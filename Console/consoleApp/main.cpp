@@ -10,7 +10,7 @@
  */
 #include <QDebug>
 #include <QObject>
-#include <QxtCommandOptions>
+#include <QCommandLineOption>
 #include "qtsingleapplication.h"
 #include "caseinfowizard.h"
 #include "Screens/frontend.h"
@@ -33,29 +33,29 @@
  *
  * Set up and handle command line options
  */
-void parseOptions( QxtCommandOptions &options, QStringList args )
+void parseOptions( QCommandLineOption &options, QStringList args )
 {
     // make options unix-like
-    options.setFlagStyle( QxtCommandOptions::DoubleDash );
-    options.setParamStyle( QxtCommandOptions::SpaceAndEquals );
+//    options.setFlagStyle( QxtCommandOptions::DoubleDash );
+//    options.setParamStyle( QxtCommandOptions::SpaceAndEquals );
 
-    options.add( "noexe", "Disable key checks for the executable" );
-    options.add( "port", "Assign the COM port to use for controlling the laser (e.g., -p COM3)", QxtCommandOptions::Required );
-    options.alias( "port", "p" );
-    options.add( "low-space", "Run in low drive space mode (no captures or recording)");
+//    options.add( "noexe", "Disable key checks for the executable" );
+//    options.add( "port", "Assign the COM port to use for controlling the laser (e.g., -p COM3)", QxtCommandOptions::Required );
+//    options.alias( "port", "p" );
+//    options.add( "low-space", "Run in low drive space mode (no captures or recording)");
 
-    options.parse( QCoreApplication::arguments() );
+//    options.parse( QCoreApplication::arguments() );
 
-    // Log any command line options. Qt pulls out any Qt-only arguments before this point
-    // The program name is always passed in
-    if( args.size() > 1 )
-    {
-        // Log any arguments
-        for (int i = 0; i < args.size(); ++i)
-        {
-            LOG( INFO, QString( "Command line arguments: %1" ).arg( args.at( i ) ) );
-        }
-    }
+//    // Log any command line options. Qt pulls out any Qt-only arguments before this point
+//    // The program name is always passed in
+//    if( args.size() > 1 )
+//    {
+//        // Log any arguments
+//        for (int i = 0; i < args.size(); ++i)
+//        {
+//            LOG( INFO, QString( "Command line arguments: %1" ).arg( args.at( i ) ) );
+//        }
+//    }
 }
 
 
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     LOG( INFO, QString( "Local time is %1" ).arg( QDateTime::currentDateTime().toString( "yyyy-MM-dd HH:mm:ss" ) ) );
 
     // check for command line options and use them if they are present
-    QxtCommandOptions options;
+    QCommandLineOption options("");
     QStringList args = app.arguments();
     parseOptions( options, args );
 

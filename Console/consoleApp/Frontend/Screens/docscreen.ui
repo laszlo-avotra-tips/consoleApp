@@ -61,7 +61,7 @@
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QxtLabel" name="statusLabel">
+    <widget class="QFrame" name="statusLabel">
      <property name="geometry">
       <rect>
        <x>4</x>
@@ -85,7 +85,7 @@
       <enum>QFrame::Raised</enum>
      </property>
     </widget>
-    <widget class="QxtLabel" name="timeFieldLabel">
+    <widget class="QFrame" name="timeFieldLabel">
      <property name="geometry">
       <rect>
        <x>4</x>
@@ -141,7 +141,7 @@
       <bold>false</bold>
      </font>
     </property>
-    <widget class="QxtLabel" name="deviceLabel">
+    <widget class="QFrame" name="deviceLabel">
      <property name="geometry">
       <rect>
        <x>4</x>
@@ -165,7 +165,7 @@
       <enum>QFrame::Raised</enum>
      </property>
     </widget>
-    <widget class="QxtLabel" name="catheterViewLabel">
+    <widget class="QFrame" name="catheterViewLabel">
      <property name="geometry">
       <rect>
        <x>6</x>
@@ -189,7 +189,7 @@
       <enum>QFrame::Raised</enum>
      </property>
     </widget>
-    <widget class="QxtLabel" name="zoomFactorLabel">
+    <widget class="QFrame" name="zoomFactorLabel">
      <property name="geometry">
       <rect>
        <x>8</x>
@@ -214,7 +214,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QxtLabel" name="recordingLabel">
+   <widget class="QFrame" name="recordingLabel">
     <property name="geometry">
      <rect>
       <x>2402</x>
@@ -256,12 +256,6 @@
    <class>captureListView</class>
    <extends>QListView</extends>
    <header>Widgets/capturelistview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QxtLabel</class>
-   <extends>QFrame</extends>
-   <header location="global">qxtlabel.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
