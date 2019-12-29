@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>unknowndev.jpg</file>
+        <file>vert_scrollbar.png</file>
+        <file>arrow_up_rollover.png</file>
+        <file>arrow_down_normal.png</file>
+        <file>arrow_down_rollover.png</file>
+        <file>arrow_up_normal.png</file>
+        <file>background_texture.png</file>
+        <file>bt_radio_rollover.png</file>
+        <file>bt_radio_normal.png</file>
+        <file>checkBox_normal.png</file>
+        <file>checkBox_active.png</file>
+        <file>handle_normal.png</file>
+        <file>handle_rollover.png</file>
+        <file>vertical_separator.png</file>
+        <file>avinger_logo.png</file>
+        <file>progress-chunk-on.png</file>
+        <file>handle_disabled.png</file>
+        <file>bt_radio_disabled.png</file>
+        <file>checkBox_disabled.png</file>
+    </qresource>
+    <qresource prefix="/resources">
+        <file>testFileDeleteLater.txt</file>
+    </qresource>
+</RCC>

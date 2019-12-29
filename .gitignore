@@ -1,0 +1,9 @@
+
+*.odt#
+*.ods#
+Console/build-*
+bootstrap
+Devices
+lib
+*.user
+Console/homescreen/homescreen2.pro.user

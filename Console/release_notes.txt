@@ -1,0 +1,1019 @@
+Avinger OCT HS System Software Release Notes
+
+All reported issues can be viewed at http://bridger:8080/report
+
+***> Update date pending release of SW0141-A OCT HS System Software Executable v4.6.0
+v4.6.0 - ?? July 2018
+---------------------
+Highlights
+----------
+* Add Ocelaris support for bidirectional operation
+* Add Ocelaris support for multiple speeds depending on Ocelot speed buttons
+
+Known Issues 
+------------
+No Known Issues.
+
+v4.4.0 - 26 July 2018
+---------------------
+Highlights
+----------
+* Add feature to set sled speed from device profile
+* Add feature to set sled torque limit from device profile
+* Disable background (Full Case) recording
+
+Known Issues 
+------------
+No Known Issues.
+
+v4.2.6 - 22 May 2018
+---------------------
+Highlights
+----------
+* Fix for missing Physician monitor
+* Improve COM port handling for communicating with Sled Support Board
+* Add initialization date check warning at system startup
+* Allow longer Device Names on recorded loops
+* Suppress warning message removing non-existent device profiles
+* Allow more device names to be displayed during Device Update
+
+Known Issues 
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#2070      OCT HS / consoleApp  Prevent infinite loop if Physician monitor not found at initialization
+#2071      OCT HS / consoleApp  Improve COM port handling for communicating with Sled Support Board
+#2072      OCT HS / HomeScreen  Add initialization date check warning at system startup
+#2073      OCT HS / consoleApp  Allow longer Device Names on recorded loops
+#2074      OCT HS / HomeScreen  Suppress warning message removing non-existent device profiles
+#2075      OCT HS / HomeScreen  Allow more device names to be displayed during Device Update
+#2076      Console (General)    Update copyright dates to include 2018
+
+v4.2.4 - 02 Apr 2018
+---------------------
+Highlights
+----------
+* Improve Aux monitor compatibility
+* Support multiple resolutions 
+
+Known Issues 
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#2016	   OCT HS Common        Improve Aux Monitor Compatibility
+#2018      OCT HS / consoleApp  Make Aux Mon layout flexible for all resolutions
+
+v4.2.1 - 03 Jan 2017
+---------------------
+Highlights
+----------
+* Attenuate Laser when Sled is not running to prolong Sled life.
+
+Known Issues 
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#1994	   OCT HS / HomeScreen      Attenuate Laser when Sled is Off L250
+
+
+v4.2.0 - 09 Nov 2016
+---------------------
+Highlights
+----------
+* Add measurement feature for measuring length and area of regions of interest
+
+Known Issues
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#1968	   OCT HS / consoleApp      Add control points to the drawn polygon
+#1969	   OCT HS / consoleApp      Allow saving measurements overlays
+#1973	   OCT HS / consoleApp      Support zoom in measurement tool
+#1974	   OCT HS / consoleApp      Allow calculations box to be moved
+
+
+v4.0.1 - 28 June 2016
+---------------------
+Highlights
+----------
+* Faster loop exports
+* Improved export time estimates
+* Fixed sticky on-screen keyboard feedback
+* Improved quick-pick interaction with on-screen keyboard
+
+Known Issues
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#1957      OCT HS Common            Exports Take Too Long
+#1962      OCT HS Common            Keyboard Feedback Can Get Stuck	
+#1964      OCT HS / HomeScreen      Update logo in Video Exports	
+#1959      OCT HS / HomeScreen      Export time estimates are inaccurate	
+#1956      OCT HS / consoleApp      Doctor and Location Quick-Pick Dismisses Keyboard	
+#1965      OCT HS / consoleApp      Case Info not properly restored on Aux Monitor after re-connect	
+
+
+v4.0.0 - 26 Apr 2016
+--------------------
+Highlights
+----------
+* Add Auxiliary 1920x1080 Monitor Support
+* Improve case setup workflow
+* Add Manual EVOA Controls
+* Add Technician Touch Monitor (1920x1080) Support
+* Add On-Screen Keyboard for Technician
+* Add Hot-Swap Support for Monitors
+* Add Sled Support Board Communication
+* Remove Catheter Color feature
+* Remove Lock View for Pantheris 
+
+Known Issues
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#1872      OCT HS Common            Hot-Swap Support for Monitors
+#1901      OCT HS Common            EVOA finalize implementation
+#1390      OCT HS Common            Update UI for touch monitor support
+#1867      OCT HS Common            Mother Ticket: On-screen keyboard and Modality
+#1888      OCT HS Common            On-screen keyboard: Customize for ease of use
+#1939      OCT HS Common            Use new background image for v4.0.0
+#1941      OCT HS Common            Add contrast to modal widgets with dim background effect
+#1917      OCT HS / Homescreen      Add COM port Config tool to Approved Apps List
+#1864      OCT HS / Homescreen      On-screen keyboard: idle timeout password prompt for Review and Export
+#1865      OCT HS / Homescreen      Modality: Preferences and Service screens should be modal
+#1868      OCT HS / Homescreen      On-screen keyboard: pdfViewer 'Find' input dialog
+#1869      OCT HS / Homescreen      On-screen keyboard: 'Add re-identification information' field of Export
+#1635      OCT HS / Homescreen      Restore function should have friendlier warning message
+#1873      OCT HS / Homescreen      New Password Setup dialog should be modal
+#1637      OCT HS / Homescreen      Enlarge the Update System window
+#1890      OCT HS / Homescreen      Dialogs launched from preferences dialog need to be centered
+#1932      OCT HS / Homescreen      Password Reset dialog dots are wrong
+#1940      OCT HS / Homescreen      Remove Border From Wizards in Homescreen
+#1899      OCT HS / consoleApp      Fix variable imaging depth range for Pantheris
+#1860      OCT HS / consoleApp      Verify dialog should be modal
+#1861      OCT HS / consoleApp      Case Setup wizard on-screen keyboard does not work
+#1918      OCT HS / consoleApp      Ensure Connected Sled Has Desired Clocking Parameters
+#1925      OCT HS / consoleApp      Read and display firmware versions in advanced view
+#1543      OCT HS / consoleApp      Enable the user to cancel a "Device Select"
+#1671      OCT HS / consoleApp      Image capture and OCT loop recording default tags
+#1856      OCT HS / consoleApp      Initial proof of concept for Auxiliary Monitor (3rd Monitor)
+#1857      OCT HS / consoleApp      Remove Catheter Color Feature
+#1858      OCT HS / consoleApp      Panning on auxiliary monitor does not work
+#1863      OCT HS / consoleApp      Improve case setup workflow
+#1866      OCT HS / consoleApp      On-screen keyboard: Delete confirmation field of delete wizard
+#1871      OCT HS / consoleApp      Annotation should be transparent and wider
+#1874      OCT HS / consoleApp      Redesign EVOA Controls (Remove Auto-Adjust, Add Manual Control)
+#1876      OCT HS / consoleApp      Full case recording is broken
+#1877      OCT HS / consoleApp      auxMon display during scan sync needs attention
+#1878      OCT HS / consoleApp      Move variable depth UI controls into a generic UI class
+#1879      OCT HS / consoleApp      Remove lock view feature
+#1880      OCT HS / consoleApp      auxMon: Mother ticket for the Aux Monitor
+#1881      OCT HS / consoleApp      auxMon: Device Select
+#1882      OCT HS / consoleApp      auxMon: Live View
+#1883      OCT HS / consoleApp      auxMon: Review
+#1884      OCT HS / consoleApp      auxMon: Scan Sync
+#1900      OCT HS / consoleApp      Catheter View label not displayed until the control is toggled in Display Options
+#1928      OCT HS / consoleApp      Log changes in clocking mode for high speed devices
+#1933      OCT HS / consoleApp      Change Default Viewing Depth to Level 3
+#856       OCT HS / consoleApp      Refactor: catheter orientation feature cleanup
+#1002      OCT HS / consoleApp      Disable Physician Preview control during loop playback
+#1914      OCT HS / consoleApp      Display warning message if incorrect Aux monitor is detected
+#1931      OCT HS / consoleApp      Make Annotate Image pen width smaller
+#933       OCT HS / consoleApp      Hide the mouse when inactive
+#1672      OCT HS / consoleApp      Reset zoom location after each zoom
+#1680      OCT HS / consoleApp      Scrollbar handles are non-standard
+#1926      OCT HS / consoleApp      Unusual border at bottom at consoleApp start
+#1930      OCT HS / consoleApp      Case Setup dialog needs to be re-sized to fit CANCEL and FINISH when keyboard is present
+
+
+v3.4.2 - 03 Jan 2017
+--------------------
+Highlights
+----------
+* Attenuate Laser when Sled is not running to prolong Sled life.
+
+Known Issues 
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#1993	   OCT HS / HomeScreen      Attenuate Laser when Sled is Off L220
+
+
+v3.4.0 - 25 June 2015
+--------------------
+Highlights
+----------
+* Lock View for Pantheris 
+* Variable Imaging Depth
+* Sepia color option
+* Training on Console
+
+Known Issues 
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component                summary
+#1698      OCT HS / HomeScreen      Create Training Selection page
+#1699      OCT HS / HomeScreen      Remove MFG devices when installing the Commercial release
+#1700      OCT HS / HomeScreen      Add PDF viewing capabilities
+#1704      OCT HS / HomeScreen      Add licensing text to manual for v3.4 release
+#1717      OCT HS / HomeScreen      Hide the training pushbutton until the feature is more cosmetically ready
+#1723      OCT HS / HomeScreen      Update (c) info on Homescreen in next release
+#1748      OCT HS / HomeScreen      Add File Browser interface for Training On Console
+#1749      OCT HS / HomeScreen      ToC: Create path for SelectCasePage to be used in Training On Console mode
+#1781      OCT HS / HomeScreen      Display Training Content Version on Service Settings Dialog
+#1793      OCT HS / HomeScreen      ToC: Video Playback Rate Incorrect For OCT Video
+#1796      OCT HS / HomeScreen      ToC: rename top level Avinger_Training directories
+#1797      OCT HS / HomeScreen      ToC: training_version.txt file handle not closed
+#1798      OCT HS / HomeScreen      ToC: MP4 file handles not closed for OCT Review and Reference videos
+#1799      OCT HS / HomeScreen      ToC: video does not fit the screen
+#1800      OCT HS / HomeScreen      ToC: "Repeat" button does not work
+#1801      OCT HS / HomeScreen      ToC: new buttons from Marketing
+#1802      OCT HS / HomeScreen      ToC: transport scrubbar causes crashes
+#1803      OCT HS / HomeScreen      ToC: PDF files are not handled correctly
+#1804      OCT HS / HomeScreen      ToC: training controls can be dragged and dropped
+#1805      OCT HS / HomeScreen      ToC: PDF viewer is not modal
+#1806      OCT HS / HomeScreen      ToC: PDF file handles can be left open
+#1811      OCT HS / HomeScreen      ToC: Update System must support Avinger_Training installation/upgrade
+#1817      OCT HS / HomeScreen      TOC: Do not be fooled by hidden files (.DS_Store)
+#1818      OCT HS / HomeScreen      TOC: Conditions for generating a warning message
+#1820      OCT HS / HomeScreen      ToC: Disable Access Timeout for OCT Review
+#1821      OCT HS / HomeScreen      ToC: PDF viewer Find pop-up needs skinning
+#1822      OCT HS / HomeScreen      ToC: the doc.pdf for Ocelot PIXL IFU is not readable
+#1823      OCT HS / HomeScreen      ToC: the info.txt content for Case Studies needs attention
+#1824      OCT HS / HomeScreen      ToC: Homescreen Training button - border, position and text
+#1825      OCT HS / HomeScreen      ToC: Training screen Back button position inconsistent
+#1826      OCT HS / HomeScreen      ToC: Training buttons have shade of gray inconsistent with the application
+#1830      OCT HS / HomeScreen      ToC: add logging to all Training button clicks
+#1832      OCT HS / HomeScreen      ToC: add top level Avinger_Training structure to repository
+#1834      OCT HS / HomeScreen      ToC: sort OCT Review table by Patient ID rather than Timestamp
+#1846      OCT HS / HomeScreen      ToC: Remove lower border from icon controls for Case Studies and Reference
+#1847      OCT HS / HomeScreen      ToC: video playback sometimes crashes
+#1850      OCT HS / HomeScreen      ToC: make sure the Avinger Training directory is non-empty
+#1851      OCT HS / HomeScreen      ToC: fix warning message when the folder Avinger_Training\oct_review is missing
+#888       OCT HS / consoleApp      log info at end of case
+#1549      OCT HS / consoleApp      Video playback crash during case
+#1676      OCT HS / consoleApp      Prevent cardinal markers from snapping back on fluoro sync
+#1750      OCT HS / consoleApp      Label EVOA Range for R&D Use
+#1753      OCT HS / consoleApp      ToC: Some wizards don't set 'mode' for selectCasePage
+#1754      OCT HS / consoleApp      Video Clips less than 1 Second are Unplayable (High Speed Only)
+#1763      OCT HS / consoleApp      Record Loop has a memory leak
+#1764      OCT HS / consoleApp      Play Loop has a memory leak
+#1767      OCT HS / consoleApp      Create Ocelot MVRX Device
+#1769      OCT HS / consoleApp      Scaling is different for low speed and high speed devices
+#1770      OCT HS / consoleApp      Include the Voxeleron Housing Segmentation algorithm
+#1771      OCT HS / consoleApp      Include the Voxeleron Test Project
+#1772      OCT HS / consoleApp      Implement SegmentHousing in DSPGPU
+#1773      OCT HS / consoleApp      Calculate housing center location from binding region
+#1774      OCT HS / consoleApp      Add a Housing Locking feature for Pantheris
+#1775      OCT HS / consoleApp      Slight truncation of letter "X" for OCELOT|MVRX in the device select screen
+#1776      OCT HS / consoleApp      Move the Color Map pallet out of the Sector
+#1778      OCT HS / consoleApp      Normal View should display ~3.3mm depth beyond glueline/internal imaging mask point
+#1779      OCT HS / consoleApp      Enable a "Sepia" color map option in Display Options
+#1780      OCT HS / consoleApp      Pantheris Stabilization: Accommodate 7French profile
+#1782      OCT HS / consoleApp      Pantheris Stabilization: Deep View disables stabilization
+#1783      OCT HS / consoleApp      Make the "Use Noise Reduction" Display Option unsticky
+#1784      OCT HS / consoleApp      Display "Stabilization On" to the Physician when appropriate
+#1785      OCT HS / consoleApp      Add variable imaging depth feature
+#1786      OCT HS / consoleApp      Adjust Pantheris 8F Profile
+#1787      OCT HS / consoleApp      Log statistics for the Housing Segmentation algorithm
+#1788      OCT HS / consoleApp      Reticle Depth Calculations are incorrect for VariableDepthMode
+#1791      OCT HS / consoleApp      Disqualify Segmentation Output based on Reasonable Housing Length
+#1792      OCT HS / consoleApp      Stabilization always on videos even when feature is disabled
+#1794      OCT HS / consoleApp      Stabilization: raw captures and thumbnails have wrong orientaion
+#1808      OCT HS / consoleApp      UI for housing stabilization
+#1809      OCT HS / consoleApp      Implement a switch to collect housing algorithm related data
+#1812      OCT HS / consoleApp      Scan Sync: low speed scan sync images have distorted masked regions
+#1813      OCT HS / consoleApp      statLogger: don't log timestamp for HOUSING_TEST_APP
+#1814      OCT HS / consoleApp      Low speed: direction ring obscured
+#1815      OCT HS / consoleApp      Disable the Lock View button and Variable Depth Arrows during review
+#1816      OCT HS / consoleApp      EVOA: log value after Device Select or spin box change
+#1819      OCT HS / consoleApp      Improve the Variable Imaging Depth UI Controls
+#1828      OCT HS / consoleApp      Finalize "Sepia" like colormap for product release
+#1831      OCT HS / consoleApp      Debug assertion error in Housing Localization Algorithm: vector subscript out of range
+#1835      OCT HS / consoleApp      Context menu of LOCK VIEW is for Scan sync
+#1836      OCT HS / consoleApp      Context menu missing for Left and Right Arrow buttons for variable depth imaging
+#1837      OCT HS / consoleApp      Remove Deep View button
+#1838      OCT HS / consoleApp      Turn off ENABLE_EVOA_MANUAL_CONTROL build flag
+#1839      OCT HS / consoleApp      Remove ENABLE_GPU_PROCESSED_DATA_GRAPH
+#1840      OCT HS / consoleApp      remove ENABLE_TRAINING_ON_CONSOLE
+#1841      OCT HS / consoleApp      Dismiss "VIEW LOCKED" from Docscreen during review
+#1842      OCT HS / consoleApp      Protect Future HS Catheters from Using Version1 of the Locking Algorithm
+#1843      OCT HS / consoleApp      Catheter edge is drawn with brightness from laser indicator
+#1844      OCT HS / consoleApp      Remove spinbox for Lock View validOffset adjustment
+#1845      OCT HS / consoleApp      Add attribute to device XML file to enable/disable housing algorithm
+#1849      OCT HS / consoleApp      Depth Indicator Positions don't match SRS
+
+
+v3.0.1 - 07 Jul 2014
+--------------------
+Highlights
+----------
+* Fit sector to view by default
+* Resolve all known issues from v3.0.0
+* Timeout EVOA Auto-adjust when the sled doesn't deliver triggers
+
+Known Issues 
+------------
+No Known Issues.
+
+Tickets Closed
+--------------
+ticket       component               summary
+#1694      OCT HS / consoleApp     Zoom Sector to fit the Sector View by Default
+#1706      OCT HS / consoleApp     Show Decorated applies additional Zoom with fitSectorToView
+#1707      OCT HS / consoleApp     Pull in the Cardinal Tick Marks to sector edges
+#1708      OCT HS / consoleApp     Move fitSectorToView out of the build flag and into the full code.
+#1709      OCT HS / consoleApp     Merge 3.0.1 changes into the branch for Release
+#1710      OCT HS / consoleApp     Pantheris VISION device XML file (Pandrone) should be ported to v3.0.1
+#1675      OCT HS / consoleApp     Tabbing gets stuck on the Image Capture tag box
+#1688      OCT HS / consoleApp     Rescaling data fatal error does not turn off power to the PDB
+#1690      OCT HS / consoleApp     Detection of no devices at Start case click not reset on subsequent clicks
+#1713      OCT HS / consoleApp     Allow the EVOA Auto-Adjust to timeout with sled off
+#1532      OCT HS / consoleApp     Spurious text on screen during Scan Sync sometimes
+
+
+v3.0.0 - 18 Dec 2013
+--------------------
+Highlights
+* New user interface layout
+* Master database for faster loading of case data (Review, Export, Archive, Delete)
+* Larger sector/waterfall view on Technician screen
+* Rename tag Captures and OCT Loops
+* Smooth zooming, navigate image by grabbing it
+* Brightness/Contrast auto-adjust button
+* Export to USB
+* Restore cases from USB
+* Copy System logs to USB
+* Browse logs
+* Single button power on and off (imaging hardware off until during case)
+
+Known Issues (See D 0330-A)
+1675    Tabbing gets stuck on the Image Capture tag box
+1532    Spurious text on screen during Scan Sync sometimes
+1688    Rescaling data fatal error does not turn off power to the PDB
+1690    Detection of no devices at Start case click not reset on subsequent clicks
+
+Tickets Closed
+ticket   component            summary
+#1604	OCT / HomeScreen	Check the version of Device XML files
+#1075	OCT / consoleApp	Add log entry for logging out of HomeScreen
+#776	OCT HS / HomeScreen	Export should handle data cases larger than a DVD
+#1076	OCT HS / HomeScreen	Cannot access system if HomeScreen fails to start
+#1206	OCT HS / HomeScreen	Review Case: video transport slider can be dragged past the end
+#1213	OCT HS / HomeScreen	Review Case: captures on physician screen show extra stuff
+#1468	OCT HS / HomeScreen	v2.4 installer should remove all old devices
+#1469	OCT HS / HomeScreen	Add Log Browser Interface
+#1472	OCT HS / HomeScreen	Force Popup Message Onto Technician Monitor
+#1479	OCT HS / HomeScreen	Use Patient ID instead of Case ID on exported images
+#1480	OCT HS / HomeScreen	Accessing Preferences after System Settings causes a crash
+#1483	OCT HS / HomeScreen	Use Patient ID instead of Case ID on post-case review screens
+#1484	OCT HS / HomeScreen	Export screens: use patient ID instead of case ID
+#1485	OCT HS / HomeScreen	Re-order the information in info.txt for exports
+#1489	OCT HS / HomeScreen	Export - error creating case information file
+#1493	OCT HS / HomeScreen	Start button debounce is faulty
+#1500	OCT HS / HomeScreen	Export to hard drive / flash device
+#1503	OCT HS / HomeScreen	Add support for exporting just the system logs, information
+#1516	OCT HS / HomeScreen	Show patient name instead of guid / case id in Archive and Delete confirmation screens
+#1517	OCT HS / HomeScreen	Add Restore from Archive feature
+#1525	OCT HS / HomeScreen	Add "Data" to password dialogs
+#1550	OCT HS / HomeScreen	Change dbreader short loop filtering to use recording length instead of file size
+#1560	OCT HS / HomeScreen	Kiosk version just shows N/A if kioskversion.txt cannot be read
+#1574	OCT HS / HomeScreen	Add support for deleting crash dump files
+#1581	OCT HS / HomeScreen	Improve Archiving Progress Bar Accuracy
+#1586	OCT HS / HomeScreen	Change BG from white to black
+#1593	OCT HS / HomeScreen	Post-Case Review does not show decorated images
+#1595	OCT HS / HomeScreen	Add Full Case Recording state to Preferences screen
+#1607	OCT HS / HomeScreen	Add OCTHS Laser Measurements.exe to whitelist
+#1610	OCT HS / HomeScreen	Use new DVD and USB buttons from Branding in the new UI
+#1621	OCT HS / HomeScreen	Consider renaming Archive directory to Avinger_Archive
+#1629	OCT HS / HomeScreen	Export sees cases multiple times
+#1643	OCT HS / HomeScreen	Copy System Logs and Crash Dumps with Case Archive
+#1644	OCT HS / HomeScreen	UI Layout Bug for DVD Export
+#1645	OCT HS / HomeScreen	USB "Chose destination" page doesn't update after "Back" on Export
+#1647	OCT HS / HomeScreen	Empty key files not identified in logging or warning messages
+#1648	OCT HS / HomeScreen	Crash with Archive Logs
+#1650	OCT HS / HomeScreen	Rename Preferences / Service buttons for consistency
+#1652	OCT HS / HomeScreen	Use higher resolution buttons for the Previous / Next buttons in Review
+#1653	OCT HS / HomeScreen	Stylize the data password dialog
+#1654	OCT HS / HomeScreen	DVD Export Back doesn't work
+#1656	OCT HS / HomeScreen	Updates to in top-level m.bat
+#1661	OCT HS / HomeScreen	Add recording length to post-case review
+#1685	OCT HS / HomeScreen	Review Case: full case icons are all labeled "Full Case Part 0"
+#567	OCT HS / consoleApp	Remember some settings across sessions
+#623	OCT HS / consoleApp	Should the laser object be global/instance/part of backend?
+#858	OCT HS / consoleApp	Exit confirmation from consoleApp handles keys oddly
+#963	OCT HS / consoleApp	UI Update: scrollbars are not quite right
+#990	OCT HS / consoleApp	Branding feedback: Clip Captures
+#1014	OCT HS / consoleApp	Disabled controls not always obvious
+#1017	OCT HS / consoleApp	Put cancel on the left of the OK button for dialog boxes
+#1194	OCT HS / consoleApp	Image annotation
+#1221	OCT HS / consoleApp	Imager Test: sector live view needs clearing before displaying new device
+#1268	OCT HS / consoleApp	Update Ocelot and PIXL imaging depths in OCT HS
+#1291	OCT HS / consoleApp	Bigger sector image on Tech screen
+#1334	OCT HS / consoleApp	Allow access to Log Out and Admin Screen with keyboard controls
+#1347	OCT HS / consoleApp	Screen layout incorrect when switching between movies during case
+#1351	OCT HS / consoleApp	Disable features during capture review
+#1401	OCT HS / consoleApp	Add tick marks at the o'clock positions on the sector
+#1443	OCT HS / consoleApp	Long device names are cut-off on the Tech screen
+#1454	OCT HS / consoleApp	Hide waterfall when reviewing High Speed movie
+#1460	OCT HS / consoleApp	Deep View label on physician screen should be hidden during playback
+#1471	OCT HS / consoleApp	Review timeout does not prompt for password
+#1475	OCT HS / consoleApp	Capture screen shots with onscreen decorations
+#1477	OCT HS / consoleApp	Update SVP0012 to test 'Invert OCT Colors' display option
+#1478	OCT HS / consoleApp	Refactor timing variable names
+#1486	OCT HS / consoleApp	Do not derive the Case ID from the Patient ID
+#1490	OCT HS / consoleApp	Captured zoomed images
+#1491	OCT HS / consoleApp	Show confirmation that password was changed
+#1492	OCT HS / consoleApp	Invert OCT displays the wrong color when saturated
+#1496	OCT HS / consoleApp	Rename image captures and OCT Loops
+#1497	OCT HS / consoleApp	Faster loading of case data
+#1498	OCT HS / consoleApp	Make Delete feature customer accessible
+#1499	OCT HS / consoleApp	Make Archive feature customer accessible
+#1501	OCT HS / consoleApp	Add smooth zooming
+#1502	OCT HS / consoleApp	Sector rotates with any mouse button
+#1505	OCT HS / consoleApp	End Case is long when using a High Speed device
+#1506	OCT HS / consoleApp	Remove Test Device screen
+#1507	OCT HS / consoleApp	Rename adminscreen to servicescreen
+#1508	OCT HS / consoleApp	Re-organize the Preferences Screen
+#1515	OCT HS / consoleApp	Remove IEEE 830 references from documents
+#1518	OCT HS / consoleApp	Add kiosk version to log
+#1519	OCT HS / consoleApp	Add application name to start of logging string
+#1520	OCT HS / consoleApp	Make initOpenCL more robust for non-AMD development
+#1521	OCT HS / consoleApp	Remove Custom Device support
+#1522	OCT HS / consoleApp	Give feedback when adding cases
+#1524	OCT HS / consoleApp	Improvements to user recordings
+#1528	OCT HS / consoleApp	Add Pantheris device for CE release
+#1529	OCT HS / consoleApp	Long pause when loading applications for updating the system
+#1533	OCT HS / consoleApp	Remove R&D Scan Sync Cutter Alignment code
+#1539	OCT HS / consoleApp	Remove extraneous text from Case Setup screen
+#1540	OCT HS / consoleApp	Remove redundant text from Device Select screen
+#1542	OCT HS / consoleApp	Slider endpoint. square vs. round
+#1544	OCT HS / consoleApp	Zoom handling and reviewing captures and clips needs attention
+#1545	OCT HS / consoleApp	Need method to indicate fluoro sync
+#1549	OCT HS / consoleApp	Video playback crash during case
+#1551	OCT HS / consoleApp	Need way to indicate that End Case also saves the data
+#1552	OCT HS / consoleApp	Renaming capture tag does not update database
+#1555	OCT HS / consoleApp	Capture direction of rotation in Low Speed device movies
+#1556	OCT HS / consoleApp	No hover tooltip on patient name
+#1557	OCT HS / consoleApp	Add auto-adjust brightness/contrast
+#1558	OCT HS / consoleApp	Make Display Options and Advanced View toggle their windows
+#1561	OCT HS / consoleApp	Remove leading and trailing spaces when editing capture tag field
+#1562	OCT HS / consoleApp	Holding spacebar creates runt loops that cannot be reviewed
+#1563	OCT HS / consoleApp	Restrict single-click and arrows during review
+#1566	OCT HS / consoleApp	Capture and OCT Loop thumbnails are drawn differently
+#1568	OCT HS / consoleApp	Change EVOA Failure verbiage to indicate Data Translation board
+#1570	OCT HS / consoleApp	Hide Physician Preview when review is started
+#1571	OCT HS / consoleApp	Add support for single-button power on/off
+#1573	OCT HS / consoleApp	Add OCT loop and Capture tags to export info.txt
+#1575	OCT HS / consoleApp	Mouse can get stuck on Physician screen
+#1578	OCT HS / consoleApp	UI for branding, usability updates
+#1579	OCT HS / consoleApp	Update capture buttons and labeling for clarity
+#1580	OCT HS / consoleApp	Display trimmed values for data entry fields
+#1582	OCT HS / consoleApp	Add end case and console shutdown to log viewer
+#1583	OCT HS / consoleApp	Change FIFO only message
+#1585	OCT HS / consoleApp	videoEncoder::close hangs draining remaining frames
+#1587	OCT HS / consoleApp	Patient data: Rename Import to Restore
+#1588	OCT HS / consoleApp	Hide annotations when reviewing
+#1589	OCT HS / consoleApp	High-speed DAQ memory leak
+#1591	OCT HS / consoleApp	Image and loop tag field display during review
+#1592	OCT HS / consoleApp	Consider automatic selectAll upon image and loop tag field focus
+#1594	OCT HS / consoleApp	Decorated image dimensions are larger than the combined sector+waterfall
+#1596	OCT HS / consoleApp	Recording label color and visibility incorrect
+#1597	OCT HS / consoleApp	Auto Adjust Brightness and Contrast crashes without Top Dead Center trigger
+#1600	OCT HS / consoleApp	Deep View button can get out of sync
+#1603	OCT HS / consoleApp	Brightness/contrast Auto Adjust enabled during image/loop review
+#1605	OCT HS / consoleApp	Convert pixel radius to millimeters in the device XML files
+#1606	OCT HS / consoleApp	Export burnWorker is broken
+#1612	OCT HS / consoleApp	Text on Physician screen is too small
+#1614	OCT HS / consoleApp	Case Review Scrolling Issue
+#1616	OCT HS / consoleApp	Warning text cutoff when no devices are present
+#1618	OCT HS / consoleApp	Update Imaging Depths for Device XML files
+#1628	OCT HS / consoleApp	Disable Scan Sync when in Annotation mode
+#1630	OCT HS / consoleApp	Live panel says 'Pantheris VISION' during Case Setup
+#1631	OCT HS / consoleApp	'Captures to export' count incorrect on export confirmation screen
+#1632	OCT HS / consoleApp	Add EVOA control for Low Speed catheters
+#1634	OCT HS / consoleApp	Keyboard shortcut for Annotation
+#1639	OCT HS / consoleApp	Make Installer overwrite existing devices
+#1640	OCT HS / consoleApp	UI looks frozen in USB export
+#1641	OCT HS / consoleApp	videoConversionWorker does not free memory
+#1646	OCT HS / consoleApp	Force outer reticle ring
+#1649	OCT HS / consoleApp	OCT Loop file handles are not released
+#1651	OCT HS / consoleApp	Cannot tell that OCT Loops are disabled when reviewing captures
+#1657	OCT HS / consoleApp	Create manifest for exported data
+#1659	OCT HS / consoleApp	Clean out the trash
+#1660	OCT HS / consoleApp	Canceling Restore can leave a case in a non-usable state
+#1662	OCT HS / consoleApp	Catheter view is not set in database
+#1664	OCT HS / consoleApp	Add logging to styledMessageBox
+#1665	OCT HS / consoleApp	Archive should always overwrite
+#1667	OCT HS / consoleApp	Rename Avinger_Archive to Avinger_Backup
+#1677	OCT HS / consoleApp	UI updates for v3.0 release
+#1679	OCT HS / consoleApp	Disable auto-repeat for the Image Capture hotkey
+#1682	OCT HS / consoleApp	Previously exported data causes error on re-export
+#1683	OCT HS / consoleApp	Remove mid-deep view feature
+#1684	OCT HS / consoleApp	Low disk space handling has issues
+
+
+v2.4.1 - 18 May 2013
+--------------------
+Highlights
+* Patch release to remove patient information from the logging system
+
+Known Issues (See D 0230-B)
+858   Exit confirmation from consoleApp handles keys oddly
+990   Branding feedback: Clip Captures
+1014  Disabled controls not always obvious
+1206  Review Case: video transport slider can be dragged past the end
+1213  Review Case: captures on physician screen show extra stuff
+1217  Review Case: review controls require extra click after first use
+1219  Review Case: captures and loops box edges are quirky
+1220  Review Case: captures/loops box controls have odd behavior
+1237  Frontend Framerate Drops to 15 fps during Dual Encoding
+1270  Implement maximum file size for files produced
+1347  Screen layout incorrect when switching between movies during case
+1443  Long device names are cut-off on the Tech screen
+1454  Hide waterfall when reviewing High Speed movie
+1460  Deep View label on physician screen should be hidden during playback
+1461  Review can crash on rapid clicking
+1471  OCT HS / HomeScreen  Review timeout does not prompt for password 
+1492  Invert OCT displays the wrong color when saturated
+1547  Crash at start of OCT Loop recording with High Speed catheter
+1549  Video playback crash during case
+
+Tickets Closed
+ticket   component            summary
+1486     OCT HS / consoleApp  Do not derive the Case ID from the Patient ID
+
+
+v2.4.0 - 29 Mar 2013
+--------------------
+Highlights
+* New video playback decoder
+* Scan Sync with polar grids
+* Better Service support
+ * Archive case data
+ * Delete case data
+ * Laser serial number displayed
+ * Last DAQ configuration date displayed
+ * Kiosk version displayed
+* Fixed some corner case crashes
+* Long term support for new catheter trials, commercial releases
+* New device icons
+* Faster installer, no reboot needed
+* New method to access the Service Settings (shift-gear)
+* On-screen markers to indicate cardinal positions
+
+Known Issues (See D 0210-A)
+858   Exit confirmation from consoleApp handles keys oddly
+990   Branding feedback: Clip Captures
+1014  Disabled controls not always obvious
+1206  Review Case: video transport slider can be dragged past the end
+1213  Review Case: captures on physician screen show extra stuff
+1217  Review Case: review controls require extra click after first use
+1219  Review Case: captures and loops box edges are quirky
+1220  Review Case: captures/loops box controls have odd behavior
+1237  Frontend Framerate Drops to 15 fps during Dual Encoding
+1270  Implement maximum file size for files produced
+1347  Screen layout incorrect when switching between movies during case
+1443  Long device names are cut-off on the Tech screen
+1454  Hide waterfall when reviewing High Speed movie
+1460  Deep View label on physician screen should be hidden during playback
+1461  Review can crash on rapid clicking
+1471  OCT HS / HomeScreen  Review timeout does not prompt for password 
+
+Tickets Closed
+ticket   component            summary
+610      OCT HS / HomeScreen  Function expireCaches should handle/report errors when deleting directories
+793      OCT HS / consoleApp  Warn if rescalingdata.csv is empty/contains less data than expected
+1057     OCT HS / consoleApp  GPU Support:compile openCL files
+1078     OCT HS / consoleApp  Add log entry for local time
+1154     OCT HS / consoleApp  Waterfall rendering has minor cosmetic issues
+1171     OCT HS / HomeScreen  session.db files held open by 'Export' and 'Review'
+1182     OCT HS / consoleApp  Consolidate INI files
+1227     OCT HS / consoleApp  Rapid toggling of record loop controls crashes leaving DAQ in FIFO only mode
+1265     OCT HS / consoleApp  Scan Sync re-enabled after playing OCT Loop
+1308     OCT HS / HomeScreen  Long MKV Full Cases Load Slowly
+1311     OCT HS / HomeScreen  Logo on physician screen needs handling within homescreen
+1354     OCT HS / consoleApp  Check space between and during cases
+1388     OCT HS / HomeScreen  Service: add option for wiping patient data
+1341     OCT HS / HomeScreen  LEAD library unlock can take long time
+1391     OCT HS / consoleApp  Add logging of state changes for Scan Sync
+1392     MFG / Lightbox HS    MFG: Allow service interface to run any EXE or BAT file
+1398     OCT HS / consoleApp  Add catheter IDE indication support
+1400     OCT HS / consoleApp  Not being able to create a thumbnail should not cause the software to fault
+1403     OCT HS / consoleApp  Add Service support for adding/removing catheter devices
+1405     OCT HS / consoleApp  Rename "Access Clinical Data" button
+1413     OCT HS / HomeScreen  Handle more precise EVOA settings
+1416     OCT HS / consoleApp  New layout of Admin Settings screen
+1418     OCT HS / HomeScreen  Add selection buttons to Archive Data and Delete Data screens
+1419     OCT HS / consoleApp  Add laser serial number to the admin settings screen
+1420     OCT HS / consoleApp  Rename "Quick-Pick" titles in prefsdialog.ui
+1421     OCT HS / consoleApp  Rename "Administrator Password" references
+1422     OCT HS / HomeScreen  Refactor video playback
+1423     OCT HS / consoleApp  Add kiosk version to system settings screen
+1424     OCT HS / consoleApp  Default for devices without disclaimers should be investigational
+1426     OCT HS / consoleApp  Add laser service date to the System Settings screen
+1432     OCT HS / consoleApp  Remove LEAD Tools DLL installation from installer
+1433     OCT HS / consoleApp  Use new background image from Mortar
+1434     OCT HS / consoleApp  Device names need to be readable
+1436     OCT HS / consoleApp  Separate device icon from the code
+1437     OCT HS / consoleApp  Create new bootstrap area in trunk for setting up system
+1438     OCT HS / consoleApp  Update device name Wolverine to Pantheris
+1439     OCT HS / consoleApp  Add OUS warning to investigational devices
+1440     OCT HS / consoleApp  Force installer to uninstall old version before installing
+1441     MFG / Lightbox HS    MFG installer should install test devices
+1442     OCT HS / consoleApp  Sort the installer list
+1444     OCT HS / consoleApp  Update device icons for v2.4
+1445     OCT HS / consoleApp  Change Scan Sync grid overlay
+1447     OCT HS / consoleApp  Delete Data should ask for data access password
+1448     MFG / Lightbox HS    MFG: Manufacturing release should log that it is such
+1449     MFG / Lightbox HS    MFG installer should remove any installed devices
+1452     OCT HS / consoleApp  Scan Sync images are scaled incorrectly
+1453     OCT HS / consoleApp  Clean up physician monitor during loop playback and capture review
+1455     OCT HS / consoleApp  Make the installer run the application after installing
+1456     OCT HS / consoleApp  Installer: remove options
+1457     OCT HS / consoleApp  Export Case is using stale free space information
+1462     OCT HS / consoleApp  Add file version to device XML files
+1463     OCT HS / HomeScreen  Devices are Read-Only if installed from CDs and cannot be removed
+1464     OCT HS / HomeScreen  Export time estimates are inaccurate
+1468     OCT HS / HomeScreen  v2.4 installer should remove all old devices
+
+ 
+v2.2.2 - 21 Feb 2013
+--------------------
+Highlights
+* EVOA controls are only available with High Speed Imaging Devices
+* Logo back on the physician monitor
+
+Known Issues (See D 0112-A)
+* no changes from v2.2.1
+
+
+Tickets Closed
+ticket   component            summary
+1414     OCT HS / consoleApp	EVOA controls should only be available for High Speed devices
+1415     OCT HS / HomeScreen  Add background logo fix for v2.2.2 release
+
+
+v2.2.1 - 28 Jan 2013
+--------------------
+Highlights
+* Maintain sector orientation in movies
+* More consistent high speed movie timing
+* Brightness/contrast controls on the Processed data graph
+* Improved data acquisition and display performance for Low Speed devices
+
+
+Known Issues (See D 0112-A)
+1154  Waterfall rendering has minor cosmetic issues
+1171  session.db files held open by 'Export' and 'Review'
+1206  Review Case: video transport slider can be dragged past the end
+1213  Review Case: captures on physician screen show extra stuff
+1217  Review Case: review controls require extra click after first use
+1219  Review Case: captures and loops box edges are quirky
+1220  Review Case: captures/loops box controls have odd behavior
+1227  Rapid toggling of record loop controls crashes leaving DAQ in FIFO only mode
+1229  LEAD decoder not loading when MKV file first loaded
+1237  Frontend Framerate Drops to 15 fps during Dual Encoding
+1265  Scan Sync re-enabled after playing OCT Loop
+1270  Implement maximum file size for files produced
+1308  Long MKV Full Cases Load Slowly
+1341  LEAD library unlock can take long time
+1342  Archive quirk: whitelist filenames apply to case data
+1347  Screen layout incorrect when switching between movies during case
+
+Tickets Closed
+ticket   component            summary
+875      OCT HS / consoleApp  Log laser serial number
+1196     OCT HS / consoleApp  Sector rotation is not maintained in movies
+1310     OCT HS / HomeScreen  Canceling Full Case export is problematic
+1325     OCT HS / HomeScreen  Archive function does not inform user of errors
+1343     OCT HS / consoleApp  Wolverine videos should not encode at 17fps
+1355     OCT HS / HomeScreen  Administrator password prompt truncated
+1356     OCT HS / HomeScreen  Export activity timeout uses wrong prompt string
+1360     OCT HS / HomeScreen  Change handling of no devices configured at startup
+1364     OCT HS / consoleApp  Crashes/hangs if device is Wolverine and sled is never turned on
+1365     OCT HS / HomeScreen  Service interface should inform user if application fails to launch
+1366     OCT HS / HomeScreen  Video with no data crashes HomeScreen\
+1369     OCT HS / consoleApp  Dynamic range is squashed for Low Speed Devices
+1370     OCT HS / consoleApp  A-line rate is slower than expected with Low Speed Devices
+1371     OCT HS / consoleApp  HomeScreen non-responsive
+1376     OCT HS / consoleApp  Add additional logging for Review
+1378     OCT HS / consoleApp  FFT view allows changing brightness/contrast
+1379     OCT HS / consoleApp  Set defaults for Brightness/Contrast for High Speed Devices
+1380     OCT HS / consoleApp  Double click device icon to select
+1381     OCT HS / consoleApp  Extraneous clip work for Low Speed Devices when full case recording is off
+1382     OCT HS / consoleApp  Adjust video quality setting to help with dual encoding
+1384     OCT HS / consoleApp  Enable brightness and contrast sliders on the FFT plot during recording
+1385     OCT HS / consoleApp  Allow rotating of the sector while recording
+1391     OCT HS / consoleApp  Add logging of state changes for Scan Sync
+
+
+
+v2.2.0 - 9 Nov 2012
+--------------------
+Hightlights
+* Edit case details during the case
+* Allow cases with the same name
+* Show full sector during Image Test
+* Full case playback on the console
+* System time input / Apply time
+* Show/hide waterfall for Low Speed Devices
+* Allow brightness/contrast changes while recording
+* Service interface for upgrading and working on the Lightbox
+* Full, multiple case data export to external hard drives
+
+Known Issues (See D 0092)
+id	   summary
+1154	Waterfall rendering has minor cosmetic issues
+1171	session.db files held open by 'Export' and 'Review'
+1196	Sector rotation is not maintained in movies
+1206	Review Case: video transport slider can be dragged past the end
+1213	Review Case: captures on physician screen show extra stuff
+1217	Review Case: review controls require extra click after first use
+1219	Review Case: captures and loops box edges are quirky
+1220	Review Case: captures/loops box controls have odd behavior
+1227	Rapid toggling of record loop controls crashes leaving DAQ in FIFO only mode
+1229	LEAD decoder not loading when MKV file first loaded
+1237	Frontend Framerate Drops to 15 fps during Dual Encoding
+1265	Scan Sync re-enabled after playing OCT Loop
+1270	Implement maximum file size for files produced
+1271	Cannot burn to Arbor CD/DVD drive
+1277	Requirement SRS-230 maximum file size not implemented
+1308	Long MKV Full Cases Load Slowly
+1310	Canceling Full Case export is problematic
+1325	Archive function does not inform user of errors
+1341	LEAD library unlock can take long time
+1342	Archive quirk: whitelist filenames apply to case data
+1347	Screen layout incorrect when switching between movies during case
+1360	Change handling of no devices configured at startup
+
+Tickets Closed
+ticket	component	         summary
+723	   OCT HS / consoleApp	Handle high speed rotation
+844	   OCT HS / consoleApp	Allow multiple cases with same id
+1019	   OCT HS / consoleApp	Make centering windows immune to which monitor is primary
+1045	   OCT HS / consoleApp	sendError does not always work - errors with openCL files
+1134	   OCT HS / consoleApp	Remove or move R&D-only features
+1137	   OCT HS / consoleApp	Output console serial number in info.txt
+1155	   OCT HS / consoleApp	Captures do not identify device when reviewed during the case
+1164	   OCT HS / consoleApp	Return to Live View causes playback controls to disappear
+1186	   OCT HS / consoleApp	Device Select preserves some options from previous device
+1205	   OCT HS / consoleApp	Loop length times are inconsistent
+1233	   OCT HS / consoleApp	Evaluate keeping DAQ saturation checks
+1234	   OCT HS / consoleApp	Loop length written to database incorrectly
+1258	   OCT HS / consoleApp	MKV files do not play (full case video)
+1264	   OCT HS / consoleApp	Scan sync value can be changed on Advanced View with High speed device selected
+1266	   OCT HS / consoleApp	Change "Raw Data Recording" label
+1274	   OCT HS / consoleApp	Missing device XML file hangs system for captive user
+1279	   OCT HS / consoleApp	Dialog for password on wrong screen for captive user
+1281     OCT HS / consoleApp	Refactor Variables from Raw Data Recording to Full Case Recording
+1285     OCT HS / consoleApp	Hide Case ID field
+1286     OCT HS / consoleApp	Continuously-updating system time input
+1287     OCT HS / consoleApp	Edit case details during the case
+1289     OCT HS / consoleApp	Show/hide waterfall on demand
+1293     OCT HS / consoleApp	Make the demo rescaling data for trunk expired
+1295     OCT HS / consoleApp	Use Patient ID on frontend instead of Case ID
+1298     OCT HS / consoleApp	Unwind sector indicator left on display
+1299     OCT HS / consoleApp	Crash in Paraguay with Wolverine device
+1304     OCT HS / consoleApp	Add Configure DAQ button to Admin Screen
+1305     OCT HS / consoleApp	Add process IDs to system log
+1312     OCT HS / consoleApp	Remove speed indicator rings for Low Speed devices
+1313     OCT HS / consoleApp	Full Case recording thumbnail for PIXL is missing
+1314     OCT HS / consoleApp	Captures should be disabled during loop playback
+1315     OCT HS / consoleApp	Captures Tab should be disabled during loop playback
+1323     OCT HS / consoleApp	EVOA Buttons activate on released instead of clicked
+1329     OCT HS / consoleApp	Add device type to overlay text in captures list
+1337     OCT HS / consoleApp	DINPro fonts are not being installed correctly
+1339     OCT HS / consoleApp	Update to black and red Avinger logos
+1345     OCT HS / consoleApp	Do not allow names with leading or trailing whitespace
+1348     OCT HS / consoleApp	EVOA status labels are wrong
+1349     OCT HS / consoleApp	Remove warning text for Raw Data Access
+1350     OCT HS / consoleApp	Update desktop background image to black and red logo
+1353     OCT HS / consoleApp	Add ATS Firmware update tool to approved application list
+1136     OCT HS / HomeScreen	Add console serial number to Admin screen
+1142     OCT HS / HomeScreen	Add ability to export Full Case data to external hard drive
+1242     OCT HS / HomeScreen	Export confirmation screen "Clips to be converted" is always 0
+1273     OCT HS / HomeScreen	Update SVP 0012 Test 3.1.1 to eliminate Step 14.8
+1282     OCT HS / HomeScreen	Re-label Raw Data Recording to Full Case Recording in the Administrator Settings Screen
+1301     OCT HS / HomeScreen	Show Patient ID instead of Case ID in lists
+1306     OCT HS / HomeScreen	Review Case looking in rawData rather than newly named fullCase folder
+1309     OCT HS / HomeScreen	Use console serial number for archiving.
+1320     OCT HS / HomeScreen	Update SRS 0007 and SDS 0007 (OCT HS System) with new requirements
+1321     OCT HS / HomeScreen	Update SVP 0012 (OCT HS System) with new requirements
+1324     OCT HS / HomeScreen	Archive function not copying Avinger_System directory
+1326     OCT HS / HomeScreen	Archive utility requires special handling for logs and config files
+1327     OCT HS / HomeScreen	Service wizard opens the last clicked app, not the highlighted app.
+1331     OCT HS / HomeScreen	Check USB device for Service Interface
+1338     OCT HS / HomeScreen	HomeScreen slow to launch
+1355     OCT HS / HomeScreen	Administrator password prompt truncated
+1356     OCT HS / HomeScreen	Export activity timeout uses wrong prompt string
+
+
+v2.0.0 - 5 Sept 2012
+--------------------
+Highlights
+* Initial release for Wolverine FIM
+* Supports new ATS DAQ hardware, Arbor computer
+* High-speed imaging
+ * 500 - 2000 RPM
+ * full-frame rendering via the GPU
+* Low-speed imaging
+ * backwards compatible to Ocelot devices
+* Deep View for high speed devices (GRIN lens)
+* EVOA support
+* direct-to-video recording
+
+Known Issues (See D 0057-A)
+id    summary
+1045	sendError does not always work - errors with openCL files
+1133	Spurious saturation signals
+1154	Waterfall rendering has minor cosmetic issues
+1157	Speed indicator always shows low (1 ring) for low speed devices
+1159	Display Option controls not relevant to high speed devices should be disabled
+1164	Return to Live View causes playback controls to disappear
+1171	session.db files held open by 'Export' and 'Review'
+1186	Device Select preserves some options from previous device
+1196	Sector rotation is not maintained in movies
+1205	Loop length times are inconsistent
+1206	Review Case: video transport slider can be dragged past the end
+1213	Review Case: captures on physician screen show extra stuff
+1217	Review Case: review controls require extra click after first use
+1219	Review Case: captures and loops box edges are quirky
+1220	Review Case: captures/loops box controls have odd behavior
+1224	Short OCT Loops do not play
+1227	Rapid toggling of record loop controls crashes leaving DAQ in FIFO only mode
+1234	Loop length written to database incorrectly
+1237	Frontend Framerate Drops to 15 fps during Dual Encoding
+1242	Export confirmation screen "Clips to be converted" is always 0
+1258	MKV files do not play (full case video)
+1264	Scan sync value can be changed on Advanced View with High speed device selected
+1265	Scan Sync re-enabled after playing OCT Loop
+1270	Implement maximum file size for files produced
+1271	Cannot burn to Arbor CD/DVD drive
+1274	Missing device XML file hangs system for captive user
+1277	Requirement SRS-230 maximum file size not implemented
+1279	Dialog for password on wrong screen for captive user
+1280	User is not warned when RescalingData is expiring or expired
+
+
+v1.4.1 - 24 Jul 2012
+-------------------------
+Highlights
+* Ocelot|PIXL device added.
+* Automatically resume recording after Scan Sync.
+* Administrator Settings screen provides Device Manager to enable/disable devices.
+* Fixed a bug that prevented the last clip from exporting if a case was ended while recording.
+* Loop playback now uses the recorded scan sync angle instead of the most recent angle.
+* Increased the case export timeout for ISO creation to handle large cases.
+* More logging of feature usage (aid post-mortem analysis).
+
+Known Issues  (See D 0015-B)
+id    summary
+443   Frame number in captures table in the database is always zero
+611   Use database version table in session.db
+612   Check/handle errors when copying images
+613   Report bad session databases found
+630   Harden the result checking of burnMedia
+639   Playback transitions cause streaking and false direction/speed indicators
+776   Export should handle data cases larger than a DVD
+786   Incorrect speed indicator when reversing direction
+858   Exit confirmation from consoleApp handles keys oddly
+962   UI Update: Drop shadows missing in most cases.
+963   UI Update: scrollbars are not quite right
+964   UI Update: round the corners of the wizards
+966   UI Update: Font spacing appears off
+967   UI Update: Change password button in prefsdialog.ui is an orphan.
+971   UI Update: Horizontal line colors are not set correctly.
+972   UI Update: Some pixel positions may not be exactly correct.
+973   UI Update: Modal dialogs and overlays do not fade backgrounds.
+983   Branding feedback: Display Options
+985   Branding feedback: Scan Sync alignment page
+990   Branding feedback: Clip Captures
+1007  Export case selection screen should indicate sort state
+1009  Exit from playback caused software to freeze
+1014  Disabled controls not always obvious
+
+v1.4.0 - 13 Feb 2012
+-------------------------
+Highlights
+* New High Resolution video exports (1080 px high). This is the default output.
+* Date and Time setup in HomeScreen
+* Cache Doctor and Location fields for faster data entry
+* Branding updates
+* More logging of feature usage (aid post-mortem analysis)
+* Auto-capture images for Scan Sync
+* Verify turning off the laser diode
+* Display Options control panel
+* Easier access to raw data
+* Improved installer for Manufacturing; it can run from HomeScreen
+
+Known Issues  (See D 0015-A)
+id    summary
+443   Frame number in captures table in the database is always zero
+611   Use database version table in session.db
+612   Check/handle errors when copying images
+613   Report bad session databases found
+630   Harden the result checking of burnMedia
+639   Playback transitions cause streaking and false direction/speed indicators
+776   Export should handle data cases larger than a DVD
+786   Incorrect speed indicator when reversing direction
+858   Exit confirmation from consoleApp handles keys oddly
+962   UI Update: Drop shadows missing in most cases.
+963   UI Update: scrollbars are not quite right
+964   UI Update: round the corners of the wizards
+966   UI Update: Font spacing appears off
+967   UI Update: Change password button in prefsdialog.ui is an orphan.
+971   UI Update: Horizontal line colors are not set correctly.
+972   UI Update: Some pixel positions may not be exactly correct.
+973   UI Update: Modal dialogs and overlays do not fade backgrounds.
+983   Branding feedback: Display Options
+985   Branding feedback: Scan Sync alignment page
+990   Branding feedback: Clip Captures
+1007  Export case selection screen should indicate sort state
+1009  Exit from playback caused software to freeze
+1014  Disabled controls not always obvious
+
+
+
+
+v1.2.0 - 14 Sept 2011
+-------------------------
+Highlights
+* Change the catheter orientation view (branches to the right in OCT look correspond to branches to the right on the fluoro)
+* New terminology for catheter orientation: Up/Down instead of Antegrade/Retrograde. Describes how the catheter appears on the fluoro
+* Display count for number of captures and OCT loops
+* Clean-up of the rendering code – eliminate almost all of the random streaking that sometimes is seen during use.  A few degree streaking still occurs every now and then; this is still being investigated
+* Display option to dim the laser indicator on the screen (the radial blue line)
+* Added Scan Sync grid overlay to help align features
+* Allow the system to run when low on storage space (disable capturing and recording)
+* Polish, polish, polish
+
+Known Issues
+id    summary
+611   Use database version table in session.db
+612   Check/handle errors when copying images
+613   Report bad session databases found
+630   Harden the result checking of burnMedia
+776   Export should handle data cases larger than a DVD
+443   Frame number in captures table in the database is always zero
+786   Incorrect speed indicator when reversing direction
+858   Exit confirmation from consoleApp handles keys oddly
+
+
+
+v1.0.1 - 26 May 2011
+-------------------------
+Highlights
+* Initial release to manufacturing for the 510(k) submission for the Lightbox / Ocelot system
+
+Known Issues
+id    summary
+630   Harden the result checking of burnMedia
+776   Export should handle data cases larger than a DVD
+314   Unwind handler should track total position to avoid wrap heuristic
+315   Streaking when exiting lag correction
+363   Image recalled without clicking in film strip
+475   Sector view streaks randomly when lag correction on
+568   Console clip playback should default to recorded waterfall rate
+610   Function expireCaches should handle/report errors when deleting directories
+612   Check/handle errors when copying images
+613   Report bad session databases found
+619   Clip XML files should be open as write-only not append
+622   Use command table instead of strings
+629   Check drive space when starting up
+758   Scan Sync directions assume a hand-held rotation device
+760   Add key checking to HomeScreen
+764   Contrast line jumps to brightness line
+766   Allow the console to run with low storage space
+443   Frame number in captures table in the database is always zero
+524   Re-skin the message boxes and wizards
+599   Triple-digit captures cut-off the trailing number in the film strip
+621   avTimeEdit::keyPressEvent() should only check for arrow keys
+639   Playback transitions cause streaking and false direction/speed indicators
+757   Rename Glove Test to Imager Test
+785   Misspelled word on Physician loop review window
+786   Incorrect speed indicator when reversing direction
