@@ -1,0 +1,981 @@
+/*
+ * livescene.cpp
+ *
+ * Implements the QGraphicsScene derived object that handles all live data presentation 
+ * including the sector and the waterfall and any indicators that go along with them.
+ * 
+ * This object also consumes the line data directly and adds it to the relevant
+ * display objects.
+ *
+ * Author: Chris White
+ *
+ * Copyright (c) 2009-2018 Avinger, Inc.
+ */
+
+#include "livescene.h"
+#include "defaults.h"
+#include <QImage>
+#include "Utility/usersettings.h"
+#include "depthsetting.h"
+#include "profiler.h"
+#include <QDateTime>
+#include <QPainter>
+#include "logger.h"
+#include <QApplication>
+
+#if ENABLE_COLORMAP_OPTIONS
+QImage sampleMap( 10, 256, QImage::Format_Indexed8 );
+#endif
+
+// SceneWidth = sector drawing area. At a minimum, this needs to accommodate ( the 512 pixel radius +
+// the catheter radius ) * 2.
+const int SceneWidth( SectorWidth_px );
+const int SceneHeight( SectorHeight_px + WaterfallHeight_px );
+const int ScreenRefreshRate_ms( 33 );
+
+const int TextHeight( 50 ); // Height of text rendered for video info
+const int TextWidth( SectorWidth_px / 4.25 ); // Width of text rendered for video info, sized to avoid sector edge
+const int TextInterlineSpacing( 5 ); // 5 pixels between lines of text
+const int LinesOfText( 3 );
+
+// Advance/rewind percents
+const double ClipStep_percent( 10.0 );
+
+// Video state update rate
+const int ClipUpdateRate_ms( 100 );
+
+/*
+ * Constructor
+ */
+liveScene::liveScene( QObject *parent )
+    : QGraphicsScene( 0, 0, SceneWidth, SceneHeight, parent )
+{
+//	qDebug() << "***** liveScene constructor";
+    // Items for display
+    sector = new sectorItem();
+    sector->setData( SectorItemKey, "sector" );
+    addItem( (QGraphicsItem *)sector );
+
+    wf = new waterfall();
+    addItem( (QGraphicsItem *)wf );
+
+    // Background image rendering for movies
+    videoSector = new sectorItem();
+    videoSector->setVideoOnly();
+
+    // the waterfall position is defined by the upper right-hand corner of the waterfall
+    // relative to the upper-left hand corner of the screen. Use the height in the x-offset
+    // since the waterfall is rotated before being displayed
+    wf->setPos( SectorWidth_px - ( SceneWidth - wf->getHeight() ) / 2 , SectorHeight_px );
+    wf->setZValue( 2.0 );
+    wf->rotate( 90.0 );
+    doPaint = false;
+
+    sector->setZValue( 1.0 );
+    sector->setPos( 0, 0 );
+    sector->clearRotationFlag();
+
+    overlays = new overlayItem( sector );
+    this->addItem( overlays );
+    overlays->setPos( 0, 0 );
+    overlays->setZValue( 100.0 );
+    overlays->setVisible( true );
+
+    infoMessageItem = NULL;
+    refreshTimer = new QTimer();
+    connect( refreshTimer, SIGNAL( timeout() ), this, SLOT( refresh() ) );
+    refreshTimer->start( ScreenRefreshRate_ms);//lcv
+
+    infoRenderTimer = new QTimer();
+    connect( infoRenderTimer, SIGNAL( timeout() ), this, SLOT( generateClipInfo() ) );
+    infoRenderTimer->start( 100 );
+#pragma message("magic number here, fix")
+
+    reviewing              = false;
+    zoomFactor             = 1.0;
+    isWaterfallVisible     = true;
+    mouseRotationEnabled   = true;
+    isAnnotateMode         = false;
+    isMeasureMode          = false;
+    cachedCalibrationScale = -1; // default value
+
+    reviewSector    = NULL;
+    reviewWaterfall = NULL;
+
+    connect( this, SIGNAL(capture(QImage,QImage,QImage,QString,unsigned int,int,float)), &capturer, SLOT(imageCapture(QImage,QImage,QImage,QString,uint,int,float)) );
+    connect( this, SIGNAL(clipCapture(QImage,QImage,QString,unsigned int)), &capturer, SLOT(clipCapture(QImage,QImage,QString,unsigned int)) );
+
+    connect( &capturer, SIGNAL(warning( QString ) ),     this, SIGNAL(sendWarning( QString ) ) );
+    connect( &capturer, SIGNAL(sendFileToKey(QString)),  this, SIGNAL(sendFileToKey(QString)));
+    connect( &capturer, SIGNAL(sendCaptureTag(QString)), this, SIGNAL(sendCaptureTag(QString)));
+    connect( &capturer, SIGNAL(updateCaptureCount()),    this, SIGNAL(updateCaptureCount()) );
+    connect( &capturer, SIGNAL(updateClipCount()),       this, SIGNAL(updateClipCount()) );
+
+    /*
+     * Default gray scale palette, linear transformation
+     */
+    grayScalePalette.resize( ColorTableSize );
+    for ( int i = 0; i < ColorTableSize; i++ )
+    {
+        grayScalePalette[ i ] =  qRgb( i, i, i );
+    }
+
+    currColorMap = grayScalePalette;
+
+    /*
+     * set up the color map for the component images
+     */
+    sector->updateColorMap( currColorMap );
+    wf->updateColorMap( currColorMap );
+
+    infoRenderBuffer = NULL;
+    infoImage = NULL;
+
+    clipPlayer = new videoDecoderItem();
+    addItem( clipPlayer );
+    clipPlayer->setTickInterval( ClipUpdateRate_ms );
+    clipPlayer->setZValue( 3.0 );
+    clipPlayer->setPos( 0, 0 );
+    clipPlayer->hide();
+
+    connect( clipPlayer, SIGNAL( finished() ), this, SIGNAL( endOfFile() ) );
+    connect( clipPlayer, SIGNAL( totalTimeChanged( qint64 ) ), this, SIGNAL( clipLengthChanged(qint64) ) );
+    connect( clipPlayer, SIGNAL( tick( qint64 ) ), this, SIGNAL( videoTick( qint64 ) ) );
+
+    /*
+     * Load direction indicator images for both directions and stopped.
+     */
+    clockwiseRingImage        = QImage( ":/octConsole/Frontend/Resources/clockwiseArrow.png" );
+    counterClockwiseRingImage = QImage( ":/octConsole/Frontend/Resources/counterClockwiseArrow.png" );
+    stoppedRingImage          = QImage( clockwiseRingImage.height(), clockwiseRingImage.height(), QImage::Format_Indexed8 );
+
+    clockwiseRingImage        = clockwiseRingImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
+    counterClockwiseRingImage = counterClockwiseRingImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
+    stoppedRingImage          = stoppedRingImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
+
+    dirRingImageHeight_px     = clockwiseRingImage.height();
+    rotationDirection         = directionTracker::Stopped;
+    stoppedRingImage.fill( Qt::black );
+
+    activeIndicatorImage      = QImage( ":/octConsole/Frontend/Resources/activeIndicator.png" );
+    activeIndicatorRingImage  = activeIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
+    passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
+    passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
+
+#if ENABLE_COLORMAP_OPTIONS
+    sampleMap.setColorTable( currColorMap );
+    // Generate a sample color strip with the brightest at the top and the darkest at the bottom.
+    for( int i = 0; i < 256; i++ )
+    {
+        for( int j = 0; j < 10; j++ )
+        {
+            sampleMap.setPixel( j, i, ( 255 - i ) );
+        }
+    }
+#endif
+
+    annotateOverlayItem      = NULL;
+    isAnnotateModeEnabled    = false;
+
+    areaOverlayItem          = NULL;
+    isMeasurementEnabled = false;
+}
+
+/*
+ * Destructor
+ */
+liveScene::~liveScene()
+{
+    if( sector != NULL )
+    {
+        delete sector;
+    }
+
+    if( wf != NULL )
+    {
+        delete wf;
+    }
+
+    if( refreshTimer != NULL )
+    {
+        delete refreshTimer;
+    }
+    if( annotateOverlayItem != NULL )
+    {
+        delete annotateOverlayItem;
+    }
+
+    if( areaOverlayItem != NULL )
+    {
+        delete areaOverlayItem;
+    }
+}
+
+/*
+ * setAnnotateMode
+ */
+void liveScene::setAnnotateMode( bool state, QColor color )
+{
+    isAnnotateMode        = state;
+    isAnnotateModeEnabled = state;
+    mouseRotationEnabled  = !state;
+
+    if( isAnnotateMode  )
+    {
+        annotateOverlayItem = new AnnotateOverlay();
+        this->addItem( annotateOverlayItem );
+        annotateOverlayItem->setZValue( 116.0 );
+        annotateOverlayItem->setColor( color );
+    }
+    else
+    {
+        if( annotateOverlayItem != NULL )
+        {
+            this->removeItem( annotateOverlayItem );
+            delete annotateOverlayItem;
+            annotateOverlayItem = NULL;
+        }
+    }
+}
+
+
+// Slots
+
+/*
+ * refresh
+ *
+ * Allow the waterfall and sector to complete their rendering, if anything
+ * has actually changed in the last interval
+ */
+void liveScene::refresh( void )
+{
+    TIME_THIS_SCOPE( liveScene_render );
+    if( doPaint )
+    {
+        doPaint = false;
+        sector->paintSector( force );
+        videoSector->paintSector( force );
+        wf->render();
+        overlays->render();
+    }
+    update();
+}
+
+/*
+ * showReview()
+ *
+ * Given a sector and waterfall image, present the images on the scene
+ * over the live view.
+ */
+void liveScene::showReview( const QImage & sec, const QImage & wf )
+{
+    if( reviewing )
+    {
+        removeItem( reviewSector );
+        removeItem( reviewWaterfall );
+        delete reviewSector;
+        delete reviewWaterfall;
+        reviewSector    = NULL;
+        reviewWaterfall = NULL;
+    }
+
+    // turn off overlays during review
+    overlays->setVisible( false );
+
+    reviewing = true;
+
+    reviewSector    = new QGraphicsPixmapItem( QPixmap::fromImage( sec ) );
+    reviewWaterfall = new QGraphicsPixmapItem( QPixmap::fromImage( wf ) );
+
+    // place the waterfall relative to the sector image.  We use the width
+    // here since the waterfall is saved in the correct rotation
+    reviewWaterfall->setPos( ( SceneWidth - wf.width() ) / 2, SectorHeight_px );
+    reviewWaterfall->setZValue( 5.0 );
+    reviewSector->setZValue( 5.0 );
+    reviewSector->setPos( 0, 0 );
+    addItem( (QGraphicsItem *)reviewWaterfall );
+    addItem( (QGraphicsItem *)reviewSector );
+}
+
+/*
+ * resetRotationCounter()
+ *
+ * Tell the sector item to restart its full rotation counter.
+ */
+void liveScene::resetRotationCounter( )
+{
+    sector->clearRotationFlag();
+}
+
+/*
+ * addScanFrame
+ * Given a shared pointer to an OCT frame,
+ * hand it off to all interested display items
+ * and schedule a display update at the next interval.
+ */
+void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
+{
+    // Pass off to the sector and waterfall
+    sector->addFrame( data );
+    videoSector->addFrame( data );
+
+    // Notify anyone interested if a full rotation has
+    // taken place. Used, by the lag correction process
+    // for example.
+    if( sector->fullRotationCompleted() )
+    {
+        emit fullRotation();
+        sector->clearRotationFlag();
+    }
+
+    deviceSettings &devSettings = deviceSettings::Instance();
+
+    // The waterfall is only enabled for low speed devices
+    if( !devSettings.current()->isHighSpeed() )
+    {
+        wf->addLine( data );
+    }
+
+    doPaint = true;
+}
+
+// SLOTS
+
+/*
+ * capture
+ *
+ * Do an image capture of the sector and the waterfall,
+ * updating the capture database as necessary and notifying
+ * interested parties that a new capture is loaded.
+ */
+void liveScene::capture( QImage decoratedImage, QString tagText )
+{
+    TIME_THIS_SCOPE( captureTotal );
+
+    /*
+     * Render the waterfall and sector images,
+     * then pass of to the capturer to write to
+     * disk.
+     */
+    QImage wfImage;
+    {
+        TIME_THIS_SCOPE( freezeWaterfall );
+        wfImage  = wf->freeze();
+    }
+    QImage secImage;
+    {
+        TIME_THIS_SCOPE( freezeSector );
+        secImage = sector->freeze();
+    }
+
+    depthSetting &ds = depthSetting::Instance();
+    int pixelsPerMm = ds.getPixelsPerMm();
+
+    deviceSettings &dev = deviceSettings::Instance();
+    if( dev.current()->getMeaurementVersion() != SupportedMeasurementVersion )
+    {
+        pixelsPerMm = -1; // assign to -1 meaning the feature is disabled.
+    }
+
+    /*
+     * Perform the capture. Allow the capture text to be translated.
+     */
+    {
+        TIME_THIS_SCOPE( captureSave );
+        emit capture( decoratedImage, wfImage, secImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
+    }
+}
+
+/*
+ * setClipForPlayback()
+ *
+ * The user has selected a clip, get everything queued up.
+ */
+void liveScene::setClipForPlayback( QString name )
+{
+    caseInfo &info = caseInfo::Instance();
+    clipPath = info.getClipsDir() + "/" + name + LoopVideoExtension;
+
+    qDebug() << "Player loading: " << clipPath;
+    clipPlayer->load( clipPath );
+    QRectF clipSize = clipPlayer->boundingRect();
+    clipPlayer->setScale( (double)SectorWidth_px / (double)clipSize.width() );
+    if( clipPlayer->state() == videoDecoderItem::ErrorState )
+    {
+        LOG( DEBUG, "Player error: videoDecoderItem::ErrorState" );
+        qDebug() << "Player error: videoDecoderItem::ErrorState";
+    }
+
+    // hide overlays
+    overlays->setVisible( false );
+    clipPlayer->show();
+    reviewing = true;
+}
+
+/*
+ * seekWithinClip()
+ *
+ * The transport, or other user, has requested to change position
+ * within the currently playing clip.
+ */
+void liveScene::seekWithinClip( qint64 pos )
+{
+    clipPlayer->seek( pos );
+}
+
+/*
+ * showMessage()
+ *
+ * Display a message on the doctor view.
+ */
+void liveScene::showMessage( QString message )
+{
+    if( infoMessageItem )
+    {
+        removeItem( infoMessageItem );
+        delete infoMessageItem;
+        infoMessageItem = NULL;
+    }
+
+    infoMessageItem = new QGraphicsTextItem( );
+    infoMessageItem->setPos( 0, 0 );
+    infoMessageItem->setPlainText( message );
+    infoMessageItem->setFont( QFont( "DinPro-Medium", 18 ) );
+    infoMessageItem->setDefaultTextColor( Qt::green );
+    addItem( infoMessageItem );
+    infoMessageItem->show();
+
+    // Value below 1.0 does not appear above sector--above 1.0 may hide sector.
+    infoMessageItem->setZValue( 1.0 );
+}
+
+/*
+ * hideAnnotations
+ */
+void liveScene::hideAnnotations()
+{
+    if( annotateOverlayItem )
+    {
+        annotateOverlayItem->hide();
+    }
+}
+
+/*
+ * showAnnotations
+ */
+void liveScene::showAnnotations()
+{
+    if( annotateOverlayItem )
+    {
+        annotateOverlayItem->show();
+    }
+}
+
+/*
+ * startPlayback
+ */
+void liveScene::startPlayback()
+{
+    clipPlayer->play();
+}
+
+/*
+ * pausePlayback
+ */
+void liveScene::pausePlayback()
+{
+    clipPlayer->pause();
+}
+
+/*
+ * advancePlayback
+ */
+void liveScene::advancePlayback()
+{
+    qint64 advanceTime = clipPlayer->currentTime() + (clipPlayer->totalTime() / ClipStep_percent);
+    if( advanceTime > clipPlayer->totalTime() )
+    {
+        clipPlayer->seek( clipPlayer->totalTime() );
+    }
+    else
+    {
+        clipPlayer->seek( advanceTime );
+    }
+}
+
+/*
+ * rewindPlayback
+ */
+void liveScene::rewindPlayback()
+{
+    qint64 rewindTime = clipPlayer->currentTime() - (clipPlayer->totalTime() / ClipStep_percent);
+    if( rewindTime < 0 )
+    {
+        clipPlayer->seek( 0 );
+    }
+    else
+    {
+        clipPlayer->seek( rewindTime );
+    }
+}
+
+/*
+ * mousePressEvent()
+ *
+ * Handle mouse button presses
+ */
+void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if( zoomFactor != 1.0 ) // no zoom
+    {
+        // capture the event; allows image review to pan and zoom
+    } 
+    else if( reviewing && !isMeasureMode )
+    {
+        dismissReviewImages();
+    }
+    else if( isMeasureMode )
+    {
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mousePressEvent(event);
+    }
+    else if( isAnnotateMode )
+    {
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mousePressEvent(event);
+    }
+    else
+    {
+        if( mouseRotationEnabled )
+        {
+            LOG( INFO, "Sector rotate" );
+            // Grab the sector
+            qApp->setOverrideCursor( Qt::ClosedHandCursor );
+
+            // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+            QGraphicsScene::mousePressEvent(event);
+        }
+    }
+}
+
+/*
+ * mouseMoveEvent()
+ *
+ */
+void liveScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if( isMeasureMode )
+    {
+        qApp->setOverrideCursor( Qt::CrossCursor );
+
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mouseMoveEvent( event );
+    }
+    else if( isAnnotateMode ) /// TBD
+    {
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mouseMoveEvent( event );
+    }
+    else if ( mouseRotationEnabled )
+    {
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mouseMoveEvent( event );
+    }
+    else
+    {
+        qApp->setOverrideCursor( Qt::OpenHandCursor );
+    }
+}
+
+/*
+ * mouseReleaseEvent()
+ *
+ * Handle mouse button releases
+ */
+void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if( mouseRotationEnabled )
+    {
+        qApp->restoreOverrideCursor();
+
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mouseReleaseEvent(event);
+
+        // Update the video-only rendering for the current roation on the screen
+        videoSector->setDisplayAngle( sector->getDisplayAngle() );
+
+        emit sendDisplayAngle( sector->getDisplayAngle() );
+    }
+    else if( isAnnotateMode )
+    {
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mouseReleaseEvent(event);
+    }
+}
+
+/*
+ * captureClip
+ *
+ * Save the sector and waterfall from the start of the clip
+ */
+void liveScene::captureClip( QString strIter )
+{
+    /*
+     * Render the waterfall and sector images,
+     * then pass of to the capturer to write to
+     * disk.
+     */
+    QImage wfImage  = wf->freeze();
+    QImage secImage = sector->freeze();
+
+    // Perform the capture. Allow the capture text to be translated.
+    emit clipCapture( wfImage, secImage, strIter, sector->getFrozenTimestamp() );
+}
+
+/*
+ * dismissReviewImages
+ *
+ * Method to programmatically dismiss review images
+ */
+void liveScene::dismissReviewImages( void )
+{
+    // Dismiss the images and clear messages and states
+    if( reviewSector )
+    {
+        LOG( INFO, "Image Review stopped" );
+        removeItem( reviewSector );
+        delete reviewSector;
+        reviewSector = NULL;
+    }
+    if( reviewWaterfall )
+    {
+        removeItem( reviewWaterfall );
+        delete reviewWaterfall;
+        reviewWaterfall = NULL;
+    }
+
+    reviewing = false;
+
+    // turn overlays back on after review.
+    overlays->setVisible( true );
+
+    emit showCurrentDeviceLabel();
+    emit sendStatusText( tr( "LIVE" ) );
+    emit reviewImageDismissed();
+}
+
+/*
+ * timestampToString()
+ *
+ * Painfully, all of the Qt time to string routines
+ * take into account the time zone of the machine
+ * current running the software. We want to ignore that
+ * and use the already baked time from the file.
+ */
+QString timestampToString( unsigned long ts )
+{
+    /*
+     * Sigh, have to do this ourselves it seems. Compute the
+     * hour, minutes, seconds since 00:00:00 Jan 1 1970
+     */
+    double hours = ts / 3600.0;
+    int    wholehours = floor( hours );
+    double frachours = hours - wholehours;
+
+    double minutes = frachours * 60.0;
+    int    wholemins = floor( minutes );
+    double fracmins = minutes - wholemins;
+    int    seconds = fracmins * 60.0;
+
+    return QString( "%1:%2:%3" ).arg( wholehours % 24, 2, 10, QChar( '0' ) ).arg( wholemins % 60, 2, 10, QChar( '0' ) ).arg( seconds, 2, 10, QChar( '0' ) );
+}
+
+/*
+ * generateClipinfo()
+ *
+ * Draw the time and some case data at the bottom of the frame.
+ */
+void liveScene::generateClipInfo()
+{
+    QMutexLocker lock( &infoRenderLock );
+
+    QString timeStr = QDateTime::currentDateTime().toString( "hh:mm:ss" );
+    deviceSettings &devInfo = deviceSettings::Instance();
+
+    QString timeString( QString( "%1" ).arg( timeStr, 8 ) );
+    QString caseString( QString( devInfo.getCurrentDeviceName() ) );
+
+    int textSize = ( TextHeight * LinesOfText + TextInterlineSpacing ) * SectorWidth_px;
+    if ( !infoImage )
+    {
+        infoImage = new QImage( SectorWidth_px, TextHeight * LinesOfText + TextInterlineSpacing, QImage::Format_RGB32 );
+    }
+
+    if ( infoLogoImage.isNull() )
+    {
+        infoLogoImage = QImage( ":/octConsole/Frontend/Resources/logo-video.png" );
+        infoLogoImage = infoLogoImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
+    }
+
+    if ( !infoRenderBuffer )
+    {
+        infoRenderBuffer = (char *)malloc( textSize );
+    }
+    QPainter p( infoImage );
+    p.fillRect(0, 0, SectorWidth_px, TextHeight * LinesOfText + TextInterlineSpacing, Qt::black );
+    p.setPen( QPen( Qt::white ) );
+
+    p.setFont( QFont( "DinPro-regular", 20 ) );
+    p.drawText( 0, TextHeight - 8, timeString );
+    p.drawText( 0, TextHeight + 25, caseString );
+
+    p.end();
+
+    // copy info to infoBuffer to be rendered by applyClipInfotoBuffer()
+    memcpy( infoRenderBuffer,
+            infoImage->convertToFormat( QImage::Format_Indexed8, grayScalePalette ).bits(),
+            textSize );
+}
+
+/*
+ * applyClipInfoToBuffer
+ */
+void liveScene::applyClipInfoToBuffer( char *buffer )
+{
+    uchar *logoBits = infoLogoImage.bits();
+    QMutexLocker lock( &infoRenderLock );
+
+    /*
+     * Add device and time.
+     */
+    for( int i = 0; i < ( TextHeight * LinesOfText ) + TextInterlineSpacing; i++ )
+    {
+        memcpy( buffer + ( i * SectorWidth_px ), infoRenderBuffer + i * SectorWidth_px, TextWidth );
+    }
+
+    /*
+     * Point to the appropriate direction indicator ring if it is a Low Speed device.
+     */
+    deviceSettings &devSettings = deviceSettings::Instance();
+    if( !devSettings.current()->isHighSpeed() )
+    {
+        if( rotationDirection == directionTracker::CounterClockwise )
+        {
+            pDirRingImage = &counterClockwiseRingImage;
+        }
+        else if( rotationDirection == directionTracker::Clockwise )
+        {
+            pDirRingImage = &clockwiseRingImage;
+        }
+        else
+        {
+            pDirRingImage = &stoppedRingImage;
+        }
+
+        /*
+         * Copy the image into the video frame if it is a Low Speed device. The image is square, so
+         * dirRingImageHeight_px is used for height and width.
+         *
+         * NOTE: memcpy() works wrong when the image dimensions are not divisible by 8. This image
+         *       is 120 x 120. Same issue as the comment below for copying logo-top.png.
+         */
+        for( int i = 0; i < dirRingImageHeight_px; i++ )
+        {
+            memcpy( ( buffer + ( SectorWidth_px * ( SectorHeight_px - dirRingImageHeight_px ) / 2 ) \
+                    - ( ( SectorWidth_px + dirRingImageHeight_px ) / 2 ) + ( i * SectorWidth_px ) ),
+                    ( pDirRingImage->bits() + ( i * ( dirRingImageHeight_px ) ) ),
+                    dirRingImageHeight_px );
+        }
+    }
+
+    // Direction indicator for highspeed bidirectional devices (Ocelaris)
+    if(devSettings.current()->isOcelaris() )
+    {
+        if(devSettings.current()->getRotation())
+        {
+            pDirRingImage = &passiveIndicatorRingImage;
+        }
+        else
+        {
+            pDirRingImage = &activeIndicatorRingImage;
+        }
+
+        /*
+         * Copy the image into the video frame if it is a Low Speed device. The image is square, so
+         * dirRingImageHeight_px is used for height and width.
+         *
+         * NOTE: memcpy() works wrong when the image dimensions are not divisible by 8. This image
+         *       is 120 x 120. Same issue as the comment below for copying logo-top.png.
+         */
+
+        for( int i = 0; i < dirRingImageHeight_px; i++ )
+        {
+            memcpy( ( buffer + ( SectorWidth_px * ( SectorHeight_px - dirRingImageHeight_px ) / 2 ) \
+                    - ( ( SectorWidth_px + dirRingImageHeight_px ) / 2 ) + ( i * SectorWidth_px ) ),
+                    ( pDirRingImage->bits() + ( i * ( dirRingImageHeight_px ) ) ),
+                    dirRingImageHeight_px );
+        }
+
+    }
+
+    /*
+     * Something strange is happening with the conversion of the logo-video.png
+     * It is 163 pixels wide, and reports that, but scanning through it in the usual
+     * manner is producing a one pixel shift per line, as if it were really 164 pixels wide.
+     * Hence the "+ 1" after the .width() call here. Maybe someone can explain this to me.
+     */
+    for( int i = 0; i < infoLogoImage.height(); i++ )
+    {
+        memcpy( buffer + ( i * SectorWidth_px ) + ( SectorWidth_px - infoLogoImage.width() ),
+                logoBits + ( i * ( infoLogoImage.width() + 1 ) ),
+                infoLogoImage.width() );
+    }
+}
+
+/*
+ * displayWaterfall
+ *
+ * Set whether the waterfall is visible on the displays
+ */
+void liveScene::displayWaterfall( bool enabled )
+{
+    wf->setVisible( enabled );
+    isWaterfallVisible = enabled;
+}
+
+/*
+ * updateGrayScaleMap
+ *
+ * update the color map in grayscale only
+ */
+void liveScene::updateGrayScaleMap( QVector<unsigned char> map )
+{
+    for ( int i = 0; i < ColorTableSize; i++ )
+    {
+        unsigned char val = map[ i ];
+        currColorMap[ i ] =  qRgb( val, val, val );
+    }
+
+    sector->updateColorMap( currColorMap );
+    wf->updateColorMap( currColorMap );
+}
+
+/*
+ * loadColormap
+ * 
+ * Load the colormap specified by colormapFile. If the file doesn't exist, it produces a message to the user
+ * and continues working with the previous setting.
+ */
+void liveScene::loadColormap( QString colormapFile )
+{
+    QFile *input = new QFile( colormapFile );
+
+    if( input == NULL )
+    {
+        // warn and do not update the colormap
+        emit sendWarning( tr( "Could not create QFile to load colormap data" ) );
+        return;
+    }
+
+    if( !input->open( QIODevice::ReadOnly ) )
+    {
+        // warn and do not update the colormap
+        QString errString = tr( "Could not open " ) + colormapFile;
+        emit sendWarning( errString );
+        return;
+    }
+
+    QTextStream in( input );
+    QString currLine = "";
+
+    int r, g, b;
+
+    // Load the data into the arrays
+    for( unsigned int i = 0; i < 256; i++ )
+    {
+        currLine = in.readLine();
+        r = currLine.section( ",", 0, 0 ).toInt();
+        g = currLine.section( ",", 1, 1 ).toInt();
+        b = currLine.section( ",", 2, 2 ).toInt();
+
+        currColorMap[ i ] =  qRgb( r, g, b );
+    }
+
+#if ENABLE_COLORMAP_OPTIONS
+    // Using the table of color options, we do this to produce a colormap preview strip (sampleMap).
+    sampleMap.setColorTable( currColorMap );
+#endif
+
+    sector->updateColorMap( currColorMap );
+    wf->updateColorMap( currColorMap );
+
+
+    // free the pointer.  NULL check done above.
+    delete input;
+}
+
+/*
+ * loadColorModeGray
+ */
+void liveScene::loadColorModeGray()
+{
+    loadColormap( SystemDir + "/colormaps/" + "gray.csv" );
+}
+
+/*
+ * loadColorModeSepia
+ */
+void liveScene::loadColorModeSepia()
+{
+    loadColormap( SystemDir + "/colormaps/" + "sepia.csv" );
+}
+
+/*
+ * setMeasureModeArea
+ */
+void liveScene::setMeasureModeArea( bool state, QColor color )
+{
+    isMeasureMode = state;
+    isMeasurementEnabled = state;
+
+    if( isMeasureMode )
+    {
+        areaOverlayItem = new AreaMeasurementOverlay( 0 );
+        this->addItem( areaOverlayItem );
+        areaOverlayItem->setZValue( 6.0 );
+        areaOverlayItem->setColor( color );
+        areaOverlayItem->setCalibrationScale( cachedCalibrationScale );
+    }
+    else
+    {
+        if( areaOverlayItem != NULL )
+        {
+            this->removeItem( areaOverlayItem );
+            delete areaOverlayItem;
+            areaOverlayItem = NULL;
+        }
+    }
+}
+
+/*
+ * setCalibrationScale
+ *
+ * This is called through frontend when a capture has been selected for review.
+ * The pixelsPerMm and zoomFactor are stored with the capture, and these create
+ * the calibration scale that is passed to the measurement overlay for
+ * converting pixel lengths to mm scale.
+ *
+ * Since this slot is called when a capture is called up for review, it is
+ * most-likely called before the measurement overlay is created; therefore,
+ * it is necessary to cache the scale value and apply it when measurements are
+ * enabled.
+ */
+void liveScene::setCalibrationScale( int pixelsPerMm, float zoomFactor )
+{
+    cachedCalibrationScale = pixelsPerMm;
+    cachedCalibrationScale *= zoomFactor;
+    if( areaOverlayItem != NULL )
+    {
+        areaOverlayItem->setCalibrationScale( cachedCalibrationScale );
+    }
+}

@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/octConsole">
+        <file>Frontend/Resources/logo-top.png</file>
+        <file>Frontend/Resources/logo-physicianScreen.png</file>
+        <file>Frontend/Resources/notes_128.png</file>
+        <file>Frontend/Resources/play_button.png</file>
+        <file>Frontend/Resources/pause_button.png</file>
+        <file>Frontend/Resources/rewind_button.png</file>
+        <file>Frontend/Resources/forward_button.png</file>
+        <file>Frontend/Resources/unknowndev.jpg</file>
+        <file>Frontend/Resources/spacebar_icon.png</file>
+        <file>Frontend/Resources/pencil_rollover.png</file>
+        <file>Frontend/Resources/pencil_normal.png</file>
+        <file>Frontend/Resources/blank_texture.png</file>
+        <file>Frontend/Resources/avinger_logo_markonly.png</file>
+        <file>Frontend/Resources/contrast_normal.png</file>
+        <file>Frontend/Resources/contrast_rollover.png</file>
+        <file>Frontend/Resources/Avinger_Logo.png</file>
+        <file>Frontend/Resources/double_handle_slider_normal.png</file>
+        <file>Frontend/Resources/double_handle_slider_disabled.png</file>
+        <file>Frontend/Resources/logo-video.png</file>
+        <file>Frontend/Resources/clockwiseArrow.png</file>
+        <file>Frontend/Resources/counterClockwiseArrow.png</file>
+        <file>Frontend/Resources/activeIndicator.png</file>
+        <file>Frontend/Resources/passiveIndicator.png</file>
+    </qresource>
+</RCC>

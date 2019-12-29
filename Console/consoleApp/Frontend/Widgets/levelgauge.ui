@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>levelGauge</class>
+ <widget class="QWidget" name="levelGauge">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>97</width>
+    <height>105</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel:enabled{
+ font: 18px &quot;DinPRO-Medium&quot;;
+color: blue;
+}
+QLabel:disabled{
+ font: 18px &quot;DinPRO-Medium&quot;;
+color: red;
+}
+/* ---------------- Pushbuttons ----------------*/
+
+QPushButton {
+    font: 16pt &quot;DinPRO-Medium&quot;;
+}
+
+QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    border-width: 2px;
+}
+
+QPushButton::hover 
+{
+    background: rgb(51, 74, 94 );
+    border-color: rgb( 166, 166, 166 );
+    color: rgb( 214, 214, 214);
+    border-width: 1px;
+    border-radius: 10px;
+}
+
+ QPushButton:default 
+{
+     background: rgb( 51, 51, 51 );
+ }
+
+QPushButton:checked 
+{
+    background:  rgb(  191, 191, 191  ); 
+    border: rgb(  191, 191, 191  ); 
+    color: rgb( 52, 73, 94 );
+ }
+
+QPushButton:disabled 
+{
+     background:  rgb( 51, 51, 51 ); 
+     border: rgb( 51, 51, 51 ); 
+     color: rgb( 128, 128, 128 );
+ }
+
+
+/* ---------- Group Boxes ---------- */
+
+ QGroupBox {
+    font: 14.75pt DINPro-medium;
+    color: white;
+    background-color: rgb( 51, 51, 51 );
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 0px;
+}
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* position at the top center */
+     left: 10px;
+     padding: 1px;
+ }
+
+
+/*--------- Progress Bar -----------*/
+QProgressBar {
+     border: 2px;
+     border-radius: 4px;
+     background-color:#808080;
+ }
+
+ QProgressBar::chunk {
+     background-color: rgb( 51, 74, 94 );
+     margin: 1px;
+ }
+
+QProgressBar::disabled {
+     background:  rgb( 51, 51, 51 ); 
+     border-color: rgb( 51, 51, 51 );
+}
+</string>
+  </property>
+  <widget class="QProgressBar" name="levelIndicator">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>78</y>
+     <width>96</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>200</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="value">
+    <number>0</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="textVisible">
+    <bool>false</bool>
+   </property>
+   <property name="invertedAppearance">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="title">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>2</y>
+     <width>98</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel { color : white; }</string>
+   </property>
+   <property name="text">
+    <string>TITLE</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="rightButton">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>47</y>
+     <width>47</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>95</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    font: 16pt &quot;DinPRO-Medium&quot;;
+}</string>
+   </property>
+   <property name="text">
+    <string>&gt;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="leftButton">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>47</y>
+     <width>47</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>95</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    font: 16pt &quot;DinPRO-Medium&quot;;
+}</string>
+   </property>
+   <property name="text">
+    <string>&lt;</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,2000 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frontendClass</class>
+ <widget class="QMainWindow" name="frontendClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1680</width>
+    <height>1050</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>2600</width>
+    <height>1700</height>
+   </size>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>OCT Imaging System</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow#frontendClass{
+   background: url(:images/background_texture.png); 
+} 
+
+QGraphicsView {
+	border: none;
+	background: black;
+}
+
+/* Looking for slider styles? Look in the individual widget style sheet, as they needed to
+ * be distinct (span slider vs. normal)
+*/
+
+
+
+/****************
+ *         v3.0            *
+ ****************/
+
+
+/* --------- General font and layout defaults ----------*/
+
+QDialog {
+ font: 18px &quot;DinPRO-Medium&quot;;
+ color: white;
+ background-color: rgb( 147, 147, 147 );
+ border: 1px solid rgb( 147, 147, 147 );
+ border-radius: 5px;
+}
+
+/* this QWidget affects the labels on the Physician screen. Why? Good question.*/
+QWidget {
+ font: 36pt &quot;DinPRO-Medium&quot;;
+}
+
+QLabel {
+ font: 18px &quot;DinPRO-Medium&quot;;
+}
+
+QLabel#titlebarLabel {
+	background: rgb( 51, 51, 51 );
+}
+QLabel#titlebarTextLabel {
+    font: 24pt &quot;DINPro-Medium&quot;;
+    color: white;
+}
+
+QLabel#instructionsLabel
+{
+    background: rgb( 191, 191, 191 );
+}
+
+QLabel#instructionsTextLabel
+{
+    font: 12pt &quot;DINPro-Medium&quot;;
+}
+
+/* ---------------- Pushbuttons ----------------*/
+
+QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 12pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 10px;
+    border-width: 2px;
+}
+
+QPushButton::hover 
+{
+    background: rgb(51, 74, 94 );
+    border-color: rgb( 166, 166, 166 );
+    color: rgb( 214, 214, 214);
+    border-width: 1px;
+    border-radius: 10px;
+}
+
+ QPushButton:default 
+{
+     background: rgb( 51, 51, 51 );
+ }
+
+QPushButton:checked 
+{
+    background:  rgb(  191, 191, 191  ); 
+    border: rgb(  191, 191, 191  ); 
+    color: rgb( 52, 73, 94 );
+ }
+
+QPushButton:disabled 
+{
+     background:  rgb( 51, 51, 51 ); 
+     border: rgb( 51, 51, 51 ); 
+     color: rgb( 128, 128, 128 );
+ }
+
+/* --------- Spin Boxes -----------*/
+
+QAbstractSpinBox {
+	font: 18px DinPRO-medium;
+	border: 0;
+    border-radius: 5px;
+}
+
+QAbstractSpinBox::up-button {
+	border: 0;
+   background: rgba(233,233,235,255);
+   border-top-right-radius: 8px;
+   margin-top: -2px;
+   margin-bottom: -1px;
+   padding-bottom: -5px;
+   width: 15px;
+}
+
+QAbstractSpinBox::up-arrow  {
+  image: url(:/images/arrow_up_normal.png);
+}
+
+QAbstractSpinBox::up-arrow:hover {
+  image: url(:images/arrow_up_rollover.png);
+}
+
+QAbstractSpinBox::down-button {
+   border: 0;
+   background: rgba(233,233,235,255);
+   border-bottom-right-radius: 8px;
+   padding-top: -5px;
+   margin-bottom: -2px;
+   margin-top: -1px;
+   width: 15px;
+}
+
+QAbstractSpinBox::down-arrow:hover {
+  image: url(:/images/arrow_down_rollover.png);
+}
+
+QAbstractSpinBox::down-arrow {
+  image: url(:/images/arrow_down_normal.png);
+}
+
+/* group boxes */
+
+
+/* ------------- Line edits and list views ---------------*/
+
+QLineEdit, QListView {
+    color: #808080;
+	font: 18px DinPro-medium;
+    selection-color: white;   
+    border: 2px groove white;
+    border-radius: 4px;
+}
+
+
+/* --------- Check Boxes ----------*/
+
+QCheckBox {
+	spacing: 5px;
+}
+
+QCheckBox::indicator {
+	border: #909090;
+    background: #909090;
+	width: 20px;
+	height: 20px;
+	margin-top: 4px;
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(:images/checkBox_normal.png);
+}
+
+QCheckBox::indicator:checked {
+	image: url(:images/checkBox_active.png);
+}
+
+QDialogButtonBox
+{
+   button-layout: 1;
+}
+
+
+/* ---------- Group Boxes ---------- */
+
+ QGroupBox {
+    font: 14.75pt DINPro-medium;
+    color: white;
+    background-color: rgb( 51, 51, 51 );
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 0px;
+}
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* position at the top center */
+     left: 10px;
+     padding: 1px;
+ }</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QGroupBox" name="liveGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>98</x>
+      <y>0</y>
+      <width>900</width>
+      <height>1080</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DINPro-medium</family>
+      <pointsize>15</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>LIVE</string>
+    </property>
+    <widget class="liveView" name="liveGraphicsView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>66</y>
+       <width>900</width>
+       <height>1014</height>
+      </rect>
+     </property>
+     <property name="cursor" stdset="0">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Fluoro Sync: Click on the Sector to&lt;br&gt;align the middle marker on the OCT&lt;br&gt;display with the middle marker on&lt;br&gt;the Fluoro display.&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="recordingLabel">
+     <property name="geometry">
+      <rect>
+       <x>95</x>
+       <y>70</y>
+       <width>165</width>
+       <height>46</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>DINPro-Medium</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:yellow;
+font: 36px &quot;DINPro-Medium&quot;;</string>
+     </property>
+     <property name="text">
+      <string>Recording</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="zoomSlider">
+     <property name="geometry">
+      <rect>
+       <x>303</x>
+       <y>35</y>
+       <width>271</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">/* ---------- Normal Sliders ------------*/
+
+QSlider::groove:horizontal {
+border: 1px solid rgb( 199, 200, 201);
+background: white;
+height: 10px;
+border-radius: 5px;
+}
+
+QSlider::sub-page:horizontal {
+background: rgb( 88, 89, 91);
+border: 1px solid rgb( 88, 89, 91);
+height: 10px;
+border-radius: 6px;
+}
+
+QSlider::add-page:horizontal   /* to the right of the handle */
+{
+background: rgb( 199, 200, 201 );
+border: 1px solid  rgb( 199, 200, 201 );
+height: 10px;
+border-radius: 6px;
+}
+
+QSlider::handle:horizontal {
+  image: url(:images/handle_normal.png);
+  margin: -15px 0;
+}
+
+QSlider::handle:horizontal:hover {
+	image: url(:images/handle_rollover.png);
+    margin: -15px 0;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
+     </property>
+     <property name="minimum">
+      <number>100</number>
+     </property>
+     <property name="maximum">
+      <number>400</number>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="zoomLevelLabel">
+     <property name="geometry">
+      <rect>
+       <x>133</x>
+       <y>40</y>
+       <width>98</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <family>DINPro-Medium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string>QLabel 
+{ 
+    color: black; 
+	font:  12pt &quot;DINPro-Medium&quot;;
+}
+</string>
+     </property>
+     <property name="text">
+      <string>ZOOM LEVEL:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="zoomFactorLabel">
+     <property name="geometry">
+      <rect>
+       <x>237</x>
+       <y>39</y>
+       <width>56</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>DINPro-Medium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel 
+{ 
+    color: black; 
+	font:  12pt &quot;DINPro-Medium&quot;;
+}
+</string>
+     </property>
+     <property name="text">
+      <string>[1.00x]</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="zoomResetPushButton">
+     <property name="geometry">
+      <rect>
+       <x>583</x>
+       <y>39</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Reset the Zoom level to 1.00.</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> border-radius: 5px;
+</string>
+     </property>
+     <property name="text">
+      <string>RESET</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="liveViewPushButton">
+     <property name="geometry">
+      <rect>
+       <x>706</x>
+       <y>39</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Close the Review display and return to the live image updates. Shortcut: ESC</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">    border-radius: 5px;</string>
+     </property>
+     <property name="text">
+      <string>LIVE VIEW</string>
+     </property>
+     <property name="shortcut">
+      <string>Esc</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timeFieldLabel_mini">
+     <property name="geometry">
+      <rect>
+       <x>265</x>
+       <y>0</y>
+       <width>86</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>DinPRO-medium</family>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+	font: 16pt DinPRO-medium;
+    color: white;
+}</string>
+     </property>
+     <property name="text">
+      <string>00:00:00</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="deviceFieldLabel">
+     <property name="geometry">
+      <rect>
+       <x>372</x>
+       <y>2</y>
+       <width>261</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>DinPRO-Medium</family>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+	font: 16pt DinPRO-Medium;
+    color: white;
+}</string>
+     </property>
+     <property name="text">
+      <string>&lt;Not Set&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="instructionsLabel">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>33</y>
+       <width>900</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>641</x>
+       <y>5</y>
+       <width>3</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="catheterViewLabel">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>2</y>
+       <width>161</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+	font: 16pt DinPRO-Medium;
+    color: white;
+}</string>
+     </property>
+     <property name="text">
+      <string>Catheter Down</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="rulerSlidingPointSpinbox">
+     <property name="geometry">
+      <rect>
+       <x>386</x>
+       <y>70</y>
+       <width>231</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="suffix">
+      <string> px</string>
+     </property>
+     <property name="prefix">
+      <string>Ruler Sliding Point </string>
+     </property>
+     <property name="maximum">
+      <number>1024</number>
+     </property>
+     <property name="singleStep">
+      <number>1</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="colormapGroupBox">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>820</y>
+       <width>301</width>
+       <height>231</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Colormap</string>
+     </property>
+     <widget class="QLabel" name="colormapLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>21</width>
+        <height>171</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="colormapListWidget">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>120</y>
+        <width>231</width>
+        <height>91</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <zorder>instructionsLabel</zorder>
+    <zorder>liveGraphicsView</zorder>
+    <zorder>recordingLabel</zorder>
+    <zorder>zoomSlider</zorder>
+    <zorder>zoomLevelLabel</zorder>
+    <zorder>zoomFactorLabel</zorder>
+    <zorder>zoomResetPushButton</zorder>
+    <zorder>liveViewPushButton</zorder>
+    <zorder>timeFieldLabel_mini</zorder>
+    <zorder>deviceFieldLabel</zorder>
+    <zorder>line</zorder>
+    <zorder>catheterViewLabel</zorder>
+    <zorder>rulerSlidingPointSpinbox</zorder>
+    <zorder>colormapGroupBox</zorder>
+   </widget>
+   <widget class="QPushButton" name="deviceSelectButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>66</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Change the current device. (Shortcut: F1)</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>DEVICE
+SELECT</string>
+    </property>
+    <property name="shortcut">
+     <string>F1</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="scanSyncButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Configure Scan Sync. (Shortcut: F3)</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>SCAN
+SYNC</string>
+    </property>
+    <property name="shortcut">
+     <string>F3</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="measureModePushButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>288</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DinPRO-Medium</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string notr="true">Toggle Measurement mode.</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>MEASURE</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="contrastCurveButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>740</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>Adjust
+Grayscale</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="rawDataPushButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>830</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>Save
+Raw
+Snapshot</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="rawSnapshotSpinBox">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>920</y>
+      <width>51</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="suffix">
+     <string/>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>999</number>
+    </property>
+    <property name="value">
+     <number>34</number>
+    </property>
+   </widget>
+   <widget class="QFrame" name="crfFrame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>950</y>
+      <width>91</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QSpinBox" name="crfTestSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>41</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>51</number>
+     </property>
+     <property name="value">
+      <number>25</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="crfTestLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>45</width>
+       <height>46</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Video
+CRF</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="annotateImagePushButton">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>214</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Toggle Annotation mode. (Shortcut: F4)</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>ANNOTATE
+IMAGE</string>
+    </property>
+    <property name="shortcut">
+     <string>F4</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="fftDevelopmentGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>790</y>
+      <width>181</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>FFT Development</string>
+    </property>
+    <widget class="QSpinBox" name="fftSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>49</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-20</number>
+     </property>
+     <property name="maximum">
+      <number>20</number>
+     </property>
+     <property name="singleStep">
+      <number>1</number>
+     </property>
+     <property name="value">
+      <number>5</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="magSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>40</y>
+       <width>49</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-20</number>
+     </property>
+     <property name="maximum">
+      <number>20</number>
+     </property>
+     <property name="value">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="fftLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>70</y>
+       <width>32</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="text">
+      <string>FFT</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="magLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>36</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="text">
+      <string>Mag</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="evoaOffLabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>1030</y>
+      <width>84</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DinPRO-Medium</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>EVOA OFF</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="indent">
+     <number>7</number>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="capturesGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>1142</x>
+      <y>0</y>
+      <width>681</width>
+      <height>811</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DINPro-medium</family>
+      <pointsize>15</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>REVIEW</string>
+    </property>
+    <widget class="captureWidget" name="reviewWidget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>681</width>
+       <height>775</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>DinPRO-Medium</family>
+       <pointsize>36</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <widget class="QGroupBox" name="playbackGroupBox">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-2</y>
+        <width>691</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+QGroupBox {    
+	background: url(:/octConsole/Frontend/Resources/blank_texture.png);
+    border-radius: 5px;
+    font: 15px DINPro-bold;
+	color: white;
+}
+
+QGroupBox::title {
+      subcontrol-origin: margin;
+      subcontrol-position: top left; /* position at the top center */
+      padding-left: 10px;
+      padding-top: 7px;
+}
+</string>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="transport" name="transportWidget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>90</y>
+         <width>495</width>
+         <height>225</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="loopMaskLabel">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>390</y>
+        <width>681</width>
+        <height>381</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">     background: rgba( 51, 51, 51, 192 );</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="imageSettingsGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>1141</x>
+      <y>920</y>
+      <width>341</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QLabel" name="contrastLabel">
+     <property name="geometry">
+      <rect>
+       <x>212</x>
+       <y>3</y>
+       <width>121</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <family>DINPro-Medium</family>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 14pt &quot;DINPro-Medium&quot;;</string>
+     </property>
+     <property name="text">
+      <string>CONTRAST</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="avDisplayControls" name="displayControlsSlider" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>321</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">/* see avDisplayControls.cpp for span color settings */
+
+/* The span slider for the display controls has some special requirements */
+QSlider::groove:horizontal 
+{
+    background: rgb( 128, 128, 128 );
+    border: 1px solid  rgb( 128, 128, 128 );
+    height: 10px;
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal 
+{
+    image: url(:/octConsole/Frontend/Resources/double_handle_slider_normal.png);
+    margin: -15px 0;
+}
+
+QSlider::handle:horizontal:hover 
+{
+    image: url(:/octConsole/Frontend/Resources/double_handle_slider_normal.png);
+    margin: -15px 0;
+}
+
+
+QSlider::handle:horizontal:disabled 
+{	
+    url(:/octConsole/Frontend/Resources/double_handle_slider_disabled.png)
+}
+
+QSlider:groove:horizontal:disabled 
+{
+/*    background: #bbb;
+    border-color: #999;*/
+}
+</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="brightnessLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>3</y>
+       <width>151</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <family>DINPro-Medium</family>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 14pt &quot;DINPro-Medium&quot;;</string>
+     </property>
+     <property name="text">
+      <string>&amp;BRIGHTNESS</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="autoAdjustBrightnessContrastButton">
+     <property name="geometry">
+      <rect>
+       <x>169</x>
+       <y>3</y>
+       <width>28</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Click to automatically adjust the brightness and contrast.</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+
+QPushButton {
+	image: url(:/octConsole/Frontend/Resources/contrast_normal.png);
+	border: none;
+	background-color: transparent;
+}
+
+QPushButton:hover {	
+	image: url(:/octConsole/Frontend/Resources/contrast_rollover.png);
+}
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="endCaseButton">
+    <property name="geometry">
+     <rect>
+      <x>1684</x>
+      <y>835</y>
+      <width>138</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Save case data and quit. (Shortcut: Alt-F12)</string>
+    </property>
+    <property name="text">
+     <string>END
+CASE</string>
+    </property>
+    <property name="shortcut">
+     <string>Alt+F12</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="recordLoopButton">
+    <property name="geometry">
+     <rect>
+      <x>1823</x>
+      <y>450</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Save a new OCT Loop to video. (Shortcut: space bar)</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>RECORD
+LOOP</string>
+    </property>
+    <property name="shortcut">
+     <string>Space</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="timeFieldLabel">
+    <property name="geometry">
+     <rect>
+      <x>1641</x>
+      <y>1010</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DinPRO-medium</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+	font: 45px DinPRO-medium;
+    color: white;
+}</string>
+    </property>
+    <property name="text">
+     <string>00:00:00</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="physicianPreviewButton">
+    <property name="geometry">
+     <rect>
+      <x>1436</x>
+      <y>835</y>
+      <width>138</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Display the capture thumbnails on the Physician Screen.</string>
+    </property>
+    <property name="text">
+     <string>PHYSICIAN
+PREVIEW</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="captureImageButton">
+    <property name="geometry">
+     <rect>
+      <x>1823</x>
+      <y>60</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Save a new image. (Shortcut: 0 - zero)</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>CAPTURE
+IMAGE</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="logo">
+    <property name="geometry">
+     <rect>
+      <x>1161</x>
+      <y>1010</y>
+      <width>168</width>
+      <height>42</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../../octConsole.qrc">:/octConsole/Frontend/Resources/Avinger_Logo.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>1491</x>
+      <y>920</y>
+      <width>331</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>PATIENT</string>
+    </property>
+    <widget class="QLabel" name="patientIDFieldLabel">
+     <property name="geometry">
+      <rect>
+       <x>39</x>
+       <y>34</y>
+       <width>271</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>DinPRO-Medium</family>
+       <pointsize>13</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">    color: white;
+    font: 13pt &quot;DinPRO-Medium&quot;;
+</string>
+     </property>
+     <property name="text">
+      <string>&lt;Not Set&gt;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="caseDetailsButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>37</y>
+       <width>36</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip">
+      <string extracomment="Add or modify case notes...">Open the session details editor.</string>
+     </property>
+     <property name="whatsThis">
+      <string extracomment="Add or modify case notes..."/>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	image: url(:/octConsole/Frontend/Resources/pencil_normal.png);
+	border: none;
+	background-color: transparent;
+}
+
+QPushButton:hover {	
+	image: url(:/octConsole/Frontend/Resources/pencil_rollover.png);
+}
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>33</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="advancedViewButton">
+    <property name="geometry">
+     <rect>
+      <x>1289</x>
+      <y>835</y>
+      <width>138</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show advanced controls and indicators. (Shortcut: Alt-F6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>ADVANCED
+VIEW</string>
+    </property>
+    <property name="shortcut">
+     <string>Alt+F6</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="displayOptionsButton">
+    <property name="geometry">
+     <rect>
+      <x>1142</x>
+      <y>835</y>
+      <width>138</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Modify display settings for viewing live OCT images. (Shortcut: Alt-F8)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>DISPLAY
+OPTIONS</string>
+    </property>
+    <property name="shortcut">
+     <string>Alt+F8</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="levelGauge" name="imagingDepthWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>552</y>
+      <width>98</width>
+      <height>105</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="saveMeasurementButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>360</y>
+      <width>75</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Save Measurement Overlay.</string>
+    </property>
+    <property name="text">
+     <string>SAVE
+OVERLAY</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="directionPushButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>480</y>
+      <width>98</width>
+      <height>66</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DinPRO-Medium</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string notr="true">Change Catheter Direction</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+    </property>
+    <property name="text">
+     <string>DIRECTION
+Passive</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="EgineeringButton">
+    <property name="geometry">
+     <rect>
+      <x>1370</x>
+      <y>1005</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Save case data and quit. (Shortcut: Alt-F12)</string>
+    </property>
+    <property name="text">
+     <string>Engineering Dialog</string>
+    </property>
+    <property name="shortcut">
+     <string>Alt+F12</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>liveGroupBox</zorder>
+   <zorder>deviceSelectButton</zorder>
+   <zorder>scanSyncButton</zorder>
+   <zorder>contrastCurveButton</zorder>
+   <zorder>rawDataPushButton</zorder>
+   <zorder>rawSnapshotSpinBox</zorder>
+   <zorder>crfFrame</zorder>
+   <zorder>annotateImagePushButton</zorder>
+   <zorder>fftDevelopmentGroupBox</zorder>
+   <zorder>evoaOffLabel</zorder>
+   <zorder>measureModePushButton</zorder>
+   <zorder>capturesGroupBox</zorder>
+   <zorder>imageSettingsGroupBox</zorder>
+   <zorder>endCaseButton</zorder>
+   <zorder>recordLoopButton</zorder>
+   <zorder>timeFieldLabel</zorder>
+   <zorder>physicianPreviewButton</zorder>
+   <zorder>captureImageButton</zorder>
+   <zorder>logo</zorder>
+   <zorder>groupBox</zorder>
+   <zorder>advancedViewButton</zorder>
+   <zorder>displayOptionsButton</zorder>
+   <zorder>imagingDepthWidget</zorder>
+   <zorder>saveMeasurementButton</zorder>
+   <zorder>directionPushButton</zorder>
+   <zorder>EgineeringButton</zorder>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>liveView</class>
+   <extends>QGraphicsView</extends>
+   <header>liveview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>levelGauge</class>
+   <extends>QWidget</extends>
+   <header>levelgauge.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>transport</class>
+   <extends>QWidget</extends>
+   <header>..\..\Common\GUI\transport.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>captureWidget</class>
+   <extends>QWidget</extends>
+   <header>capturewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>avDisplayControls</class>
+   <extends>QWidget</extends>
+   <header>avDisplayControls.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>deviceSelectButton</tabstop>
+  <tabstop>scanSyncButton</tabstop>
+  <tabstop>measureModePushButton</tabstop>
+  <tabstop>contrastCurveButton</tabstop>
+  <tabstop>rawDataPushButton</tabstop>
+  <tabstop>rawSnapshotSpinBox</tabstop>
+  <tabstop>crfTestSpinBox</tabstop>
+  <tabstop>zoomSlider</tabstop>
+  <tabstop>zoomResetPushButton</tabstop>
+  <tabstop>liveViewPushButton</tabstop>
+  <tabstop>liveGraphicsView</tabstop>
+  <tabstop>colormapListWidget</tabstop>
+  <tabstop>magSpinBox</tabstop>
+  <tabstop>fftSpinBox</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../octConsole.qrc"/>
+ </resources>
+ <connections/>
+</ui>

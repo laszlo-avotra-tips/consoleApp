@@ -1,0 +1,37 @@
+#ifndef ENGINEERINGCONTROLLER_H
+#define ENGINEERINGCONTROLLER_H
+
+#include <QWidget>
+#include <QTimer>
+
+class EngineeringDialog;
+class EngineeringModel;
+
+class EngineeringController : public QObject
+{
+    Q_OBJECT
+
+public:
+    EngineeringController(QWidget *parent = nullptr);
+    void setViewPosition(int x = 400, int y = 0);
+    void showOrHideView(bool isShown = true);
+
+private slots:
+    void updateStat();
+    void saveFrameBuffers();
+    void loadFrameBuffers();
+    void playbackStartStopCommand(bool isStart);
+    void setPlaybackSpeed(int speed);
+
+private:
+    void startPlayback();
+    void stopPlayback();
+
+    EngineeringDialog* m_view;
+    EngineeringModel* m_model;
+    bool m_isGeometrySet;
+    QTimer m_statTimer;
+
+};
+
+#endif // ENGINEERINGCONTROLLER_H

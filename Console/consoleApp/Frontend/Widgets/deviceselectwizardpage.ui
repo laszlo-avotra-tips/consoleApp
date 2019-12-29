@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>deviceSelectWizardPage</class>
+ <widget class="QWizardPage" name="deviceSelectWizardPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>720</width>
+    <height>574</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WizardPage</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="4">
+   <item>
+    <widget class="QListWidget" name="listWidget">
+     <property name="styleSheet">
+      <string notr="true">QListWidget 
+{
+	border: 0px;
+	background: rgba( 128,128,128, 255 );
+}
+
+QListWidget::item 
+{/* 
+    border-top: 1px solid rgb(214, 214, 214); 
+    border-bottom: 1px solid rgb(214, 214, 214); 
+*/
+}
+/*
+QListWidget::item:selected:!active 
+{
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #ABAFE5, stop: 1 #8588B2);
+ }
+
+QListWidget::item:selected:active 
+{
+     background: qlineargradient( x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 rgb( 0, 0, 0 ) , stop: 1 rgb( 255, 255, 255 ) );
+ }
+*/
+
+QListWidget::item:selected 
+{
+     background: rgb( 207, 207, 207 );
+}
+
+/*--- Scroll Bar ---*/
+QScrollBar::handle:vertical {
+    background: rgb( 52, 73, 94 );
+    min-height: 74px;
+    border-radius: 3px;
+    border: 1px solid #333333;
+}
+
+QScrollBar:vertical {
+    border: 2px solid #424242;
+    background: #424242;
+    border-radius: 5px;
+    max-width: 17px;
+}
+
+QScrollBar::add-line:vertical { width: 0; }
+QScrollBar::sub-line:vertical { width: 0; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical 
+{ 
+    background: #424242; 
+}
+</string>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
+     <property name="autoScrollMargin">
+      <number>0</number>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>213</width>
+       <height>213</height>
+      </size>
+     </property>
+     <property name="textElideMode">
+      <enum>Qt::ElideNone</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollPerItem</enum>
+     </property>
+     <property name="movement">
+      <enum>QListView::Snap</enum>
+     </property>
+     <property name="flow">
+      <enum>QListView::LeftToRight</enum>
+     </property>
+     <property name="isWrapping" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="spacing">
+      <number>32</number>
+     </property>
+     <property name="viewMode">
+      <enum>QListView::IconMode</enum>
+     </property>
+     <property name="uniformItemSizes">
+      <bool>false</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="currentRow">
+      <number>-1</number>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
