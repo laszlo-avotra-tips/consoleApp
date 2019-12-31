@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
 //    keyboardInputContext *ic = new keyboardInputContext();
 //    app.setInputContext( ic );
 
-    if( app.isRunning() )
-    {
-        return 0;
-    }
+//    if( app.isRunning() )
+//    {
+//        return 0;
+//    }
 
     // single application initialization
     app.initialize();
