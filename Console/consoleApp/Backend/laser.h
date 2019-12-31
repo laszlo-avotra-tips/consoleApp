@@ -20,7 +20,7 @@
  * This namespace is used by the QSerialPort library.  Use the namespace
  * keyword to allow QSerialPort instead of TNX::QSerialPort
  */
-//using namespace TNX;
+using namespace TNX;
 
 class Laser : public QObject
 {
