@@ -68,7 +68,7 @@ liveScene::liveScene( QObject *parent )
     // since the waterfall is rotated before being displayed
     wf->setPos( SectorWidth_px - ( SceneWidth - wf->getHeight() ) / 2 , SectorHeight_px );
     wf->setZValue( 2.0 );
-    wf->rotate( 90.0 );
+//    wf->rotate( 90.0 );
     doPaint = false;
 
     sector->setZValue( 1.0 );
@@ -131,16 +131,16 @@ liveScene::liveScene( QObject *parent )
     infoRenderBuffer = NULL;
     infoImage = NULL;
 
-    clipPlayer = new videoDecoderItem();
-    addItem( clipPlayer );
-    clipPlayer->setTickInterval( ClipUpdateRate_ms );
-    clipPlayer->setZValue( 3.0 );
-    clipPlayer->setPos( 0, 0 );
-    clipPlayer->hide();
+//    clipPlayer = new videoDecoderItem();
+//    addItem( clipPlayer );
+//    clipPlayer->setTickInterval( ClipUpdateRate_ms );
+//    clipPlayer->setZValue( 3.0 );
+//    clipPlayer->setPos( 0, 0 );
+//    clipPlayer->hide();
 
-    connect( clipPlayer, SIGNAL( finished() ), this, SIGNAL( endOfFile() ) );
-    connect( clipPlayer, SIGNAL( totalTimeChanged( qint64 ) ), this, SIGNAL( clipLengthChanged(qint64) ) );
-    connect( clipPlayer, SIGNAL( tick( qint64 ) ), this, SIGNAL( videoTick( qint64 ) ) );
+//    connect( clipPlayer, SIGNAL( finished() ), this, SIGNAL( endOfFile() ) );
+//    connect( clipPlayer, SIGNAL( totalTimeChanged( qint64 ) ), this, SIGNAL( clipLengthChanged(qint64) ) );
+//    connect( clipPlayer, SIGNAL( tick( qint64 ) ), this, SIGNAL( videoTick( qint64 ) ) );
 
     /*
      * Load direction indicator images for both directions and stopped.
@@ -397,18 +397,18 @@ void liveScene::setClipForPlayback( QString name )
     clipPath = info.getClipsDir() + "/" + name + LoopVideoExtension;
 
     qDebug() << "Player loading: " << clipPath;
-    clipPlayer->load( clipPath );
-    QRectF clipSize = clipPlayer->boundingRect();
-    clipPlayer->setScale( (double)SectorWidth_px / (double)clipSize.width() );
-    if( clipPlayer->state() == videoDecoderItem::ErrorState )
-    {
-        LOG( DEBUG, "Player error: videoDecoderItem::ErrorState" );
-        qDebug() << "Player error: videoDecoderItem::ErrorState";
-    }
+//    clipPlayer->load( clipPath );
+//    QRectF clipSize = clipPlayer->boundingRect();
+//    clipPlayer->setScale( (double)SectorWidth_px / (double)clipSize.width() );
+//    if( clipPlayer->state() == videoDecoderItem::ErrorState )
+//    {
+//        LOG( DEBUG, "Player error: videoDecoderItem::ErrorState" );
+//        qDebug() << "Player error: videoDecoderItem::ErrorState";
+//    }
 
-    // hide overlays
+//    // hide overlays
+//    clipPlayer->show();
     overlays->setVisible( false );
-    clipPlayer->show();
     reviewing = true;
 }
 
@@ -420,7 +420,7 @@ void liveScene::setClipForPlayback( QString name )
  */
 void liveScene::seekWithinClip( qint64 pos )
 {
-    clipPlayer->seek( pos );
+//    clipPlayer->seek( pos );
 }
 
 /*
@@ -476,7 +476,7 @@ void liveScene::showAnnotations()
  */
 void liveScene::startPlayback()
 {
-    clipPlayer->play();
+//    clipPlayer->play();
 }
 
 /*
@@ -484,7 +484,7 @@ void liveScene::startPlayback()
  */
 void liveScene::pausePlayback()
 {
-    clipPlayer->pause();
+//    clipPlayer->pause();
 }
 
 /*
@@ -492,15 +492,15 @@ void liveScene::pausePlayback()
  */
 void liveScene::advancePlayback()
 {
-    qint64 advanceTime = clipPlayer->currentTime() + (clipPlayer->totalTime() / ClipStep_percent);
-    if( advanceTime > clipPlayer->totalTime() )
-    {
-        clipPlayer->seek( clipPlayer->totalTime() );
-    }
-    else
-    {
-        clipPlayer->seek( advanceTime );
-    }
+//    qint64 advanceTime = clipPlayer->currentTime() + (clipPlayer->totalTime() / ClipStep_percent);
+//    if( advanceTime > clipPlayer->totalTime() )
+//    {
+//        clipPlayer->seek( clipPlayer->totalTime() );
+//    }
+//    else
+//    {
+//        clipPlayer->seek( advanceTime );
+//    }
 }
 
 /*
@@ -508,15 +508,15 @@ void liveScene::advancePlayback()
  */
 void liveScene::rewindPlayback()
 {
-    qint64 rewindTime = clipPlayer->currentTime() - (clipPlayer->totalTime() / ClipStep_percent);
-    if( rewindTime < 0 )
-    {
-        clipPlayer->seek( 0 );
-    }
-    else
-    {
-        clipPlayer->seek( rewindTime );
-    }
+//    qint64 rewindTime = clipPlayer->currentTime() - (clipPlayer->totalTime() / ClipStep_percent);
+//    if( rewindTime < 0 )
+//    {
+//        clipPlayer->seek( 0 );
+//    }
+//    else
+//    {
+//        clipPlayer->seek( rewindTime );
+//    }
 }
 
 /*

@@ -55,7 +55,7 @@ const int VariableDepthNumChunks = 5;
 /*
  * Constructor
  */
-frontend::frontend( QWidget *parent, Qt::WFlags flags )
+frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     : QMainWindow(parent, flags), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
 {
     scene    = nullptr;
@@ -761,7 +761,7 @@ void frontend::clockTimerExpiry()
 {
     ui.timeFieldLabel->setText( QTime::currentTime().toString() );
     ui.timeFieldLabel_mini->setText( QTime::currentTime().toString() );
-    docWindow->ui.timeFieldLabel->setText( QTime::currentTime().toString() );
+//lcv    docWindow->ui.timeFieldLabel->setText( QTime::currentTime().toString() );
     auxMon->updateTime( QTime::currentTime().toString() );
 
     update();
@@ -1476,7 +1476,7 @@ void frontend::updateCatheterViewLabel()
         str = CatheterPointedUpText;
     }
     ui.catheterViewLabel->setText( str );
-    docWindow->ui.catheterViewLabel->setText( str );
+//lcv    docWindow->ui.catheterViewLabel->setText( str );
     auxMon->setText( AuxMonitor::CatheterView, true, str );
 }
 
@@ -1619,7 +1619,7 @@ void frontend::playbackControlsVisible( bool state )
 void frontend::handleStatusText( QString status )
 {
     ui.liveGroupBox->setTitle( status );
-    docWindow->ui.statusLabel->setText( status );
+//lcv    docWindow->ui.statusLabel->setText( status );
     auxMon->setText( AuxMonitor::Status, true, status );
 }
 
@@ -2206,7 +2206,7 @@ void frontend::on_zoomSlider_valueChanged( int value )
         ui.zoomResetPushButton->hide();
 
         docWindow->ui.zoomFactorLabel->hide();
-        docWindow->ui.zoomFactorLabel->setText( "" );
+//lcv        docWindow->ui.zoomFactorLabel->setText( "" );
 
         auxMon->setText( AuxMonitor::ZoomFactor, false, "" );
 
@@ -2248,7 +2248,7 @@ void frontend::on_zoomSlider_valueChanged( int value )
         zoomFactorText = zoomFactorText.setNum( sx, 'f', 2 ).append( "x" );
 
         ui.zoomFactorLabel->setText( "["+ zoomFactorText + "]" );
-        docWindow->ui.zoomFactorLabel->setText( tr( "Zoom - " ) + zoomFactorText );
+//lcv        docWindow->ui.zoomFactorLabel->setText( tr( "Zoom - " ) + zoomFactorText );
         auxMon->setText( AuxMonitor::ZoomFactor, true, tr( "Zoom - " ) + zoomFactorText );
         ui.zoomResetPushButton->show();
 

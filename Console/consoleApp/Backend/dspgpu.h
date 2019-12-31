@@ -138,7 +138,7 @@ private:
 
     char       *loadCLProgramSourceFromFile( QString );
     QByteArray  loadCLProgramBinaryFromFile( QString );
-    bool buildOpenCLKernel( QString clSourceFile, char *kernelName, cl_program *program, cl_kernel *kernel );
+    bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
     bool initOpenCL();
     void computeFFTWindow();
     bool initOpenCLFFT();

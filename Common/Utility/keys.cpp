@@ -17,7 +17,7 @@
 #include "logger.h"
 #include <QCryptographicHash>
 #include <QStringList>
-#include <QtConcurrentMap>
+//#include <QtConcurrentMap>
 #include <QList>
 #include <QMutex>
 #include <QMutexLocker>
@@ -322,7 +322,7 @@ return; //lcv
     connect( fileCheckWatcher, SIGNAL( progressRangeChanged( int, int ) ), this, SIGNAL( fileCheckProgressRange( int,int) ) );
     connect( fileCheckWatcher, SIGNAL( progressValueChanged( int ) ), this, SIGNAL( fileCheckProgressChanged( int ) ) );
 
-    fileCheckWatcher->setFuture( QtConcurrent::mapped( keyList, checkSingleKey ) );
+//lcv    fileCheckWatcher->setFuture( QtConcurrent::mapped( keyList, checkSingleKey ) );
 }
 
 /*

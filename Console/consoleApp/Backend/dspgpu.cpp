@@ -414,7 +414,7 @@ bool DSPGPU::initOpenCLFFT( void )
  *
  * Load, compile and build the program for the given OpenCL kernel.
  */
-bool DSPGPU::buildOpenCLKernel( QString clSourceFile, char *kernelName, cl_program *program, cl_kernel *kernel )
+bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel )
 {
     qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
     QTime buildTimer;
@@ -1072,7 +1072,7 @@ unsigned int DSPGPU::rescale( const unsigned short *inputData )
     rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
     int err = clEnqueueWriteBuffer( cl_Commands,
                                     rescaleInputMemObj,
-                                    TRUE,
+                                    true,
                                     0,
                                     rescaleInputMemObjSize,
                                     inputData,

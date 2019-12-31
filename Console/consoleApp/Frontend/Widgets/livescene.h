@@ -147,14 +147,14 @@ public slots:
 
     void stopPlayback()
     {
-        clipPlayer->pause();
-        clipPlayer->hide();
+//        clipPlayer->pause();
+//        clipPlayer->hide();
     }
 
     void restartLoop()
     {
-        clipPlayer->seek( 0 );
-        clipPlayer->play();
+//        clipPlayer->seek( 0 );
+//        clipPlayer->play();
     }
 
     void clearSector()
@@ -248,7 +248,7 @@ private:
     QGraphicsPixmapItem *reviewSector;
     QGraphicsPixmapItem *reviewWaterfall;
 
-    videoDecoderItem *clipPlayer;
+//    videoDecoderItem *clipPlayer;
     QString           clipPath;
 
     QImage *infoImage;

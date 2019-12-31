@@ -17,7 +17,7 @@
 ****************************************************************************/
 
 #include "qtsingleapplication.h"
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class QtSingletonPrivate
 {
@@ -109,8 +109,8 @@ public:
     \warning On X11 type can not be QApplication::Tty.
 
 */
-QtSingleApplication::QtSingleApplication(const QString &id, int &argc, char **argv, Type type)
-    : QApplication(argc, argv, type)
+QtSingleApplication::QtSingleApplication(const QString &id, int &argc, char **argv)
+    : QApplication(argc, argv)
 {
 #ifdef Q_WS_X11
     Q_ASSERT_X(type != Tty, "QtSingleApplication::QtSingleApplication",

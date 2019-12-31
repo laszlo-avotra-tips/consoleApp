@@ -19,7 +19,7 @@
 #ifndef QTSINGLEAPPLICATION_H
 #define QTSINGLEAPPLICATION_H
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #ifdef Q_WS_MAC
 #include <CoreFoundation/CoreFoundation.h>
 #endif
@@ -48,7 +48,7 @@ class QT_QTSINGLEAPPLICATION_EXPORT QtSingleApplication : public QApplication
 {
     Q_OBJECT
 public:
-    QtSingleApplication(const QString &id, int &argc, char **argv, Type = GuiClient);
+    QtSingleApplication(const QString &id, int &argc, char **argv);
 #ifdef Q_WS_X11
     QtSingleApplication(Display* dpy, const QString &id, int argc, char **argv, Qt::HANDLE visual = 0, Qt::HANDLE colormap = 0);
 #endif

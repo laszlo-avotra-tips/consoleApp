@@ -22,14 +22,14 @@ const QColor SpanDisabledColor( 128, 128, 128 );
  * constructor
  */
 avDisplayControls::avDisplayControls( QWidget *parent ):
-        QxtSpanSlider(parent)
+        QSlider(parent)
 {
     this->setOrientation( Qt::Horizontal );
 
     // Set default range
     this->setRange( BrightnessLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
-    this->setUpperValue( ContrastLevels_HighSpeed.defaultValue );
-    this->setLowerValue( BrightnessLevels_HighSpeed.defaultValue );
+//    this->setUpperValue( ContrastLevels_HighSpeed.defaultValue );
+//    this->setLowerValue( BrightnessLevels_HighSpeed.defaultValue );
 
     // Set the color for the span when the slider is disabled
     QPalette qpalette;
@@ -47,20 +47,20 @@ void avDisplayControls::updateBrightnessContrastLimits( void )
 
     // Force the current values into the new range before resetting the range
     // Otherwise, if the new range is narrower it may cause side effects when applied
-    setLowerValue( 0 );
-    setUpperValue( 0 );
+//    setLowerValue( 0 );
+//    setUpperValue( 0 );
 
     if( devSettings.current()->isHighSpeed() )
     {
         setRange( BrightnessLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
-        setUpperValue( ContrastLevels_HighSpeed.defaultValue );
-        setLowerValue( BrightnessLevels_HighSpeed.defaultValue );
+//        setUpperValue( ContrastLevels_HighSpeed.defaultValue );
+//        setLowerValue( BrightnessLevels_HighSpeed.defaultValue );
     }
     else
     {
         setRange( BrightnessLevels_LowSpeed.minValue, ContrastLevels_LowSpeed.maxValue );
-        setUpperValue( ContrastLevels_LowSpeed.defaultValue );
-        setLowerValue( BrightnessLevels_LowSpeed.defaultValue );
+//        setUpperValue( ContrastLevels_LowSpeed.defaultValue );
+//        setLowerValue( BrightnessLevels_LowSpeed.defaultValue );
     }
 
 }

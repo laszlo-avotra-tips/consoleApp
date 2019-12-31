@@ -965,7 +965,7 @@ void SledSupport::getFirmwareVersions( void )
          * display "N/A" if not. The version strings are messaged to advanced view
          * via the path through frontend using signals & slots.
          */
-        if( resp.startsWith( strPrefix.toAscii() ) )
+        if( resp.startsWith( strPrefix.toLatin1() ) )
         {
             // parse the response
             resp.remove( 0, strPrefix.length() ); // remove 7 characters "ACK gv="
@@ -1046,9 +1046,9 @@ QByteArray SledSupport::qualifyVersion( QByteArray v )
 
         // recombine the version
         newV.clear();
-        newV = vMajor.toAscii();
+        newV = vMajor.toLatin1();
         newV.append( "." );
-        newV.append( vMinor.toAscii() );
+        newV.append( vMinor.toLatin1() );
     }
 
     return newV;

@@ -637,7 +637,7 @@ QGroupBox::title {
      <string>RAW OCT SIGNAL</string>
     </property>
    </widget>
-   <widget class="dataPlotWidget" name="rawDataPlot" native="true">
+   <widget class="QFrame" name="rawDataPlot" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -675,7 +675,7 @@ color: rgb(0, 0, 0 );
      <string>PROCESSED SIGNAL</string>
     </property>
    </widget>
-   <widget class="dataPlotWidget" name="fftDataPlot" native="true">
+   <widget class="QFrame" name="fftDataPlot" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -870,9 +870,9 @@ QProgressBar::chunk {
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>dataPlotWidget</class>
+   <class>QFrame</class>
    <extends>QWidget</extends>
-   <header>dataPlotWidget.h</header>
+   <header>QFrame.h</header>
    <container>1</container>
    <slots>
     <signal>updateBrightness(int)</signal>

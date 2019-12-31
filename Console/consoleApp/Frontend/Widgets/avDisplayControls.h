@@ -13,9 +13,10 @@
 #ifndef AVDISPLAYCONTROLS_H
 #define AVDISPLAYCONTROLS_H
 
-#include <QxtSpanSlider>
+//#include <QxtSpanSlider>
+#include <QSlider>
 
-class avDisplayControls : public QxtSpanSlider
+class avDisplayControls : public QSlider
 {
     Q_OBJECT
 

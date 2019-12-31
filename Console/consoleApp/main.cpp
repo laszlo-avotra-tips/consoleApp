@@ -47,7 +47,7 @@ void parseOptions( QCommandLineOption &options, QStringList args )
 //    options.parse( QCoreApplication::arguments() );
 
 //    // Log any command line options. Qt pulls out any Qt-only arguments before this point
-//    // The program name is always passed in
+//    // The program name is always passed inF
 //    if( args.size() > 1 )
 //    {
 //        // Log any arguments
@@ -68,8 +68,8 @@ int main(int argc, char *argv[])
     QtSingleApplication app( "OCT Console", argc, argv );
 
     // use the touch keyboard
-    keyboardInputContext *ic = new keyboardInputContext();
-    app.setInputContext( ic );
+//    keyboardInputContext *ic = new keyboardInputContext();
+//    app.setInputContext( ic );
 
     if( app.isRunning() )
     {
@@ -113,7 +113,9 @@ int main(int argc, char *argv[])
     parseOptions( options, args );
 
     // Check the EXE key?  Default to true
-    bool runExeCheck = !options.count( "noexe" );
+//lcv    bool runExeCheck = !options.count( "noexe" );
+    bool runExeCheck = true;
+
 #if !ENABLE_EXE_CHECKS
     runExeCheck = false;
 #endif
@@ -240,7 +242,7 @@ int main(int argc, char *argv[])
         }
 
         // if the system is running low on space, turn off all storage except for the logs
-        frontEndWindow.disableStorage( options.count( "low-space" ) );
+//lcv        frontEndWindow.disableStorage( options.count( "low-space" ) );
 
 #if QT_NO_DEBUG
         // The laser diode is turned on at the start of the case and remains on throughout

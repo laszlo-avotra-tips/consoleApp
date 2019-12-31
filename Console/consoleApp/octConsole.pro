@@ -7,7 +7,7 @@ TARGET = octConsole
 
 TEMPLATE = app
 
-QT += sql xml
+QT += sql xml serialport
 
 # XXX this needs to be here to link even though we do not
 # have any openGL code.  QtSingleApplication::sendMessage

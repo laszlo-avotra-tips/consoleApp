@@ -45,47 +45,47 @@ advancedView::advancedView( QWidget *parent )
     timer.start();
 
     ui.setupUi(this);
+//lcv
+//    // Set up the raw data display
+//    ui.rawDataPlot->init( MaxSampleVal );
+//    QwtText rawBottomText( "Samples" );
+//    rawBottomText.setColor( TitleColor );
+//    ui.rawDataPlot->setAxisTitle( QwtPlot::xBottom, rawBottomText );
+//    ui.rawDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
+//    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxSampleVal );
 
-    // Set up the raw data display
-    ui.rawDataPlot->init( MaxSampleVal );
-    QwtText rawBottomText( "Samples" );
-    rawBottomText.setColor( TitleColor );
-    ui.rawDataPlot->setAxisTitle( QwtPlot::xBottom, rawBottomText );
-    ui.rawDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
-    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxSampleVal );
+//    QwtText rawLeftText( "ADC Values" );
+//    rawLeftText.setColor( TitleColor );
+//    ui.rawDataPlot->setAxisTitle( QwtPlot::yLeft, rawLeftText );
+//    ui.rawDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
+//    ui.rawDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
+//    ui.rawDataPlot->setAxisScale( QwtPlot::yLeft, MinADCVal, MaxADCVal );
 
-    QwtText rawLeftText( "ADC Values" );
-    rawLeftText.setColor( TitleColor );
-    ui.rawDataPlot->setAxisTitle( QwtPlot::yLeft, rawLeftText );
-    ui.rawDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
-    ui.rawDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
-    ui.rawDataPlot->setAxisScale( QwtPlot::yLeft, MinADCVal, MaxADCVal );
+//    // Set up the FFT display
+//#if CONSOLE_MANUFACTURING_RELEASE
+//    ui.fftDataPlot->init( 512 );
+//    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, 3.3 );
+//    ui.fftDataPlot->drawMmDepthLines();
+//    QwtText fftBottomText( "Depth (mm)" );
+//#else
+//    ui.fftDataPlot->init( MaxDepthVal );
+//    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxDepthVal );
+//    QwtText fftBottomText( "Depth" );
+//    ui.fftDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
+//    ui.rawDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
+//#endif
+//    fftBottomText.setColor( TitleColor );
+//    ui.fftDataPlot->setAxisTitle( QwtPlot::xBottom, fftBottomText );
+//    ui.fftDataPlot->axisTitle( QwtPlot::xBottom ).setColor( TitleColor );
+//    ui.fftDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
 
-    // Set up the FFT display
-#if CONSOLE_MANUFACTURING_RELEASE
-    ui.fftDataPlot->init( 512 );
-    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, 3.3 );
-    ui.fftDataPlot->drawMmDepthLines();
-    QwtText fftBottomText( "Depth (mm)" );
-#else
-    ui.fftDataPlot->init( MaxDepthVal );
-    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxDepthVal );
-    QwtText fftBottomText( "Depth" );
-    ui.fftDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-    ui.rawDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-#endif
-    fftBottomText.setColor( TitleColor );
-    ui.fftDataPlot->setAxisTitle( QwtPlot::xBottom, fftBottomText );
-    ui.fftDataPlot->axisTitle( QwtPlot::xBottom ).setColor( TitleColor );
-    ui.fftDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
-
-    QwtText fftLeftText( "'dB'" );  // the data is in dB but we're not really displaying that
-    fftLeftText.setColor( TitleColor );
-    ui.fftDataPlot->setAxisTitle( QwtPlot::yLeft, fftLeftText );
-    ui.fftDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
-    ui.fftDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
-    ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
-    ui.fftDataPlot->enableLevels();
+//    QwtText fftLeftText( "'dB'" );  // the data is in dB but we're not really displaying that
+//    fftLeftText.setColor( TitleColor );
+//    ui.fftDataPlot->setAxisTitle( QwtPlot::yLeft, fftLeftText );
+//    ui.fftDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
+//    ui.fftDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
+//    ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
+//    ui.fftDataPlot->enableLevels();
 
     connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
     connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
@@ -207,15 +207,15 @@ advancedView::~advancedView()
  */
 void advancedView::addScanline( const OCTFile::FrameData_t *pData )
 {
-    if( pData->rawData != NULL )
-    {
-        ui.rawDataPlot->plotData( pData->rawData );
-    }
+//    if( pData->rawData != NULL )
+//    {
+//        ui.rawDataPlot->plotData( pData->rawData );
+//    }
 
-    if( ( pData->fftData != NULL ) )
-    {
-        ui.fftDataPlot->plotData( pData->fftData );
-    }
+//    if( ( pData->fftData != NULL ) )
+//    {
+//        ui.fftDataPlot->plotData( pData->fftData );
+//    }
 
     // Rough updates/second counter
     lineCount++;
@@ -257,7 +257,7 @@ void advancedView::addScanline( const OCTFile::FrameData_t *pData )
  */
 void advancedView::handleBrightnessChanged(int value)
 {
-    ui.fftDataPlot->changeBrightness(value);
+//lcv    ui.fftDataPlot->changeBrightness(value);
     emit brightnessChanged(value); // Let the DSP know.
 
     userSettings &settings = userSettings::Instance();
@@ -272,7 +272,7 @@ void advancedView::handleBrightnessChanged(int value)
  */
 void advancedView::handleContrastChanged(int value)
 {
-    ui.fftDataPlot->changeContrast(value);
+//lcv    ui.fftDataPlot->changeContrast(value);
     emit contrastChanged(value); // Let the DSP know.
 
     userSettings &settings = userSettings::Instance();
@@ -348,8 +348,8 @@ void advancedView::handleLaserDiodeStatus( bool isOn )
 void advancedView::handleRawDataLengthChange( int size )
 {
     // Adjust the axis and amount of data to copy to the chart
-    ui.rawDataPlot->init( size );
-    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, size );
+//lcv    ui.rawDataPlot->init( size );
+//lcv    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, size );
 #if CONSOLE_MANUFACTURING_RELEASE
     rawDataLength = size;
 #endif
@@ -400,15 +400,16 @@ void advancedView::handleDeviceChange()
     // Set the state of the UI depending on the device selected
     if( devSettings.current()->isHighSpeed() )
     {
-        ui.fftDataPlot->clearData();
+//lcv
+//        ui.fftDataPlot->clearData();
 
-        ui.fftDataPlot->setBrightnessLimits( BrightnessLevels_HighSpeed.minValue, BrightnessLevels_HighSpeed.maxValue );
-        ui.fftDataPlot->setContrastLimits( ContrastLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
+//        ui.fftDataPlot->setBrightnessLimits( BrightnessLevels_HighSpeed.minValue, BrightnessLevels_HighSpeed.maxValue );
+//        ui.fftDataPlot->setContrastLimits( ContrastLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
 
-        ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_HighSpeed );
+//        ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_HighSpeed );
 
-        ui.fftDataPlot->changeBrightness( BrightnessLevels_HighSpeed.defaultValue );
-        ui.fftDataPlot->changeContrast( ContrastLevels_HighSpeed.defaultValue );
+//        ui.fftDataPlot->changeBrightness( BrightnessLevels_HighSpeed.defaultValue );
+//        ui.fftDataPlot->changeContrast( ContrastLevels_HighSpeed.defaultValue );
 
 #if ENABLE_TOP_DEAD_CENTER_TOGGLE
         ui.tdcCheckBox->show();
@@ -417,21 +418,21 @@ void advancedView::handleDeviceChange()
     else
     {
         ui.tdcCheckBox->hide(); //lcv
+//lcv
+//        ui.fftDataPlot->setBrightnessLimits( BrightnessLevels_LowSpeed.minValue, BrightnessLevels_LowSpeed.maxValue );
+//        ui.fftDataPlot->setContrastLimits( ContrastLevels_LowSpeed.minValue, ContrastLevels_LowSpeed.maxValue );
 
-        ui.fftDataPlot->setBrightnessLimits( BrightnessLevels_LowSpeed.minValue, BrightnessLevels_LowSpeed.maxValue );
-        ui.fftDataPlot->setContrastLimits( ContrastLevels_LowSpeed.minValue, ContrastLevels_LowSpeed.maxValue );
+//        ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
 
-        ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
-
-        ui.fftDataPlot->changeBrightness( BrightnessLevels_LowSpeed.defaultValue );
-        ui.fftDataPlot->changeContrast( ContrastLevels_LowSpeed.defaultValue );
+//        ui.fftDataPlot->changeBrightness( BrightnessLevels_LowSpeed.defaultValue );
+//        ui.fftDataPlot->changeContrast( ContrastLevels_LowSpeed.defaultValue );
     }
 
 
     // Set the tolerance for selecting a line to 10% of the full y-axis range
-    ui.fftDataPlot->setMousePressTolerance( ui.fftDataPlot->axisScaleDiv( QwtPlot::yLeft )->upperBound() * 0.10 );
+//lcv    ui.fftDataPlot->setMousePressTolerance( ui.fftDataPlot->axisScaleDiv( QwtPlot::yLeft )->upperBound() * 0.10 );
 
-    ui.fftDataPlot->enableDisplayControls();
+//lcv    ui.fftDataPlot->enableDisplayControls();
 
     ui.evoaStatusVal->setText( EvoaStatusDefault );
 
@@ -457,7 +458,7 @@ void advancedView::handleDeviceChange()
  */
 void advancedView::setReviewState()
 {
-    ui.fftDataPlot->disableDisplayControls();
+//lcv    ui.fftDataPlot->disableDisplayControls();
 }
 
 /*
@@ -467,7 +468,7 @@ void advancedView::setReviewState()
  */
 void advancedView::setLiveState()
 {
-    ui.fftDataPlot->enableDisplayControls();
+//lcv    ui.fftDataPlot->enableDisplayControls();
 }
 
 /*

@@ -397,7 +397,7 @@ void DaqDataConsumer::setupEncoder( videoEncoder **cdc, const QString VidFilenam
 
     if( isHighSpeedDevice )
     {
-        *cdc = new videoEncoder( VidFilename.toAscii().data(),
+        *cdc = new videoEncoder( VidFilename.toLatin1().data(),
                                  SectorWidth_px,
                                  SectorHeight_px,
                                  Width_px,
@@ -407,7 +407,7 @@ void DaqDataConsumer::setupEncoder( videoEncoder **cdc, const QString VidFilenam
     else
     {
         // Include space for the waterfall XXX Where to get canonical wf size?
-        *cdc = new videoEncoder( VidFilename.toAscii().data(),
+        *cdc = new videoEncoder( VidFilename.toLatin1().data(),
                                  SectorWidth_px,
                                  SectorHeight_px + WaterfallHeight_px,
                                  Width_px,

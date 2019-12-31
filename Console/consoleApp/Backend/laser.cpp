@@ -8,6 +8,7 @@
  * Copyright (c) 2010-2018 Avinger, Inc.
  *
  */
+#include <QThread>
 #include <QDebug>
 #include "defaults.h"
 #include "laser.h"
@@ -113,50 +114,51 @@ bool Laser::init( void )
     bool status = true;
 
     // create serial port object
-    serialPort = new QSerialPort( portName, settings );
+//lcv    serialPort = new QSerialPort( portName, settings );
+    serialPort = new QSerialPort( portName );
 
-    if( serialPort == NULL )
-    {
-        // error:  failures stop the application and do not return
-        displayFailureMessage( QString( tr( "Cannot create accessor to serial port " ) ).append( qPrintable( portName ) ), true );
-        status = false;
-    }
+//    if( serialPort == NULL )
+//    {
+//        // error:  failures stop the application and do not return
+//        displayFailureMessage( QString( tr( "Cannot create accessor to serial port " ) ).append( qPrintable( portName ) ), true );
+//        status = false;
+//    }
 
-    // open COM port
-    else if( !serialPort->open() )
-    {
-        // error:  failures stop the application and do not return
-        displayFailureMessage( QString( tr( "Cannot open serial port " ) ).append( qPrintable( portName ) ), true );
-        status = false;
-    }
+//    // open COM port
+//    else if( !serialPort->open() )
+//    {
+//        // error:  failures stop the application and do not return
+//        displayFailureMessage( QString( tr( "Cannot open serial port " ) ).append( qPrintable( portName ) ), true );
+//        status = false;
+//    }
 
-    else if( !serialPort->setCommTimeouts( QSerialPort::CtScheme_NonBlockingRead ) )
-    {
-        displayWarningMessage( QString( tr( "Cannot set communications timeout values at port " ) ).append( qPrintable( portName ) ) );
-        status = false;
-    }
+//    else if( !serialPort->setCommTimeouts( QSerialPort::CtScheme_NonBlockingRead ) )
+//    {
+//        displayWarningMessage( QString( tr( "Cannot set communications timeout values at port " ) ).append( qPrintable( portName ) ) );
+//        status = false;
+//    }
 
-    // The Santec laser does not use flow control
-    serialPort->setFlowControl( QPortSettings::FLOW_OFF );
+//    // The Santec laser does not use flow control
+//    serialPort->setFlowControl( QPortSettings::FLOW_OFF );
 
-    // flush any data sitting in the buffers
-    serialPort->flushInBuffer();
-    serialPort->flushOutBuffer();
-    serialPort->bytesAvailable();
+//    // flush any data sitting in the buffers
+//    serialPort->flushInBuffer();
+//    serialPort->flushOutBuffer();
+//    serialPort->bytesAvailable();
 
-    ioController &ioc = ioController::Instance();
+//    ioController &ioc = ioController::Instance();
 
-    // Verify that the IO Controller is ready before talking to the Laser
-    if( ioc.isReady() )
-    {
-        // Verify that we can talk to the laser
-        isDiodeOn();
-    }
-    else
-    {
-        displayWarningMessage( tr( "Attempting to access the Laser before IO Controller is ready" ) );
-        status = false;
-    }
+//    // Verify that the IO Controller is ready before talking to the Laser
+//    if( ioc.isReady() )
+//    {
+//        // Verify that we can talk to the laser
+//        isDiodeOn();
+//    }
+//    else
+//    {
+//        displayWarningMessage( tr( "Attempting to access the Laser before IO Controller is ready" ) );
+//        status = false;
+//    }
 
     return status;
 }
@@ -238,7 +240,8 @@ void Laser::forceOff()
 bool Laser::isDiodeOn()
 {
     // Clear anything in the buffer (e.g., previous ON/OFF echo)
-    serialPort->flushInBuffer();
+//lcv    serialPort->flushInBuffer();
+    serialPort->flush();
 
 #if DEBUG_LASER
     qDebug() << "Status:";
@@ -287,7 +290,8 @@ bool Laser::isDiodeOn()
 
 #ifndef Q_WS_WIN
 void Sleep(int ms) {
-	usleep(ms * 1000);
+//lcv	usleep(ms * 1000);
+    QThread::msleep(ms);
 }
 #endif
 

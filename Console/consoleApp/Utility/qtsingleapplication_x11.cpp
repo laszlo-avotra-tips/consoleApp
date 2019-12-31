@@ -107,7 +107,7 @@ bool QtSingletonSysPrivate::getProperty(char** data, unsigned long* nitems,
                                  reinterpret_cast<unsigned char **>(data));
         if (ret == Success && actualType == typ && *nitems > 0) {
             if (bafter == 0)
-                return TRUE;
+                return true;
             else {
                 if (actualFormat == 8)
                     length += (bafter / 4) + 1;
@@ -119,12 +119,12 @@ bool QtSingletonSysPrivate::getProperty(char** data, unsigned long* nitems,
         } else {
             if (*nitems > 0 && *data != 0)
                 XFree(*data);
-            return FALSE;
+            return false;
         }
         if (*nitems > 0 && *data != 0)
             XFree(*data);
     }
-    return FALSE;
+    return false;
 }
 
 void QtSingletonSysPrivate::findWindows(QList<Window> &windows)
@@ -263,14 +263,14 @@ bool QtSingleApplication::isRunning() const
     QByteArray login = sysd->toXPCS(id()+sysd->login());
     Atom tmp = XInternAtom(QX11Info::display(),
 			   login,
-			   True);
+               true);
 
     if (tmp != None) {
 	WId wid = XGetSelectionOwner(QX11Info::display(),
 				     tmp);
 	return (wid != None);
     }
-    return FALSE;
+    return false;
 }
 
 bool QtSingleApplication::sendMessage(const QString &message, int)
@@ -278,20 +278,20 @@ bool QtSingleApplication::sendMessage(const QString &message, int)
     QByteArray login = sysd->toXPCS(id()+sysd->login());
     Atom sel = XInternAtom(QX11Info::display(),
                            login,
-                           True);
+                           true);
     if (sel == None)
-        return FALSE;
+        return false;
     WId wid = XGetSelectionOwner(QX11Info::display(), sel);
     if (wid != None) {
 	Atom typ = XInternAtom(QX11Info::display(),
 				"_QTSINGLEAPPLICATION",
-				True);
+                true);
         if (typ != None) {
             sysd->sendMessageTo(wid, sel, typ, message);
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
 /*!
@@ -317,7 +317,7 @@ bool QtSingleApplication::x11EventFilter(XEvent *msg)
                                        CurrentTime);
                     if (XGetSelectionOwner(QX11Info::display(), sysd->selAtom) == lid)
                         sysd->owner = true;
-                    return TRUE;
+                    return true;
                 }
                 char* data = 0;
                 unsigned long nitems = 0;
@@ -328,7 +328,7 @@ bool QtSingleApplication::x11EventFilter(XEvent *msg)
                         XFree(data);
                     emit messageReceived(str);
 
-                    return TRUE;
+                    return true;
                 }
                 if (data)
                     XFree(data);

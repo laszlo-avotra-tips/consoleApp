@@ -156,11 +156,11 @@ bool videoEncoder::initVideo(void)
      */
 #if ENABLE_VIDEO_CRF_QUALITY_TESTING
     // If enabled, the value in system.ini is completely ignored!
-    av_dict_set(&opts, "crf", gCrfTestValue.toAscii().constData(), 0);
+    av_dict_set(&opts, "crf", gCrfTestValue.toLatin1().constData(), 0);
     qDebug() << "====> crf = " << gCrfTestValue;
     LOG( DEBUG, QString( "video encoder crf (test value) = %1" ).arg( gCrfTestValue ) );
 #else
-    av_dict_set( &opts, "crf", QString( "%1" ).arg( crfSetting ).toAscii().constData(), 0 );
+    av_dict_set( &opts, "crf", QString( "%1" ).arg( crfSetting ).toLatin1().constData(), 0 );
     LOG( DEBUG, QString( "video encoder crf = %1" ).arg( crfSetting ) );
 #endif
 
@@ -463,7 +463,7 @@ void videoEncoder::addFrame(char *frameData)
         /*
          * Encode the frame
          */
-        outSize = hacked_avcodec_encode_video(codecCtx, outputBuffer, bufferSize, picture);
+        outSize = avcodec_encode_video(codecCtx, outputBuffer, bufferSize, picture);
 
         /*
          * if zero size, then the image was buffered in the encoder, we'll get to it later.

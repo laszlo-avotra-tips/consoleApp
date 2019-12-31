@@ -39,30 +39,31 @@ docscreen::docscreen( QWidget *parent )
     ui.previewListview->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui.previewListview->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    ui.timeFieldLabel->setRotation( Qxt::Clockwise );
-    ui.timeFieldLabel->setStyleSheet( "QFrame { color: lightGray }" );
+//lcv
+//    ui.timeFieldLabel->setRotation( Qxt::Clockwise );
+//    ui.timeFieldLabel->setStyleSheet( "QFrame { color: lightGray }" );
 
-    ui.statusLabel->setRotation( Qxt::Clockwise );
-    ui.statusLabel->setStyleSheet( "QFrame { color: lightGray }" );
+//    ui.statusLabel->setRotation( Qxt::Clockwise );
+//    ui.statusLabel->setStyleSheet( "QFrame { color: lightGray }" );
 
-    ui.recordingLabel->setText( tr( "RECORDING" ) );
-    ui.recordingLabel->setRotation( Qxt::Clockwise );
-    ui.recordingLabel->setStyleSheet( "QFrame { color: yellow }" );
-    ui.recordingLabel->hide();
+//    ui.recordingLabel->setText( tr( "RECORDING" ) );
+//    ui.recordingLabel->setRotation( Qxt::Clockwise );
+//    ui.recordingLabel->setStyleSheet( "QFrame { color: yellow }" );
+//    ui.recordingLabel->hide();
 
-    ui.deviceLabel->setRotation( Qxt::Clockwise );
-    ui.deviceLabel->setStyleSheet( "QFrame { color: lightGray }" );
-    ui.deviceLabel->setText( "" );
-    ui.deviceLabel->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
+//    ui.deviceLabel->setRotation( Qxt::Clockwise );
+//    ui.deviceLabel->setStyleSheet( "QFrame { color: lightGray }" );
+//    ui.deviceLabel->setText( "" );
+//    ui.deviceLabel->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 
-    ui.zoomFactorLabel->setRotation( Qxt::Clockwise );
-    ui.zoomFactorLabel->setStyleSheet( "QFrame { color: lightGray }" );
-    ui.zoomFactorLabel->setText( "" );
-    ui.zoomFactorLabel->setAlignment( Qt::AlignCenter | Qt::AlignVCenter );
+//    ui.zoomFactorLabel->setRotation( Qxt::Clockwise );
+//    ui.zoomFactorLabel->setStyleSheet( "QFrame { color: lightGray }" );
+//    ui.zoomFactorLabel->setText( "" );
+//    ui.zoomFactorLabel->setAlignment( Qt::AlignCenter | Qt::AlignVCenter );
 
-    ui.catheterViewLabel->setRotation( Qxt::Clockwise );
-    ui.catheterViewLabel->setStyleSheet( "QFrame { color: lightGray }" );
-    ui.catheterViewLabel->setAlignment( Qt::AlignLeft | Qt::AlignVCenter );
+//    ui.catheterViewLabel->setRotation( Qxt::Clockwise );
+//    ui.catheterViewLabel->setStyleSheet( "QFrame { color: lightGray }" );
+//    ui.catheterViewLabel->setAlignment( Qt::AlignLeft | Qt::AlignVCenter );
 
     QPixmap logoPixmap( ":/octConsole/Frontend/Resources/logo-physicianScreen.png" );
     ui.logoLabel->setPixmap( logoPixmap );
@@ -170,6 +171,6 @@ void docscreen::updatePreview( QModelIndex ix )
  */
 void docscreen::setDeviceName( QString dev )
 {
-    ui.deviceLabel->setText( dev );
+//lcv    ui.deviceLabel->setText( dev );
 }
 

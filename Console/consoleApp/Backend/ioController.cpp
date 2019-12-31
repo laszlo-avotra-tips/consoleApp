@@ -84,9 +84,9 @@ BOOL CALLBACK GetDriver( LPSTR ioControllerLpszName, LPSTR ioControllerLpszEntry
     /* try to open board */
     lpboard->status = olDaInitialize((PTSTR)ioControllerLpszName,(PHDEV)&lpboard->hdrvr);
     if   (lpboard->hdrvr != NULL)
-        return FALSE;          /* false to stop enumerating */
+        return false;          /* false to stop enumerating */
     else
-        return TRUE;           /* true to continue          */
+        return true;           /* true to continue          */
 }
 
 /*

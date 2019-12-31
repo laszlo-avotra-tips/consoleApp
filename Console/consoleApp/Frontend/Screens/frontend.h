@@ -13,7 +13,7 @@
 
 #include <QCursor>
 #include <QCloseEvent>
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 #include <QMouseEvent>
 #include <QTimer>
 #include "ui_frontend.h"
@@ -52,7 +52,7 @@ class frontend : public QMainWindow
     Q_OBJECT
 
 public:
-    frontend(QWidget *parent = nullptr, Qt::WFlags flags = nullptr);
+    frontend(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
     ~frontend();
     void init( void );
     void abortStartUp( void ) { appAborted = true; }
