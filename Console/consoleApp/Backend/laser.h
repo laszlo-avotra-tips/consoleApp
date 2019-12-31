@@ -13,14 +13,14 @@
 
 #include <QMutex>
 #include <QObject>
-#include <QSerialPort>
+//#include <QSerialPort>
 #include <QString>
 
 /*
  * This namespace is used by the QSerialPort library.  Use the namespace
  * keyword to allow QSerialPort instead of TNX::QSerialPort
  */
-using namespace TNX;
+//using namespace TNX;
 
 class Laser : public QObject
 {
@@ -51,7 +51,7 @@ private:
     // amount of time to wait for responses
     static const int CommDelay_ms = 50;
 
-    QSerialPort *serialPort;
+//    QSerialPort *serialPort;
     QString portName;
     QString settings;
 

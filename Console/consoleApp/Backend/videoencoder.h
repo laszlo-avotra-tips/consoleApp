@@ -55,7 +55,7 @@ public:
     static void initVideoLibrary(void)
     {
         // Do this outside of the object, and only once.
-        av_register_all();
+//lcv        av_register_all();
     }
 
 public slots:

@@ -317,30 +317,30 @@ bool DSP::checkIPPVersion( void )
 {
     bool status = false;
 
-    // Check the core library
-    const IppLibraryVersion* lib = ippGetLibVersion();
-    LOG( INFO, QString( "IPP Version: %1.%2" ).arg( lib->major ).arg( lib->minor ) );
+//    // Check the core library
+//    const IppLibraryVersion* lib = ippGetLibVersion();
+//    LOG( INFO, QString( "IPP Version: %1.%2" ).arg( lib->major ).arg( lib->minor ) );
 
-    status = ( ( lib->major == Major ) &&
-               ( lib->minor == Minor ) );
+//    status = ( ( lib->major == Major ) &&
+//               ( lib->minor == Minor ) );
 
-    if( !status )
-    {
-        LOG( FATAL, QString( "Using IPP Version: %1.%2. Expected %3.%4" ).arg( lib->major ).arg( lib->minor ).arg( Major ).arg( Minor ) );
-    }
+//    if( !status )
+//    {
+//        LOG( FATAL, QString( "Using IPP Version: %1.%2. Expected %3.%4" ).arg( lib->major ).arg( lib->minor ).arg( Major ).arg( Minor ) );
+//    }
 
-    // Check the signal processing library
-    lib = ippsGetLibVersion();
-    LOG( INFO, QString( "IPPS Version: %1.%2" ).arg( lib->major ).arg( lib->minor ) );
+//    // Check the signal processing library
+//    lib = ippsGetLibVersion();
+//    LOG( INFO, QString( "IPPS Version: %1.%2" ).arg( lib->major ).arg( lib->minor ) );
 
-    status = ( status &&
-              ( lib->major == Major ) &&
-              ( lib->minor == Minor ) );
+//    status = ( status &&
+//              ( lib->major == Major ) &&
+//              ( lib->minor == Minor ) );
 
-    if( !status )
-    {
-        LOG( FATAL, QString( "Using IPPS Version: %1.%2. Expected %3.%4" ).arg( lib->major ).arg( lib->minor ).arg( Major ).arg( Minor ) );
-    }
+//    if( !status )
+//    {
+//        LOG( FATAL, QString( "Using IPPS Version: %1.%2. Expected %3.%4" ).arg( lib->major ).arg( lib->minor ).arg( Major ).arg( Minor ) );
+//    }
 
     return status;
 }

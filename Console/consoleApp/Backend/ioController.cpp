@@ -74,18 +74,18 @@ ioController::~ioController()
  */
 BOOL CALLBACK GetDriver( LPSTR ioControllerLpszName, LPSTR ioControllerLpszEntry, LPARAM ioControllerLParam )
 {
-    LPBOARD lpboard = (LPBOARD)(LPVOID)ioControllerLParam;
+//    LPBOARD lpboard = (LPBOARD)(LPVOID)ioControllerLParam;
 
-    /* fill in board strings */
+//    /* fill in board strings */
 
-    lstrcpyn((PTSTR)(LPWSTR)lpboard->name,(LPCWSTR)ioControllerLpszName,MAX_BOARD_NAME_LENGTH-1);
-    lstrcpyn((PTSTR)(LPWSTR)lpboard->entry,(LPCWSTR)ioControllerLpszEntry,MAX_BOARD_NAME_LENGTH-1);
+//    lstrcpyn((PTSTR)(LPWSTR)lpboard->name,(LPCWSTR)ioControllerLpszName,MAX_BOARD_NAME_LENGTH-1);
+//    lstrcpyn((PTSTR)(LPWSTR)lpboard->entry,(LPCWSTR)ioControllerLpszEntry,MAX_BOARD_NAME_LENGTH-1);
 
-    /* try to open board */
-    lpboard->status = olDaInitialize((PTSTR)ioControllerLpszName,(PHDEV)&lpboard->hdrvr);
-    if   (lpboard->hdrvr != NULL)
-        return false;          /* false to stop enumerating */
-    else
+//    /* try to open board */
+//    lpboard->status = olDaInitialize((PTSTR)ioControllerLpszName,(PHDEV)&lpboard->hdrvr);
+//    if   (lpboard->hdrvr != NULL)
+//        return false;          /* false to stop enumerating */
+//    else
         return true;           /* true to continue          */
 }
 
@@ -98,15 +98,15 @@ bool ioController::queryDevice( void )
 {
     bool status = true;
 
-    mutex.lock();
-    ECODE retVal = olDaEnumBoards( (DABRDPROC)GetDriver, (LPARAM)&board );
-    mutex.unlock();
+//    mutex.lock();
+//    ECODE retVal = olDaEnumBoards( (DABRDPROC)GetDriver, (LPARAM)&board );
+//    mutex.unlock();
 
-    if( retVal )
-    {
-        LOG( FATAL, QString( "olDaEnumBoards() Failed, error code: %1" ).arg( retVal ) );
-        status = false;
-    }
+//    if( retVal )
+//    {
+//        LOG( FATAL, QString( "olDaEnumBoards() Failed, error code: %1" ).arg( retVal ) );
+//        status = false;
+//    }
 
     return status;
 }
@@ -122,89 +122,89 @@ bool ioController::queryDevice( void )
 bool ioController::configureModule( ioModule *module )
 {
     bool  status = true;
-    ECODE retVal = 0;
-    if( !module->isEnabled )
-    {
-        if( status )
-        {
-            mutex.lock();
-            retVal = olDaEnumBoards( (DABRDPROC)GetDriver, (LPARAM)&board ); // Get a handle to the board
-            mutex.unlock();
+//    ECODE retVal = 0;
+//    if( !module->isEnabled )
+//    {
+//        if( status )
+//        {
+//            mutex.lock();
+//            retVal = olDaEnumBoards( (DABRDPROC)GetDriver, (LPARAM)&board ); // Get a handle to the board
+//            mutex.unlock();
 
-            if( retVal > 0 )
-            {
-                LOG( FATAL, QString( "olDaEnumBoards() Failed, error code: %1" ).arg( retVal ) );
-                status = false;
-            }
-        }
+//            if( retVal > 0 )
+//            {
+//                LOG( FATAL, QString( "olDaEnumBoards() Failed, error code: %1" ).arg( retVal ) );
+//                status = false;
+//            }
+//        }
 
-        // Enter only if the device has been configured
-        if( status && deviceIsConfigured )
-        {
-            mutex.lock();
-            // necessary to release previous mode
-            retVal = olDaReleaseDASS( board.hdass );
-            mutex.unlock();
+//        // Enter only if the device has been configured
+//        if( status && deviceIsConfigured )
+//        {
+//            mutex.lock();
+//            // necessary to release previous mode
+//            retVal = olDaReleaseDASS( board.hdass );
+//            mutex.unlock();
 
-            if( retVal > 0 )
-            {
-                LOG( FATAL, QString( "olDaReleaseDASS() Failed, error code: %1" ).arg( retVal ) );
-                status = false;
-            }
-        }
+//            if( retVal > 0 )
+//            {
+//                LOG( FATAL, QString( "olDaReleaseDASS() Failed, error code: %1" ).arg( retVal ) );
+//                status = false;
+//            }
+//        }
 
-        if( status)
-        {
-            mutex.lock();
-            // Switch the ioModule tag
-            retVal = olDaGetDASS( (HDEV)board.hdrvr, module->tag, 0, &board.hdass );
-            mutex.unlock();
+//        if( status)
+//        {
+//            mutex.lock();
+//            // Switch the ioModule tag
+//            retVal = olDaGetDASS( (HDEV)board.hdrvr, module->tag, 0, &board.hdass );
+//            mutex.unlock();
 
-            if( retVal > 0 )
-            {
-                LOG( FATAL, QString( "olDaGetDASS() Failed, error code: %1" ).arg( retVal ) );
-                status = false;
-            }
-        }
+//            if( retVal > 0 )
+//            {
+//                LOG( FATAL, QString( "olDaGetDASS() Failed, error code: %1" ).arg( retVal ) );
+//                status = false;
+//            }
+//        }
 
-        if( status)
-        {
-            mutex.lock();
-            retVal = olDaSetDataFlow( board.hdass, OL_DF_SINGLEVALUE );
-            mutex.unlock();
+//        if( status)
+//        {
+//            mutex.lock();
+//            retVal = olDaSetDataFlow( board.hdass, OL_DF_SINGLEVALUE );
+//            mutex.unlock();
 
-            if( retVal )
-            {
-                LOG( FATAL, QString( "olDaSetDataFlow() Failed, error code: %1" ).arg( retVal ) );
-                status = false;
-            }
-        }
+//            if( retVal )
+//            {
+//                LOG( FATAL, QString( "olDaSetDataFlow() Failed, error code: %1" ).arg( retVal ) );
+//                status = false;
+//            }
+//        }
 
-        if( status)
-        {
-            mutex.lock();
-            retVal = olDaConfig( board.hdass );
-            mutex.unlock();
+//        if( status)
+//        {
+//            mutex.lock();
+//            retVal = olDaConfig( board.hdass );
+//            mutex.unlock();
 
-            if( retVal )
-            {
-                LOG( FATAL, QString( "olDaConfig() Failed, error code: %1" ).arg( retVal ) );
-                status = false;
-            }
-        }
-    }
+//            if( retVal )
+//            {
+//                LOG( FATAL, QString( "olDaConfig() Failed, error code: %1" ).arg( retVal ) );
+//                status = false;
+//            }
+//        }
+//    }
 
-    // Disable all modules, and enable the current module if configure was successful
-    disableAllModules();
-    if( status )
-    {
-        module->isEnabled  = true;
-        deviceIsConfigured = true;
-    }
-    else
-    {
-        emit sendError( QString( "IO Controller configureModule() has failed -- mode: %1" ).arg( module->mode ) );
-    }
+//    // Disable all modules, and enable the current module if configure was successful
+//    disableAllModules();
+//    if( status )
+//    {
+//        module->isEnabled  = true;
+//        deviceIsConfigured = true;
+//    }
+//    else
+//    {
+//        emit sendError( QString( "IO Controller configureModule() has failed -- mode: %1" ).arg( module->mode ) );
+//    }
     return status;
 }
 
@@ -228,46 +228,46 @@ bool ioController::shutdown( void )
 {
     bool  status = true;
 
-#ifdef QT_DEBUG
-    return status;
-#endif
+//#ifdef QT_DEBUG
+//    return status;
+//#endif
 
-    ECODE retVal = 0;
+//    ECODE retVal = 0;
 
-    // only required if a module is already configured
-    if( status && deviceIsConfigured )
-    {
-        mutex.lock();
-        retVal = olDaReleaseDASS( board.hdass );
-        mutex.unlock();
-        if( retVal )
-        {
-            LOG( FATAL, QString( "olDaReleaseDASS() Failed, error code: %1" ).arg( retVal ) );
-            status = false;
-        }
-    }
+//    // only required if a module is already configured
+//    if( status && deviceIsConfigured )
+//    {
+//        mutex.lock();
+//        retVal = olDaReleaseDASS( board.hdass );
+//        mutex.unlock();
+//        if( retVal )
+//        {
+//            LOG( FATAL, QString( "olDaReleaseDASS() Failed, error code: %1" ).arg( retVal ) );
+//            status = false;
+//        }
+//    }
 
-    if( status )
-    {
-        mutex.lock();
-        retVal = olDaTerminate( (HDEV)board.hdrvr );
-        mutex.unlock();
-        if( retVal )
-        {
-            LOG( FATAL, QString( "olDaTerminate() Failed, error code: %1" ).arg( retVal ) );
-            status = false;
-        }
-    }
+//    if( status )
+//    {
+//        mutex.lock();
+//        retVal = olDaTerminate( (HDEV)board.hdrvr );
+//        mutex.unlock();
+//        if( retVal )
+//        {
+//            LOG( FATAL, QString( "olDaTerminate() Failed, error code: %1" ).arg( retVal ) );
+//            status = false;
+//        }
+//    }
 
-    if( status )
-    {
-        disableAllModules();
-        deviceIsConfigured = false;
-    }
-    else
-    {
-        emit sendError( "IO Controller shutdown has failed." );
-    }
+//    if( status )
+//    {
+//        disableAllModules();
+//        deviceIsConfigured = false;
+//    }
+//    else
+//    {
+//        emit sendError( "IO Controller shutdown has failed." );
+//    }
     return status;
 }
 
@@ -292,35 +292,35 @@ bool ioController::isReady( void )
 bool ioController::setAnalogVoltageOut( double val )
 {
     bool  status = true;
-    ECODE retVal = 0;
+//    ECODE retVal = 0;
 
-    // Convert val from volts to counts.
-    long newVal_cnts = (long)( val * IocCountsPerVolt );
+//    // Convert val from volts to counts.
+//    long newVal_cnts = (long)( val * IocCountsPerVolt );
 
-    // Verify that the board is ready
-    if( !analogOutModule.isEnabled )
-    {
-        status = configureModule( &analogOutModule );
-    }
+//    // Verify that the board is ready
+//    if( !analogOutModule.isEnabled )
+//    {
+//        status = configureModule( &analogOutModule );
+//    }
 
-    if( status )
-    {
-        mutex.lock();
-//        LOG4(val, newVal_cnts, IocEvoaChannel, IocEvoaGain_Ch0);
-        retVal = olDaPutSingleValue( board.hdass, newVal_cnts, IocEvoaChannel, IocEvoaGain_Ch0 );
-        mutex.unlock();
+//    if( status )
+//    {
+//        mutex.lock();
+////        LOG4(val, newVal_cnts, IocEvoaChannel, IocEvoaGain_Ch0);
+//        retVal = olDaPutSingleValue( board.hdass, newVal_cnts, IocEvoaChannel, IocEvoaGain_Ch0 );
+//        mutex.unlock();
 
-        if( retVal )
-        {
-            LOG( FATAL, QString( "olDaPutSingleValue() Failed, error code: %1" ).arg( retVal ) );
-            status = false;
-        }
-    }
+//        if( retVal )
+//        {
+//            LOG( FATAL, QString( "olDaPutSingleValue() Failed, error code: %1" ).arg( retVal ) );
+//            status = false;
+//        }
+//    }
 
-    if( !status )
-    {
-        emit sendError( "IO Controller analog output communication has failed." );
-    }
+//    if( !status )
+//    {
+//        emit sendError( "IO Controller analog output communication has failed." );
+//    }
     return status;
 }
 
@@ -336,29 +336,29 @@ bool ioController::setAnalogVoltageOut( double val )
 bool ioController::setDigitalVoltageOut( long val )
 {
     bool  status = true;
-    ECODE retVal = 0;
-    // Verify that the board is ready
-    if( !digitalOutModule.isEnabled )
-    {
-        status = configureModule( &digitalOutModule );
-    }
+//    ECODE retVal = 0;
+//    // Verify that the board is ready
+//    if( !digitalOutModule.isEnabled )
+//    {
+//        status = configureModule( &digitalOutModule );
+//    }
 
-    if( status )
-    {
-        mutex.lock();
-        retVal = olDaPutSingleValue( board.hdass, val, IocLaserPowerChannel, IocLaserPowerGain_Ch0 );
-        mutex.unlock();
+//    if( status )
+//    {
+//        mutex.lock();
+//        retVal = olDaPutSingleValue( board.hdass, val, IocLaserPowerChannel, IocLaserPowerGain_Ch0 );
+//        mutex.unlock();
 
-        if( retVal )
-        {
-                LOG( FATAL, QString( "olDaPutSingleValue() Failed, error code: %1" ).arg( retVal ) );
-                status = false;
-        }
-    }
+//        if( retVal )
+//        {
+//                LOG( FATAL, QString( "olDaPutSingleValue() Failed, error code: %1" ).arg( retVal ) );
+//                status = false;
+//        }
+//    }
 
-    if( !status )
-    {
-        emit sendError( "IO Controller digital output communication has failed." );
-    }
+//    if( !status )
+//    {
+//        emit sendError( "IO Controller digital output communication has failed." );
+//    }
     return status;
 }

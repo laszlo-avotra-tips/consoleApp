@@ -106,21 +106,22 @@ bool Initialization::init( int argc, char *argv[] )
                             "       is not the original version that was installed." );
         isReady = false;
     }
-    else if( !DAQ::isDaqPresent() )
-    {
-        statusMessage = tr( "ERROR: No DAQ Hardware found." );
-        isReady = false;
-    }
-    else if( !DAQ::checkSDKVersion() )
-    {
-        statusMessage = tr( "ERROR: DAQ SDK Version mismatch." );
-        isReady = false;
-    }
-    else if( !DAQ::checkDriverVersion() )
-    {
-        statusMessage = tr( "ERROR: DAQ Driver Version mismatch." );
-        isReady = false;
-    }
+//lcv
+//    else if( !DAQ::isDaqPresent() )
+//    {
+//        statusMessage = tr( "ERROR: No DAQ Hardware found." );
+//        isReady = false;
+//    }
+//    else if( !DAQ::checkSDKVersion() )
+//    {
+//        statusMessage = tr( "ERROR: DAQ SDK Version mismatch." );
+//        isReady = false;
+//    }
+//    else if( !DAQ::checkDriverVersion() )
+//    {
+//        statusMessage = tr( "ERROR: DAQ Driver Version mismatch." );
+//        isReady = false;
+//    }
     else if( !DSP::checkIPPVersion() )
     {
         statusMessage = tr( "ERROR: IPP SDK Version mismatch." );

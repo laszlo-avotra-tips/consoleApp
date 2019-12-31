@@ -91,15 +91,15 @@ Laser::Laser()
  */
 Laser::~Laser()
 {
-    if( serialPort != NULL )
-    {
-        // The system may not have logging services available anymore
-        forceOff();
-        serialPort->close();
+//    if( serialPort != NULL )
+//    {
+//        // The system may not have logging services available anymore
+//        forceOff();
+//        serialPort->close();
 
-        delete serialPort;
-        serialPort = NULL;
-    }
+//        delete serialPort;
+//        serialPort = NULL;
+//    }
 }
 
 
@@ -112,51 +112,51 @@ bool Laser::init( void )
 {
     bool status = true;
 
-    // create serial port object
-    serialPort = new QSerialPort( portName, settings );
+//    // create serial port object
+//    serialPort = new QSerialPort( portName, settings );
 
-    if( serialPort == NULL )
-    {
-        // error:  failures stop the application and do not return
-        displayFailureMessage( QString( tr( "Cannot create accessor to serial port " ) ).append( qPrintable( portName ) ), true );
-        status = false;
-    }
+//    if( serialPort == NULL )
+//    {
+//        // error:  failures stop the application and do not return
+//        displayFailureMessage( QString( tr( "Cannot create accessor to serial port " ) ).append( qPrintable( portName ) ), true );
+//        status = false;
+//    }
 
-    // open COM port
-    else if( !serialPort->open() )
-    {
-        // error:  failures stop the application and do not return
-        displayFailureMessage( QString( tr( "Cannot open serial port " ) ).append( qPrintable( portName ) ), true );
-        status = false;
-    }
+//    // open COM port
+//    else if( !serialPort->open() )
+//    {
+//        // error:  failures stop the application and do not return
+//        displayFailureMessage( QString( tr( "Cannot open serial port " ) ).append( qPrintable( portName ) ), true );
+//        status = false;
+//    }
 
-    else if( !serialPort->setCommTimeouts( QSerialPort::CtScheme_NonBlockingRead ) )
-    {
-        displayWarningMessage( QString( tr( "Cannot set communications timeout values at port " ) ).append( qPrintable( portName ) ) );
-        status = false;
-    }
+//    else if( !serialPort->setCommTimeouts( QSerialPort::CtScheme_NonBlockingRead ) )
+//    {
+//        displayWarningMessage( QString( tr( "Cannot set communications timeout values at port " ) ).append( qPrintable( portName ) ) );
+//        status = false;
+//    }
 
-    // The Santec laser does not use flow control
-    serialPort->setFlowControl( QPortSettings::FLOW_OFF );
+//    // The Santec laser does not use flow control
+//    serialPort->setFlowControl( QPortSettings::FLOW_OFF );
 
-    // flush any data sitting in the buffers
-    serialPort->flushInBuffer();
-    serialPort->flushOutBuffer();
-    serialPort->bytesAvailable();
+//    // flush any data sitting in the buffers
+//    serialPort->flushInBuffer();
+//    serialPort->flushOutBuffer();
+//    serialPort->bytesAvailable();
 
-    ioController &ioc = ioController::Instance();
+//    ioController &ioc = ioController::Instance();
 
-    // Verify that the IO Controller is ready before talking to the Laser
-    if( ioc.isReady() )
-    {
-        // Verify that we can talk to the laser
-        isDiodeOn();
-    }
-    else
-    {
-        displayWarningMessage( tr( "Attempting to access the Laser before IO Controller is ready" ) );
-        status = false;
-    }
+//    // Verify that the IO Controller is ready before talking to the Laser
+//    if( ioc.isReady() )
+//    {
+//        // Verify that we can talk to the laser
+//        isDiodeOn();
+//    }
+//    else
+//    {
+//        displayWarningMessage( tr( "Attempting to access the Laser before IO Controller is ready" ) );
+//        status = false;
+//    }
 
     return status;
 }
@@ -168,22 +168,22 @@ bool Laser::init( void )
  */
 void Laser::turnDiodeOn()
 {
-    if( serialPort != NULL )
-    {
-        mutex.lock();
-        serialPort->write( DiodeOn );
-        mutex.unlock();
-        LOG( INFO, "LASER: Diode ON" );
-    }
+//    if( serialPort != NULL )
+//    {
+//        mutex.lock();
+//        serialPort->write( DiodeOn );
+//        mutex.unlock();
+//        LOG( INFO, "LASER: Diode ON" );
+//    }
 
-    // eat the echo
-    getResponse();
+//    // eat the echo
+//    getResponse();
 
-    // verify the laser diode turned on
-    if( !isDiodeOn() )
-    {
-        displayWarningMessage( LaserWarningMessage );
-    }
+//    // verify the laser diode turned on
+//    if( !isDiodeOn() )
+//    {
+//        displayWarningMessage( LaserWarningMessage );
+//    }
 }
 
 /*
@@ -193,22 +193,22 @@ void Laser::turnDiodeOn()
  */
 void Laser::turnDiodeOff()
 {
-    if( serialPort != NULL )
-    {
-        mutex.lock();
-        serialPort->write( DiodeOff );
-        mutex.unlock();
-        LOG( INFO, "LASER: Diode OFF" );
-    }
+//    if( serialPort != NULL )
+//    {
+//        mutex.lock();
+//        serialPort->write( DiodeOff );
+//        mutex.unlock();
+//        LOG( INFO, "LASER: Diode OFF" );
+//    }
 
-    // eat the echo
-    getResponse();
+//    // eat the echo
+//    getResponse();
 
-    // verify the laser diode turned off
-    if( isDiodeOn() )
-    {
-        displayWarningMessage( LaserWarningMessage );
-    }
+//    // verify the laser diode turned off
+//    if( isDiodeOn() )
+//    {
+//        displayWarningMessage( LaserWarningMessage );
+//    }
 }
 
 
@@ -221,12 +221,12 @@ void Laser::turnDiodeOff()
  */
 void Laser::forceOff()
 {
-    if( serialPort != NULL )
-    {
-        mutex.lock();
-        serialPort->write( DiodeOff );
-        mutex.unlock();
-    }
+//    if( serialPort != NULL )
+//    {
+//        mutex.lock();
+//        serialPort->write( DiodeOff );
+//        mutex.unlock();
+//    }
 }
 
 /*
@@ -237,51 +237,51 @@ void Laser::forceOff()
  */
 bool Laser::isDiodeOn()
 {
-    // Clear anything in the buffer (e.g., previous ON/OFF echo)
-    serialPort->flushInBuffer();
+//    // Clear anything in the buffer (e.g., previous ON/OFF echo)
+//    serialPort->flushInBuffer();
 
-#if DEBUG_LASER
-    qDebug() << "Status:";
-#endif
-    mutex.lock();
-    serialPort->write( LaserStatus );
-    mutex.unlock();
+//#if DEBUG_LASER
+//    qDebug() << "Status:";
+//#endif
+//    mutex.lock();
+//    serialPort->write( LaserStatus );
+//    mutex.unlock();
 
-#if DEBUG_LASER
-    qDebug() << "isDiodeOn() Bytes available:" << serialPort->bytesAvailable();
-#endif
+//#if DEBUG_LASER
+//    qDebug() << "isDiodeOn() Bytes available:" << serialPort->bytesAvailable();
+//#endif
 
-    QByteArray resp = getResponse();
+//    QByteArray resp = getResponse();
 
-    // if byte 0 = <space>, status = false (off)
-    //           =    -   , status = true  (on)
-    // TBD: Make status  a tri-state
+//    // if byte 0 = <space>, status = false (off)
+//    //           =    -   , status = true  (on)
+//    // TBD: Make status  a tri-state
     bool status = false;
-    if( resp.length() > 0 )
-    {
-        // Verify we have a real response from the laser
-        if( resp.at( 0 ) == '-' )
-        {
-            status = true;
-        }
-        else if( resp.at( 0 ) == ' ' )
-        {
-            status = false;
-        }
-        else
-        {
-            displayWarningMessage( LaserWarningMessage );
-        }
-    }
-    else
-    {
-        displayWarningMessage( LaserWarningMessage );
-    }
+//    if( resp.length() > 0 )
+//    {
+//        // Verify we have a real response from the laser
+//        if( resp.at( 0 ) == '-' )
+//        {
+//            status = true;
+//        }
+//        else if( resp.at( 0 ) == ' ' )
+//        {
+//            status = false;
+//        }
+//        else
+//        {
+//            displayWarningMessage( LaserWarningMessage );
+//        }
+//    }
+//    else
+//    {
+//        displayWarningMessage( LaserWarningMessage );
+//    }
 
-#if DEBUG_LASER
-    qDebug() << "Laser isDiodeOn:" << status;
-#endif
-    emit diodeIsOn( status );
+//#if DEBUG_LASER
+//    qDebug() << "Laser isDiodeOn:" << status;
+//#endif
+//    emit diodeIsOn( status );
     return( status );
 }
 
@@ -298,32 +298,33 @@ void Sleep(int ms) {
  */
 QByteArray Laser::getResponse( void )
 {
-    // wait for data to come back
-    Sleep( CommDelay_ms );
+//    // wait for data to come back
+//    Sleep( CommDelay_ms );
 
-    quint64 bytesAvailable = serialPort->bytesAvailable();
-#if DEBUG_LASER
-    qDebug() << "getResponse() Bytes available:" << bytesAvailable;
-#endif
+//    quint64 bytesAvailable = serialPort->bytesAvailable();
+//#if DEBUG_LASER
+//    qDebug() << "getResponse() Bytes available:" << bytesAvailable;
+//#endif
 
-    mutex.lock();
-    QByteArray data = serialPort->read( bytesAvailable );
-    mutex.unlock();
+//    mutex.lock();
+//    QByteArray data = serialPort->read( bytesAvailable );
+//    mutex.unlock();
 
-#if DEBUG_LASER
-    qDebug() << "  Response: " << data.toUpper();
-#endif
+//#if DEBUG_LASER
+//    qDebug() << "  Response: " << data.toUpper();
+//#endif
 
-    /*
-     * Log any NR responses from the laser.  These were seen sporadically at
-     * startup during development but never lasted more than one request.
-     * See #597.
-     */
-    if( data.toUpper().startsWith( "NR" ) )
-    {
-        LOG( INFO, "LASER: Laser responded with NR" );
-        qDebug() << "LASER: Laser responded with NR";
-    }
+//    /*
+//     * Log any NR responses from the laser.  These were seen sporadically at
+//     * startup during development but never lasted more than one request.
+//     * See #597.
+//     */
+//    if( data.toUpper().startsWith( "NR" ) )
+//    {
+//        LOG( INFO, "LASER: Laser responded with NR" );
+//        qDebug() << "LASER: Laser responded with NR";
+//    }
 
-    return data;
+//    return data;
+    return QByteArray();
 }

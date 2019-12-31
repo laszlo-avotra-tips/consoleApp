@@ -11,7 +11,7 @@
 #include <QMutex>
 #include <QObject>
 #include <QThread>
-#include <QSerialPort>
+//#include <QSerialPort>
 #include <QString>
 #include "ftd2xx.h"
 

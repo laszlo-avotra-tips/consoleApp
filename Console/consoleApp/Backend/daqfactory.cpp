@@ -36,10 +36,10 @@ IDAQ *daqfactory::getdaq()
 #endif
 
         }
-        else
-        {
-            idaq = new LowSpeedDAQ();
-        }
+//        else
+//        {
+//            idaq = new LowSpeedDAQ();
+//        }
     }
     return idaq;
 }
