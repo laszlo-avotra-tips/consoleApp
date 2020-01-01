@@ -17,6 +17,7 @@ win32 {
    QT += opengl
 }
 
+CONFIG += c++11
 CONFIG += qxt
 QXT += core gui
 

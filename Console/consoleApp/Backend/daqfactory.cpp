@@ -27,18 +27,10 @@ IDAQ *daqfactory::getdaq()
 
         if( setting.current()->isHighSpeed() )
         {
-#ifdef QT_NO_DEBUG
-            idaq = new HighSpeedDAQ();
-#else
             idaq = new FileDaq();
-#endif
-
         }
-//        else
-//        {
-//            idaq = new LowSpeedDAQ();
-//        }
     }
+
     return idaq;
 }
 
