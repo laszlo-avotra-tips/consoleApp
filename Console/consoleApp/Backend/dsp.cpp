@@ -282,7 +282,7 @@ void DSP::loadRescalingData( void )
         emit sendWarning( tr( "Laser configuration file: No data found. Imaging may not work." ) );
     }
 
-    // free the pointer.  NULL check done above.
+    // free the pointer.  nullptr check done above.
     delete input;
 }
 
@@ -396,7 +396,7 @@ void DSP::recordRawData( int rawDataLength )
 
     errorHandler & err = errorHandler::Instance();
     hRawFile = new QFile( filename_bin );
-    if( hRawFile == NULL )
+    if( !hRawFile )
     {
         // fatal error
         err.fail( tr( "Could not create a new file handle for saving OCT data." ), true );
@@ -410,7 +410,7 @@ void DSP::recordRawData( int rawDataLength )
 
     QString filename_txt = QString( StorageDir + "/rawLaserData-%1.txt" ).arg( strIteration );
     hRawTextFile = new QFile( filename_txt );
-    if( hRawTextFile == NULL )
+    if( !hRawTextFile )
     {
         // fatal error
         err.fail( tr( "Could not create a new file handle for saving OCT data." ), true );
@@ -424,12 +424,12 @@ void DSP::recordRawData( int rawDataLength )
                      << "Bytes per Record:  " << bytesPerRecord << " \r\n"
                      << "Bytes per Buffer:  " << bytesPerBuffer;
 
-    if( hRawTextFile != NULL )
+    if( hRawTextFile )
     {
         hRawTextFile->flush();
         hRawTextFile->close();
         delete hRawTextFile;
-        hRawTextFile = NULL;
+        hRawTextFile = nullptr;
     }
     fileIteration++;
 }
@@ -439,13 +439,13 @@ void DSP::recordRawData( int rawDataLength )
  */
 void DSP::closeRawDataFiles( void )
 {
-    if( hRawFile != NULL )
+    if( hRawFile )
     {
         hRawFile->flush();
         hRawFile->close();
 
         delete hRawFile;
-        hRawFile = NULL;
+        hRawFile = nullptr;
     }
 }
 
