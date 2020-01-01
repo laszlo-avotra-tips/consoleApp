@@ -18,13 +18,13 @@
 backgroundMask::backgroundMask(QWidget *parent) :
     QWidget(parent)
 {
-    mask = NULL;
+    mask = nullptr;
 
     /*
-     * Check for NULL parent. This could happen when backgroundMask is created
+     * Check for parent. This could happen when backgroundMask is created
      * from a widget without a parent widget.
      */
-    if( parent != NULL )
+    if( parent )
     {
         init( parent->topLevelWidget() );
     }
@@ -35,10 +35,10 @@ backgroundMask::backgroundMask(QWidget *parent) :
  */
 backgroundMask::~backgroundMask()
 {
-    if( mask != NULL )
+    if( mask )
     {
         delete mask;
-        mask = NULL;
+        mask = nullptr;
     }
 }
 

@@ -40,10 +40,10 @@ styledMessageBox::styledMessageBox( QWidget *parent, QString msg ) :
  */
 styledMessageBox::~styledMessageBox()
 {
-    if( mask != NULL )
+    if( mask )
     {
         delete mask;
-        mask = NULL;
+        mask = nullptr;
     }
     delete ui;
 }
@@ -163,7 +163,7 @@ void styledMessageBox::warning( QString message )
     msg.center();
     msg.exec();
 
-    LOG( WARNING, message.toLatin1() );
+    LOG( WARNING, message.toLatin1() )
 }
 
 /*
@@ -182,7 +182,7 @@ void styledMessageBox::info( QString message )
     msg.center();
     msg.exec();
 
-    LOG( INFO, message.toLatin1() );
+    LOG( INFO, message.toLatin1() )
 }
 
 /*
@@ -201,5 +201,5 @@ void styledMessageBox::critical( QString message )
     msg.center();
     msg.exec();
 
-    LOG( FATAL, message.toLatin1() );
+    LOG( FATAL, message.toLatin1() )
 }
