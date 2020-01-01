@@ -1,7 +1,5 @@
 #include "daqfactory.h"
 #include "deviceSettings.h"
-//#include "highspeeddaq.h"
-//#include "lowspeeddaq.h"
 #include "daqSettings.h"
 #include "idaqproxy.h"
 #include "filedaq.h"

@@ -13,7 +13,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QMessageBox>
-#include "daq.h"
 #include "initialization.h"
 #include "sawFile.h"
 #include "defaults.h"

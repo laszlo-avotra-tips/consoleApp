@@ -10,7 +10,6 @@
  */
 #include <QDebug>
 #include "softwaredsp.h"
-//#include "daq.h"
 #include "defaults.h"
 #include "logger.h"
 #include "profiler.h"

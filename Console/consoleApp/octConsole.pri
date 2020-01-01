@@ -65,8 +65,6 @@ HEADERS += \
     Backend/powerdistributionboard.h \
     Backend/dsp.h \
     Backend/softwaredsp.h \
-    Backend/lowspeeddaq.h \
-    Backend/highspeeddaq.h \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
     Frontend/Widgets/curveswidget.h \
@@ -151,9 +149,7 @@ SOURCES += \
     Backend/evoa.cpp \ 
     Backend/powerdistributionboard.cpp \
     Backend/dsp.cpp \
-    Backend/lowspeeddaq.cpp \
     Backend/softwaredsp.cpp \
-    Backend/highspeeddaq.cpp \
     Backend/depthsetting.cpp \
     Backend/sledsupport.cpp \
     Frontend/Widgets/curveswidget.cpp \
