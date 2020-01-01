@@ -73,8 +73,8 @@ private:
     Logger( Logger const & ); // hide copy
     Logger & operator=( Logger const & ); // hide assign
 
-    bool getFileHandle( const QString LogFile );
-    bool rotateLog( const QString LogFile );
+    bool getFileHandle(const QString systemLogFileName );
+    bool rotateLog(const QString systemLogFileName );
 
     QFile *hFile;
     QTextStream *output;

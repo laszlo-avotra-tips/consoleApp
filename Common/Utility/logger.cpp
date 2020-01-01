@@ -26,8 +26,8 @@ const int MaxLogSize_bytes = 2 * B_per_KB * KB_per_MB;
  */
 Logger::Logger()
 {
-    hFile   = NULL;
-    output  = NULL;
+    hFile   = nullptr;
+    output  = nullptr;
     appName = "";
 }
 
@@ -38,14 +38,14 @@ Logger::Logger()
  */
 Logger::~Logger()
 {
-    if( hFile != NULL )
+    if( hFile )
     {
         hFile->flush();
         hFile->close();
         delete hFile;
     }
 
-    if( output != NULL )
+    if( output )
     {
         delete output;
     }
@@ -91,7 +91,7 @@ bool Logger::init( QString applicationName )
             {
                 output = new QTextStream( hFile );
 
-                if( output == NULL )
+                if( !output )
                 {
                     status = QObject::tr( "ERROR: Could not open %1 for writing." ).arg( SystemLogFileName );
                     isOk = false;
@@ -116,7 +116,7 @@ void Logger::close( void )
 {
     if (hFile) {
         hFile->close();
-        hFile = NULL;
+        hFile = nullptr;
     }
 }
 
@@ -125,13 +125,13 @@ void Logger::close( void )
  *
  * Get and check a handle for the system log
  */
-bool Logger::getFileHandle( const QString SystemLogFileName )
+bool Logger::getFileHandle( const QString systemLogFileName )
 {
     // set the file handle for the object
-    hFile = new QFile( SystemLogFileName );
+    hFile = new QFile( systemLogFileName );
 
     // return the status of the memory allocation
-    return( hFile != NULL );
+    return( hFile != nullptr );
 }
   
 /*
@@ -139,7 +139,7 @@ bool Logger::getFileHandle( const QString SystemLogFileName )
  *
  * Check the size of the log and rotate it if necessary.
  */
-bool Logger::rotateLog( const QString SystemLogFileName )
+bool Logger::rotateLog( const QString systemLogFileName )
 {
     bool isOk = true;
 
@@ -156,7 +156,7 @@ bool Logger::rotateLog( const QString SystemLogFileName )
         delete hFile;
 
         // create a new handle.  Error is handled by calling function
-        isOk = getFileHandle( SystemLogFileName );
+        isOk = getFileHandle( systemLogFileName );
     }
 
     return isOk;
