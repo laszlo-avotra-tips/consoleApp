@@ -95,7 +95,7 @@ HEADERS += \
     $$PWD/Backend/theglobals.h
 
 # Source files
-SOURCES += Backend/daq.cpp \
+SOURCES += \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
