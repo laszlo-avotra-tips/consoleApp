@@ -38,7 +38,7 @@ bool DaqSettings::init( void )
         // Settings are saved in a hard-coded location
         settings = new QSettings( ConsoleIniFile , QSettings::IniFormat );
 
-        if( settings != NULL )
+        if( settings )
         {
             // Keep track of where the default file is stored and the current file name
             QFileInfo iniFile( settings->fileName() );
@@ -48,15 +48,15 @@ bool DaqSettings::init( void )
             load();
             isReady = true;
 
-            LOG( INFO, "DAQ initialization settings:" );
-            LOG( INFO, QString( "   recordCount:        %1" ).arg( recordCount ) );
-            LOG( INFO, QString( "   preDepth:           %1" ).arg( preDepth ) );
-            LOG( INFO, QString( "   recordLength:       %1" ).arg( recordLength ) );
-            LOG( INFO, QString( "   chAInputRange:      %1" ).arg( chAInputRange ) );
-            LOG( INFO, QString( "   chBInputRange:      %1" ).arg( chBInputRange ) );
+            LOG( INFO, "DAQ initialization settings:" )
+            LOG( INFO, QString( "   recordCount:        %1" ).arg( recordCount ) )
+            LOG( INFO, QString( "   preDepth:           %1" ).arg( preDepth ) )
+            LOG( INFO, QString( "   recordLength:       %1" ).arg( recordLength ) )
+            LOG( INFO, QString( "   chAInputRange:      %1" ).arg( chAInputRange ) )
+            LOG( INFO, QString( "   chBInputRange:      %1" ).arg( chBInputRange ) )
             // TBD - encoder min/max are values to start looking for the encoder.  they are DAQ specific
-            LOG( INFO, QString( "   encoderCalMin:      %1" ).arg( encoderCalMin ) );
-            LOG( INFO, QString( "   encoderCalMax:      %1" ).arg( encoderCalMax ) );
+            LOG( INFO, QString( "   encoderCalMin:      %1" ).arg( encoderCalMin ) )
+            LOG( INFO, QString( "   encoderCalMax:      %1" ).arg( encoderCalMax ) )
         }
         else
         {
@@ -66,14 +66,14 @@ bool DaqSettings::init( void )
         }
     }
     return isReady;
-};
+}
 
 /*
  * Destructor
  */
 DaqSettings::~DaqSettings()
 {
-    if( settings != NULL )
+    if( settings )
     {
         delete settings;
     }
