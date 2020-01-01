@@ -147,10 +147,10 @@ void WindowManager::configureMonitors()
 #if MSG_ON
             qDebug() << "EnumDisplaySettings: " <<
 #endif
-                        reinterpret_cast<int>(EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode));
+                        bool(EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode));
 #if MSG_ON
             qDebug() << QString::fromWCharArray( DisplayDevice.DeviceName ) << "DisplayDevice.StateFlags DISPLAY_DEVICE_PRIMARY_DEVICE: "
-                     << reinterpret_cast<unsigned long>((DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE))
+                     << bool((DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE))
                      << "Position:" << deviceMode.dmPosition.x << deviceMode.dmPosition.y;
 #endif
         }
@@ -171,10 +171,10 @@ void WindowManager::configureMonitors()
 #if MSG_ON
             qDebug() << "EnumDisplaySettings: " <<
 #endif
-                        reinterpret_cast<int>(EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode));
+                        bool(EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode));
 #if MSG_ON
             qDebug() << QString::fromWCharArray( DisplayDevice.DeviceName ) << "DisplayDevice.StateFlags DISPLAY_DEVICE_PRIMARY_DEVICE: "
-                     << reinterpret_cast<unsigned long>((DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE))
+                     << bool((DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE))
                      << "Position:" << deviceMode.dmPosition.x << deviceMode.dmPosition.y;
 #endif
         }

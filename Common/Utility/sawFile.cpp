@@ -25,7 +25,9 @@
 #include <errno.h>
 #endif
 
-const QString NoncritialFileTypes[] = { "png", "mkv", "mp4" };
+namespace{
+const char* NoncritialFileTypes[] = { "png", "mkv", "mp4" };
+}
 
 /*
  * computeHash
@@ -36,7 +38,7 @@ const QString NoncritialFileTypes[] = { "png", "mkv", "mp4" };
 QByteArray SawFile::computeHash( QString inputFile )
 {
     errorHandler & err = errorHandler::Instance();
-    QByteArray calcKey = 0;
+    QByteArray calcKey;
     QFile *input       = new QFile( inputFile );
     QFileInfo filename( input->fileName() );
 
@@ -46,7 +48,7 @@ QByteArray SawFile::computeHash( QString inputFile )
      * Check the filename against a list of non-critical file types.
      *
      */
-    for( int kr = 0; kr < sizeof( NoncritialFileTypes ); kr++ )
+    for( size_t kr = 0; kr < sizeof( NoncritialFileTypes ); kr++ )
     {
         isNoncriticalFile = filename.suffix().compare( NoncritialFileTypes[ kr ] );
 
@@ -56,7 +58,7 @@ QByteArray SawFile::computeHash( QString inputFile )
         }
     }
 
-    if( input == NULL )
+    if( !input )
     {
         err.fail( QObject::tr( "OCTFile::computeHash() could not get input pointer." ) );
     }
@@ -67,7 +69,7 @@ QByteArray SawFile::computeHash( QString inputFile )
          */
         if( isNoncriticalFile )
         {
-            LOG( DEBUG, QString( "Non-critcal file could not open %1 for reading." ).arg( inputFile ) );
+            LOG( DEBUG, QString( "Non-critcal file could not open %1 for reading." ).arg( inputFile ) )
         }
         else
         {
@@ -96,7 +98,7 @@ QByteArray SawFile::computeHash( QString inputFile )
         calcKey = hash.result().toHex();
     }
 
-    // free the memory. NULL checked above
+    // free the memory. nullptr checked above
     delete input;
 
     return calcKey;
@@ -116,9 +118,9 @@ int SawFile::getDiskFreeSpaceInGB( LPCWSTR drive )
 
     int freeSpace_gb = 0;
 
-    if( GetDiskFreeSpaceEx( drive, &freeBytes, NULL, NULL ) )
+    if( GetDiskFreeSpaceEx( drive, &freeBytes, nullptr, nullptr ) )
     {
-        freeSpace_gb = freeBytes.QuadPart / B_per_GB;
+        freeSpace_gb = int(freeBytes.QuadPart / B_per_GB);
     }
     qDebug() << "Free drive space: " << freeSpace_gb << "GB";
 
@@ -127,17 +129,17 @@ int SawFile::getDiskFreeSpaceInGB( LPCWSTR drive )
 #else
 int SawFile::getDiskFreeSpaceInGB( const char *path )
 {
-    struct statfs *stats = NULL;
+    struct statfs *stats = nullptr;
     int freeSpace_gb     = 0;
     errorHandler & err = errorHandler::Instance();
 
     if( statfs( path, stats ) == 0 )
     {
         // success
-        if( stats == NULL )
+        if( !stats )
         {
             // fatal error
-            err.fail( "OCTFile::getDiskFreeSpaceInGB(): statfs pointer is NULL." );
+            err.fail( "OCTFile::getDiskFreeSpaceInGB(): statfs pointer is nullptr." );
         }
 
         qDebug() << "Free drive space bavail: " << stats->f_bavail;
