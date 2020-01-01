@@ -23,7 +23,7 @@
 
 rotaryAverage::rotaryAverage( void )
 {
-    values = NULL;
+    values = nullptr;
     width = DefaultWidth;
     range = DefaultRange;
     maxValue = range - 1;
@@ -51,15 +51,15 @@ void rotaryAverage::reset( int newWidth, int newRange )
     if (values)
     {
         delete [] values;
-        values = NULL;
+        values = nullptr;
     }
 
     if ( newWidth <= 0 )
     {
         newWidth = DefaultWidth;
     }
-    values = new double[ newWidth ];
-    memset(values, 0, sizeof( double ) * newWidth);
+    values = new double[ size_t(newWidth) ];
+    memset(values, 0, sizeof( double ) * size_t(newWidth));
     width = newWidth;
 
     range = newRange;
@@ -109,7 +109,7 @@ double rotaryAverage::getNextValue( double newValue )
     // See if this incoming new value indicates we just wrapped.
     // averageValue holds the running average value, the last value returned by this method.
 
-    const int WrapThreshold = 0.75 * range;
+    const int WrapThreshold = int(0.75f * range);
     double deltaValue = newValue - averageValue;
 
     #if DEBUG_AVERAGE
@@ -140,7 +140,7 @@ double rotaryAverage::getNextValue( double newValue )
     // by sliding one revolution (range) up or down. The virtual value does not need to stay
     // in the encoder range, it's only used for averaging.
 
-    int virtualNewValue = newValue;
+    int virtualNewValue = int(newValue);
     if( slideValue != 0 )
     {
         virtualNewValue += ( slideValue * range );
@@ -151,11 +151,11 @@ double rotaryAverage::getNextValue( double newValue )
     }
 
     // Now just do the arithmetic housekeeping
-    sum           -= values[ idx ];
+    sum           -= int(values[ idx ]);
     values[ idx ]  = virtualNewValue;
-    sum           += values[ idx ];
+    sum           += int(values[ idx ]);
     idx            = ( idx + 1 ) % width; // Note: trying to use 'idx++' for 'idx + 1' will cause chaos and crashing
-    averageValue   = (int)( floor( ( (float)sum / (float)width ) + 0.5 ) );
+    averageValue   = int( floor( ( float(sum) / float(width) ) + 0.5f ) );
 
     #if DEBUG_AVERAGE
     qDebug() << "::::::::::: width:" << width << "idx:" << idx << "sum:" << sum << "averageValue:" << averageValue;
