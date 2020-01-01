@@ -14,22 +14,24 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-const QString closeKeyStyle( "QPushButton { min-width: 30; background: #8F2400; color: black; border-radius: 5; } QPushButton:Pressed { background: #7F2400; color: black; border-radius: 5; }" );
-const QString keyboardStyle( "QWidget { background: #444444; font: 12pt DINPro-Medium; }\n QPushButton { min-width: 0; background: #aaaaaa; color: black; border-radius: 10; }\n QPushButton:Pressed { background: #888888; color: white; border: 2px solid white; border-radius: 10 }" );
+namespace {
+const char* closeKeyStyle = "QPushButton { min-width: 30; background: #8F2400; color: black; border-radius: 5; } QPushButton:Pressed { background: #7F2400; color: black; border-radius: 5; }";
+const char* keyboardStyle = "QWidget { background: #444444; font: 12pt DINPro-Medium; }\n QPushButton { min-width: 0; background: #aaaaaa; color: black; border-radius: 10; }\n QPushButton:Pressed { background: #888888; color: white; border: 2px solid white; border-radius: 10 }";
 
 const int DefaultKeyWidth( 120 );
 const int DefaultKeyHeight( 50 );
 
+}
 /*
  * constructor
  */
 keyboard::keyboard()
-    : QWidget( 0, ( Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint ) ),
-    lastFocusedWidget( 0 )
+    : QWidget( nullptr, ( Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint ) ),
+    lastFocusedWidget( nullptr )
 {
     setFocusPolicy( Qt::NoFocus );
     signalMapper = new QSignalMapper( this );
-    lastClickedButton = NULL;
+    lastClickedButton = nullptr;
 
     setStyleSheet( keyboardStyle );
 
@@ -137,7 +139,7 @@ void keyboard::buttonClicked( QWidget *w )
     {
         lower = !lower; // toggle caps
 
-        lastClickedButton = (QPushButton *)w; // cache the last button
+        lastClickedButton = dynamic_cast<QPushButton *>(w); // cache the last button
         if( !lower )
         {
             setKeyStyleClicked();
@@ -160,7 +162,7 @@ void keyboard::buttonClicked( QWidget *w )
 
     emit keyPressed( chr );
 
-    lastClickedButton = (QPushButton *)w;                     // cache the last button
+    lastClickedButton = dynamic_cast<QPushButton *>(w);       // cache the last button
     setKeyStyleClicked();                                     // set the styleSheet for the last button
     QTimer::singleShot( 200, this, SLOT( resetKeyStyle() ) ); // reset the stylesheet after 200 ms timeout
 }
@@ -170,7 +172,7 @@ void keyboard::buttonClicked( QWidget *w )
  */
 void keyboard::setKeyStyleClicked()
 {
-    if( lastClickedButton != NULL )
+    if( lastClickedButton )
     {
         lastClickedButton->setStyleSheet( "QPushButton{ background: #888888; color: white; border: 2px solid white; }" );
     }
@@ -181,7 +183,7 @@ void keyboard::setKeyStyleClicked()
  */
 void keyboard::resetKeyStyle()
 {
-    if( lastClickedButton != NULL )
+    if( lastClickedButton )
     {
         lastClickedButton->setStyleSheet( "QPushButton{ color: black; }" );
         shiftButton->setStyleSheet( "QPushButton{ color: black; }" );
@@ -298,20 +300,11 @@ void keyboard::setIgnoreFocusEvents( bool ignore)
  */
 bool keyboard::event( QEvent *e )
  {
-    if( !ignoreFocusEvents )
+    if(( !ignoreFocusEvents ) && ( e->type() == QEvent::WindowActivate) && ( lastFocusedWidget ))
     {
-        switch( e->type() )
-        {
-        case QEvent::WindowActivate:
-            if( lastFocusedWidget )
-            {
-                lastFocusedWidget->activateWindow();
-            }
-            break;
-        default:
-            break;
-        }
+        lastFocusedWidget->activateWindow();
     }
+
     return QWidget::event( e );
  }
 
@@ -322,7 +315,7 @@ void keyboard::saveFocusWidget( QWidget * /*oldFocus*/, QWidget *newFocus )
 {
     if( !ignoreFocusEvents )
     {
-        if( newFocus != 0 && !this->isAncestorOf( newFocus ) )
+        if( newFocus && !this->isAncestorOf( newFocus ) )
         {
             lastFocusedWidget = newFocus;
         }
