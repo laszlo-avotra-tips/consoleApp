@@ -61,7 +61,7 @@ size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
 size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
 
 // Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
-const float NormalizeScalingFactor = (float)( (float)SectorWidth_px / (float)2 );
+const float NormalizeScalingFactor = float(SectorWidth_px) / 2.0f;
 
 /*
  * destructor

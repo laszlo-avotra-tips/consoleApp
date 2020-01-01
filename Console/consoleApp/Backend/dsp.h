@@ -34,12 +34,11 @@ public:
 
     static bool checkIPPVersion( void );
 
-    virtual void init( unsigned int inputLength,
+    virtual void init(unsigned int inputLength,
                        unsigned int frameLines,
-                       int inBytesPerRecord,
-                       int inBytesPerBuffer,
+                       unsigned int inBytesPerRecord,
+                       unsigned int inBytesPerBuffer,
                        int inChannelCount
-//                       ,U16 **inDaqRawData
                        );
 
     virtual void run( void );
@@ -119,7 +118,7 @@ protected:
     unsigned int bytesPerBuffer; // working buffer space alloc
     unsigned int recordLength;   // Single A-Line sampled data length
     unsigned int linesPerFrame;  // Number of lines in a frame to operate on at once
-    unsigned int aLineLength_px;
+    int aLineLength_px;
 
     // rescaling data
     float *wholeSamples;
@@ -134,10 +133,10 @@ protected:
 
     // Data related to the current A-line
     unsigned int   timeStamp;
-    unsigned short milliseconds;
+    int milliseconds;
 
     unsigned int getTimeStamp( void ) { return timeStamp; }
-    unsigned short getMilliseconds( void ) { return milliseconds; }
+    int getMilliseconds( void ) { return milliseconds; }
 
     void loadRescalingData( void );
     bool findLabel( QTextStream *in, QString *currLine, const QString Label );

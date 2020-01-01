@@ -51,7 +51,7 @@
 
 
 // Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
-const float NormalizeScalingFactor = (float)( (float)SectorWidth_px / (float)2 );
+//const float NormalizeScalingFactor = float(SectorWidth_px) / 2.0f;
 
 /*
  * constructor
@@ -98,7 +98,7 @@ DSP::DSP()
 DSP::~DSP()
 {
     qDebug() << "DSP::~DSP()";
-    LOG( INFO, "DSP shutdown" );
+    LOG( INFO, "DSP shutdown" )
 
     if( fractionalSamples )
     {
@@ -118,12 +118,11 @@ DSP::~DSP()
  * Initialize the common DSP data for use.  Data structures are set up
  * and the laser rescaling values are loaded from disk.
  */
-void DSP::init( unsigned int inputLength,
+void DSP::init(unsigned int inputLength,
                 unsigned int frameLines,
-                int inBytesPerRecord,
-                int inBytesPerBuffer,
+                unsigned int inBytesPerRecord,
+                unsigned int inBytesPerBuffer,
                 int inChannelCount
-//                ,U16 **inDaqRawData
                 )
 {
     qDebug() << "DSP::init";
@@ -147,7 +146,7 @@ void DSP::init( unsigned int inputLength,
     wholeSamples      = new float[ RescalingDataLength ];
     fractionalSamples = new float[ RescalingDataLength ];
 
-    if( ( wholeSamples == NULL ) || ( fractionalSamples == NULL ) )
+    if( !wholeSamples || !fractionalSamples )
     {
         // fatal error
         displayFailureMessage( tr( "Could not allocate memory for the rescaling values" ), true );
@@ -158,9 +157,9 @@ void DSP::init( unsigned int inputLength,
 
     // Update radius and offset, set to Normal Mode upon new device select
     deviceSettings &settings = deviceSettings::Instance();
-    catheterRadius_px = (float)settings.current()->getCatheterRadius_px();
-    catheterRadius_um = (float)settings.current()->getCatheterRadius_um();
-    internalImagingMask_px = (float)settings.current()->getInternalImagingMask_px();
+    catheterRadius_px = float(settings.current()->getCatheterRadius_px());
+    catheterRadius_um = float(settings.current()->getCatheterRadius_um());
+    internalImagingMask_px = float(settings.current()->getInternalImagingMask_px());
 
     qDebug() << "DSP::init complete";
 }
@@ -207,7 +206,7 @@ void DSP::loadRescalingData( void )
 
     QFile *input = new QFile( StrRescalingData );
 
-    if( input == NULL )
+    if( !input )
     {
         // fatal error
         emit sendError( tr( "Could not create QFile to load rescaling data" ) );
@@ -273,8 +272,8 @@ void DSP::loadRescalingData( void )
             else
             {
                 currLine = in.readLine();
-                wholeSamples[ i ]      = currLine.section( ",", 1, 1 ).toDouble();
-                fractionalSamples[ i ] = currLine.section( ",", 2, 2 ).toDouble();
+                wholeSamples[ i ]      = currLine.section( ",", 1, 1 ).toFloat();
+                fractionalSamples[ i ] = currLine.section( ",", 2, 2 ).toFloat();
             }
         }
     }
@@ -355,12 +354,12 @@ bool DSP::checkIPPVersion( void )
 U32 DSP::getAvgAmplitude( U16 *pA )
 {
     U32 average = 0;
-    const int start_idx = (int)( recordLength / 3 );
-    const int end_idx   = (int)( ( 2 * recordLength ) / 3 );
+    const int start_idx = int( recordLength / 3 );
+    const int end_idx   = int( ( 2 * recordLength ) / 3 );
 
     for( int i = start_idx; i < end_idx; i++ )
     {
-        average += (U32)( pA [ i ] );
+        average += U32( pA [ i ] );
     }
 
     average /= ( recordLength / 3 );
