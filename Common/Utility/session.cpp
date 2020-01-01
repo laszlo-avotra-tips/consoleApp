@@ -23,8 +23,8 @@
 Session::Session()
 {
     // no unknown pointers
-    eventLog = NULL;
-    keys     = NULL;
+    eventLog = nullptr;
+    keys     = nullptr;
 }
 
 /*
@@ -44,7 +44,7 @@ void Session::init( void )
         mutex.unlock();
         keys     = new Keys( StorageDir + "/" + KeyFile, Keys::WriteOnly );
 
-        if( ( eventLog == NULL ) || ( keys == NULL ) )
+        if( !eventLog || !keys )
         {
             // Fatal error
             emit sendError( "Session::init() failed." );
@@ -91,7 +91,7 @@ void Session::start( void )
     int timeOffset = info.getUtcOffset();
     QString eventString = QString( "Session Start UTC Offset:%1" ).arg( timeOffset );
     sendSessionEvent( eventString );
-    LOG( INFO, eventString );
+    LOG( INFO, eventString )
 }
 
 /*
@@ -105,21 +105,21 @@ void Session::shutdown( void )
     // Add a line to the event log
     emit sendSessionEvent( "Session End" );
 
-    if( eventLog != NULL )
+    if( eventLog )
     {
         mutex.lock();
         eventLog->close();
         mutex.unlock();
     }
 
-    if( keys != NULL )
+    if( keys )
     {
         // Add session-specific files to the key list before shutting down
         // the key object.
         keys->addFile( EventDataLogFileName );
         keys->addFile( SessionDatabaseFileName );
         delete keys;
-        keys = NULL;
+        keys = nullptr;
     }
 }
 
@@ -131,7 +131,7 @@ void Session::shutdown( void )
  */
 void Session::handleFileToKey( QString filename )
 {
-    if( keys != NULL )
+    if( keys )
     {
         keys->addFile( filename );
     }
