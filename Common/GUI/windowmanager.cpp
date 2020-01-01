@@ -280,8 +280,8 @@ bool WindowManager::enumerateMonitorNames()
     bool retVal = false;
 //    UINT32 num_of_paths = 0;
 //    UINT32 num_of_modes = 0;
-//    DISPLAYCONFIG_PATH_INFO* displayPaths = NULL;
-//    DISPLAYCONFIG_MODE_INFO* displayModes = NULL;
+//    DISPLAYCONFIG_PATH_INFO* displayPaths = nullptr;
+//    DISPLAYCONFIG_MODE_INFO* displayModes = nullptr;
 
 //    GetDisplayConfigBufferSizes(QDC_ALL_PATHS, &num_of_paths, &num_of_modes);
 
@@ -290,7 +290,7 @@ bool WindowManager::enumerateMonitorNames()
 //    displayModes = (DISPLAYCONFIG_MODE_INFO*)calloc((int)num_of_modes, sizeof(DISPLAYCONFIG_MODE_INFO));
 
 //    // Query for the information
-//    QueryDisplayConfig(QDC_ALL_PATHS, &num_of_paths, displayPaths, &num_of_modes, displayModes, NULL);
+//    QueryDisplayConfig(QDC_ALL_PATHS, &num_of_paths, displayPaths, &num_of_modes, displayModes, nullptr);
 
 //    int myMonitorEnum = 1;
 

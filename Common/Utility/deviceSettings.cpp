@@ -27,7 +27,7 @@
  */
 deviceSettings::deviceSettings(void) : QObject()
 {
-    settings      = NULL;
+    settings      = nullptr;
     currentDevice = -1;     // No device selected
 }
 
@@ -39,7 +39,7 @@ deviceSettings::~deviceSettings()
     device *dev;
     foreach( dev, deviceList ) 
     {
-        if( dev != NULL )
+        if( dev )
         {
             delete dev;
         }
@@ -85,15 +85,15 @@ bool deviceSettings::loadDevice( QString deviceFile )
     QFileInfo    fileInfo;
 
     // do not display the file path in the warning message, but use the full path for the LOG message
-    if( ( file == NULL ) || ( doc == NULL ) )
+    if( ( !file ) || ( !doc ) )
     {
         err.warn( "Failed to open device XML file." );
-        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) );
+        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) )
     }
     else if( !file->open( QFile::ReadOnly | QFile::Text ) )
     {
         err.warn( "Failed to open device XML file." );
-        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) );
+        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) )
     }
     else
     {
@@ -171,7 +171,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                     retVal = false;
                     QString msg = QString( tr( "%1\nThis High Speed device does not have proper clocking attributes and will not work." ) ).arg( fileInfo.fileName() );
                     err.warn( msg );
-                    LOG( WARNING, msg );
+                    LOG( WARNING, msg )
                 }
                 else if( !e.hasAttribute( "torqueLimit" ) ||
                          !e.hasAttribute( "timeLimit" ) )
@@ -179,7 +179,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                     retVal = false;
                     QString msg = QString( tr( "%1\nThis High Speed device does not have proper torque attributes and will not work." ) ).arg( fileInfo.fileName() );
                     err.warn( msg );
-                    LOG( WARNING, msg );
+                    LOG( WARNING, msg )
                 }
                 else // valid high speed device profile with clocking parameters
                 {
@@ -214,7 +214,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
 
                     // range check torque
                     float tmpTorque = e.attribute( "torqueLimit", "0" ).toFloat(); // store the value read in temporarily
-                    if( tmpTorque < 1.0 || tmpTorque > 4.5 )
+                    if( tmpTorque < 1.0f || tmpTorque > 4.5f )
                     {
                         retVal = false;
                     }
@@ -230,7 +230,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                     {
                         QString msg = QString( tr( "%1\nThis High Speed device does not have proper attributes and will not work." ) ).arg( fileInfo.fileName() );
                         err.warn( msg );
-                        LOG( WARNING, msg );
+                        LOG( WARNING, msg )
                     }
                 }
             }

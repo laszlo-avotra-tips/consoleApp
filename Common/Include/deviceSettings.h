@@ -41,8 +41,8 @@ public:
             int         inRevolutionsPerMin        = 500,   // magic
             int         inALineLengthNormal_px     = 512,   // magic
             int         inALineLengthDeep_px       = 1024,  // magic
-            float       inImagingDepthNormal_mm    = 3.3,   // magic
-            float       inImagingDepthDeep_mm      = 6.0,   // magic
+            float       inImagingDepthNormal_mm    = 3.3f,   // magic
+            float       inImagingDepthDeep_mm      = 6.0f,   // magic
             bool        inClockingEnabledByDefault = false,
             QByteArray  inClockingGain             = "25",  // magic
             QByteArray  inClockingOffset           = "400", // magic
@@ -55,7 +55,7 @@ public:
             QByteArray  inSpeed3                   = "2000",
             QString     inDisclaimerText           = InvestigationalDeviceWarning,
             DeviceType  inDeviceType               = LowSpeed,
-            QImage     *inIcon                     = NULL )
+            QImage     *inIcon                     = nullptr )
     {
         deviceName               = inDeviceName;
         internalImagingMask_px   = inInternalImagingMask_px;
@@ -92,14 +92,14 @@ public:
         measurementVersion       = inMeasurementVersion;
         deviceType               = inDeviceType;
         icon                     = inIcon;
-        pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
-        pixelsPerUm              = pixelsPerMm / (float)1000;
+        pixelsPerMm              = static_cast<float>(aLineLengthNormal_px) / static_cast<float>(imagingDepthNormal_mm);
+        pixelsPerUm              = pixelsPerMm / 1000.0f;
         rotation                 = -1;
     }
 
     ~device()
     {
-        if( icon != NULL )
+        if( icon )
         {
             delete icon;
         }
@@ -107,7 +107,7 @@ public:
 
     QString getDeviceName(void)           { return deviceName; }
     int getInternalImagingMask_px(void)   { return internalImagingMask_px; }
-    int getCatheterRadius_px(void)        { return ( catheterRadius_um * pixelsPerUm ); }
+    int getCatheterRadius_px(void)        { return int( catheterRadius_um * pixelsPerUm ); }
     int getCatheterRadius_um(void)        { return catheterRadius_um; }
     int getLinesPerRevolution(void)       { return linesPerRevolution_cnt; }
     int getRevolutionsPerMin(void)        { return revolutionsPerMin; }
@@ -199,7 +199,7 @@ public:
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
 
