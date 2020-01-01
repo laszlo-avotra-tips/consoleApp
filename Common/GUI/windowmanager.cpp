@@ -16,8 +16,10 @@
 #include "defaults.h"
 #include <QMainWindow>
 
-const QString TechMonitorName = "PCT2265";
+namespace {
+const char* TechMonitorName = "PCT2265";
 const int MaxTestIterations = 5;
+}
 
 /*
  * WARNING! - Do not turn this define off in the repository (for shipping releases).
@@ -31,7 +33,7 @@ const int MaxTestIterations = 5;
  */
 WindowManager::WindowManager()
 {
-    infoBox = NULL;
+    infoBox = nullptr;
     goodMonitorConfigFound = false;
     expectedTechEnum = -1; // enumeration in the context of WinAPI starts at 1
     failedTestCount = 0;
@@ -86,7 +88,7 @@ void WindowManager::configureMonitors()
     DisplayDevice.cb = sizeof(DisplayDevice);
 
     int numDisplays = 0;
-    for(int i = 0; EnumDisplayDevices(NULL, i, &DisplayDevice, 0); i++)
+    for(int i = 0; EnumDisplayDevices(nullptr, i, &DisplayDevice, 0); i++)
     {
         if(!(DisplayDevice.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER) && (DisplayDevice.StateFlags & DISPLAY_DEVICE_ATTACHED_TO_DESKTOP))
         {
@@ -97,7 +99,7 @@ void WindowManager::configureMonitors()
     ZeroMemory(&DisplayDevice, sizeof(DISPLAY_DEVICE));
     DisplayDevice.cb = sizeof(DisplayDevice);
 
-    for(int i = 0; EnumDisplayDevices(NULL, i, &DisplayDevice, 0); i++)
+    for(int i = 0; EnumDisplayDevices(nullptr, i, &DisplayDevice, 0); i++)
     {
         if(!(DisplayDevice.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER) && (DisplayDevice.StateFlags & DISPLAY_DEVICE_ATTACHED_TO_DESKTOP))
         {
@@ -127,7 +129,7 @@ void WindowManager::configureMonitors()
 #if MSG_ON
                 qDebug() << "ChangeDisplaySettingsEx returns: " <<
 #endif
-                            ChangeDisplaySettingsEx((LPCWSTR)DisplayDevice.DeviceName, &deviceMode, NULL, CDS_SET_PRIMARY | CDS_UPDATEREGISTRY | CDS_NORESET, NULL);
+                            ChangeDisplaySettingsEx(reinterpret_cast<LPCWSTR>(DisplayDevice.DeviceName), &deviceMode, nullptr, CDS_SET_PRIMARY | CDS_UPDATEREGISTRY | CDS_NORESET, nullptr);
 
 #if MSG_ON
                 qDebug() << "DEVMODE dmDeviceName" << QString::fromWCharArray( deviceMode.dmDeviceName );
@@ -139,15 +141,16 @@ void WindowManager::configureMonitors()
                 deviceMode.dmPosition.x = DM_PELSWIDTH;
                 deviceMode.dmPosition.y = 0;
 #if MSG_ON
-                qDebug() << "ChangeDisplaySettingsEx returns: " << ChangeDisplaySettingsEx((LPCWSTR)DisplayDevice.DeviceName, &deviceMode, NULL, CDS_UPDATEREGISTRY | CDS_NORESET, NULL);
+                qDebug() << "ChangeDisplaySettingsEx returns: " << ChangeDisplaySettingsEx(reinterpret_cast<LPCWSTR>(DisplayDevice.DeviceName), &deviceMode, nullptr, CDS_UPDATEREGISTRY | CDS_NORESET, nullptr);
 #endif
             }
 #if MSG_ON
             qDebug() << "EnumDisplaySettings: " <<
 #endif
-                        (bool)EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode);
+                        reinterpret_cast<int>(EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode));
 #if MSG_ON
-            qDebug() << QString::fromWCharArray( DisplayDevice.DeviceName ) << "DisplayDevice.StateFlags DISPLAY_DEVICE_PRIMARY_DEVICE: " << (bool)(DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE)
+            qDebug() << QString::fromWCharArray( DisplayDevice.DeviceName ) << "DisplayDevice.StateFlags DISPLAY_DEVICE_PRIMARY_DEVICE: "
+                     << reinterpret_cast<unsigned long>((DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE))
                      << "Position:" << deviceMode.dmPosition.x << deviceMode.dmPosition.y;
 #endif
         }
@@ -156,11 +159,11 @@ void WindowManager::configureMonitors()
 #if MSG_ON
     qDebug() << "ChangeDisplaySettingsEx returns: " <<
 #endif
-                ChangeDisplaySettingsEx(0,0,0,0,0);
+                ChangeDisplaySettingsEx(nullptr,nullptr,nullptr,0,nullptr);
 
     ZeroMemory(&DisplayDevice, sizeof(DISPLAY_DEVICE));
     DisplayDevice.cb = sizeof(DisplayDevice);
-    for(int i = 0; EnumDisplayDevices(NULL, i, &DisplayDevice, 0); i++)
+    for(int i = 0; EnumDisplayDevices(nullptr, i, &DisplayDevice, 0); i++)
     {
         if(!(DisplayDevice.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER) && (DisplayDevice.StateFlags & DISPLAY_DEVICE_ATTACHED_TO_DESKTOP))
         {
@@ -168,9 +171,10 @@ void WindowManager::configureMonitors()
 #if MSG_ON
             qDebug() << "EnumDisplaySettings: " <<
 #endif
-                        (bool)EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode);
+                        reinterpret_cast<int>(EnumDisplaySettings(DisplayDevice.DeviceName, i, &deviceMode));
 #if MSG_ON
-            qDebug() << QString::fromWCharArray( DisplayDevice.DeviceName ) << "DisplayDevice.StateFlags DISPLAY_DEVICE_PRIMARY_DEVICE: " << (bool)(DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE)
+            qDebug() << QString::fromWCharArray( DisplayDevice.DeviceName ) << "DisplayDevice.StateFlags DISPLAY_DEVICE_PRIMARY_DEVICE: "
+                     << reinterpret_cast<unsigned long>((DisplayDevice.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE))
                      << "Position:" << deviceMode.dmPosition.x << deviceMode.dmPosition.y;
 #endif
         }
@@ -540,7 +544,7 @@ void WindowManager::showInfoMessage( QWidget *parent )
     // hide any message that might previously exist
     hideInfoMessage();
 
-    if( infoBox == NULL )
+    if( !infoBox )
     {
         infoBox = new styledMessageBox( parent );
         infoBox->setTitle( tr( "WARNING" ) );
@@ -556,11 +560,11 @@ void WindowManager::showInfoMessage( QWidget *parent )
  */
 void WindowManager::hideInfoMessage()
 {
-    if( infoBox != NULL )
+    if( infoBox )
     {
         infoBox->close();
         delete infoBox;
-        infoBox = NULL;
+        infoBox = nullptr;
     }
 }
 
@@ -589,10 +593,10 @@ void WindowManager::centerChildOverParent( QWidget *child )
     bool isFullScreen = child->isFullScreen();
     QWidget *parent;
 
-    if( child->parent() == NULL )
+    if( !child->parent() )
     {
         parent = QApplication::widgetAt(0,0);
-        if( parent == NULL )
+        if( !parent )
         {
             return;
         }
@@ -647,7 +651,7 @@ QWidgetList WindowManager::sortWidgetList( QWidgetList list )
         {
             // re-order based on criteria, 1) hasParent && hasChild(ren) 2) hasParent
             // this is the first pass, so move to front if hasParent
-            if( list.at( i )->parent() != NULL )
+            if( list.at( i )->parent() )
             {
                 retList.prepend( list.at( i ) );
             }
@@ -664,7 +668,7 @@ QWidgetList WindowManager::sortWidgetList( QWidgetList list )
     {
         bool sendToFront = false;
         // all should be qualified now, just re-order based on criteria 1) hasParent && hasChild(ren)
-        if( retList.at( i )->parent() != NULL )
+        if( retList.at( i )->parent() )
         {
             if( !retList.at( i )->children().isEmpty() )
             {
@@ -672,7 +676,7 @@ QWidgetList WindowManager::sortWidgetList( QWidgetList list )
                 foreach( QObject *obj, retList.at( i )->children() )
                 {
                     QWidget *w = qobject_cast<QWidget*>(obj);
-                    if( w != NULL )
+                    if( w )
                     {
                         if( w->isWindow() )
                         {
