@@ -24,17 +24,19 @@
 #include "logger.h"
 #include "util.h"
 
+namespace {
 QMutex fileCheckMutex;
+}
 
 /*
  * Constructor
  */
 Keys::Keys( QString sourceFilename, Access_T openMode ) :
-        hFile( NULL ),
-        hFileInfo( NULL ),
+        hFile( nullptr ),
+        hFileInfo( nullptr ),
+        fileCheckWatcher( nullptr ),
         isValidFiles( false ),
-        isValueCalculated( false ),
-        fileCheckWatcher( NULL )
+        isValueCalculated( false )
 {
     keyFilename = sourceFilename;
     mode = openMode;
@@ -46,7 +48,7 @@ Keys::Keys( QString sourceFilename, Access_T openMode ) :
 Keys::~Keys( void )
 {
 
-    if (fileCheckWatcher != NULL) {
+    if (fileCheckWatcher ) {
         fileCheckWatcher->cancel();
     }
 
@@ -57,16 +59,16 @@ Keys::~Keys( void )
     }
 
     // Free up handles
-    if( hFileInfo != NULL )
+    if( hFileInfo )
     {
         delete hFileInfo;
-        hFileInfo = NULL;
+        hFileInfo = nullptr;
     }
 
-    if( hFile != NULL )
+    if( hFile )
     {
         delete hFile;
-        hFile = NULL;
+        hFile = nullptr;
     }
 }
 
@@ -83,12 +85,12 @@ void Keys::init( void )
 
     getFileHandles( keyFilename );
 
-    if( ( mode == ReadOnly ) )
+    if(  mode == ReadOnly )
     {
         if ( !hFile->open( QIODevice::ReadOnly | QIODevice::Text ) )
         {
             qDebug() << "ERROR: Could not open " << hFile->fileName() << " read-only";
-            LOG( WARNING, QString( "ERROR: Could not open %1 read-only" ).arg( hFile->fileName() ) );
+            LOG( WARNING, QString( "ERROR: Could not open %1 read-only" ).arg( hFile->fileName() ) )
             err.warn(QString( tr( "Could not open %1 read-only." ) ).arg( hFile->fileName() ) );
             status = KeyFileError;
         }
@@ -101,7 +103,7 @@ void Keys::init( void )
             }
             else
             {
-                LOG( WARNING, QString( "Key missing: %1 has no key data" ).arg( hFile->fileName() ) );
+                LOG( WARNING, QString( "Key missing: %1 has no key data" ).arg( hFile->fileName() ) )
             }
         }
     }
@@ -111,7 +113,7 @@ void Keys::init( void )
         if( !hFile->open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) )
         {
             qDebug() << "ERROR: Could not open " << hFile->fileName() << " for writing.";
-            LOG( WARNING, QString( "ERROR: Could not open %1 for writing" ).arg( hFile->fileName() ) );
+            LOG( WARNING, QString( "ERROR: Could not open %1 for writing" ).arg( hFile->fileName() ) )
             err.warn( QString( tr( "Could not open %1 for writing." ) ).arg( hFile->fileName() ) );
 
             status = KeyFileError;
@@ -127,7 +129,7 @@ void Keys::init( void )
         if ( !hFile->open( QIODevice::ReadWrite | QIODevice::Text ) )
         {
             qDebug() << "ERROR: Could not open " << hFile->fileName() << " read/write: " << hFile->errorString();
-            LOG( WARNING, QString( "ERROR: Could not open %1 read/write: %2" ).arg( hFile->fileName() ).arg( hFile->errorString() ) );
+            LOG( WARNING, QString( "ERROR: Could not open %1 read/write: %2" ).arg( hFile->fileName() ).arg( hFile->errorString() ) )
             err.warn( QString( tr( "Could not open %1 for read/write." ) ).arg( hFile->fileName() ) );
             status = KeyFileError;
         }
@@ -135,7 +137,7 @@ void Keys::init( void )
         {
             if( !readKeys() )
             {
-                LOG( WARNING, QString( "ERROR: Key file %1 has errors" ).arg( hFile->fileName() ) );
+                LOG( WARNING, QString( "ERROR: Key file %1 has errors" ).arg( hFile->fileName() ) )
                 err.warn( QString( "ERROR: Key file %1 has errors" ).arg( hFile->fileName() ) );
             }
         }
@@ -214,7 +216,7 @@ KeyBundle_t *checkSingleKey( KeyBundle_t *key )
         qDebug() << "ERROR: Key mismatch! " << key->file << "\n"
                 << "    Loaded:" << key->key << "\n"
                 << "  Computed:" << testValue;
-        LOG( WARNING, QString( "ERROR: Key mismatch. %1" ).arg( key->file ) );
+        LOG( WARNING, QString( "ERROR: Key mismatch. %1" ).arg( key->file ) )
         key->valid = false;
     } else {
         qDebug() << "INFO: Key match " << key->file << "\n"
@@ -237,7 +239,7 @@ void Keys::handleFileCheckDone( void )
     int itemCounter = keyHash.count();
 
     for ( int i = 0; i < itemCounter; i++) {
-        if ( !( (KeyBundle_t *)fileCheckWatcher->resultAt( i ) )->valid ) {
+        if ( !( dynamic_cast<KeyBundle_t *>(fileCheckWatcher->resultAt( i )) )->valid ) {
             status = KeyCryptoError;
             allValid = false;
         }
@@ -245,12 +247,12 @@ void Keys::handleFileCheckDone( void )
     emit fileCheckDone( allValid );
 
     delete fileCheckWatcher;
-    fileCheckWatcher = NULL;
+    fileCheckWatcher = nullptr;
     qDebug() << "File check complete, result is " << allValid;
     if ( allValid ) {
-        LOG( INFO, QString( "File check complete, result is %1" ).arg( allValid ) );
+        LOG( INFO, QString( "File check complete, result is %1" ).arg( allValid ) )
     } else {
-        LOG( WARNING, QString( "File check complete, result is %1" ).arg( allValid ) );
+        LOG( WARNING, QString( "File check complete, result is %1" ).arg( allValid ) )
     }
 }
 
@@ -264,7 +266,7 @@ void Keys::handleFileCheckDone( void )
  */
 bool Keys::checkKeysBlocking( void )
 {
-    bool status = true;
+    bool retStatus = true;
     errorHandler & err = errorHandler::Instance();
 
     QHashIterator<QString, QByteArray> i( keyHash );
@@ -286,11 +288,11 @@ bool Keys::checkKeysBlocking( void )
                     << "    Loaded:" << i.value() << "\n"
                     << "  Computed:" << testValue;
 
-            status = false;
+            retStatus = false;
         }
     }
 
-    return status;
+    return retStatus;
 }
 /*
  * checkKeysBackground
@@ -455,20 +457,20 @@ void Keys::getFileHandles( QString filename )
 
     // handle to get path/file information
     hFileInfo = new QFileInfo( filename );
-    if( hFileInfo == NULL )
+    if( !hFileInfo )
     {
-        qDebug() << "ERROR: Keys::hFileInfo (" << filename << ") is NULL."; // TBD
-        LOG( WARNING, QString( "ERROR: Keys::hFileInfo %1 is NULL. " ).arg( filename ) );
-        err.fail( QString( tr( "Keys::hFileInfo (%1) is NULL. Key check failed." ) ).arg( filename ) );
+        qDebug() << "ERROR: Keys::hFileInfo (" << filename << ") is nullptr."; // TBD
+        LOG( WARNING, QString( "ERROR: Keys::hFileInfo %1 is nullptr. " ).arg( filename ) )
+        err.fail( QString( tr( "Keys::hFileInfo (%1) is nullptr. Key check failed." ) ).arg( filename ) );
         status = KeyFileError;
     }
 
     // handle to access the contents of the file
     hFile = new QFile( filename );
-    if( hFile == NULL )
+    if( !hFile )
     {
-        LOG( WARNING, QString( "ERROR: Keys::hFile %1 is NULL." ).arg( filename ) );
-        err.fail( QString( tr( "Keys::hFile (%1) is NULL. Key check failed." ) ).arg( filename) );
+        LOG( WARNING, QString( "ERROR: Keys::hFile %1 is nullptr." ).arg( filename ) )
+        err.fail( QString( tr( "Keys::hFile (%1) is nullptr. Key check failed." ) ).arg( filename) );
         status = KeyFileError;
     }
 }
@@ -483,21 +485,21 @@ void Keys::getFileHandles( QString filename )
 bool Keys::containsRequiredFiles( QStringList list )
 {
     // default to OK
-    bool status = true;
+    bool retStatus = true;
 
     // Walk through the list of required files.  If any is not in the list,
     // log it and return false to the caller.
     for( int i = 0; i < list.count(); i++ )
     {
-        status = keyHash.contains( list.at( i ) );
+        retStatus = keyHash.contains( list.at( i ) );
 
         if( !status )
         {
             // Log with full path to the keys file
-            LOG( WARNING, QString( "Missing required file %1 in %2 " ).arg( list.at( i ) ).arg( hFileInfo->absoluteFilePath() ) );
+            LOG( WARNING, QString( "Missing required file %1 in %2 " ).arg( list.at( i ) ).arg( hFileInfo->absoluteFilePath() ) )
             break;
         }
     }
 
-    return status;
+    return retStatus;
 }
