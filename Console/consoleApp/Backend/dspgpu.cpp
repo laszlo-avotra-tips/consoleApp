@@ -57,11 +57,13 @@
 #define DEFAULT_GLOBAL_UNITS ( 2048 )
 #define DEFAULT_LOCAL_UNITS  ( 16 )
 
-size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
-size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
+namespace{
+//size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
+//size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
+}
 
 // Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
-const float NormalizeScalingFactor = float(SectorWidth_px) / 2.0f;
+//const float NormalizeScalingFactor = float(SectorWidth_px) / 2.0f;
 
 /*
  * destructor
@@ -70,16 +72,16 @@ const float NormalizeScalingFactor = float(SectorWidth_px) / 2.0f;
  */
 DSPGPU::~DSPGPU()
 {
-    LOG( INFO, "DSP GPU shutdown" );
+    LOG( INFO, "DSP GPU shutdown" )
     qDebug() << "DSPGPU::~DSPGPU()";
 
     // Release working memory
     for( int i = 0; i < channelCount; i++ )
     {
-        if( workingBuffer[ i ] != NULL )
+        if( workingBuffer[ i ] )
         {
             free( workingBuffer[ i ] );
-            workingBuffer[ i ] = NULL;
+            workingBuffer[ i ] = nullptr;
         }
     }
 
@@ -152,8 +154,8 @@ DSPGPU::~DSPGPU()
  */
 void DSPGPU::init( unsigned int inputLength,
                    unsigned int frameLines,
-                   int inBytesPerRecord,
-                   int inBytesPerBuffer,
+                   unsigned int inBytesPerRecord,
+                   unsigned int inBytesPerBuffer,
                    int inChannelCount )
 {
     qDebug() << "DSPGPU::init";
@@ -163,17 +165,17 @@ void DSPGPU::init( unsigned int inputLength,
 
     qDebug() << "DSP: Allocating space for workingBuffer:" << bytesPerBuffer << "B";
 
-    LOG1(bytesPerBuffer);
+    LOG1(bytesPerBuffer)
 
     for( int i = 0; i < inChannelCount; i++ )
     {
         // XXX Need to pass these into the DSP so we dont copy buffers there
         // for opencl
-        workingBuffer[ i ] = (U16 *)malloc( bytesPerBuffer );
+        workingBuffer[ i ] = static_cast<U16 *>(malloc( bytesPerBuffer ));
     }
 
-    if( ( workingBuffer[ 0 ] == NULL ) ||
-        ( ( inChannelCount == 2 ) && ( workingBuffer[ 1 ] == NULL ) ) )
+    if( !workingBuffer[ 0 ] ||
+        ( ( inChannelCount == 2 ) && !workingBuffer[ 1 ] ) )
     {
         emit sendError( tr( "Error allocating space in DSP::init" ) );
     }
@@ -233,7 +235,7 @@ void DSPGPU::processData( void )
         pData = TheGlobals::instance()->getFrameDataPointer();
 
         // use local pointer into data for easier access
-        const U16 *pA = NULL;
+        const U16 *pA = nullptr;
 
         if( channelCount == 1 )
         {
@@ -261,11 +263,11 @@ void DSPGPU::processData( void )
         // walk through the bulk data handling
         if( rescale( pA ) != 0 )  //Success if return 0
         {
-            LOG( WARNING, "Failed to rescale data on GPU." );
+            LOG( WARNING, "Failed to rescale data on GPU." )
         }
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
-            LOG( WARNING, "Failed to transform data on GPU." );
+            LOG( WARNING, "Failed to transform data on GPU." )
         }
 #else
         // zero out the image data, no processing for demo mode
@@ -300,7 +302,7 @@ void DSPGPU::processData( void )
         pData->frameCount      = 0;
         pData->encoderPosition = 0; // NOT USED for fast-OCT
         pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = getMilliseconds();
+        pData->milliseconds    = U16(getMilliseconds());
 
         // Update the global index into the shared buffer. This must be the last thing in the thread
         // to make sure that the consumer thread only sees completely filled data structures.
@@ -337,8 +339,8 @@ void DSPGPU::computeFFTWindow( void )
  */
 bool DSPGPU::initOpenCLFFT( void )
 {
-    clAmdFftStatus status;
-    clAmdFftSetupData setupData;
+//    clAmdFftStatus status;
+//    clAmdFftSetupData setupData;
 
 //    status = clAmdFftInitSetupData( &setupData );
 //    if( status != CLFFT_SUCCESS )
@@ -392,7 +394,7 @@ bool DSPGPU::initOpenCLFFT( void )
 //        return false;
 //    }
 
-//    status = clAmdFftBakePlan( hCl_fft_plan, 1, &cl_Commands, NULL, NULL );
+//    status = clAmdFftBakePlan( hCl_fft_plan, 1, &cl_Commands, nullptr, nullptr );
 //    if( status != CLFFT_SUCCESS)
 //    {
 //        qDebug() << "clAmdFftBakePlan failed: " << status;
@@ -420,7 +422,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
     QTime buildTimer;
     buildTimer.start();
 
-    int err;
+//    int err;
 
 //    /*
 //     * Load, compile, link the source
@@ -436,7 +438,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
 //    /*
 //     * Create the compute program(s) from the source buffer
 //     */
-//    *program = clCreateProgramWithSource( cl_Context, 1, (const char **) &sourceBuf, NULL, &err );
+//    *program = clCreateProgramWithSource( cl_Context, 1, (const char **) &sourceBuf, nullptr, &err );
 //    if( !*program || ( err != CL_SUCCESS ) )
 //    {
 //        qDebug() << "DSP: OpenCL could not create program from source: " << err;
@@ -445,7 +447,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
 //    }
 //    free( sourceBuf );
 
-//    err = clBuildProgram( *program, 0, NULL, NULL, NULL, NULL );
+//    err = clBuildProgram( *program, 0, nullptr, nullptr, nullptr, nullptr );
 //    if( err != CL_SUCCESS )
 //    {
 //        size_t length;
@@ -495,7 +497,7 @@ bool DSPGPU::initOpenCL()
 //    cl_platform_id platformId;
 //    cl_uint        numPlatforms = 0;
 
-//    int err = clGetPlatformIDs( 0, NULL, &numPlatforms );
+//    int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
 //    qDebug() << "numPlatforms =" << numPlatforms;
 
 //    if( numPlatforms == 0 )
@@ -507,7 +509,7 @@ bool DSPGPU::initOpenCL()
 
 //    // Found openCL-capable platforms
 //    cl_platform_id* platformIds = ( cl_platform_id* )malloc( sizeof( cl_platform_id ) * numPlatforms );
-//    err = clGetPlatformIDs( numPlatforms, platformIds, NULL );
+//    err = clGetPlatformIDs( numPlatforms, platformIds, nullptr );
 
 //    int deviceIndex = -1;
 
@@ -519,9 +521,9 @@ bool DSPGPU::initOpenCL()
 
 //    for ( cl_int i = 0; i < numPlatforms; i++ )
 //    {
-//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VENDOR,  DefaultStringSize, vendor,  NULL );
-//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_NAME,    DefaultStringSize, name,    NULL );
-//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VERSION, DefaultStringSize, version, NULL );
+//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VENDOR,  DefaultStringSize, vendor,  nullptr );
+//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_NAME,    DefaultStringSize, name,    nullptr );
+//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VERSION, DefaultStringSize, version, nullptr );
 
 //        if ( err != CL_SUCCESS )
 //        {
@@ -568,7 +570,7 @@ bool DSPGPU::initOpenCL()
 //    }
 
 //    // Verify the GPU is present
-//    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, NULL );
+//    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
 
 //    // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
 //    if( err == CL_DEVICE_NOT_FOUND )
@@ -580,7 +582,7 @@ bool DSPGPU::initOpenCL()
 //#endif
 //        qDebug() << "GPU not present.  Falling back to the CPU.";
 //#endif
-//        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, NULL );
+//        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, nullptr );
 //    }
 
 //    if( err != CL_SUCCESS )
@@ -643,7 +645,7 @@ bool DSPGPU::initOpenCL()
 //    LOG( INFO, "OpenCL device: " + QString( (char *)vendor_name ) + " " + QString( (char *)device_name ) );
 //    qDebug() << "DSP: Found OpenCL Device " <<  QString( (char *)vendor_name ) + " " + QString( (char *)device_name );
 
-//    cl_Context = clCreateContext( 0, 1, &cl_ComputeDeviceId, NULL, NULL, &err );
+//    cl_Context = clCreateContext( 0, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
 //    if( !cl_Context )
 //    {
 //        qDebug() << "DSP: OpenCL could not create compute context.";
@@ -708,14 +710,14 @@ char *DSPGPU::loadCLProgramSourceFromFile( QString filename )
     if( !sourceFile.open( QIODevice::ReadOnly ) )
     {
         displayFailureMessage( tr( "Failed to load OpenCL source file %1 ").arg( filename ), true );
-        return NULL;
+        return nullptr;
     }
 
-    int srcSize = sourceFileInfo.size();
+    size_t srcSize = size_t(sourceFileInfo.size());
 
     // memory is freed by the calling routine
-    sourceBuf = (char *)malloc( srcSize + 1 );
-    sourceFile.read( sourceBuf, srcSize );
+    sourceBuf = static_cast<char *>(malloc( srcSize + 1 ));
+    sourceFile.read( sourceBuf, qint64(srcSize ));
     sourceBuf[ srcSize ] = '\0'; // Very important!
     return sourceBuf;
 }
@@ -730,7 +732,7 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
     if( !objectFile.open( QIODevice::ReadOnly ) )
     {
         displayFailureMessage( tr( "Failed to load OpenCL object file %1 ").arg( filename ), true );
-        return NULL;
+        return nullptr;
     }
 
     QByteArray objectBytes;
@@ -744,7 +746,7 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
  */
 bool DSPGPU::createCLMemObjects( cl_context context )
 {
-    int err;
+//    int err;
 
 //    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
 //    rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, nullptr );
@@ -834,8 +836,8 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 //                                   sizeof( float ) * 1024,    // number of bytes to read
 //                                   imData,                    // ptr
 //                                   0,                         // set to zero
-//                                   NULL,                      // goes with above zero
-//                                   NULL );                    // see page 261 of OpenCL Programming Guide
+//                                   nullptr,                      // goes with above zero
+//                                   nullptr );                    // see page 261 of OpenCL Programming Guide
 
 //   clStatus |= clEnqueueReadBuffer( cl_Commands,               // command_queue
 //                                    fftRealOutputMemObj,       // buffer
@@ -844,8 +846,8 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 //                                    sizeof( float ) * 1024,    // number of bytes to read
 //                                    reData,                    // ptr
 //                                    0,                         // set to zero
-//                                    NULL,                      // goes with above zero
-//                                    NULL );                    // see page 261 of OpenCL Programming Guide
+//                                    nullptr,                      // goes with above zero
+//                                    nullptr );                    // see page 261 of OpenCL Programming Guide
 
 //   if( clStatus != CL_SUCCESS )
 //   {
@@ -867,7 +869,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 //   }
 
 //   fftStatus = clAmdFftEnqueueTransform( hCl_fft_plan, CLFFT_FORWARD, 1, &cl_Commands, 0,
-//                                         NULL, NULL, inputMemObjects, outputMemObjects, NULL );
+//                                         nullptr, nullptr, inputMemObjects, outputMemObjects, nullptr );
 
 //   if( fftStatus != CLFFT_SUCCESS ) {
 //       qDebug() << "DSP: Failed to enqueue fft operation to OpenCL command queue.";
@@ -934,7 +936,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 
 //   global_unit_dim[ 0 ] = FFTDataSize;
 //   global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-//   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_PostProcKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
+//   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_PostProcKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
 //   if( clStatus != CL_SUCCESS )
 //   {
 //       qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
@@ -966,7 +968,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 //    }
 //    global_unit_dim[ 0 ] = FFTDataSize;
 //    global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-//    clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_BandCKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
+//    clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_BandCKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
 //    if( clStatus != CL_SUCCESS )
 //    {
 //        qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
@@ -1009,7 +1011,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 //   global_unit_dim[ 0 ] = SectorWidth_px;
 //   global_unit_dim[ 1 ] = SectorHeight_px;
 
-//   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_WarpKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
+//   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_WarpKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
 
 //   if( clStatus != CL_SUCCESS )
 //   {
@@ -1033,7 +1035,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 //   /*
 //    * read out the display frame
 //    */
-//   clStatus = clEnqueueReadImage( cl_Commands, outputImageMemObj, CL_TRUE, origin, region, 0, 0, dispData, 0, NULL, NULL );
+//   clStatus = clEnqueueReadImage( cl_Commands, outputImageMemObj, CL_TRUE, origin, region, 0, 0, dispData, 0, nullptr, nullptr );
 //   if( clStatus != CL_SUCCESS )
 //   {
 //       qDebug() << "DSP: Failed to read back final image data from warp kernel: " << clStatus;
@@ -1043,7 +1045,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 //   /*
 //    * read out the video frame
 //    */
-//   clStatus = clEnqueueReadImage( cl_Commands, outputVideoImageMemObj, CL_TRUE, origin, region, 0, 0, videoData, 0, NULL, NULL );
+//   clStatus = clEnqueueReadImage( cl_Commands, outputVideoImageMemObj, CL_TRUE, origin, region, 0, 0, videoData, 0, nullptr, nullptr );
 //   if( clStatus != CL_SUCCESS )
 //   {
 //       qDebug() << "DSP: Failed to read back video image data from warp kernel: " << clStatus;
@@ -1094,7 +1096,7 @@ unsigned int DSPGPU::rescale( const unsigned short *inputData )
 //    err |= clSetKernelArg( cl_RescaleKernel, 5, sizeof(unsigned int), &recordLength );
 //    err |= clSetKernelArg( cl_RescaleKernel, 6, sizeof(unsigned int), &RescalingDataLength );
 
-//    err |= clEnqueueNDRangeKernel( cl_Commands, cl_RescaleKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
+//    err |= clEnqueueNDRangeKernel( cl_Commands, cl_RescaleKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
 
 //    if( err != CL_SUCCESS )
 //    {

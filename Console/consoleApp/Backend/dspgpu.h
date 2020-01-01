@@ -30,10 +30,10 @@ class DSPGPU : public DSP
 public:
     ~DSPGPU();
 
-    void init( unsigned int inputLength,
+    void init(unsigned int inputLength,
                unsigned int frameLines,
-               int inBytesPerRecord,
-               int inBytesPerBuffer,
+               unsigned int inBytesPerRecord,
+               unsigned int inBytesPerBuffer,
                int inChannelCount);
 
 
