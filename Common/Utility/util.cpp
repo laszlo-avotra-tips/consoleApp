@@ -165,7 +165,7 @@ QString getTextVersionNumber( const QString CookieFileName, const QString Versio
     {
         QFile *input = new QFile( CookieFileName );
 
-        if( ( input != NULL ) && ( input->open( QIODevice::ReadOnly ) ) )
+        if( ( input ) && ( input->open( QIODevice::ReadOnly ) ) )
         {
             QTextStream in( input );
 

@@ -49,7 +49,7 @@ depthSetting::~depthSetting()
  */
 void depthSetting::updateImagingDepth( double newDepth )
 {
-    imagingDepth_S = (float)newDepth;
+    imagingDepth_S = float(newDepth);
     calculateReticles();
 }
 
@@ -75,7 +75,7 @@ void depthSetting::calculateReticles( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     // Make sure a device exists before calling member functions.
-    if( dev.current() != NULL )
+    if( dev.current() )
     {
         if( dev.current()->isHighSpeed() )
         {
@@ -83,25 +83,25 @@ void depthSetting::calculateReticles( void )
              *  - 0.5 is 1/2
              *  - 1000.0 is umPerMm
              */
-            const float percentageOfCanvasUsed = ( fractionOfCanvas / 0.5f ); // because we reserve space for the cardinal marks, we don't use entire canvas.
-            const float StandardMmPerSample = (float)dev.current()->getImagingDepthNormal_mm() / (float)dev.current()->getALineLengthNormal_px();
-            const float imagingDepthMm = (float)imagingDepth_S * (float)StandardMmPerSample;
-            const float catheterRadius_mm = (float)dev.current()->getCatheterRadius_um() / 1000.0f;
-            const float distanceFromCenterInMm = (float)catheterRadius_mm + (float)( (float)imagingDepth_S * StandardMmPerSample );
-            const float distanceFromCenterInPx = (int)( ( (float)SectorWidth_px / 2.0f ) * percentageOfCanvasUsed );
+            const float percentageOfCanvasUsed = fractionOfCanvas / 0.5f; // because we reserve space for the cardinal marks, we don't use entire canvas.
+            const float StandardMmPerSample = float(dev.current()->getImagingDepthNormal_mm()) / float(dev.current()->getALineLengthNormal_px());
+            const float imagingDepthMm = float(imagingDepth_S) * float(StandardMmPerSample);
+            const float catheterRadius_mm = float(dev.current()->getCatheterRadius_um()) / 1000.0f;
+            const float distanceFromCenterInMm = float(catheterRadius_mm) + float(imagingDepth_S * StandardMmPerSample );
+            const float distanceFromCenterInPx = float(SectorWidth_px / 2.0f ) * percentageOfCanvasUsed;
             const float pxPerMm = distanceFromCenterInPx / distanceFromCenterInMm;
 
-            numReticles = (int)imagingDepthMm;
-            pixelsPerMm = (int)pxPerMm;
-            catheterEdgePosition = (int)( catheterRadius_mm * pxPerMm );
+            numReticles = int(imagingDepthMm);
+            pixelsPerMm = int(pxPerMm);
+            catheterEdgePosition = int( catheterRadius_mm * pxPerMm );
         }
         else
         {
             // NOTE Drawing 1 to 1, so 1 px = 1 S
-            const float StandardMmPerSample = (float)dev.current()->getImagingDepthNormal_mm() / (float)dev.current()->getALineLengthNormal_px();
+            const float StandardMmPerSample = float(dev.current()->getImagingDepthNormal_mm()) / float(dev.current()->getALineLengthNormal_px());
 
-            numReticles = (int)( dev.current()->getImagingDepthNormal_mm() + 0.5 );
-            pixelsPerMm = (int)( 1.0f / StandardMmPerSample );
+            numReticles = int( dev.current()->getImagingDepthNormal_mm() + 0.5f );
+            pixelsPerMm = int( 1.0f / StandardMmPerSample );
             catheterEdgePosition = dev.current()->getCatheterRadius_px();
         }
     }
