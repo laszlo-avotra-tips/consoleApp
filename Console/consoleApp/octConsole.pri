@@ -6,7 +6,6 @@
 HEADERS += \
     ../buildflags.h \
     ../version.h \
-    Backend/daq.h \
     Backend/dspgpu.h \
     Backend/initialization.h \
     Backend/daqSettings.h \
