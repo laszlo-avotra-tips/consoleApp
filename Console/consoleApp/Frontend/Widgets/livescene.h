@@ -24,7 +24,7 @@
 #include <QMutex>
 #include "waterfall.h"
 #include "sectoritem.h"
-#include "../../Common/GUI/videodecoderitem.h"
+//lcv #include "../../Common/GUI/videodecoderitem.h"
 #include "Utility/capturemachine.h"
 #include "buildflags.h"
 #include "annotateoverlay.h"

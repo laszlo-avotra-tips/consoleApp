@@ -70,7 +70,6 @@ HEADERS += \
     Frontend/Widgets/curvesdialog.h \
     Frontend/Widgets/areameasurementoverlay.h \
     Frontend/Widgets/levelgauge.h \
-    ../../Common/GUI/videodecoderitem.h \
     ../../Common/GUI/transport.h \
     Frontend/Widgets/annotateoverlay.h \
     $$PWD/../../Common/GUI/scrubbar.h \
@@ -155,7 +154,6 @@ SOURCES += \
     Frontend/Widgets/curvesdialog.cpp \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/levelgauge.cpp \
-    ../../Common/GUI/videodecoderitem.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/transport.cpp \
     ../../Common/GUI/scrubbar.cpp \
