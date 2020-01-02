@@ -35,10 +35,10 @@ levelGauge::~levelGauge()
  * the default.
  */
 void levelGauge::init( int desiredNumChunks,
-                       double defaultVal,
+                       float defaultVal,
                        QString title,
-                       double minVal,
-                       double maxVal )
+                       float minVal,
+                       float maxVal )
 {
     numChunks = desiredNumChunks;
     controlledObjMinVal = minVal;

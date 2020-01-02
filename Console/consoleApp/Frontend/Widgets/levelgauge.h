@@ -20,9 +20,9 @@ class levelGauge : public QWidget
     Q_OBJECT
     
 public:
-    explicit levelGauge(QWidget *parent = 0);
+    explicit levelGauge(QWidget *parent = nullptr);
     ~levelGauge();
-    void init( int desiredNumChunks, double defaultVal, QString title, double minVal, double maxVal );
+    void init(int desiredNumChunks, float defaultVal, QString title, float minVal, float maxVal );
     void enableControls( bool val );
     void setValue( double val );
 

@@ -543,7 +543,7 @@ void frontend::disableStorage( bool disable )
         // inform the user
         styledMessageBox::warning( tr( "Captures are disabled due to low storage space.\nContact Service at %1." ).arg( ServiceNumber ) );
 
-        LOG( WARNING, "Low disk space. Captures and recording disabled." );
+        LOG( WARNING, "Low disk space. Captures and recording disabled." )
     }
 }
 
@@ -643,10 +643,10 @@ bool frontend::confirmExit( void )
  */
 void frontend::on_endCaseButton_clicked()
 {
-    LOG( INFO, "End case button clicked" );
+    LOG( INFO, "End case button clicked" )
     if( confirmExit() )
     {
-        LOG( INFO, "End case confirmation accepted" );
+        LOG( INFO, "End case confirmation accepted" )
         stopDataCapture();
         emit recordBackgroundData( false );
 
@@ -654,7 +654,7 @@ void frontend::on_endCaseButton_clicked()
     }
     else
     {
-        LOG( INFO, "End case confirmation rejected" );
+        LOG( INFO, "End case confirmation rejected" )
     }
 }
 
@@ -708,9 +708,9 @@ void frontend::shutdownCleanup()
     int numCaptures = db.getNumCaptures();
     sessionDatabase::LoopStat loopStat = db.getLoopsStats();
 
-    LOG( INFO, QString( "Number of Captures = %1" ).arg( numCaptures ) );
-    LOG( INFO, QString( "Number of Loops = %1" ).arg( loopStat.numLoops ) );
-    LOG( INFO, QString( "Total Length of Loops (ms) = %1" ).arg( loopStat.totLength ) );
+    LOG( INFO, QString( "Number of Captures = %1" ).arg( numCaptures ) )
+    LOG( INFO, QString( "Number of Loops = %1" ).arg( loopStat.numLoops ) )
+    LOG( INFO, QString( "Total Length of Loops (ms) = %1" ).arg( loopStat.totLength ) )
 
     // Close out the session.  This sends out a message to the event log.
     session.shutdown();
@@ -958,7 +958,7 @@ void frontend::on_advancedViewButton_clicked()
     if( advView->isVisible() )
     {
         advView->hide();
-        LOG( INFO, "Advanced View: stop" );
+        LOG( INFO, "Advanced View: stop" )
     }
     else
     {
@@ -968,7 +968,7 @@ void frontend::on_advancedViewButton_clicked()
 
         advView->show();
         emit checkLaserDiodeStatus();
-        LOG( INFO, "Advanced View: start" );
+        LOG( INFO, "Advanced View: start" )
     }
 }
 
@@ -991,12 +991,12 @@ void frontend::on_displayOptionsButton_clicked()
     if( viewOption->isVisible() )
     {
         viewOption->hide();
-        LOG( INFO, "Display Options: stop" );
+        LOG( INFO, "Display Options: stop" )
     }
     else
     {
         viewOption->show();
-        LOG( INFO, "Display Options: start" );
+        LOG( INFO, "Display Options: start" )
     }
 }
 
@@ -1028,7 +1028,7 @@ void frontend::on_scanSyncButton_clicked()
 
     // Turn off mouse rotation of sector
     emit disableMouseRotateSector();
-    LOG( INFO, "Scan Sync Adjustment started" );
+    LOG( INFO, "Scan Sync Adjustment started" )
 
     userSettings &settings = userSettings::Instance();
     ui.scanSyncButton->setChecked( true );
@@ -1075,10 +1075,10 @@ void frontend::on_scanSyncButton_clicked()
         const double NewLagAngle = lagHandler->getAngle();
 
         scene->setWindAngle( NewLagAngle );
-        settings.setLag( NewLagAngle );
+        settings.setLag( int(NewLagAngle) );
         emit sendLagAngle( NewLagAngle );
         emit tagEvent( "Scan Sync = " + QString( "%1" ).arg( NewLagAngle ) );
-        LOG( INFO, QString( "Scan Sync = %1" ).arg( NewLagAngle ));
+        LOG( INFO, QString( "Scan Sync = %1" ).arg( NewLagAngle ))
     }
     else
     {
@@ -1086,7 +1086,7 @@ void frontend::on_scanSyncButton_clicked()
         scene->setWindAngle( prevWindAngle );
 
         emit tagEvent( "Scan Sync Adjustment Cancelled" );
-        LOG( INFO, "Scan Sync Adjustment Cancelled" );
+        LOG( INFO, "Scan Sync Adjustment Cancelled" )
     }
 
     scene->resetRotationCounter();
@@ -1117,7 +1117,7 @@ void frontend::handleManualLagAngle( double newAngle )
 {
     scene->setWindAngle( newAngle );
     emit tagEvent( "Scan Sync = " + QString( "%1" ).arg( newAngle ) );
-    LOG( INFO, QString( "Scan Sync = %1" ).arg( newAngle ));
+    LOG( INFO, QString( "Scan Sync = %1" ).arg( newAngle ))
 }
 
 /*
@@ -1127,7 +1127,7 @@ void frontend::handleManualLagAngle( double newAngle )
  */
 QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
 {
-    LOG( INFO, "Device Selection: Start" );
+    LOG( INFO, "Device Selection: Start" )
     emit tagEvent( "Device Change Started" );
     handleStatusText( tr( "Changing Devices" ) );
     ui.deviceSelectButton->setChecked( true );
@@ -1172,11 +1172,11 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
      * is configured. If the wizard is cancelled, set to the previously selected device,
      * or return as QDialog::Rejected if no previous device exists.
      */
-    QDialog::DialogCode retVal = (QDialog::DialogCode)dWiz.exec();
+    QDialog::DialogCode retVal = QDialog::DialogCode(dWiz.exec());
     if( retVal == QDialog::Rejected )
     {
         // User cancelled the device change, revert to the previously selected device.
-        LOG( INFO, "Device change cancelled." );
+        LOG( INFO, "Device change cancelled." )
 
         // If no device has been selected, then this is the first pass through and the user wants to return to Homescreen.
         if( previousDevice == -1 )
@@ -1188,7 +1188,7 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
     {
         emit recordBackgroundData( false );
         shutdownHardware();
-        LOG( INFO, QString( "Current Device: %1" ).arg( dev.getCurrentDeviceName() ) );
+        LOG( INFO, QString( "Current Device: %1" ).arg( dev.getCurrentDeviceName() ) )
 
         // Restore updates
         scene->clearImages();
@@ -1229,7 +1229,7 @@ void frontend::startDAQprepareView()
     ui.deviceSelectButton->setChecked( false );
     handleStatusText( tr( "LIVE" ) );
     emit tagEvent( "Device Change End" );
-    LOG( INFO, "Device Selection: End" );
+    LOG( INFO, "Device Selection: End" )
 
     setupDeviceForSledSupport();
 }
@@ -1281,8 +1281,8 @@ void frontend::updateCaseInfo()
     // Update UI
     ui.patientIDFieldLabel->setText( info.getPatientID() );
 
-    LOG( INFO, QString( "Patient ID added or updated" ) );
-    LOG( INFO, QString( "Case ID: %1" ).arg( info.getCaseID() ) );
+    LOG( INFO, QString( "Patient ID added or updated" ) )
+    LOG( INFO, QString( "Case ID: %1" ).arg( info.getCaseID() ) )
 }
 
 /*
@@ -1292,7 +1292,7 @@ void frontend::updateCaseInfo()
  */
 void frontend::on_caseDetailsButton_clicked()
 {
-    LOG( INFO, "Case details button clicked" );
+    LOG( INFO, "Case details button clicked" )
 
     // Update session case information
     if( setupCase( false ) )
@@ -1300,7 +1300,7 @@ void frontend::on_caseDetailsButton_clicked()
         // Update information on the screen
         updateCaseInfo();
 
-        LOG( INFO, "Case details modified" );
+        LOG( INFO, "Case details modified" )
     }
     else
     {
@@ -1320,7 +1320,7 @@ void frontend::on_recordLoopButton_clicked()
         /*
          * Do not allow toggling of the record state faster than MinRecordingLength_ms
          */
-        LOG( DEBUG, "Prevented fast recording switch" );
+        LOG( DEBUG, "Prevented fast recording switch" )
     }
     else if( !isRecordingClip )
     {
@@ -1370,7 +1370,7 @@ void frontend::on_recordLoopButton_clicked()
         {
             viewStr = "ProximalToDistal";
         }
-        LOG( INFO, "Clip Recording: Start (clip-" + strClipNumber + ")" );
+        LOG( INFO, "Clip Recording: Start (clip-" + strClipNumber + ")" )
         /*
          * Save clip information to the session database immediately. This
          * ensures that Case Review will see the clip even if the console
@@ -1378,7 +1378,7 @@ void frontend::on_recordLoopButton_clicked()
          */
         clipListModel &clipList = clipListModel::Instance();
         clipList.addClipCapture( ClipName,
-                                 clipTimestamp.toTime_t(),
+                                 int(clipTimestamp.toTime_t()),
                                  viewStr,
                                  dev.current()->getDeviceName(),
                                  dev.current()->isHighSpeed() );
@@ -1403,7 +1403,7 @@ void frontend::on_recordLoopButton_clicked()
  */
 void frontend::handleClipRecordingStopped( void )
 {
-    LOG( INFO, "Clip Recording: Stop (clip-" + strClipNumber + ")" );
+    LOG( INFO, "Clip Recording: Stop (clip-" + strClipNumber + ")" )
 
     // stop recording the clips
     ui.deviceSelectButton->setDisabled( false );
@@ -1423,7 +1423,7 @@ void frontend::handleClipRecordingStopped( void )
 	// clipLength_ms is updated when the video recording is closed
     clipList.updateClipInfo( clipLength_ms );
 
-    LOG( INFO, QString( "Clip Recording: Length: %1 ms (clip-%2)" ).arg( clipLength_ms ).arg( strClipNumber ) );
+    LOG( INFO, QString( "Clip Recording: Length: %1 ms (clip-%2)" ).arg( clipLength_ms ).arg( strClipNumber ) )
 //    qDebug() << "Clip" << strClipNumber << "length (ms): " << clipLength_ms;
 
 
@@ -1539,7 +1539,7 @@ void frontend::handlePlayButton_clicked()
         scene->startPlayback();
         isClipPlaying = true;
 
-        LOG( INFO, QString( "Clip playback: started (%1)" ).arg( playbackClipName ) );
+        LOG( INFO, QString( "Clip playback: started (%1)" ).arg( playbackClipName ) )
     }
 }
 
@@ -1550,7 +1550,7 @@ void frontend::handlePauseButton_clicked()
 {
     isClipPlaying = false;
     scene->pausePlayback();
-    LOG( INFO, "Clip playback: paused" );
+    LOG( INFO, "Clip playback: paused" )
 }
 
 /*
@@ -1560,7 +1560,7 @@ void frontend::handlePauseButton_clicked()
  */
 void frontend::closePlayback()
 {
-    LOG( INFO, "Loop playback stopped" );
+    LOG( INFO, "Loop playback stopped" )
     deviceSettings &dev = deviceSettings::Instance();
 
     isClipPlaying = false;
@@ -1579,7 +1579,7 @@ void frontend::closePlayback()
 
     resumeDaq();
 
-    LOG( INFO, "Clip playback: closed" );
+    LOG( INFO, "Clip playback: closed" )
 }
 
 /*
@@ -2089,7 +2089,7 @@ void frontend::setMeasurementMode( bool enable )
         ui.liveGraphicsView->setToolTip( "" );
         ui.saveMeasurementButton->show();
         ui.measureModePushButton->setChecked( true );
-        LOG( INFO, "Measure Mode: start" );
+        LOG( INFO, "Measure Mode: start" )
     }
     else
     {
@@ -2097,7 +2097,7 @@ void frontend::setMeasurementMode( bool enable )
         setSceneCursor( QCursor( Qt::OpenHandCursor ) );
         ui.saveMeasurementButton->hide();
         ui.measureModePushButton->setChecked( false );
-        LOG( INFO, "Measure Mode: stop" );
+        LOG( INFO, "Measure Mode: stop" )
     }
     isMeasureModeActive = enable; // state variable for toggle action
 }
@@ -2149,12 +2149,12 @@ void frontend::on_saveMeasurementButton_clicked()
         trans.rotate( 90 );
         p = p.transformed( trans, Qt::SmoothTransformation );
 
-        float docScreenRatio = (float)docWindow->ui.liveGraphicsView->height() / ( (float)docWindow->ui.liveGraphicsView->width() );
-        float techScreenRatio = (float)ui.liveGraphicsView->width() / (float)ui.liveGraphicsView->height();
+        float docScreenRatio = float(docWindow->ui.liveGraphicsView->height()) / float(docWindow->ui.liveGraphicsView->width() );
+        float techScreenRatio = float(ui.liveGraphicsView->width()) / float(ui.liveGraphicsView->height());
         scaledImageFactor = techScreenRatio / docScreenRatio;
 
         // update zoom factor if necessary
-        ui.reviewWidget->updateZoomFactor( ui.zoomSlider->value() / 100.0 / scaledImageFactor );
+        ui.reviewWidget->updateZoomFactor( ui.zoomSlider->value() / 100.0f / scaledImageFactor );
     }
 
     // send image to captureListModel
@@ -2169,8 +2169,8 @@ void frontend::on_saveMeasurementButton_clicked()
  */
 void frontend::on_zoomSlider_valueChanged( int value )
 {
-    float sx = (float)value / 100.0;
-    float sy = sx;
+    double sx = double(value) / 100.0;
+    double sy = sx;
 
     /*
      * Scale and keep the original view size on the Physician screen.
@@ -2189,7 +2189,7 @@ void frontend::on_zoomSlider_valueChanged( int value )
     auxMon->setTransformForZoom( QTransform::fromScale( sx * auxViewMatrix.m11(), sy * auxViewMatrix.m22() ),
                                  ( value > 100.0 ) ); // zoomed is true if value is greater than 100.0
 
-    scene->setZoomFactor( sx ); // pass the zoom factor to liveScene
+    scene->setZoomFactor( float(sx) ); // pass the zoom factor to liveScene
 
     if( value == ui.zoomSlider->minimum() )
     {
@@ -2351,7 +2351,7 @@ void frontend::on_zoomResetPushButton_clicked()
 {
     centerLiveGraphicsView();
     ui.zoomSlider->setValue( ui.zoomSlider->minimum() );
-    LOG( INFO, "Zoom reset" );
+    LOG( INFO, "Zoom reset" )
 }
 
 /*
@@ -2360,7 +2360,7 @@ void frontend::on_zoomResetPushButton_clicked()
 void frontend::on_zoomSlider_sliderPressed()
 {
     isZooming = true;
-    LOG( INFO, "Zoom slider pressed" );
+    LOG( INFO, "Zoom slider pressed" )
 }
 
 /*
@@ -2372,7 +2372,7 @@ void frontend::on_zoomSlider_sliderPressed()
 void frontend::on_zoomSlider_sliderReleased()
 {
     isZooming = false;
-    LOG( INFO, QString( "Zoom slider released - %1" ).arg( zoomFactorText ) );
+    LOG( INFO, QString( "Zoom slider released - %1" ).arg( zoomFactorText ) )
 }
 
 /*
@@ -2467,7 +2467,7 @@ void frontend::configureDisplayForReview()
  */
 void frontend::on_liveViewPushButton_clicked()
 {
-    LOG( INFO, "Live View button clicked" );
+    LOG( INFO, "Live View button clicked" )
     ui.liveGraphicsView->setToolTip( defaultSceneToolTip );
     setSceneCursor( QCursor( Qt::OpenHandCursor ) );
 
@@ -2572,7 +2572,7 @@ void frontend::hideLiveViewButton()
  */
 void frontend::on_autoAdjustBrightnessContrastButton_clicked()
 {
-    LOG( INFO, "Auto-adjust brightness and contrast clicked" );
+    LOG( INFO, "Auto-adjust brightness and contrast clicked" )
     emit autoAdjustBrightnessAndContrast();
 }
 
@@ -2611,7 +2611,7 @@ void frontend::on_annotateImagePushButton_clicked()
         ui.scanSyncButton->setDisabled( true );
         ui.liveGraphicsView->setToolTip( "" );
         setSceneCursor( QCursor( Qt::CrossCursor ) );  // TBD: pencil?
-        LOG( INFO, "Annotate Mode: start" );
+        LOG( INFO, "Annotate Mode: start" )
     }
     else
     {
@@ -2623,7 +2623,7 @@ void frontend::on_annotateImagePushButton_clicked()
             ui.liveGraphicsView->setToolTip( defaultSceneToolTip );
         }
         setSceneCursor( QCursor( Qt::OpenHandCursor ) );
-        LOG( INFO, "Annotate Mode: stop" );
+        LOG( INFO, "Annotate Mode: stop" )
     }
 }
 
@@ -2770,7 +2770,7 @@ void frontend::testDisplays()
  */
 void frontend::handleDaqReset()
 {
-    LOG( INFO, "DAQ Reset requested." );
+    LOG( INFO, "DAQ Reset requested." )
 
     // Temporarily pause data while we start
     stopDataCapture();
@@ -2819,7 +2819,7 @@ void frontend::setupDeviceForSledSupport()
 void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
 {
     //qDebug() << "**** changeSpeed";
-    LOG1(revsPerMin);
+    LOG1(revsPerMin)
     deviceSettings &dev = deviceSettings::Instance();
     dev.current()->setLinesPerRevolution( aLines );
     dev.current()->setRevolutionsPerMin( revsPerMin );
@@ -2880,5 +2880,5 @@ void frontend::on_EgineeringButton_toggled(bool checked)
 {
     m_ec->setViewPosition(ui.capturesGroupBox->x());
     m_ec->showOrHideView(checked);
-    LOG1(checked);
+    LOG1(checked)
 }
