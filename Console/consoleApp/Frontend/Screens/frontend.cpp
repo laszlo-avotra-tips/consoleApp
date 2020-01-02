@@ -139,7 +139,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     ui.contrastCurveButton->show();
     ui.colormapGroupBox->show();
     // Set default linear value map
-    curveDlg = NULL;
+    curveDlg = nullptr;
 #else
     ui.colormapGroupBox->hide();
     ui.contrastCurveButton->hide();
@@ -216,8 +216,8 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     connect( &session, SIGNAL(sendError(QString)),   this, SLOT(handleError(QString)) );
     connect( &session, SIGNAL(sendWarning(QString)), this, SLOT(handleWarning(QString)) );
 
-    docWindow = NULL;
-    auxMon = NULL;
+    docWindow = nullptr;
+    auxMon = nullptr;
 
     wmgr = &WindowManager::Instance();
     connect( wmgr, SIGNAL(monitorChangesDetected()), this, SLOT(handleScreenChanges()) );
@@ -260,8 +260,8 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     // place Catheter Orientation label on monitors
     updateCatheterViewLabel();
 
-    lagHandler = NULL;
-    caseWizard = NULL;
+    lagHandler = nullptr;
+    caseWizard = nullptr;
 
     // Set the focus on the Tech window so the menu keys are active
     QApplication::setActiveWindow( ui.centralWidget );
@@ -315,7 +315,7 @@ frontend::~frontend()
     if( !appAborted )
     {
         // Shutdown the data consumer and wait for the thread to stop
-        if( consumer != NULL )
+        if( consumer )
         {
             consumer->stop();
             consumer->wait();
@@ -335,7 +335,7 @@ frontend::~frontend()
         delete viewOption;
 
         delete docWindow;
-        docWindow = NULL;  // docWindow is checked in the zoom pan handler
+        docWindow = nullptr;  // docWindow is checked in the zoom pan handler
 
         delete scene;
         delete lagHandler;
@@ -846,7 +846,7 @@ void frontend::handleError( QString notice )
  */
 void frontend::startDataCapture( void )
 {
-    if( consumer != NULL )
+    if( consumer )
     {
         consumer->start();
     }
@@ -859,7 +859,7 @@ void frontend::startDataCapture( void )
  */
 void frontend::stopDataCapture( void )
 {
-    if( consumer != NULL )
+    if( consumer )
     {
         consumer->stop();
         consumer->wait();
@@ -1093,7 +1093,7 @@ void frontend::on_scanSyncButton_clicked()
     scene->handleLagWizardStop();
 
     delete lagHandler;
-    lagHandler = NULL;
+    lagHandler = nullptr;
 
     ui.scanSyncButton->setChecked( false );
     handleStatusText( tr( "LIVE" ) );
@@ -1994,7 +1994,7 @@ void frontend::on_fftSpinBox_valueChanged(int arg1)
 // R&D only
 void frontend::on_contrastCurveButton_clicked()
 {
-    if( curveDlg == NULL )
+    if( !curveDlg )
     {
         curveDlg = new curvesDialog(this);
     }
@@ -2281,7 +2281,7 @@ void frontend::centerLiveGraphicsView( void )
  */
 void frontend::handleTechViewHorizontalPan( int value )
 {
-    if( ( ui.liveGraphicsView != NULL ) && ( docWindow != NULL ) )
+    if( ( ui.liveGraphicsView ) && ( docWindow ) )
     {
         int techRange = ui.liveGraphicsView->horizontalScrollBar()->maximum() -
                         ui.liveGraphicsView->horizontalScrollBar()->minimum();
@@ -2317,7 +2317,7 @@ void frontend::handleTechViewHorizontalPan( int value )
  */
 void frontend::handleTechViewVerticalPan( int value )
 {
-    if( ( ui.liveGraphicsView != NULL ) && ( docWindow != NULL ) )
+    if( ( ui.liveGraphicsView ) && ( docWindow ) )
     {
         int techMax   = ui.liveGraphicsView->verticalScrollBar()->maximum();
         int techRange = techMax - ui.liveGraphicsView->verticalScrollBar()->minimum();
@@ -2666,11 +2666,11 @@ void frontend::handleBadMonitorConfig()
 void frontend::hideDisplays()
 {
     this->hide();
-    if( auxMon != NULL )
+    if( auxMon )
     {
         auxMon->hide();
     }
-    if( docWindow != NULL )
+    if( docWindow )
     {
         docWindow->hide();
     }
@@ -2682,12 +2682,12 @@ void frontend::hideDisplays()
 void frontend::createDisplays()
 {
     // create displays even if they aren't going to be driven
-    if( docWindow == NULL )
+    if( !docWindow )
     {
         docWindow = new docscreen( this );
         docWindow->hide();
     }
-    if( auxMon == NULL )
+    if( !auxMon )
     {
         auxMon = new AuxMonitor( this );
         auxMon->hide();
