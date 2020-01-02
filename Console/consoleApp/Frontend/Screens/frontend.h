@@ -205,7 +205,7 @@ private:
     liveScene *scene;
 
     lagWizard *lagHandler;
-    caseInfoWizard *caseWizard;
+//    caseInfoWizard *caseWizard;
 
     QTimer mouseCaptureTimer;
     QTimer clockTimer;

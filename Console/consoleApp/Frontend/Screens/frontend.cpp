@@ -261,7 +261,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     updateCatheterViewLabel();
 
     lagHandler = nullptr;
-    caseWizard = nullptr;
+//    caseWizard = nullptr;
 
     // Set the focus on the Tech window so the menu keys are active
     QApplication::setActiveWindow( ui.centralWidget );
@@ -339,7 +339,7 @@ frontend::~frontend()
 
         delete scene;
         delete lagHandler;
-        delete caseWizard;
+//        delete caseWizard;
     }
     else
     {
