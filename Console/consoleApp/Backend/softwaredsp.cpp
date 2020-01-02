@@ -110,10 +110,10 @@ SoftwareDSP::~SoftwareDSP()
 //        delete [] adjustBuffer;
 //    }
 
-//    if( resampledData != NULL )
+//    if( resampledData )
 //    {
 //        delete [] resampledData;
-//        resampledData = NULL;
+//        resampledData = nullptr;
 //    }
 
 //    if( fftData.fftChABuf )
@@ -358,9 +358,9 @@ void SoftwareDSP::checkInitFFTStructs( void )
 //    int fftWorkBufSize = 0;
 //    ippsFFTGetBufSize_R_16s( fftData.fftSpec, &fftWorkBufSize );
 
-//    fftData.fftWorkBuf = fftWorkBufSize > 0 ? new char[ fftWorkBufSize ] : NULL;
+//    fftData.fftWorkBuf = fftWorkBufSize > 0 ? new char[ fftWorkBufSize ] : nullptr;
 
-//    if( fftData.fftWorkBuf == NULL )
+//    if( !fftData.fftWorkBuf )
 //    {
 //        emit sendError( tr( "Failed to allocate FFT Work buffer" ) );
 //    }
@@ -805,7 +805,7 @@ void SoftwareDSP::saveSignals()
 
     errorHandler & err = errorHandler::Instance();
     QFile *hRescaledDataFile = new QFile( rescaledDataFilename );
-    if( hRescaledDataFile == NULL )
+    if( !hRescaledDataFile )
     {
         // fatal error
         err.fail( tr( "Could not create a new file handle for saving OCT data." ), true );
@@ -831,12 +831,12 @@ void SoftwareDSP::saveSignals()
         hRescaledDataFile->flush();
         hRescaledDataFile->close();
         delete hRescaledDataFile;
-        hRescaledDataFile = NULL;
+        hRescaledDataFile = nullptr;
     }
 
     QString postFFTFilename = QString( StorageDir + "/lowSpeedData-%1-postFFT.csv" ).arg( strIteration );
     QFile *hPostFFTFile = new QFile( postFFTFilename );
-    if( hPostFFTFile == NULL )
+    if( !hPostFFTFile )
     {
         // fatal error
         err.fail( tr( "Could not create a new file handle for saving OCT data." ), true );
@@ -857,12 +857,12 @@ void SoftwareDSP::saveSignals()
         outPostFFTDataStream << pData->fftData[ i ] << "\r\n";
     }
 
-    if( hPostFFTFile != NULL )
+    if( hPostFFTFile )
     {
         hPostFFTFile->flush();
         hPostFFTFile->close();
         delete hPostFFTFile;
-        hPostFFTFile = NULL;
+        hPostFFTFile = nullptr;
     }
 
     fileIteration++;
