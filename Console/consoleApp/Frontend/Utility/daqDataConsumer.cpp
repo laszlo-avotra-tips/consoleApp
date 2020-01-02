@@ -22,10 +22,10 @@
 
 // shared data with DAQ thread
 const int FullCaseVideoWidth_px( 1024 );
-const int FullCaseVideoHeight_px( (double)( SectorHeight_px + WaterfallHeight_px ) * ( (double)FullCaseVideoWidth_px / (double)SectorWidth_px ) );
+const int FullCaseVideoHeight_px( int(double( SectorHeight_px + WaterfallHeight_px ) * double(FullCaseVideoWidth_px) / double(SectorWidth_px) ) );
 
 const int LoopVideoWidth_px( 1024 );
-const int LoopVideoHeight_px( (double)( SectorHeight_px + WaterfallHeight_px ) * ( (double)LoopVideoWidth_px / (double)SectorWidth_px ) );
+const int LoopVideoHeight_px( int(double( SectorHeight_px + WaterfallHeight_px ) * double(LoopVideoWidth_px) / double(SectorWidth_px ) ) );
 
 const int ThreadWaitTimeout_ms = 5000;  // XXX: Make sure the video threads exit.  Would prefer to know why they sometimes do not
 
@@ -39,7 +39,7 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     sceneInThread        = s;
     advViewInThread      = adv;
     eventLog             = eLog;
-    pData                = NULL;
+    pData                = nullptr;
     currFrame            = 0;
     prevFrame            = 0;
     isRunning            = false;
@@ -55,8 +55,8 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     clipFile       = "";
     clipFrameCount = 0;
     lastTimestamp  = 0;
-    clipEncoder    = NULL;
-    caseEncoder    = NULL;
+    clipEncoder    = nullptr;
+    caseEncoder    = nullptr;
 
     prevDirection = directionTracker::Stopped;
     currDirection = directionTracker::Stopped;
@@ -65,7 +65,7 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     useDistalToProximalView = true;
     processingTimer.start();
 
-    safeFrameBuffer = (char *)malloc( ( SectorHeight_px + WaterfallWidth_px ) * SectorWidth_px );
+    safeFrameBuffer = static_cast<char*>(malloc( ( SectorHeight_px + WaterfallWidth_px ) * SectorWidth_px ) );
 
     /*
      * Get the state of the Full Case recording flag from the system settings. The
@@ -98,13 +98,13 @@ DaqDataConsumer::~DaqDataConsumer()
         caseEncoder->close();
         caseEncoder->wait( ThreadWaitTimeout_ms );
         delete caseEncoder;
-        caseEncoder = NULL;
+        caseEncoder = nullptr;
     }
 
     if( systemSettings )
     {
         delete systemSettings;
-        systemSettings = NULL;
+        systemSettings = nullptr;
     }
 }
 
@@ -117,7 +117,7 @@ DaqDataConsumer::~DaqDataConsumer()
 void DaqDataConsumer::run( void )
 {
     qDebug() << "Thread: frontend::DaqDataConsumer::run()";
-    LOG( INFO, "DaqDataConsumer Thread started" );
+    LOG( INFO, "DaqDataConsumer Thread started" )
 
     // access lines per revolution
     deviceSettings &devSettings = deviceSettings::Instance();
@@ -125,7 +125,7 @@ void DaqDataConsumer::run( void )
 
     // Notify Advanced View if full case is being recorded
     emit alwaysRecordingFullCase( isAlwaysRecordFullCaseOn );
-    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) );
+    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) )
 
     // initialize prevFrame to the same value that currFrame will get so no
     // work is done until the DAQ and DSP start up
@@ -181,8 +181,8 @@ void DaqDataConsumer::run( void )
                 frame->width = 512;
             }
             frame->frameCount = pData->frameCount; // not used by frontend
-            frame->dispData   = new QByteArray( (const char *)pData->dispData, frame->depth * frame->width );
-            frame->videoData  = new QByteArray( (const char *)pData->videoData, frame->depth * frame->width );
+            frame->dispData   = new QByteArray( reinterpret_cast<const char *>(pData->dispData), int(frame->depth * frame->width) );
+            frame->videoData  = new QByteArray( reinterpret_cast<const char *>(pData->videoData), int(frame->depth * frame->width ) );
             frame->timestamp  = pData->timeStamp;
 
             // Add this line to the scene
@@ -204,7 +204,7 @@ void DaqDataConsumer::run( void )
                 // TBD - may want to move encoder stuff to the device level
                 if( useDistalToProximalView )
                 {
-                    dirTracker.updateDirection( ( linesPerRevolution - 1 ) - pData->encoderPosition );
+                    dirTracker.updateDirection( U16(linesPerRevolution - 1  - pData->encoderPosition ));
                 }
                 else
                 {   // proximal to distal view
@@ -246,7 +246,7 @@ void DaqDataConsumer::run( void )
             /*
              * Only do recording-related work if either an OCT Loop or Full Case recording is going on
              */
-            if( ( recordClip && ( clipFile != NULL ) ) || ( isRecordFullCaseOn && isAlwaysRecordFullCaseOn ) )
+            if( ( recordClip && ( clipFile != nullptr ) ) || ( isRecordFullCaseOn && isAlwaysRecordFullCaseOn ) )
             {
                     // Don't do anything until the video encoder is ready
                     enum videoEncoder::videoStatus_e status = videoEncoder::Starting;
@@ -315,7 +315,7 @@ void DaqDataConsumer::run( void )
         }
 
         if( ( timeoutCounter > 0) && isHighSpeedDevice &&
-                ( ( recordClip && ( clipFile != NULL ) ) || ( isRecordFullCaseOn && isAlwaysRecordFullCaseOn ) ) )
+                ( ( recordClip && ( clipFile != nullptr ) ) || ( isRecordFullCaseOn && isAlwaysRecordFullCaseOn ) ) )
         {
             /*
              * High Speed Device
@@ -324,14 +324,14 @@ void DaqDataConsumer::run( void )
             {
                 frameTimer.restart();
                 timeoutCounter--;
-                sceneInThread->applyClipInfoToBuffer( (char *)pData->videoData );
+                sceneInThread->applyClipInfoToBuffer( reinterpret_cast<char *>(pData->videoData ) );
                 if( clipEncoder )
                 {
-                    clipEncoder->addFrame( (char *)pData->videoData );
+                    clipEncoder->addFrame( reinterpret_cast<char *>(pData->videoData ) );
                 }
                 if( caseEncoder )
                 {
-                    caseEncoder->addFrame( (char *)pData->videoData );
+                    caseEncoder->addFrame( reinterpret_cast<char *>(pData->videoData ) );
                 }
             }
         }
@@ -354,7 +354,7 @@ void DaqDataConsumer::run( void )
         yieldCurrentThread();
     }
 
-    LOG( INFO, "DaqDataConsumer Thread stopped" );
+    LOG( INFO, "DaqDataConsumer Thread stopped" )
     qDebug() << "Thread: frontend::DaqDataConsumer::stopped()";
 }
 
@@ -471,7 +471,7 @@ void DaqDataConsumer::stopClipRecording( void )
         // Pass the full video duration to Frontend to be written to the database.
         emit sendVideoDuration( clipEncoder->getDuration() );
         delete clipEncoder;
-        clipEncoder = NULL;
+        clipEncoder = nullptr;
     }
     qDebug() << "Clip encoder finished.";
     start();  // XXX WTF?
@@ -508,7 +508,7 @@ void DaqDataConsumer::recordBackgroundData( bool state )
             caseEncoder->start();
             frameTimer.start();
 
-            LOG( DEBUG, QString( "Background Recording: Start (%1)" ).arg( strFullCaseNumber ) );
+            LOG( DEBUG, QString( "Background Recording: Start (%1)" ).arg( strFullCaseNumber ) )
             qDebug() << QString( "Background Recording: Start (%1)" ).arg( strFullCaseNumber );
         }
         else
@@ -519,9 +519,9 @@ void DaqDataConsumer::recordBackgroundData( bool state )
                 caseEncoder->close();
                 caseEncoder->wait( ThreadWaitTimeout_ms );
                 delete caseEncoder;
-                caseEncoder = NULL;
+                caseEncoder = nullptr;
 
-                LOG( DEBUG, QString( "Background Recording: Stop (%1)" ).arg( strFullCaseNumber ) );
+                LOG( DEBUG, QString( "Background Recording: Stop (%1)" ).arg( strFullCaseNumber ) )
                 qDebug() << QString( "Background Recording: Stop (%1)" ).arg( strFullCaseNumber );
             }
         }
@@ -542,20 +542,20 @@ void DaqDataConsumer::recordBackgroundData( bool state )
 void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
 {
     // Only perform the search if data is available
-    if( pData != NULL )
+    if( pData )
     {
         const int MaxADCVal = 65535; // full range of 16-bit card
         deviceSettings &dev = deviceSettings::Instance();
         int maxVal = 0;
         int minVal = MaxADCVal; // max value of the processed data graph--2^8 for High Speed and 2^16 for low speed
-        const float RelaxationParameter = (float)0.2;
+        const float RelaxationParameter = 0.2f;
 
         /*
          * Search for min and max from the glueline offset to the Normal View pixel depth.
          * The processed data graph uses 1024 points, but we should only base this calculation on
          * the viewable points in the Normal View mode.
          */
-        for( int i = dev.current()->getInternalImagingMask_px(); i < ( FFTDataSize / 2 ); i++ )
+        for( U32 i = U32(dev.current()->getInternalImagingMask_px() ); i < ( FFTDataSize / 2 ); i++ )
         {
             // find min
             if( pData->fftData[ i ] < minVal )
@@ -571,7 +571,7 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
         }
 
         // Set the new brightness at the minimum plus 20% of the range of max to min.
-        int newBrightness = minVal + (float)( RelaxationParameter * (float)( maxVal - minVal ) );
+        int newBrightness = minVal + int(float( RelaxationParameter) * float( maxVal - minVal ) );
 
         // Adjustment algorithm: Set the Brightness and Contrast to Min and Max, respectively.
         emit updateBrightness( newBrightness );
