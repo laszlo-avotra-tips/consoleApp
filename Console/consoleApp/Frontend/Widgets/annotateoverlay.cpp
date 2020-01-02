@@ -24,7 +24,7 @@ AnnotateOverlay::AnnotateOverlay( QGraphicsItem *parent )
     currentPenWidth = 20;
     mouseIsDown     = false;
 
-    workingSegmentList = NULL;
+    workingSegmentList = nullptr;
 }
 
 /*
@@ -39,7 +39,7 @@ AnnotateOverlay::~AnnotateOverlay()
      * in drawingsList once mouseReleaseEvent() has been called.
      */
 
-    if( overlayPixmap != NULL )
+    if( overlayPixmap )
     {
         delete overlayPixmap;
     }
