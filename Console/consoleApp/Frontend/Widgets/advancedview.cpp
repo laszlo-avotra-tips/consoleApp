@@ -207,12 +207,12 @@ advancedView::~advancedView()
  */
 void advancedView::addScanline( const OCTFile::FrameData_t *pData )
 {
-//    if( pData->rawData != NULL )
+//    if( pData->rawData )
 //    {
 //        ui.rawDataPlot->plotData( pData->rawData );
 //    }
 
-//    if( ( pData->fftData != NULL ) )
+//    if( ( pData->fftData ) )
 //    {
 //        ui.fftDataPlot->plotData( pData->fftData );
 //    }
@@ -231,7 +231,7 @@ void advancedView::addScanline( const OCTFile::FrameData_t *pData )
         update();
 
 #if CONSOLE_MANUFACTURING_RELEASE
-        if( pData->rawData != NULL )
+        if( pData->rawData )
         {
             float max = 0;
             // find max val in raw data and display in a label
