@@ -49,10 +49,10 @@ bool Initialization::init( int argc, char *argv[] )
 
     // Check that the application has at least this version of Qt libraries installed.
     // If this test fails, a pop-up happens automatically and the application quits.
-    LOG( INFO, QString( "Qt Version: %1" ).arg( qVersion() ) );
+    LOG( INFO, QString( "Qt Version: %1" ).arg( qVersion() ) )
     qDebug() << QString( "Qt Version: %1" ).arg( qVersion() );
 
-    QT_REQUIRE_VERSION( argc, argv, "4.8.1" );
+//lcv    QT_REQUIRE_VERSION( argc, argv, "4.8.1" );
 
     // Verify that an application instance has been created before running these
     // checks.  The hard drive space check and the pop-up at the end need the

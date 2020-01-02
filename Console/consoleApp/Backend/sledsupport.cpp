@@ -65,7 +65,7 @@ const char SetOcelotSpeed2[]     = "so2\r";
 const char GetOcelotSpeed[]      = "go\r";
 //const char GetRunningState[]     = "gr\r";
 
-QByteArray resp;
+//QByteArray resp;
 QByteArray lastSpeed = "1000";
 QByteArray oSpeed1;
 QByteArray oSpeed2;
@@ -96,7 +96,7 @@ SledSupport::~SledSupport()
 {
     stop(); // end the running thread cleanly
 
-//    if( ftHandle != NULL )
+//    if( ftHandle )
 //    {
 ////        qDebug() << "Closing Serial Port";
 //        FT_Close( ftHandle);
@@ -110,7 +110,7 @@ bool SledSupport::writeSerial(QByteArray command)
 {
     //qDebug() << "Command to write: " << command;
     bool retVal = true;
-//    if( ftHandle != NULL )
+//    if( ftHandle )
 //    {
 //        int  cmdSize = command.size();
 //        char* cmdData = new char(cmdSize);
@@ -249,7 +249,7 @@ bool SledSupport::init( void )
  */
 void SledSupport::getAllStatus()
 {
-//    if( ftHandle != NULL )
+//    if( ftHandle )
 //    {
 //        mutex.lock();
 
@@ -286,7 +286,7 @@ void SledSupport::updateClockingMode( void )
         emit announceClockingMode( currClockingMode );
         prevClockingMode = currClockingMode;
 //        qDebug() << "Change in clocking mode. Mode:" << currClockingMode;
-        LOG( INFO, QString( "Sled Support Board: Clocking mode change. Mode: %1" ).arg( currClockingMode ) );
+        LOG( INFO, QString( "Sled Support Board: Clocking mode change. Mode: %1" ).arg( currClockingMode ) )
     }
 }
 
@@ -353,10 +353,10 @@ void SledSupport::handleSledResponse( void )
  */
 void SledSupport::run( void )
 {
-    int round = 0;
-    QByteArray oSpeed = "1000";
-    deviceSettings &dev = deviceSettings::Instance();
-    LOG1(oSpeed);
+//    int round = 0;
+//    QByteArray oSpeed = "1000";
+//    deviceSettings &dev = deviceSettings::Instance();
+//    LOG1(oSpeed)
 
     isRunning = true;
     while( isRunning )
@@ -548,7 +548,7 @@ void SledSupport::stop( void )
      */
     if( !wait( 3000 ) )
     {
-        LOG( WARNING, "Sled Support stop() timeout (3000 ms) trying to exit the thread." );
+        LOG( WARNING, "Sled Support stop() timeout (3000 ms) trying to exit the thread." )
     }
 }
 
@@ -640,7 +640,7 @@ void SledSupport::updateDeviceForSledSupport()
 void SledSupport::setClockingMode( bool mode )
 {
     QByteArray compareVal;
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
         mutex.lock();
 
@@ -649,17 +649,17 @@ void SledSupport::setClockingMode( bool mode )
         //qDebug() << "Tx:" << setClockingSerialCmd;
         writeSerial( setClockingSerialCmd );
 
-        LOG( INFO, QString( "Sled Support Board: set clocking mode: %1" ).arg( QString::number( mode ) ) );
+        LOG( INFO, QString( "Sled Support Board: set clocking mode: %1" ).arg( QString::number( mode ) ) )
 
         Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
+        QByteArray response = getResponse();
         mutex.unlock();
 
-        //qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
+//        qDebug() << "Rx:" << response;
+        if( response.toUpper().contains( "NAK" ) )
         {
- //           qDebug() << "set clocking returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set clocking returned NAK. Response: %1" ).arg( QString( resp ) ) );
+ //           qDebug() << "set clocking returned NAK" << response.toUpper();
+            LOG( WARNING, QString( "Sled Support Board: set clocking returned NAK. Response: %1" ).arg( QString( response ) ) )
         }
     }
 }
@@ -670,22 +670,22 @@ void SledSupport::setClockingMode( bool mode )
 void SledSupport::setClockingGain( QByteArray gain )
 {
     QByteArray setGainSerialCmd = QByteArray( SetClockingGain ).append( gain ).append( "\r" );
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
         mutex.lock();
 
         //qDebug() << "Tx:" << setGainSerialCmd;
         writeSerial( setGainSerialCmd );
-        LOG( INFO, QString( "Sled Support Board: set clocking gain: %1" ).arg( QString( gain ) ) );
+        LOG( INFO, QString( "Sled Support Board: set clocking gain: %1" ).arg( QString( gain ) ) )
         Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
+        QByteArray response = getResponse();
         mutex.unlock();
 
-        //qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
+//        qDebug() << "Rx:" << response;
+        if( response.toUpper().contains( "NAK" ) )
         {
-//            qDebug() << "set clocking gain returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set clocking gain returned NAK. Response: %1" ).arg( QString( resp ) ) );
+//            qDebug() << "set clocking gain returned NAK" << response.toUpper();
+            LOG( WARNING, QString( "Sled Support Board: set clocking gain returned NAK. Response: %1" ).arg( QString( response ) ) )
         }
     }
 }
@@ -696,23 +696,23 @@ void SledSupport::setClockingGain( QByteArray gain )
 void SledSupport::setClockingOffset( QByteArray offset )
 {
     QByteArray setOffsetSerialCmd = QByteArray( SetClockingOffset ).append( offset ).append( "\r" );
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
         mutex.lock();
 
         //qDebug() << "Tx:" << setOffsetSerialCmd;
         writeSerial( setOffsetSerialCmd );
-        LOG( INFO, QString( "Sled Support Board: set clocking offset: %1" ).arg( QString( offset ) ) );
+        LOG( INFO, QString( "Sled Support Board: set clocking offset: %1" ).arg( QString( offset ) ) )
 
         Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
+        QByteArray response = getResponse();
         mutex.unlock();
 
-        //qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
+//        qDebug() << "Rx:" << response;
+        if( response.toUpper().contains( "NAK" ) )
         {
-//            qDebug() << "set clocking offset returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set clocking offset returned NAK. Response: %1" ).arg( QString( resp ) ) );
+//            qDebug() << "set clocking offset returned NAK" << response.toUpper();
+            LOG( WARNING, QString( "Sled Support Board: set clocking offset returned NAK. Response: %1" ).arg( QString( response ) ) )
         }
     }
 }
@@ -723,9 +723,9 @@ void SledSupport::setClockingOffset( QByteArray offset )
 
 void SledSupport::setSledSpeed(QByteArray speed)
 {
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
-        LOG1(speed.toInt());
+        LOG1(speed.toInt())
         auto speedInt = speed.toInt();
 //        if(speedInt != m_speed)
         {
@@ -734,22 +734,22 @@ void SledSupport::setSledSpeed(QByteArray speed)
             mutex.lock();
             qDebug() << "Tx:" << setSpeedSerialCmd;
             writeSerial( setSpeedSerialCmd );
-            LOG( INFO, QString( "Sled Support Board: set speed: %1" ).arg( QString( speed ) ) );
+            LOG( INFO, QString( "Sled Support Board: set speed: %1" ).arg( QString( speed ) ) )
             Sleep( SledCommDelay_ms );
-            QByteArray resp = getResponse();
+            QByteArray response = getResponse();
             mutex.unlock();
-            LOG1(m_speed);
+            LOG1(m_speed)
             emit speedChanged(m_speed);
 
-    //        qDebug() << "Rx:" << resp;
-            if( resp.toUpper().contains( "NAK" ) )
+//        qDebug() << "Rx:" << response;
+            if( response.toUpper().contains( "NAK" ) )
             {
-                qDebug() << "set speed returned NAK" << resp.toUpper();
-                LOG( WARNING, QString( "Sled Support Board: set speed returned NAK. Response: %1" ).arg( QString( resp ) ) );
+                qDebug() << "set speed returned NAK" << response.toUpper();
+                LOG( WARNING, QString( "Sled Support Board: set speed returned NAK. Response: %1" ).arg( QString( response ) ) )
             }
         }
     }else{
-        LOG1(ftHandle);
+        LOG1(ftHandle)
     }
 
 }
@@ -759,7 +759,7 @@ void SledSupport::setSledSpeed(QByteArray speed)
 */
 void SledSupport::setSledDirection( QByteArray dir )
 {
-//    if( ftHandle != NULL )
+//    if( ftHandle )
 //    {
 //        qDebug() << "*** sledsupport::setDirection(): " << dir;
 //        bool running = false;
@@ -819,26 +819,26 @@ void SledSupport::setSledDirection( QByteArray dir )
 
 void SledSupport::setSledTorque(QByteArray torque)
 {
-    int temp = (int) (torque.toFloat() * 10);   // Sled expects parameter without the decimal point
+    int temp = int (torque.toFloat() * 10);   // Sled expects parameter without the decimal point
     torque.setNum( temp );
     QByteArray setTorqueSerialCmd = QByteArray( SetTorque ).append( torque ).append( "\r" );
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
         mutex.lock();
 
 //        qDebug() << "Tx:" << setTorqueSerialCmd;
         writeSerial( setTorqueSerialCmd );
-        LOG( INFO, QString( "Sled Support Board: set torque limit: %1" ).arg( QString( torque ) ) );
+        LOG( INFO, QString( "Sled Support Board: set torque limit: %1" ).arg( QString( torque ) ) )
 
         Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
+        QByteArray response = getResponse();
         mutex.unlock();
 
 //        qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
+        if( response.toUpper().contains( "NAK" ) )
         {
 //            qDebug() << "set torque returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set torque returned NAK. Response: %1" ).arg( QString( resp ) ) );
+            LOG( WARNING, QString( "Sled Support Board: set torque returned NAK. Response: %1" ).arg( QString( response ) ) )
         }
     }
 }
@@ -850,23 +850,23 @@ void SledSupport::setSledTorque(QByteArray torque)
 void SledSupport::setSledLimitTime(QByteArray limit)
 {
     QByteArray setLimitSerialCmd = QByteArray( SetLimitTime ).append( limit ).append( "\r" );
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
         mutex.lock();
 
 //        qDebug() << "Tx:" << setLimitSerialCmd;
         writeSerial( setLimitSerialCmd );
-        LOG( INFO, QString( "Sled Support Board: set torque timeout: %1" ).arg( QString( limit ) ) );
+        LOG( INFO, QString( "Sled Support Board: set torque timeout: %1" ).arg( QString( limit ) ) )
 
         Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
+        QByteArray response = getResponse();
         mutex.unlock();
 
 //        qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
+        if( response.toUpper().contains( "NAK" ) )
         {
 //            qDebug() << "set limit returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set limit returned NAK. Response: %1" ).arg( QString( resp ) ) );
+            LOG( WARNING, QString( "Sled Support Board: set limit returned NAK. Response: %1" ).arg( QString( response ) ) )
         }
     }
 }
@@ -877,36 +877,36 @@ void SledSupport::setSledLimitTime(QByteArray limit)
 
 void SledSupport::setSledLimitBlink(int blink)
 {
-    if( ( blink != 0 ) || ( blink != 1 ) )
-    {
-        return;
-    }
+//    if( ( blink != 0 ) || ( blink != 1 ) )
+//    {
+//        return;
+//    }
 
-    char isBlinkEnabled = '1';
-    if(!blink)
-    {
-        isBlinkEnabled = '0';
-    }
-    QByteArray setBlinkSerialCmd = QByteArray( SetLimitBlink ).append( isBlinkEnabled ).append( "\r" );
-    if( ftHandle != NULL )
-    {
-        mutex.lock();
+//    char isBlinkEnabled = '1';
+//    if(!blink)
+//    {
+//        isBlinkEnabled = '0';
+//    }
+//    QByteArray setBlinkSerialCmd = QByteArray( SetLimitBlink ).append( isBlinkEnabled ).append( "\r" );
+//    if( ftHandle )
+//    {
+//        mutex.lock();
 
-//        qDebug() << "Tx:" << setBlinkSerialCmd;
-        writeSerial( setBlinkSerialCmd );
-        LOG( INFO, QString( "Sled Support Board: set blink: %1" ).arg( char( isBlinkEnabled ) ) );
+////        qDebug() << "Tx:" << setBlinkSerialCmd;
+//        writeSerial( setBlinkSerialCmd );
+//        LOG( INFO, QString( "Sled Support Board: set blink: %1" ).arg( char( isBlinkEnabled ) ) )
 
-        Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
-        mutex.unlock();
+//        Sleep( SledCommDelay_ms );
+//        QByteArray response = getResponse();
+//        mutex.unlock();
 
-//        qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
-        {
-//            qDebug() << "set blink returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set blink returned NAK. Response: %1" ).arg( QString( resp ) ) );
-        }
-    }
+////        qDebug() << "Rx:" << resp;
+//        if( response.toUpper().contains( "NAK" ) )
+//        {
+////            qDebug() << "set blink returned NAK" << resp.toUpper();
+//            LOG( WARNING, QString( "Sled Support Board: set blink returned NAK. Response: %1" ).arg( QString( response ) ) )
+//        }
+//    }
 }
 
 void SledSupport::setSledMultiMode(int mode)
@@ -914,23 +914,23 @@ void SledSupport::setSledMultiMode(int mode)
     baParam.setNum( mode );
 
     QByteArray setSledMultiSerialCmd = QByteArray( SetButtonMulti ).append( baParam ).append( "\r" );
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
         mutex.lock();
 
         qDebug() << "Tx:" << setSledMultiSerialCmd;
         writeSerial( setSledMultiSerialCmd );
-        LOG( INFO, QString( "Sled Support Board: set mode: %1" ).arg( mode ) );
+        LOG( INFO, QString( "Sled Support Board: set mode: %1" ).arg( mode ) )
 
         Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
+        QByteArray response = getResponse();
         mutex.unlock();
 
-//        qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
+//        qDebug() << "Rx:" << response;
+        if( response.toUpper().contains( "NAK" ) )
         {
-            qDebug() << "set mode returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set mode returned NAK. Response: %1" ).arg( QString( resp ) ) );
+            qDebug() << "set mode returned NAK" << response.toUpper();
+            LOG( WARNING, QString( "Sled Support Board: set mode returned NAK. Response: %1" ).arg( QString( response ) ) )
         }
     }
 }
@@ -947,13 +947,12 @@ void SledSupport::getFirmwareVersions( void )
 {
 //	qDebug() << "**** Sledsupport::getFirmwareVersions";
     deviceSettings &dev = deviceSettings::Instance();
-    if( ftHandle != NULL )
+    if( ftHandle )
     {
-		resp = getResponse();			// clear any leftovers
         mutex.lock();
         writeSerial( GetFirmwareVersions );
         Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
+        QByteArray response = getResponse();
         mutex.unlock();
 
         QString strPrefix = "ACK gv=";
@@ -966,31 +965,31 @@ void SledSupport::getFirmwareVersions( void )
          * display "N/A" if not. The version strings are messaged to advanced view
          * via the path through frontend using signals & slots.
          */
-        if( resp.startsWith( strPrefix.toLatin1() ) )
+        if( response.startsWith( strPrefix.toLatin1() ) )
         {
             // parse the response
-            resp.remove( 0, strPrefix.length() ); // remove 7 characters "ACK gv="
+            response.remove( 0, strPrefix.length() ); // remove 7 characters "ACK gv="
 
-            sledVersion = qualifyVersion( resp.left( versionTemplate.length() ) );
-            ssbVersion  = qualifyVersion( resp.right( versionTemplate.length() ) );
+            sledVersion = qualifyVersion( response.left( versionTemplate.length() ) );
+            ssbVersion  = qualifyVersion( response.right( versionTemplate.length() ) );
         }
         sledParams.vSled = sledVersion;
         sledParams.vSSB  = ssbVersion;
 //		qDebug() << "**** Announce firmware versions";
         emit announceFirmwareVersions( sledVersion, ssbVersion );
-        LOG( INFO, QString( "Firmware versions: Sled - %1, Sled Support Board - %2" ).arg( QString( sledVersion ) ).arg( QString( ssbVersion ) ) );
+        LOG( INFO, QString( "Firmware versions: Sled - %1, Sled Support Board - %2" ).arg( QString( sledVersion ) ).arg( QString( ssbVersion ) ) )
 
         if( sledParams.vSled.startsWith( "1.") )
         {
             qDebug() << "Sled Version is 1.X, is not supported";
-            LOG( INFO, QString( "Sled Version %1 is not supported" ).arg( QString( sledParams.vSled ) ) );
+            LOG( INFO, QString( "Sled Version %1 is not supported" ).arg( QString( sledParams.vSled ) ) )
             emit handleError( tr("Sled Version %1 is not supported - Require Version 2.3 or higher\nWill Shutdown Case").arg( QString( sledParams.vSled ) ) );
             return;
         }
         if( sledParams.vSSB.startsWith( "1.") || sledParams.vSSB.startsWith( "2.") || sledParams.vSSB.startsWith( "3.0") )
         {
             qDebug() << "Sled Support Board Version is 1.X, 2.X or 3.0 is not supported";
-            LOG( INFO, QString( "Sled Support Board Version %1 is not supported" ).arg( QString( sledParams.vSSB ) ) );
+            LOG( INFO, QString( "Sled Support Board Version %1 is not supported" ).arg( QString( sledParams.vSSB ) ) )
             emit handleError( tr("Sled Support Board Version %1 is not supported - Require Version 3.1 or higher\nWill Shutdown Case").arg( QString( sledParams.vSSB ) ) );
             return;
         }
@@ -999,7 +998,7 @@ void SledSupport::getFirmwareVersions( void )
             if( sledParams.vSled.startsWith( "1.") || sledParams.vSled.startsWith( "2.") )
             {
                 qDebug() << "Ocelaris requires Sled Version 3.X";
-                LOG( INFO, QString( "Ocelaris requires Sled Version 3.X" ).arg( QString( sledParams.vSled ) ) );
+                LOG( INFO, QString( "Ocelaris requires Sled Version 3.X" ).arg( QString( sledParams.vSled ) ) )
                 emit handleError( tr("Ocelaris requires Sled Version 3.0 or higher \nWill Shutdown Case").arg( QString( sledParams.vSled ) ) );
                 return;
             }

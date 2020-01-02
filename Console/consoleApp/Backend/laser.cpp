@@ -91,14 +91,14 @@ Laser::Laser()
  */
 Laser::~Laser()
 {
-//    if( serialPort != NULL )
+//    if( serialPort )
 //    {
 //        // The system may not have logging services available anymore
 //        forceOff();
 //        serialPort->close();
 
 //        delete serialPort;
-//        serialPort = NULL;
+//        serialPort = nullptr;
 //    }
 }
 
@@ -115,7 +115,7 @@ bool Laser::init( void )
 //    // create serial port object
 //    serialPort = new QSerialPort( portName, settings );
 
-//    if( serialPort == NULL )
+//    if( serialPort )
 //    {
 //        // error:  failures stop the application and do not return
 //        displayFailureMessage( QString( tr( "Cannot create accessor to serial port " ) ).append( qPrintable( portName ) ), true );
@@ -168,7 +168,7 @@ bool Laser::init( void )
  */
 void Laser::turnDiodeOn()
 {
-//    if( serialPort != NULL )
+//    if( serialPort )
 //    {
 //        mutex.lock();
 //        serialPort->write( DiodeOn );
@@ -193,7 +193,7 @@ void Laser::turnDiodeOn()
  */
 void Laser::turnDiodeOff()
 {
-//    if( serialPort != NULL )
+//    if( serialPort )
 //    {
 //        mutex.lock();
 //        serialPort->write( DiodeOff );
@@ -221,7 +221,7 @@ void Laser::turnDiodeOff()
  */
 void Laser::forceOff()
 {
-//    if( serialPort != NULL )
+//    if( serialPort )
 //    {
 //        mutex.lock();
 //        serialPort->write( DiodeOff );
