@@ -29,7 +29,7 @@ const int MeasurementPrecision = 2;
 /*
  * Constructor
  */
-AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget *parent )
+AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     : QGraphicsPixmapItem()
 {
 #ifndef MEASUREMENT_APP
@@ -37,7 +37,6 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget *parent )
 
     // Position the box near the bottom right corner with space for text.
     box = new QRect( overlayPixmap->width() - 280, overlayPixmap->height() - 180, 1, 1 );
-    parent; // suppress warning
 #else
     overlayPixmap = new QPixmap( parent->geometry().width(), parent->geometry().height()  );
     box = new QRect( overlayPixmap->width() - 280, overlayPixmap->height() - 180, 1, 1 );
@@ -62,12 +61,12 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget *parent )
  */
 AreaMeasurementOverlay::~AreaMeasurementOverlay()
 {
-    if( overlayPixmap != NULL )
+    if( overlayPixmap )
     {
         delete overlayPixmap;
     }
 
-    if( box != NULL )
+    if( box )
     {
         delete box;
     }
@@ -105,8 +104,8 @@ void AreaMeasurementOverlay::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             if( addControlPoint( event->pos().toPoint() ) )
             {
-                QPoint p1 = event->pos().toPoint();
-                replacementPointIndex = pointsOverlap( &p1, &polygonPoints, PointTolerance );
+                QPoint point1 = event->pos().toPoint();
+                replacementPointIndex = pointsOverlap( &point1, &polygonPoints, PointTolerance );
                 if( replacementPointIndex >= 0 )
                 {
                     allowReplace = true;
@@ -281,7 +280,7 @@ QPolygon AreaMeasurementOverlay::polygonToPoints( QPolygon *list )
                 seg = QLineF( list->point( i ), list->point( i + 1 ) );
             }
 
-            const int segLen = (int)seg.length();
+            const int segLen = int(seg.length());
 
             // add control point at end of unit vector originating from p1
             QLineF uv = seg.unitVector();
@@ -421,7 +420,7 @@ int AreaMeasurementOverlay::computeLength( QPoint *p1, QPoint *p2 )
     int x2 = p2->x();
     int y2 = p2->y();
 
-    return( qSqrt( ( x2 - x1 ) * ( x2 - x1 ) + ( y2 - y1 ) * ( y2 - y1 ) ) );
+    return int( qSqrt( ( x2 - x1 ) * ( x2 - x1 ) + ( y2 - y1 ) * ( y2 - y1 ) ) );
 }
 
 /*
@@ -606,19 +605,19 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             emit twoPointsDrawn();
         }
 #endif
-        if( currPxPerMm != NULL )
+        if( currPxPerMm > 0 )
         {
             QLineF line;
             line.setPoints( polygonPoints.point( 0 ), polygonPoints.point( 1 ) );
             painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
-            QString str = QString( "Length: %1 mm" ).arg( QString::number( (float)line.length() / currPxPerMm, 'f', MeasurementPrecision ) );
+            QString str = QString( "Length: %1 mm" ).arg( QString::number( line.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
             painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
 
             // Size the box according to the text drawn.
             QStaticText st( str );
             st.prepare( QTransform(), font );  // prepare text so we can determine the text size
-            box->setWidth( st.size().width() + ( 2 * xMargin ) );
-            box->setHeight( st.size().height() + ( 2 * yMargin ) );
+            box->setWidth( int(st.size().width() + ( 2 * xMargin ) ) );
+            box->setHeight( int(st.size().height() + ( 2 * yMargin ) ) );
 #ifdef MEASUREMENT_APP
             painter->fillRect( *box, QColor( 255, 255, 255, 60 ) );
 #endif
@@ -627,23 +626,23 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
     }
     else
     {
-        if( currPxPerMm != NULL )
+        if( currPxPerMm > 0 )
         {
             if( centroid.isValid )
             {
                 QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
                 painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
-                QString str( QString( "Min: %1 mm" ).arg( QString::number( (float)classMinLine.length() / currPxPerMm, 'f', MeasurementPrecision ) ) );
+                QString str( QString( "Min: %1 mm" ).arg( QString::number( classMinLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
                 painter->drawText( minRect.bottomLeft(), str );
 
                 QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
                 painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
-                str = QString( "Max: %1 mm" ).arg( QString::number( (float)classMaxLine.length() / currPxPerMm, 'f', MeasurementPrecision ) );
+                str = QString( "Max: %1 mm" ).arg( QString::number( classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
                 painter->drawText( maxRect.bottomLeft(), str );
 
                 QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
                 painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
-                str = QString( "Area: %1 mm" ).arg( QString::number( (float)polygonArea / currPxPerMm / currPxPerMm, 'f', MeasurementPrecision ) );
+                str = QString( "Area: %1 mm" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
                 painter->drawText( areaRect.bottomLeft(), str );
 
                 /*
@@ -655,14 +654,14 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 QFont subFont = painter->font();
                 subFont.setPointSize( FontSize - ( FontSize / 3 ) );
                 painter->setFont( subFont );
-                painter->drawText( QPoint( areaRect.left() + staticText.size().width(), areaRect.bottom() - ( FontSize / 2 ) ), QString( "2" ) );
+                painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize / 2 ) ), QString( "2" ) );
                 painter->setFont( font );
 
                 // Size the box according to the text drawn.
-                staticText.setText( QString( "Area: %1 mm^2" ).arg( QString::number( (float)polygonArea / currPxPerMm / currPxPerMm, 'f', MeasurementPrecision ) ) );
+                staticText.setText( QString( "Area: %1 mm^2" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
                 staticText.prepare( QTransform(), font );                               // prepare text so we can determine the text size
-                box->setWidth( staticText.size().width() );                             // set box width based on text
-                box->setHeight( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ); // set box heigh based on text
+                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
+                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
 #ifdef MEASUREMENT_APP
                 box->setBottom( areaRect.bottom() + yMargin );
                 painter->fillRect( *box, QColor( 255, 255, 255, 50 ) );
