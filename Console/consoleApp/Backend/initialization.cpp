@@ -62,7 +62,7 @@ bool Initialization::init( int argc, char *argv[] )
     if ( !qApp )
     {
         QApplication *tmp = new QApplication( argc, argv );
-        if( tmp != NULL )
+        if( tmp )
         {
             delete tmp;
         }
