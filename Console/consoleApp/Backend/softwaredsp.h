@@ -26,10 +26,10 @@ public:
     SoftwareDSP();
     ~SoftwareDSP();
 
-    void init( unsigned int inputLength,
+    void init(unsigned int inputLength,
                unsigned int frameLines,
-               int inBytesPerRecord,
-               int inBytesPerBuffer,
+               unsigned int inBytesPerRecord,
+               unsigned int inBytesPerBuffer,
                int inChannelCount );
 
     unsigned int rescale( const unsigned short *inputData );

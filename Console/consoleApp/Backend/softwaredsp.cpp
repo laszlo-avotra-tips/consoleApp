@@ -27,7 +27,7 @@
 #define FFT_HINT (ippAlgHintAccurate)
 
 #define LOG_TABLE_SIZE (65536)
-#define LOG_SCALE_FACTOR ( ( LOG_TABLE_SIZE - 1 ) / (10 * log10( (double)( LOG_TABLE_SIZE - 1 ) ) ) )
+#define LOG_SCALE_FACTOR ( ( LOG_TABLE_SIZE - 1 ) / (10 * log10( double( LOG_TABLE_SIZE - 1 ) ) ) )
 
 /*
  * constructor
@@ -37,9 +37,9 @@ SoftwareDSP::SoftwareDSP()
     qDebug() << "SoftwareDSP constructor";
 
     // Default FFT config
-    fftData.fftSpec    = NULL;
-    fftData.fftChABuf  = NULL;
-    fftData.fftWorkBuf = NULL;
+    fftData.fftSpec    = nullptr;
+    fftData.fftChABuf  = nullptr;
+    fftData.fftWorkBuf = nullptr;
     fftData.fftOrder   = FFT_ORDER;
     fftData.inputSize  = (1 << FFT_ORDER);
     fftData.fftPoints  = (1 << FFT_ORDER);
@@ -56,7 +56,7 @@ SoftwareDSP::SoftwareDSP()
     fftData.fftScaleFactor = 5;
 
     // log lookup table
-    logTable = NULL;
+    logTable = nullptr;
 
     // save the default settings in case the device is changed during the session
     DaqSettings       &settings = DaqSettings::Instance();
@@ -67,9 +67,9 @@ SoftwareDSP::SoftwareDSP()
     defaultEncoderSettings.gearingRatio = 1;
 
     // XXX: Not a big fan of this pattern
-    if( devSettings.current() != NULL )
+    if( devSettings.current() )
     {
-        defaultEncoderSettings.linesPerRev = devSettings.current()->getLinesPerRevolution();
+        defaultEncoderSettings.linesPerRev = U16(devSettings.current()->getLinesPerRevolution());
     }
     else
     {
@@ -94,7 +94,7 @@ SoftwareDSP::SoftwareDSP()
     prevTime = 0;
     currTime = 0;
 
-    resampledData = NULL;
+    resampledData = nullptr;
 }
 
 /*
@@ -103,7 +103,7 @@ SoftwareDSP::SoftwareDSP()
 SoftwareDSP::~SoftwareDSP()
 {
     qDebug() << "SoftwareDSP::~SoftwareDSP()";
-    LOG( INFO, "SoftwareDSP shutdown" );
+    LOG( INFO, "SoftwareDSP shutdown" )
 
 //    if( adjustBuffer )
 //    {
@@ -141,8 +141,8 @@ SoftwareDSP::~SoftwareDSP()
  */
 void SoftwareDSP::init( unsigned int inputLength,
                         unsigned int frameLines,
-                        int inBytesPerRecord,
-                        int inBytesPerBuffer,
+                        unsigned int inBytesPerRecord,
+                        unsigned int inBytesPerBuffer,
                         int inChannelCount )
 {
     // call the common initilization steps
@@ -155,7 +155,7 @@ void SoftwareDSP::init( unsigned int inputLength,
     // Memory for working on the FFT data
     adjustBuffer = new unsigned short[ fftData.fftPoints ];
 
-    if( adjustBuffer == NULL )
+    if( adjustBuffer )
     {
         // fatal error
         displayFailureMessage( tr( "Could not allocate memory for DSP display buffers" ), true );
@@ -163,7 +163,7 @@ void SoftwareDSP::init( unsigned int inputLength,
 
     resampledData = new unsigned short[ DSP::RescalingDataLength ];
 
-    if( resampledData == NULL )
+    if( resampledData )
     {
         emit sendError( tr( "Error allocating space in DSP::init" ) );
     }
@@ -471,7 +471,7 @@ unsigned int SoftwareDSP::rescale( const unsigned short *inputData )
     for( outIndex = 0; outIndex < rescaleLength; outIndex++ )
     {
         // Extract the index of the sample we are using as the first data point
-        sampleIndex = (int)wholeSamples[ outIndex ];
+        sampleIndex = U32(wholeSamples[ outIndex ]);
 
         // Does the rescaling data point beyond what we've captured? If so, bail.
         if( ( sampleIndex + 1 ) > inputLength )
@@ -481,9 +481,9 @@ unsigned int SoftwareDSP::rescale( const unsigned short *inputData )
 
         // Linearly interpolate between that sample and the next one, according to
         // where whole + fractional is located.
-        interpSample = ( ( (double)inputData[ sampleIndex + 1 ] - (double)inputData[ sampleIndex ] ) * fractionalSamples[ outIndex ] );
-        interpSample = interpSample + (double)inputData[ sampleIndex ] - (double)offset;
-        outputData[ outIndex ] = (unsigned short)floor_int( interpSample );
+        interpSample = ( ( double(inputData[ sampleIndex + 1 ]) - double(inputData[ sampleIndex ] )) * double(fractionalSamples[ outIndex ]) );
+        interpSample = interpSample + double(inputData[ sampleIndex ]) - double(offset);
+        outputData[ outIndex ] = U16(floor_int( float(interpSample) ));
     }
 
     return outIndex;
@@ -510,7 +510,7 @@ void SoftwareDSP::computeLogTable( void )
     }
     logTable = new unsigned short[ LOG_TABLE_SIZE ];
 
-    if( logTable == NULL )
+    if( logTable )
     {
         // Fatal error
         emit sendError( tr( "Could not allocate memory for the DSP log table" ) );
@@ -522,7 +522,7 @@ void SoftwareDSP::computeLogTable( void )
     // Compute (10 * log10(i))*scale of every possible input
     for( int i = 1; i < LOG_TABLE_SIZE; i++ )
     {
-        logTable[ i ] = (unsigned short)( 10.0 * log10( (double) i ) * LOG_SCALE_FACTOR );
+        logTable[ i ] = U16( 10.0 * log10( double( i ) * LOG_SCALE_FACTOR ));
     }
 }
 
