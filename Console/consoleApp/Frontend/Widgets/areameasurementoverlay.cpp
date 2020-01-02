@@ -53,7 +53,7 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     centroid.isValid = false;
 
     replacementPointIndex = -1;
-    currPxPerMm = NULL;
+    currPxPerMm = 0.0f;
 }
 
 /*
@@ -428,7 +428,7 @@ int AreaMeasurementOverlay::computeLength( QPoint *p1, QPoint *p2 )
  *
  * Finds the longest line traveling through the centroid. If MaxIterations
  * are required to find the max, rule that the max was not determined. Max Line is set
- * to NULL and returns FALSE. Returns TRUE on success.
+ * to 0 and returns FALSE. Returns TRUE on success.
  */
 bool AreaMeasurementOverlay::calculateLongestLine( QPolygon *list )
 {
@@ -483,7 +483,7 @@ bool AreaMeasurementOverlay::calculateLongestLine( QPolygon *list )
  *
  * Finds the shortest line traveling through the centroid. If MaxIterations
  * are required to find the min, rule that the min was not determined. Min Line is set
- * to NULL and returns FALSE. Returns TRUE on success.
+ * to 0 and returns FALSE. Returns TRUE on success.
  */
 bool AreaMeasurementOverlay::calculateShortestLine( QPolygon *list )
 {
@@ -600,7 +600,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
     if( polygonPoints.size() == 2 )
     {
 #ifdef MEASUREMENT_APP
-        if( currPxPerMm == NULL )
+        if( currPxPerMm > 0 )
         {
             emit twoPointsDrawn();
         }

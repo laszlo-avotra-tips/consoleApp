@@ -21,7 +21,7 @@ class avDisplayControls : public QSlider
     Q_OBJECT
 
 public:
-    avDisplayControls( QWidget * = NULL );
+    avDisplayControls( QWidget * = nullptr );
 
 signals:
 
