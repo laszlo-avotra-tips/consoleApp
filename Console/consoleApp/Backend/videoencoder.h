@@ -20,7 +20,7 @@
  */
 #define DEFAULT_BITRATE_BPS (1000 * 10) // Video bitrate
 #define DEFAULT_FPS     15
-#define DEFAULT_BUFFERSIZE  8000 * 1024;
+#define DEFAULT_BUFFERSIZE  int(8000 * 1024)
 #define DEFAULT_GOP_INTERVAL 12
 
 // Set for extra encode processing options.

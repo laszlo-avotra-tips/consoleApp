@@ -25,20 +25,20 @@
 extern QString gCrfTestValue;
 #endif
 
-const int UsecPerMsec = 1000;
+//const int UsecPerMsec = 1000;
 
 /*
  * Constructor
  */
 videoEncoder::videoEncoder(char *vidFilename, int srcWidth, int srcHeight, int dstWidth, int dstHeight, double fps)
 {
-    imgConvertCtx = NULL;
-    picture       = NULL;
-    tmpPicture    = NULL;
-    imgConvertCtx = NULL;
-    outputBuffer  = NULL;
-    format        = NULL;
-    videoStream   = NULL;
+    imgConvertCtx = nullptr;
+    picture       = nullptr;
+    tmpPicture    = nullptr;
+    imgConvertCtx = nullptr;
+    outputBuffer  = nullptr;
+    format        = nullptr;
+    videoStream   = nullptr;
 
     frameCount      = 0;
     framesPerSecond = fps;
@@ -89,13 +89,13 @@ void videoEncoder::run(void)
  */
 AVFrame *videoEncoder::allocatePicture(int pixelFormat, int width, int height)
 {
-    AVFrame *p;
+//    AVFrame *p = nullptr;
 //    int size;
 
 //    p = avcodec_alloc_frame();
 //    if(!p)
 //    {
-//        return(NULL);
+//        return(nullptr);
 //    }
 
 //    size = avpicture_get_size((PixelFormat)pixelFormat, width, height);
@@ -103,10 +103,11 @@ AVFrame *videoEncoder::allocatePicture(int pixelFormat, int width, int height)
 //    if(!picBuf)
 //    {
 //        av_free(p);
-//        return(NULL);
+//        return(nullptr);
 //    }
 //    avpicture_fill((AVPicture *)p, picBuf, (PixelFormat)pixelFormat, width, height);
-    return(p);
+//    return(p);
+    return nullptr;
 }
 
 /*
@@ -119,7 +120,7 @@ bool videoEncoder::initVideo(void)
 {
 //    AVCodecContext *codecCtx;
 //    AVCodec        *codec;
-//    AVDictionary    *opts = NULL;
+//    AVDictionary    *opts = nullptr;
 //    int             status;
 
 //    codecCtx = videoStream->codec;
@@ -170,7 +171,7 @@ bool videoEncoder::initVideo(void)
 //        return(false);
 //    }
 
-//    outputBuffer = NULL;
+//    outputBuffer = nullptr;
 //    if(!(outputCtx->oformat->flags & AVFMT_RAWPICTURE))
 //    {
 
@@ -188,7 +189,7 @@ bool videoEncoder::initVideo(void)
 //    /*
 //     * Not YUV? Then we need to convert using this intermediate picture buffer
 //     */
-//    tmpPicture = NULL;
+//    tmpPicture = nullptr;
 //    if(codecCtx->pix_fmt != PIX_FMT_GRAY8)
 //    {
 //        tmpPicture = allocatePicture(PIX_FMT_GRAY8, width, height);
@@ -213,14 +214,14 @@ bool videoEncoder::initVideo(void)
  */
 AVStream *videoEncoder::addVideoStream(int codecId)
 {
-    AVStream *stream;
+//    AVStream *stream = nullptr;
 //    AVCodecContext *codecCtx;
 
 //    stream = av_new_stream(outputCtx, 0);
 //    if(!stream)
 //    {
 //        qDebug() << "Failed to create new video stream.";
-//        return NULL;
+//        return nullptr;
 //    }
 
 //    codecCtx = stream->codec;
@@ -262,7 +263,8 @@ AVStream *videoEncoder::addVideoStream(int codecId)
 //    {
 //        codecCtx->flags |= CODEC_FLAG_GLOBAL_HEADER;
 //    }
-    return(stream);
+//    return(stream);
+    return nullptr;
 }
 
 /*
@@ -273,7 +275,7 @@ AVStream *videoEncoder::addVideoStream(int codecId)
  */
 bool videoEncoder::init(void)
 {
-//    format = av_guess_format(NULL, filename, NULL);
+//    format = av_guess_format(nullptr, filename, nullptr);
 //    if(!format)
 //    {
 //        qDebug() << "Couldn't determine format from filename.";
@@ -319,7 +321,7 @@ bool videoEncoder::init(void)
 //            return(false);
 //        }
 //    }
-//    avformat_write_header(outputCtx, NULL);
+//    avformat_write_header(outputCtx, nullptr);
     return(true);
 }
 
@@ -331,7 +333,7 @@ bool videoEncoder::init(void)
  */
 void videoEncoder::copyFrame(AVFrame *frame, char *frameData, AVCodecContext *)
 {
-    memcpy(frame->data[0], frameData, width * height);
+    memcpy(frame->data[0], frameData, size_t(width * height));
 }
 
 #ifdef Q_WS_WIN
@@ -388,7 +390,7 @@ void videoEncoder::addFrame(char *frameData)
 //    int retval = 0;
 //    AVCodecContext *codecCtx;
 
-//    if( videoStream == NULL )
+//    if( videoStream == nullptr )
 //    {
 //        /*
 //         * if the videoStream got stepped on, log the issue and return
@@ -409,13 +411,13 @@ void videoEncoder::addFrame(char *frameData)
 //    if(codecCtx->pix_fmt != PIX_FMT_GRAY8)
 //    {
 
-//        if(imgConvertCtx == NULL)
+//        if(imgConvertCtx == nullptr)
 //        {
 //            imgConvertCtx = sws_getContext(width, height,
 //                                           PIX_FMT_GRAY8, codecCtx->width, codecCtx->height,
-//                                           codecCtx->pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
+//                                           codecCtx->pix_fmt, SWS_BICUBIC, nullptr, nullptr, nullptr);
 
-//            if(imgConvertCtx == NULL)
+//            if(imgConvertCtx == nullptr)
 //            {
 //                qDebug() << "Failed to get image conversion context.";
 //                QApplication::exit(-1);
@@ -549,7 +551,7 @@ void videoEncoder::close(void)
 //     * Drain any remaining frames
 //     */
 //#ifdef Q_WS_WIN
-//        outSize = hacked_avcodec_encode_video(codecCtx, outputBuffer, bufferSize, NULL);
+//        outSize = hacked_avcodec_encode_video(codecCtx, outputBuffer, bufferSize, nullptr);
 //#else
 //        outSize = avcodec_encode_video(codecCtx, outputBuffer, bufferSize, picture);
 //#endif
@@ -586,7 +588,7 @@ void videoEncoder::close(void)
 //            outSize = 0;
 //        }
 //#ifdef Q_WS_WIN
-//        outSize = hacked_avcodec_encode_video(codecCtx, outputBuffer, bufferSize, NULL);
+//        outSize = hacked_avcodec_encode_video(codecCtx, outputBuffer, bufferSize, nullptr);
 //#else
 //        outSize = avcodec_encode_video(codecCtx, outputBuffer, bufferSize, picture);
 //#endif
@@ -620,14 +622,14 @@ void videoEncoder::close(void)
 //     */
 //    duration_ms = 0;
 //    outputCtx   = avformat_alloc_context();
-//    avformat_open_input( &outputCtx, filename, NULL, NULL );
+//    avformat_open_input( &outputCtx, filename, nullptr, nullptr );
 
 //    /*
 //     * If the file contains no data (header only), then outputCtx will be null
 //     * and all data is invalid.  If it did load data, use it to get the duration
 //     * and then set it free.
 //     */
-//    if( outputCtx != NULL )
+//    if( outputCtx )
 //    {
 //        duration_ms = ( outputCtx->duration / UsecPerMsec );
 
