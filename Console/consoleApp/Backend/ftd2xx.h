@@ -43,7 +43,7 @@ kernel & user mode
 
 #ifdef _WIN32
 // Compiling on Windows
-#include <windows.h>
+#include <Windows.h>
 
 // The following ifdef block is the standard way of creating macros
 // which make exporting from a DLL simpler.  All files within this DLL

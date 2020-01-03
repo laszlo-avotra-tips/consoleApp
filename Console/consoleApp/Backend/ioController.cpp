@@ -18,6 +18,8 @@
 #include "defaults.h"
 #include "deviceSettings.h"
 
+ioController* ioController::theController{nullptr};
+
 BOOL CALLBACK GetDriver( LPSTR ioControllerLpszName, LPSTR ioControllerLpszEntry, LPARAM ioControllerLParam );
 //lcv
 //const double       IocPositiveDaqResolution_cnts = 2048; // resolution is (1/2)*2^12 from 0-10V.
@@ -43,6 +45,16 @@ typedef struct tag_board      // DAC struct for identifying device
 typedef BOARD FAR* LPBOARD;
 
 //BOARD board;
+
+// Singleton
+ioController & ioController::Instance()
+{
+    if(!theController)
+    {
+        theController = new ioController();
+    }
+    return *theController;
+}
 
 /*
  * Constructor

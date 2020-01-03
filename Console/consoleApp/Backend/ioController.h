@@ -22,11 +22,7 @@ class ioController : public QObject
 
 public:
     // Singleton
-    static ioController &Instance()
-    {
-        static ioController theController;
-        return theController;
-    }
+    static ioController &Instance();
 
     enum ControllerMode
     {
@@ -61,6 +57,7 @@ private:
     LPARAM ioControllerLParam;
 
     bool     deviceIsConfigured;
+    static ioController* theController;
 
     void disableAllModules( void );
 
