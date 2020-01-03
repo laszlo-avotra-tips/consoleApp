@@ -16,11 +16,8 @@ class depthSetting : public QObject
 
 public:
     // Singleton
-    static depthSetting &Instance()
-    {
-        static depthSetting theDepthManager;
-        return theDepthManager;
-    }
+    static depthSetting &Instance();
+
     float getDepth_S( void )             { return imagingDepth_S; }
     int   getNumReticles( void )         { return numReticles; }
     int   getPixelsPerMm( void )         { return pixelsPerMm; }
@@ -44,6 +41,7 @@ private:
     int numReticles;
     int pixelsPerMm;
     int catheterEdgePosition;
+    static depthSetting* theDepthManager;
 
     // prevent access to:
     depthSetting();  // default constructor

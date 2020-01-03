@@ -9,6 +9,17 @@
 #include "deviceSettings.h"
 #include "defaults.h"
 
+depthSetting* depthSetting::theDepthManager{nullptr};
+
+// Singleton
+depthSetting & depthSetting::Instance()
+{
+    if(!theDepthManager){
+        theDepthManager = new depthSetting();
+    }
+    return *theDepthManager;
+}
+
 /*
  * Constructor
  */
