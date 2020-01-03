@@ -339,9 +339,9 @@ bool WindowManager::enumerateMonitorNames()
  *
  * (e.g. "PCT2265")
  */
-void WindowManager::getFriendlyNameFromTarget( LUID adapterId, UINT32 targetId, int myMonitorEnum )
+void WindowManager::getFriendlyNameFromTarget( LUID /*adapterId*/, UINT32 targetId, int myMonitorEnum )
 {
-    LOG3(adapterId, targetId, myMonitorEnum)
+    LOG2(targetId, myMonitorEnum)
 //    DISPLAYCONFIG_TARGET_DEVICE_NAME deviceName;
 //    DISPLAYCONFIG_DEVICE_INFO_HEADER header;
 //    header.size = sizeof(DISPLAYCONFIG_TARGET_DEVICE_NAME);
@@ -383,8 +383,9 @@ void WindowManager::getFriendlyNameFromTarget( LUID adapterId, UINT32 targetId, 
  *
  * (e.g. \\.\DISPLAY4)
  */
-void WindowManager::getGDIDeviceNameFromSource( LUID adapterId, UINT32 sourceId )
+void WindowManager::getGDIDeviceNameFromSource( LUID /*adapterId*/, UINT32 sourceId )
 {
+    LOG1(sourceId)
 //    DISPLAYCONFIG_SOURCE_DEVICE_NAME deviceName;
 //    DISPLAYCONFIG_DEVICE_INFO_HEADER header;
 //    header.size = sizeof(DISPLAYCONFIG_SOURCE_DEVICE_NAME);
@@ -400,8 +401,9 @@ void WindowManager::getGDIDeviceNameFromSource( LUID adapterId, UINT32 sourceId 
  *
  * (e.g. \\?\DISPLAY#SAM0304#5&9a89472&0&UID33554704#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7})
  */
-void WindowManager::getMonitorDevicePathFromTarget( LUID adapterId, UINT32 targetId )
+void WindowManager::getMonitorDevicePathFromTarget( LUID /*adapterId*/, UINT32 targetId )
 {
+    LOG1(targetId)
 //    DISPLAYCONFIG_TARGET_DEVICE_NAME deviceName;
 //    DISPLAYCONFIG_DEVICE_INFO_HEADER header;
 //    header.size = sizeof(DISPLAYCONFIG_TARGET_DEVICE_NAME);

@@ -23,7 +23,7 @@ class styledMessageBox : public QDialog
     Q_OBJECT
 
 public:
-    explicit styledMessageBox(QWidget *parent = 0, QString msg = 0);
+    explicit styledMessageBox(QWidget *parent = nullptr, QString msg = QString());
     ~styledMessageBox();
     void setHasCancel( bool has, bool cancelIsDefault = false, bool hasOk = true );
     void setTitle( QString titleMsg );

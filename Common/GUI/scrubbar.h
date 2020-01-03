@@ -14,7 +14,7 @@ class scrubbar : public QSlider
 {
     Q_OBJECT
 public:
-    explicit scrubbar(QWidget *parent = 0);
+    explicit scrubbar(QWidget *parent = nullptr);
     
 signals:
     

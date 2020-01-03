@@ -26,9 +26,9 @@
 
 KeyBundle_t *checkSingleKey( KeyBundle_t *key );
 
-//namespace {
-//QMutex fileCheckMutex;
-//}
+namespace {
+QMutex fileCheckMutex;
+}
 
 /*
  * Constructor
