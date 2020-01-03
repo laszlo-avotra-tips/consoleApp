@@ -56,13 +56,16 @@ void deviceWizard::init( void )
 void deviceWizard::changeEvent( QEvent *e )
 {
     QWizard::changeEvent(e);
-    switch (e->type())
-    {
-    case QEvent::LanguageChange:
+//    switch (e->type())
+//    {
+//    case QEvent::LanguageChange:
+//        ui->retranslateUi(this);
+//        break;
+//    default:
+//        break;
+//    }
+    if(e->type() == QEvent::LanguageChange){
         ui->retranslateUi(this);
-        break;
-    default:
-        break;
     }
 }
 
@@ -78,7 +81,7 @@ void deviceWizard::keyPressEvent( QKeyEvent *e )
     deviceSettings &dev = deviceSettings::Instance();
 
     // Capture the ESC key and prevent it from closing the window if no current device exists.
-    if( dev.current() == NULL && e->key() == Qt::Key_Escape )
+    if( !dev.current() && e->key() == Qt::Key_Escape )
     {
         return;
     }
