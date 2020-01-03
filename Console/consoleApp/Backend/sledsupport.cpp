@@ -30,12 +30,22 @@
  * go         Print Ocelot Speed
  */
 
+SledSupport* SledSupport::theBoard{nullptr};
+
 // amount of time to wait for responses
 static const int SledCommDelay_ms = 20;
 static const int SledLoopDelay_ms = 200;
 
 // update clocking mode every second
 //static const int ClockingUpdateTimer_ms = 1000;
+
+SledSupport & SledSupport::Instance()
+{
+    if(!theBoard){
+        theBoard = new SledSupport();
+    }
+    return *theBoard;
+}
 
 /*
  * Constructor

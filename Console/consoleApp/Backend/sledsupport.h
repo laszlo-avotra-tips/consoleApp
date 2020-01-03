@@ -21,11 +21,7 @@ class SledSupport : public QThread
 
 public:
     // Singleton
-    static SledSupport & Instance()
-    {
-        static SledSupport theBoard;
-        return theBoard;
-    }
+    static SledSupport & Instance();
 
     // Initialize serial communication
     bool init( void );
@@ -165,6 +161,8 @@ private:
     QByteArray oSpeed1;
     QByteArray oSpeed2;
     QByteArray oSpeed3;
+
+    static SledSupport* theBoard;
 
 };
 
