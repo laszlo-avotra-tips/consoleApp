@@ -454,15 +454,15 @@ void sectorItem::render( void )
         for( int j = internalImagingMask_px; j < currentAlineLength_px; j++ )
         {
             // TIME_THIS_SCOPE( render_for_cached );
-            correctedRho = rhoCorrectionFactor * ( (float)j + catheterRadius_px - internalImagingMask_px );
-            v1 = (float)( (unsigned char)oldLine.at( j ) );  //XXX: float?
-            v2 = (float)( (unsigned char)newLine.at( j ) );
+            correctedRho = rhoCorrectionFactor * ( j + catheterRadius_px - internalImagingMask_px );
+            v1 = float( oldLine.at( j ) );
+            v2 = float( newLine.at( j ) );
 
             // As rho gets larger, we need to fill more points, but we can compute
             // how many we can safely skip at each rho to speed things up. It's
             // not necessary to fill at the same resolution close to the origin as
             // it is far away.
-            skipCount = floor_int( ( 1 / ( MinInterpolationAngle_rad * ( ( correctedRho * 2.5 ) + 1.0 ) ) ) + 0.5 );
+            skipCount = floor_int( ( 1.0f / ( float(MinInterpolationAngle_rad) * ( ( correctedRho * 2.5f ) + 1.0f ) ) ) + 0.5f );
             if( skipCount == 0 )
             {
                 skipCount++;

@@ -33,20 +33,6 @@
  * Constants and #defines
  */
 
-// Minimum angular resolution we try to fill in when interpolating
-const double MinInterpolationAngle_rad( MININTERPOLATIONANGLE_RAD );
-
-// How many angle samples to average to produce current angle value
-const int RotaryAverageWidth( 4 );
-
-// Default sector size
-const QSize sectorSize( SectorHeight_px, SectorWidth_px );
-
-// Default sector background color (black, opaque)
-const QColor backgroundColor( 0, 0, 0, 255 );
-
-// Integrator limit
-const int AngleIntLimit( 720 );
 
 /*
  * Class declarations
@@ -145,7 +131,7 @@ public:
     char *frameData()
     {
         sectorDecoratedImage = sectorImage->copy();
-        return( (char *)sectorDecoratedImage.bits() );
+        return reinterpret_cast<char *>(sectorDecoratedImage.bits() );
     }
     int getStatus( void )
     {
@@ -256,7 +242,7 @@ private:
 
     // rendering
     int interpDirection;
-    float interpMultiplier;
+//    float interpMultiplier;
 
     unsigned int timestamp;
     directionTracker::Direction_T currDirection;
@@ -270,6 +256,22 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+private:
+    // Integrator limit
+    const int AngleIntLimit {720};
+    // Minimum angular resolution we try to fill in when interpolating
+    const double MinInterpolationAngle_rad { MININTERPOLATIONANGLE_RAD };
+    // How many angle samples to average to produce current angle value
+    const int RotaryAverageWidth { 4 };
+    // Default sector size
+    const QSize sectorSize {SectorHeight_px, SectorWidth_px };
+    // Detect flip around 360 by a large instantaneous change in angle
+    const float CrossOverAngleChange_rad {3 * float( pi / 2)};
+    const float UnwrapMinOpacityAngle_deg {0.2f};
+    // Constants for rendering various things
+    const float UnwrapMaxOpacityAngle_deg {0.8f};
+
 };
 
 /*
@@ -278,7 +280,7 @@ protected:
 class overlayItem : public QGraphicsPixmapItem
 {
 public:
-    overlayItem( sectorItem *parent = 0 );
+    overlayItem( sectorItem *parent = nullptr );
     ~overlayItem();
     void render( void );
 private:
@@ -287,4 +289,8 @@ private:
     QImage     *overlayImage;
     sectorItem *parentSector;
     int reticleBrightness;
+
+    const QSize sectorSize {SectorHeight_px, SectorWidth_px };
+    // Reticle and indicator colors/pens/brushes
+    const QBrush ReticleBrush {Qt::NoBrush};
 };
