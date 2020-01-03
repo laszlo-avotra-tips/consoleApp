@@ -15,7 +15,7 @@
 #include "livescene.h"
 #include "defaults.h"
 #include <QImage>
-#include "Utility/usersettings.h"
+#include "Utility/userSettings.h"
 #include "depthsetting.h"
 #include "profiler.h"
 #include <QDateTime>
@@ -27,6 +27,8 @@
 QImage sampleMap( 10, 256, QImage::Format_Indexed8 );
 #endif
 
+QString timestampToString( unsigned long ts );
+
 // SceneWidth = sector drawing area. At a minimum, this needs to accommodate ( the 512 pixel radius +
 // the catheter radius ) * 2.
 const int SceneWidth( SectorWidth_px );
@@ -34,7 +36,7 @@ const int SceneHeight( SectorHeight_px + WaterfallHeight_px );
 const int ScreenRefreshRate_ms( 33 );
 
 const int TextHeight( 50 ); // Height of text rendered for video info
-const int TextWidth( SectorWidth_px / 4.25 ); // Width of text rendered for video info, sized to avoid sector edge
+const int TextWidth( int(SectorWidth_px / 4.25 ) ); // Width of text rendered for video info, sized to avoid sector edge
 const int TextInterlineSpacing( 5 ); // 5 pixels between lines of text
 const int LinesOfText( 3 );
 
@@ -51,13 +53,15 @@ liveScene::liveScene( QObject *parent )
     : QGraphicsScene( 0, 0, SceneWidth, SceneHeight, parent )
 {
 //	qDebug() << "***** liveScene constructor";
+    //lcv
+    LOG2(ClipStep_percent, ClipUpdateRate_ms)
     // Items for display
     sector = new sectorItem();
     sector->setData( SectorItemKey, "sector" );
-    addItem( (QGraphicsItem *)sector );
+    addItem( sector );
 
     wf = new waterfall();
-    addItem( (QGraphicsItem *)wf );
+    addItem( wf );
 
     // Background image rendering for movies
     videoSector = new sectorItem();
@@ -81,7 +85,7 @@ liveScene::liveScene( QObject *parent )
     overlays->setZValue( 100.0 );
     overlays->setVisible( true );
 
-    infoMessageItem = NULL;
+    infoMessageItem = nullptr;
     refreshTimer = new QTimer();
     connect( refreshTimer, SIGNAL( timeout() ), this, SLOT( refresh() ) );
     refreshTimer->start( ScreenRefreshRate_ms);//lcv
@@ -89,7 +93,7 @@ liveScene::liveScene( QObject *parent )
     infoRenderTimer = new QTimer();
     connect( infoRenderTimer, SIGNAL( timeout() ), this, SLOT( generateClipInfo() ) );
     infoRenderTimer->start( 100 );
-#pragma message("magic number here, fix")
+//lcv #pragma message("magic number here, fix")
 
     reviewing              = false;
     zoomFactor             = 1.0;
@@ -99,8 +103,8 @@ liveScene::liveScene( QObject *parent )
     isMeasureMode          = false;
     cachedCalibrationScale = -1; // default value
 
-    reviewSector    = NULL;
-    reviewWaterfall = NULL;
+    reviewSector    = nullptr;
+    reviewWaterfall = nullptr;
 
     connect( this, SIGNAL(capture(QImage,QImage,QImage,QString,unsigned int,int,float)), &capturer, SLOT(imageCapture(QImage,QImage,QImage,QString,uint,int,float)) );
     connect( this, SIGNAL(clipCapture(QImage,QImage,QString,unsigned int)), &capturer, SLOT(clipCapture(QImage,QImage,QString,unsigned int)) );
@@ -128,8 +132,8 @@ liveScene::liveScene( QObject *parent )
     sector->updateColorMap( currColorMap );
     wf->updateColorMap( currColorMap );
 
-    infoRenderBuffer = NULL;
-    infoImage = NULL;
+    infoRenderBuffer = nullptr;
+    infoImage = nullptr;
 
 //    clipPlayer = new videoDecoderItem();
 //    addItem( clipPlayer );
@@ -174,10 +178,10 @@ liveScene::liveScene( QObject *parent )
     }
 #endif
 
-    annotateOverlayItem      = NULL;
+    annotateOverlayItem      = nullptr;
     isAnnotateModeEnabled    = false;
 
-    areaOverlayItem          = NULL;
+    areaOverlayItem          = nullptr;
     isMeasurementEnabled = false;
 }
 
@@ -186,26 +190,26 @@ liveScene::liveScene( QObject *parent )
  */
 liveScene::~liveScene()
 {
-    if( sector != NULL )
+    if( sector )
     {
         delete sector;
     }
 
-    if( wf != NULL )
+    if( wf )
     {
         delete wf;
     }
 
-    if( refreshTimer != NULL )
+    if( refreshTimer )
     {
         delete refreshTimer;
     }
-    if( annotateOverlayItem != NULL )
+    if( annotateOverlayItem )
     {
         delete annotateOverlayItem;
     }
 
-    if( areaOverlayItem != NULL )
+    if( areaOverlayItem )
     {
         delete areaOverlayItem;
     }
@@ -229,11 +233,11 @@ void liveScene::setAnnotateMode( bool state, QColor color )
     }
     else
     {
-        if( annotateOverlayItem != NULL )
+        if( annotateOverlayItem )
         {
             this->removeItem( annotateOverlayItem );
             delete annotateOverlayItem;
-            annotateOverlayItem = NULL;
+            annotateOverlayItem = nullptr;
         }
     }
 }
@@ -267,7 +271,7 @@ void liveScene::refresh( void )
  * Given a sector and waterfall image, present the images on the scene
  * over the live view.
  */
-void liveScene::showReview( const QImage & sec, const QImage & wf )
+void liveScene::showReview( const QImage & sec, const QImage & waterFall )
 {
     if( reviewing )
     {
@@ -275,8 +279,8 @@ void liveScene::showReview( const QImage & sec, const QImage & wf )
         removeItem( reviewWaterfall );
         delete reviewSector;
         delete reviewWaterfall;
-        reviewSector    = NULL;
-        reviewWaterfall = NULL;
+        reviewSector    = nullptr;
+        reviewWaterfall = nullptr;
     }
 
     // turn off overlays during review
@@ -285,16 +289,16 @@ void liveScene::showReview( const QImage & sec, const QImage & wf )
     reviewing = true;
 
     reviewSector    = new QGraphicsPixmapItem( QPixmap::fromImage( sec ) );
-    reviewWaterfall = new QGraphicsPixmapItem( QPixmap::fromImage( wf ) );
+    reviewWaterfall = new QGraphicsPixmapItem( QPixmap::fromImage( waterFall ) );
 
     // place the waterfall relative to the sector image.  We use the width
     // here since the waterfall is saved in the correct rotation
-    reviewWaterfall->setPos( ( SceneWidth - wf.width() ) / 2, SectorHeight_px );
+    reviewWaterfall->setPos( ( SceneWidth - waterFall.width() ) / 2, SectorHeight_px );
     reviewWaterfall->setZValue( 5.0 );
     reviewSector->setZValue( 5.0 );
     reviewSector->setPos( 0, 0 );
-    addItem( (QGraphicsItem *)reviewWaterfall );
-    addItem( (QGraphicsItem *)reviewSector );
+    addItem( reviewWaterfall );
+    addItem( reviewSector );
 }
 
 /*
@@ -418,7 +422,7 @@ void liveScene::setClipForPlayback( QString name )
  * The transport, or other user, has requested to change position
  * within the currently playing clip.
  */
-void liveScene::seekWithinClip( qint64 pos )
+void liveScene::seekWithinClip( qint64 /*pos*/ )
 {
 //    clipPlayer->seek( pos );
 }
@@ -434,7 +438,7 @@ void liveScene::showMessage( QString message )
     {
         removeItem( infoMessageItem );
         delete infoMessageItem;
-        infoMessageItem = NULL;
+        infoMessageItem = nullptr;
     }
 
     infoMessageItem = new QGraphicsTextItem( );
@@ -526,7 +530,7 @@ void liveScene::rewindPlayback()
  */
 void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if( zoomFactor != 1.0 ) // no zoom
+    if( zoomFactor != 1.0f ) // no zoom
     {
         // capture the event; allows image review to pan and zoom
     } 
@@ -548,7 +552,7 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         if( mouseRotationEnabled )
         {
-            LOG( INFO, "Sector rotate" );
+            LOG( INFO, "Sector rotate" )
             // Grab the sector
             qApp->setOverrideCursor( Qt::ClosedHandCursor );
 
@@ -604,7 +608,7 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         // Update the video-only rendering for the current roation on the screen
         videoSector->setDisplayAngle( sector->getDisplayAngle() );
 
-        emit sendDisplayAngle( sector->getDisplayAngle() );
+        emit sendDisplayAngle( float(sector->getDisplayAngle()) );
     }
     else if( isAnnotateMode )
     {
@@ -642,16 +646,16 @@ void liveScene::dismissReviewImages( void )
     // Dismiss the images and clear messages and states
     if( reviewSector )
     {
-        LOG( INFO, "Image Review stopped" );
+        LOG( INFO, "Image Review stopped" )
         removeItem( reviewSector );
         delete reviewSector;
-        reviewSector = NULL;
+        reviewSector = nullptr;
     }
     if( reviewWaterfall )
     {
         removeItem( reviewWaterfall );
         delete reviewWaterfall;
-        reviewWaterfall = NULL;
+        reviewWaterfall = nullptr;
     }
 
     reviewing = false;
@@ -679,13 +683,13 @@ QString timestampToString( unsigned long ts )
      * hour, minutes, seconds since 00:00:00 Jan 1 1970
      */
     double hours = ts / 3600.0;
-    int    wholehours = floor( hours );
+    int    wholehours( int(floor(hours)) );
     double frachours = hours - wholehours;
 
     double minutes = frachours * 60.0;
-    int    wholemins = floor( minutes );
+    int    wholemins = int(floor( minutes ));
     double fracmins = minutes - wholemins;
-    int    seconds = fracmins * 60.0;
+    int    seconds = int(fracmins * 60.0);
 
     return QString( "%1:%2:%3" ).arg( wholehours % 24, 2, 10, QChar( '0' ) ).arg( wholemins % 60, 2, 10, QChar( '0' ) ).arg( seconds, 2, 10, QChar( '0' ) );
 }
@@ -705,7 +709,7 @@ void liveScene::generateClipInfo()
     QString timeString( QString( "%1" ).arg( timeStr, 8 ) );
     QString caseString( QString( devInfo.getCurrentDeviceName() ) );
 
-    int textSize = ( TextHeight * LinesOfText + TextInterlineSpacing ) * SectorWidth_px;
+    size_t textSize = ( TextHeight * LinesOfText + TextInterlineSpacing ) * SectorWidth_px;
     if ( !infoImage )
     {
         infoImage = new QImage( SectorWidth_px, TextHeight * LinesOfText + TextInterlineSpacing, QImage::Format_RGB32 );
@@ -719,7 +723,7 @@ void liveScene::generateClipInfo()
 
     if ( !infoRenderBuffer )
     {
-        infoRenderBuffer = (char *)malloc( textSize );
+        infoRenderBuffer = static_cast<char *>(malloc( textSize ) );
     }
     QPainter p( infoImage );
     p.fillRect(0, 0, SectorWidth_px, TextHeight * LinesOfText + TextInterlineSpacing, Qt::black );
@@ -784,7 +788,7 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
             memcpy( ( buffer + ( SectorWidth_px * ( SectorHeight_px - dirRingImageHeight_px ) / 2 ) \
                     - ( ( SectorWidth_px + dirRingImageHeight_px ) / 2 ) + ( i * SectorWidth_px ) ),
                     ( pDirRingImage->bits() + ( i * ( dirRingImageHeight_px ) ) ),
-                    dirRingImageHeight_px );
+                    size_t(dirRingImageHeight_px ) );
         }
     }
 
@@ -813,7 +817,7 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
             memcpy( ( buffer + ( SectorWidth_px * ( SectorHeight_px - dirRingImageHeight_px ) / 2 ) \
                     - ( ( SectorWidth_px + dirRingImageHeight_px ) / 2 ) + ( i * SectorWidth_px ) ),
                     ( pDirRingImage->bits() + ( i * ( dirRingImageHeight_px ) ) ),
-                    dirRingImageHeight_px );
+                    size_t(dirRingImageHeight_px ) );
         }
 
     }
@@ -828,7 +832,7 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
     {
         memcpy( buffer + ( i * SectorWidth_px ) + ( SectorWidth_px - infoLogoImage.width() ),
                 logoBits + ( i * ( infoLogoImage.width() + 1 ) ),
-                infoLogoImage.width() );
+                size_t(infoLogoImage.width() ) );
     }
 }
 
@@ -870,7 +874,7 @@ void liveScene::loadColormap( QString colormapFile )
 {
     QFile *input = new QFile( colormapFile );
 
-    if( input == NULL )
+    if( !input )
     {
         // warn and do not update the colormap
         emit sendWarning( tr( "Could not create QFile to load colormap data" ) );
@@ -940,7 +944,7 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
 
     if( isMeasureMode )
     {
-        areaOverlayItem = new AreaMeasurementOverlay( 0 );
+        areaOverlayItem = new AreaMeasurementOverlay( nullptr );
         this->addItem( areaOverlayItem );
         areaOverlayItem->setZValue( 6.0 );
         areaOverlayItem->setColor( color );
@@ -948,11 +952,11 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
     }
     else
     {
-        if( areaOverlayItem != NULL )
+        if( areaOverlayItem )
         {
             this->removeItem( areaOverlayItem );
             delete areaOverlayItem;
-            areaOverlayItem = NULL;
+            areaOverlayItem = nullptr;
         }
     }
 }
@@ -970,11 +974,11 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
  * it is necessary to cache the scale value and apply it when measurements are
  * enabled.
  */
-void liveScene::setCalibrationScale( int pixelsPerMm, float zoomFactor )
+void liveScene::setCalibrationScale( int pixelsPerMm, float zoomFactorValue )
 {
     cachedCalibrationScale = pixelsPerMm;
-    cachedCalibrationScale *= zoomFactor;
-    if( areaOverlayItem != NULL )
+    cachedCalibrationScale = int( cachedCalibrationScale * zoomFactorValue);
+    if( areaOverlayItem != nullptr )
     {
         areaOverlayItem->setCalibrationScale( cachedCalibrationScale );
     }
