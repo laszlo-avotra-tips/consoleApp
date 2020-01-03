@@ -22,6 +22,18 @@
 #include <QSettings>
 #include <QMessageBox>
 #include "logger.h"
+
+deviceSettings* deviceSettings::theSettings{nullptr};
+
+// singleton
+deviceSettings & deviceSettings::Instance()
+{
+    if(!theSettings){
+        theSettings = new deviceSettings();
+    }
+    return *theSettings;
+}
+
 /*
  * constructor
  */

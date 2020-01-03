@@ -174,12 +174,7 @@ class deviceSettings : public QObject
 
 public:
     // singleton
-    static deviceSettings & Instance()
-    {
-        static deviceSettings theSettings;
-        return theSettings;
-    }
-
+    static deviceSettings & Instance();
     int init( void );
 
     void setCurrentDevice( int devIndex )
@@ -232,6 +227,7 @@ private:
     int currentDevice;
     QList<device *> deviceList;
     QSettings *settings;
+    static deviceSettings* theSettings;
 
     deviceSettings();
     ~deviceSettings();

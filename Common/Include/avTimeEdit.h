@@ -22,7 +22,7 @@ class avTimeEdit : public QTimeEdit
 {
 Q_OBJECT
 public:
-    explicit avTimeEdit(QWidget *parent = 0);
+    explicit avTimeEdit(QWidget *parent = nullptr);
 
 signals:
     void userUpdate();
