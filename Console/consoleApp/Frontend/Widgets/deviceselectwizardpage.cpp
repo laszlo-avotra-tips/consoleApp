@@ -42,13 +42,16 @@ deviceSelectWizardPage::~deviceSelectWizardPage()
 void deviceSelectWizardPage::changeEvent(QEvent *e)
 {
     QWizardPage::changeEvent(e);
-    switch (e->type()) 
-    {
-    case QEvent::LanguageChange:
+//    switch (e->type())
+//    {
+//    case QEvent::LanguageChange:
+//        ui->retranslateUi(this);
+//        break;
+//    default:
+//        break;
+//    }
+    if( e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-        break;
-    default:
-        break;
     }
 }
 
@@ -102,13 +105,13 @@ void deviceSelectWizardPage::populateList(void)
         li->setTextAlignment( Qt::AlignHCenter );
 
         // add 20 px spacing on sides, add 2.2xfontHeight in vertical
-        li->setSizeHint( QSize( d->getIcon().size() + QSize( 20, 2.2 * fontHeight ) ) );
+        li->setSizeHint( QSize( d->getIcon().size() + QSize( 20, int(2.2 * fontHeight )) ) );
     }
 }
 
 bool deviceSelectWizardPage::isComplete(void) const
 {
-    if( ui->listWidget->currentItem() != NULL )
+    if( ui->listWidget->currentItem() )
     {
         return true;
     }
