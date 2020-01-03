@@ -17,6 +17,16 @@
 #include "buildflags.h"
 #include "util.h"
 
+DaqSettings* DaqSettings::theSettings{nullptr};
+
+// Singleton
+DaqSettings & DaqSettings::Instance() {
+    if(!theSettings){
+        theSettings = new DaqSettings();
+    }
+    return *theSettings;
+}
+
 /*
  * Constructor
  */

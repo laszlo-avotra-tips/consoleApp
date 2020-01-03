@@ -19,17 +19,14 @@
 
 // ATS DAQ records must be aligned at specific boundaries. Records may shift within
 // a buffer if alingment requirements are not met.
-const int DaqRecordSampleAlignment = 32;  // ATS9462
+//const int DaqRecordSampleAlignment = 32;  // ATS9462
 
 class DaqSettings
 {
 
 public:
     // Singleton
-    static DaqSettings & Instance() {
-        static DaqSettings theSettings;
-        return theSettings;
-    }
+    static DaqSettings & Instance();
 
     bool init( void );
     void load( void );
@@ -65,6 +62,9 @@ private:
     unsigned short encoderCounts;
 
     bool isReady;
+    const ulong DaqRecordSampleAlignment {32};  // ATS9462
+    static DaqSettings* theSettings;
+
 };
 
 #endif  // DAQSETTINGS_H_
