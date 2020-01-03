@@ -19,9 +19,9 @@
 #include "util.h"
 #include "logger.h"
 
-const long PdbDigitalVoltageLow  = 0;
-const long PdbDigitalVoltageHigh = 1;
-const int  PdbSleepTime_ms       = 100;
+//const long PdbDigitalVoltageLow  = 0;
+//const long PdbDigitalVoltageHigh = 1;
+//const int  PdbSleepTime_ms       = 100;
 
 /*
  * powerOn

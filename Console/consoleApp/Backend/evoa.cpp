@@ -60,7 +60,7 @@ bool EVOA::setVoltage( double val, QString statusLabel )
     {
         currVoltage_v = val;
         currStatus = statusLabel;
-        LOG( INFO, QString( "EVOA voltage(V)      = %1, status = %2" ).arg( currVoltage_v ).arg( currStatus ) );
+        LOG( INFO, QString( "EVOA voltage(V)      = %1, status = %2" ).arg( currVoltage_v ).arg( currStatus ) )
         emit valueChanged( currVoltage_v );
         emit statusChanged( currStatus );    // set status label
     }
@@ -69,7 +69,7 @@ bool EVOA::setVoltage( double val, QString statusLabel )
         QString str = "EVOA failed trying to set voltage.";
         str.append( "Attempting: %1(V), Min: %2(V), Max: %3(V)" );
         str.arg( val ).arg( EvoaMinVoltage_v ).arg( EvoaMaxVoltage_v );
-        LOG( WARNING, str );
+        LOG( WARNING, str )
     }
 
     return status;
@@ -108,7 +108,7 @@ void EVOA::updateVoltage( double newVoltage )
         QString str = "EVOA failed trying to set voltage outside allowed range.";
         str.append( "Attempting: %1(V), Min: %2(V), Max: %3(V)" );
         str.arg( newVoltage ).arg( EvoaMinVoltage_v ).arg( EvoaMaxVoltage_v );
-        LOG( WARNING, str );
+        LOG( WARNING, str )
     }
 }
 
@@ -119,7 +119,7 @@ void EVOA::updateVoltage( double newVoltage )
  */
 void EVOA::calculateScaleFactor( int numChunks )
 {
-    scale = ( EvoaMaxVoltage_v - EvoaMinVoltage_v ) / (float)( numChunks - 1 );
+    scale = ( EvoaMaxVoltage_v - EvoaMinVoltage_v ) / double( numChunks - 1 );
 }
 
 /*

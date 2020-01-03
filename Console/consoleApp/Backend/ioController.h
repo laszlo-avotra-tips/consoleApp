@@ -13,8 +13,8 @@
 
 #include <QObject>
 #include <QMutex>
-#include <windows.h>
-#include "oldaapi.h"
+#include <Windows.h>
+#include "OLDAAPI.H"
 
 class ioController : public QObject
 {

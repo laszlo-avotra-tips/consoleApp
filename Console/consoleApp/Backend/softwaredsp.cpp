@@ -374,6 +374,7 @@ void SoftwareDSP::checkInitFFTStructs( void )
  */
 bool SoftwareDSP::transformData_sw( unsigned short *data )
 {
+    LOG1(data)
 //    TIME_THIS_SCOPE( dsp_transformData );
 
 //    IppStatus status = ippStsNoErr;
@@ -539,6 +540,7 @@ bool SoftwareDSP::adjustForDisplay( const unsigned short * const pFftData,
                                     unsigned char * pDisplayData,
                                     const int BufferSize )
 {
+    LOG3(pFftData,pDisplayData,BufferSize)
 //    TIME_THIS_SCOPE( dsp_adjustForDisplay );
 
 //    // ipp doesn't respect the const pointer and const data input; copy
@@ -613,6 +615,7 @@ bool SoftwareDSP::adjustForDisplay( const unsigned short * const pFftData,
  */
 int SoftwareDSP::computeEncoderAngle( unsigned short *data, int length )
 {
+    LOG2(data,length)
 //    TIME_THIS_SCOPE( dsp_computeEncoderAngle );
 
 //    // Max difference allowed between measurements at the start and finish

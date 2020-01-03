@@ -18,16 +18,18 @@
 #include "defaults.h"
 #include "deviceSettings.h"
 
-const double       IocPositiveDaqResolution_cnts = 2048; // resolution is (1/2)*2^12 from 0-10V.
-const double       IocPositiveVoltageRange_v     = 10.0;
-const double       IocCountsPerVolt  = IocPositiveDaqResolution_cnts / IocPositiveVoltageRange_v;
-const double       IocEvoaGain_Ch0         = 1.0;
-const double       IocLaserPowerGain_Ch0   = 1.0;
-const unsigned int IocEvoaChannel          = 0;
-const unsigned int IocLaserPowerChannel    = 0;
+BOOL CALLBACK GetDriver( LPSTR ioControllerLpszName, LPSTR ioControllerLpszEntry, LPARAM ioControllerLParam );
+//lcv
+//const double       IocPositiveDaqResolution_cnts = 2048; // resolution is (1/2)*2^12 from 0-10V.
+//const double       IocPositiveVoltageRange_v     = 10.0;
+//const double       IocCountsPerVolt  = IocPositiveDaqResolution_cnts / IocPositiveVoltageRange_v;
+//const double       IocEvoaGain_Ch0         = 1.0;
+//const double       IocLaserPowerGain_Ch0   = 1.0;
+//const unsigned int IocEvoaChannel          = 0;
+//const unsigned int IocLaserPowerChannel    = 0;
 
 #define STRLEN 80     // string size for general text manipulation
-char iocStr[STRLEN];  // global string for general text manipulation
+//char iocStr[STRLEN];  // global string for general text manipulation
 
 typedef struct tag_board      // DAC struct for identifying device
 {
@@ -39,7 +41,8 @@ typedef struct tag_board      // DAC struct for identifying device
 } BOARD;
 
 typedef BOARD FAR* LPBOARD;
-BOARD board;
+
+//BOARD board;
 
 /*
  * Constructor
@@ -74,6 +77,7 @@ ioController::~ioController()
  */
 BOOL CALLBACK GetDriver( LPSTR ioControllerLpszName, LPSTR ioControllerLpszEntry, LPARAM ioControllerLParam )
 {
+    LOG3(ioControllerLpszName,ioControllerLpszEntry,ioControllerLParam)
 //    LPBOARD lpboard = (LPBOARD)(LPVOID)ioControllerLParam;
 
 //    /* fill in board strings */
@@ -122,6 +126,7 @@ bool ioController::queryDevice( void )
 bool ioController::configureModule( ioModule *module )
 {
     bool  status = true;
+    LOG1(module)
 //    ECODE retVal = 0;
 //    if( !module->isEnabled )
 //    {
@@ -292,6 +297,7 @@ bool ioController::isReady( void )
 bool ioController::setAnalogVoltageOut( double val )
 {
     bool  status = true;
+    LOG1(val)
 //    ECODE retVal = 0;
 
 //    // Convert val from volts to counts.
@@ -336,6 +342,7 @@ bool ioController::setAnalogVoltageOut( double val )
 bool ioController::setDigitalVoltageOut( long val )
 {
     bool  status = true;
+    LOG1(val)
 //    ECODE retVal = 0;
 //    // Verify that the board is ready
 //    if( !digitalOutModule.isEnabled )

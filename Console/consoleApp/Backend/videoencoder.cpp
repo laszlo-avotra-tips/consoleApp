@@ -87,8 +87,9 @@ void videoEncoder::run(void)
  * This sets up a buffer with the format and size we want for
  * encoding.
  */
-AVFrame *videoEncoder::allocatePicture(int pixelFormat, int width, int height)
+AVFrame *videoEncoder::allocatePicture(int pixelFormat, int w, int h)
 {
+    LOG3(pixelFormat,w,h)
 //    AVFrame *p = nullptr;
 //    int size;
 
@@ -214,6 +215,7 @@ bool videoEncoder::initVideo(void)
  */
 AVStream *videoEncoder::addVideoStream(int codecId)
 {
+    LOG1(codecId)
 //    AVStream *stream = nullptr;
 //    AVCodecContext *codecCtx;
 
@@ -386,6 +388,7 @@ __declspec(naked)
  */
 void videoEncoder::addFrame(char *frameData)
 {
+    LOG1(frameData)
 //    int outSize = -2;
 //    int retval = 0;
 //    AVCodecContext *codecCtx;

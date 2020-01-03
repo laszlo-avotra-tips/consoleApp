@@ -41,8 +41,8 @@ public slots:
     void setAveraging( bool enable ) { doAveraging = enable; }
     void setFrameAverageWeights( int inPrevFrameWeight_percent, int inCurrFrameWeight_percent )
     {
-        prevFrameWeight_percent = inPrevFrameWeight_percent / 100.0;
-        currFrameWeight_percent = inCurrFrameWeight_percent / 100.0;
+        prevFrameWeight_percent = inPrevFrameWeight_percent / 100.0f;
+        currFrameWeight_percent = inCurrFrameWeight_percent / 100.0f;
     }
     void setDisplayAngle( float angle ) { displayAngle_deg = angle; }
 

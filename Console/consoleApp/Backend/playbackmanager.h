@@ -35,7 +35,7 @@ public:
     int frameIndex() const;
     void startPlayback();
     void stopPlayback();
-    void setPlaybackSpeed(int speed);
+    void setPlaybackSpeed(unsigned long speed);
 
     unsigned long playbackLoopSleep() const;
 

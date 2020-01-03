@@ -422,6 +422,8 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
     QTime buildTimer;
     buildTimer.start();
 
+    LOG3(kernelName,program,kernel)
+
 //    int err;
 
 //    /*
@@ -746,6 +748,7 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
  */
 bool DSPGPU::createCLMemObjects( cl_context context )
 {
+    LOG1(&context)
 //    int err;
 
 //    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
@@ -816,6 +819,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
  */
 bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 {
+    LOG2(dispData,videoData)
 //   clAmdFftStatus fftStatus;
 //   int            clStatus;
 //   int            averageVal   = (int)doAveraging;
@@ -1070,6 +1074,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
  */
 unsigned int DSPGPU::rescale( const unsigned short *inputData )
 {
+    LOG1(inputData)
 //    TIME_THIS_SCOPE( dsp_rescale );
 //    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
 //    int err = clEnqueueWriteBuffer( cl_Commands,

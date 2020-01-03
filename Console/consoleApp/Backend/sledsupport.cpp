@@ -37,40 +37,6 @@ static const int SledLoopDelay_ms = 200;
 // update clocking mode every second
 //static const int ClockingUpdateTimer_ms = 1000;
 
-// Commands for accessing the Sled Support Board
-const char SetClockingGain[]     = "scg";
-const char SetClockingOffset[]   = "sco";
-const char SetClockingMode[]     = "sc";
-const char SetSpeed[]            = "ss";
-const char SetSled[]             = "sr";
-const char SetSledOn[]           = "sr1\r";
-const char SetSledOff[]          = "sr0\r";
-const char SetTorque[]           = "sto";
-const char SetLimitTime[]        = "sti";
-const char SetDirection[]        = "sd";
-const char SetLimitBlink[]       = "sbl";
-const char SetButtonMulti[]      = "sbm";
-const char GetClockingGain[]     = "gcg\r";
-const char GetClockingOffset[]   = "gco\r";
-const char GetClockingMode[]     = "gc\r";
-const char GetSpeed[]            = "gs\r";
-const char GetTorque[]           = "gto\r";
-const char GetLimitTime[]        = "gti\r";
-const char GetFirmwareVersions[] = "gv\r";
-const char GetRunningState[]     = "gr\r";
-
-// Avaialble commands for future extention. Currently unused.
-//const char GetCurrentSpeed[]     = "gs\r";
-const char SetOcelotSpeed2[]     = "so2\r";
-const char GetOcelotSpeed[]      = "go\r";
-//const char GetRunningState[]     = "gr\r";
-
-//QByteArray resp;
-QByteArray lastSpeed = "1000";
-QByteArray oSpeed1;
-QByteArray oSpeed2;
-QByteArray oSpeed3;
-
 /*
  * Constructor
  *
@@ -110,6 +76,7 @@ bool SledSupport::writeSerial(QByteArray command)
 {
     //qDebug() << "Command to write: " << command;
     bool retVal = true;
+    LOG1(&command)
 //    if( ftHandle )
 //    {
 //        int  cmdSize = command.size();
@@ -523,6 +490,7 @@ void SledSupport::startSled()
 
 void SledSupport::setSledRotation( int dir )
 {
+    LOG1(dir)
 //    deviceSettings &dev = deviceSettings::Instance();
 //    int direction = dev.current()->getRotation();
 //    qDebug() << "**** sledsupport::setSledRotation()" << direction << dir;
@@ -759,6 +727,7 @@ void SledSupport::setSledSpeed(QByteArray speed)
 */
 void SledSupport::setSledDirection( QByteArray dir )
 {
+    LOG1(dir)
 //    if( ftHandle )
 //    {
 //        qDebug() << "*** sledsupport::setDirection(): " << dir;
@@ -877,6 +846,7 @@ void SledSupport::setSledLimitTime(QByteArray limit)
 
 void SledSupport::setSledLimitBlink(int blink)
 {
+    LOG1(blink)
 //    if( ( blink != 0 ) || ( blink != 1 ) )
 //    {
 //        return;

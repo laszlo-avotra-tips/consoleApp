@@ -130,6 +130,42 @@ private:
     ~SledSupport();                                 //   default destructor
     SledSupport( SledSupport const & );             //   copy
     SledSupport & operator=( SledSupport const & ); //   assign
+
+private:
+    // Commands for accessing the Sled Support Board
+    const char* SetClockingGain     {"scg"};
+    const char* SetClockingOffset   {"sco"};
+    const char* SetClockingMode     {"sc"};
+    const char* SetSpeed            {"ss"};
+
+    const char* SetSled             {"sr"};
+    const char* SetSledOn           {"sr1\r"};
+    const char* SetSledOff          {"sr0\r"};
+    const char* SetTorque           {"sto"};
+    const char* SetLimitTime        {"sti"};
+    const char* SetDirection        {"sd"};
+    const char* SetLimitBlink       {"sbl"};
+    const char* SetButtonMulti      {"sbm"};
+
+    const char* GetClockingGain     = "gcg\r";
+    const char* GetClockingOffset   = "gco\r";
+    const char* GetClockingMode     = "gc\r";
+    const char* GetSpeed            = "gs\r";
+    const char* GetTorque           = "gto\r";
+    const char* GetLimitTime        = "gti\r";
+    const char* GetFirmwareVersions = "gv\r";
+    const char* GetRunningState     = "gr\r";
+
+//     Avaialble commands for future extention. Currently unused.
+    const char* GetCurrentSpeed     = "gs\r";
+    const char* SetOcelotSpeed2     = "so2\r";
+    const char* GetOcelotSpeed      = "go\r";
+
+    QByteArray lastSpeed {"1000"};
+    QByteArray oSpeed1;
+    QByteArray oSpeed2;
+    QByteArray oSpeed3;
+
 };
 
 #endif // SLEDSUPPORT_H

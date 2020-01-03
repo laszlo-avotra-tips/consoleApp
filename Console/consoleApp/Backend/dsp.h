@@ -54,8 +54,8 @@ signals:
     void sendError( QString );
 
 public slots:
-    void setBlackLevel( int val ) { blackLevel = (float)val; }
-    void setWhiteLevel( int val ) { whiteLevel = (float)val; }
+    void setBlackLevel( int val ) { blackLevel = val; }
+    void setWhiteLevel( int val ) { whiteLevel = val; }
     void stop( void ) { isRunning = false; }
     void updateCatheterView();
 //    {
@@ -91,9 +91,9 @@ private:
     {
         Major = 6,
 #ifdef WIN32
-        Minor = 0,
+        Minor = 0
 #else
-        Minor = 1,
+        Minor = 1
 #endif
     };
 

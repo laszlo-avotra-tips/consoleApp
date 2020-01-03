@@ -64,12 +64,12 @@
  *    > LF
  */
 
-const QString LaserWarningMessage( QObject::tr( "Unable to talk to the laser.\n\nPlease contact Avinger Service at %1." ).arg( ServiceNumber ) );
+//const QString LaserWarningMessage( QObject::tr( "Unable to talk to the laser.\n\nPlease contact Avinger Service at %1." ).arg( ServiceNumber ) );
 
-// Commands for accessing the Santec laser
-const char DiodeOn[]       = "LO\r";
-const char DiodeOff[]      = "LF\r";
-const char LaserStatus[]   = "DI\r";
+//// Commands for accessing the Santec laser
+//const char DiodeOn[]       = "LO\r";
+//const char DiodeOff[]      = "LF\r";
+//const char LaserStatus[]   = "DI\r";
 
 
 /*
@@ -285,11 +285,11 @@ bool Laser::isDiodeOn()
     return( status );
 }
 
-#ifndef Q_WS_WIN
-void Sleep(int ms) {
-//lcv	usleep(ms * 1000);
-}
-#endif
+//#ifndef Q_WS_WIN
+//void Sleep(int ms) {
+////lcv	usleep(ms * 1000);
+//}
+//#endif
 
 /*
  * getResponse

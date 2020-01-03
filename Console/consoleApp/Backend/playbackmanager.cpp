@@ -12,7 +12,7 @@ PlaybackManager *PlaybackManager::instance()
 {
     if(!m_instance){
         m_instance = new PlaybackManager();
-        LOG1(m_instance);
+        LOG1(m_instance)
     }
     return m_instance;
 }
@@ -50,12 +50,12 @@ void PlaybackManager::retrieveFrameData(int index, const void *buffer)
 void PlaybackManager::saveBuffer(const QString &fn)
 {
     if(!fn.isEmpty()){
-        LOG1(fn);
+        LOG1(fn)
         QFile outFile(fn);
         if(!outFile.open(QIODevice::WriteOnly)){
             QString errorMsg("error openeing file ");
             errorMsg += fn;
-            LOG1(errorMsg);
+            LOG1(errorMsg)
             return;
         }
 
@@ -72,7 +72,7 @@ void PlaybackManager::saveBuffer(const QString &fn)
                 auto size = it->second.second;
                 qds.writeRawData(pData, size);
                 if((i == 0) || (i == 194) || (i == 195)){
-                    LOG3(id,pBuffer,size);
+                    LOG3(id,pBuffer,size)
                 }
                 ++i;
             }
@@ -84,12 +84,12 @@ void PlaybackManager::loadBuffer(const QString &fn)
 {
     if(!fn.isEmpty()){
 //        m_isPlayback = true;
-        LOG2(m_isPlayback, fn);
+        LOG2(m_isPlayback, fn)
         QFile inFile(fn);
         if(!inFile.open(QIODevice::ReadOnly)){
             QString errorMsg("error openeing file ");
             errorMsg += fn;
-            LOG1(errorMsg);
+            LOG1(errorMsg)
             return;
         }
 
@@ -103,16 +103,16 @@ void PlaybackManager::loadBuffer(const QString &fn)
             if(readCount != pointerSizePair.second){
                 QString errorMsg("file read error at index ");
                 errorMsg += QString::number(it->first);
-                LOG1(errorMsg);
+                LOG1(errorMsg)
             }
             ++frameCount;
 //            LOG2(readCount,pointerSizePair.first);
         }
-#if QT_NO_DEBUG
-        const auto frameIt = m_frameBufferContainer.begin();
-        m_frameQueue.push(frameIt->first, frameIt->second.first, frameIt->second.second);
-#endif
-        LOG2(m_isPlayback, frameCount);
+//#if QT_NO_DEBUG
+//        const auto frameIt = m_frameBufferContainer.begin();
+//        m_frameQueue.push(frameIt->first, frameIt->second.first, frameIt->second.second);
+//#endif
+        LOG2(m_isPlayback, frameCount)
         emit framesAvailable(frameCount);
     }
 }
@@ -174,7 +174,7 @@ void PlaybackManager::setCount(int count, int index)
 void PlaybackManager::singleStep()
 {
     m_isSingleStep = true;
-    LOG1(m_isSingleStep);
+    LOG1(m_isSingleStep)
 }
 
 unsigned long PlaybackManager::playbackLoopSleep() const
@@ -185,16 +185,16 @@ unsigned long PlaybackManager::playbackLoopSleep() const
 void PlaybackManager::startPlayback()
 {
     m_isPlayback = true;
-    LOG1(m_isPlayback);
+    LOG1(m_isPlayback)
 }
 
 void PlaybackManager::stopPlayback()
 {
     m_isPlayback = false;
-    LOG1(m_isPlayback);
+    LOG1(m_isPlayback)
 }
 
-void PlaybackManager::setPlaybackSpeed(int speed)
+void PlaybackManager::setPlaybackSpeed(unsigned long speed)
 {
     unsigned long maxSleep(1030);
     m_playbackLoopSleep = maxSleep - speed;
@@ -218,7 +218,7 @@ int PlaybackManager::queueSize() const
 void PlaybackManager::printCache()
 {
     while(!m_validFrameIndexCache.empty()){
-        LOG1(m_validFrameIndexCache.front());
+        LOG1(m_validFrameIndexCache.front())
         m_validFrameIndexCache.pop();
     }
 }

@@ -17,10 +17,10 @@ FileDaq::FileDaq(): m_isConfigured(false),m_dsp(nullptr),
 
     if( !settings.init() )
     {
-        LOG( WARNING, "Unable to load DAQ Settings." );
+        LOG( WARNING, "Unable to load DAQ Settings." )
     }
 
-    LOG2(m_count1, m_count2);
+    LOG2(m_count1, m_count2)
 }
 
 FileDaq::~FileDaq()
@@ -31,7 +31,7 @@ FileDaq::~FileDaq()
 void FileDaq::init()
 {
     m_isRunning = true;
-    LOG2(m_count1, m_count2);
+    LOG2(m_count1, m_count2)
 
     // Create the DSP
     m_dsp = new DSPGPU();
@@ -49,22 +49,22 @@ void FileDaq::init()
     }
 
     U8  bitsPerSample        = 16;
-    int bytesPerSample   = ( bitsPerSample + 7 ) / 8;
+    U32 bytesPerSample   = ( bitsPerSample + 7 ) / 8;
     U32 preTriggerSamples = DaqSettings::Instance().getPreDepth();
     U32 postTriggerSamples = DaqSettings::Instance().getRecordLength() - preTriggerSamples;
     U32 samplesPerRecord = preTriggerSamples + postTriggerSamples;
-    int bytesPerRecord   = bytesPerSample * int(samplesPerRecord);
+    U32 bytesPerRecord   = bytesPerSample * samplesPerRecord;
 
-    int recordsPerBuffer = deviceSettings::Instance().current()->getLinesPerRevolution();
+    U32 recordsPerBuffer = U32(deviceSettings::Instance().current()->getLinesPerRevolution());
 
-    int channelCount = 1;
-    int bytesPerBuffer = bytesPerRecord * recordsPerBuffer * channelCount;
+    U32 channelCount = 1;
+    U32 bytesPerBuffer = bytesPerRecord * recordsPerBuffer * channelCount;
 
     // initialize the DSP thread
     m_dsp->init( DaqSettings::Instance().getRecordLength(),
                U16(deviceSettings::Instance().current()->getLinesPerRevolution()),
                bytesPerRecord,
-               bytesPerBuffer, channelCount );
+               bytesPerBuffer, int(channelCount) );
 
     emit attenuateLaser( false );
 }
@@ -83,7 +83,7 @@ void FileDaq::run()
         yieldCurrentThread();
     }
 
-    LOG1(m_isConfigured);
+    LOG1(m_isConfigured)
 
     // prevent multiple, simultaneous starts
     if( !m_isRunning )
@@ -128,7 +128,7 @@ void FileDaq::run()
             if(PlaybackManager::instance()->isPlayback()){
                 msleep(PlaybackManager::instance()->playbackLoopSleep());
             }
-            LOG2(tgi->getGDaqRawData_idx(), tgi->getGFrameCounter());
+            LOG2(tgi->getGDaqRawData_idx(), tgi->getGFrameCounter())
         }
 
         ++m_count1;
@@ -144,13 +144,13 @@ void FileDaq::run()
 
     }
 
-    LOG3(m_count1,m_count2,m_count1-m_count2);
+    LOG3(m_count1,m_count2,m_count1-m_count2)
 }
 
 void FileDaq::stop()
 {
     m_isRunning = false;
-    LOG1(m_isRunning);
+    LOG1(m_isRunning)
 }
 
 void FileDaq::pause()

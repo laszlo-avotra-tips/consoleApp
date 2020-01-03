@@ -68,7 +68,7 @@ signals:
 
 private:
     bool init(void);
-    AVFrame *allocatePicture(int pixelFormat, int width, int height);
+    AVFrame *allocatePicture(int pixelFormat, int w, int h);
     bool initVideo(void);
     AVStream *addVideoStream(int codecId);
     void copyFrame(AVFrame *frame, char *frameData, AVCodecContext *codecCtx);
