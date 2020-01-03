@@ -454,15 +454,15 @@ void sectorItem::render( void )
         for( int j = internalImagingMask_px; j < currentAlineLength_px; j++ )
         {
             // TIME_THIS_SCOPE( render_for_cached );
-            correctedRho = rhoCorrectionFactor * ( (float)j + catheterRadius_px - internalImagingMask_px );
-            v1 = (float)( (unsigned char)oldLine.at( j ) );  //XXX: float?
-            v2 = (float)( (unsigned char)newLine.at( j ) );
+            correctedRho = rhoCorrectionFactor * ( j + catheterRadius_px - internalImagingMask_px );
+            v1 = float( oldLine.at( j ) );
+            v2 = float( newLine.at( j ) );
 
             // As rho gets larger, we need to fill more points, but we can compute
             // how many we can safely skip at each rho to speed things up. It's
             // not necessary to fill at the same resolution close to the origin as
             // it is far away.
-            skipCount = floor_int( ( 1 / ( MinInterpolationAngle_rad * ( ( correctedRho * 2.5 ) + 1.0 ) ) ) + 0.5 );
+            skipCount = floor_int( ( 1.0f / ( float(MinInterpolationAngle_rad) * ( ( correctedRho * 2.5f ) + 1.0f ) ) ) + 0.5f );
             if( skipCount == 0 )
             {
                 skipCount++;
@@ -471,7 +471,7 @@ void sectorItem::render( void )
             for( i = 0; i < numberOfLinesToFill; i += skipCount )
             {
                 interpAngle_rad = lastAngle_rad + i * interpMultiplier;
-                drawPoint = quickTrig.lookupPosition( correctedRho, interpAngle_rad );
+                drawPoint = quickTrig.lookupPosition( int(correctedRho), double(interpAngle_rad) );
 
                 // The interpolation formula has to account for which
                 // direction we are progressing, otherwise the change in
@@ -486,19 +486,20 @@ void sectorItem::render( void )
 
                 // We aren't really interpolating in rho: we don't really need to we since are
                 // 1:1 on radial resolution. If zooming or shrinking, let qt handle it.
-                singleChannel = floor_int( ( v1 * deltaTheta1 + v2 * deltaTheta2 ) + 0.5 );
+                singleChannel = uchar( float( v1 * deltaTheta1 + v2 * deltaTheta2 ) + 0.5f );
 
                 int xPos = drawPoint.x();
                 int yPos = drawPoint.y();
 
-#if ENABLE_GRIN_LENS
-                xPos /= 2;
-                yPos /= 2;
-#endif
-                *((unsigned char *)rawPixels + ( ( xPos + centerX )     + ( yPos + centerY ) * secWidth ) ) = singleChannel;
+//#if ENABLE_GRIN_LENS
+//                xPos /= 2;
+//                yPos /= 2;
+//#endif
+                *(rawPixels + ( ( xPos + centerX )     + ( yPos + centerY ) * secWidth ) ) = singleChannel;
 
                 // Eliminate missed pixels due to rounding by copying the line one pixel over
-                *((unsigned char *)rawPixels + ( ( xPos + centerX + 1 ) + ( yPos + centerY ) * secWidth ) ) = singleChannel;
+                *(rawPixels + ( ( xPos + centerX + 1 ) + ( yPos + centerY ) * secWidth ) ) = singleChannel;
+
             } // for( numberOfLinesToFill )
         } //for( internalImagingMask_px )
      } // if( twoLinesValid )
@@ -554,12 +555,12 @@ void sectorItem::paintSector ( bool force )
     {
         double tmpAngle_rad = degToRad * currentAngle_deg;
 
-        float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
-        float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
+        float cosTheta = quickTrig.lookupCos( double(tmpAngle_rad) );
+        float sinTheta = quickTrig.lookupSin( double(tmpAngle_rad) );
 
         // calculate the endpoint of the marker line
-        int x = x1 + floor_int( ( cosTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
-        int y = y1 + floor_int( ( sinTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
+        int x = x1 + int( ( cosTheta * ( currentAlineLength_px + catheterRadius_px ) + 0.5f ) );
+        int y = y1 + int( ( sinTheta * ( currentAlineLength_px + catheterRadius_px ) + 0.5f ) );
 
         // Draw the reference line
         painter->drawLine( x1, y1, x, y );
@@ -592,7 +593,6 @@ void sectorItem::paintSector ( bool force )
         directionPen.setColor( PassiveSpinColor );
         break;
 
-    default: // intentional fall-through
     case directionTracker::Stopped: /* no change */
         // cathGrayscaleHsvH must be converted to RGB for setColor()
         directionPen.setColor( Qt::black );
@@ -710,13 +710,13 @@ void sectorItem::overlayUnwrapIndicator( double angle )
 
     // fade the unwind indicator in and out.  It will be at the color's defined
     // full-scale alpha value at x% of the programmed lag correction
-    const double MaxAngle_deg = unwindAmount * UnwrapMaxOpacityAngle_deg;
+    const double MaxAngle_deg = unwindAmount * double(UnwrapMaxOpacityAngle_deg);
     double alphaPercent = unwinder.getUnwoundAngle() / MaxAngle_deg;
 
     // do not draw any indicator for small amounts of unwinding.  This prevents the
     // indicator from popping onto the screen for small amounts of backlash/whip
     // when stopping rotation (especially with the manual HHR)
-    if( unwinder.getUnwoundAngle() < UnwrapMinOpacityAngle_deg )
+    if( unwinder.getUnwoundAngle() < double(UnwrapMinOpacityAngle_deg) )
     {
         alphaPercent = 0.0;
     }
@@ -726,14 +726,14 @@ void sectorItem::overlayUnwrapIndicator( double angle )
     }
     // else leave the value unchanged
 
-    QColor arcColor( 0, 255, 0, (int)( 200 * alphaPercent ) ); // Green, semi-transparent
+    QColor arcColor( 0, 255, 0, int( 200 * alphaPercent ) ); // Green, semi-transparent
 
     const int PenWidth = 6;
     painter->setPen(QPen(arcColor, PenWidth, Qt::SolidLine, Qt::RoundCap));
     painter->setBrush(QBrush(arcColor, Qt::SolidPattern));
     painter->drawArc( QRectF( 0.0, 0.0, sectorImage->width() - PenWidth, sectorImage->height() - PenWidth ),
-                      (int)( startAngle_deg * 16.0 ), // converstion to Qt angle representation
-                      getInitialUnwindDirection() * (int)( angle * 16.0 ) );
+                      int( startAngle_deg * 16.0 ), // converstion to Qt angle representation
+                      getInitialUnwindDirection() * int( angle * 16.0 ) );
 }
 
 /*
@@ -751,27 +751,27 @@ QImage sectorItem::freeze ( void )
     QImage tmp = sectorImage->copy();
 
     // Rotate about the center of the image; use +0.5 to force rounding
-    float yTranslation = ( float( tmp.height() ) / 2.0 ) + 0.5;
-    float xTranslation = ( float( tmp.width() )  / 2.0 ) + 0.5;
+    float yTranslation = ( float( tmp.height() ) / 2.0f ) + 0.5f;
+    float xTranslation = ( float( tmp.width() )  / 2.0f ) + 0.5f;
 
     // Compute the bounding rectangle of the new circle, to crop
     // off the corners that will be rotated around.  Even though the image
     // looks round, it's really a rectangle!
-    double clipPixels = sqrt( (double)( tmp.height() * tmp.height() ) +
-                              (double)( tmp.width()  * tmp.width()  ) );
+    double clipPixels = sqrt( double( tmp.height() * tmp.height() ) +
+                              double( tmp.width()  * tmp.width()  ) );
     clipPixels = ( clipPixels - tmp.width() ) / 2.0;
 
     QRect clipRect;
-    clipRect.setX( clipPixels * fabs( sin( displayRotationAngle_deg * degToRad * 2.0 ) ) );
+    clipRect.setX( int(clipPixels * fabs( sin( displayRotationAngle_deg * degToRad * 2.0 ) ) ) );
     clipRect.setY( clipRect.x() );
     clipRect.setWidth( tmp.width() );
     clipRect.setHeight( tmp.height() );
 
     // Rotate about the center of the image
     QTransform transform;
-    transform.translate( xTranslation, yTranslation );
+    transform.translate( double(xTranslation), double(yTranslation) );
     transform.rotate( displayRotationAngle_deg );
-    transform.translate( -xTranslation, -yTranslation );
+    transform.translate( double(-xTranslation), double(-yTranslation) );
 
     // rotate the image
     tmp = tmp.transformed( transform, Qt::SmoothTransformation );
