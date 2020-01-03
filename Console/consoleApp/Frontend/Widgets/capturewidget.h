@@ -32,13 +32,14 @@ class captureItemDelegate : public QAbstractItemDelegate
     Q_OBJECT
 
 public:
-    captureItemDelegate(bool rotated = false, QObject *parent = 0);
+    captureItemDelegate(bool rotated = false, QObject *parent = nullptr);
     QSize sizeHint( const QStyleOptionViewItem &option,
                     const QModelIndex &index ) const;
     void paint( QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index ) const;
 private:
     bool doRotate;
+    const QColor SelectedItemColor{ 143, 185, 224 };
 };
 
 
@@ -54,13 +55,14 @@ class clipItemDelegate : public QAbstractItemDelegate
     Q_OBJECT
 
 public:
-    clipItemDelegate(bool rotated = false, QObject *parent = 0);
+    clipItemDelegate(bool rotated = false, QObject *parent = nullptr);
     QSize sizeHint( const QStyleOptionViewItem &option,
                     const QModelIndex &index ) const;
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const;
 private:
     bool doRotate;
+    const QColor SelectedItemColor{ 143, 185, 224 };
 };
 
 /*
@@ -71,7 +73,7 @@ class captureWidget : public QWidget
     Q_OBJECT
 
 public:
-    captureWidget( QWidget *parent = 0 );
+    captureWidget( QWidget *parent = nullptr );
     ~captureWidget();
     void init( void );
 

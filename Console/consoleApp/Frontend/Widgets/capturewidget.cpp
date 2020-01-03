@@ -34,7 +34,7 @@
 #include "logger.h"
 
 const QSize  ThumbSize( ThumbnailHeight_px + 10, ThumbnailHeight_px + 10 );
-const QColor SelectedItemColor( 143, 185, 224 );
+//const QColor SelectedItemColor( 143, 185, 224 );
 const int    MinOffsetForNumberLabel_px = 10;
 
 /*
@@ -228,8 +228,8 @@ captureWidget::captureWidget( QWidget *parent ) :
     isImageReviewInProgress = false;
     isLoopReviewInProgress  = false;
 
-    selectedCaptureItem = NULL;
-    selectedLoopItem    = NULL;
+    selectedCaptureItem = nullptr;
+    selectedLoopItem    = nullptr;
 
     ui->setupUi( this );
 }
@@ -326,7 +326,7 @@ void captureWidget::displayCapture( QModelIndex index )
 
         if( !isImageReviewInProgress )
         {
-            LOG( INFO, "Image Review started" );
+            LOG( INFO, "Image Review started" )
             disconnect( ui->capListView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
             connect(    ui->capListView, SIGNAL( clicked( QModelIndex ) ),       this, SLOT( displayCapture(QModelIndex) ) );
 
@@ -583,7 +583,7 @@ void captureWidget::on_selectedLoopLineEdit_editingFinished()
  */
 void captureWidget::on_showDecoratedPushButton_toggled( bool checked )
 {
-    LOG( INFO, QString( "Show Decorated enabled: %1" ).arg( checked ) );
+    LOG( INFO, QString( "Show Decorated enabled: %1" ).arg( checked ) )
     displayDecoratedImages = checked;
     if( isImageReviewInProgress )
     {
