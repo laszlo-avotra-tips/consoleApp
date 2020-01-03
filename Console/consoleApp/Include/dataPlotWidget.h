@@ -28,7 +28,7 @@
 //    Q_OBJECT
 
 //public:
-//    dataPlotWidget( QWidget * = NULL );
+//    dataPlotWidget( QWidget * = nullptr );
 //    ~dataPlotWidget();
 //    void init ( int size = 2048 );
 //    void plotData( unsigned short * );

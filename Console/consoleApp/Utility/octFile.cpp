@@ -29,8 +29,9 @@ const unsigned char OctFileFormatVersion = 4;
 //   - it is advantageous to be able to load a single file in a hex editor for
 //     development purposes
 //   - FAT32 has an individual file size limit of 2 GB
-const unsigned long MaxFileSize_MB = 128;
-const unsigned long MaxFileSize_B  = MaxFileSize_MB * B_per_KB * KB_per_MB;
+
+//lcv const unsigned long MaxFileSize_MB = 128;
+//lcv const unsigned long MaxFileSize_B  = MaxFileSize_MB * B_per_KB * KB_per_MB;
 
 /*
  * Constructor -- Console mode, creating data
@@ -81,7 +82,7 @@ void OCTFile::open( void )
     currFullyQualifiedFileName = genFullyQualifiedFileName();
 
     hFile = new QFile( currFullyQualifiedFileName );
-    if( hFile == NULL )
+    if( !hFile )
     {
         // fatal error
         err.fail( tr( "Could not create a new file handle for saving OCT data." ), true );
@@ -126,7 +127,7 @@ void OCTFile::writeFileHeader( void )
     outputStream.writeRawData( header.magic, 3 );
     outputStream << header.formatVersion
                  << header.numLinesPerRevolution
-                 << (quint32)0;  // Number of frames in this file; this
+                 << quint32(0);  // Number of frames in this file; this
                                  // will be filled in when the file is closed
 }
 
@@ -162,10 +163,10 @@ void OCTFile::close( void )
     // send full path for file
     emit sendFileToKey( storageDir + "/" + currFileName );
 
-    if( hFile != NULL )
+    if( hFile )
     {
         delete hFile;
-        hFile = NULL;
+        hFile = nullptr;
     }
 }
 
@@ -200,9 +201,9 @@ void OCTFile::processHeaders()
             currentVersion = version;
         }
 
-        totalNumberOfFrames += numFramesThisFile;
+        totalNumberOfFrames += quint32(numFramesThisFile);
 
-        indexList.append( totalNumberOfFrames );
+        indexList.append( int(totalNumberOfFrames ) );
     }
 }
 
@@ -239,29 +240,29 @@ void OCTFile::setFrame( int requestedFrame )
 
     // If the request frame number is greater than the number of frames for the whole clip,
     // leave everything alone.
-    if ( (unsigned)requestedFrame >= ( totalNumberOfFrames + firstFrameNumber ) )
+    if ( quint32(requestedFrame) >= ( totalNumberOfFrames + firstFrameNumber ) )
     {
         return;
     }
 
     // Prevent multiple access to the file handles
     readFrameLock.lock();
-    hFile = NULL;
+    hFile = nullptr;
 
     // Find the file which owns this frame
     for ( int i = indexList.count() - 1; i >= 0; i-- )
     {
-        if ( (unsigned int)requestedFrame > ( indexList.value( i ) + firstFrameNumber ) )
+        if ( requestedFrame > ( indexList.value( i ) + int(firstFrameNumber ) ) )
         {
             if ( i < hFileList.count() )
             {
-                offset = requestedFrame - indexList.value( i ) - firstFrameNumber;
+                offset = requestedFrame - indexList.value( i ) - int(firstFrameNumber);
                 hFile = hFileList.at( i + 1 );
                 break;
             }
             else
             {
-                // TBD: this leaves hFile == NULL
+                // TBD: this leaves hFile == nullptr
                 styledMessageBox::warning( tr( "File indexing failure:\nFrame does not match any currently loaded file " ) );
                 readFrameLock.unlock();
                 return;
@@ -276,7 +277,7 @@ void OCTFile::setFrame( int requestedFrame )
 
         // Clips will not necessarily start at frame 0; the offset must be calculated
         // from the first frame of the clip
-        offset = requestedFrame - firstFrameNumber;
+        offset = requestedFrame - int(firstFrameNumber);
         if( offset < 0 )
         {
             qDebug() << "Resetting offset to 0";
@@ -285,7 +286,7 @@ void OCTFile::setFrame( int requestedFrame )
     }
 
     resetFile();
-    int headerEnd = hFile->pos();
+    qint64 headerEnd = hFile->pos();
 
     hFile->seek( headerEnd + ( offset * framesize_bytes ) );
     readFrameLock.unlock();

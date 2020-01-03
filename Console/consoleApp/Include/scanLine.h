@@ -26,20 +26,20 @@ class scanframe
 public:
     scanframe()
     {
-        dispData = NULL;
+        dispData = nullptr;
     }
     ~scanframe()
     {
         if( dispData )
         {
             delete dispData;
-            dispData = NULL;
+            dispData = nullptr;
         }
 
         if( videoData )
         {
             delete videoData;
-            videoData = NULL;
+            videoData = nullptr;
         }
 
     }

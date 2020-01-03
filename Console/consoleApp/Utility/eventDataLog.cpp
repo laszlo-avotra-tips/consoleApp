@@ -25,9 +25,9 @@
  */
 EventDataLog::EventDataLog()
 {
-    hFile     = NULL;
-    xmlWriter = NULL;
-};
+    hFile     = nullptr;
+    xmlWriter = nullptr;
+}
 
 /*
  * Destructor
@@ -56,7 +56,7 @@ void EventDataLog::init( void )
     const QString EventLogFile = caseInfo.getStorageDir() + "/" + EventDataLogFileName;
     hFile = new QFile( EventLogFile );
 
-    if( hFile == NULL )
+    if( !hFile )
     {
         // fatal error
         err.fail( QObject::tr( "Could not get a file handle for the Event Data Log for this session." ), true );
@@ -72,7 +72,7 @@ void EventDataLog::init( void )
     {
         xmlWriter = new QXmlStreamWriter( hFile );
         
-        if( xmlWriter == NULL )
+        if( !xmlWriter )
         {
             // fatal error
             err.fail( QObject::tr( "Could not create the handle for the Event Data Log XML file." ), true );
