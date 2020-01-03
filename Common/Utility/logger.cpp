@@ -17,8 +17,18 @@
 #include "buildflags.h"
 #include "version.h"
 
+Logger* Logger::theLogger{nullptr};
+
 // Constants
 const int MaxLogSize_bytes = 2 * B_per_KB * KB_per_MB;
+
+// Singleton
+Logger & Logger::Instance() {
+    if(!theLogger){
+        theLogger = new Logger();
+    }
+    return *theLogger;
+}
 
 /*
  * Constructor

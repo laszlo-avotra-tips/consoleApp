@@ -18,7 +18,17 @@
 #include "trigLookupTable.h"
 #include "util.h"
 
+trigLookupTable* trigLookupTable::theTable{nullptr};
+
 const int overhead( 3 ); // How far beyond line length to extend the table.
+
+// Singleton
+trigLookupTable & trigLookupTable::Instance() {
+    if(!theTable){
+        theTable = new trigLookupTable();
+    }
+    return *theTable;
+}
 
 /*
  * Constructor

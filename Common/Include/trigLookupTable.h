@@ -23,10 +23,8 @@ class trigLookupTable
 public:
   
     // Singleton
-    static trigLookupTable & Instance() {
-        static trigLookupTable theTable;
-        return theTable;
-    }
+    static trigLookupTable & Instance();
+
     float lookupCos(double radians );
     float lookupSin(double radians );
     void lookupSinCos(double radians, float & sinOut, float & cosOut );
@@ -35,7 +33,7 @@ public:
 private:
 
     // Hide ctor, dtor, copy and assign for singletons
-    trigLookupTable( float resolution = MININTERPOLATIONANGLE_RAD, int lineLength = ALineLengthNormal_px );
+    trigLookupTable( float resolution = float(MININTERPOLATIONANGLE_RAD), int lineLength = ALineLengthNormal_px );
     ~trigLookupTable( void );
     trigLookupTable( trigLookupTable const & );
     trigLookupTable & operator=( trigLookupTable const & );
@@ -47,4 +45,5 @@ private:
     float resolution;
     int lineLen;
     int numEntries;
+    static trigLookupTable* theTable;
 };

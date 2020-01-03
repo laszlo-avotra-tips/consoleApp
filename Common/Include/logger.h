@@ -32,12 +32,12 @@
 #include <QThread>
 
 // Macro for all classes to use for logging
-#if UNIT_TEST
-   #define LOG( severity, msg ) {}
-#else
+//#if UNIT_TEST
+//   #define LOG( severity, msg ) {}
+//#else
    #define LOG( severity, msg ) { Logger &log = Logger::Instance(); \
                                   log.logMessage( msg, #severity, __FILE__, __LINE__ ); }
-#endif  // UNIT_TEST
+//#endif  // UNIT_TEST
 
 
 #define LOG1(var_) { Logger &log = Logger::Instance(); log.getTextStream( __FUNCTION__, __LINE__, QThread::currentThreadId()) \
@@ -54,11 +54,7 @@ class Logger
 {
 public:
     // Singleton
-    static Logger & Instance() {
-        static Logger theLogger;
-        return theLogger;
-    }
-
+    static Logger & Instance();
     bool init( QString applicationName );
     void close( void );
 
@@ -83,6 +79,8 @@ private:
 
     QString status;
     QString appName;
+
+     static Logger* theLogger;
 };
 
 #endif  // LOGGER_H_
