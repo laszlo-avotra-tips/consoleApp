@@ -6,7 +6,6 @@
 #include "dspgpu.h"
 #include "daqSettings.h"
 #include "deviceSettings.h"
-//#include "util.h"
 #include "theglobals.h"
 
 

@@ -12,7 +12,7 @@ class FileDaq : public IDAQ
 {
 public:
     FileDaq();
-    ~FileDaq();
+    ~FileDaq() override;
 
     void init( void ) override;
     void run( void ) override;
