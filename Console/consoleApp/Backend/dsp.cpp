@@ -227,33 +227,33 @@ void DSP::loadRescalingData( void )
     {
         emit sendError( tr( "Laser Rescaling Data file is missing proper header." ) );
     }
-#if QT_NO_DEBUG
-    // Grab the service date so the upper levels can access it
-    if( findLabel( &in, &currLine, "% Last Service Date" ) )
-    {
-        QString strDate = currLine.section( ":", 1, 1 ).trimmed();
-        serviceDate = QDate::fromString( strDate, "yyyy-MM-dd" );
-        LOG( INFO, "Last service date: " + serviceDate.toString() );
+//#if QT_NO_DEBUG
+//    // Grab the service date so the upper levels can access it
+//    if( findLabel( &in, &currLine, "% Last Service Date" ) )
+//    {
+//        QString strDate = currLine.section( ":", 1, 1 ).trimmed();
+//        serviceDate = QDate::fromString( strDate, "yyyy-MM-dd" );
+//        LOG( INFO, "Last service date: " + serviceDate.toString() );
 
-        // set date service is due
-        serviceDate = serviceDate.addYears( 1 );
+//        // set date service is due
+//        serviceDate = serviceDate.addYears( 1 );
         
-        const QDate Now = QDate::currentDate();
-        const int NumDays = Now.daysTo( serviceDate );
+//        const QDate Now = QDate::currentDate();
+//        const int NumDays = Now.daysTo( serviceDate );
 
-        // If the service date has passed (negative number of days), warn the operator
-        // but let the application run. If the service date is within 30 days of expiring
-        // pop up a warning message at start up.
-        if( NumDays < 0 )
-        {
-            emit sendWarning( QString( tr( "The laser required service on %1.  Please contact Service." ) ).arg( serviceDate.toString() ) );
-        }
-        else if( NumDays < NumDaysToWarnForService )
-        {
-            emit sendWarning( QString( tr( "The laser will require service by %1.  Please contact Service soon." ) ).arg( serviceDate.toString() ) );
-        }
-    }
-#endif
+//        // If the service date has passed (negative number of days), warn the operator
+//        // but let the application run. If the service date is within 30 days of expiring
+//        // pop up a warning message at start up.
+//        if( NumDays < 0 )
+//        {
+//            emit sendWarning( QString( tr( "The laser required service on %1.  Please contact Service." ) ).arg( serviceDate.toString() ) );
+//        }
+//        else if( NumDays < NumDaysToWarnForService )
+//        {
+//            emit sendWarning( QString( tr( "The laser will require service by %1.  Please contact Service soon." ) ).arg( serviceDate.toString() ) );
+//        }
+//    }
+//#endif
     // Find and load the rescaling data
     if( findLabel( &in, &currLine, "% DATA" ) )
     {
