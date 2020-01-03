@@ -128,7 +128,7 @@ sectorItem::sectorItem( QGraphicsItem *parent )
 sectorItem::~sectorItem()
 {
 //	qDebug() << ">>>>>> 2";
-    if( sectorImage != NULL ) 
+    if( sectorImage )
     {
         delete sectorImage;
     }

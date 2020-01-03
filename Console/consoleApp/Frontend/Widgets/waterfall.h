@@ -30,7 +30,7 @@
 class waterfall : public QGraphicsPixmapItem
 {
 public:
-    waterfall( int width = WaterfallHeight_px, int height = WaterfallWidth_px, QGraphicsItem *parent = 0);
+    waterfall( int w = WaterfallHeight_px, int h = WaterfallWidth_px, QGraphicsItem *parent = nullptr);
     ~waterfall();
     QImage freeze( void );
 
@@ -49,7 +49,7 @@ public:
         QImage transformed = wfImage->transformed(m);
         int w = transformed.width();
         int h = transformed.height();
-        memcpy( destBuffer, transformed.bits(), w * h );
+        memcpy( destBuffer, transformed.bits(), size_t(w * h ) );
     }
 
     void updateColorMap(QVector<QRgb> map );

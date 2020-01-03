@@ -29,8 +29,8 @@
 /*
  * constructor
  */
-waterfall::waterfall( int width, int height, QGraphicsItem *parent )
-    :  QGraphicsPixmapItem(parent), width(width), height(height)
+waterfall::waterfall( int w, int h, QGraphicsItem *parent )
+    :  QGraphicsPixmapItem(parent), width(w), height(h)
 {
     status = 1;
 
@@ -49,7 +49,7 @@ waterfall::waterfall( int width, int height, QGraphicsItem *parent )
 
 waterfall::~waterfall()
 {
-    if ( wfImage != NULL ) {
+    if ( wfImage ) {
        delete wfImage;
     }
 }
@@ -92,14 +92,14 @@ void waterfall::scrollWaterfall(void)
     }
 
     // Amount of data in a row of the image
-    int dataSize = sizeof(char) * wfImage->width();
+    int dataSize = int(sizeof(char)) * wfImage->width();
 
     // Get direct access to the image data
-    unsigned char *rawPixels = (unsigned char *)wfImage->bits();
+    unsigned char *rawPixels = static_cast<unsigned char *>(wfImage->bits() );
 
     // Shift all data linecount rows down
     unsigned char *dstaddr = rawPixels + ( dataSize * count );
-    const int length = dataSize * ( wfImage->height() - count );
+    const size_t length = size_t(dataSize * ( wfImage->height() - count ) );
 #ifdef WIN32
     memmove_s( dstaddr, length, rawPixels, length );
 #else
@@ -119,12 +119,12 @@ void waterfall::scrollWaterfall(void)
         // copy the line data into the waterfall.
         memcpy( rawPixels + (count * dataSize),
                 lineData,
-                dataSize );
+                size_t(dataSize ) );
 
         // Clear up to the glue line offset using the same color as the catheter.
         memset( rawPixels + (count * dataSize),
                 0, // Keep the color black
-                glueLineOffset_px );
+                size_t(glueLineOffset_px ) );
         // Remove the local line data
         count--;
     }

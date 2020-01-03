@@ -914,7 +914,7 @@ void liveScene::loadColormap( QString colormapFile )
     wf->updateColorMap( currColorMap );
 
 
-    // free the pointer.  NULL check done above.
+    // free the pointer.  nullptr check done above.
     delete input;
 }
 
