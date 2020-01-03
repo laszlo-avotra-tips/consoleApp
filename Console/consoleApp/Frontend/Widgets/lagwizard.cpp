@@ -30,7 +30,7 @@ lagWizard::lagWizard(QWidget *parent) :
 
     setWindowFlags( Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() | Qt::FramelessWindowHint );
-    p = NULL;
+    p = nullptr;
     seenDirectionChange    = false;
     seenFirstRotation      = false;
     seenSecondRotation     = false;
@@ -57,13 +57,16 @@ lagWizard::~lagWizard()
 void lagWizard::changeEvent(QEvent *e)
 {
     QWizard::changeEvent( e );
-    switch( e->type() )
-    {
-    case QEvent::LanguageChange:
-        ui->retranslateUi( this );
-        break;
-    default:
-        break;
+//    switch( e->type() )
+//    {
+//    case QEvent::LanguageChange:
+//        ui->retranslateUi( this );
+//        break;
+//    default:
+//        break;
+//    }
+    if(e->type() == QEvent::LanguageChange){
+        ui->retranslateUi(this);
     }
 }
 
@@ -78,7 +81,11 @@ void lagWizard::setScene( QGraphicsScene *scene )
     // Reset angleInt in sectoritem.cpp. Now a full rotation is respective of the starting
     // point during the scan sync.
     emit resetIntegrationAngle();
-    theScene = (liveScene *)scene;
+    theScene = dynamic_cast<liveScene *>(scene);
+
+    if(!scene){
+        return; //lcv
+    }
 
     /*
      * Find the sector in the list of scene items
@@ -137,12 +144,11 @@ void lagWizard::initializePage( int id )
         break;
     default:
         return;
-        break;
     }
     if( p ) 
     {
         delete p;
-        p = NULL;
+        p = nullptr;
     }
 }
 
@@ -169,7 +175,7 @@ void lagWizard::handleDirectionChange( void )
     seenDirectionChange = true;
     emit resetIntegrationAngle();
 
-    LOG( DEBUG, "Scan Sync: handle direction changed" );
+    LOG( DEBUG, "Scan Sync: handle direction changed" )
 }
 
 /*
@@ -208,7 +214,7 @@ void lagWizard::handleFullRotation( void )
             emit goToNext();
             // Go to State 3
 
-            LOG( INFO, "Scan Sync: First image captured" );
+            LOG( INFO, "Scan Sync: First image captured" )
         }
     }
     else
@@ -225,7 +231,7 @@ void lagWizard::handleFullRotation( void )
                 seenFirstRotation = true;
                 seenSecondRotation = false;
 
-                LOG( INFO, "Scan Sync: First rotation after direction change detected" );
+                LOG( INFO, "Scan Sync: First rotation after direction change detected" )
             }
             else
             {
@@ -234,7 +240,7 @@ void lagWizard::handleFullRotation( void )
                     // Rotation 2 of 3. Go to State 6
                     seenSecondRotation = true;
 
-                    LOG( INFO, "Scan Sync: Second rotation detected" );
+                    LOG( INFO, "Scan Sync: Second rotation detected" )
                 }
                 else
                 {
@@ -243,7 +249,7 @@ void lagWizard::handleFullRotation( void )
                      */
                     emit goToNext();
 
-                    LOG( INFO, "Scan Sync: Second image captured" );
+                    LOG( INFO, "Scan Sync: Second image captured" )
                 }
             } // seenFirstRotation
         } // seenDirectionChange
