@@ -91,10 +91,10 @@ void docscreen::setScene( QGraphicsScene *scene )
     // Associate the view with the scene
     ui.liveGraphicsView->setScene( scene );
     ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
-#if HIGH_QUALITY_RENDERING
-    // High quality rendering hints
-    ui.liveGraphicsView->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
-#endif
+//#if HIGH_QUALITY_RENDERING
+//    // High quality rendering hints
+//    ui.liveGraphicsView->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
+//#endif
 }
 
 /*
@@ -131,12 +131,12 @@ void docscreen::showPreview( bool enable )
     {
         proxyModel->invalidate();
         ui.previewListview->show();
-        LOG( INFO, "Physician Preview: On" );
+        LOG( INFO, "Physician Preview: On" )
     }
     else
     {
         ui.previewListview->hide();
-        LOG( INFO, "Physician Preview: Off" );
+        LOG( INFO, "Physician Preview: Off" )
     }
 }
 
@@ -162,7 +162,6 @@ void docscreen::updatePreview( QModelIndex ix )
                                   QAbstractItemView::PositionAtCenter );
 }
 
-/*
 
 /*
  * setDevice
@@ -171,6 +170,7 @@ void docscreen::updatePreview( QModelIndex ix )
  */
 void docscreen::setDeviceName( QString dev )
 {
+    LOG1(dev)
 //lcv    ui.deviceLabel->setText( dev );
 }
 

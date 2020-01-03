@@ -40,7 +40,7 @@ public:
         QString   cachedText;
     };
 
-    explicit AuxMonitor(QWidget *parent = 0);
+    explicit AuxMonitor(QWidget *parent = nullptr);
     void setScene(QGraphicsScene *scene);
     ~AuxMonitor();
 

@@ -173,8 +173,6 @@ void AuxMonitor::setText( LabelEnum labelName, bool showText, QString text )
         label = &statusLabel;
         validLabel = true;
         break;
-    default:
-        break;
     }
 
     if( validLabel )
@@ -286,13 +284,13 @@ void AuxMonitor::optimizeSceneSize()
  */
 void AuxMonitor::testAndMoveInfo()
 {
-    WindowManager &wm = WindowManager::Instance();
+    WindowManager &windowManager = WindowManager::Instance();
     /*
      * 1.59 is the threshold for aspect ratio.
      * If the ratio is below 1.59 (square monitor), then we move text into the right info box and hide the left box.
      * If the ratio is above 1.59 (wide monitor), then we move text into a left and right box.
      */
-    if( ( (float)wm.getAuxilliaryDisplayGeometry().width() / (float)wm.getAuxilliaryDisplayGeometry().height() ) < 1.59f )
+    if( ( windowManager.getAuxilliaryDisplayGeometry().width() / float(windowManager.getAuxilliaryDisplayGeometry().height() ) ) < 1.59f )
     {
         QVBoxLayout *vbLayout = qobject_cast<QVBoxLayout*>( ui.infoGroupBox_2->layout() );
         vbLayout->insertWidget( 0, ui.statusLabel );        // desired placement at index 0
