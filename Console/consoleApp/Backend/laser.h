@@ -28,12 +28,7 @@ class Laser : public QObject
 
 public:
     // Singleton
-    static Laser & Instance()
-    {
-        static Laser theLaser;
-        return theLaser;
-    }
-
+    static Laser & Instance();
     void setPort( const char *port ) { portName = port; }
     void setConfig( const char *config ) { settings = config; }
     bool init( void );
@@ -56,6 +51,13 @@ private:
     QString settings;
 
     QMutex mutex;
+
+// Commands for accessing the Santec laser
+    const char* DiodeOn       = "LO\r";
+    const char* DiodeOff      = "LF\r";
+    const char* LaserStatus   = "DI\r";
+
+    static Laser* theLaser;
 
     QByteArray getResponse( void );
 

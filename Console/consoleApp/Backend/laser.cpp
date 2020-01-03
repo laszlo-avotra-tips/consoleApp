@@ -66,11 +66,16 @@
 
 //const QString LaserWarningMessage( QObject::tr( "Unable to talk to the laser.\n\nPlease contact Avinger Service at %1." ).arg( ServiceNumber ) );
 
-//// Commands for accessing the Santec laser
-//const char DiodeOn[]       = "LO\r";
-//const char DiodeOff[]      = "LF\r";
-//const char LaserStatus[]   = "DI\r";
 
+Laser* Laser::theLaser{nullptr};
+
+Laser & Laser::Instance()
+{
+    if(!theLaser){
+        theLaser = new Laser();
+    }
+    return *theLaser;
+}
 
 /*
  * Constructor
