@@ -33,12 +33,12 @@
 //dataPlotWidget::dataPlotWidget( QWidget *parent ):
 //    QwtPlot(parent)
 //{
-//    picker          = NULL;
-//    cData           = NULL;
-//    d_x             = NULL;
-//    d_y             = NULL;
-//    contrastCurve   = NULL;
-//    brightnessCurve = NULL;
+//    picker          = nullptr;
+//    cData           = nullptr;
+//    d_x             = nullptr;
+//    d_y             = nullptr;
+//    contrastCurve   = nullptr;
+//    brightnessCurve = nullptr;
 
 //    showLevels             = false;
 //    displayControlsEnabled = false;
@@ -46,7 +46,7 @@
 //    brightnessDragging     = false;
 
 //#if CONSOLE_MANUFACTURING_RELEASE
-//    maskMarker = NULL;
+//    maskMarker = nullptr;
 //#endif
 //}
 
@@ -61,13 +61,13 @@
 
 //    alignScales();
 
-//    if( d_x != NULL )
+//    if( d_x )
 //    {
 //        delete [] d_x;
 //    }
 //    d_x = new double[ plotSize ];
 
-//    if( d_y != NULL )
+//    if( d_y  )
 //    {
 //        delete [] d_y;
 //    }
@@ -82,7 +82,7 @@
 //    }
 
 //    // Insert new curve
-//    if( cData != NULL )
+//    if( cData )
 //    {
 //        delete cData;
 //    }
@@ -103,10 +103,10 @@
 
 //    // Default to a Low Speed Device
 //    currContrast    = ContrastLevels_LowSpeed.defaultValue;
-//    contrastCurve   = NULL;
+//    contrastCurve   = nullptr;
 
 //    currBrightness  = BrightnessLevels_LowSpeed.defaultValue;
-//    brightnessCurve = NULL;
+//    brightnessCurve = nullptr;
 
 //    brightnessDragging = false;
 //    contrastDragging   = false;
@@ -278,14 +278,14 @@
 //{
 //    showLevels = true;
 
-//    if( contrastCurve != NULL )
+//    if( contrastCurve )
 //    {
 //        delete contrastCurve;
 //    }
 //    contrastCurve = new QwtPlotCurve();
 //    contrastCurve->attach( this );
 
-//    if( brightnessCurve != NULL )
+//    if( brightnessCurve )
 //    {
 //        delete brightnessCurve;
 //    }
@@ -409,7 +409,7 @@
 // */
 //void dataPlotWidget::drawInternalMaskLine(int iMask_px )
 //{
-//    if( maskMarker != NULL )
+//    if( maskMarker )
 //    {
 //        delete maskMarker;
 //    }
