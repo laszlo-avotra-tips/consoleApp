@@ -36,8 +36,8 @@ void displayFailureMessage( QString errString, bool fatal )
 {
     // Attempt to write to the log file.  If the log is the cause of the failure
     // the message will only appear on the screen.
-    LOG( INFO, "-------------------" );
-    LOG( FATAL, errString );
+    LOG( INFO, "-------------------" )
+    LOG( FATAL, errString )
 
 //    Laser &laser = Laser::Instance();
 //    laser.forceOff();
@@ -58,7 +58,7 @@ void displayFailureMessage( QString errString, bool fatal )
     {
         // Log a message for development testing
         qDebug() << "displayFailureMessage() was called from the non-GUI thread.";
-        LOG( DEBUG, "displayFailureMessage() was called from the non-GUI thread.  " );
+        LOG( DEBUG, "displayFailureMessage() was called from the non-GUI thread.  " )
     }
 
     if ( fatal )
@@ -87,7 +87,7 @@ void displayWarningMessage( QString warnString )
     }
     else
     {
-        LOG( WARNING, warnString.prepend( "Called from the non-GUI thread. ") );
+        LOG( WARNING, warnString.prepend( "Called from the non-GUI thread. ") )
     }
 }
 

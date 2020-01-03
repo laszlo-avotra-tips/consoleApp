@@ -42,13 +42,16 @@ transport::~transport()
 void transport::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
-    switch (e->type())
-    {
-    case QEvent::LanguageChange:
+//    switch (e->type())
+//    {
+//    case QEvent::LanguageChange:
+//        ui->retranslateUi(this);
+//        break;
+//    default:
+//        break;
+//    }
+    if(e->type() == QEvent::LanguageChange){
         ui->retranslateUi(this);
-        break;
-    default:
-        break;
     }
 }
 
@@ -136,12 +139,12 @@ void transport::handleClipName( QString name )
 void transport::handleClipLengthChanged( qint64 length_ms )
 {
     // Add 500 ms and integer divide to round the result to the nearest second
-    int length_s = (int)( ( length_ms + 500 ) / 1000 );
+    int length_s = int( ( length_ms + 500 ) / 1000 );
     QTime length_time = QTime(0, 0, 0, 0);
     length_time = length_time.addSecs( length_s );
     lengthString = length_time.toString( "h:mm:ss" );
     ui->clipLengthLabel->setText( QString( "0:00:00/" ) +lengthString );
-    ui->timelineSlider->setMaximum( length_ms );
+    ui->timelineSlider->setMaximum( int(length_ms) );
 }
 
 /*
@@ -172,10 +175,10 @@ void transport::seekingEnd()
  */
 void transport::updateClipPosition( qint64 position )
 {
-    ui->timelineSlider->setValue( position );
+    ui->timelineSlider->setValue( int(position ) );
 
     QTime pos_time = QTime( 0, 0, 0, 0);
-    pos_time = pos_time.addMSecs( position );
+    pos_time = pos_time.addMSecs( int(position) );
     QString posString = QString( "%1/%2 " ).arg( pos_time.toString( "h:mm:ss") ).arg( lengthString );
     ui->clipLengthLabel->setText( posString );
 }

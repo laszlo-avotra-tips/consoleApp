@@ -23,7 +23,7 @@ class deviceWizard : public QWizard {
     Q_OBJECT
 
 public:
-    deviceWizard(QWidget *parent = 0);
+    deviceWizard(QWidget *parent = nullptr);
     ~deviceWizard();
     void init( void );
 

@@ -31,14 +31,14 @@ trigLookupTable::trigLookupTable ( float minResolution, int lineLength )
     lineLen = lineLength * overhead; // Extra entries to handle image morph
 
     // Depends on angular resolution
-    numEntries = (int)floor( (2*pi/resolution) + 0.5 ) + 1;
+    numEntries = int(floor( (2 * pi / double(resolution)) + 0.5 ) ) + 1;
 
-    sinTable = new float[ numEntries ];
-    cosTable = new float[ numEntries ];
+    sinTable = new float[ size_t(numEntries) ];
+    cosTable = new float[ size_t(numEntries) ];
 
     for (count = 0; count < numEntries; count++) {
-        sinTable[count] = sin( (float)count * resolution );
-        cosTable[count] = cos( (float)count * resolution );
+        sinTable[count] = sin( count * resolution );
+        cosTable[count] = cos( count * resolution );
     }
 
     buildPositionTable();
@@ -71,15 +71,15 @@ void trigLookupTable::buildPositionTable( void )
     int i, j;
     int x, y;
 
-    posTable = new QPoint *[ lineLen ];
+    posTable = new QPoint *[ size_t(lineLen) ];
 
     for ( i = 0; i < lineLen; i++ )
     {
-        posTable[i] = new QPoint[ numEntries ];
+        posTable[i] = new QPoint[ size_t(numEntries) ];
         for( j = 0; j < numEntries; j++ )
         {
-            x = floor_int( (float)i * cos(j * resolution) + 0.5 );
-            y = floor_int( (float)i * sin(j * resolution) + 0.5 );
+            x = floor_int( i * cos(j * resolution) + 0.5f );
+            y = floor_int( i * sin(j * resolution) + 0.5f );
             posTable[i][j].setX( x );
             posTable[i][j].setY( y );
         }
@@ -93,7 +93,7 @@ void trigLookupTable::buildPositionTable( void )
  * Given a polar coordinate, return a QPoint containing
  * the corresponding screen location.
  */
-QPoint trigLookupTable::lookupPosition( int rho, float radians )
+QPoint trigLookupTable::lookupPosition( int rho, double radians )
 {
     // Only operate modulo 360 degrees
     while( radians > 2*pi )
@@ -106,7 +106,7 @@ QPoint trigLookupTable::lookupPosition( int rho, float radians )
     }
 
     // Position is a simple lookup into the position table
-    int iTheta = floor_int( ( radians / resolution ) + 0.5 ); 
+    int iTheta = floor_int( ( float(radians) / resolution ) + 0.5f );
     return( posTable[rho][iTheta] );
 }
 
@@ -116,7 +116,7 @@ QPoint trigLookupTable::lookupPosition( int rho, float radians )
  * Given an angle in radians return the closest cos value
  * in the table.
  */
-float trigLookupTable::lookupCos ( float radians )
+float trigLookupTable::lookupCos ( double radians )
 {
     int index;
 
@@ -126,7 +126,7 @@ float trigLookupTable::lookupCos ( float radians )
     while ( radians < 0 )
         radians += 2*pi;
 
-    index = floor_int( ( radians/resolution ) + 0.5 );
+    index = floor_int( ( float(radians) / resolution ) + 0.5f );
     return( cosTable[index] );
 }
 
@@ -136,7 +136,7 @@ float trigLookupTable::lookupCos ( float radians )
  * Given an angle in radians return the closest sin value
  * in the table.
  */
-float trigLookupTable::lookupSin ( float radians )
+float trigLookupTable::lookupSin ( double radians )
 {
     int index;
 
@@ -146,7 +146,7 @@ float trigLookupTable::lookupSin ( float radians )
     while ( radians < 0 )
         radians += 2*pi;
 
-    index = floor_int( ( radians/resolution ) + 0.5 );
+    index = floor_int( ( float(radians) / resolution ) + 0.5f );
     Q_ASSERT(index < numEntries);
     return( sinTable[index] );
 }
@@ -158,7 +158,7 @@ float trigLookupTable::lookupSin ( float radians )
  * of an angle in radians. Both are returned in the passed
  * by refernces sinOut and cosOut.
  */
-void trigLookupTable::lookupSinCos ( float radians, float & sinOut, float &cosOut )
+void trigLookupTable::lookupSinCos ( double radians, float & sinOut, float &cosOut )
 {
     int index;
 
@@ -168,7 +168,7 @@ void trigLookupTable::lookupSinCos ( float radians, float & sinOut, float &cosOu
     while ( radians < 0 )
         radians += 2*pi;
 
-    index = floor_int( ( radians/resolution ) + 0.5 );
+    index = floor_int( ( float(radians) / resolution ) + 0.5f );
     sinOut = sinTable[index];
     cosOut = cosTable[index];
 }

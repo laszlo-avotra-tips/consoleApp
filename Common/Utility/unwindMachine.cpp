@@ -222,9 +222,6 @@ bool unwindMachine::update ( double newPosition )
         case Unwinding:
             applyOffset = doUnwind( newPosition );
             break;
-
-        default:
-            break;
     }
 
     // Update the client with the offset to keep angles

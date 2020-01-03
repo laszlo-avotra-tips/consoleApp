@@ -21,7 +21,7 @@ class transport : public QWidget {
     Q_OBJECT
 
 public:
-    transport(QWidget *parent = 0);
+    transport(QWidget *parent = nullptr);
     ~transport();
     bool isRepeatChecked( void );
 

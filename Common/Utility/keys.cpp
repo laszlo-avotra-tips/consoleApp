@@ -24,9 +24,11 @@
 #include "logger.h"
 #include "util.h"
 
-namespace {
-QMutex fileCheckMutex;
-}
+KeyBundle_t *checkSingleKey( KeyBundle_t *key );
+
+//namespace {
+//QMutex fileCheckMutex;
+//}
 
 /*
  * Constructor
@@ -304,25 +306,25 @@ bool Keys::checkKeysBlocking( void )
 void Keys::checkKeysBackground( void )
 {
 return; //lcv
-    QHashIterator<QString, QByteArray> i( keyHash );
-    QList<KeyBundle_t *> keyList;
+//    QHashIterator<QString, QByteArray> i( keyHash );
+//    QList<KeyBundle_t *> keyList;
 
-    while( i.hasNext() )
-    {
-        KeyBundle_t *keybundle = new KeyBundle_t;
-        i.next();
-        QString testFile = hFileInfo->absolutePath() + "/" + i.key();
-        keybundle->file = testFile;
-        QByteArray testValue = i.value();
-        keybundle->key = testValue;
-        keybundle->valid = false;
-        keyList.append(keybundle);
-    }
+//    while( i.hasNext() )
+//    {
+//        KeyBundle_t *keybundle = new KeyBundle_t;
+//        i.next();
+//        QString testFile = hFileInfo->absolutePath() + "/" + i.key();
+//        keybundle->file = testFile;
+//        QByteArray testValue = i.value();
+//        keybundle->key = testValue;
+//        keybundle->valid = false;
+//        keyList.append(keybundle);
+//    }
 
-    fileCheckWatcher = new QFutureWatcher<KeyBundle_t *>(this);
-    connect( fileCheckWatcher, SIGNAL( finished() ), this, SLOT( handleFileCheckDone() ) );
-    connect( fileCheckWatcher, SIGNAL( progressRangeChanged( int, int ) ), this, SIGNAL( fileCheckProgressRange( int,int) ) );
-    connect( fileCheckWatcher, SIGNAL( progressValueChanged( int ) ), this, SIGNAL( fileCheckProgressChanged( int ) ) );
+//    fileCheckWatcher = new QFutureWatcher<KeyBundle_t *>(this);
+//    connect( fileCheckWatcher, SIGNAL( finished() ), this, SLOT( handleFileCheckDone() ) );
+//    connect( fileCheckWatcher, SIGNAL( progressRangeChanged( int, int ) ), this, SIGNAL( fileCheckProgressRange( int,int) ) );
+//    connect( fileCheckWatcher, SIGNAL( progressValueChanged( int ) ), this, SIGNAL( fileCheckProgressChanged( int ) ) );
 
 //lcv    fileCheckWatcher->setFuture( QtConcurrent::mapped( keyList, checkSingleKey ) );
 }

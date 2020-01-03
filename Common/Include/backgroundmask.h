@@ -18,7 +18,7 @@ class backgroundMask : public QWidget
 {
     Q_OBJECT
 public:
-    explicit backgroundMask( QWidget *parent = 0 );
+    explicit backgroundMask( QWidget *parent = nullptr );
     ~backgroundMask();    
     void init( QWidget *parent );
 

@@ -18,7 +18,7 @@ class fileUtil
 public:
     static bool deleteDir( QString, bool excludeTopLevelDir = false );
     static QFileInfoList searchFiletypeRecursive( const QString &sDir, QString filter );
-    static quint64 dirSize( const QString &dir);
+    static qint64 dirSize( const QString &dir);
 };
 
 #endif // HOMESCREEN_FILEUTIL_H

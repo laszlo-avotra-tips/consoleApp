@@ -75,9 +75,9 @@ bool fileUtil::deleteDir( QString dirPath, bool excludeTopLevelDir )
  * Return the complete size of a directory and all subdirs and files.
  * Recursively. We have plenty of stack.
  */
-quint64 fileUtil::dirSize( const QString &dirName )
+qint64 fileUtil::dirSize( const QString &dirName )
 {
-    quint64 size = 0;
+    qint64 size = 0;
 
     QFileInfo fileInfo( dirName );
     if ( fileInfo.isDir() )
@@ -86,14 +86,14 @@ quint64 fileUtil::dirSize( const QString &dirName )
         QFileInfoList list = dir.entryInfoList( QDir::Files | QDir::Dirs |  QDir::Hidden | QDir::NoSymLinks | QDir::NoDotAndDotDot );
         for ( int i = 0; i < list.size(); i++ )
         {
-            QFileInfo fileInfo = list.at( i );
-            if( fileInfo.isDir() )
+            QFileInfo fileInfovALUE = list.at( i );
+            if( fileInfovALUE.isDir() )
             {
-                size += dirSize( fileInfo.absoluteFilePath() );
+                size += dirSize( fileInfovALUE.absoluteFilePath() );
             }
             else
             {
-                size += fileInfo.size();
+                size += fileInfovALUE.size();
             }
         }
     }

@@ -134,7 +134,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
         // read attributes for device
         if( e.tagName() == "device" )
         {
-            device::DeviceType speedType;
+            device::DeviceType speedType{device::HighSpeed};
             QString type = e.attribute( "deviceType", "" );
 
             // must compare strings and assign to the enumerated type

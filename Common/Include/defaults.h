@@ -23,7 +23,7 @@
 // and consumer.
 #define FRAME_BUFFER_SIZE 32
 
-#define MININTERPOLATIONANGLE_RAD (0.0005)
+#define MININTERPOLATIONANGLE_RAD (0.0005f)
 
 // Window Flags macro required for virtual keyboard input context
 const Qt::WindowFlags KeyboardWindowFlags = Qt::Widget | Qt::Dialog | Qt::FramelessWindowHint;

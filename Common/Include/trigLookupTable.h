@@ -27,10 +27,10 @@ public:
         static trigLookupTable theTable;
         return theTable;
     }
-    float lookupCos( float radians );
-    float lookupSin( float radians );
-    void lookupSinCos( float radians, float & sinOut, float & cosOut );
-    QPoint lookupPosition( int rho, float radians );
+    float lookupCos(double radians );
+    float lookupSin(double radians );
+    void lookupSinCos(double radians, float & sinOut, float & cosOut );
+    QPoint lookupPosition(int rho, double radians );
 
 private:
 
