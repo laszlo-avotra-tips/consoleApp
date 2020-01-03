@@ -32,7 +32,7 @@
 #include "sledsupport.h"
 
 // Detect flip around 360 by a large instantaneous change in angle
-const float CrossOverAngleChange_rad( 3 * ( pi / 2) );
+const float CrossOverAngleChange_rad( 3 * float( pi / 2) );
 
 // Reticle and indicator colors/pens/brushes
 const QBrush ReticleBrush( Qt::NoBrush );
@@ -41,8 +41,8 @@ const QBrush ReticleBrush( Qt::NoBrush );
 //const QColor PassiveSpinColor    = QColor( 70, 234, 242 ).darker( 200 );  // light blue-ish
 
 // Constants for rendering various things
-const float UnwrapMaxOpacityAngle_deg( (float)0.8 );
-const float UnwrapMinOpacityAngle_deg( (float)0.2 );
+const float UnwrapMaxOpacityAngle_deg( 0.8f );
+const float UnwrapMinOpacityAngle_deg( 0.2f );
 
 
 /*

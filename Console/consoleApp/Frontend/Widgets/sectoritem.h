@@ -55,7 +55,7 @@ class sectorItem : public QGraphicsPixmapItem
 {
 
 public:
-    sectorItem(QGraphicsItem *parent = 0);
+    sectorItem(QGraphicsItem *parent = nullptr);
     ~sectorItem();
 
     void deviceChanged(void);
