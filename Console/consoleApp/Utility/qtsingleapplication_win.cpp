@@ -54,9 +54,9 @@ protected:
 
 };
 
-static HANDLE createLockedMutex(const QString &id)
+static HANDLE createLockedMutex(const QString & /*id*/)
 {
-    LOG1(id)
+//    LOG1(id)
     HANDLE mutex = nullptr;
 //    QT_WA({
 //        mutex = CreateMutex(0, false, (TCHAR*)id.utf16());
