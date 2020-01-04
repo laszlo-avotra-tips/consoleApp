@@ -23,7 +23,7 @@ namespace Ui {
 class lagWizard : public QWizard {
     Q_OBJECT
 public:
-    lagWizard(QWidget *parent = 0);
+    lagWizard(QWidget *parent = nullptr);
     ~lagWizard();
 
     void setScene( QGraphicsScene *scene );

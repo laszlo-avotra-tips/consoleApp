@@ -38,8 +38,8 @@ private:
     int    position;
     int    numChunks;
     float  scaleFactor;
-    double controlledObjMinVal;
-    double controlledObjMaxVal;
+    float controlledObjMinVal;
+    float controlledObjMaxVal;
     void   updatePosition( void );
 };
 

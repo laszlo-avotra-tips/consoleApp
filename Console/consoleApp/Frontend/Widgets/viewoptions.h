@@ -26,7 +26,7 @@ class viewOptions : public QWidget
     Q_OBJECT
 
 public:
-    viewOptions(QWidget *parent = 0);
+    viewOptions(QWidget *parent = nullptr);
     ~viewOptions();
     void disableButtons( void );
     void enableButtons( void );

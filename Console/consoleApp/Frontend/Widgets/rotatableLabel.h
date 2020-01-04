@@ -22,7 +22,7 @@ class rotatableLabel : public QLabel
     Q_OBJECT
 
 public:
-    rotatableLabel( QWidget *parent = 0 );
+    rotatableLabel( QWidget *parent = nullptr );
     double getAngle( void ) {
         return( currentAngle );
     }

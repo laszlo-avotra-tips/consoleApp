@@ -20,7 +20,7 @@ const QString &EngineeringModel::getFileName() const
 void EngineeringModel::setPlaybackSpeed(int speed)
 {
     m_playbackSpeed = speed;
-    LOG1(m_playbackSpeed);
+    LOG1(m_playbackSpeed)
     emit playbackSpeedChanged(m_playbackSpeed);
 }
 
@@ -46,14 +46,14 @@ void EngineeringModel::setMotorSpeed(int speed)
 void EngineeringModel::setFileName(const QString &fn)
 {
     m_fileName = fn;
-    LOG1(m_fileName);
+    LOG1(m_fileName)
 }
 
 void EngineeringModel::setLaserOn(bool isOn)
 {
     if(m_isLaserOn != isOn){
         m_isLaserOn = isOn;
-        LOG1(m_isLaserOn);
+        LOG1(m_isLaserOn)
         emit laserOnChanged(m_isLaserOn);
         if(m_isLaserOn){
             Laser::Instance().turnDiodeOn();
@@ -65,10 +65,10 @@ void EngineeringModel::setLaserOn(bool isOn)
 
 void EngineeringModel::setMotorPowerOn(bool isOn)
 {
-    LOG1(isOn);
+    LOG1(isOn)
     if(m_isMotorPowerOn != isOn){
         m_isMotorPowerOn = isOn;
-        LOG1(m_isMotorPowerOn);
+        LOG1(m_isMotorPowerOn)
         emit motorOnChanged(m_isMotorPowerOn);
 
         if(!m_isMotorPowerOn){

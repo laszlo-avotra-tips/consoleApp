@@ -895,7 +895,7 @@ void liveScene::loadColormap( QString colormapFile )
     int r, g, b;
 
     // Load the data into the arrays
-    for( unsigned int i = 0; i < 256; i++ )
+    for( int i = 0; i < 256; i++ )
     {
         currLine = in.readLine();
         r = currLine.section( ",", 0, 0 ).toInt();

@@ -20,7 +20,7 @@ const int DefaultNumberRadialLines = 12;
 gridOverlay::gridOverlay( QWidget *parent ) : QLabel( parent )
 {
     numRadialLines = DefaultNumberRadialLines;
-    angle = 360.0 / (float)DefaultNumberRadialLines;
+    angle = 360.0f / DefaultNumberRadialLines;
 }
 
 
@@ -63,7 +63,7 @@ void gridOverlay::paintEvent( QPaintEvent * )
     for( int kr = 0; kr < numRadialLines; kr++ )
     {
         p.drawLine( InnerRadius_px, 0, radius - spacing_px, 0 );
-        p.rotate( angle );
+        p.rotate( double(angle) );
     }
 
     p.end();

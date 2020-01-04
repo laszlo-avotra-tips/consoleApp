@@ -38,7 +38,7 @@ public:
     static const int ColorTableSize = 256;
     static const int SectorItemKey  = 1;
 
-    liveScene( QObject *parent = 0 );
+    liveScene( QObject *parent = nullptr );
     ~liveScene();
     void setZoomFactor( float factor ) { zoomFactor = factor; }
     void setMeasureModeArea( bool state, QColor color );

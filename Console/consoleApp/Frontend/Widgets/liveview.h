@@ -18,7 +18,7 @@ class liveView : public QGraphicsView
     Q_OBJECT
 
 public:
-    liveView(QWidget *parent = 0);
+    liveView(QWidget *parent = nullptr);
     ~liveView();
 
 signals:

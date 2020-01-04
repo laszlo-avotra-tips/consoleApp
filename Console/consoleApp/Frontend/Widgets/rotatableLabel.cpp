@@ -15,7 +15,7 @@
 #include <QMatrix>
 #include <math.h>
 
-const double pi(3.1415);
+//const double pi(3.1415);
 
 rotatableLabel::rotatableLabel( QWidget *parent ) : QLabel( parent )
 {

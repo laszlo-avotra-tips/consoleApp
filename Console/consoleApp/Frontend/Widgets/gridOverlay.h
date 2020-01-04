@@ -20,11 +20,11 @@ class gridOverlay : public QLabel
     Q_OBJECT
 
 public:
-    gridOverlay( QWidget *parent = 0 );
+    gridOverlay( QWidget *parent = nullptr );
     void setSpacing( int val )
     {
         numRadialLines = val;
-        angle = 360.0 / (float)val;
+        angle = 360.0f / float(val);
     }
 
 private:

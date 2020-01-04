@@ -22,7 +22,7 @@ Q_OBJECT
 Q_PROPERTY( QBrush fadeBrush READ fadeBrush WRITE setFadeBrush )
 Q_PROPERTY( int fadeDuraction READ fadeDuration WRITE setFadeDuration )
 public:
-    explicit notificationWidget(QWidget *parent = 0);
+    explicit notificationWidget(QWidget *parent = nullptr);
     QBrush fadeBrush() const { return startBrush; }
     void setFadeBrush(const QBrush &newColor) { startBrush = newColor; }
 

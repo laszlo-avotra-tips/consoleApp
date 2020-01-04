@@ -45,12 +45,12 @@ void levelGauge::init( int desiredNumChunks,
     controlledObjMaxVal = maxVal;
 
     // calculate a scale factor
-    scaleFactor = ( controlledObjMaxVal - controlledObjMinVal ) / (float)( numChunks - 1 );
+    scaleFactor = ( controlledObjMaxVal - controlledObjMinVal ) / ( numChunks - 1 );
 
     // map defaultVal to position
     // 0.5 required to round the value
     // +1 required to account for the min level value (always show 1, never go below).
-    position = ( 1 + (int)( ( ( defaultVal - controlledObjMinVal ) / scaleFactor ) + 0.5 ) );
+    position = ( 1 + int( ( ( defaultVal - controlledObjMinVal ) / scaleFactor ) + 0.5f ) );
 
     ui->levelIndicator->setRange( 0, numChunks );
     ui->levelIndicator->setValue( position );
@@ -60,11 +60,11 @@ void levelGauge::init( int desiredNumChunks,
     // Make progress bar chunk size proportional to the desired range.
     float mg = 2.0f; // margin
     float bd = 2.0f; // border
-    float sz = (float)ui->levelIndicator->width();
-    float chunks = (float)desiredNumChunks;
+    float sz = float(ui->levelIndicator->width());
+    float chunks = desiredNumChunks;
     float chw = ( ( sz - bd - ( (2*mg) * (chunks-1.0f) ) ) / chunks ); // chunk width
-    int i_chw = chw; // round down
-    ui->levelIndicator->setStyleSheet( QString( "QProgressBar::chunk{ width: %1px; margin: %2px; border: %3px; }" ).arg( i_chw ).arg( mg ).arg( bd ) );
+    int i_chw = int(chw); // round down
+    ui->levelIndicator->setStyleSheet( QString( "QProgressBar::chunk{ width: %1px; margin: %2px; border: %3px; }" ).arg( i_chw ).arg( double(mg) ).arg( double(bd) ) );
 }
 
 /*
@@ -107,8 +107,8 @@ void levelGauge::on_rightButton_clicked()
 void levelGauge::updatePosition( void )
 {
     ui->levelIndicator->setValue( position );
-    double val = controlledObjMinVal + ( scaleFactor * (float)( position - 1 ) );
-    emit valueChanged( val );
+    float val = controlledObjMinVal + ( scaleFactor * ( position - 1 ) );
+    emit valueChanged( double(val) );
 }
 
 /*
@@ -120,7 +120,7 @@ void levelGauge::updatePosition( void )
  */
 void levelGauge::setValue( double val )
 {
-    position = ( ( val - controlledObjMinVal ) / scaleFactor ) + 1;
+    position = int( ( float(val) - controlledObjMinVal ) / scaleFactor ) + 1;
     ui->levelIndicator->setValue( position );
 }
 

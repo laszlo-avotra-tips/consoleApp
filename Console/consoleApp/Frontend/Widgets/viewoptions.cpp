@@ -118,12 +118,12 @@ void viewOptions::on_distalToProximalViewRadioButton_toggled(bool checked)
     if( checked )
     {
         settings.setCatheterView( userSettings::DistalToProximal );
-        LOG( INFO, "Catheter view: Down - distal to proximal" );
+        LOG( INFO, "Catheter view: Down - distal to proximal" )
     }
     else
     {
         settings.setCatheterView( userSettings::ProximalToDistal );
-        LOG( INFO, "Catheter view: Up - proximal to distal" );
+        LOG( INFO, "Catheter view: Up - proximal to distal" )
     }
 
     emit updateCatheterView();
@@ -140,8 +140,8 @@ void viewOptions::on_scanSyncSlider_valueChanged( int value )
     userSettings &settings = userSettings::Instance();
     settings.setLag( value );
     ui->scanSyncValueLabel->setText( QString( "%1" ).arg( value ) );
-    LOG( INFO, QString( "Manual Scan Sync = %1" ).arg( value ));
-    emit sendManualLagAngle( (double)value );
+    LOG( INFO, QString( "Manual Scan Sync = %1" ).arg( value ))
+    emit sendManualLagAngle( double(value) );
 }
 
 /*
@@ -151,7 +151,7 @@ void viewOptions::on_scanSyncSlider_valueChanged( int value )
  */
 void viewOptions::handleNewLagAngle( double newLagAngle )
 {
-    ui->scanSyncSlider->setValue( newLagAngle );
+    ui->scanSyncSlider->setValue( int(newLagAngle) );
     ui->scanSyncValueLabel->setText( QString( "%1" ).arg( newLagAngle ) );
 }
 
@@ -205,7 +205,7 @@ void viewOptions::handleDeviceChange()
  */
 void viewOptions::on_useNoiseReductionRadioButton_toggled( bool enable )
 {
-    LOG( INFO, QString( "Noise reduction enabled: %1" ).arg( enable ) );
+    LOG( INFO, QString( "Noise reduction enabled: %1" ).arg( enable ) )
 
     emit enableAveraging( enable );
     ui->noiseReductionSlider->setEnabled( enable );
@@ -247,7 +247,7 @@ void viewOptions::on_showWaterfallRadioButton_toggled(bool checked)
  */
 void viewOptions::on_invertColorsRadioButton_toggled(bool checked)
 {
-    LOG( INFO, QString( "Invert colors enabled: %1" ).arg( checked ) );
+    LOG( INFO, QString( "Invert colors enabled: %1" ).arg( checked ) )
     userSettings &settings = userSettings::Instance();
     settings.setInvertOctColor( checked );
 
