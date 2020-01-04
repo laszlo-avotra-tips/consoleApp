@@ -118,7 +118,7 @@ QtSingleApplication::QtSingleApplication(const QString &id, int &argc, char **ar
 #endif
     d = new QtSingletonPrivate;
     d->id = id;
-    actWin = 0;
+    actWin = nullptr;
 
     sysInit();
 }

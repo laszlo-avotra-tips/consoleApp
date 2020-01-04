@@ -35,8 +35,8 @@
 //#if UNIT_TEST
 //   #define LOG( severity, msg ) {}
 //#else
-   #define LOG( severity, msg ) { Logger &log = Logger::Instance(); \
-                                  log.logMessage( msg, #severity, __FILE__, __LINE__ ); }
+   #define LOG( severity_, msg_ ) { Logger &log_ = Logger::Instance(); \
+                                  log_.logMessage( msg_, #severity_, __FILE__, __LINE__ ); }
 //#endif  // UNIT_TEST
 
 

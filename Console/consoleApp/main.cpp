@@ -28,6 +28,8 @@
 #include "sledsupport.h"
 #include "daqfactory.h"
 
+void parseOptions( QCommandLineOption &options, QStringList args );
+
 /*
  * parseOptions
  *
@@ -35,6 +37,7 @@
  */
 void parseOptions( QCommandLineOption &options, QStringList args )
 {
+    LOG2(&options,args.size())
     // make options unix-like
 //    options.setFlagStyle( QxtCommandOptions::DoubleDash );
 //    options.setParamStyle( QxtCommandOptions::SpaceAndEquals );
@@ -87,12 +90,12 @@ int main(int argc, char *argv[])
     }
 
     // Start the session in the system log
-    LOG( INFO, "-------------------" );
-    LOG( INFO, "Application started: OCT HS Console" );
-    LOG( INFO, QString( "OCT Console Process ID (PID) : %1" ).arg( app.applicationPid() ) );
-    LOG( INFO, QString( "OCT Console Version: %1" ).arg( getSoftwareVersionNumber() ) );
+    LOG( INFO, "-------------------" )
+    LOG( INFO, "Application started: OCT HS Console" )
+    LOG( INFO, QString( "OCT Console Process ID (PID) : %1" ).arg( app.applicationPid() ) )
+    LOG( INFO, QString( "OCT Console Version: %1" ).arg( getSoftwareVersionNumber() ) )
 #if _DEBUG
-    LOG( INFO, "DEBUG Build" );
+    LOG( INFO, "DEBUG Build" )
 #else
     LOG( INFO, "RELEASE Build" );
 #endif
@@ -102,10 +105,10 @@ int main(int argc, char *argv[])
 #if ENABLE_SQUISH
     LOG( INFO, "SQUISH Enabled" );
 #else
-    LOG( INFO, "SQUISH Disabled" );
+    LOG( INFO, "SQUISH Disabled" )
 #endif
 
-    LOG( INFO, QString( "Local time is %1" ).arg( QDateTime::currentDateTime().toString( "yyyy-MM-dd HH:mm:ss" ) ) );
+    LOG( INFO, QString( "Local time is %1" ).arg( QDateTime::currentDateTime().toString( "yyyy-MM-dd HH:mm:ss" ) ) )
 
     // check for command line options and use them if they are present
     QCommandLineOption options("");
@@ -153,11 +156,11 @@ int main(int argc, char *argv[])
     // create the main window
     frontend frontEndWindow;
 
-#if QT_NO_DEBUG
-    // Provide power to all other non-PC components in the Lightbox
-    powerDistributionBoard pdb;
-    pdb.powerOn();
-#endif
+//#if QT_NO_DEBUG
+//    // Provide power to all other non-PC components in the Lightbox
+//    powerDistributionBoard pdb;
+//    pdb.powerOn();
+//#endif
 
     // if both monitors are not present, only show the technician's
     if( !init.isPhysicianScreenAvailable() )
@@ -184,52 +187,52 @@ int main(int argc, char *argv[])
 
         QObject::connect( &app, SIGNAL( aboutToQuit() ), &frontEndWindow, SLOT( shutdownCleanup() ) );
 
-#if QT_NO_DEBUG
-        Laser &laser = Laser::Instance();
+//#if QT_NO_DEBUG
+//        Laser &laser = Laser::Instance();
 
-        // default serial port
-        QString portName = DefaultPortName;
-        if( options.count( "port" ) )
-        {
-            portName = options.value( "port" ).toString();
-        }
+//        // default serial port
+//        QString portName = DefaultPortName;
+//        if( options.count( "port" ) )
+//        {
+//            portName = options.value( "port" ).toString();
+//        }
 
-        laser.setPort( portName.toLatin1() );
+//        laser.setPort( portName.toLatin1() );
 
-        QString laserCommConfig = DefaultLaserCommConfig;
-        laser.setConfig( laserCommConfig.toLatin1() );
+//        QString laserCommConfig = DefaultLaserCommConfig;
+//        laser.setConfig( laserCommConfig.toLatin1() );
 
-        QObject::connect( &frontEndWindow,      SIGNAL(checkLaserDiodeStatus()), &laser, SLOT(isDiodeOn()) );
-        QObject::connect( &laser,  SIGNAL(diodeIsOn(bool)),         &frontEndWindow,     SIGNAL(forwardLaserDiodeStatus(bool)) );
-        QObject::connect( &frontEndWindow,      SIGNAL(forwardTurnDiodeOn()),    &laser, SLOT(turnDiodeOn()) );
-        QObject::connect( &frontEndWindow,      SIGNAL(forwardTurnDiodeOff()),   &laser, SLOT(turnDiodeOff()) );
+//        QObject::connect( &frontEndWindow,      SIGNAL(checkLaserDiodeStatus()), &laser, SLOT(isDiodeOn()) );
+//        QObject::connect( &laser,  SIGNAL(diodeIsOn(bool)),         &frontEndWindow,     SIGNAL(forwardLaserDiodeStatus(bool)) );
+//        QObject::connect( &frontEndWindow,      SIGNAL(forwardTurnDiodeOn()),    &laser, SLOT(turnDiodeOn()) );
+//        QObject::connect( &frontEndWindow,      SIGNAL(forwardTurnDiodeOff()),   &laser, SLOT(turnDiodeOff()) );
 
-        // initialize the hardware for communicating to the laser
-        laser.init();
-#else
-        LOG( INFO, "LASER: serial port control is DISABLED" );
-#endif
+//        // initialize the hardware for communicating to the laser
+//        laser.init();
+//#else
+        LOG( INFO, "LASER: serial port control is DISABLED" )
+//#endif
 
-#if QT_NO_DEBUG
-        SledSupport &sledSupport = SledSupport::Instance();
-        QObject::connect( &sledSupport, SIGNAL( announceClockingMode( int ) ),
-                          &frontEndWindow,           SIGNAL( announceClockingMode( int ) ) );
-        QObject::connect( &sledSupport, SIGNAL( announceFirmwareVersions( QByteArray, QByteArray ) ),
-                          &frontEndWindow,           SIGNAL( announceFirmwareVersions( QByteArray, QByteArray ) ) );
-        QObject::connect( &frontEndWindow,           SIGNAL( updateDeviceForSledSupport() ),
-                          &sledSupport, SLOT(   updateDeviceForSledSupport() ) );
-        QObject::connect( &sledSupport, SIGNAL( changeDeviceSpeed( int, int ) ),
-                          &frontEndWindow,           SLOT(   changeDeviceSpeed( int, int ) ) );
-        QObject::connect( &sledSupport, SIGNAL( handleError(QString ) ),
-                          &frontEndWindow,           SLOT(   handleError(QString) ) );
-        QObject::connect( &sledSupport, SIGNAL( setDirButton( int ) ),
-                          &frontEndWindow,           SLOT(   dirButton( int ) ) );
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
-        QObject::connect( &frontEndWindow, SIGNAL( checkSledStatus() ), &sledSupport, SLOT( getAllStatus() ) );
-#endif
-#else // !QT_NO_DEBUG
-        LOG( INFO, "SLED support board: serial port control is DISABLED" );
-#endif
+//#if QT_NO_DEBUG
+//        SledSupport &sledSupport = SledSupport::Instance();
+//        QObject::connect( &sledSupport, SIGNAL( announceClockingMode( int ) ),
+//                          &frontEndWindow,           SIGNAL( announceClockingMode( int ) ) );
+//        QObject::connect( &sledSupport, SIGNAL( announceFirmwareVersions( QByteArray, QByteArray ) ),
+//                          &frontEndWindow,           SIGNAL( announceFirmwareVersions( QByteArray, QByteArray ) ) );
+//        QObject::connect( &frontEndWindow,           SIGNAL( updateDeviceForSledSupport() ),
+//                          &sledSupport, SLOT(   updateDeviceForSledSupport() ) );
+//        QObject::connect( &sledSupport, SIGNAL( changeDeviceSpeed( int, int ) ),
+//                          &frontEndWindow,           SLOT(   changeDeviceSpeed( int, int ) ) );
+//        QObject::connect( &sledSupport, SIGNAL( handleError(QString ) ),
+//                          &frontEndWindow,           SLOT(   handleError(QString) ) );
+//        QObject::connect( &sledSupport, SIGNAL( setDirButton( int ) ),
+//                          &frontEndWindow,           SLOT(   dirButton( int ) ) );
+//#if ENABLE_SLED_SUPPORT_BOARD_TESTING
+//        QObject::connect( &frontEndWindow, SIGNAL( checkSledStatus() ), &sledSupport, SLOT( getAllStatus() ) );
+//#endif
+//#else // !QT_NO_DEBUG
+        LOG( INFO, "SLED support board: serial port control is DISABLED" )
+//#endif
 
         // Initialize the session
         frontEndWindow.updateCaseInfo();
@@ -244,18 +247,18 @@ int main(int argc, char *argv[])
         // if the system is running low on space, turn off all storage except for the logs
 //lcv        frontEndWindow.disableStorage( options.count( "low-space" ) );
 
-#if QT_NO_DEBUG
-        // The laser diode is turned on at the start of the case and remains on throughout
-        laser.turnDiodeOn();
-#endif
+//#if QT_NO_DEBUG
+//        // The laser diode is turned on at the start of the case and remains on throughout
+//        laser.turnDiodeOn();
+//#endif
 
         // Start the daq and data consumer threads  // XXX needed here?  device select will start the HW
         frontEndWindow.startDaq();
         frontEndWindow.startDataCapture();
 
-#if QT_NO_DEBUG
-        frontEndWindow.setupDeviceForSledSupport();
-#endif
+//#if QT_NO_DEBUG
+//        frontEndWindow.setupDeviceForSledSupport();
+//#endif
 
         status = app.exec();
 
@@ -263,29 +266,29 @@ int main(int argc, char *argv[])
         frontEndWindow.stopDataCapture();
         frontEndWindow.stopDaq(); // merge into stopDataCapture()?
 
-#if QT_NO_DEBUG
-        laser.turnDiodeOff();
+//#if QT_NO_DEBUG
+//        laser.turnDiodeOff();
 
-        pdb.powerOff();
-#endif
+//        pdb.powerOff();
+//#endif
 
         // Set the flag indicating all has been closed properly for this session
         sessionDatabase &db = sessionDatabase::Instance();
         db.markExitAsClean();
 
-        LOG( INFO, "Application stopped: OCT Console" );
+        LOG( INFO, "Application stopped: OCT Console" )
     }
     else  // the case wizard was cancelled
     {
         // tell frontend the application isn't starting up
         frontEndWindow.abortStartUp();
 
-#if QT_NO_DEBUG
-        // power down
-        pdb.powerOff();
-#endif
+//#if QT_NO_DEBUG
+//        // power down
+//        pdb.powerOff();
+//#endif
 
-        LOG( INFO, "Application cancelled: OCT Console" );
+        LOG( INFO, "Application cancelled: OCT Console" )
 
         // user cancelled setup; return normal exit code
         status = 0;

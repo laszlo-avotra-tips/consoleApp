@@ -19,6 +19,7 @@
 #include "qtsingleapplication.h"
 #include <qt_windows.h>
 #include <QWidget>
+#include <logger.h>
 
 class QtSingletonSysPrivate : public QWidget
 {
@@ -36,10 +37,15 @@ protected:
             return false;
 
 //lcv        Q_ASSERT(msg->hwnd == winId());
-        COPYDATASTRUCT *data = (COPYDATASTRUCT*)msg->lParam;
-        QString message = QString::fromUtf16((unsigned short*)data->lpData);
+        COPYDATASTRUCT *data = reinterpret_cast<COPYDATASTRUCT*>(msg->lParam);
 
-        emit ((QtSingleApplication*)qApp)->messageReceived( message );
+        QString message = QString::fromUtf16( static_cast<ushort*>(data->lpData) );
+
+        auto* app = dynamic_cast<QtSingleApplication*>(qApp);
+
+        if(app){
+            emit (app->messageReceived( message ) );
+        }
 
 	if (result)
 	  *result = 0;
@@ -50,7 +56,8 @@ protected:
 
 static HANDLE createLockedMutex(const QString &id)
 {
-    HANDLE mutex;
+    LOG1(id)
+    HANDLE mutex = nullptr;
 //    QT_WA({
 //        mutex = CreateMutex(0, false, (TCHAR*)id.utf16());
 //    }, {
@@ -83,7 +90,7 @@ static HWND findWindow(const QString &id)
 {
     HANDLE mutex = createLockedMutex(id);
 
-    HWND hwnd;
+    HWND hwnd = nullptr;
 //    QString wid = id + "_QtSingleApplicationWindow";
 
 //    QT_WA( {
@@ -92,7 +99,7 @@ static HWND findWindow(const QString &id)
 //	hwnd = ::FindWindowA("QWidget", wid.toLocal8Bit().data());
 //    } )
 
-//    closeLockedMutex(mutex);
+    closeLockedMutex(mutex);
 
     return hwnd;
 }
@@ -131,21 +138,22 @@ void QtSingleApplication::initialize( bool activate )
 
 bool QtSingleApplication::isRunning() const
 {
-    return findWindow(id()) != 0;
+    return findWindow(id()) != nullptr;
 }
 
-bool QtSingleApplication::sendMessage( const QString &message, int timeout )
+bool QtSingleApplication::sendMessage( const QString & message, int timeout )
 {
-    HWND hwnd = findWindow(id());
-    if ( !hwnd )
-    return false;
+    LOG2(message,timeout)
+//    HWND hwnd = findWindow(id());
+//    if ( !hwnd )
+//    return false;
 
-    COPYDATASTRUCT data;
-    data.dwData = 0;
-    data.cbData = (message.length()+1) * sizeof(QChar);
-    data.lpData = (void*)message.utf16();
-    DWORD result;
-    LRESULT res;
+//    COPYDATASTRUCT data;
+//    data.dwData = 0;
+//    data.cbData = (message.length()+1) * sizeof(QChar);
+//    data.lpData = (void*)message.utf16();
+//    DWORD result(0);
+//    LRESULT res = 0;
 //    QT_WA( {
 //	res = SendMessageTimeout(hwnd, WM_COPYDATA, 0/*hwnd sender*/, (LPARAM)&data,
 //				 SMTO_ABORTIFHUNG,timeout,&result);
@@ -153,5 +161,6 @@ bool QtSingleApplication::sendMessage( const QString &message, int timeout )
 //	res = SendMessageTimeoutA(hwnd, WM_COPYDATA, 0/*hwnd sender*/, (LPARAM)&data,
 //				  SMTO_ABORTIFHUNG,timeout,&result);
 //    } )
-    return res != 0;
+//    return res != 0;
+    return true;
 }
