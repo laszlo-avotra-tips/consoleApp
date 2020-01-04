@@ -34,13 +34,16 @@ caseInfoWizard::~caseInfoWizard()
 void caseInfoWizard::changeEvent(QEvent *e)
 {
     QWizard::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+    //    switch ( e->type() ) {
+    //    case QEvent::LanguageChange:
+    //        ui->retranslateUi( this );
+    //        break;
+    //    default:
+    //        break;
+    //    }
+        if(e->type() == QEvent::LanguageChange){
+            ui->retranslateUi( this );
+        }
 }
 
 void caseInfoWizard::init( SetupType type )

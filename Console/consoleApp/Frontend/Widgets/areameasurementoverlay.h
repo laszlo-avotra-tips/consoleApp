@@ -16,7 +16,7 @@ class AreaMeasurementOverlay : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    AreaMeasurementOverlay( QWidget *parent = 0 );
+    AreaMeasurementOverlay( QWidget *parent = nullptr );
     ~AreaMeasurementOverlay();
 
     void setColor( QColor color ) { currentColor = color; }

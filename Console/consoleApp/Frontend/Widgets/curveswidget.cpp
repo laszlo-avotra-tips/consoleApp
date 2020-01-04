@@ -28,12 +28,12 @@ curvesWidget::~curvesWidget()
 
 void curvesWidget::reset(void)
 {
-    int i;
+    ushort i;
 
     // Set up a straight linear map
     for (i = 0; i <= maxLevel; i++)
     {
-        curveMap[i] = i;
+        curveMap[i] = uchar(i);
     }
     emit notifyCurveChanged();
 }
@@ -97,7 +97,7 @@ void curvesWidget::mouseDoubleClickEvent(QMouseEvent * /*event*/)
 
 void curvesWidget::recalcCurve(void)
 {
-    int i;
+    short i;
     double pcnt;
 
     QPainterPath path;
@@ -109,13 +109,13 @@ void curvesWidget::recalcCurve(void)
     path.cubicTo(controlPoint1, controlPoint2, QPointF(255.0, 0.0));
    
     for (i = 0; i <= maxLevel; i++) {
-        pcnt = (double)i / 255.0;
+        pcnt = double(i) / 255.0;
         if (path.pointAtPercent(pcnt).y() > 255) {
             curveMap[i] = 0;
         } else if (path.pointAtPercent(pcnt).y() < 0) {
             curveMap[i] = 255;
         } else {
-            curveMap[i] = (unsigned char)(255.0 - path.pointAtPercent(pcnt).y());
+            curveMap[i] = uchar(255.0 - path.pointAtPercent(pcnt).y());
         }
     }
     emit notifyCurveChanged();

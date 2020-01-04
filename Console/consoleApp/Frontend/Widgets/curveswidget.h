@@ -13,14 +13,13 @@
 #include <QPoint>
 #include <QVector>
 
-const int maxLevel(255);
 
 class curvesWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    curvesWidget(QWidget *parent = 0);
+    curvesWidget(QWidget *parent = nullptr);
     ~curvesWidget();
 
     QVector<unsigned char> getMap(void);
@@ -40,6 +39,7 @@ private:
     QVector<unsigned char> curveMap;
     QPointF controlPoint1;
     QPointF controlPoint2;
+    const short maxLevel {255};
 
 };
 

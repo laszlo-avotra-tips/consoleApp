@@ -122,9 +122,9 @@ void AnnotateOverlay::paint( QPainter *painter, const QStyleOptionGraphicsItem *
             paintSegments( painter, segList );
         }
     }
-#if DEBUG_ANNOTATION
-    painter->drawRect( 0, 0, overlayPixmap->width(), overlayPixmap->height() );
-#endif
+//#if DEBUG_ANNOTATION
+//    painter->drawRect( 0, 0, overlayPixmap->width(), overlayPixmap->height() );
+//#endif
 }
 
 /*

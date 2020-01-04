@@ -11,7 +11,7 @@
  *
  * Copyright (c) 2010-2018 Avinger, Inc
  */
-#include "styledMessagebox.h"
+#include "styledmessagebox.h"
 #include <QString>
 #include <QTime>
 #include <QUuid>
@@ -193,7 +193,7 @@ bool caseInfoWizardPage::validatePage()
             // save a cookie for HomeScreen to find
             updateSessionCookieFile( info.getCaseID() );
 
-            LOG( INFO, QString( "Case ID: %1" ).arg( info.getCaseID() ) );
+            LOG( INFO, QString( "Case ID: %1" ).arg( info.getCaseID() ) )
         }
     }
     else
@@ -215,13 +215,16 @@ bool caseInfoWizardPage::validatePage()
 void caseInfoWizardPage::changeEvent(QEvent *e)
 {
     QWizardPage::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+    //    switch ( e->type() ) {
+    //    case QEvent::LanguageChange:
+    //        ui->retranslateUi( this );
+    //        break;
+    //    default:
+    //        break;
+    //    }
+        if(e->type() == QEvent::LanguageChange){
+            ui->retranslateUi( this );
+        }
 }
 
 /*

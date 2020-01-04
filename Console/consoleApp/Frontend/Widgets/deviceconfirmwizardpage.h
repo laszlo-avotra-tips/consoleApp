@@ -23,7 +23,7 @@ class deviceConfirmWizardPage : public QWizardPage
     Q_OBJECT
 
 public:
-    deviceConfirmWizardPage(QWidget *parent = 0);
+    deviceConfirmWizardPage(QWidget *parent = nullptr);
     ~deviceConfirmWizardPage();
     bool validatePage();
     void initializePage();

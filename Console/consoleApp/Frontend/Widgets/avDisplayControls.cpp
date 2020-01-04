@@ -15,8 +15,6 @@
 #include "defaults.h"
 #include "deviceSettings.h"
 
-const QColor SpanEnabledColor( 191, 191, 191 );
-const QColor SpanDisabledColor( 128, 128, 128 );
 
 /*
  * constructor

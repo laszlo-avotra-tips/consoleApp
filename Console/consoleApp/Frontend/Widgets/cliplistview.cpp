@@ -42,12 +42,15 @@ bool clipListView::viewportEvent( QEvent *event )
         /*
          * Determine the index of the hovered item
          */
-        QHelpEvent *he = (QHelpEvent *)event;
-        QModelIndex index = indexAt( he->pos() );
-        QVariant tip = index.data( Qt::ToolTipRole );
+        QHelpEvent *he = dynamic_cast<QHelpEvent *>(event);
 
-        QToolTip::showText( he->globalPos(), tip.toString() );
-        return( true );
+        if(he){
+            QModelIndex index = indexAt( he->pos() );
+            QVariant tip = index.data( Qt::ToolTipRole );
+
+            QToolTip::showText( he->globalPos(), tip.toString() );
+            return( true );
+        }
     }
     return( QListView::viewportEvent(event) );
 

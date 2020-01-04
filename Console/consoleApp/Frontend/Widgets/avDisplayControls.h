@@ -31,6 +31,8 @@ public slots:
 protected:
 
 private:
+    const QColor SpanEnabledColor { 191, 191, 191 };
+    const QColor SpanDisabledColor { 128, 128, 128 };
 
 };
 

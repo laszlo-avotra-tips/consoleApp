@@ -26,7 +26,7 @@ class deviceSelectWizardPage : public QWizardPage
     Q_OBJECT
 
 public:
-    deviceSelectWizardPage(QWidget *parent = 0);
+    deviceSelectWizardPage(QWidget *parent = nullptr);
     ~deviceSelectWizardPage();
     void init( void );
     bool isComplete() const;

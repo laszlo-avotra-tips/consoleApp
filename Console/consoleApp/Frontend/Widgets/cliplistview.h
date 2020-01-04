@@ -19,7 +19,7 @@ class clipListView : public QListView
 Q_OBJECT
 
 public:
-    explicit clipListView(QWidget *parent = 0);
+    explicit clipListView(QWidget *parent = nullptr);
 
 signals:
 

@@ -17,7 +17,7 @@ class captureListView : public QListView
 {
 Q_OBJECT
 public:
-    explicit captureListView(QWidget *parent = 0);
+    explicit captureListView(QWidget *parent = nullptr);
 
 signals:
 

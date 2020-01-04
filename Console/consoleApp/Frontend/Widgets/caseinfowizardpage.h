@@ -29,7 +29,7 @@ class caseInfoWizardPage : public QWizardPage {
     Q_OBJECT
 
 public:
-    caseInfoWizardPage(QWidget *parent = 0);
+    caseInfoWizardPage(QWidget *parent = nullptr);
     ~caseInfoWizardPage();
     bool validatePage();
     void init( caseInfoWizard::SetupType type );

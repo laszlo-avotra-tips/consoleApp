@@ -26,7 +26,7 @@ class AnnotateOverlay : public QGraphicsPixmapItem
 {
 
 public:
-    AnnotateOverlay( QGraphicsItem *parent = 0 );
+    AnnotateOverlay( QGraphicsItem *parent = nullptr );
     ~AnnotateOverlay();
 
     void setColor( QColor color ) { currentColor = color; }

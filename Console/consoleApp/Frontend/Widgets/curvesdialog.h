@@ -18,7 +18,7 @@ class curvesDialog : public QDialog
     Q_OBJECT
 
 public:
-    curvesDialog(QWidget *parent = 0);
+    curvesDialog(QWidget *parent = nullptr);
     ~curvesDialog();
 
     QVector<unsigned char> getMap(void);

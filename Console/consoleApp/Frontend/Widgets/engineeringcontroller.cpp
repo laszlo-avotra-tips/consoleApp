@@ -103,7 +103,7 @@ void EngineeringController::loadFrameBuffers()
 
 void EngineeringController::playbackStartStopCommand(bool isStart)
 {
-    LOG1(isStart);
+    LOG1(isStart)
     if(isStart){
         startPlayback();
     }else{
@@ -114,7 +114,7 @@ void EngineeringController::playbackStartStopCommand(bool isStart)
 
 void EngineeringController::setPlaybackSpeed(int speed)
 {
-    PlaybackManager::instance()->setPlaybackSpeed(speed);
+    PlaybackManager::instance()->setPlaybackSpeed(ulong(speed));
 }
 
 void EngineeringController::startPlayback()

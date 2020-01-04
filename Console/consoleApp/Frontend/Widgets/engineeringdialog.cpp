@@ -10,7 +10,7 @@ EngineeringDialog::EngineeringDialog(QWidget *parent) :
     ui(new Ui::EngineeringDialog),m_count(0)
 {
     ui->setupUi(this);
-    LOG1(++m_count);
+    LOG1(++m_count)
 
     connect(ui->sliderPlaybackSpeed, SIGNAL(valueChanged(int)), this, SIGNAL(playbackSpeedChanged(int)));
     connect(ui->sliderVoa, SIGNAL(valueChanged(int)), this, SIGNAL(voaAttenuationChanged(int)));
@@ -36,7 +36,7 @@ void EngineeringDialog::setMotorSpeed(int val)
 
 void EngineeringDialog::setFramesAvailable(int frameCount)
 {
-    LOG1(frameCount);
+    LOG1(frameCount)
     QString msg("Frames for playback: ");
     msg += QString::number(frameCount);
     ui->labelFramesForPlayback->setText(msg);
@@ -57,21 +57,21 @@ void EngineeringDialog::on_checkBoxLaserOff_toggled(bool checked)
 
 void EngineeringDialog::on_groupBoxMotor_toggled(bool isOn)
 {
-    LOG1(isOn);
+    LOG1(isOn)
     emit isMotorOnChanged(isOn);
     ui->sliderMotorSpeed->setEnabled(isOn);
 }
 
 void EngineeringDialog::on_pushButtonLoad_clicked()
 {
-    LOG1(++m_count);
+    LOG1(++m_count)
     emit loadFrame();
 //    ui->checkBoxPlayback->setEnabled(true);
 }
 
 void EngineeringDialog::on_pushButtonSave_clicked()
 {
-    LOG1(++m_count);
+    LOG1(++m_count)
     emit saveFrame();
 }
 
@@ -99,7 +99,7 @@ void EngineeringDialog::on_lineEdit_textChanged(const QString &fn)
 
 void EngineeringDialog::on_checkBoxPlayback_toggled(bool checked)
 {
-    LOG1(checked);
+    LOG1(checked)
     emit playbackStartStop(checked);
 }
 
@@ -110,7 +110,7 @@ void EngineeringDialog::countChanged(int count, int index)
 
     qts << "Frame count = " << count << ", Frame index = " << index;
 
-    LOG2(count, index);
+    LOG2(count, index)
     ui->labelStat->setText(msg);
 }
 

@@ -27,7 +27,7 @@ public:
         UpdateCaseSetup
     };
 
-    caseInfoWizard(QWidget *parent = 0);
+    caseInfoWizard(QWidget *parent = nullptr);
     ~caseInfoWizard();
     void init( SetupType type );
 

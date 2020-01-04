@@ -38,13 +38,15 @@ deviceConfirmWizardPage::~deviceConfirmWizardPage()
 void deviceConfirmWizardPage::changeEvent(QEvent *e)
 {
     QWizardPage::changeEvent(e);
-    switch( e->type() )
-    {
-    case QEvent::LanguageChange:
+    //    switch ( e->type() ) {
+    //    case QEvent::LanguageChange:
+    //        ui->retranslateUi( this );
+    //        break;
+    //    default:
+    //        break;
+    //    }
+    if(e->type() == QEvent::LanguageChange){
         ui->retranslateUi( this );
-        break;
-    default:
-        break;
     }
 }
 

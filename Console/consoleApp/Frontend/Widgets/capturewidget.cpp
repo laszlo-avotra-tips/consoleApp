@@ -365,16 +365,16 @@ void captureWidget::loopSelected( QModelIndex index )
 
     ui->selectedLoopLineEdit->setText( selectedLoopItem->getTag() );
 
-#if LOAD_CLIP_INTO_PREVIEW_BUTTONS
-// TBD: Do not load the clip into the preview window
-    QIcon icon(QPixmap::fromImage(item->loadSector( item->getTag() ).scaled(ui->sectorCaptureButton->size())));
-    ui->sectorCaptureButton->setIcon(icon);
+//#if LOAD_CLIP_INTO_PREVIEW_BUTTONS
+//// TBD: Do not load the clip into the preview window
+//    QIcon icon(QPixmap::fromImage(item->loadSector( item->getTag() ).scaled(ui->sectorCaptureButton->size())));
+//    ui->sectorCaptureButton->setIcon(icon);
 
-    icon = QPixmap::fromImage(item->loadWaterfall( item->getTag() ).scaled(ui->waterfallCaptureButton->size()));
-    ui->waterfallCaptureButton->setIcon(icon);
+//    icon = QPixmap::fromImage(item->loadWaterfall( item->getTag() ).scaled(ui->waterfallCaptureButton->size()));
+//    ui->waterfallCaptureButton->setIcon(icon);
 
-    emit currentCaptureChanged( index );
-#endif
+//    emit currentCaptureChanged( index );
+//#endif
 }
 
 /*
@@ -441,12 +441,15 @@ void captureWidget::loadLoop( QModelIndex index )
 void captureWidget::changeEvent( QEvent *e )
 {
     QWidget::changeEvent( e );
-    switch ( e->type() ) {
-    case QEvent::LanguageChange:
+//    switch ( e->type() ) {
+//    case QEvent::LanguageChange:
+//        ui->retranslateUi( this );
+//        break;
+//    default:
+//        break;
+//    }
+    if(e->type() == QEvent::LanguageChange){
         ui->retranslateUi( this );
-        break;
-    default:
-        break;
     }
 }
 
