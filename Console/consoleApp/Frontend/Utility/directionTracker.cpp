@@ -46,13 +46,13 @@ void directionTracker::getEncoderCountsForDevice( void )
     deviceSettings &devSettings = deviceSettings::Instance();
     if( devSettings.current() )
     {
-        encoderCounts = devSettings.current()->getLinesPerRevolution();
+        encoderCounts = ushort(devSettings.current()->getLinesPerRevolution());
     }
     else
     {
         encoderCounts = DefaultEncoderCount;
     }
-    crossingThreshold_counts = 0.75 * encoderCounts;
+    crossingThreshold_counts = ushort(0.75 * encoderCounts);
 }
 
 /*
@@ -86,7 +86,7 @@ void directionTracker::updateDirection( unsigned short newPosition )
     ignoreCount = 0;
 
     // Determine the change from the previous measurement
-    short angleDiff_cnt = (short)newPosition - prevPosition;
+    short angleDiff_cnt = short(newPosition - prevPosition);
 
     // Special case: crossing over 360 (heuristically defined as
     // instantaneous angle change > 270 degrees
@@ -94,7 +94,7 @@ void directionTracker::updateDirection( unsigned short newPosition )
     // revolution (encoderCounts counts) and flip the sign.
     if( abs( angleDiff_cnt ) > crossingThreshold_counts )
     {
-        angleDiff_cnt = -sign( angleDiff_cnt ) * ( encoderCounts - abs( angleDiff_cnt ) );
+        angleDiff_cnt = short(-sign( angleDiff_cnt ) * ( encoderCounts - abs( angleDiff_cnt ) ) );
     }
 
     // maintain state across calls

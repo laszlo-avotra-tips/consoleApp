@@ -149,7 +149,7 @@ public:
     static captureListModel & Instance(void);
 
     int addCapture( QString tag,
-                    int timestamp,
+                    uint timestamp,
                     QString name,
                     QString deviceName,
                     bool isHighSpeed,

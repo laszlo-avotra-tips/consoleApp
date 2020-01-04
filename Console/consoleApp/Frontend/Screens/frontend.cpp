@@ -1378,7 +1378,7 @@ void frontend::on_recordLoopButton_clicked()
          */
         clipListModel &clipList = clipListModel::Instance();
         clipList.addClipCapture( ClipName,
-                                 int(clipTimestamp.toTime_t()),
+                                 clipTimestamp.toTime_t(),
                                  viewStr,
                                  dev.current()->getDeviceName(),
                                  dev.current()->isHighSpeed() );

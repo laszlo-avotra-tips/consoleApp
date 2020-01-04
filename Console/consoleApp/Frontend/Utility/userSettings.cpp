@@ -13,6 +13,9 @@
 #include "userSettings.h"
 #include "defaults.h"
 
+userSettings* userSettings::theSettings{nullptr};
+caseInfo* caseInfo::theInfo{nullptr};
+
 userSettings::userSettings()
 {
     settings = new QSettings( SystemSettingsFile, QSettings::IniFormat );
@@ -37,11 +40,20 @@ void userSettings::saveSettings()
     settings->setValue( "image/useInvertOctColor",        invertOctColorEnabled );
 }
 
+
 /*
  * loadSettings()
  *
  * Load the current user settings from the .ini file.
  */
+userSettings &userSettings::Instance() {
+
+    if(!theSettings){
+        theSettings = new userSettings();
+    }
+    return *theSettings;
+}
+
 void userSettings::loadSettings()
 {
     // lag angle is NOT saved across sessions
@@ -54,4 +66,13 @@ void userSettings::loadSettings()
     laserIndicatorBrightnessVal = settings->value( "image/laserIndicatorBrightness", DefaultLaserIndicatorBrightness ).toInt();
     noiseReductionVal           = settings->value( "image/noiseReduction",           DefaultCurrFrameWeight_Percent ).toInt();
     invertOctColorEnabled       = settings->value( "image/useInvertOctColor",        DefaultUseInvertOctColor ).toBool();
+}
+
+
+caseInfo &caseInfo::Instance() {
+
+    if(!theInfo){
+        theInfo = new caseInfo();
+    }
+    return *theInfo;
 }

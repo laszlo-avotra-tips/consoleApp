@@ -118,7 +118,7 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
      */
     if( !capture.waterfallImage.transformed( m ).save( WfName, "PNG", 100 ) )
     {
-        LOG( DEBUG, "Image Capture: waterfall capture failed" );
+        LOG( DEBUG, "Image Capture: waterfall capture failed" )
     }
     else
     {
@@ -127,7 +127,7 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
 
     if( !secRGB.save( SecName, "PNG", 100 ) )
     {
-        LOG( DEBUG, "Image Capture: sector capture failed" );
+        LOG( DEBUG, "Image Capture: sector capture failed" )
     }
     else
     {
@@ -137,7 +137,7 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
     // save a thumbnail image for the UI to use
     if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
     {
-        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" );
+        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
     }
     else
     {
@@ -158,7 +158,7 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
 
     if( !tmpImage.save( DecoratedImageName, "PNG", 100 ) )
     {
-        LOG( DEBUG, "Image Capture: decorated image capture failed" );
+        LOG( DEBUG, "Image Capture: decorated image capture failed" )
     }
     else
     {
@@ -181,7 +181,7 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
     emit updateCaptureCount();
 
     emit sendCaptureTag( saveName );
-    LOG( INFO, QString( "Capture - %1" ).arg( saveName ) );
+    LOG( INFO, QString( "Capture - %1" ).arg( saveName ) )
 }
 
 
@@ -258,7 +258,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
      */
     if( !loop.waterfallImage.transformed( m ).save( WfName, "PNG", 100 ) )
     {
-        LOG( DEBUG, "Loop capture: waterfall capture failed" );
+        LOG( DEBUG, "Loop capture: waterfall capture failed" )
     }
     else
     {
@@ -267,7 +267,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     if( !secRGB.save( SecName, "PNG", 100 ) )
     {
-        LOG( DEBUG, "Loop capture: sector capture failed" );
+        LOG( DEBUG, "Loop capture: sector capture failed" )
     }
     else
     {
@@ -277,7 +277,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     // save a thumbnail image for the UI to use
     if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
     {
-        LOG( DEBUG, "Loop capture: sector thumbnail capture failed" );
+        LOG( DEBUG, "Loop capture: sector thumbnail capture failed" )
     }
     else
     {
@@ -287,7 +287,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     emit updateClipCount();
 
     emit sendCaptureTag( ClipName );
-    LOG( INFO, "Loop Capture: " + ClipName );
+    LOG( INFO, "Loop Capture: " + ClipName )
 }
 
 

@@ -20,6 +20,8 @@
 #define OCT_LOOPS_SCHEMA_VERSION       4
 #define SESSION_SCHEMA_VERSION         3
 
+sessionDatabase* sessionDatabase::theDB{nullptr};
+
 /*
  * constructor
  */
@@ -41,6 +43,13 @@ sessionDatabase::sessionDatabase()
  * specified by the user. Sets up the SQLite file,
  * the schema and tables.
  */
+sessionDatabase &sessionDatabase::Instance() {
+    if(!theDB){
+        theDB = new sessionDatabase();
+    }
+    return *theDB;
+}
+
 QSqlError sessionDatabase::initDb(void)
 {
     caseInfo &info = caseInfo::Instance();
@@ -264,7 +273,7 @@ void sessionDatabase::markExitAsClean( void )
  * addCapture
  */
 int sessionDatabase::addCapture( QString tag,
-                                 int     timestamp,
+                                 uint    timestamp,
                                  QString name,
                                  QString deviceName,
                                  bool    isHighSpeed,
@@ -323,7 +332,7 @@ int sessionDatabase::addCapture( QString tag,
  * addClipCapture
  */
 int sessionDatabase::addClipCapture( QString name,
-                                     int     timestamp,
+                                     uint    timestamp,
                                      QString catheterView,
                                      QString deviceName,
                                      bool    isHighSpeed )

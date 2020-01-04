@@ -19,10 +19,7 @@ class sessionDatabase
 public:
 
     // singleton
-    static sessionDatabase & Instance(void) {
-        static sessionDatabase theDB;
-        return theDB;
-    }
+    static sessionDatabase & Instance(void);
 
     QSqlError initDb(void);
     void close( void );
@@ -31,15 +28,15 @@ public:
     void updateSession(void);
     void markExitAsClean(void);
 
-    int addCapture( QString tag,
-                    int timestamp,
+    int addCapture(QString tag,
+                    uint timestamp,
                     QString name,
                     QString deviceName,
                     bool isHighSpeed,
                     int pixelsPerMm );
 
-    int addClipCapture( QString name,
-                        int timestamp,
+    int addClipCapture(QString name,
+                        uint timestamp,
                         QString catheterView,
                         QString deviceName,
                         bool isHighSpeed );
@@ -68,6 +65,8 @@ private:
 
     // Searchable database
     QSqlDatabase db;
+
+    static sessionDatabase* theDB;
 };
 
 #endif // SESSIONDATABASE_H

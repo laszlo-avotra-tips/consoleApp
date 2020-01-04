@@ -17,6 +17,8 @@
 #include <QDir>
 #include "Utility/sessiondatabase.h"
 
+clipListModel* clipListModel::theDB{nullptr};
+
 /*
  * constructor
  */
@@ -71,6 +73,13 @@ QVariant clipListModel::data(const QModelIndex &index, int role) const
 
 }
 
+clipListModel &clipListModel::Instance() {
+    if(!theDB){
+        theDB = new clipListModel();
+    }
+    return *theDB;
+}
+
 
 /*
  * addClipCapture()
@@ -79,7 +88,7 @@ QVariant clipListModel::data(const QModelIndex &index, int role) const
  * all associated data and file reference location.
  */
 int clipListModel::addClipCapture( QString name,
-                                   int timestamp,
+                                   uint timestamp,
                                    QString catheterView,
                                    QString deviceName,
                                    bool isHighSpeed )

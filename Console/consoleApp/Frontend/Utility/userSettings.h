@@ -22,10 +22,7 @@ class caseInfo
 public:
 
     // Singleton
-    static caseInfo & Instance() {
-        static caseInfo theInfo;
-        return theInfo;
-    }
+    static caseInfo & Instance();
     void setPatientID( QString id ) {
         patientID = id;
     }
@@ -96,6 +93,7 @@ private:
     QString deviceName;
     QString notes;
     int utcOffset;
+    static caseInfo* theInfo;
 };
 
 /*
@@ -105,10 +103,7 @@ class userSettings
 {
 public:
     // Singleton
-    static userSettings & Instance() {
-        static userSettings theSettings;
-        return theSettings;
-    }
+    static userSettings & Instance();
 
     enum CatheterView_t
     {
@@ -208,4 +203,5 @@ private:
     userSettings & operator=(userSettings const &); // hide assign
 
     QSettings *settings;
+    static userSettings* theSettings;
 };

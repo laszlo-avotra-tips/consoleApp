@@ -92,8 +92,8 @@ public:
     {
         return deviceName;
     }
-    QImage loadSectorThumbnail( QString name ) {
-        return( loadImage( ".thumb_" + name + "*sector.png" ) );
+    QImage loadSectorThumbnail( QString nameSectorThumbnail ) {
+        return( loadImage( ".thumb_" + nameSectorThumbnail + "*sector.png" ) );
     }
 
 private:
@@ -125,7 +125,7 @@ public:
         int count = itemMap.count();
         return(count);
     }
-    int columnCount(const QModelIndex) const {
+    int columnCount(const QModelIndex&) const {
         return(1);
     }
     QModelIndex parent(const QModelIndex &) const {
@@ -135,13 +135,10 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 
     // singleton
-    static clipListModel & Instance(void) {
-        static clipListModel theDB;
-        return theDB;
-    }
+    static clipListModel & Instance(void);
 
-    int addClipCapture( QString name,
-                        int timestamp,
+    int addClipCapture(QString name,
+                        uint timestamp,
                         QString catheterView,
                         QString deviceName ,
                         bool isHighSpeed );
@@ -181,4 +178,5 @@ private:
     // of each result lookup in here to get the actual data item.
     // This needs to be rebuilt at load time for playback.
     QMap<int, clipItem *> itemMap;
+    static clipListModel* theDB;
 };

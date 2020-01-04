@@ -91,8 +91,8 @@ captureListModel &captureListModel::Instance()
  * Add a new capture to the database, including
  * all associated data and file reference location.
  */
-int captureListModel::addCapture( QString tag,
-                                  int timestamp,
+int captureListModel::addCapture(QString tag,
+                                  uint timestamp,
                                   QString name,
                                   QString deviceName,
                                   bool isHighSpeed,
@@ -100,7 +100,7 @@ int captureListModel::addCapture( QString tag,
                                   float zoomFactor )
 {
 
-    QDateTime timeVal = QDateTime::fromTime_t(uint(timestamp));
+    QDateTime timeVal = QDateTime::fromTime_t(timestamp);
     // Find next available ID
     sessionDatabase &db = sessionDatabase::Instance();
     int maxID = db.addCapture( tag, timestamp, name, deviceName, isHighSpeed, pixelsPerMm );

@@ -28,7 +28,7 @@ public:
 
 private:
     Direction_T currDirection;
-    short prevPosition;
+    unsigned short prevPosition;
     unsigned short encoderCounts;
     unsigned short crossingThreshold_counts;
 };
