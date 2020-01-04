@@ -100,10 +100,10 @@ public:
     }
 
     // XXX: do not like wildcarding based on the base name
-    QImage loadWaterfall( QString name ) { return( loadImage( name + "*waterfall.png" ) ); }
-    QImage loadSector( QString name ) { return( loadImage( name + "*" + SectorImageSuffix + ".png" ) ); }
-    QImage loadSectorThumbnail( QString name ) { return( loadImage( ".thumb_" + name + "*" + SectorImageSuffix + ".png" ) ); }
-    QImage loadDecoratedImage( QString name ) { return( loadImage( name + "*" + DecoratedImageSuffix + ".png" ) ); }
+    QImage loadWaterfall( QString wfName ) { return( loadImage( wfName + "*waterfall.png" ) ); }
+    QImage loadSector( QString sectorName ) { return( loadImage( sectorName + "*" + SectorImageSuffix + ".png" ) ); }
+    QImage loadSectorThumbnail( QString sectorThumbnailName ) { return( loadImage( ".thumb_" + sectorThumbnailName + "*" + SectorImageSuffix + ".png" ) ); }
+    QImage loadDecoratedImage( QString decoratedImageName ) { return( loadImage( decoratedImageName + "*" + DecoratedImageSuffix + ".png" ) ); }
     void replaceDecoratedImage( QImage p ) { saveDecoratedImage( p, name + DecoratedImageSuffix + ".png" ); }
 
 private:
@@ -136,7 +136,7 @@ public:
         int count = itemMap.count();
         return(count);
     }
-    int columnCount(const QModelIndex) const {
+    int columnCount(const QModelIndex&) const {
         return(1);
     }
     QModelIndex parent(const QModelIndex &) const {
@@ -146,11 +146,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 
     // singleton
-    static captureListModel & Instance(void)
-    {
-        static captureListModel theDB;
-        return theDB;
-    }
+    static captureListModel & Instance(void);
 
     int addCapture( QString tag,
                     int timestamp,
@@ -191,4 +187,6 @@ private:
     // of each result lookup in here to get the actual data item.
     // This needs to be rebuilt at load time for playback.
     QMap<int, captureItem *> itemMap;
+
+    static captureListModel* theDB;
 };

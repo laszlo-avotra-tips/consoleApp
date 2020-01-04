@@ -18,7 +18,7 @@
 #include "Utility/sessiondatabase.h"
 #include "logger.h"
 
-
+captureListModel* captureListModel::theDB{nullptr};
 /*
  * constructor
  */
@@ -76,6 +76,14 @@ QVariant captureListModel::data( const QModelIndex &index, int role ) const
 
 }
 
+captureListModel &captureListModel::Instance()
+{
+    if(!theDB){
+        theDB = new captureListModel();
+    }
+    return *theDB;
+}
+
 
 /*
  * addCapture()
@@ -92,7 +100,7 @@ int captureListModel::addCapture( QString tag,
                                   float zoomFactor )
 {
 
-    QDateTime timeVal = QDateTime::fromTime_t(timestamp);
+    QDateTime timeVal = QDateTime::fromTime_t(uint(timestamp));
     // Find next available ID
     sessionDatabase &db = sessionDatabase::Instance();
     int maxID = db.addCapture( tag, timestamp, name, deviceName, isHighSpeed, pixelsPerMm );
@@ -188,11 +196,11 @@ void captureItem::saveDecoratedImage(QImage newDecorated, QString imageFilter)
         // Replace the decorated image.
         if( !tmpImage.save( f.fileName(), "PNG", 100 ) )
         {
-            LOG( WARNING, "Image Capture: decorated image capture failed. Unable to save new decorated image." );
+            LOG( WARNING, "Image Capture: decorated image capture failed. Unable to save new decorated image." )
         }
     }
     else
     {
-        LOG( DEBUG, "Image Capture: decorated image capture failed. Unable to remove original decorated image." );
+        LOG( DEBUG, "Image Capture: decorated image capture failed. Unable to remove original decorated image." )
     }
 }
