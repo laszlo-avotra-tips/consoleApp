@@ -25,7 +25,7 @@ class advancedView : public QWidget
     Q_OBJECT
 
 public:
-    advancedView(QWidget *parent = 0);
+    advancedView(QWidget *parent = nullptr);
     ~advancedView();
 
 public slots:
@@ -73,6 +73,18 @@ private:
     QLabel *rawDataMaxLabel;
     int    rawDataLength;
 #endif
+
+    const int MaxSampleVal {4992};               // Defined by the length of the pre-resampled laser data
+    const int MinADCVal {32768};                 // ATS card is +/- full range, start at 0V
+    const int MaxADCVal {65535};                 // full range of 16-bit card
+    const int MaxDepthVal {MaxALineLength - 1};  // Defined by the length of the FFT data after processing
+    const int MaxdBVal_LowSpeed {65535};
+    const int MaxdBVal_HighSpeed {255};
+    const int NumEvoaChunks {5};                 // create a UI level gauge with 5 levels
+
+    const QColor TitleColor { 0, 0, 0};
+    const QFont AxisFont {"DinPRO-medium", 15};
+
 
 private slots:
     void on_laserDiodeButton_clicked();

@@ -21,16 +21,6 @@
 #include "util.h"
 #include "windowmanager.h"
 
-const int MaxSampleVal( 4992 );               // Defined by the length of the pre-resampled laser data
-const int MinADCVal( 32768 );                 // ATS card is +/- full range, start at 0V
-const int MaxADCVal( 65535 );                 // full range of 16-bit card
-const int MaxDepthVal( MaxALineLength - 1 );  // Defined by the length of the FFT data after processing
-const int MaxdBVal_LowSpeed( 65535 );
-const int MaxdBVal_HighSpeed( 255 );
-const int NumEvoaChunks( 5 );                 // create a UI level gauge with 5 levels
-
-const QColor TitleColor( QColor( 0, 0, 0 ) );
-const QFont AxisFont( "DinPRO-medium", 15 );
 
 /*
  * constructor
@@ -111,7 +101,7 @@ advancedView::advancedView( QWidget *parent )
 
     ui.evoaBox->show();
 
-    ui.evoaControlWidget->init( NumEvoaChunks, evoa->getCurrVoltage(), "Imaging Strength", evoa->getMinVal(), evoa->getMaxVal() );
+    ui.evoaControlWidget->init( NumEvoaChunks, float(evoa->getCurrVoltage()), "Imaging Strength", evoa->getMinVal(), evoa->getMaxVal() );
     QString style = ui.evoaControlWidget->styleSheet();
 
     // give the level indicator a darker background
@@ -207,6 +197,7 @@ advancedView::~advancedView()
  */
 void advancedView::addScanline( const OCTFile::FrameData_t *pData )
 {
+    LOG1(pData)
 //    if( pData->rawData )
 //    {
 //        ui.rawDataPlot->plotData( pData->rawData );
@@ -312,13 +303,13 @@ void advancedView::on_laserDiodeButton_clicked()
         if ( msgLaserOff.result() )
         {
             emit turnDiodeOff();
-            LOG( INFO, "Laser Diode: User disabled" );
+            LOG( INFO, "Laser Diode: User disabled" )
         }
     }
     else
     {
         emit turnDiodeOn();
-        LOG( INFO, "Laser Diode: User enabled" );
+        LOG( INFO, "Laser Diode: User enabled" )
     }
 
     // Update the indicator for the laser diode
@@ -347,6 +338,7 @@ void advancedView::handleLaserDiodeStatus( bool isOn )
  */
 void advancedView::handleRawDataLengthChange( int size )
 {
+    LOG1(size)
     // Adjust the axis and amount of data to copy to the chart
 //lcv    ui.rawDataPlot->init( size );
 //lcv    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, size );
@@ -382,7 +374,7 @@ void advancedView::getEvoaVoltage_v( double val )
 void advancedView::on_tdcCheckBox_toggled(bool checked)
 {
     emit tdcToggled( checked );
-    ui.linesPerSecondLabel->setText( 0 ); // force to zero so it updates on the next frame received
+    ui.linesPerSecondLabel->setText( "" ); // force to zero so it updates on the next frame received
 }
 
 /*
@@ -395,7 +387,7 @@ void advancedView::handleDeviceChange()
     QSettings *settings = new QSettings( SystemSettingsFile, QSettings::IniFormat );
     evoa->setVoltageToDefault();
     ui.evoaVoltageVal_v->setText( settings->value( EvoaDefaultSetting, EvoaDefault_v ).toString() );
-    ui.evoaControlWidget->init( NumEvoaChunks, evoa->getCurrVoltage(), "Imaging Strength", evoa->getMinVal(), evoa->getMaxVal() );
+    ui.evoaControlWidget->init( NumEvoaChunks, float(evoa->getCurrVoltage()), "Imaging Strength", evoa->getMinVal(), evoa->getMaxVal() );
 
     // Set the state of the UI depending on the device selected
     if( devSettings.current()->isHighSpeed() )
@@ -476,7 +468,7 @@ void advancedView::setLiveState()
  */
 void advancedView::on_evoaSetDefaultButton_clicked()
 {
-    LOG( INFO, "EVOA return to default clicked" );
+    LOG( INFO, "EVOA return to default clicked" )
     evoa->setVoltageToDefault();
     ui.evoaControlWidget->setValue( evoa->getCurrVoltage() );
 }
@@ -544,7 +536,7 @@ void advancedView::attenuateLaser( bool attenuate )
 
     if( attenuate )
     {
-        ui.evoaControlWidget->setValue( evoa->getMinVal() );
+        ui.evoaControlWidget->setValue( double(evoa->getMinVal() ) );
     }
     else
     {
