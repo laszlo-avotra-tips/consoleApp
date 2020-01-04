@@ -63,9 +63,9 @@ T min( T a, T b )
     return( a < b ? a : b );
 }
 
-// Math defines
-const double pi(3.1415);
-const double degToRad(pi/180.0);
+//// Math defines
+//const double pi(3.1415);
+//const double degToRad(pi/180.0);
 
 // Conversion constants
 const unsigned long  B_per_KB( 1024 );
@@ -86,26 +86,21 @@ class errorHandler : public QObject
 
 public:
 
-    static errorHandler & Instance(void) {
-        static errorHandler theHandler;
-        return theHandler;
-    }
+    static errorHandler & Instance(void);
 
-    void fail( QString errString, bool fatal = true ) {
-        emit failure( errString, fatal );
-    }
+    void fail( QString errString, bool fatal = true );
 
-    void warn( QString warnString ) {
-        emit warning( warnString );
-    }
+    void warn( QString warnString );
 
 signals:
     void failure( QString, bool );
     void warning( QString );
 
 private:
-    errorHandler() {}
-    ~errorHandler() {}
+    static errorHandler* theHandler;
+
+    errorHandler();
+    ~errorHandler();
 
     errorHandler( errorHandler const & ); // hide copy
     errorHandler & operator=( errorHandler const & ); // hide assign

@@ -267,7 +267,7 @@ private:
     // Default sector size
     const QSize sectorSize {SectorHeight_px, SectorWidth_px };
     // Detect flip around 360 by a large instantaneous change in angle
-    const float CrossOverAngleChange_rad {3 * float( pi / 2)};
+    const float CrossOverAngleChange_rad;// {3 * float( pi / 2)};
     const float UnwrapMinOpacityAngle_deg {0.2f};
     // Constants for rendering various things
     const float UnwrapMaxOpacityAngle_deg {0.8f};

@@ -35,12 +35,17 @@
 //const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish
 //const QColor PassiveSpinColor    = QColor( 70, 234, 242 ).darker( 200 );  // light blue-ish
 
+namespace{
+// Math defines
+const double pi(3.1415);
+const double degToRad(pi/180.0);
+}
 
 /*
  * Constructor
  */
 sectorItem::sectorItem( QGraphicsItem *parent )
-    : QGraphicsPixmapItem( parent )
+    : QGraphicsPixmapItem( parent ),CrossOverAngleChange_rad(3 * float( pi / 2))
 {
 //	qDebug() << ">>>>>> 1";
     currDirection = directionTracker::Stopped;

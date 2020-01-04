@@ -23,6 +23,7 @@
 #include "version.h"
 #include "buildflags.h"
 //#include "laser.h"
+#include "logger.h"
 
 /*
  * displayFailureMessage
@@ -247,3 +248,24 @@ SystemData_T getSystemData()
 
     return data;
 }
+
+errorHandler* errorHandler::theHandler{nullptr};
+
+errorHandler &errorHandler::Instance() {
+    if(!theHandler){
+        theHandler = new errorHandler();
+    }
+    return *theHandler;
+}
+
+void errorHandler::fail(QString errString, bool fatal) {
+    emit failure( errString, fatal );
+}
+
+void errorHandler::warn(QString warnString) {
+    emit warning( warnString );
+}
+
+errorHandler::errorHandler() {}
+
+errorHandler::~errorHandler() {}

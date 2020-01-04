@@ -22,6 +22,11 @@ trigLookupTable* trigLookupTable::theTable{nullptr};
 
 const int overhead( 3 ); // How far beyond line length to extend the table.
 
+namespace{
+// Math defines
+const double pi(3.1415);
+}
+
 // Singleton
 trigLookupTable & trigLookupTable::Instance() {
     if(!theTable){
