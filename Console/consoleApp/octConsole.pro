@@ -44,7 +44,6 @@ win32 {
        ../../Common/Include                 \
        ../../lib/win32/AlazarTech/Include/C          \
        ../../lib/win32/ipp/ia32/include              \
-       ../../lib/win32/qserialport/include/QtSerialPort \
        ../../lib/win32/AMD/AMD-APP/include  \
        ../../lib/win32/AMD/clAmdFft/include \
        ../../lib/win32/DataTranslation/Include \
@@ -70,7 +69,6 @@ win32 {
        -l../../lib/win32/ipp/ia32/stublib/ipps            \
        -l../../lib/win32/ipp/ia32/stublib/ippsr           \
        -lglu32                                            \
-       -lQtSerialPort1                                    \
        -loldaapi32                                        \
        -lolmem32                                          \
        -lgraph32                                          \
@@ -86,7 +84,6 @@ unix {
        ../../Common/Include                 \
        ../../lib/linux32/AlazarTech/include    \
        ../../lib/linux32/ipp/6.1.0.039/ia32/include \
-       ../../lib/linux32/qserialport/include/QtSerialPort \
        Backend                              \
        Include                              \
        Frontend/GeneratedFiles              \
@@ -109,8 +106,7 @@ unix {
        -lippsc \
        -lippcore \
        -liomp5 \
-       -lPlxApi \
-       -lQtSerialPort
+       -lPlxApi
 
     OBJECTS_DIR = ./.obj
     MOC_DIR = ./.moc
