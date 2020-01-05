@@ -351,15 +351,15 @@ bool DSP::checkIPPVersion( void )
  * third and second third samples of the A-line. This is called by
  * setEvoaPowerLevel() to read A-line strength and determine adjustment amount.
  */
-U32 DSP::getAvgAmplitude( U16 *pA )
+quint32 DSP::getAvgAmplitude(quint16 *pA )
 {
-    U32 average = 0;
+    quint32 average = 0;
     const int start_idx = int( recordLength / 3 );
     const int end_idx   = int( ( 2 * recordLength ) / 3 );
 
     for( int i = start_idx; i < end_idx; i++ )
     {
-        average += U32( pA [ i ] );
+        average += quint32( pA [ i ] );
     }
 
     average /= ( recordLength / 3 );

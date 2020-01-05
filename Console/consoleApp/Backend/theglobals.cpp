@@ -27,10 +27,10 @@ void TheGlobals::allocateFrameData()
 {
     DaqSettings &settings = DaqSettings::Instance();
 
-    U32 preTriggerSamples = settings.getPreDepth();
+    quint32 preTriggerSamples = settings.getPreDepth();
 
     // Select the number of post-trigger samples per record
-    U32 postTriggerSamples = settings.getRecordLength() - preTriggerSamples;
+    quint32 postTriggerSamples = settings.getRecordLength() - preTriggerSamples;
 
     for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
 
@@ -44,16 +44,16 @@ void TheGlobals::allocateFrameData()
     }
 }
 
-const U16 *TheGlobals::getDaqRawDataBuffer(size_t index) const
+const quint16 *TheGlobals::getDaqRawDataBuffer(size_t index) const
 {
-    const U16* retVal(nullptr);
+    const quint16* retVal(nullptr);
     if(index < m_daqRawData.size()){
         retVal = m_daqRawData[index];
     }
     return retVal;
 }
 
-const U16 *TheGlobals::getDaqRawDataBuffer() const
+const quint16 *TheGlobals::getDaqRawDataBuffer() const
 {
     auto index = getGDaqRawData_idx();
     return getDaqRawDataBuffer(size_t(index));
@@ -68,10 +68,10 @@ void TheGlobals::freeDaqRawDataBuffer()
 }
 
 //5758976
-void TheGlobals::allocateDaqRawDataBuffer(U32 bufferSize)
+void TheGlobals::allocateDaqRawDataBuffer(quint32 bufferSize)
 {
     for(int i = 0; i < m_daqRawDataBufferCount; ++i){
-        U16* buffer = static_cast<U16 *>(malloc( bufferSize ));
+        quint16* buffer = static_cast<quint16 *>(malloc( bufferSize ));
         m_daqRawData.push_back(buffer);
         PlaybackManager::instance()->addFrameBuffer(i,buffer, bufferSize); //TODO - optimize
     }
@@ -79,7 +79,7 @@ void TheGlobals::allocateDaqRawDataBuffer(U32 bufferSize)
 
 void TheGlobals::allocateDaqRawDataBuffer()
 {
-    const U32 bytesPerBuffer(5758976);
+    const quint32 bytesPerBuffer(5758976);
     allocateDaqRawDataBuffer(bytesPerBuffer);
 }
 

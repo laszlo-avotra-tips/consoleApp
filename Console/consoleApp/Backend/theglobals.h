@@ -3,7 +3,6 @@
 
 #include "octFile.h"
 #include "defaults.h"
-#include "AlazarApiType.h"
 #include <QMutex>
 #include <vector>
 
@@ -31,10 +30,10 @@ public:
     void freeFrameData();
     void allocateFrameData();
 
-    const U16* getDaqRawDataBuffer(size_t index) const;
-    const U16* getDaqRawDataBuffer() const;
+    const quint16* getDaqRawDataBuffer(size_t index) const;
+    const quint16* getDaqRawDataBuffer() const;
     void freeDaqRawDataBuffer();
-    void allocateDaqRawDataBuffer(U32 bufferSize);
+    void allocateDaqRawDataBuffer(quint32 bufferSize);
     void allocateDaqRawDataBuffer();
 
 private:
@@ -48,7 +47,7 @@ private:
     // at once to avoid calling on the OS to create and release memory during
     // run-time.
     std::vector<OCTFile::FrameData_t> m_gFrameData;
-    std::vector<U16*> m_daqRawData;
+    std::vector<quint16*> m_daqRawData;
     mutable QMutex m_mutex;
     const int m_daqRawDataBufferCount;
     int m_gFrameCounter;

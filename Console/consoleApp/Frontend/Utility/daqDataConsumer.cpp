@@ -204,7 +204,7 @@ void DaqDataConsumer::run( void )
                 // TBD - may want to move encoder stuff to the device level
                 if( useDistalToProximalView )
                 {
-                    dirTracker.updateDirection( U16(linesPerRevolution - 1  - pData->encoderPosition ));
+                    dirTracker.updateDirection( quint16(linesPerRevolution - 1  - pData->encoderPosition ));
                 }
                 else
                 {   // proximal to distal view
@@ -555,7 +555,7 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
          * The processed data graph uses 1024 points, but we should only base this calculation on
          * the viewable points in the Normal View mode.
          */
-        for( U32 i = U32(dev.current()->getInternalImagingMask_px() ); i < ( FFTDataSize / 2 ); i++ )
+        for( quint32 i = quint32(dev.current()->getInternalImagingMask_px() ); i < ( FFTDataSize / 2 ); i++ )
         {
             // find min
             if( pData->fftData[ i ] < minVal )

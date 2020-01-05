@@ -69,7 +69,7 @@ SoftwareDSP::SoftwareDSP()
     // XXX: Not a big fan of this pattern
     if( devSettings.current() )
     {
-        defaultEncoderSettings.linesPerRev = U16(devSettings.current()->getLinesPerRevolution());
+        defaultEncoderSettings.linesPerRev = quint16(devSettings.current()->getLinesPerRevolution());
     }
     else
     {
@@ -472,7 +472,7 @@ unsigned int SoftwareDSP::rescale( const unsigned short *inputData )
     for( outIndex = 0; outIndex < rescaleLength; outIndex++ )
     {
         // Extract the index of the sample we are using as the first data point
-        sampleIndex = U32(wholeSamples[ outIndex ]);
+        sampleIndex = quint32(wholeSamples[ outIndex ]);
 
         // Does the rescaling data point beyond what we've captured? If so, bail.
         if( ( sampleIndex + 1 ) > inputLength )
@@ -484,7 +484,7 @@ unsigned int SoftwareDSP::rescale( const unsigned short *inputData )
         // where whole + fractional is located.
         interpSample = ( ( double(inputData[ sampleIndex + 1 ]) - double(inputData[ sampleIndex ] )) * double(fractionalSamples[ outIndex ]) );
         interpSample = interpSample + double(inputData[ sampleIndex ]) - double(offset);
-        outputData[ outIndex ] = U16(floor_int( float(interpSample) ));
+        outputData[ outIndex ] = quint16(floor_int( float(interpSample) ));
     }
 
     return outIndex;
@@ -523,7 +523,7 @@ void SoftwareDSP::computeLogTable( void )
     // Compute (10 * log10(i))*scale of every possible input
     for( int i = 1; i < LOG_TABLE_SIZE; i++ )
     {
-        logTable[ i ] = U16( 10.0 * log10( double( i ) * LOG_SCALE_FACTOR ));
+        logTable[ i ] = quint16( 10.0 * log10( double( i ) * LOG_SCALE_FACTOR ));
     }
 }
 

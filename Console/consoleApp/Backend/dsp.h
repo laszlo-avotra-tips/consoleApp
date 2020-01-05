@@ -15,7 +15,6 @@
 
 #include <QThread>
 #include <QTime>
-#include "AlazarApiType.h" // defines U16
 #include "octFile.h"
 #include "buildflags.h"
 
@@ -44,7 +43,7 @@ public:
     virtual void run( void );
     virtual void processData( void ) = 0;
 
-    U32 getAvgAmplitude( U16 *pA );
+    quint32 getAvgAmplitude( quint16 *pA );
 
     // The size of the rescaling data is constant for all lasers
     static const unsigned int RescalingDataLength = 2048;

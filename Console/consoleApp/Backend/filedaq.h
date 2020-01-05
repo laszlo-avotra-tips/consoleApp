@@ -2,7 +2,6 @@
 #define FILEDAQ_H
 
 #include "idaq.h"
-#include "AlazarApiType.h"
 #include "octFile.h"
 #include "defaults.h"
 

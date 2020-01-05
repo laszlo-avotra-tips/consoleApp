@@ -47,21 +47,21 @@ void FileDaq::init()
         emit sendError( tr( "DAQ hardware could not be initialized." ) );
     }
 
-    U8  bitsPerSample        = 16;
-    U32 bytesPerSample   = ( bitsPerSample + 7 ) / 8;
-    U32 preTriggerSamples = DaqSettings::Instance().getPreDepth();
-    U32 postTriggerSamples = DaqSettings::Instance().getRecordLength() - preTriggerSamples;
-    U32 samplesPerRecord = preTriggerSamples + postTriggerSamples;
-    U32 bytesPerRecord   = bytesPerSample * samplesPerRecord;
+    quint8  bitsPerSample        = 16;
+    quint32 bytesPerSample   = ( bitsPerSample + 7 ) / 8;
+    quint32 preTriggerSamples = DaqSettings::Instance().getPreDepth();
+    quint32 postTriggerSamples = DaqSettings::Instance().getRecordLength() - preTriggerSamples;
+    quint32 samplesPerRecord = preTriggerSamples + postTriggerSamples;
+    quint32 bytesPerRecord   = bytesPerSample * samplesPerRecord;
 
-    U32 recordsPerBuffer = U32(deviceSettings::Instance().current()->getLinesPerRevolution());
+    quint32 recordsPerBuffer = quint32(deviceSettings::Instance().current()->getLinesPerRevolution());
 
-    U32 channelCount = 1;
-    U32 bytesPerBuffer = bytesPerRecord * recordsPerBuffer * channelCount;
+    quint32 channelCount = 1;
+    quint32 bytesPerBuffer = bytesPerRecord * recordsPerBuffer * channelCount;
 
     // initialize the DSP thread
     m_dsp->init( DaqSettings::Instance().getRecordLength(),
-               U16(deviceSettings::Instance().current()->getLinesPerRevolution()),
+               quint16(deviceSettings::Instance().current()->getLinesPerRevolution()),
                bytesPerRecord,
                bytesPerBuffer, int(channelCount) );
 

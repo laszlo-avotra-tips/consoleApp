@@ -104,7 +104,7 @@ private:
 
     // Lookup table for fast 16-bit int to scaled 16-bit int logarithm
     unsigned short *logTable;
-    U16 *m_daqRawData[2];
+    quint16 *m_daqRawData[2];
 
     int  computeEncoderAngle( unsigned short *data, int length );
     void checkInitFFTStructs( void );

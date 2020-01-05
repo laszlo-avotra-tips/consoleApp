@@ -171,7 +171,7 @@ void DSPGPU::init( unsigned int inputLength,
     {
         // XXX Need to pass these into the DSP so we dont copy buffers there
         // for opencl
-        workingBuffer[ i ] = static_cast<U16 *>(malloc( bytesPerBuffer ));
+        workingBuffer[ i ] = static_cast<quint16 *>(malloc( bytesPerBuffer ));
     }
 
     if( !workingBuffer[ 0 ] ||
@@ -235,7 +235,7 @@ void DSPGPU::processData( void )
         pData = TheGlobals::instance()->getFrameDataPointer();
 
         // use local pointer into data for easier access
-        const U16 *pA = nullptr;
+        const quint16 *pA = nullptr;
 
         if( channelCount == 1 )
         {
@@ -244,7 +244,7 @@ void DSPGPU::processData( void )
         else
         {
             // ATS DAQ interleaves Channels A & B.
-            const U16 *pBothChannels = TheGlobals::instance()->getDaqRawDataBuffer(size_t(index));
+            const quint16 *pBothChannels = TheGlobals::instance()->getDaqRawDataBuffer(size_t(index));
 
             // point to the start of each working buffer
             auto wb0 = workingBuffer[ 0 ];
@@ -278,7 +278,7 @@ void DSPGPU::processData( void )
         // resampledData is used for in-place transforming of the data so it must be
         // copied before any other processing takes place.
 //lcv        ippsCopy_16s( (Ipp16s *)pA, (Ipp16s *)pData->rawData, bytesPerRecord / 2 );  // used for Advanced View display
-////lcv        ippsCopy_8u( reinterpret_cast<const U8*>(pA), reinterpret_cast<U8*>(pData->rawData), bytesPerRecord );
+////lcv        ippsCopy_8u( reinterpret_cast<const quint8*>(pA), reinterpret_cast<quint8*>(pData->rawData), bytesPerRecord );
 
 #if ENABLE_RAW_DATA_SNAPSHOT
         if( isRecordRaw && ( rawCount < snapshotLength ) )
@@ -302,7 +302,7 @@ void DSPGPU::processData( void )
         pData->frameCount      = 0;
         pData->encoderPosition = 0; // NOT USED for fast-OCT
         pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = U16(getMilliseconds());
+        pData->milliseconds    = quint16(getMilliseconds());
 
         // Update the global index into the shared buffer. This must be the last thing in the thread
         // to make sure that the consumer thread only sees completely filled data structures.

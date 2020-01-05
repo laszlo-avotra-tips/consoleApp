@@ -42,7 +42,6 @@ win32 {
        ../../lib/win32/ffmpeg/include/libavformat       \
        ../../lib/win32/ffmpeg/include/libswscale        \
        ../../Common/Include                 \
-       ../../lib/win32/AlazarTech/Include/C          \
        ../../lib/win32/ipp/ia32/include              \
        ../../lib/win32/AMD/AMD-APP/include  \
        ../../lib/win32/AMD/clAmdFft/include \
@@ -59,11 +58,9 @@ win32 {
     LIBS += -L../../lib/win32/ffmpeg/lib
     LIBS += -L../../lib/win32/ffmpeg/bin
     LIBS +=                                       \
-       -L"../../lib/win32/AlazarTech/lib/x86"             \
        -L"../../lib/win32/ipp/ia32/stublib"               \
        -L"../../lib/win32/qserialport/lib"                \
        -L"../../lib/win32/DataTranslation/"               \
-       -l../../lib/win32/AlazarTech/lib/x86/ATSApi        \
        -l../../lib/win32/ipp/ia32/stublib/ippcore         \
        -l../../lib/win32/ipp/ia32/stublib/ippi            \
        -l../../lib/win32/ipp/ia32/stublib/ipps            \
@@ -82,7 +79,6 @@ unix {
    INCLUDEPATH +=                           \
        .                                    \
        ../../Common/Include                 \
-       ../../lib/linux32/AlazarTech/include    \
        ../../lib/linux32/ipp/6.1.0.039/ia32/include \
        Backend                              \
        Include                              \
@@ -91,7 +87,6 @@ unix {
        Frontend
 
    LIBS += \
-       -L"../../lib/linux32/AlazarTech/lib" \
        -L"../../lib/linux32/ipp/6.1.0.039/ia32/sharedlib" \
        -L"../../lib/linux32/qserialport/lib" \
        -lippdc \
@@ -129,6 +124,3 @@ unix|win32: LIBS += -L$$PWD/../../lib/win32/FTDI/ -lftd2xx
 INCLUDEPATH += $$PWD/../../lib/win32/FTDI
 DEPENDPATH += $$PWD/../../lib/win32/FTDI
 
-HEADERS += \
-    ../../lib/win32/AlazarTech/Include/C/AlazarApiType.h \
-    ../../lib/win32/AlazarTech/Include/C/AlazarApiFunction.h

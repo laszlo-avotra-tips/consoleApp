@@ -116,7 +116,7 @@ private:
     cl_mem           outputVideoImageMemObj;
     size_t           outputVideoImageMemObjSize;
 
-    U16 *workingBuffer[ 2 ];
+    quint16 *workingBuffer[ 2 ];
     unsigned char *pPostProcOutputFrame;
     size_t           pPostProcOutputFrameSize;
 
