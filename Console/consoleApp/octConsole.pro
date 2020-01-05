@@ -18,10 +18,8 @@ win32 {
 }
 
 CONFIG += c++11
-CONFIG += qxt
-QXT += core gui
 
-DEFINES += QT_XML_LIB QT_SQL_LIB  QWT_DLL
+DEFINES += QT_XML_LIB QT_SQL_LIB
 
 win32 {
    # Turn on additional settings for building the Windows release
@@ -45,9 +43,6 @@ win32 {
        ../../lib/win32/ffmpeg/include/libswscale        \
        ../../Common/Include                 \
        ../../lib/win32/AlazarTech/Include/C          \
-       ../../lib/win32/Qwt-6.0.1/src                 \
-       ../../lib/win32/Qxt-0.6.0/include/QxtCore     \
-       ../../lib/win32/Qxt-0.6.0/include/QxtGui      \
        ../../lib/win32/ipp/ia32/include              \
        ../../lib/win32/qserialport/include/QtSerialPort \
        ../../lib/win32/AMD/AMD-APP/include  \
@@ -66,8 +61,6 @@ win32 {
     LIBS += -L../../lib/win32/ffmpeg/bin
     LIBS +=                                       \
        -L"../../lib/win32/AlazarTech/lib/x86"             \
-       -L"../../lib/win32/Qwt-6.0.1/lib"                  \
-       -L"../../lib/win32/Qxt-0.6.0/lib"                  \
        -L"../../lib/win32/ipp/ia32/stublib"               \
        -L"../../lib/win32/qserialport/lib"                \
        -L"../../lib/win32/DataTranslation/"               \
@@ -85,11 +78,6 @@ win32 {
        -lClAmdFFt.Runtime
    LIBS += -lswscale -lavformat -lavcodec -lavutil
 
-   CONFIG( debug, debug|release ) {
-       LIBS += -lqwtd -lqxtguid -lqxtcored
-   } else {
-       LIBS += -lqwt -lqxtgui -lqxtcore
-   }
 }  #win32
 
 unix {
@@ -97,10 +85,7 @@ unix {
        .                                    \
        ../../Common/Include                 \
        ../../lib/linux32/AlazarTech/include    \
-       ../../lib/linux32/qwt/include \
        ../../lib/linux32/ipp/6.1.0.039/ia32/include \
-       ../../lib/linux32/libqxt/include/QxtCore \
-       ../../lib/linux32/libqxt/include/QxtGui \
        ../../lib/linux32/qserialport/include/QtSerialPort \
        Backend                              \
        Include                              \
@@ -110,13 +95,8 @@ unix {
 
    LIBS += \
        -L"../../lib/linux32/AlazarTech/lib" \
-       -L"../../lib/linux32/qwt/lib" \
-       -L"../../lib/linux32/libqxt/lib" \
        -L"../../lib/linux32/ipp/6.1.0.039/ia32/sharedlib" \
        -L"../../lib/linux32/qserialport/lib" \
-       -lqwt \
-       -lQxtGui \
-       -lQxtCore \
        -lippdc \
        -lippcc \
        -lippac \
