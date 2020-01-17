@@ -21,6 +21,14 @@ CONFIG += c++11
 
 DEFINES += QT_XML_LIB QT_SQL_LIB
 
+isEmpty(OPENCL_DIR):OPENCL_DIR=$$(OPENCL_DIR)
+
+isEmpty(OPENCL_DIR) {
+    message("set OPENCL_DIR as environment variable or qmake variable to get rid of this message")
+    OPENCL_DIR = "C:/Program Files (x86)/IntelSWTools/sw_dev_tools/OpenCL/sdk"
+}
+
+
 win32 {
    # Turn on additional settings for building the Windows release
    #   Zi   Enable debugging info
@@ -36,15 +44,18 @@ win32 {
 
    INCLUDEPATH +=                           \
        .                                    \
-       ..                                   \
-       ../../lib/win32/ffmpeg/include                   \
-       ../../lib/win32/ffmpeg/include/libavcodec        \
-       ../../lib/win32/ffmpeg/include/libavformat       \
-       ../../lib/win32/ffmpeg/include/libswscale        \
+       ..
+
+#    INCLUDEPATH += \
+#       ../../lib/win32/ffmpeg/include                   \
+#       ../../lib/win32/ffmpeg/include/libavcodec        \
+#       ../../lib/win32/ffmpeg/include/libavformat       \
+#       ../../lib/win32/ffmpeg/include/libswscale   \
+#       ../../lib/win32/ipp/ia32/include
+
+    INCLUDEPATH += \
        ../../Common/Include                 \
-       ../../lib/win32/ipp/ia32/include              \
-       ../../lib/win32/AMD/AMD-APP/include  \
-       ../../lib/win32/AMD/clAmdFft/include \
+       $$OPENCL_DIR/include \
        ../../lib/win32/DataTranslation/Include \
        Backend                              \
        Include                              \
@@ -52,56 +63,58 @@ win32 {
        Frontend/Widgets                     \
        Frontend
 
-    LIBS += -L"../../lib/win32/AMD/AMD-APP/lib/x86/" -lopencl
-    LIBS += -L"../../lib/win32/AMD/clAmdFft/lib"
-    LIBS += -L"../../lib/win32/AMD/clAmdFft/bin"
-    LIBS += -L../../lib/win32/ffmpeg/lib
-    LIBS += -L../../lib/win32/ffmpeg/bin
+    LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
+
+#    LIBS += -L../../lib/win32/ffmpeg/lib
+#    LIBS += -L../../lib/win32/ffmpeg/bin
+#    LIBS +=                                       \
+#       -L"../../lib/win32/ipp/ia32/stublib"
+
     LIBS +=                                       \
-       -L"../../lib/win32/ipp/ia32/stublib"               \
-       -L"../../lib/win32/qserialport/lib"                \
        -L"../../lib/win32/DataTranslation/"               \
-       -l../../lib/win32/ipp/ia32/stublib/ippcore         \
-       -l../../lib/win32/ipp/ia32/stublib/ippi            \
-       -l../../lib/win32/ipp/ia32/stublib/ipps            \
-       -l../../lib/win32/ipp/ia32/stublib/ippsr           \
        -lglu32                                            \
-       -loldaapi32                                        \
-       -lolmem32                                          \
-       -lgraph32                                          \
-       -luser32                                           \
-       -lClAmdFFt.Runtime
-   LIBS += -lswscale -lavformat -lavcodec -lavutil
+       -luser32
+
+#    LIBS +=                                                 \
+#       -L"../../lib/win32/qserialport/lib"                \
+#       -lgraph32
+
+#   LIBS += -lswscale -lavformat -lavcodec -lavutil
 
 }  #win32
 
 unix {
+
+#   INCLUDEPATH +=                           \
+#       ../../lib/linux32/ipp/6.1.0.039/ia32/include
+
    INCLUDEPATH +=                           \
        .                                    \
        ../../Common/Include                 \
-       ../../lib/linux32/ipp/6.1.0.039/ia32/include \
-       Backend                              \
+        Backend                              \
        Include                              \
        Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
        Frontend
 
-   LIBS += \
-       -L"../../lib/linux32/ipp/6.1.0.039/ia32/sharedlib" \
-       -L"../../lib/linux32/qserialport/lib" \
-       -lippdc \
-       -lippcc \
-       -lippac \
-       -lippsr \
-       -lippvc \
-       -lippcv \
-       -lippj \
-       -lippi \
-       -lipps \
-       -lippsc \
-       -lippcore \
-       -liomp5 \
-       -lPlxApi
+#   LIBS += \
+#       -L"../../lib/linux32/ipp/6.1.0.039/ia32/sharedlib" \
+#       -L"../../lib/linux32/qserialport/lib"    \
+#       -liomp5 \
+#       -lPlxApi
+
+#   LIBS += \
+#       -lippdc \
+#       -lippcc \
+#       -lippac \
+#       -lippsr \
+#       -lippvc \
+#       -lippcv \
+#       -lippj \
+#       -lippi \
+#       -lipps \
+#       -lippsc \
+#       -lippcore \
 
     OBJECTS_DIR = ./.obj
     MOC_DIR = ./.moc
@@ -119,8 +132,8 @@ CONFIG( release ) {
     QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
 }
 
-unix|win32: LIBS += -L$$PWD/../../lib/win32/FTDI/ -lftd2xx
+#unix|win32: LIBS += -L$$PWD/../../lib/win32/FTDI/ -lftd2xx
 
-INCLUDEPATH += $$PWD/../../lib/win32/FTDI
-DEPENDPATH += $$PWD/../../lib/win32/FTDI
+#INCLUDEPATH += $$PWD/../../lib/win32/FTDI
+#DEPENDPATH += $$PWD/../../lib/win32/FTDI
 

@@ -14,7 +14,7 @@
 #include <QObject>
 #include <QMutex>
 #include <Windows.h>
-#include "OLDAAPI.H"
+//#include "OLDAAPI.H"
 
 class ioController : public QObject
 {
@@ -33,7 +33,7 @@ public:
     struct ioModule
     {
         ControllerMode mode;
-        olss_tag       tag;
+//        olss_tag       tag;
         bool           isEnabled;
     };
 

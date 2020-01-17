@@ -36,8 +36,8 @@ BOOL CALLBACK GetDriver( LPSTR ioControllerLpszName, LPSTR ioControllerLpszEntry
 typedef struct tag_board      // DAC struct for identifying device
 {
     HDRVR hdrvr;              // driver handle
-    HDASS hdass;              // subsystem handle
-    ECODE status;             // board error status
+//    HDASS hdass;              // subsystem handle
+//    ECODE status;             // board error status
     char name[STRLEN];        // string for board name
     char entry[STRLEN];       // string for board name
 } BOARD;
@@ -62,11 +62,11 @@ ioController & ioController::Instance()
 ioController::ioController()
 {
     analogOutModule.mode       = AnalogOutput;
-    analogOutModule.tag        = OLSS_DA;
+//    analogOutModule.tag        = OLSS_DA;
     analogOutModule.isEnabled  = false;
 
     digitalOutModule.mode      = DigitalOutput;
-    digitalOutModule.tag       = OLSS_DOUT;
+//    digitalOutModule.tag       = OLSS_DOUT;
     digitalOutModule.isEnabled = false;
 
     deviceIsConfigured = false;

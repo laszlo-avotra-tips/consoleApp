@@ -12,7 +12,7 @@
 #define DSPGPU_H_
 
 #include <CL/opencl.h>
-#include "clAmdFft.h"
+//#include "clAmdFft.h"
 #include "dsp.h"
 #include "buildflags.h"
 
@@ -65,8 +65,8 @@ private:
 
     cl_command_queue cl_Commands;
 
-    //    FFT State
-    clAmdFftPlanHandle hCl_fft_plan;
+//    //    FFT State
+//    clAmdFftPlanHandle hCl_fft_plan;
 
     size_t           cl_max_workgroup_size;
 

@@ -26,7 +26,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QCoreApplication>
-#include "clAmdFft.h"
+//#include "clAmdFft.h"
 #include "defaults.h"
 #include "dspgpu.h"
 #include "logger.h"
@@ -35,7 +35,7 @@
 #include "buildflags.h"
 #include "deviceSettings.h"
 #include "Backend/depthsetting.h"
-#include "ipp.h"
+//#include "ipp.h"
 #include "theglobals.h"
 
 

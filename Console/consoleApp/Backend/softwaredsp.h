@@ -13,7 +13,7 @@
 
 #include "dsp.h"
 #include "buildflags.h"
-#include "ipp.h"
+//#include "ipp.h"
 
 /*
  * Uses the CPU for DSP calculations
@@ -69,7 +69,7 @@ private:
     struct fftData_t
     {
         // FFT Control settings and buffers
-        IppsFFTSpec_R_16s *fftSpec;
+//        IppsFFTSpec_R_16s *fftSpec;
         char              *fftWorkBuf;
         unsigned int      inputSize;
         unsigned int      fftOrder;

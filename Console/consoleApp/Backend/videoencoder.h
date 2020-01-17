@@ -27,10 +27,10 @@
 #define HIGH_QUALITY_VIDEO 0
 
 // ffmpeg libavcodec includes
-extern "C" {
-    #include "avformat.h"
-    #include "swscale.h"
-}
+//extern "C" {
+//    #include "avformat.h"
+//    #include "swscale.h"
+//}
 
 #define MAXFILENAMELEN 256
 
@@ -68,13 +68,13 @@ signals:
 
 private:
     bool init(void);
-    AVFrame *allocatePicture(int pixelFormat, int w, int h);
+//    AVFrame *allocatePicture(int pixelFormat, int w, int h);
     bool initVideo(void);
-    AVStream *addVideoStream(int codecId);
-    void copyFrame(AVFrame *frame, char *frameData, AVCodecContext *codecCtx);
+//    AVStream *addVideoStream(int codecId);
+//    void copyFrame(AVFrame *frame, char *frameData, AVCodecContext *codecCtx);
     void closeVideo(void);
 
-    AVFrame *picture, *tmpPicture;
+//    AVFrame *picture, *tmpPicture;
     struct SwsContext *imgConvertCtx;
 
     unsigned char *outputBuffer;
@@ -93,9 +93,9 @@ private:
 
     char filename[MAXFILENAMELEN];
 
-    AVOutputFormat *format;
-    AVFormatContext *outputCtx;
-    AVStream *videoStream;
+//    AVOutputFormat *format;
+//    AVFormatContext *outputCtx;
+//    AVStream *videoStream;
 
     unsigned char *picBuf;
 

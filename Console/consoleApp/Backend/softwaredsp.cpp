@@ -37,7 +37,7 @@ SoftwareDSP::SoftwareDSP()
     qDebug() << "SoftwareDSP constructor";
 
     // Default FFT config
-    fftData.fftSpec    = nullptr;
+//    fftData.fftSpec    = nullptr;
     fftData.fftChABuf  = nullptr;
     fftData.fftWorkBuf = nullptr;
     fftData.fftOrder   = FFT_ORDER;

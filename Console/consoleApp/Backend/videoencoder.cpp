@@ -33,12 +33,12 @@ extern QString gCrfTestValue;
 videoEncoder::videoEncoder(char *vidFilename, int srcWidth, int srcHeight, int dstWidth, int dstHeight, double fps)
 {
     imgConvertCtx = nullptr;
-    picture       = nullptr;
-    tmpPicture    = nullptr;
+//    picture       = nullptr;
+//    tmpPicture    = nullptr;
     imgConvertCtx = nullptr;
     outputBuffer  = nullptr;
-    format        = nullptr;
-    videoStream   = nullptr;
+//    format        = nullptr;
+//    videoStream   = nullptr;
 
     frameCount      = 0;
     framesPerSecond = fps;
@@ -87,9 +87,9 @@ void videoEncoder::run(void)
  * This sets up a buffer with the format and size we want for
  * encoding.
  */
-AVFrame *videoEncoder::allocatePicture(int pixelFormat, int w, int h)
-{
-    LOG3(pixelFormat,w,h)
+//AVFrame *videoEncoder::allocatePicture(int pixelFormat, int w, int h)
+//{
+//    LOG3(pixelFormat,w,h)
 //    AVFrame *p = nullptr;
 //    int size;
 
@@ -108,8 +108,7 @@ AVFrame *videoEncoder::allocatePicture(int pixelFormat, int w, int h)
 //    }
 //    avpicture_fill((AVPicture *)p, picBuf, (PixelFormat)pixelFormat, width, height);
 //    return(p);
-    return nullptr;
-}
+//}
 
 /*
  * initVideo()
@@ -213,9 +212,9 @@ bool videoEncoder::initVideo(void)
  * were taken from the ffmpeg faq more or less for
  * "good quality" h264.
  */
-AVStream *videoEncoder::addVideoStream(int codecId)
-{
-    LOG1(codecId)
+//AVStream *videoEncoder::addVideoStream(int codecId)
+//{
+//    LOG1(codecId)
 //    AVStream *stream = nullptr;
 //    AVCodecContext *codecCtx;
 
@@ -266,8 +265,7 @@ AVStream *videoEncoder::addVideoStream(int codecId)
 //        codecCtx->flags |= CODEC_FLAG_GLOBAL_HEADER;
 //    }
 //    return(stream);
-    return nullptr;
-}
+//}
 
 /*
  * init()
@@ -333,10 +331,10 @@ bool videoEncoder::init(void)
  * Simple function to memcpy frame data to an AVFrame, was
  * more complicated earlier.
  */
-void videoEncoder::copyFrame(AVFrame *frame, char *frameData, AVCodecContext *)
-{
-    memcpy(frame->data[0], frameData, size_t(width * height));
-}
+//void videoEncoder::copyFrame(AVFrame *frame, char *frameData, AVCodecContext *)
+//{
+//    memcpy(frame->data[0], frameData, size_t(width * height));
+//}
 
 #ifdef Q_WS_WIN
 /*

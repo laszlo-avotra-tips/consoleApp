@@ -41,7 +41,7 @@
 #include "util.h"
 #include "buildflags.h"
 #include "depthsetting.h"
-#include "ipp.h"
+//#include "ipp.h"
 #include "Utility/userSettings.h"
 
 #if ENABLE_RAW_DATA_SNAPSHOT
