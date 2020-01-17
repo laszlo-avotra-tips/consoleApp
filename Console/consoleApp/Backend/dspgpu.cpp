@@ -489,11 +489,12 @@ bool DSPGPU::initOpenCL()
 {
     qDebug() << "initOpenCL start";
 
-#if _DEBUG
-    QString path = QCoreApplication::applicationDirPath();
+#ifdef QT_DEBUG
+    QString path = QCoreApplication::applicationDirPath() + QString("/../../consoleApp/");
 #else
     QString path = QCoreApplication::applicationDirPath();
 #endif
+    qDebug() << path << endl;
 
     cl_platform_id platformId;
     cl_uint        numPlatforms = 0;
