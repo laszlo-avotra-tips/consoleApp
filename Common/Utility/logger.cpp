@@ -18,7 +18,6 @@
 #include "version.h"
 
 Logger* Logger::theLogger{nullptr};
-
 // Constants
 const int MaxLogSize_bytes = 2 * B_per_KB * KB_per_MB;
 
@@ -204,6 +203,12 @@ void Logger::logMessage( QString msg, const char *severity, const char *file, in
 #endif
 }
 
+void Logger::logDebugMessage(const QString &msg, const char* function, int line, Qt::HANDLE tId)
+{
+    QMutexLocker locker( &mutex );
+    getTextStream(function, line, tId) << msg;
+}
+
 QTextStream &Logger::getTextStream(const char* function, int line, Qt::HANDLE tId )
 {
     *output << "[" << QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
@@ -213,4 +218,6 @@ QTextStream &Logger::getTextStream(const char* function, int line, Qt::HANDLE tI
 
     return *output;
 }
+
+
 

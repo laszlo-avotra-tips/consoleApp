@@ -40,15 +40,25 @@
 //#endif  // UNIT_TEST
 
 
-#define LOG1(var_) { Logger &log = Logger::Instance(); log.getTextStream( __FUNCTION__, __LINE__, QThread::currentThreadId()) \
-    << #var_ << "=" << var_ << endl;}
+#define LOG1(var_) { Logger &log = Logger::Instance(); \
+    QString msg; QTextStream qts(&msg); \
+    qts << #var_ << "=" << var_ << endl; \
+    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
+
 #define LOG2(x_,y_) { Logger &log = Logger::Instance(); \
-    log.getTextStream( __FUNCTION__, __LINE__, QThread::currentThreadId()) << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << endl;}
+    QString msg; QTextStream qts(&msg); \
+    qts << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << endl; \
+    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
+
 #define LOG3(x_,y_,z_) { Logger &log = Logger::Instance(); \
-    log.getTextStream( __FUNCTION__, __LINE__, QThread::currentThreadId()) << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << endl;}
+    QString msg; QTextStream qts(&msg); \
+    qts << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << endl; \
+    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
+
 #define LOG4(x_,y_,z_,zz_) { Logger &log = Logger::Instance(); \
-    log.getTextStream( __FUNCTION__, __LINE__, QThread::currentThreadId()) << #x_ << "=" << x_ << " " << #y_ << "=" << y_ \
-    << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ << endl;}
+    QString msg; QTextStream qts(&msg); \
+    qts << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ << endl; \
+    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 class Logger
 {
@@ -61,6 +71,7 @@ public:
     QString getStatusMessage( void ) { return status; }
 
     void logMessage( QString msg, const char *severity, const char* file, int line );
+    void logDebugMessage(const QString& msg, const char* function, int line, Qt::HANDLE tId );
     QTextStream& getTextStream(const char* function, int line, Qt::HANDLE tId );
 
 private:

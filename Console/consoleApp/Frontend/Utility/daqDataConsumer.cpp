@@ -117,7 +117,7 @@ DaqDataConsumer::~DaqDataConsumer()
 void DaqDataConsumer::run( void )
 {
     qDebug() << "Thread: frontend::DaqDataConsumer::run()";
-//    LOG( INFO, "DaqDataConsumer Thread started" )
+    LOG( INFO, "DaqDataConsumer Thread started" )
 
     // access lines per revolution
     deviceSettings &devSettings = deviceSettings::Instance();
@@ -125,7 +125,7 @@ void DaqDataConsumer::run( void )
 
     // Notify Advanced View if full case is being recorded
     emit alwaysRecordingFullCase( isAlwaysRecordFullCaseOn );
-//    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) )
+    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) )
 
     // initialize prevFrame to the same value that currFrame will get so no
     // work is done until the DAQ and DSP start up
