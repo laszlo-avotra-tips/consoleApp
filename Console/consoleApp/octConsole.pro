@@ -46,13 +46,6 @@ win32 {
        .                                    \
        ..
 
-#    INCLUDEPATH += \
-#       ../../lib/win32/ffmpeg/include                   \
-#       ../../lib/win32/ffmpeg/include/libavcodec        \
-#       ../../lib/win32/ffmpeg/include/libavformat       \
-#       ../../lib/win32/ffmpeg/include/libswscale   \
-#       ../../lib/win32/ipp/ia32/include
-
     INCLUDEPATH += \
        ../../Common/Include                 \
        $$OPENCL_DIR/include \
@@ -65,22 +58,10 @@ win32 {
 
     LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
 
-#    LIBS += -L../../lib/win32/ffmpeg/lib
-#    LIBS += -L../../lib/win32/ffmpeg/bin
-#    LIBS +=                                       \
-#       -L"../../lib/win32/ipp/ia32/stublib"
-
     LIBS +=                                       \
        -L"../../lib/win32/DataTranslation/"               \
        -lglu32                                            \
        -luser32
-
-#    LIBS +=                                                 \
-#       -L"../../lib/win32/qserialport/lib"                \
-#       -lgraph32
-
-#   LIBS += -lswscale -lavformat -lavcodec -lavutil
-
 }  #win32
 
 unix {
@@ -97,25 +78,6 @@ unix {
        Frontend/Widgets                     \
        Frontend
 
-#   LIBS += \
-#       -L"../../lib/linux32/ipp/6.1.0.039/ia32/sharedlib" \
-#       -L"../../lib/linux32/qserialport/lib"    \
-#       -liomp5 \
-#       -lPlxApi
-
-#   LIBS += \
-#       -lippdc \
-#       -lippcc \
-#       -lippac \
-#       -lippsr \
-#       -lippvc \
-#       -lippcv \
-#       -lippj \
-#       -lippi \
-#       -lipps \
-#       -lippsc \
-#       -lippcore \
-
     OBJECTS_DIR = ./.obj
     MOC_DIR = ./.moc
 }
@@ -131,9 +93,4 @@ include( $${TARGET}.pri )
 CONFIG( release ) {
     QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
 }
-
-#unix|win32: LIBS += -L$$PWD/../../lib/win32/FTDI/ -lftd2xx
-
-#INCLUDEPATH += $$PWD/../../lib/win32/FTDI
-#DEPENDPATH += $$PWD/../../lib/win32/FTDI
 
