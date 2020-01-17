@@ -127,7 +127,7 @@ void FileDaq::run()
             if(PlaybackManager::instance()->isPlayback()){
                 msleep(PlaybackManager::instance()->playbackLoopSleep());
             }
-            LOG2(tgi->getGDaqRawData_idx(), tgi->getGFrameCounter())
+//            LOG2(tgi->getGDaqRawData_idx(), tgi->getGFrameCounter())
         }
 
         ++m_count1;
