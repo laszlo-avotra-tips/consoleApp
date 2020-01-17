@@ -139,7 +139,7 @@ std::pair<int, std::pair<void *, int> > PlaybackManager::frontFrame()
 }
 
 PlaybackManager::PlaybackManager()
-    : QObject(nullptr),m_countDaqRawDataCompleted(0), m_isPlayback(false),m_playbackLoopSleep(500)
+    : QObject(nullptr),m_countDaqRawDataCompleted(0), m_isPlayback(false),m_playbackLoopSleep(500),m_isSingleStep(false)
 {
 }
 
