@@ -58,8 +58,8 @@
 #define DEFAULT_LOCAL_UNITS  ( 16 )
 
 namespace{
-//size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
-//size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
+size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
+size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
 }
 
 // Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
@@ -113,38 +113,37 @@ DSPGPU::~DSPGPU()
     /*
      * Clean up openCL objects
      */
-//    clAmdFftTeardown();
-//    clReleaseKernel( cl_RescaleKernel );
-//    clReleaseKernel( cl_PostProcKernel );
-//    clReleaseKernel( cl_BandCKernel );
-//    clReleaseKernel( cl_WarpKernel );
+    clReleaseKernel( cl_RescaleKernel );
+    clReleaseKernel( cl_PostProcKernel );
+    clReleaseKernel( cl_BandCKernel );
+    clReleaseKernel( cl_WarpKernel );
 
-//    clReleaseProgram( cl_RescaleProgram );
-//    clReleaseProgram( cl_PostProcProgram );
-//    clReleaseProgram( cl_BandCProgram );
-//    clReleaseProgram( cl_WarpProgram );
+    clReleaseProgram( cl_RescaleProgram );
+    clReleaseProgram( cl_PostProcProgram );
+    clReleaseProgram( cl_BandCProgram );
+    clReleaseProgram( cl_WarpProgram );
 
-//    clReleaseMemObject( rescaleInputMemObj );
-//    clReleaseMemObject( rescaleOutputMemObj );
-//    clReleaseMemObject( rescaleFracSamplesMemObj );
-//    clReleaseMemObject( rescaleWholeSamplesMemObj );
+    clReleaseMemObject( rescaleInputMemObj );
+    clReleaseMemObject( rescaleOutputMemObj );
+    clReleaseMemObject( rescaleFracSamplesMemObj );
+    clReleaseMemObject( rescaleWholeSamplesMemObj );
 
-//    clReleaseMemObject( fftImaginaryInputMemObj );
-//    clReleaseMemObject( postProcOutputMemObj );
+    clReleaseMemObject( fftImaginaryInputMemObj );
+    clReleaseMemObject( postProcOutputMemObj );
 
-//    clReleaseMemObject( windowMemObj );
-//    clReleaseMemObject( fftRealOutputMemObj );
-//    clReleaseMemObject( fftImaginaryOutputMemObj );
+    clReleaseMemObject( windowMemObj );
+    clReleaseMemObject( fftRealOutputMemObj );
+    clReleaseMemObject( fftImaginaryOutputMemObj );
 
-//    clReleaseMemObject( lastFramePreScalingMemObj );
+    clReleaseMemObject( lastFramePreScalingMemObj );
 
-//    clReleaseMemObject( inputImageMemObj );
-//    clReleaseMemObject( warpInputImageMemObj );
-//    clReleaseMemObject( outputImageMemObj );
-//    clReleaseMemObject( outputVideoImageMemObj );
+    clReleaseMemObject( inputImageMemObj );
+    clReleaseMemObject( warpInputImageMemObj );
+    clReleaseMemObject( outputImageMemObj );
+    clReleaseMemObject( outputVideoImageMemObj );
 
-//    clReleaseCommandQueue( cl_Commands );
-//    clReleaseContext( cl_Context );
+    clReleaseCommandQueue( cl_Commands );
+    clReleaseContext( cl_Context );
 }
 
 /*
@@ -222,7 +221,7 @@ void DSPGPU::processData( void )
      static int prevIndex = TheGlobals::instance()->getPrevGDaqRawData_idx();
 
     // which index to point into for the raw data
-     int index = TheGlobals::instance()->getPrevGDaqRawData_idx();
+     int index = TheGlobals::instance()->getGDaqRawData_idx();
 
     // Only process data if it has been updated
 //#if QT_NO_DEBUG
@@ -424,57 +423,57 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
 
     LOG3(kernelName,program,kernel)
 
-//    int err;
+    int err;
 
-//    /*
-//     * Load, compile, link the source
-//     */
-//    LOG2(clSourceFile,kernelName);
-//    char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
-//    if( !sourceBuf )
-//    {
-//        displayFailureMessage( tr( "Failed to load program source file %1 (%2)" ).arg( clSourceFile ).arg( QDir::currentPath() ), true );
-//        return false;
-//    }
+    /*
+     * Load, compile, link the source
+     */
+    LOG2(clSourceFile,kernelName)
+    char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
+    if( !sourceBuf )
+    {
+        displayFailureMessage( tr( "Failed to load program source file %1 (%2)" ).arg( clSourceFile ).arg( QDir::currentPath() ), true );
+        return false;
+    }
 
-//    /*
-//     * Create the compute program(s) from the source buffer
-//     */
-//    *program = clCreateProgramWithSource( cl_Context, 1, (const char **) &sourceBuf, nullptr, &err );
-//    if( !*program || ( err != CL_SUCCESS ) )
-//    {
-//        qDebug() << "DSP: OpenCL could not create program from source: " << err;
-//        displayFailureMessage( tr( "Could not build OpenCL kernel from source, reason %1" ).arg( err ), true );
-//        return false;
-//    }
-//    free( sourceBuf );
+    /*
+     * Create the compute program(s) from the source buffer
+     */
+    *program = clCreateProgramWithSource( cl_Context, 1, (const char **) &sourceBuf, nullptr, &err );
+    if( !*program || ( err != CL_SUCCESS ) )
+    {
+        qDebug() << "DSP: OpenCL could not create program from source: " << err;
+        displayFailureMessage( tr( "Could not build OpenCL kernel from source, reason %1" ).arg( err ), true );
+        return false;
+    }
+    free( sourceBuf );
 
-//    err = clBuildProgram( *program, 0, nullptr, nullptr, nullptr, nullptr );
-//    if( err != CL_SUCCESS )
-//    {
-//        size_t length;
-//        const int BuildLogLength = 2048;
-//        char *build_log = (char *)malloc( BuildLogLength );
+    err = clBuildProgram( *program, 0, nullptr, nullptr, nullptr, nullptr );
+    if( err != CL_SUCCESS )
+    {
+        size_t length;
+        const int BuildLogLength = 2048;
+        char *build_log = (char *)malloc( BuildLogLength );
 
-//        qDebug() << "DSP: OpenCL build failed: " << err;
-//        clGetProgramBuildInfo( *program, cl_ComputeDeviceId, CL_PROGRAM_BUILD_LOG, BuildLogLength, build_log, &length );
-//        qDebug() << "openCl Build log:" << build_log;
+        qDebug() << "DSP: OpenCL build failed: " << err;
+        clGetProgramBuildInfo( *program, cl_ComputeDeviceId, CL_PROGRAM_BUILD_LOG, BuildLogLength, build_log, &length );
+        qDebug() << "openCl Build log:" << build_log;
 
-//        displayFailureMessage( tr( "Could not build program, reason %1" ).arg( err ), true );
-//        free( build_log );
-//        return false;
-//    }
+        displayFailureMessage( tr( "Could not build program, reason %1" ).arg( err ), true );
+        free( build_log );
+        return false;
+    }
 
-//    *kernel = clCreateKernel( *program, kernelName, &err );
+    *kernel = clCreateKernel( *program, kernelName, &err );
 
-//    if( err != CL_SUCCESS )
-//    {
-//        qDebug() << "DSP: OpenCL could not create compute kernel: " << err;
-//        displayFailureMessage( tr( "Could not create compute kernel, reason %1" ).arg( err ), true );
-//        return false;
-//    }
-//    LOG1( buildTimer.elapsed());
-//    qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
+    if( err != CL_SUCCESS )
+    {
+        qDebug() << "DSP: OpenCL could not create compute kernel: " << err;
+        displayFailureMessage( tr( "Could not create compute kernel, reason %1" ).arg( err ), true );
+        return false;
+    }
+    LOG1( buildTimer.elapsed())
+    qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
     return true;
 }
 
@@ -490,55 +489,55 @@ bool DSPGPU::initOpenCL()
 {
     qDebug() << "initOpenCL start";
 
-//#if _DEBUG
-//    QString path = QCoreApplication::applicationDirPath();
-//#else
-//    QString path = QCoreApplication::applicationDirPath();
-//#endif
+#if _DEBUG
+    QString path = QCoreApplication::applicationDirPath();
+#else
+    QString path = QCoreApplication::applicationDirPath();
+#endif
 
-//    cl_platform_id platformId;
-//    cl_uint        numPlatforms = 0;
+    cl_platform_id platformId;
+    cl_uint        numPlatforms = 0;
 
-//    int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
-//    qDebug() << "numPlatforms =" << numPlatforms;
+    int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
+    qDebug() << "numPlatforms =" << numPlatforms;
 
-//    if( numPlatforms == 0 )
-//    {
-//        // fatal error
-//        displayFailureMessage( tr( "Could not find openCL platform, reason: %1" ).arg( err ), true );
-//        return false;
-//    }
+    if( numPlatforms == 0 )
+    {
+        // fatal error
+        displayFailureMessage( tr( "Could not find openCL platform, reason: %1" ).arg( err ), true );
+        return false;
+    }
 
-//    // Found openCL-capable platforms
-//    cl_platform_id* platformIds = ( cl_platform_id* )malloc( sizeof( cl_platform_id ) * numPlatforms );
-//    err = clGetPlatformIDs( numPlatforms, platformIds, nullptr );
+    // Found openCL-capable platforms
+    cl_platform_id* platformIds = static_cast<cl_platform_id*>(malloc( sizeof( cl_platform_id ) * numPlatforms ));
+    err = clGetPlatformIDs( numPlatforms, platformIds, nullptr );
 
-//    int deviceIndex = -1;
+    uint deviceIndex = 99;
 
-//    const int DefaultStringSize = 128;
-//    char vendor[ DefaultStringSize ];
-//    char name[ DefaultStringSize ];
-//    char version[ DefaultStringSize ];
+    const int DefaultStringSize = 128;
+    char vendor[ DefaultStringSize ];
+    char name[ DefaultStringSize ];
+    char version[ DefaultStringSize ];
 
 
-//    for ( cl_int i = 0; i < numPlatforms; i++ )
-//    {
-//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VENDOR,  DefaultStringSize, vendor,  nullptr );
-//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_NAME,    DefaultStringSize, name,    nullptr );
-//        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VERSION, DefaultStringSize, version, nullptr );
+    for ( cl_uint i = 0; i < numPlatforms; i++ )
+    {
+        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VENDOR,  DefaultStringSize, vendor,  nullptr );
+        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_NAME,    DefaultStringSize, name,    nullptr );
+        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VERSION, DefaultStringSize, version, nullptr );
 
-//        if ( err != CL_SUCCESS )
-//        {
-//            displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
-//            return false;
-//        }
-//        qDebug() << "Platform (" << i << ") Vendor:" << vendor << " Name:" << name << " Version:" << version;
+        if ( err != CL_SUCCESS )
+        {
+            displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
+            return false;
+        }
+        qDebug() << "Platform (" << i << ") Vendor:" << vendor << " Name:" << name << " Version:" << version;
 
-//        if ( QString( vendor ) == "Advanced Micro Devices, Inc." &&
-//             QString( name )   == "AMD Accelerated Parallel Processing" )
-//        {
-//            deviceIndex = i;
-//        }
+        if ( QString( vendor ) == "Intel(R) Corporation" &&
+             QString( name )   == "Intel(R) OpenCL" )
+        {
+            deviceIndex = i;
+        }
 
 //#ifdef QT_DEBUG
 //        if ( QString( vendor ) == "NVIDIA Corporation" && (deviceIndex == -1))
@@ -546,142 +545,142 @@ bool DSPGPU::initOpenCL()
 //            deviceIndex = i;
 //        }
 //#endif
-//        LOG2(i,deviceIndex);
-//        if(i == deviceIndex){
-//            LOG3(vendor,name,version);
-//        }
-//    }
+        LOG2(i,deviceIndex)
+        if(i == deviceIndex){
+            LOG3(vendor,name,version)
+        }
+    }
 
-//    // Fatal error if no AMD-compatible platforms are found
-////#if QT_NO_DEBUG //lcv
-//    if ( deviceIndex < 0 )
-//    {
-//        displayFailureMessage( tr( "Could not find AMD platform" ), true );
-//        return false;
-//    }
-////#endif
-//    platformId = platformIds[ deviceIndex ];
-
-//    // release the memory.  Error paths do not free the memory since they will shut down the program
-//    free( platformIds );
-
-//    if( err != CL_SUCCESS )
-//    {
-//        displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
-//        return false;
-//    }
-
-//    // Verify the GPU is present
-//    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
-
-//    // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
-//    if( err == CL_DEVICE_NOT_FOUND )
-//    {
-//        // fall back to CPU when debugging if GPU not present
-//#if !_DEBUG
-//#if !ENABLE_SQUISH
-//        displayWarningMessage( tr( "GPU not present.  Falling back to the CPU." ) );
+    // Fatal error if no AMD-compatible platforms are found
+//#if QT_NO_DEBUG //lcv
+    if ( deviceIndex > 10 )
+    {
+        displayFailureMessage( tr( "Could not find AMD platform" ), true );
+        return false;
+    }
 //#endif
-//        qDebug() << "GPU not present.  Falling back to the CPU.";
-//#endif
-//        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, nullptr );
-//    }
+    platformId = platformIds[ deviceIndex ];
 
-//    if( err != CL_SUCCESS )
-//    {
-//        displayFailureMessage( tr( "Could not get OpenCL device IDs, reason: %1" ).arg( err ), true );
-//        return false;
-//    }
+    // release the memory.  Error paths do not free the memory since they will shut down the program
+    free( platformIds );
 
-//    {
-////        cl_int clGetDeviceInfo (cl_device_id device,
-////         cl_device_info param_name,
-////         size_t param_value_size,
-////         void *param_value,
-////         size_t *param_value_size_ret)
-//    }
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
+        return false;
+    }
 
-//    size_t returned_size( 0 );
-//    cl_uint maxComputeUnits;
-//    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(maxComputeUnits), &maxComputeUnits, &returned_size );
-//    LOG3(err, maxComputeUnits,returned_size);
+    // Verify the GPU is present
+    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
 
-//    cl_uint maxWorkItemDimentions;
-//    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimentions), &maxWorkItemDimentions, &returned_size );
-//    LOG3(err, maxWorkItemDimentions,returned_size);
+    // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
+    if( err == CL_DEVICE_NOT_FOUND )
+    {
+        // fall back to CPU when debugging if GPU not present
+#if !_DEBUG
+#if !ENABLE_SQUISH
+        displayWarningMessage( tr( "GPU not present.  Falling back to the CPU." ) );
+#endif
+        qDebug() << "GPU not present.  Falling back to the CPU.";
+#endif
+        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, nullptr );
+    }
 
-//    size_t maxWorkItemSizes[3];
-//    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(maxWorkItemSizes), &maxWorkItemSizes, &returned_size );
-//    LOG4(err, maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2]);
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Could not get OpenCL device IDs, reason: %1" ).arg( err ), true );
+        return false;
+    }
 
-//    err = clGetDeviceInfo( cl_ComputeDeviceId,
-//                           CL_DEVICE_MAX_WORK_GROUP_SIZE,
-//                           sizeof( cl_max_workgroup_size ),
-//                           &cl_max_workgroup_size,
-//                           &returned_size );
-//    LOG3(err, cl_max_workgroup_size, returned_size);
+    {
+//        cl_int clGetDeviceInfo (cl_device_id device,
+//         cl_device_info param_name,
+//         size_t param_value_size,
+//         void *param_value,
+//         size_t *param_value_size_ret)
+    }
 
-//    size_t maxWorkGroupSize;
-//    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, &returned_size );
-//    LOG3(err, maxWorkGroupSize,returned_size);
+    size_t returned_size( 0 );
+    cl_uint maxComputeUnits;
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(maxComputeUnits), &maxComputeUnits, &returned_size );
+    LOG3(err, maxComputeUnits,returned_size)
 
-//    if( err != CL_SUCCESS )
-//    {
-//        displayFailureMessage( tr( "Could not enumerate OpenCL device IDs, reason: %1" ).arg( err ), true );
-//        return false;
-//    }
+    cl_uint maxWorkItemDimentions;
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimentions), &maxWorkItemDimentions, &returned_size );
+    LOG3(err, maxWorkItemDimentions,returned_size)
 
-//    cl_char vendor_name[ 1024 ] = { 0 };
-//    cl_char device_name[ 1024 ] = { 0 };
-//    err  = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_VENDOR, sizeof( vendor_name ), vendor_name, &returned_size);
-//    err |= clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_NAME, sizeof( device_name ), device_name, &returned_size);
+    size_t maxWorkItemSizes[3];
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(maxWorkItemSizes), &maxWorkItemSizes, &returned_size );
+    LOG4(err, maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
 
-//    LOG2( reinterpret_cast<char*>(vendor_name), reinterpret_cast<char*>(device_name));
+    err = clGetDeviceInfo( cl_ComputeDeviceId,
+                           CL_DEVICE_MAX_WORK_GROUP_SIZE,
+                           sizeof( cl_max_workgroup_size ),
+                           &cl_max_workgroup_size,
+                           &returned_size );
+    LOG3(err, cl_max_workgroup_size, returned_size)
 
-//    if( err != CL_SUCCESS )
-//    {
-//        displayFailureMessage( tr( "Could not get OpenCL device info, reason: %1").arg( err ), true );
-//        return false;
-//    }
+    size_t maxWorkGroupSize;
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, &returned_size );
+    LOG3(err, maxWorkGroupSize,returned_size)
 
-//    LOG( INFO, "OpenCL device: " + QString( (char *)vendor_name ) + " " + QString( (char *)device_name ) );
-//    qDebug() << "DSP: Found OpenCL Device " <<  QString( (char *)vendor_name ) + " " + QString( (char *)device_name );
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Could not enumerate OpenCL device IDs, reason: %1" ).arg( err ), true );
+        return false;
+    }
 
-//    cl_Context = clCreateContext( 0, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
-//    if( !cl_Context )
-//    {
-//        qDebug() << "DSP: OpenCL could not create compute context.";
-//        displayFailureMessage( tr( "Could not allocate OpenCL compute context, reason %1" ).arg( err ), true );
-//        return false;
-//    }
+    cl_char vendor_name[ 1024 ] = { 0 };
+    cl_char device_name[ 1024 ] = { 0 };
+    err  = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_VENDOR, sizeof( vendor_name ), vendor_name, &returned_size);
+    err |= clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_NAME, sizeof( device_name ), device_name, &returned_size);
 
-//    cl_Commands = clCreateCommandQueue( cl_Context, cl_ComputeDeviceId, 0, &err );
-//    if( !cl_Commands )
-//    {
-//        qDebug() << "DSP: OpenCL could not create command queue.";
-//        displayFailureMessage( tr( "Could not create OpenCL command queue, reason %1" ).arg( err ), true );
-//        return false;
-//    }
+    LOG2( reinterpret_cast<char*>(vendor_name), reinterpret_cast<char*>(device_name))
 
-//    if( !buildOpenCLKernel( QString( path + RESCALE_CL ), "rescale_kernel", &cl_RescaleProgram, &cl_RescaleKernel ) )
-//    {
-//        return false;
-//    }
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Could not get OpenCL device info, reason: %1").arg( err ), true );
+        return false;
+    }
 
-//    if( !buildOpenCLKernel( QString( path + POSTPROC_CL ), "postproc_kernel", &cl_PostProcProgram, &cl_PostProcKernel ) )
-//    {
-//        return false;
-//    }
+    LOG( INFO, "OpenCL device: " + QString( reinterpret_cast<char*>(vendor_name)) + " " + QString( reinterpret_cast<char*>(device_name)) )
+    qDebug() << "DSP: Found OpenCL Device " <<  QString( reinterpret_cast<char*>(vendor_name) ) + " " + QString( reinterpret_cast<char*>(device_name) );
 
-//    if( !buildOpenCLKernel( QString( path + BANDC_CL ), "bandc_kernel", &cl_BandCProgram, &cl_BandCKernel ) )
-//    {
-//        return false;
-//    }
+    cl_Context = clCreateContext( nullptr, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
+    if( !cl_Context )
+    {
+        qDebug() << "DSP: OpenCL could not create compute context.";
+        displayFailureMessage( tr( "Could not allocate OpenCL compute context, reason %1" ).arg( err ), true );
+        return false;
+    }
 
-//    if( !buildOpenCLKernel( QString( path + WARP_CL ), "warp_kernel", &cl_WarpProgram, &cl_WarpKernel ) )
-//    {
-//        return false;
-//    }
+    cl_Commands = clCreateCommandQueue( cl_Context, cl_ComputeDeviceId, 0, &err );
+    if( !cl_Commands )
+    {
+        qDebug() << "DSP: OpenCL could not create command queue.";
+        displayFailureMessage( tr( "Could not create OpenCL command queue, reason %1" ).arg( err ), true );
+        return false;
+    }
+
+    if( !buildOpenCLKernel( QString( path + RESCALE_CL ), "rescale_kernel", &cl_RescaleProgram, &cl_RescaleKernel ) )
+    {
+        return false;
+    }
+
+    if( !buildOpenCLKernel( QString( path + POSTPROC_CL ), "postproc_kernel", &cl_PostProcProgram, &cl_PostProcKernel ) )
+    {
+        return false;
+    }
+
+    if( !buildOpenCLKernel( QString( path + BANDC_CL ), "bandc_kernel", &cl_BandCProgram, &cl_BandCKernel ) )
+    {
+        return false;
+    }
+
+    if( !buildOpenCLKernel( QString( path + WARP_CL ), "warp_kernel", &cl_WarpProgram, &cl_WarpKernel ) )
+    {
+        return false;
+    }
 
 //    if( !initOpenCLFFT() )
 //    {
@@ -689,12 +688,12 @@ bool DSPGPU::initOpenCL()
 //        return false;
 //    }
 
-//    createCLMemObjects( cl_Context );
+    createCLMemObjects( cl_Context );
 
-//    global_unit_dim[ 0 ] = RescalingDataLength;
-//    global_unit_dim[ 1 ] = linesPerFrame;
+    global_unit_dim[ 0 ] = RescalingDataLength;
+    global_unit_dim[ 1 ] = linesPerFrame;
 
-//    qDebug() << "DSPGPU: OpenCL init complete.";
+    qDebug() << "DSPGPU: OpenCL init complete.";
 
     return true;
 }
@@ -749,65 +748,65 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
 bool DSPGPU::createCLMemObjects( cl_context context )
 {
     LOG1(&context)
-//    int err;
+    int err;
 
-//    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
-//    rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, nullptr );
-//    LOG2(rescaleInputMemObj, rescaleInputMemObjSize);
+    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
+    rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, nullptr );
+    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
 
-//    rescaleOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-//    rescaleOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, rescaleOutputMemObjSize, nullptr, nullptr );
-//    LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize);
+    rescaleOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+    rescaleOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, rescaleOutputMemObjSize, nullptr, nullptr );
+    LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize)
 
-//    rescaleFracSamplesMemObjSize = RescalingDataLength * sizeof(float);
-//    rescaleFracSamplesMemObj  = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleFracSamplesMemObjSize, fractionalSamples, nullptr );
-//    LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize);
+    rescaleFracSamplesMemObjSize = RescalingDataLength * sizeof(float);
+    rescaleFracSamplesMemObj  = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleFracSamplesMemObjSize, fractionalSamples, nullptr );
+    LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize)
 
-//    rescaleWholeSamplesMemObjSize = RescalingDataLength * sizeof(float);
-//    rescaleWholeSamplesMemObj = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleWholeSamplesMemObjSize, wholeSamples, nullptr );
-//    LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize);
+    rescaleWholeSamplesMemObjSize = RescalingDataLength * sizeof(float);
+    rescaleWholeSamplesMemObj = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleWholeSamplesMemObjSize, wholeSamples, nullptr );
+    LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize)
 
-//    fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-//    fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, nullptr );
-//    LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize);
+    fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+    fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, nullptr );
+    LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
 
-//    postProcOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(unsigned short);
-//    postProcOutputMemObj      = clCreateBuffer( context, CL_MEM_WRITE_ONLY, postProcOutputMemObjSize, nullptr, nullptr );
-//    LOG2(postProcOutputMemObj, postProcOutputMemObjSize);
+    postProcOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(unsigned short);
+    postProcOutputMemObj      = clCreateBuffer( context, CL_MEM_WRITE_ONLY, postProcOutputMemObjSize, nullptr, nullptr );
+    LOG2(postProcOutputMemObj, postProcOutputMemObjSize)
 
-//    windowMemObjSize = RescalingDataLength * sizeof(float);
-//    windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, nullptr );
-//    LOG2(windowMemObj, windowMemObjSize);
+    windowMemObjSize = RescalingDataLength * sizeof(float);
+    windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, nullptr );
+    LOG2(windowMemObj, windowMemObjSize)
 
-//    fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-//    fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, nullptr );
-//    LOG2(fftRealOutputMemObj, fftRealOutputMemObjSize);
+    fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+    fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, nullptr );
+    LOG2(fftRealOutputMemObj, fftRealOutputMemObjSize)
 
-//    fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-//    fftImaginaryOutputMemObj  = clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr, nullptr );
-//    LOG2(fftImaginaryOutputMemObj, fftImaginaryOutputMemObjSize);
+    fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+    fftImaginaryOutputMemObj  = clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr, nullptr );
+    LOG2(fftImaginaryOutputMemObj, fftImaginaryOutputMemObjSize)
 
-//    lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-//    lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, nullptr );
-//    LOG2(lastFramePreScalingMemObj, lastFramePreScalingMemObjSize);
+    lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+    lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, nullptr );
+    LOG2(lastFramePreScalingMemObj, lastFramePreScalingMemObjSize)
 
-//    cl_image_format clImageFormat;
-//    clImageFormat.image_channel_order     = CL_R;
-//    clImageFormat.image_channel_data_type = CL_UNSIGNED_INT8;
+    cl_image_format clImageFormat;
+    clImageFormat.image_channel_order     = CL_R;
+    clImageFormat.image_channel_data_type = CL_UNSIGNED_INT8;
 
-//    inputImageMemObj       = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+    inputImageMemObj       = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
 
-//    warpInputImageMemObj   = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+    warpInputImageMemObj   = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
 
-//    outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
+    outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
 
-//    outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
+    outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
 
-//    if( err != CL_SUCCESS )
-//    {
-//        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-//        return false;
-//    }
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Failed to create GPU images" ), true );
+        return false;
+    }
 
     return true;
 }
@@ -1075,44 +1074,44 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 unsigned int DSPGPU::rescale( const unsigned short *inputData )
 {
     LOG1(inputData)
-//    TIME_THIS_SCOPE( dsp_rescale );
-//    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
-//    int err = clEnqueueWriteBuffer( cl_Commands,
-//                                    rescaleInputMemObj,
-//                                    true,
-//                                    0,
-//                                    rescaleInputMemObjSize,
-//                                    inputData,
-//                                    0,
-//                                    nullptr,
-//                                    nullptr );
-//    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
+    TIME_THIS_SCOPE( dsp_rescale );
+    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
+    int err = clEnqueueWriteBuffer( cl_Commands,
+                                    rescaleInputMemObj,
+                                    true,
+                                    0,
+                                    rescaleInputMemObjSize,
+                                    inputData,
+                                    0,
+                                    nullptr,
+                                    nullptr );
+    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
 
-//    if( err != CL_SUCCESS )
-//    {
-//        qDebug() << "Error: Failed to enqueue new data to GPU! Err = " << err;
-//        return 1;
-//    }
-//    err  = clSetKernelArg( cl_RescaleKernel, 0, sizeof(cl_mem),       &rescaleInputMemObj );
-//    err |= clSetKernelArg( cl_RescaleKernel, 1, sizeof(cl_mem),       &rescaleOutputMemObj );
-//    err |= clSetKernelArg( cl_RescaleKernel, 2, sizeof(cl_mem),       &rescaleFracSamplesMemObj );
-//    err |= clSetKernelArg( cl_RescaleKernel, 3, sizeof(cl_mem),       &rescaleWholeSamplesMemObj );
-//    err |= clSetKernelArg( cl_RescaleKernel, 4, sizeof(cl_mem),       &windowMemObj );
-//    err |= clSetKernelArg( cl_RescaleKernel, 5, sizeof(unsigned int), &recordLength );
-//    err |= clSetKernelArg( cl_RescaleKernel, 6, sizeof(unsigned int), &RescalingDataLength );
+    if( err != CL_SUCCESS )
+    {
+        qDebug() << "Error: Failed to enqueue new data to GPU! Err = " << err;
+        return 1;
+    }
+    err  = clSetKernelArg( cl_RescaleKernel, 0, sizeof(cl_mem),       &rescaleInputMemObj );
+    err |= clSetKernelArg( cl_RescaleKernel, 1, sizeof(cl_mem),       &rescaleOutputMemObj );
+    err |= clSetKernelArg( cl_RescaleKernel, 2, sizeof(cl_mem),       &rescaleFracSamplesMemObj );
+    err |= clSetKernelArg( cl_RescaleKernel, 3, sizeof(cl_mem),       &rescaleWholeSamplesMemObj );
+    err |= clSetKernelArg( cl_RescaleKernel, 4, sizeof(cl_mem),       &windowMemObj );
+    err |= clSetKernelArg( cl_RescaleKernel, 5, sizeof(unsigned int), &recordLength );
+    err |= clSetKernelArg( cl_RescaleKernel, 6, sizeof(unsigned int), &RescalingDataLength );
 
-//    err |= clEnqueueNDRangeKernel( cl_Commands, cl_RescaleKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+    err |= clEnqueueNDRangeKernel( cl_Commands, cl_RescaleKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
 
-//    if( err != CL_SUCCESS )
-//    {
-//        qDebug() << "Error: Failed to execute kernel! Err = " << err;
-//        qDebug() << "global_unit_dim[0] = " << global_unit_dim[ 0 ] << "global_unit_dim[1] = " << global_unit_dim[ 1 ] << "\n"
-//                 << "local_unit_dim[0]  = " << local_unit_dim[ 0 ]  << "local_unit_dim[1]  = " << local_unit_dim[ 1 ];
-//        return 1;
-//    }
-//    auto tgi = TheGlobals::instance();
-//    LOG3(local_unit_dim[ 0 ], local_unit_dim[ 1 ], tgi->getGFrameCounter());
-//    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx());
+    if( err != CL_SUCCESS )
+    {
+        qDebug() << "Error: Failed to execute kernel! Err = " << err;
+        qDebug() << "global_unit_dim[0] = " << global_unit_dim[ 0 ] << "global_unit_dim[1] = " << global_unit_dim[ 1 ] << "\n"
+                 << "local_unit_dim[0]  = " << local_unit_dim[ 0 ]  << "local_unit_dim[1]  = " << local_unit_dim[ 1 ];
+        return 1;
+    }
+    auto tgi = TheGlobals::instance();
+    LOG3(local_unit_dim[ 0 ], local_unit_dim[ 1 ], tgi->getGFrameCounter())
+    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx())
 
     return 0;
 }
