@@ -129,7 +129,7 @@ DSPGPU::~DSPGPU()
     clReleaseMemObject( rescaleWholeSamplesMemObj );
 
     clReleaseMemObject( fftImaginaryInputMemObj );
-    clReleaseMemObject( postProcOutputMemObj );
+//    clReleaseMemObject( postProcOutputMemObj );
 
     clReleaseMemObject( windowMemObj );
     clReleaseMemObject( fftRealOutputMemObj );
@@ -224,9 +224,7 @@ void DSPGPU::processData( void )
      int index = TheGlobals::instance()->getGDaqRawData_idx();
 
     // Only process data if it has been updated
-//#if QT_NO_DEBUG
     if( index != prevIndex )
-//#endif
     {
         TIME_THIS_SCOPE( DSPGPU_processData );
 
@@ -400,12 +398,12 @@ bool DSPGPU::initOpenCLFFT( void )
 //        return false;
 //    }
 
-//    fftImaginaryBuffer = (float *)malloc( sizeof(float) * RescalingDataLength * linesPerFrame );
-//    if( !fftImaginaryBuffer )
-//    {
-//        qDebug() << "malloc() fftImaginaryBuffer failed.";
-//        return false;
-//    }
+    fftImaginaryBuffer = (float *)malloc( sizeof(float) * RescalingDataLength * linesPerFrame );
+    if( !fftImaginaryBuffer )
+    {
+        qDebug() << "malloc() fftImaginaryBuffer failed.";
+        return false;
+    }
     memset( fftImaginaryBuffer, 0, sizeof(float) * RescalingDataLength * linesPerFrame );
     return true;
 }
@@ -771,9 +769,9 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, nullptr );
     LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
 
-    postProcOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(unsigned short);
-    postProcOutputMemObj      = clCreateBuffer( context, CL_MEM_WRITE_ONLY, postProcOutputMemObjSize, nullptr, nullptr );
-    LOG2(postProcOutputMemObj, postProcOutputMemObjSize)
+//    postProcOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(unsigned short);
+//    postProcOutputMemObj      = clCreateBuffer( context, CL_MEM_WRITE_ONLY, postProcOutputMemObjSize, nullptr, nullptr );
+//    LOG2(postProcOutputMemObj, postProcOutputMemObjSize)
 
     windowMemObjSize = RescalingDataLength * sizeof(float);
     windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, nullptr );
@@ -825,8 +823,8 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    int            averageVal   = int(doAveraging);
    int            invertColors = int(doInvertColors);
 
-//   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
-//   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
+   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
+   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
 
    // XXX: Empirically set to achieve full range at just below detector saturation
    // scaleFactor adjusted for new DAQ Input Range for HS devices. See #1777, #1769

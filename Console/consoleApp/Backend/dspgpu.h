@@ -83,8 +83,8 @@ private:
     cl_mem           fftImaginaryInputMemObj;
     size_t           fftImaginaryInputMemObjSize;
 
-    cl_mem           postProcOutputMemObj;
-    size_t           postProcOutputMemObjSize;
+//    cl_mem           postProcOutputMemObj;
+//    size_t           postProcOutputMemObjSize;
 
     float           *fftImaginaryBuffer;
     size_t           fftImaginaryBufferSize;
