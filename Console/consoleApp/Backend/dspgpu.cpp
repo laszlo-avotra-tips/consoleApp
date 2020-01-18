@@ -1074,7 +1074,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
  */
 unsigned int DSPGPU::rescale( const unsigned short *inputData )
 {
-    LOG1(inputData)
+//    LOG1(inputData)
     TIME_THIS_SCOPE( dsp_rescale );
     rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
     int err = clEnqueueWriteBuffer( cl_Commands,
@@ -1086,7 +1086,7 @@ unsigned int DSPGPU::rescale( const unsigned short *inputData )
                                     0,
                                     nullptr,
                                     nullptr );
-    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
+//    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
 
     if( err != CL_SUCCESS )
     {
@@ -1111,8 +1111,8 @@ unsigned int DSPGPU::rescale( const unsigned short *inputData )
         return 1;
     }
     auto tgi = TheGlobals::instance();
-    LOG3(local_unit_dim[ 0 ], local_unit_dim[ 1 ], tgi->getGFrameCounter())
-    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx())
+//    LOG3(local_unit_dim[ 0 ], local_unit_dim[ 1 ], tgi->getGFrameCounter())
+//    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx())
 
     return 0;
 }
