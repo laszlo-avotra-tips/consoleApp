@@ -823,12 +823,12 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    int            averageVal   = int(doAveraging);
    int            invertColors = int(doInvertColors);
 
-   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
-   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
+//   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
+//   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
 
    // XXX: Empirically set to achieve full range at just below detector saturation
    // scaleFactor adjusted for new DAQ Input Range for HS devices. See #1777, #1769
-   float scaleFactor = (float) ( ( 20000.0 * 255.0 ) / 65535.0 );
+   float scaleFactor = ( 20000.0f * 255.0f ) / 65535.0f;
    const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
 
 //   clStatus = clEnqueueReadBuffer( cl_Commands,               // command_queue
@@ -880,12 +880,14 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    unsigned int inputLength = RescalingDataLength;
 
    // Make this a loop XXX
-   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &fftRealOutputMemObj );
+//   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &fftRealOutputMemObj );
+   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &rescaleOutputMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
+//   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
+   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryInputMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;
