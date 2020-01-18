@@ -18,6 +18,7 @@ public:
     ~EngineeringDialog();
 
     void setStatMsg(const QString& msg);
+    void signalsConnected();
 
 public slots:
     void setMotorSpeed(int val);

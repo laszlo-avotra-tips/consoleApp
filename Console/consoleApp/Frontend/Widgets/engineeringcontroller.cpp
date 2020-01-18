@@ -38,6 +38,8 @@ EngineeringController::EngineeringController(QWidget *parent)
     SledSupport& sledSp = SledSupport::Instance();
     connect(&sledSp, SIGNAL(speedChanged(int)), m_view, SLOT(setMotorSpeed(int)));
 
+    m_view->signalsConnected();
+
 #ifdef QT_NO_DEBUG
     m_statTimer.start(200);
 #endif

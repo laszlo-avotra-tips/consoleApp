@@ -33,7 +33,7 @@
 
 // Macro for all classes to use for logging
 //#if UNIT_TEST
-//   #define LOG( severity, msg ) {}
+//   #define LOG( severity, logMsg ) {}
 //#else
    #define LOG( severity_, msg_ ) { Logger &log_ = Logger::Instance(); \
                                   log_.logMessage( msg_, #severity_, __FILE__, __LINE__ ); }
@@ -41,24 +41,24 @@
 
 
 #define LOG1(var_) { Logger &log = Logger::Instance(); \
-    QString msg; QTextStream qts(&msg); \
-    qts << #var_ << "=" << var_ << endl; \
-    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
+    QString logMsg; QTextStream qtextstream(&logMsg); \
+    qtextstream << #var_ << "=" << var_ << endl; \
+    log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 #define LOG2(x_,y_) { Logger &log = Logger::Instance(); \
-    QString msg; QTextStream qts(&msg); \
-    qts << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << endl; \
-    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
+    QString logMsg; QTextStream qtextstream(&logMsg); \
+    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << endl; \
+    log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 #define LOG3(x_,y_,z_) { Logger &log = Logger::Instance(); \
-    QString msg; QTextStream qts(&msg); \
-    qts << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << endl; \
-    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
+    QString logMsg; QTextStream qtextstream(&logMsg); \
+    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << endl; \
+    log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 #define LOG4(x_,y_,z_,zz_) { Logger &log = Logger::Instance(); \
-    QString msg; QTextStream qts(&msg); \
-    qts << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ << endl; \
-    log.logDebugMessage(msg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
+    QString logMsg; QTextStream qtextstream(&logMsg); \
+    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ << endl; \
+    log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 class Logger
 {

@@ -3,6 +3,7 @@
 #include "logger.h"
 #include <QFileDialog>
 #include <QObject>
+#include <QDebug>
 
 
 EngineeringDialog::EngineeringDialog(QWidget *parent) :
@@ -16,6 +17,8 @@ EngineeringDialog::EngineeringDialog(QWidget *parent) :
     connect(ui->sliderVoa, SIGNAL(valueChanged(int)), this, SIGNAL(voaAttenuationChanged(int)));
     connect(ui->sliderMotorSpeed, SIGNAL(valueChanged(int)), this, SIGNAL(motorSpeedChanged(int)));
 
+    LOG1(ui->lineEdit->text())
+    qDebug() << ui->lineEdit->text();
 }
 
 EngineeringDialog::~EngineeringDialog()
@@ -27,6 +30,15 @@ void EngineeringDialog::setStatMsg(const QString& msg)
 {
     ui->labelStat->setText(msg);
     //    LOG1(msg);
+}
+
+void EngineeringDialog::signalsConnected()
+{
+    if(!ui->lineEdit->text().isEmpty()){
+        emit fileNameChanged(ui->lineEdit->text());
+        ui->pushButtonLoad->setEnabled(true);
+        ui->sliderPlaybackSpeed->setEnabled(true);
+    }
 }
 
 void EngineeringDialog::setMotorSpeed(int val)
