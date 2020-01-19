@@ -323,7 +323,10 @@ void DSPGPU::processData( void )
  */
 void DSPGPU::computeFFTWindow( void )
 {
-//    windowBuffer = (float *)malloc( RescalingDataLength * sizeof(float) );
+    windowBuffer = static_cast<float *>(malloc( RescalingDataLength * sizeof(float) ));
+    for(size_t i=0; i< RescalingDataLength; ++i){
+        windowBuffer[i] = 1.0f;
+    }
 //    ippsSet_32f( 1, windowBuffer, RescalingDataLength );
 //    ippsWinHann_32f_I( windowBuffer, RescalingDataLength );
 }
@@ -398,7 +401,7 @@ bool DSPGPU::initOpenCLFFT( void )
 //        return false;
 //    }
 
-    fftImaginaryBuffer = (float *)malloc( sizeof(float) * RescalingDataLength * linesPerFrame );
+    fftImaginaryBuffer = static_cast<float *>(malloc( sizeof(float) * RescalingDataLength * linesPerFrame ));
     if( !fftImaginaryBuffer )
     {
         qDebug() << "malloc() fftImaginaryBuffer failed.";
@@ -406,6 +409,20 @@ bool DSPGPU::initOpenCLFFT( void )
     }
     memset( fftImaginaryBuffer, 0, sizeof(float) * RescalingDataLength * linesPerFrame );
     return true;
+}
+
+QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
+{
+    QString cause;
+    switch(clError){
+        case CL_INVALID_CONTEXT :       {cause = "CL_INVALID_CONTEXT";} break;
+        case CL_INVALID_VALUE :         {cause = "CL_INVALID_VALUE";} break;
+        case CL_INVALID_BUFFER_SIZE :   {cause = "CL_INVALID_BUFFER_SIZE";} break;
+        case CL_INVALID_HOST_PTR :      {cause = "CL_INVALID_HOST_PTR";} break;
+        case CL_MEM_OBJECT_ALLOCATION_FAILURE :  {cause = "CL_MEM_OBJECT_ALLOCATION_FAILURE";} break;
+        case CL_OUT_OF_HOST_MEMORY :    {cause = "CL_OUT_OF_HOST_MEMORY";} break;
+    }
+    return cause;
 }
 
 /*
@@ -681,11 +698,11 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-//    if( !initOpenCLFFT() )
-//    {
-//        qDebug() << "DSP: AMDOpenCLFFT setup failed.";
-//        return false;
-//    }
+    if( !initOpenCLFFT() )
+    {
+        qDebug() << "initOpenCLFFT() failed.";
+        return false;
+    }
 
     createCLMemObjects( cl_Context );
 
@@ -747,47 +764,85 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
 bool DSPGPU::createCLMemObjects( cl_context context )
 {
     LOG1(&context)
-    int err;
+    cl_int err;
+    const char* errorMsg = "failed to allocate memory";
 
     rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
-    rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, nullptr );
+    rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, &err );
     LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
+    if(!rescaleInputMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
     rescaleOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    rescaleOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, rescaleOutputMemObjSize, nullptr, nullptr );
+    rescaleOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, rescaleOutputMemObjSize, nullptr, &err );
     LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize)
+    if(!rescaleOutputMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
     rescaleFracSamplesMemObjSize = RescalingDataLength * sizeof(float);
-    rescaleFracSamplesMemObj  = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleFracSamplesMemObjSize, fractionalSamples, nullptr );
+    rescaleFracSamplesMemObj  = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleFracSamplesMemObjSize, fractionalSamples, &err );
     LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize)
+    if(!rescaleFracSamplesMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
     rescaleWholeSamplesMemObjSize = RescalingDataLength * sizeof(float);
-    rescaleWholeSamplesMemObj = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleWholeSamplesMemObjSize, wholeSamples, nullptr );
+    rescaleWholeSamplesMemObj = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleWholeSamplesMemObjSize, wholeSamples, &err );
     LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize)
+    if(!rescaleWholeSamplesMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
-    fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, nullptr );
-    LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
 
 //    postProcOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(unsigned short);
 //    postProcOutputMemObj      = clCreateBuffer( context, CL_MEM_WRITE_ONLY, postProcOutputMemObjSize, nullptr, nullptr );
 //    LOG2(postProcOutputMemObj, postProcOutputMemObjSize)
 
     windowMemObjSize = RescalingDataLength * sizeof(float);
-    windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, nullptr );
+    windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, &err );
     LOG2(windowMemObj, windowMemObjSize)
+    if(!windowMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
+
+    fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+    fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, &err );
+    LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
+    if(!fftImaginaryInputMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
     fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, nullptr );
+    fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, &err );
     LOG2(fftRealOutputMemObj, fftRealOutputMemObjSize)
+    if(!fftRealOutputMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
     fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    fftImaginaryOutputMemObj  = clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr, nullptr );
+    fftImaginaryOutputMemObj  = clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr, &err );
     LOG2(fftImaginaryOutputMemObj, fftImaginaryOutputMemObjSize)
+    if(!fftImaginaryOutputMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
     lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, nullptr );
+    lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, &err );
     LOG2(lastFramePreScalingMemObj, lastFramePreScalingMemObjSize)
+    if(!lastFramePreScalingMemObj){
+        LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        return false;
+    }
 
     cl_image_format clImageFormat;
     clImageFormat.image_channel_order     = CL_R;

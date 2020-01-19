@@ -142,6 +142,7 @@ private:
     bool initOpenCL();
     void computeFFTWindow();
     bool initOpenCLFFT();
+    QString clCreateBufferErrorVerbose(int clError) const;
 
     float displayAngle_deg;
 };
