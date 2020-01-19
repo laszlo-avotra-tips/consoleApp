@@ -772,6 +772,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
     if(!rescaleInputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -780,6 +781,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize)
     if(!rescaleOutputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -788,6 +790,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize)
     if(!rescaleFracSamplesMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -796,6 +799,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize)
     if(!rescaleWholeSamplesMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -809,6 +813,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(windowMemObj, windowMemObjSize)
     if(!windowMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -817,6 +822,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
     if(!fftImaginaryInputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -825,6 +831,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(fftRealOutputMemObj, fftRealOutputMemObjSize)
     if(!fftRealOutputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -833,6 +840,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(fftImaginaryOutputMemObj, fftImaginaryOutputMemObjSize)
     if(!fftImaginaryOutputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -841,6 +849,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     LOG2(lastFramePreScalingMemObj, lastFramePreScalingMemObjSize)
     if(!lastFramePreScalingMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
+        displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
@@ -849,10 +858,25 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     clImageFormat.image_channel_data_type = CL_UNSIGNED_INT8;
 
     inputImageMemObj       = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Failed to create GPU images" ), true );
+        return false;
+    }
 
     warpInputImageMemObj   = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Failed to create GPU images" ), true );
+        return false;
+    }
 
     outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Failed to create GPU images" ), true );
+        return false;
+    }
 
     outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
 
