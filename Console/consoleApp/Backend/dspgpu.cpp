@@ -425,6 +425,14 @@ QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
     return cause;
 }
 
+bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOutImag)
+{
+    //short the fft
+    fftOutImag = fftImaginaryInputMemObj;
+    fftOutReal = rescaleOut;
+    return true;
+}
+
 /*
  * buildOpenCLKernel
  *
@@ -902,8 +910,10 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    int            averageVal   = int(doAveraging);
    int            invertColors = int(doInvertColors);
 
-//   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
-//   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
+   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
+   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
+
+   computeTheFFT(rescaleOutputMemObj, fftRealOutputMemObj, fftImaginaryOutputMemObj);
 
    // XXX: Empirically set to achieve full range at just below detector saturation
    // scaleFactor adjusted for new DAQ Input Range for HS devices. See #1777, #1769
@@ -959,14 +969,12 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    unsigned int inputLength = RescalingDataLength;
 
    // Make this a loop XXX
-//   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &fftRealOutputMemObj );
-   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &rescaleOutputMemObj );
+   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &fftRealOutputMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
    }
-//   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryInputMemObj );
+   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;

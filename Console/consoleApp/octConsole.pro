@@ -21,13 +21,16 @@ CONFIG += c++11
 
 DEFINES += QT_XML_LIB QT_SQL_LIB
 
-isEmpty(OPENCL_DIR):OPENCL_DIR=$$(OPENCL_DIR)
+#isEmpty(OPENCL_DIR):OPENCL_DIR=$$(OPENCL_DIR)
 
-isEmpty(OPENCL_DIR) {
+#isEmpty(OPENCL_DIR) {
     message("set OPENCL_DIR as environment variable or qmake variable to get rid of this message")
     OPENCL_DIR = "C:/Program Files (x86)/IntelSWTools/sw_dev_tools/OpenCL/sdk"
-}
+#}
 
+    CUDA_DIR1 = "C:\Users\lvincze\Documents\GitHub\cudaUnitTest\cudaFFT"
+    CUDA_DIR2 = "C:\CUDA\lib\x64"
+    CUDA_DIR3 = "C:\Users\lvincze\Documents\GitHub\bin\win64"
 
 win32 {
    # Turn on additional settings for building the Windows release
@@ -56,12 +59,18 @@ win32 {
        Frontend/Widgets                     \
        Frontend
 
+     INCLUDEPATH *= $$CUDA_DIR1
+
     LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
+    LIBS += -L$$CUDA_DIR3/Debug -lcudaFFT
+    LIBS += -L$$CUDA_DIR2 -lcudart -lcufft
+
 
     LIBS +=                                       \
        -L"../../lib/win32/DataTranslation/"               \
        -lglu32                                            \
        -luser32
+
 }  #win32
 
 unix {

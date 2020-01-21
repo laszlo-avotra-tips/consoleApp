@@ -143,6 +143,7 @@ private:
     void computeFFTWindow();
     bool initOpenCLFFT();
     QString clCreateBufferErrorVerbose(int clError) const;
+    bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag);
 
     float displayAngle_deg;
 };
