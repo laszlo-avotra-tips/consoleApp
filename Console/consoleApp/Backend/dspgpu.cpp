@@ -430,6 +430,15 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
     //short the fft
     fftOutImag = fftImaginaryInputMemObj;
     fftOutReal = rescaleOut;
+
+    //the rescale output has to be copied into cpu memory
+    return true;
+}
+
+bool DSPGPU::computeTheFFT(cl_mem &fftOutReal, cl_mem &fftOutImag, const quint16 *dataIn, long size)
+{
+    //apply the fft to the input signal directly without rescale
+
     return true;
 }
 
