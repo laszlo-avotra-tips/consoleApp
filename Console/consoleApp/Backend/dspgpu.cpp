@@ -37,7 +37,8 @@
 #include "Backend/depthsetting.h"
 //#include "ipp.h"
 #include "theglobals.h"
-
+#include <complex>
+#include <cudaFFTwrapper.h>
 
 #if _DEBUG
 #   define RESCALE_CL  "./backend/opencl/rescale.cl"
@@ -432,6 +433,7 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
 
     float* pHostRescaleOutReal = new float[dataSize];
     float* pHostFftOutImag = new float[dataSize];
+    std::complex<float>* hostFftData = new std::complex<float>[dataSize];
 
     const cl_bool isBlockingCall{CL_TRUE};
 
@@ -462,6 +464,15 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
         }
     }
     LOG3(msg,dataSize,memSize);
+
+    //init the host fft data
+    for(size_t i = 0; i < dataSize; ++i){
+        auto& data = hostFftData[i];
+        data = std::complex<float>(pHostRescaleOutReal[i],0.0f);
+    }
+
+    ComputeTheFFT(hostFftData, nullptr, RescalingDataLength, linesPerFrame);
+
 
     //copy host imag to device imag
     const size_t offset{0};
@@ -512,6 +523,7 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
     //
     delete [] pHostRescaleOutReal;
     delete [] pHostFftOutImag;
+    delete [] hostFftData;
     //the rescale output has to be copied into cpu memory
     return true;
 }
