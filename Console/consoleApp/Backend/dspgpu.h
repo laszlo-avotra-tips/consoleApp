@@ -144,7 +144,7 @@ private:
     bool initOpenCLFFT();
     QString clCreateBufferErrorVerbose(int clError) const;
     bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag);
-    bool computeTheFFT(cl_mem &fftOutReal, cl_mem &fftOutImag, const quint16 *dataIn, long size);
+//    bool computeTheFFT(cl_mem &fftOutReal, cl_mem &fftOutImag, const quint16 *dataIn, long size);
 
     float displayAngle_deg;
 };

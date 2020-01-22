@@ -536,12 +536,12 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
     return true;
 }
 
-bool DSPGPU::computeTheFFT(cl_mem &fftOutReal, cl_mem &fftOutImag, const quint16 *dataIn, long size)
-{
-    //apply the fft to the input signal directly without rescale
+//bool DSPGPU::computeTheFFT(cl_mem &fftOutReal, cl_mem &fftOutImag, const quint16 *dataIn, long size)
+//{
+//    //apply the fft to the input signal directly without rescale
 
-    return true;
-}
+//    return true;
+//}
 
 /*
  * buildOpenCLKernel
