@@ -433,6 +433,7 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
 
     float* pHostRescaleOutReal = new float[dataSize];
     float* pHostFftOutImag = new float[dataSize];
+    float* pHostFftOutReal = new float[dataSize];
     std::complex<float>* hostFftData = new std::complex<float>[dataSize];
 
     const cl_bool isBlockingCall{CL_TRUE};
@@ -451,21 +452,21 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
     LOG2(RescalingDataLength, linesPerFrame)
     LOG3(msg,dataSize,memSize);
 
-    if(ret == CL_SUCCESS){
-        //Imag in
-        ret = clEnqueueReadBuffer(cl_Commands, fftImaginaryInputMemObj, isBlockingCall, 0,
-                memSize, pHostFftOutImag, 0, nullptr, nullptr);
-        if(ret == CL_SUCCESS){
-            msg = "SUCCESS";
-        }
-        else{
-            msg = "FAILURE";
-            return false;
-        }
-    }
-    LOG3(msg,dataSize,memSize);
+//    if(ret == CL_SUCCESS){
+//        //Imag in
+//        ret = clEnqueueReadBuffer(cl_Commands, fftImaginaryInputMemObj, isBlockingCall, 0,
+//                memSize, pHostFftOutImag, 0, nullptr, nullptr);
+//        if(ret == CL_SUCCESS){
+//            msg = "SUCCESS";
+//        }
+//        else{
+//            msg = "FAILURE";
+//            return false;
+//        }
+//    }
+//    LOG3(msg,dataSize,memSize);
 
-    //init the host fft data
+    //init the host fft in data
     for(size_t i = 0; i < dataSize; ++i){
         auto& data = hostFftData[i];
         data = std::complex<float>(pHostRescaleOutReal[i],0.0f);
@@ -473,6 +474,11 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
 
     ComputeTheFFT(hostFftData, nullptr, RescalingDataLength, linesPerFrame);
 
+    //init the fft out data
+    for(size_t i = 0; i < dataSize; ++i){
+        pHostFftOutReal[i] = hostFftData[i].real();
+        pHostFftOutImag[i] = hostFftData[i].imag();
+    }
 
     //copy host imag to device imag
     const size_t offset{0};
@@ -502,7 +508,8 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
                                 isBlockingCall,
                                 offset,
                                 memSize,
-                                pHostRescaleOutReal,
+                                //pHostRescaleOutReal,
+                                pHostFftOutReal,
                                 num_events_in_wait_list,
                                 nullptr,
                                 nullptr );
@@ -524,6 +531,7 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
     delete [] pHostRescaleOutReal;
     delete [] pHostFftOutImag;
     delete [] hostFftData;
+    delete [] pHostFftOutReal;
     //the rescale output has to be copied into cpu memory
     return true;
 }
