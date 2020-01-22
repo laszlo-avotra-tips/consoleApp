@@ -427,10 +427,91 @@ QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
 
 bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOutImag)
 {
-    //short the fft
-    fftOutImag = fftImaginaryInputMemObj;
-    fftOutReal = rescaleOut;
+    const unsigned int dataSize{RescalingDataLength * linesPerFrame};
+    unsigned long memSize = dataSize * sizeof(float);
 
+    float* pHostRescaleOutReal = new float[dataSize];
+    float* pHostFftOutImag = new float[dataSize];
+
+    const cl_bool isBlockingCall{CL_TRUE};
+
+    //Real in
+    cl_int ret = clEnqueueReadBuffer(cl_Commands, rescaleOut, isBlockingCall, 0,
+            memSize, pHostRescaleOutReal, 0, nullptr, nullptr);
+    QString msg;
+    if(ret == CL_SUCCESS){
+        msg = "SUCCESS";
+    }
+    else{
+        msg = "FAILURE";
+        return false;
+    }
+    LOG2(RescalingDataLength, linesPerFrame)
+    LOG3(msg,dataSize,memSize);
+
+    if(ret == CL_SUCCESS){
+        //Imag in
+        ret = clEnqueueReadBuffer(cl_Commands, fftImaginaryInputMemObj, isBlockingCall, 0,
+                memSize, pHostFftOutImag, 0, nullptr, nullptr);
+        if(ret == CL_SUCCESS){
+            msg = "SUCCESS";
+        }
+        else{
+            msg = "FAILURE";
+            return false;
+        }
+    }
+    LOG3(msg,dataSize,memSize);
+
+    //copy host imag to device imag
+    const size_t offset{0};
+    const cl_int num_events_in_wait_list{0};
+    ret = clEnqueueWriteBuffer( cl_Commands,
+                                fftOutImag,
+                                isBlockingCall,
+                                offset,
+                                memSize,
+                                pHostFftOutImag,
+                                num_events_in_wait_list,
+                                nullptr,
+                                nullptr );
+
+    if(ret == CL_SUCCESS){
+        msg = "SUCCESS";
+    }
+    else{
+        msg = "FAILURE";
+        return false;
+    }
+    LOG3(msg,dataSize,memSize);
+
+    //copy host real to device real
+    ret = clEnqueueWriteBuffer( cl_Commands,
+                                fftOutReal,
+                                isBlockingCall,
+                                offset,
+                                memSize,
+                                pHostRescaleOutReal,
+                                num_events_in_wait_list,
+                                nullptr,
+                                nullptr );
+
+    if(ret == CL_SUCCESS){
+        msg = "SUCCESS";
+    }
+    else{
+        msg = "FAILURE";
+        return false;
+    }
+    LOG3(msg,dataSize,memSize);
+
+    //short the fft
+//    fftOutImag = fftImaginaryInputMemObj;
+//    fftOutReal = rescaleOut;
+
+    //
+    delete [] pHostRescaleOutReal;
+    delete [] pHostFftOutImag;
     //the rescale output has to be copied into cpu memory
     return true;
 }
