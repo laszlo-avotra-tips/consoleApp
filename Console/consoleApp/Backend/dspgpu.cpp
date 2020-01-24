@@ -939,33 +939,79 @@ bool DSPGPU::createCLMemObjects( cl_context context )
         return false;
     }
 
-    cl_image_format clImageFormat;
-    clImageFormat.image_channel_order     = CL_R;
-    clImageFormat.image_channel_data_type = CL_UNSIGNED_INT8;
+    //    clImageFormat.image_channel_order     = CL_R;
+    //    clImageFormat.image_channel_data_type = CL_UNSIGNED_INT8;
+    const cl_image_format clImageFormat{CL_R,CL_UNSIGNED_INT8};
 
-    inputImageMemObj       = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+    const cl_mem_object_type image_type{CL_MEM_OBJECT_IMAGE2D};
+
+    const size_t input_image_width{MaxALineLength};
+    const size_t output_image_width{SectorWidth_px};
+
+    const size_t input_image_height{linesPerFrame};
+    const size_t output_image_height{SectorHeight_px};
+
+    const size_t image_depth{1};
+    const size_t image_array_size{1};
+    const size_t image_row_pitch{0};
+    const size_t image_slice_pitch{0};
+    const cl_uint num_mip_levels{0};
+    const cl_uint num_samples{0};
+    cl_mem buffer{nullptr};
+
+    const cl_image_desc inputImageDescriptor{
+        image_type,
+        input_image_width,
+        input_image_height,
+        image_depth,
+        image_array_size,
+        image_row_pitch,
+        image_slice_pitch,
+        num_mip_levels,
+        num_samples,
+        {buffer}
+    };
+
+    const cl_image_desc outputImageDescriptor{
+        image_type,
+        output_image_width,
+        output_image_height,
+        image_depth,
+        image_array_size,
+        image_row_pitch,
+        image_slice_pitch,
+        num_mip_levels,
+        num_samples,
+        {buffer}
+    };
+
+
+//    inputImageMemObj       = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+    inputImageMemObj       = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
         displayFailureMessage( tr( "Failed to create GPU images" ), true );
         return false;
     }
 
-    warpInputImageMemObj   = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+//    warpInputImageMemObj   = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
+    warpInputImageMemObj   = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
         displayFailureMessage( tr( "Failed to create GPU images" ), true );
         return false;
     }
 
-    outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
+//    outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
+    outputImageMemObj      = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
         displayFailureMessage( tr( "Failed to create GPU images" ), true );
         return false;
     }
 
-    outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
-
+//    outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
+    outputVideoImageMemObj = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
         displayFailureMessage( tr( "Failed to create GPU images" ), true );
