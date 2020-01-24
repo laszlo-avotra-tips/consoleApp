@@ -429,8 +429,8 @@ QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
 bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOutImag)
 {
     //short the fft
-    fftOutImag = fftImaginaryInputMemObj;
-    fftOutReal = rescaleOut;
+//    fftOutImag = fftImaginaryInputMemObj;
+//    fftOutReal = rescaleOut;
 
     const bool enableThisCode{true};
     if(enableThisCode){
@@ -452,16 +452,10 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
         //Real in
         cl_int ret = clEnqueueReadBuffer(cl_Commands, rescaleOut, isBlockingCall, 0,
                 memSize, pHostRescaleOutReal, 0, nullptr, nullptr);
-        QString msg;
-        if(ret == CL_SUCCESS){
-            msg = "SUCCESS";
-        }
-        else{
-            msg = "FAILURE";
+        if(!isClReturnValueSuccess(ret,__LINE__)){
             return false;
         }
 //        LOG2(fftSize, fftBatch)
-//        LOG3(msg,dataSize,memSize);
 
         //init the host fft in data
         for(size_t i = 0; i < dataSize; ++i){
@@ -494,14 +488,10 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
                                     nullptr,
                                     nullptr );
 
-        if(ret == CL_SUCCESS){
-            msg = "SUCCESS";
-        }
-        else{
-            msg = "FAILURE";
+        if(!isClReturnValueSuccess(ret,__LINE__)){
             return false;
         }
-//        LOG3(msg,dataSize,memSize);
+//        LOG2(dataSize,memSize);
 
         //copy host real to device real
         ret = clEnqueueWriteBuffer( cl_Commands,
@@ -509,26 +499,35 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
                                     isBlockingCall,
                                     offset,
                                     memSize,
-                                    //pHostRescaleOutReal,
                                     pHostFftOutReal,
                                     num_events_in_wait_list,
                                     nullptr,
                                     nullptr );
 
-        if(ret == CL_SUCCESS){
-            msg = "SUCCESS";
-        }
-        else{
-            msg = "FAILURE";
+        if(!isClReturnValueSuccess(ret,__LINE__)){
             return false;
         }
-//        LOG3(msg,dataSize,memSize);
+//        LOG2(dataSize,memSize);
         delete [] pHostRescaleOutReal;
         delete [] pHostFftOutImag;
         delete [] hostFftDataIn;
         delete [] pHostFftOutReal;
     }
     return true;
+}
+
+bool DSPGPU::isClReturnValueSuccess(cl_int ret, int line) const
+{
+    QString errorMesage;
+    QTextStream qts(&errorMesage);
+
+    bool success{true};
+    if(ret != CL_SUCCESS){
+        success = false;
+        qts << " Open CL failes at line " << line;
+        LOG1(errorMesage)
+    }
+    return success;
 }
 
 /*
@@ -620,7 +619,7 @@ bool DSPGPU::initOpenCL()
     cl_platform_id platformId;
     cl_uint        numPlatforms = 0;
 
-    int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
+    cl_int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
     qDebug() << "numPlatforms =" << numPlatforms;
 
     if( numPlatforms == 0 )
@@ -660,17 +659,6 @@ bool DSPGPU::initOpenCL()
         {
             deviceIndex = i;
         }
-
-//#ifdef QT_DEBUG
-//        if ( QString( vendor ) == "NVIDIA Corporation" && (deviceIndex == -1))
-//        {
-//            deviceIndex = i;
-//        }
-//#endif
-//        LOG2(i,deviceIndex)
-//        if(i == deviceIndex){
-//            LOG3(vendor,name,version)
-//        }
     }
 
     if ( deviceIndex > 10 )
@@ -715,46 +703,52 @@ bool DSPGPU::initOpenCL()
     size_t returned_size( 0 );
     cl_uint maxComputeUnits;
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(maxComputeUnits), &maxComputeUnits, &returned_size );
-    LOG3(err, maxComputeUnits,returned_size)
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+    LOG2(maxComputeUnits,returned_size)
 
     cl_uint maxWorkItemDimentions;
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimentions), &maxWorkItemDimentions, &returned_size );
-    LOG3(err, maxWorkItemDimentions,returned_size)
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+    LOG2(maxWorkItemDimentions,returned_size)
 
     size_t maxWorkItemSizes[3];
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(maxWorkItemSizes), &maxWorkItemSizes, &returned_size );
-    LOG4(err, maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+    LOG3(maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
 
     err = clGetDeviceInfo( cl_ComputeDeviceId,
                            CL_DEVICE_MAX_WORK_GROUP_SIZE,
                            sizeof( cl_max_workgroup_size ),
                            &cl_max_workgroup_size,
                            &returned_size );
-    LOG3(err, cl_max_workgroup_size, returned_size)
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+    LOG2(cl_max_workgroup_size, returned_size)
 
     size_t maxWorkGroupSize;
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, &returned_size );
-    LOG3(err, maxWorkGroupSize,returned_size)
-
-    if( err != CL_SUCCESS )
-    {
+    if(!isClReturnValueSuccess(err,__LINE__)){
         displayFailureMessage( tr( "Could not enumerate OpenCL device IDs, reason: %1" ).arg( err ), true );
         return false;
     }
+    LOG2(maxWorkGroupSize,returned_size)
 
     cl_char vendor_name[ 1024 ] = { 0 };
     cl_char device_name[ 1024 ] = { 0 };
     err  = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_VENDOR, sizeof( vendor_name ), vendor_name, &returned_size);
     err |= clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_NAME, sizeof( device_name ), device_name, &returned_size);
 
-    LOG2( reinterpret_cast<char*>(vendor_name), reinterpret_cast<char*>(device_name))
-
-    if( err != CL_SUCCESS )
-    {
+    if(!isClReturnValueSuccess(err,__LINE__)){
         displayFailureMessage( tr( "Could not get OpenCL device info, reason: %1").arg( err ), true );
         return false;
     }
-
     LOG( INFO, "OpenCL device: " + QString( reinterpret_cast<char*>(vendor_name)) + " " + QString( reinterpret_cast<char*>(device_name)) )
     qDebug() << "DSP: Found OpenCL Device " <<  QString( reinterpret_cast<char*>(vendor_name) ) + " " + QString( reinterpret_cast<char*>(device_name) );
 
@@ -1148,17 +1142,17 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
     }
 
    // Set true by default, means the sector draws Counter-Clockwise. This variable is necessary because we pass an address as an argument.
-   int reverseDirection = (int)useDistalToProximalView;
+   int reverseDirection = int(useDistalToProximalView);
 
    // get variables and pass into Warp.CL
    depthSetting &depth = depthSetting::Instance();
-   const int   imagingDepth_S   = depth.getDepth_S();
+   const int   imagingDepth_S   = int(depth.getDepth_S());
    const float fractionOfCanvas = depth.getFractionOfCanvas();
 
    deviceSettings &dev = deviceSettings::Instance();
    const float standardDepth_mm = dev.current()->getImagingDepthNormal_mm();
    const int   standardDepth_S  = dev.current()->getALineLengthNormal_px();
-   reverseDirection ^= (int)dev.current()->getRotation();    // apply Sled rotational direction
+   reverseDirection ^= int(dev.current()->getRotation());    // apply Sled rotational direction
 
    clStatus  = clSetKernelArg( cl_WarpKernel,  0, sizeof(cl_mem), &warpInputImageMemObj );
    clStatus |= clSetKernelArg( cl_WarpKernel,  1, sizeof(cl_mem), &outputImageMemObj );
@@ -1278,7 +1272,7 @@ unsigned int DSPGPU::rescale( const unsigned short *inputData )
                  << "local_unit_dim[0]  = " << local_unit_dim[ 0 ]  << "local_unit_dim[1]  = " << local_unit_dim[ 1 ];
         return 1;
     }
-    auto tgi = TheGlobals::instance();
+//    auto tgi = TheGlobals::instance();
 //    LOG3(local_unit_dim[ 0 ], local_unit_dim[ 1 ], tgi->getGFrameCounter())
 //    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx())
 

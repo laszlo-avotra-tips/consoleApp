@@ -145,7 +145,7 @@ private:
     bool initOpenCLFFT();
     QString clCreateBufferErrorVerbose(int clError) const;
     bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag);
-
+    bool isClReturnValueSuccess(cl_int ret, int line) const;
 };
 
 #endif // DSPGPU_H_
