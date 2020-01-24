@@ -542,7 +542,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
     QTime buildTimer;
     buildTimer.start();
 
-    LOG3(kernelName,program,kernel)
+//    LOG3(kernelName,program,kernel)
 
     int err;
 
@@ -560,7 +560,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
     /*
      * Create the compute program(s) from the source buffer
      */
-    *program = clCreateProgramWithSource( cl_Context, 1, (const char **) &sourceBuf, nullptr, &err );
+    *program = clCreateProgramWithSource( cl_Context, 1, const_cast<const char **>( &sourceBuf), nullptr, &err );
     if( !*program || ( err != CL_SUCCESS ) )
     {
         qDebug() << "DSP: OpenCL could not create program from source: " << err;
@@ -574,7 +574,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
     {
         size_t length;
         const int BuildLogLength = 2048;
-        char *build_log = (char *)malloc( BuildLogLength );
+        char *build_log = static_cast<char *>(malloc( BuildLogLength ));
 
         qDebug() << "DSP: OpenCL build failed: " << err;
         clGetProgramBuildInfo( *program, cl_ComputeDeviceId, CL_PROGRAM_BUILD_LOG, BuildLogLength, build_log, &length );
@@ -593,7 +593,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
         displayFailureMessage( tr( "Could not create compute kernel, reason %1" ).arg( err ), true );
         return false;
     }
-    LOG1( buildTimer.elapsed())
+//    LOG1( buildTimer.elapsed())
     qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
     return true;
 }
@@ -667,20 +667,18 @@ bool DSPGPU::initOpenCL()
 //            deviceIndex = i;
 //        }
 //#endif
-        LOG2(i,deviceIndex)
-        if(i == deviceIndex){
-            LOG3(vendor,name,version)
-        }
+//        LOG2(i,deviceIndex)
+//        if(i == deviceIndex){
+//            LOG3(vendor,name,version)
+//        }
     }
 
-    // Fatal error if no AMD-compatible platforms are found
-//#if QT_NO_DEBUG //lcv
     if ( deviceIndex > 10 )
     {
-        displayFailureMessage( tr( "Could not find AMD platform" ), true );
+        displayFailureMessage( tr( "Could not find gpu" ), true );
         return false;
     }
-//#endif
+
     platformId = platformIds[ deviceIndex ];
 
     // release the memory.  Error paths do not free the memory since they will shut down the program
@@ -712,14 +710,6 @@ bool DSPGPU::initOpenCL()
     {
         displayFailureMessage( tr( "Could not get OpenCL device IDs, reason: %1" ).arg( err ), true );
         return false;
-    }
-
-    {
-//        cl_int clGetDeviceInfo (cl_device_id device,
-//         cl_device_info param_name,
-//         size_t param_value_size,
-//         void *param_value,
-//         size_t *param_value_size_ret)
     }
 
     size_t returned_size( 0 );
@@ -869,13 +859,13 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
  */
 bool DSPGPU::createCLMemObjects( cl_context context )
 {
-    LOG1(&context)
+//    LOG1(&context)
     cl_int err;
     const char* errorMsg = "failed to allocate memory";
 
     rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
     rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, &err );
-    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
+//    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
     if(!rescaleInputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
@@ -884,7 +874,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     rescaleOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
     rescaleOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, rescaleOutputMemObjSize, nullptr, &err );
-    LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize)
+//    LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize)
     if(!rescaleOutputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
@@ -893,7 +883,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     rescaleFracSamplesMemObjSize = RescalingDataLength * sizeof(float);
     rescaleFracSamplesMemObj  = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleFracSamplesMemObjSize, fractionalSamples, &err );
-    LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize)
+//    LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize)
     if(!rescaleFracSamplesMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
@@ -902,21 +892,16 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     rescaleWholeSamplesMemObjSize = RescalingDataLength * sizeof(float);
     rescaleWholeSamplesMemObj = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleWholeSamplesMemObjSize, wholeSamples, &err );
-    LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize)
+//    LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize)
     if(!rescaleWholeSamplesMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
         return false;
     }
 
-
-//    postProcOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(unsigned short);
-//    postProcOutputMemObj      = clCreateBuffer( context, CL_MEM_WRITE_ONLY, postProcOutputMemObjSize, nullptr, nullptr );
-//    LOG2(postProcOutputMemObj, postProcOutputMemObjSize)
-
     windowMemObjSize = RescalingDataLength * sizeof(float);
     windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, &err );
-    LOG2(windowMemObj, windowMemObjSize)
+//    LOG2(windowMemObj, windowMemObjSize)
     if(!windowMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
@@ -925,7 +910,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
     fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, &err );
-    LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
+//    LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
     if(!fftImaginaryInputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
@@ -934,7 +919,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
     fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, &err );
-    LOG2(fftRealOutputMemObj, fftRealOutputMemObjSize)
+//    LOG2(fftRealOutputMemObj, fftRealOutputMemObjSize)
     if(!fftRealOutputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
@@ -943,7 +928,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
     fftImaginaryOutputMemObj  = clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr, &err );
-    LOG2(fftImaginaryOutputMemObj, fftImaginaryOutputMemObjSize)
+//    LOG2(fftImaginaryOutputMemObj, fftImaginaryOutputMemObjSize)
     if(!fftImaginaryOutputMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
@@ -952,7 +937,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
     lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, &err );
-    LOG2(lastFramePreScalingMemObj, lastFramePreScalingMemObjSize)
+//    LOG2(lastFramePreScalingMemObj, lastFramePreScalingMemObjSize)
     if(!lastFramePreScalingMemObj){
         LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
         displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
