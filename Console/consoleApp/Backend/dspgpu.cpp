@@ -760,7 +760,8 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-    cl_Commands = clCreateCommandQueue( cl_Context, cl_ComputeDeviceId, 0, &err );
+//    cl_Commands = clCreateCommandQueue( cl_Context, cl_ComputeDeviceId, 0, &err );
+    cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
     if( !cl_Commands )
     {
         qDebug() << "DSP: OpenCL could not create command queue.";
