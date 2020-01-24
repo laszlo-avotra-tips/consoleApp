@@ -986,7 +986,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     };
 
 
-//    inputImageMemObj       = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
     inputImageMemObj       = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
@@ -994,7 +993,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
         return false;
     }
 
-//    warpInputImageMemObj   = clCreateImage2D( context, CL_MEM_READ_WRITE, &clImageFormat, MaxALineLength, linesPerFrame, 0, nullptr, &err );
     warpInputImageMemObj   = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
@@ -1002,7 +1000,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
         return false;
     }
 
-//    outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
     outputImageMemObj      = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
@@ -1010,7 +1007,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
         return false;
     }
 
-//    outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &clImageFormat, SectorWidth_px, SectorHeight_px, 0, nullptr, &err );
     outputVideoImageMemObj = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
     {
