@@ -428,76 +428,57 @@ QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
 
 bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOutImag)
 {
-    unsigned int fftSize = RescalingDataLength;
-    unsigned int fftBatch = linesPerFrame;
+    //short the fft
+    fftOutImag = fftImaginaryInputMemObj;
+    fftOutReal = rescaleOut;
 
-    const unsigned long dataSize{fftSize * fftBatch};
-    const unsigned long memSize = dataSize * sizeof(float);
-
-    float* pHostRescaleOutReal = new float[dataSize];
-    float* pHostFftOutImag = new float[dataSize];
-    float* pHostFftOutReal = new float[dataSize];
-    std::complex<float>* hostFftData = new std::complex<float>[dataSize];
-    std::complex<float>* hostFftDataInv = new std::complex<float>[dataSize];
-
-
-    const cl_bool isBlockingCall{CL_TRUE};
-
-    //Real in
-    cl_int ret = clEnqueueReadBuffer(cl_Commands, rescaleOut, isBlockingCall, 0,
-            memSize, pHostRescaleOutReal, 0, nullptr, nullptr);
-    QString msg;
-    if(ret == CL_SUCCESS){
-        msg = "SUCCESS";
-    }
-    else{
-        msg = "FAILURE";
-        return false;
-    }
-    LOG2(fftSize, fftBatch)
-    LOG3(msg,dataSize,memSize);
-
-//    if(ret == CL_SUCCESS){
-//        //Imag in
-//        ret = clEnqueueReadBuffer(cl_Commands, fftImaginaryInputMemObj, isBlockingCall, 0,
-//                memSize, pHostFftOutImag, 0, nullptr, nullptr);
-//        if(ret == CL_SUCCESS){
-//            msg = "SUCCESS";
-//        }
-//        else{
-//            msg = "FAILURE";
-//            return false;
-//        }
-//    }
-//    LOG3(msg,dataSize,memSize);
-
-    //init the host fft in data
-    for(size_t i = 0; i < dataSize; ++i){
-        auto& data = hostFftData[i];
-        data = std::complex<float>(pHostRescaleOutReal[i],0.0f);
-    }
-    ComputeTheFFT(hostFftData, nullptr, RescalingDataLength, linesPerFrame);
-//    ComputeTheFFT(hostFftData, hostFftDataInv, fftSize, fftBatch);
-
-    // check result
-    int iTestResult = 1;
-
-    //result scaling
-    addjustCoefficientMagnitude(hostFftData, dataSize);
-
-    iTestResult = isOriginalEqualToTheTransformedAndInverseTransformenData(hostFftData, hostFftDataInv, dataSize);
-
-    LOG1(iTestResult)
-
-    printTheData(hostFftData, hostFftDataInv, 8, 0);
-
-    const bool enableThisCode{false};
-
+    const bool enableThisCode{true};
     if(enableThisCode){
+        const int fftSize = RescalingDataLength;
+        const int fftBatch = int(linesPerFrame);
+
+        const size_t dataSize = size_t(fftSize * fftBatch);
+        const size_t memSize = dataSize * sizeof(float);
+
+        float* pHostRescaleOutReal = new float[dataSize];
+        float* pHostFftOutImag = new float[dataSize];
+        float* pHostFftOutReal = new float[dataSize];
+        std::complex<float>* hostFftDataIn = new std::complex<float>[dataSize];
+        std::complex<float>* hostFftDataOut = new std::complex<float>[dataSize];
+
+
+        const cl_bool isBlockingCall{CL_TRUE};
+
+        //Real in
+        cl_int ret = clEnqueueReadBuffer(cl_Commands, rescaleOut, isBlockingCall, 0,
+                memSize, pHostRescaleOutReal, 0, nullptr, nullptr);
+        QString msg;
+        if(ret == CL_SUCCESS){
+            msg = "SUCCESS";
+        }
+        else{
+            msg = "FAILURE";
+            return false;
+        }
+        LOG2(fftSize, fftBatch)
+        LOG3(msg,dataSize,memSize);
+
+        //init the host fft in data
+        for(size_t i = 0; i < dataSize; ++i){
+            auto& data = hostFftDataIn[i];
+            data = std::complex<float>(pHostRescaleOutReal[i],0.0f);
+        }
+        ComputeTheFFT(hostFftDataOut, hostFftDataIn, fftSize, fftBatch);
+
+        //result scaling
+        addjustCoefficientMagnitude(hostFftDataOut, dataSize);
+
+        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
+
         //init the fft out data
         for(size_t i = 0; i < dataSize; ++i){
-            pHostFftOutReal[i] = hostFftData[i].real();
-            pHostFftOutImag[i] = hostFftData[i].imag();
+            pHostFftOutReal[i] = hostFftDataOut[i].real();
+            pHostFftOutImag[i] = hostFftDataOut[i].imag();
         }
 
         //copy host imag to device imag
@@ -542,30 +523,13 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
             return false;
         }
         LOG3(msg,dataSize,memSize);
+        delete [] pHostRescaleOutReal;
+        delete [] pHostFftOutImag;
+        delete [] hostFftDataIn;
+        delete [] pHostFftOutReal;
     }
-    else
-    {
-
-        //short the fft
-        fftOutImag = fftImaginaryInputMemObj;
-        fftOutReal = rescaleOut;
-    }
-    //
-    delete [] pHostRescaleOutReal;
-    delete [] pHostFftOutImag;
-    delete [] hostFftData;
-    delete [] pHostFftOutReal;
-    delete [] hostFftDataInv;
-    //the rescale output has to be copied into cpu memory
     return true;
 }
-
-//bool DSPGPU::computeTheFFT(cl_mem &fftOutReal, cl_mem &fftOutImag, const quint16 *dataIn, long size)
-//{
-//    //apply the fft to the input signal directly without rescale
-
-//    return true;
-//}
 
 /*
  * buildOpenCLKernel

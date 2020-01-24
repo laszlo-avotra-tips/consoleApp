@@ -48,6 +48,7 @@ public slots:
 
 private:
     bool  doAveraging; // Instruct the post-process kernel to average two frames at a time.
+    float displayAngle_deg;
 
     // OpenCL state
     cl_device_id     cl_ComputeDeviceId;
@@ -144,9 +145,7 @@ private:
     bool initOpenCLFFT();
     QString clCreateBufferErrorVerbose(int clError) const;
     bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag);
-//    bool computeTheFFT(cl_mem &fftOutReal, cl_mem &fftOutImag, const quint16 *dataIn, long size);
 
-    float displayAngle_deg;
 };
 
 #endif // DSPGPU_H_
