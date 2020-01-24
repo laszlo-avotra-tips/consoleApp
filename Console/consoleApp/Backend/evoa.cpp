@@ -12,6 +12,7 @@
  *
  */
 #include <QSettings>
+#include <QTextStream>
 #include "evoa.h"
 #include "ioController.h"
 #include "logger.h"
@@ -66,9 +67,12 @@ bool EVOA::setVoltage( double val, QString statusLabel )
     }
     else
     {
-        QString str = "EVOA failed trying to set voltage.";
-        str.append( "Attempting: %1(V), Min: %2(V), Max: %3(V)" );
-        str.arg( val ).arg( EvoaMinVoltage_v ).arg( EvoaMaxVoltage_v );
+        QString str;
+        QTextStream qts(&str);
+        qts << "EVOA failed trying to set voltage. Attempting: "
+            << val << "(V), Min: "
+            << EvoaMinVoltage_v << "(V), Max: "
+            << EvoaMaxVoltage_v << "(V)";
         LOG( WARNING, str )
     }
 
@@ -105,9 +109,13 @@ void EVOA::updateVoltage( double newVoltage )
     }
     else
     {
-        QString str = "EVOA failed trying to set voltage outside allowed range.";
-        str.append( "Attempting: %1(V), Min: %2(V), Max: %3(V)" );
-        str.arg( newVoltage ).arg( EvoaMinVoltage_v ).arg( EvoaMaxVoltage_v );
+        QString str;
+        QTextStream qts(&str);
+        qts << "EVOA failed trying to set voltage outside allowed range. Attempting: "
+            << newVoltage << "(V), Min: "
+            << EvoaMinVoltage_v << "(V), Max: "
+            << EvoaMaxVoltage_v << "(V)";
+
         LOG( WARNING, str )
     }
 }
