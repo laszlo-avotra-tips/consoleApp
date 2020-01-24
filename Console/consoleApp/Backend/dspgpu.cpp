@@ -460,8 +460,8 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
             msg = "FAILURE";
             return false;
         }
-        LOG2(fftSize, fftBatch)
-        LOG3(msg,dataSize,memSize);
+//        LOG2(fftSize, fftBatch)
+//        LOG3(msg,dataSize,memSize);
 
         //init the host fft in data
         for(size_t i = 0; i < dataSize; ++i){
@@ -473,7 +473,7 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
         //result scaling
         addjustCoefficientMagnitude(hostFftDataOut, dataSize);
 
-        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
+//        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
 
         //init the fft out data
         for(size_t i = 0; i < dataSize; ++i){
@@ -501,7 +501,7 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
             msg = "FAILURE";
             return false;
         }
-        LOG3(msg,dataSize,memSize);
+//        LOG3(msg,dataSize,memSize);
 
         //copy host real to device real
         ret = clEnqueueWriteBuffer( cl_Commands,
@@ -522,7 +522,7 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
             msg = "FAILURE";
             return false;
         }
-        LOG3(msg,dataSize,memSize);
+//        LOG3(msg,dataSize,memSize);
         delete [] pHostRescaleOutReal;
         delete [] pHostFftOutImag;
         delete [] hostFftDataIn;
@@ -1002,14 +1002,12 @@ bool DSPGPU::createCLMemObjects( cl_context context )
  */
 bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 {
-    LOG2(dispData,videoData)
-//   clAmdFftStatus fftStatus;
    int            clStatus;
    int            averageVal   = int(doAveraging);
    int            invertColors = int(doInvertColors);
 
-   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
-   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
+//   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
+//   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
 
    computeTheFFT(rescaleOutputMemObj, fftRealOutputMemObj, fftImaginaryOutputMemObj);
 

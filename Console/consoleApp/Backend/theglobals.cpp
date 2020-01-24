@@ -15,8 +15,7 @@ TheGlobals *TheGlobals::instance()
 }
 
 TheGlobals::TheGlobals()
-    :m_daqRawDataBufferCount(128),m_gFrameCounter(0),m_gDaqRawData_idx(0),
-//      :m_daqRawDataBufferCount(192),m_gFrameCounter(0),m_gDaqRawData_idx(0),
+      :m_daqRawDataBufferCount(192),m_gFrameCounter(0),m_gDaqRawData_idx(0),
       m_gDaqRawDataBuffersPosted(1),m_gDaqRawDataCompleted(0)
 {
     allocateDaqRawDataBuffer();
