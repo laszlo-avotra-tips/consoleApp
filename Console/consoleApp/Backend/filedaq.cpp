@@ -174,11 +174,7 @@ long FileDaq::getRecordLength() const
 
 bool FileDaq::getData()
 {
-    auto tgi = TheGlobals::instance();
-    tgi->updateGDaqRawData_idx();
-    tgi->incrementGDaqRawDataCompleted();
-
-    return true;
+    return false;
 }
 
 void FileDaq::enableAuxTriggerAsTriggerEnable(bool)

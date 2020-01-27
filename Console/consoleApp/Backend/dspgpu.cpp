@@ -227,6 +227,8 @@ void DSPGPU::processData( void )
     // Only process data if it has been updated
     if( index != prevIndex )
     {
+        prevIndex = index;
+
         TIME_THIS_SCOPE( DSPGPU_processData );
 
         // determine where to store this frame of data for the Frontend
@@ -306,11 +308,7 @@ void DSPGPU::processData( void )
         // to make sure that the consumer thread only sees completely filled data structures.
         TheGlobals::instance()->inrementGFrameCounter();
 
-//#ifdef QT_DEBUG
-//        TheGlobals::instance()->incrementGDaqRawDataCompleted();
-//        TheGlobals::instance()->updateGDaqRawData_idx();
-//#endif
-        prevIndex = index;
+//        prevIndex = index;
     }
 
     yieldCurrentThread();
