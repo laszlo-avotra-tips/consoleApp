@@ -237,27 +237,27 @@ void DSPGPU::processData( void )
         // use local pointer into data for easier access
         const quint16 *pA = nullptr;
 
-        if( channelCount == 1 )
-        {
+//        if( channelCount == 1 )
+//        {
             pA = TheGlobals::instance()->getDaqRawDataBuffer(size_t(index));
-        }
-        else
-        {
-            // ATS DAQ interleaves Channels A & B.
-            const quint16 *pBothChannels = TheGlobals::instance()->getDaqRawDataBuffer(size_t(index));
+//        }
+//        else
+//        {
+//            // ATS DAQ interleaves Channels A & B.
+//            const quint16 *pBothChannels = TheGlobals::instance()->getDaqRawDataBuffer(size_t(index));
 
-            // point to the start of each working buffer
-            auto wb0 = workingBuffer[ 0 ];
-            auto wb1 = workingBuffer[ 1 ];
+//            // point to the start of each working buffer
+//            auto wb0 = workingBuffer[ 0 ];
+//            auto wb1 = workingBuffer[ 1 ];
 
-            // De-interleave the data. IPP has a deinterleave function but my first
-            // pass at it failed. Might be faster; doesn't appear to matter.
-            for( unsigned int i = 0, j = 0; i < ( bytesPerBuffer / 2 ); i += 2, j++ )
-            {
-                wb0[ j ] = pBothChannels[ i ];
-                wb1[ j ] = pBothChannels[ i + 1 ];
-            }
-        }
+//            // De-interleave the data. IPP has a deinterleave function but my first
+//            // pass at it failed. Might be faster; doesn't appear to matter.
+//            for( unsigned int i = 0, j = 0; i < ( bytesPerBuffer / 2 ); i += 2, j++ )
+//            {
+//                wb0[ j ] = pBothChannels[ i ];
+//                wb1[ j ] = pBothChannels[ i + 1 ];
+//            }
+//        }
 
 #if !ENABLE_DEMO_MODE
         // walk through the bulk data handling
@@ -265,7 +265,7 @@ void DSPGPU::processData( void )
         {
             LOG( WARNING, "Failed to rescale data on GPU." )
         }
-        if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
+        if( !transformData( pData->dispData, pData->videoData, index ) )   //Success if return true
         {
             LOG( WARNING, "Failed to transform data on GPU." )
         }
@@ -511,6 +511,83 @@ bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOut
         delete [] hostFftDataIn;
         delete [] pHostFftOutReal;
     }
+    return true;
+}
+
+bool DSPGPU::computeTheFFT(const quint16 *pDataIn, cl_mem &fftOutReal, cl_mem &fftOutImag)
+{
+    const int fftSize = RescalingDataLength;
+    const int fftBatch = int(linesPerFrame);
+
+    const size_t dataSize = size_t(fftSize * fftBatch);
+    const size_t memSize = dataSize * sizeof(float);
+
+    float* pHostRescaleOutReal = new float[dataSize];
+    float* pHostFftOutImag = new float[dataSize];
+    float* pHostFftOutReal = new float[dataSize];
+    std::complex<float>* hostFftDataIn = new std::complex<float>[dataSize];
+    std::complex<float>* hostFftDataOut = new std::complex<float>[dataSize];
+
+
+    const cl_bool isBlockingCall{CL_TRUE};
+
+    //Real in
+
+    //init the host fft in data
+    for(size_t i = 0; i < dataSize; ++i){
+        auto& data = hostFftDataIn[i];
+        data = std::complex<float>(float(pDataIn[i]),0.0f);
+    }
+    ComputeTheFFT(hostFftDataOut, hostFftDataIn, fftSize, fftBatch);
+
+    //result scaling
+    addjustCoefficientMagnitude(hostFftDataOut, dataSize);
+
+//        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
+
+    //init the fft out data
+    for(size_t i = 0; i < dataSize; ++i){
+        pHostFftOutReal[i] = hostFftDataOut[i].real();
+        pHostFftOutImag[i] = hostFftDataOut[i].imag();
+    }
+
+    //copy host imag to device imag
+    const size_t offset{0};
+    const cl_int num_events_in_wait_list{0};
+    cl_int ret = clEnqueueWriteBuffer( cl_Commands,
+                                fftOutImag,
+                                isBlockingCall,
+                                offset,
+                                memSize,
+                                pHostFftOutImag,
+                                num_events_in_wait_list,
+                                nullptr,
+                                nullptr );
+
+    if(!isClReturnValueSuccess(ret,__LINE__)){
+        return false;
+    }
+//        LOG2(dataSize,memSize);
+
+    //copy host real to device real
+    ret = clEnqueueWriteBuffer( cl_Commands,
+                                fftOutReal,
+                                isBlockingCall,
+                                offset,
+                                memSize,
+                                pHostFftOutReal,
+                                num_events_in_wait_list,
+                                nullptr,
+                                nullptr );
+
+    if(!isClReturnValueSuccess(ret,__LINE__)){
+        return false;
+    }
+//        LOG2(dataSize,memSize);
+    delete [] pHostRescaleOutReal;
+    delete [] pHostFftOutImag;
+    delete [] hostFftDataIn;
+    delete [] pHostFftOutReal;
     return true;
 }
 
@@ -1020,16 +1097,19 @@ bool DSPGPU::createCLMemObjects( cl_context context )
  *
  * FFT the input laser signal, post process to 8-bit and warp to sector.
  */
-bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
+bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData, int index )
 {
    int            clStatus;
    int            averageVal   = int(doAveraging);
    int            invertColors = int(doInvertColors);
 
+//   const quint16 *pA = TheGlobals::instance()->getDaqRawDataBuffer(size_t(index));
+
 //   cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
 //   cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
 
    computeTheFFT(rescaleOutputMemObj, fftRealOutputMemObj, fftImaginaryOutputMemObj);
+//   computeTheFFT(pA, fftRealOutputMemObj, fftImaginaryOutputMemObj);
 
    // XXX: Empirically set to achieve full range at just below detector saturation
    // scaleFactor adjusted for new DAQ Input Range for HS devices. See #1777, #1769

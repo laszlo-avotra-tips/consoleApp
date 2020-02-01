@@ -135,7 +135,7 @@ private:
 
     unsigned int rescale( const unsigned short *inputData );
     void processData( void );
-    bool transformData( unsigned char *data , unsigned char *videoData );
+    bool transformData( unsigned char *data , unsigned char *videoData, int index = 0 );
 
     char       *loadCLProgramSourceFromFile( QString );
     QByteArray  loadCLProgramBinaryFromFile( QString );
@@ -144,7 +144,8 @@ private:
     void computeFFTWindow();
     bool initOpenCLFFT();
     QString clCreateBufferErrorVerbose(int clError) const;
-    bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag);
+    bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag); //const quint16 *
+    bool computeTheFFT(const quint16 * pDataIn, cl_mem &fftOutReal, cl_mem &fftOutImag);
     bool isClReturnValueSuccess(cl_int ret, int line) const;
 };
 

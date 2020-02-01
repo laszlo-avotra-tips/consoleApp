@@ -546,6 +546,7 @@ void SledSupport::setSledParams( DeviceParams_T params )
         setSledLimitBlink( params.blinkEnabled );
         setSledMultiMode( params.sledMulti );
     }
+    LOG2(params.speed, params.offset);
 }
 
 /*

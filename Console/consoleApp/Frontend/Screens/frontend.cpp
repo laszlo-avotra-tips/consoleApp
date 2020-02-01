@@ -2823,6 +2823,7 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     deviceSettings &dev = deviceSettings::Instance();
     dev.current()->setLinesPerRevolution( aLines );
     dev.current()->setRevolutionsPerMin( revsPerMin );
+    LOG2(revsPerMin, aLines);
 
 //    lastDirCCW = dev.current()->getRotation();
     stopDataCapture();
