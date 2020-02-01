@@ -29,6 +29,7 @@ sessionDatabase::sessionDatabase()
 {
     // Find the database in the patient directory if it
     // exists, or create a new one.
+
     if( !QSqlDatabase::drivers().contains( "QSQLITE" ) )
     {
         // TBD:  this should fail earlier.  don't allow app to start up?

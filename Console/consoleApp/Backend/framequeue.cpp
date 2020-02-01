@@ -11,7 +11,7 @@ void FrameQueue::push(int frameId, void *buffer, int bufferSize)
     std::pair< int, std::pair<void*,int>> thisBuffer(frameId,
                                                      std::pair<void*, int>(buffer,bufferSize));
     QMutexLocker guard(&m_mutex);
-    LOG3(frameId, buffer, bufferSize)
+    LOG3(frameId, buffer, bufferSize);
     m_frameQueue.push(thisBuffer);
     emit queueChanged();
 }

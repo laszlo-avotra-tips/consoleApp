@@ -22,6 +22,8 @@ private slots:
     void loadFrameBuffers();
     void playbackStartStopCommand(bool isStart);
     void setPlaybackSpeed(int speed);
+    void handleSaveDataToFile();
+    void saveDataToFile();
 
 private:
     void startPlayback();

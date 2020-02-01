@@ -6,6 +6,8 @@
 #include "logger.h"
 #include "playbackmanager.h"
 #include "sledsupport.h"
+#include "signalmanager.h"
+
 
 EngineeringController::EngineeringController(QWidget *parent)
     : QObject(parent),m_view(nullptr), m_model(nullptr),m_isGeometrySet(false)
@@ -32,13 +34,17 @@ EngineeringController::EngineeringController(QWidget *parent)
     connect(PlaybackManager::instance(), SIGNAL(countChanged(int, int)),
             m_view, SLOT(countChanged(int, int)));
 
-    connect(PlaybackManager::instance(), SIGNAL(framesAvailable(int)),
+    connect(PlaybackManager::instance(), SIGNAL(rawDataBuffersAvailable(int)),
             m_view, SLOT(setFramesAvailable(int)));
 
     SledSupport& sledSp = SledSupport::Instance();
     connect(&sledSp, SIGNAL(speedChanged(int)), m_view, SLOT(setMotorSpeed(int)));
 
+    connect(m_view, SIGNAL(saveDataToFile()), this, SLOT(handleSaveDataToFile()));
+
     m_view->signalsConnected();
+
+    SignalManager::instance()->loadSignal();
 
 #ifdef QT_NO_DEBUG
     m_statTimer.start(200);
@@ -70,10 +76,9 @@ void EngineeringController::updateStat()
 {
     QString msg;
     QTextStream qt(&msg);
-//    LOG1(frameCount);
-    qt << "Cached frames: " <<  PlaybackManager::instance()->queueSize();
-    qt << ", Frame Counter: " << PlaybackManager::instance()->countDaqRawDataCompleted();
-    qt << ", Frame index: " << PlaybackManager::instance()->frameIndex();
+    qt << "Queued rawData: " <<  PlaybackManager::instance()->queueSize();
+    qt << ", rawData Processed: " << PlaybackManager::instance()->countOfRawDataBuffersProcessed();
+    qt << ", rawData index: " << PlaybackManager::instance()->frameIndex();
 
     if(!PlaybackManager::instance()->isPlayback()){
         m_view->setStatMsg(msg);
@@ -105,7 +110,7 @@ void EngineeringController::loadFrameBuffers()
 
 void EngineeringController::playbackStartStopCommand(bool isStart)
 {
-    LOG1(isStart)
+    LOG1(isStart);
     if(isStart){
         startPlayback();
     }else{
@@ -116,7 +121,17 @@ void EngineeringController::playbackStartStopCommand(bool isStart)
 
 void EngineeringController::setPlaybackSpeed(int speed)
 {
-    PlaybackManager::instance()->setPlaybackSpeed(ulong(speed));
+    PlaybackManager::instance()->setPlaybackSpeed(speed);
+}
+
+void EngineeringController::handleSaveDataToFile()
+{
+    QTimer::singleShot(100,this,SLOT(saveDataToFile() ) ) ;
+}
+
+void EngineeringController::saveDataToFile()
+{
+    SignalManager::instance()->saveSignal();
 }
 
 void EngineeringController::startPlayback()

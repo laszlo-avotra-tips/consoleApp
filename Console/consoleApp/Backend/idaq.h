@@ -10,7 +10,7 @@ class IDAQ : public QThread
     Q_OBJECT
 
 public:
-    IDAQ(){}
+    virtual ~IDAQ(){}
 
     virtual void stop() = 0;
     virtual void pause() = 0;

@@ -88,7 +88,8 @@ HEADERS += \
     $$PWD/Backend/playbackmanager.h \
     $$PWD/Backend/framequeue.h \
     $$PWD/Backend/filedaq.h \
-    $$PWD/Backend/theglobals.h
+    $$PWD/Backend/theglobals.h \
+    $$PWD/Backend/signalmanager.h
 
 # Source files
 SOURCES += \
@@ -170,7 +171,8 @@ SOURCES += \
     $$PWD/Backend/playbackmanager.cpp \
     $$PWD/Backend/framequeue.cpp \
     $$PWD/Backend/filedaq.cpp \
-    $$PWD/Backend/theglobals.cpp
+    $$PWD/Backend/theglobals.cpp \
+    $$PWD/Backend/signalmanager.cpp
 
 win32:SOURCES += Utility/qtsingleapplication_win.cpp
 unix:SOURCES += Utility/qtsingleapplication_x11.cpp

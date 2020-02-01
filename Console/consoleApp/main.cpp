@@ -27,6 +27,7 @@
 #include "keyboardinputcontext.h"
 #include "sledsupport.h"
 #include "daqfactory.h"
+#include "signalmanager.h"
 
 void parseOptions( QCommandLineOption &options, QStringList args );
 
@@ -175,6 +176,8 @@ int main(int argc, char *argv[])
 
     // Initialize frontend processes
     frontEndWindow.init();
+
+    SignalManager::instance();
 
     // Select a device and initialize data acquisition
     int result = frontEndWindow.setupCase( true );

@@ -35,6 +35,7 @@ signals:
     void saveFrame();
     void playbackStartStop(bool isStart);
     void singleStep();
+    void saveDataToFile();
 
 private slots:
     void on_checkBoxLaserOn_toggled(bool checked);
@@ -52,6 +53,14 @@ private slots:
     void countChanged(int count, int index);
 
     void on_pushButtonSingleStep_clicked();
+
+    void on_pushButtonSaveData_clicked();
+
+    void enableFileButtons();
+
+    void setButtonEnabledStatusWhileSavingTheSignal(bool buttonStatus);
+
+    void enableSingleStep();
 
 private:
     Ui::EngineeringDialog *ui;

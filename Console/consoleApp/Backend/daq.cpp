@@ -94,7 +94,7 @@ void DAQ::init( void )
     hBoard = AlazarGetBoardBySystemID( 1, 1 );
     AlazarAbortAsyncRead( hBoard );// abort any ongoing aync reads if the card was left in a weird state
 
-    LOG1(TheGlobals::instance()->getGDaqRawDataBuffersPosted())
+    LOG1(TheGlobals::instance()->getRawDataBufferCount())
 
     emit updateCatheterView();
 
@@ -372,7 +372,7 @@ void DAQ::shutdown( void )
     }
 
     // release raw data storage space
-    TheGlobals::instance()->freeDaqRawDataBuffer();
+    TheGlobals::instance()->freeRawDataBuffer();
 
     // Free the global memory
     TheGlobals::instance()->freeFrameData();

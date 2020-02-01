@@ -6,7 +6,9 @@
 #include "dspgpu.h"
 #include "daqSettings.h"
 #include "deviceSettings.h"
+//#include "util.h"
 #include "theglobals.h"
+#include "signalmanager.h"
 
 
 FileDaq::FileDaq(): m_isConfigured(false),m_dsp(nullptr),
@@ -16,7 +18,7 @@ FileDaq::FileDaq(): m_isConfigured(false),m_dsp(nullptr),
 
     if( !settings.init() )
     {
-        LOG( WARNING, "Unable to load DAQ Settings." )
+        LOG( WARNING, "Unable to load DAQ Settings." );
     }
 
     LOG2(m_count1, m_count2)
@@ -29,8 +31,8 @@ FileDaq::~FileDaq()
 
 void FileDaq::init()
 {
-    m_isRunning = true;
-    LOG2(m_count1, m_count2)
+    m_isRunning = false;
+    LOG2(m_count1, m_count2);
 
     // Create the DSP
     m_dsp = new DSPGPU();
@@ -48,22 +50,22 @@ void FileDaq::init()
     }
 
     quint8  bitsPerSample        = 16;
-    quint32 bytesPerSample   = ( bitsPerSample + 7 ) / 8;
+    int bytesPerSample   = ( bitsPerSample + 7 ) / 8;
     quint32 preTriggerSamples = DaqSettings::Instance().getPreDepth();
     quint32 postTriggerSamples = DaqSettings::Instance().getRecordLength() - preTriggerSamples;
     quint32 samplesPerRecord = preTriggerSamples + postTriggerSamples;
-    quint32 bytesPerRecord   = bytesPerSample * samplesPerRecord;
+    int bytesPerRecord   = bytesPerSample * int(samplesPerRecord);
 
-    quint32 recordsPerBuffer = quint32(deviceSettings::Instance().current()->getLinesPerRevolution());
+    int recordsPerBuffer = deviceSettings::Instance().current()->getLinesPerRevolution();
 
-    quint32 channelCount = 1;
-    quint32 bytesPerBuffer = bytesPerRecord * recordsPerBuffer * channelCount;
+    int channelCount = 1;
+    int bytesPerBuffer = bytesPerRecord * recordsPerBuffer * channelCount;
 
     // initialize the DSP thread
     m_dsp->init( DaqSettings::Instance().getRecordLength(),
                quint16(deviceSettings::Instance().current()->getLinesPerRevolution()),
                bytesPerRecord,
-               bytesPerBuffer, int(channelCount) );
+               bytesPerBuffer, channelCount );
 
     emit attenuateLaser( false );
 }
@@ -82,7 +84,7 @@ void FileDaq::run()
         yieldCurrentThread();
     }
 
-    LOG1(m_isConfigured)
+//lcv    LOG1(m_isConfigured);
 
     // prevent multiple, simultaneous starts
     if( !m_isRunning )
@@ -96,7 +98,9 @@ void FileDaq::run()
         if( isHighSpeedDevice )
         {
             // Start the DSP thread
-            m_dsp->start();
+            if(!SignalManager::instance()->isFftSource()){
+                m_dsp->start();
+            }
         }
 
 
@@ -115,19 +119,33 @@ void FileDaq::run()
 
     while( m_isRunning )
     {
-        if(PlaybackManager::instance()->isPlayback() || PlaybackManager::instance()->isSingleStep())
+        if(PlaybackManager::instance()->isPlayback() )
         {
             auto tgi = TheGlobals::instance();
-            tgi->updateGDaqRawData_idx();
-            tgi->incrementGDaqRawDataCompleted();
-            int index = tgi->getGDaqRawData_idx();
+            tgi->updateRawDataIndex();
+            int index = tgi->getRawDataIndex();
             ++m_count2;
-            m_dsp->processData();
+            m_dsp->processData(index);
+            tgi->incrementRawDataIndexCompleted();
             PlaybackManager::instance()->setCount(m_count2, index);
             if(PlaybackManager::instance()->isPlayback()){
                 msleep(PlaybackManager::instance()->playbackLoopSleep());
             }
-//            LOG2(tgi->getGDaqRawData_idx(), tgi->getGFrameCounter())
+            LOG2(tgi->getRawDataIndex(), tgi->getFrameIndex());
+        }
+
+        if(PlaybackManager::instance()->isSingleStep()){
+            if(!SignalManager::instance()->isFftSource()){
+                if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
+                    m_dsp->processData(m_count2);
+                }
+            }else{
+                if(SignalManager::instance()->loadSignal())
+                {
+                    m_dsp->processData(m_count2);
+                }
+
+            }
         }
 
         ++m_count1;
@@ -143,13 +161,13 @@ void FileDaq::run()
 
     }
 
-    LOG3(m_count1,m_count2,m_count1-m_count2)
+    LOG3(m_count1,m_count2,m_count1-m_count2);
 }
 
 void FileDaq::stop()
 {
     m_isRunning = false;
-    LOG1(m_isRunning)
+//    LOG1(m_isRunning);
 }
 
 void FileDaq::pause()
@@ -174,7 +192,11 @@ long FileDaq::getRecordLength() const
 
 bool FileDaq::getData()
 {
-    return false;
+    auto tgi = TheGlobals::instance();
+    tgi->updateRawDataIndex();
+    tgi->incrementRawDataIndexCompleted();
+
+    return true;
 }
 
 void FileDaq::enableAuxTriggerAsTriggerEnable(bool)

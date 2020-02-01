@@ -98,7 +98,7 @@ DSP::DSP()
 DSP::~DSP()
 {
     qDebug() << "DSP::~DSP()";
-    LOG( INFO, "DSP shutdown" )
+    LOG( INFO, "DSP shutdown" );
 
     if( fractionalSamples )
     {
@@ -118,11 +118,12 @@ DSP::~DSP()
  * Initialize the common DSP data for use.  Data structures are set up
  * and the laser rescaling values are loaded from disk.
  */
-void DSP::init(unsigned int inputLength,
+void DSP::init( unsigned int inputLength,
                 unsigned int frameLines,
-                unsigned int inBytesPerRecord,
-                unsigned int inBytesPerBuffer,
+                int inBytesPerRecord,
+                int inBytesPerBuffer,
                 int inChannelCount
+//                ,quint16 **inDaqRawData
                 )
 {
     qDebug() << "DSP::init";
@@ -153,6 +154,8 @@ void DSP::init(unsigned int inputLength,
     }
 
     // populate wholeSamples[] and fractionSamples[]
+    LOG2(recordLength,linesPerFrame);
+    LOG2(bytesPerRecord,bytesPerBuffer);
     loadRescalingData();
 
     // Update radius and offset, set to Normal Mode upon new device select
@@ -203,6 +206,7 @@ void DSP::loadRescalingData( void )
 {
     // Load the configuration file
     const QString StrRescalingData = SystemDir + "/RescalingData.csv";
+    LOG1(StrRescalingData);
 
     QFile *input = new QFile( StrRescalingData );
 
@@ -351,15 +355,15 @@ bool DSP::checkIPPVersion( void )
  * third and second third samples of the A-line. This is called by
  * setEvoaPowerLevel() to read A-line strength and determine adjustment amount.
  */
-quint32 DSP::getAvgAmplitude(quint16 *pA )
+quint32 DSP::getAvgAmplitude( quint16 *pA )
 {
     quint32 average = 0;
-    const int start_idx = int( recordLength / 3 );
-    const int end_idx   = int( ( 2 * recordLength ) / 3 );
+    const int start_idx = (int)( recordLength / 3 );
+    const int end_idx   = (int)( ( 2 * recordLength ) / 3 );
 
     for( int i = start_idx; i < end_idx; i++ )
     {
-        average += quint32( pA [ i ] );
+        average += (quint32)( pA [ i ] );
     }
 
     average /= ( recordLength / 3 );

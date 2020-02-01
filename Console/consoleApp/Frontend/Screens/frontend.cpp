@@ -339,7 +339,9 @@ frontend::~frontend()
 
         delete scene;
         delete lagHandler;
-//        delete caseWizard;
+        if(caseWizard){
+            delete caseWizard;
+        }
     }
     else
     {

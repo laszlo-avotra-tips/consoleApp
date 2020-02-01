@@ -463,22 +463,22 @@ bool HighSpeedDAQ::getData( void )
     // repost this buffer only if AlazarWaitAsyncBufferComplete() was successful
     if( status == ApiSuccess )
     {
-        TheGlobals::instance()->updateGDaqRawData_idx();
+        TheGlobals::instance()->updateRawDataIndex();
 
         // copy to rawData buffers
-        const U16 *pA = TheGlobals::instance()->getDaqRawDataBuffer();
+        const U16 *pA = TheGlobals::instance()->getRawDataBufferPointer();
 
         if(PlaybackManager::instance()->isPlayback()){
-            PlaybackManager::instance()->retrieveFrameData(TheGlobals::instance()->getGDaqRawData_idx(), pA);
+            PlaybackManager::instance()->retrieveRawData(TheGlobals::instance()->getRawDataIndex(), pA);
             buffersCompleted++;
-            TheGlobals::instance()->incrementGDaqRawDataCompleted();
+            TheGlobals::instance()->incrementRawDataIndexCompleted();
         } else {
             // Copy from the DMA buffer to our internal structure  -- would be nice not to do this
             ippsCopy_16s( (Ipp16s *)pBuffer, (Ipp16s *)pA, bytesPerBuffer / 2  );
 
             buffersCompleted++;
-            TheGlobals::instance()->incrementGDaqRawDataCompleted();
-            PlaybackManager::instance()->recordFrameData(TheGlobals::instance()->getGDaqRawData_idx(), TheGlobals::instance()->getGDaqRawDataCompleted());
+            TheGlobals::instance()->incrementRawDataIndexCompleted();
+            PlaybackManager::instance()->recordRawData(TheGlobals::instance()->getRawDataIndex(), TheGlobals::instance()->getRawDataIndexCompleted());
             // Repost the buffer so the DAQ can use it again
         }
         status = AlazarPostAsyncBuffer( hBoard, pBuffer, bytesPerBuffer );

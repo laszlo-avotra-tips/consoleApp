@@ -19,6 +19,7 @@
 #include "deviceSettings.h"
 #include "userSettings.h"
 #include "theglobals.h"
+#include "signalmanager.h"
 
 // shared data with DAQ thread
 const int FullCaseVideoWidth_px( 1024 );
@@ -117,7 +118,7 @@ DaqDataConsumer::~DaqDataConsumer()
 void DaqDataConsumer::run( void )
 {
     qDebug() << "Thread: frontend::DaqDataConsumer::run()";
-    LOG( INFO, "DaqDataConsumer Thread started" )
+//lcv    LOG( INFO, "DaqDataConsumer Thread started" );
 
     // access lines per revolution
     deviceSettings &devSettings = deviceSettings::Instance();
@@ -125,11 +126,11 @@ void DaqDataConsumer::run( void )
 
     // Notify Advanced View if full case is being recorded
     emit alwaysRecordingFullCase( isAlwaysRecordFullCaseOn );
-    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) )
+//lcv    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) );
 
     // initialize prevFrame to the same value that currFrame will get so no
     // work is done until the DAQ and DSP start up
-    prevFrame = TheGlobals::instance()->getPrevGFrameCounter();
+    prevFrame = TheGlobals::instance()->getPrevFrameIndex();
 
     timeoutCounter = 0;
     isRunning = true;
@@ -143,13 +144,20 @@ void DaqDataConsumer::run( void )
          */
         bool isHighSpeedDevice  = devSettings.current()->isHighSpeed();
 
-        // wrap-safe method to grab one index behind the frame that is currently being filled
-        currFrame = TheGlobals::instance()->getPrevGFrameCounter();
+//        // wrap-safe method to grab one index behind the frame that is currently being filled
+//        currFrame = TheGlobals::instance()->getPrevFrameIndex();
 
-        // If we have a new frame, process it.
-        if( currFrame != prevFrame )
-        {
-            TIME_THIS_SCOPE( ddc_run );
+//        // If we have a new frame, process it.
+//        if( currFrame != prevFrame )
+//        {
+//            prevFrame      = currFrame;
+//            TIME_THIS_SCOPE( ddc_run );
+        bool once(true);
+        if(once && TheGlobals::instance()->isFrameRenderingQueue()){
+            once = false;
+
+            currFrame = TheGlobals::instance()->frontFrameRenderingQueue();
+
             timeoutCounter = HsVideoTimeoutCount;
 
             // grab the data for this frame
@@ -297,7 +305,7 @@ void DaqDataConsumer::run( void )
             }
 
             // prepare for the next iteration
-            prevFrame      = currFrame;
+//            prevFrame      = currFrame;
             prevDirection  = currDirection;
 
 #if ENABLE_FRAME_COUNTERS_TO_DEBUG

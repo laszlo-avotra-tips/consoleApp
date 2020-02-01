@@ -39,6 +39,7 @@
                                   log_.logMessage( msg_, #severity_, __FILE__, __LINE__ ); }
 //#endif  // UNIT_TEST
 
+#define LOG0 { Logger &log = Logger::Instance(); log.getTextStream( __FUNCTION__, __LINE__, QThread::currentThreadId()) << endl;}
 
 #define LOG1(var_) { Logger &log = Logger::Instance(); \
     QString logMsg; QTextStream qtextstream(&logMsg); \
@@ -87,6 +88,7 @@ private:
     QTextStream *output;
 
     QMutex mutex;
+    QMutex m_mutex;
 
     QString status;
     QString appName;

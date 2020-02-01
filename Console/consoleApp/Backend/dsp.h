@@ -33,10 +33,10 @@ public:
 
     static bool checkIPPVersion( void );
 
-    virtual void init(unsigned int inputLength,
+    virtual void init( unsigned int inputLength,
                        unsigned int frameLines,
-                       unsigned int inBytesPerRecord,
-                       unsigned int inBytesPerBuffer,
+                       int inBytesPerRecord,
+                       int inBytesPerBuffer,
                        int inChannelCount
                        );
 

@@ -5,7 +5,7 @@
 #include "octFile.h"
 #include "defaults.h"
 
-class DSP;
+class DSPGPU;
 
 class FileDaq : public IDAQ
 {
@@ -30,7 +30,7 @@ public:
 
 private:
     bool m_isConfigured;
-    DSP  *m_dsp;
+    DSPGPU  *m_dsp;
 
     QString m_daqLevel;
 

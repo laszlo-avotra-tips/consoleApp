@@ -12,67 +12,67 @@ PlaybackManager *PlaybackManager::instance()
 {
     if(!m_instance){
         m_instance = new PlaybackManager();
-        LOG1(m_instance)
+        LOG1(m_instance);
     }
     return m_instance;
 }
 
-void PlaybackManager::addFrameBuffer(int index, void *fb, ulong size)
+void PlaybackManager::addRawDataBuffer(int index, void *fb, ulong size)
 {
 //    LOG3(index,fb,size);
-    m_frameBufferContainer[index] = std::pair<void*,ulong>(fb,size);
+    m_rawDataBufferContainer[index] = std::pair<void*,ulong>(fb,size);
 }
 
-void PlaybackManager::recordFrameData(int index, int count)
+void PlaybackManager::recordRawData(int index, int count)
 {
     if(!isPlayback()){
-    m_validFrameIndexCache.push(index);
-        if(m_validFrameIndexCache.size() > m_frameBufferContainer.size()){
-            m_validFrameIndexCache.pop();
+    m_dawDataBufferIndexQueue.push(index);
+        if(m_dawDataBufferIndexQueue.size() > m_rawDataBufferContainer.size()){
+            m_dawDataBufferIndexQueue.pop();
         }
     }
     m_frameIndex = index;
-    m_countDaqRawDataCompleted = count;
+    m_countOfRawDataProcessed = count;
 }
 
-void PlaybackManager::retrieveFrameData(int index, const void *buffer)
+void PlaybackManager::retrieveRawData(int index, const void *buffer)
 {
 //    LOG1(index);
     if(isPlayback()){
-        const auto& it = m_frameBufferContainer.find(index);
+        const auto& it = m_rawDataBufferContainer.find(index);
         buffer = it->second.first;
 //        LOG2(index, buffer);
     }
     m_frameIndex = index;
-    ++m_countDaqRawDataCompleted;
+    ++m_countOfRawDataProcessed;
 }
 
 void PlaybackManager::saveBuffer(const QString &fn)
 {
     if(!fn.isEmpty()){
-        LOG1(fn)
+        LOG1(fn);
         QFile outFile(fn);
         if(!outFile.open(QIODevice::WriteOnly)){
             QString errorMsg("error openeing file ");
             errorMsg += fn;
-            LOG1(errorMsg)
+            LOG1(errorMsg);
             return;
         }
 
         QDataStream qds(&outFile);
 
         int i(0);
-        while(!m_validFrameIndexCache.empty()){
-            const auto& id = m_validFrameIndexCache.front();
-            m_validFrameIndexCache.pop();
-            const auto it = m_frameBufferContainer.find(id);
-            if(it != m_frameBufferContainer.end()){
+        while(!m_dawDataBufferIndexQueue.empty()){
+            const auto& id = m_dawDataBufferIndexQueue.front();
+            m_dawDataBufferIndexQueue.pop();
+            const auto it = m_rawDataBufferContainer.find(id);
+            if(it != m_rawDataBufferContainer.end()){
                 void* pBuffer = it->second.first;
                 char* pData = static_cast<char*>(pBuffer);
                 auto size = it->second.second;
                 qds.writeRawData(pData, size);
                 if((i == 0) || (i == 194) || (i == 195)){
-                    LOG3(id,pBuffer,size)
+                    LOG3(id,pBuffer,size);
                 }
                 ++i;
             }
@@ -84,36 +84,32 @@ void PlaybackManager::loadBuffer(const QString &fn)
 {
     if(!fn.isEmpty()){
 //        m_isPlayback = true;
-        LOG2(m_isPlayback, fn)
+        LOG2(m_isPlayback, fn);
         QFile inFile(fn);
         if(!inFile.open(QIODevice::ReadOnly)){
             QString errorMsg("error openeing file ");
             errorMsg += fn;
-            LOG1(errorMsg)
+            LOG1(errorMsg);
             return;
         }
 
         QDataStream qds(&inFile);
 
         int frameCount(0);
-        for (auto it = m_frameBufferContainer.begin(); it != m_frameBufferContainer.end(); ++it){
+        for (auto it = m_rawDataBufferContainer.begin(); it != m_rawDataBufferContainer.end(); ++it){
             const auto& pointerSizePair = it->second;
             char* buffer = static_cast<char*>(pointerSizePair.first);
             auto readCount = qds.readRawData(buffer, pointerSizePair.second);
             if(readCount != pointerSizePair.second){
                 QString errorMsg("file read error at index ");
                 errorMsg += QString::number(it->first);
-                LOG1(errorMsg)
+                LOG1(errorMsg);
             }
             ++frameCount;
 //            LOG2(readCount,pointerSizePair.first);
         }
-//#if QT_NO_DEBUG
-//        const auto frameIt = m_frameBufferContainer.begin();
-//        m_frameQueue.push(frameIt->first, frameIt->second.first, frameIt->second.second);
-//#endif
-        LOG2(m_isPlayback, frameCount)
-        emit framesAvailable(frameCount);
+        LOG2(m_isPlayback, frameCount);
+        emit rawDataBuffersAvailable(frameCount);
     }
 }
 
@@ -122,24 +118,8 @@ bool PlaybackManager::isPlayback() const
     return m_isPlayback;
 }
 
-bool PlaybackManager::thereAreNoFrames() const
-{
-    return m_frameQueue.isEmpty();
-}
-
-void PlaybackManager::popFrame()
-{
-    m_frameQueue.pop();
-
-}
-
-std::pair<int, std::pair<void *, int> > PlaybackManager::frontFrame()
-{
-    return m_frameQueue.front();
-}
-
 PlaybackManager::PlaybackManager()
-    : QObject(nullptr),m_countDaqRawDataCompleted(0), m_isPlayback(false),m_playbackLoopSleep(500),m_isSingleStep(false)
+    : QObject(nullptr),m_countOfRawDataProcessed(0), m_isPlayback(false),m_playbackLoopSleep(500),m_isSingleStep(false)
 {
 }
 
@@ -150,10 +130,10 @@ bool PlaybackManager::isSingleStep()
     return retVal;
 }
 
-std::vector<int> PlaybackManager::count() const
-{
-    return m_countContainer;
-}
+//std::vector<int> PlaybackManager::count() const
+//{
+//    return m_countContainer;
+//}
 
 void PlaybackManager::setCount(int count, int index)
 {
@@ -174,7 +154,7 @@ void PlaybackManager::setCount(int count, int index)
 void PlaybackManager::singleStep()
 {
     m_isSingleStep = true;
-    LOG1(m_isSingleStep)
+    LOG1(m_isSingleStep);
 }
 
 unsigned long PlaybackManager::playbackLoopSleep() const
@@ -182,19 +162,66 @@ unsigned long PlaybackManager::playbackLoopSleep() const
     return m_playbackLoopSleep;
 }
 
+bool PlaybackManager::isInputQueue() const
+{
+    return TheGlobals::instance()->isRawDataQueue();
+}
+
+bool PlaybackManager::EnqueueBuffer(int index)
+{
+    return TheGlobals::instance()->enqueueBuffer(index);
+}
+
+bool PlaybackManager::findInputBuffer(int index, void *&dataBuffer)
+{
+    bool success = false;
+    auto it = m_rawDataBufferContainer.find(index);
+
+    if(it != m_rawDataBufferContainer.end()){
+        dataBuffer = it->second.first;
+        success = true;
+    }
+
+    return success;
+}
+
+bool PlaybackManager::findDisplayBuffer(int index, OCTFile::FrameData_t *&frameData)
+{
+    frameData = TheGlobals::instance()->getFrameDataPointer(index);
+
+    return frameData != nullptr;
+}
+
+void PlaybackManager::inputProcessingDone(int index)
+{
+    TheGlobals::instance()->rawDataQueuePop(index);
+    TheGlobals::instance()->pushFrameDataQueue(index);
+}
+
+bool PlaybackManager::isFrameQueue() const
+{
+    return TheGlobals::instance()->isFrameDataQueue();
+}
+
+void PlaybackManager::frameReady(int index)
+{
+    TheGlobals::instance()->frameDataQueuePop(index);
+    TheGlobals::instance()->pushFrameRenderingQueue(index);
+}
+
 void PlaybackManager::startPlayback()
 {
     m_isPlayback = true;
-    LOG1(m_isPlayback)
+    LOG1(m_isPlayback);
 }
 
 void PlaybackManager::stopPlayback()
 {
     m_isPlayback = false;
-    LOG1(m_isPlayback)
+    LOG1(m_isPlayback);
 }
 
-void PlaybackManager::setPlaybackSpeed(unsigned long speed)
+void PlaybackManager::setPlaybackSpeed(int speed)
 {
     unsigned long maxSleep(1030);
     m_playbackLoopSleep = maxSleep - speed;
@@ -205,20 +232,12 @@ int PlaybackManager::frameIndex() const
     return m_frameIndex;
 }
 
-int PlaybackManager::countDaqRawDataCompleted() const
+int PlaybackManager::countOfRawDataBuffersProcessed() const
 {
-    return m_countDaqRawDataCompleted;
+    return m_countOfRawDataProcessed;
 }
 
 int PlaybackManager::queueSize() const
 {
-    return int(m_validFrameIndexCache.size());
-}
-
-void PlaybackManager::printCache()
-{
-    while(!m_validFrameIndexCache.empty()){
-        LOG1(m_validFrameIndexCache.front())
-        m_validFrameIndexCache.pop();
-    }
+    return int(m_dawDataBufferIndexQueue.size());
 }

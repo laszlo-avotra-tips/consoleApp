@@ -30,11 +30,13 @@ class DSPGPU : public DSP
 public:
     ~DSPGPU();
 
-    void init(unsigned int inputLength,
+    void init( unsigned int inputLength,
                unsigned int frameLines,
-               unsigned int inBytesPerRecord,
-               unsigned int inBytesPerBuffer,
+               int inBytesPerRecord,
+               int inBytesPerBuffer,
                int inChannelCount);
+
+    bool processData(int);
 
 
 public slots:
@@ -135,7 +137,7 @@ private:
 
     unsigned int rescale( const unsigned short *inputData );
     void processData( void );
-    bool transformData( unsigned char *data , unsigned char *videoData, int index = 0 );
+    bool transformData( unsigned char *data , unsigned char *videoData );
 
     char       *loadCLProgramSourceFromFile( QString );
     QByteArray  loadCLProgramBinaryFromFile( QString );
