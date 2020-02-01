@@ -140,11 +140,7 @@ void FileDaq::run()
                     m_dsp->processData(m_count2);
                 }
             }else{
-                if(SignalManager::instance()->loadSignal())
-                {
-                    m_dsp->processData(m_count2);
-                }
-
+                m_dsp->processData(m_count2);
             }
         }
 
