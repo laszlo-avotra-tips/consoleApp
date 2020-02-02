@@ -44,8 +44,6 @@ EngineeringController::EngineeringController(QWidget *parent)
 
     m_view->signalsConnected();
 
-    SignalManager::instance()->loadSignal();
-
 #ifdef QT_NO_DEBUG
     m_statTimer.start(200);
 #endif
