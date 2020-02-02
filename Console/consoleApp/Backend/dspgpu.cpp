@@ -114,11 +114,6 @@ DSPGPU::~DSPGPU()
         }
     }
 
-    if( pPostProcOutputFrame )
-    {
-        delete [] pPostProcOutputFrame;
-    }
-
     /*
      * Clean up openCL objects
      */
@@ -173,12 +168,8 @@ void DSPGPU::init( unsigned int inputLength,
                    int inBytesPerBuffer,
                    int inChannelCount )
 {
-    qDebug() << "DSPGPU::init";
-
     // call the common initilization steps
     DSP::init( inputLength, frameLines, inBytesPerRecord, inBytesPerBuffer, inChannelCount );
-
-    qDebug() << "DSP: Allocating space for workingBuffer:" << bytesPerBuffer << "B";
 
     LOG1(bytesPerBuffer);
 
@@ -194,9 +185,6 @@ void DSPGPU::init( unsigned int inputLength,
     {
         emit sendError( tr( "Error allocating space in DSP::init" ) );
     }
-
-    qDebug() << "DSPGPU: Allocating space for PostProcOutputBuffer";
-    pPostProcOutputFrame = new unsigned char[ linesPerFrame * MaxALineLength ]; // take full buffer 1024 * linesPerFrame
 
     // Configure the DSP
     computeFFTWindow();
@@ -398,67 +386,6 @@ void DSPGPU::computeFFTWindow( void )
  */
 bool DSPGPU::initOpenCLFFT( void )
 {
-//    clAmdFftStatus status;
-//    clAmdFftSetupData setupData;
-
-//    status = clAmdFftInitSetupData( &setupData );
-//    if( status != CLFFT_SUCCESS )
-//    {
-//        qDebug() << "clAmdFFtInitSetupData failed: " << status;
-//        return false;
-//    }
-
-//    status = clAmdFftSetup( &setupData );
-//    if( status != CLFFT_SUCCESS )
-//    {
-//        qDebug() << "clAmdFFtSetup failed: " << status;
-//        return false;
-//    }
-
-//    size_t fftLen = DSP::RescalingDataLength;
-//    status = clAmdFftCreateDefaultPlan( &hCl_fft_plan, cl_Context,
-//                                        CLFFT_1D, &fftLen );
-//    if( status != CLFFT_SUCCESS )
-//    {
-//        qDebug() << "clAmdFFtCreateDefaultPlan failed: " << status;
-//        return false;
-//    }
-
-//    status = clAmdFftSetLayout( hCl_fft_plan, CLFFT_COMPLEX_PLANAR, CLFFT_COMPLEX_PLANAR );
-//    if( status != CLFFT_SUCCESS)
-//    {
-//        qDebug() << "clAmdFftSetLayout failed: " << status;
-//        return false;
-//    }
-
-//    status  =  clAmdFftSetPlanBatchSize( hCl_fft_plan, linesPerFrame );
-//    if( status != CLFFT_SUCCESS)
-//    {
-//        qDebug() << "clAmdFftSetPlanBatchSize failed: " << status;
-//        return false;
-//    }
-
-//    status = clAmdFftSetPlanDistance( hCl_fft_plan, RescalingDataLength, RescalingDataLength );
-//    if( status != CLFFT_SUCCESS)
-//    {
-//        qDebug() << "clAmdFftSetPlanDistance failed: " << status;
-//        return false;
-
-//    }
-
-//    status = clAmdFftSetResultLocation( hCl_fft_plan, CLFFT_OUTOFPLACE );
-//    if( status != CLFFT_SUCCESS )
-//    {
-//        qDebug() << "clAmdFftSetResultLocation failed: " << status;
-//        return false;
-//    }
-
-//    status = clAmdFftBakePlan( hCl_fft_plan, 1, &cl_Commands, nullptr, nullptr );
-//    if( status != CLFFT_SUCCESS)
-//    {
-//        qDebug() << "clAmdFftBakePlan failed: " << status;
-//        return false;
-//    }
 
     fftImaginaryBuffer = static_cast<float *>(malloc( sizeof(float) * RescalingDataLength * linesPerFrame ));
     if( !fftImaginaryBuffer )

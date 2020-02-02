@@ -68,9 +68,6 @@ private:
 
     cl_command_queue cl_Commands;
 
-//    //    FFT State
-//    clAmdFftPlanHandle hCl_fft_plan;
-
     size_t           cl_max_workgroup_size;
 
     float           *windowBuffer;
@@ -85,9 +82,6 @@ private:
 
     cl_mem           fftImaginaryInputMemObj;
     size_t           fftImaginaryInputMemObjSize;
-
-//    cl_mem           postProcOutputMemObj;
-//    size_t           postProcOutputMemObjSize;
 
     float           *fftImaginaryBuffer;
     size_t           fftImaginaryBufferSize;
@@ -120,8 +114,6 @@ private:
     size_t           outputVideoImageMemObjSize;
 
     quint16 *workingBuffer[ 2 ];
-    unsigned char *pPostProcOutputFrame;
-    size_t           pPostProcOutputFrameSize;
 
     float prevFrameWeight_percent;
     float currFrameWeight_percent;

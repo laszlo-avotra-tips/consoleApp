@@ -60,8 +60,6 @@
  */
 DSP::DSP()
 {
-    qDebug() << "DSP constructor";
-
     // default service date
     serviceDate = QDate( 2009, 1, 1 );
 
@@ -126,8 +124,6 @@ void DSP::init( unsigned int inputLength,
 //                ,quint16 **inDaqRawData
                 )
 {
-    qDebug() << "DSP::init";
-
     recordLength   = inputLength;
     linesPerFrame  = frameLines;
     bytesPerRecord = inBytesPerRecord;
@@ -163,8 +159,6 @@ void DSP::init( unsigned int inputLength,
     catheterRadius_px = float(settings.current()->getCatheterRadius_px());
     catheterRadius_um = float(settings.current()->getCatheterRadius_um());
     internalImagingMask_px = float(settings.current()->getInternalImagingMask_px());
-
-    qDebug() << "DSP::init complete";
 }
 
 /*
