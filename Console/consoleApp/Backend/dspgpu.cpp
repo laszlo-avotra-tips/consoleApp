@@ -599,7 +599,7 @@ bool DSPGPU::isClReturnValueSuccess(cl_int ret, int line) const
  */
 bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel )
 {
-    qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
+//    qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
     QTime buildTimer;
     buildTimer.start();
 
@@ -653,7 +653,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
         return false;
     }
     LOG1( buildTimer.elapsed());
-    qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
+//    qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
     return true;
 }
 
