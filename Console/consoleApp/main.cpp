@@ -111,13 +111,14 @@ int main(int argc, char *argv[])
 
     LOG( INFO, QString( "Local time is %1" ).arg( QDateTime::currentDateTime().toString( "yyyy-MM-dd HH:mm:ss" ) ) )
 
+//lcv
     // check for command line options and use them if they are present
-    QCommandLineOption options("");
-    QStringList args = app.arguments();
-    parseOptions( options, args );
+//    QCommandLineOption options("");
+//    QStringList args = app.arguments();
+//    parseOptions( options, args );
 
     // Check the EXE key?  Default to true
-//lcv    bool runExeCheck = !options.count( "noexe" );
+//    bool runExeCheck = !options.count( "noexe" );
     bool runExeCheck = true;
 
 #if !ENABLE_EXE_CHECKS
