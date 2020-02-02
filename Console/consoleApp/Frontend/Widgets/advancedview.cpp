@@ -77,8 +77,8 @@ advancedView::advancedView( QWidget *parent )
 //    ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
 //    ui.fftDataPlot->enableLevels();
 
-    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
-    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
+//    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
+//    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
 
     ui.versionLabel->setText( getSoftwareVersionNumber() );
 

@@ -190,14 +190,14 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     m_ec = new EngineeringController(this);
 
-    connect( ui.displayControlsSlider, SIGNAL(lowerValueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
-    connect( ui.displayControlsSlider, SIGNAL(upperValueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
+//    connect( ui.displayControlsSlider, SIGNAL(lowerValueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
+//    connect( ui.displayControlsSlider, SIGNAL(upperValueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
 
-    connect( advView, SIGNAL(brightnessChanged(int)), ui.displayControlsSlider, SLOT(setLowerValue(int)) );
-    connect( advView, SIGNAL(contrastChanged(int)),   ui.displayControlsSlider, SLOT(setUpperValue(int)) );
+//    connect( advView, SIGNAL(brightnessChanged(int)), ui.displayControlsSlider, SLOT(setLowerValue(int)) );
+//    connect( advView, SIGNAL(contrastChanged(int)),   ui.displayControlsSlider, SLOT(setUpperValue(int)) );
 
-    connect( this,    SIGNAL(brightnessChange(int)), ui.displayControlsSlider, SLOT(setLowerPosition(int)) );
-    connect( this,    SIGNAL(contrastChange(int)),   ui.displayControlsSlider, SLOT(setUpperPosition(int)) );
+//    connect( this,    SIGNAL(brightnessChange(int)), ui.displayControlsSlider, SLOT(setLowerPosition(int)) );
+//    connect( this,    SIGNAL(contrastChange(int)),   ui.displayControlsSlider, SLOT(setUpperPosition(int)) );
 
     connect( advView, SIGNAL(brightnessChanged(int)),  this, SIGNAL(brightnessChange(int)) );
     connect( advView, SIGNAL(contrastChanged(int)),    this, SIGNAL(contrastChange(int)) );
