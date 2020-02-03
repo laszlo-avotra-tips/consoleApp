@@ -22,7 +22,8 @@ SignalManager *SignalManager::instance()
 
 SignalManager::SignalManager():
     m_realData(nullptr),m_imagData(nullptr),m_lastFramePrescaling(nullptr),m_dataLen(592*2048),
-    m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.char", SignalDir + "real.char"))
+    m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.float", SignalDir + "real.float"))
+//  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.char", SignalDir + "real.char"))
 //  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.dat", SignalDir + "real.dat"))
 {
     m_realData = new float[m_dataLen];
@@ -86,34 +87,30 @@ bool SignalManager::loadSignal()
     bool success(true);
 
     LOG2(m_fftFileName.first, m_fftFileName.second);
-    size_t leni(0);
-    size_t lenr(0);
-    int indexi(-1);
-    int indexr(-2);
+    size_t leni(1212416);
+    size_t lenr(1212416);
+    int indexi(0);
+    int indexr(0);
     if(isFftSource()){
         if(m_imagFile.open(QIODevice::ReadOnly)){
-            QTextStream ifs(&m_imagFile);
-            ifs >> leni >> indexi >> endl;
-
-            char* pImag = reinterpret_cast<char*>(m_imagData);
-            qint64 readCount(leni * sizeof(float));
-            m_imagFile.read(pImag, readCount);
-
-//            for(size_t i = 0; i < leni; ++i){
-//                ifs >> m_imagData[i];
-//            }
+            QDataStream qds(&m_imagFile);
+            for(qint64 i = 0; i < leni; ++i){
+                qds >> m_imagData[i];
+            }
+//            char* pImag = reinterpret_cast<char*>(m_imagData);
+//            qint64 readCount(leni * sizeof(float));
+//            m_imagFile.read(pImag, readCount);
         }
         if(m_realFile.open(QIODevice::ReadOnly)){
-            QTextStream ifs(&m_realFile);
-            ifs >> lenr >> indexr >> endl;
 
-            char* pReal = reinterpret_cast<char*>(m_realData);
-            qint64 readCount(lenr * sizeof(float));
-            m_imagFile.read(pReal, readCount);
+            QDataStream qds(&m_realFile);
+            for(qint64 i = 0; i < leni; ++i){
+                qds >> m_realData[i];
+            }
 
-//            for(size_t i = 0; i < lenr; ++i){
-//                ifs >> m_realData[i];
-//            }
+//            char* pReal = reinterpret_cast<char*>(m_realData);
+//            qint64 readCount(lenr * sizeof(float));
+//            m_realFile.read(pReal, readCount);
         }
     }
     m_imagFile.close();
