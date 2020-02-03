@@ -1,6 +1,7 @@
 #include "signalmanager.h"
 #include <QString>
-#include <QTextStream>
+//#include <QTextStream>
+#include <QDataStream>
 #include "logger.h"
 #include <QTime>
 #include "theglobals.h"
@@ -21,7 +22,8 @@ SignalManager *SignalManager::instance()
 
 SignalManager::SignalManager():
     m_realData(nullptr),m_imagData(nullptr),m_lastFramePrescaling(nullptr),m_dataLen(592*2048),
-    m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.dat", SignalDir + "real.dat"))
+    m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.char", SignalDir + "real.char"))
+//  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.dat", SignalDir + "real.dat"))
 {
     m_realData = new float[m_dataLen];
     m_imagData = new float[m_dataLen];
@@ -92,16 +94,26 @@ bool SignalManager::loadSignal()
         if(m_imagFile.open(QIODevice::ReadOnly)){
             QTextStream ifs(&m_imagFile);
             ifs >> leni >> indexi >> endl;
-            for(size_t i = 0; i < leni; ++i){
-                ifs >> m_imagData[i];
-            }
+
+            char* pImag = reinterpret_cast<char*>(m_imagData);
+            qint64 readCount(leni * sizeof(float));
+            m_imagFile.read(pImag, readCount);
+
+//            for(size_t i = 0; i < leni; ++i){
+//                ifs >> m_imagData[i];
+//            }
         }
         if(m_realFile.open(QIODevice::ReadOnly)){
             QTextStream ifs(&m_realFile);
             ifs >> lenr >> indexr >> endl;
-            for(size_t i = 0; i < lenr; ++i){
-                ifs >> m_realData[i];
-            }
+
+            char* pReal = reinterpret_cast<char*>(m_realData);
+            qint64 readCount(lenr * sizeof(float));
+            m_imagFile.read(pReal, readCount);
+
+//            for(size_t i = 0; i < lenr; ++i){
+//                ifs >> m_realData[i];
+//            }
         }
     }
     m_imagFile.close();
