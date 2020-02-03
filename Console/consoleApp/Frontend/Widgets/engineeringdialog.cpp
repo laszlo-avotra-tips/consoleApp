@@ -39,8 +39,10 @@ void EngineeringDialog::signalsConnected()
 {
     if(!ui->lineEdit->text().isEmpty()){
         emit fileNameChanged(ui->lineEdit->text());
-        ui->pushButtonLoad->setEnabled(true);
-        ui->sliderPlaybackSpeed->setEnabled(true);
+        if(!SignalManager::instance()->isFftSource()){
+            ui->pushButtonLoad->setEnabled(true);
+            ui->sliderPlaybackSpeed->setEnabled(true);
+        }
     }
 }
 
@@ -159,12 +161,12 @@ void EngineeringDialog::setButtonEnabledStatusWhileSavingTheSignal(bool buttonSt
 {
     LOG1(buttonStatus);
     ui->pushButtonFile->setEnabled(buttonStatus);
-    ui->pushButtonLoad->setEnabled(buttonStatus);
     ui->pushButtonSave->setEnabled(buttonStatus);
     ui->pushButtonSaveData->setEnabled(buttonStatus);
 
     if(!SignalManager::instance()->isFftSource()){
         ui->pushButtonSingleStep->setEnabled(buttonStatus);
+        ui->pushButtonLoad->setEnabled(buttonStatus);
     }
 
     ui->checkBoxPlayback->setEnabled(buttonStatus);
@@ -174,5 +176,6 @@ void EngineeringDialog::enableSingleStep()
 {
     if(SignalManager::instance()->isFftSource()){
         ui->pushButtonSingleStep->setEnabled(true);
+        ui->pushButtonFile->setEnabled(false);
     }
 }
