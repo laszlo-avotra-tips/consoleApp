@@ -10,6 +10,9 @@ SignalManager* SignalManager::m_instance = nullptr;
 
 namespace {
 QString SignalDir("C:/Avinger_System/signal/");
+bool isText(false);
+bool isFloat(false);
+bool isChar(true);
 }
 
 SignalManager *SignalManager::instance()
@@ -21,11 +24,23 @@ SignalManager *SignalManager::instance()
 }
 
 SignalManager::SignalManager():
-    m_realData(nullptr),m_imagData(nullptr),m_lastFramePrescaling(nullptr),m_dataLen(592*2048),
-    m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.float", SignalDir + "real.float"))
+    m_realData(nullptr),m_imagData(nullptr),m_lastFramePrescaling(nullptr),m_dataLen(592*2048)
+//  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.float", SignalDir + "real.float"))
 //  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.char", SignalDir + "real.char"))
 //  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.dat", SignalDir + "real.dat"))
 {
+    if(isText){
+        m_fftFileName = std::pair<QString,QString>(SignalDir + "imag.dat", SignalDir + "real.dat");
+    }
+
+    if(isFloat){
+         m_fftFileName = std::pair<QString,QString>(SignalDir + "imag.float", SignalDir + "real.float");
+    }
+
+    if(isChar){
+        m_fftFileName = std::pair<QString,QString>(SignalDir + "imag.char", SignalDir + "real.char");
+    }
+
     m_realData = new float[m_dataLen];
     m_imagData = new float[m_dataLen];
     m_lastFramePrescaling = new float[m_dataLen];
@@ -93,24 +108,46 @@ bool SignalManager::loadSignal()
     int indexr(0);
     if(isFftSource()){
         if(m_imagFile.open(QIODevice::ReadOnly)){
-            QDataStream qds(&m_imagFile);
-            for(qint64 i = 0; i < leni; ++i){
-                qds >> m_imagData[i];
+            if(isFloat){
+                QDataStream qds(&m_imagFile);
+                for(qint64 i = 0; i < leni; ++i){
+                    qds >> m_imagData[i];
+                }
             }
-//            char* pImag = reinterpret_cast<char*>(m_imagData);
-//            qint64 readCount(leni * sizeof(float));
-//            m_imagFile.read(pImag, readCount);
+            if(isText){
+                char* pImag = reinterpret_cast<char*>(m_imagData);
+                qint64 readCount(leni * sizeof(float));
+                m_imagFile.read(pImag, readCount);
+            }
+            if(isChar){
+                QTime durationTimer;
+                durationTimer.start();
+                auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_imagData), leni * int(sizeof(float)));
+                auto imagFileReadDuration = durationTimer.elapsed();
+                LOG2(imagDataSize,imagFileReadDuration)
+            }
         }
         if(m_realFile.open(QIODevice::ReadOnly)){
 
-            QDataStream qds(&m_realFile);
-            for(qint64 i = 0; i < leni; ++i){
-                qds >> m_realData[i];
+            if(isFloat){
+                QDataStream qds(&m_realFile);
+                for(qint64 i = 0; i < leni; ++i){
+                    qds >> m_realData[i];
+                }
             }
 
-//            char* pReal = reinterpret_cast<char*>(m_realData);
-//            qint64 readCount(lenr * sizeof(float));
-//            m_realFile.read(pReal, readCount);
+            if(isText){
+                char* pReal = reinterpret_cast<char*>(m_realData);
+                qint64 readCount(lenr * sizeof(float));
+                m_realFile.read(pReal, readCount);
+            }
+            if(isChar){
+                QTime durationTimer;
+                durationTimer.start();
+                auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_realData), lenr * int(sizeof(float)));
+                auto realFileReadDuration = durationTimer.elapsed();
+                LOG2(realDataSize,realFileReadDuration)
+            }
         }
     }
     m_imagFile.close();

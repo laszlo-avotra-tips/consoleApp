@@ -47,7 +47,7 @@ private:
     float* m_lastFramePrescaling;
     const size_t m_dataLen;
     bool m_isSource;
-    const std::pair<QString,QString> m_fftFileName;
+    std::pair<QString,QString> m_fftFileName;
     QFile m_imagFile;
     QFile m_realFile;
     QString m_temp;
