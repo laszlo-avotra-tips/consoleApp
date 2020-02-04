@@ -65,34 +65,48 @@ float *SignalManager::getLastFramePrescaling() const
     return m_lastFramePrescaling;
 }
 
-void SignalManager::saveSignal()
+void SignalManager::saveSignal(int count)
 {
     const auto& signalTable = getIsFftDataInitializedFromGpu();
-    for ( auto it = signalTable.begin(); it != signalTable.end(); ++it){
+    auto it = signalTable.find(count);
+    if(it != signalTable.end()){
         if(it->second){
             auto index = it->first;
             LOG3(index, m_fftFileName.first, m_fftFileName.second);
-            const size_t len(m_dataLen);
             if(!isFftSource()){
-                if(m_imagFile.open(QIODevice::WriteOnly)){
-                    QTextStream ifs(&m_imagFile);
-                    ifs << m_dataLen << " "<< index <<endl;
-                    for(size_t i = 0; i < len; ++i){
-                        ifs << *m_imagData++ << endl;
-                    }
+                bool iFileSuccess(false);
+                bool rFileSuccess(false);
+                if(count == 0){
+                    iFileSuccess = m_imagFile.open(QIODevice::WriteOnly);
+                } else{
+                    iFileSuccess = (m_imagFile.open(QIODevice::WriteOnly | QIODevice::Append));
                 }
-                if(m_realFile.open(QIODevice::WriteOnly)){
-                    QTextStream ifs(&m_realFile);
-                    ifs << m_dataLen << " "<< index <<endl;
-                    for(size_t i = 0; i < len; ++i){
-                        ifs << *m_realData++ << endl;
-                    }
+                if(iFileSuccess){
+                    QTime durationTimer;
+                    durationTimer.start();
+                    auto countBytesWritten = m_imagFile.write(reinterpret_cast<char*>(m_imagData), m_dataLen * int(sizeof(float)));
+                    auto imagSignalSaveDuration = durationTimer.elapsed();
+                    LOG2(countBytesWritten,imagSignalSaveDuration);
+                    m_imagFile.close();
+                }
+                if(count == 0){
+                    rFileSuccess = m_realFile.open(QIODevice::WriteOnly);
+                } else{
+                    rFileSuccess = (m_realFile.open(QIODevice::WriteOnly | QIODevice::Append));
+                }
+                if(rFileSuccess){
+                    QTime durationTimer;
+                    durationTimer.start();
+                    auto countBytesWritten = m_realFile.write(reinterpret_cast<char*>(m_realData), m_dataLen * int(sizeof(float)));
+                    auto realSignalSaveDuration = durationTimer.elapsed();
+                    LOG2(countBytesWritten, realSignalSaveDuration);
+                    m_realFile.close();
+                }
+                if(iFileSuccess && rFileSuccess){
+                    emit signalSaved();
                 }
             }
             LOG3(index, m_fftFileName.first, m_fftFileName.second);
-            m_imagFile.close();
-            m_realFile.close();
-            emit signalSaved();
         }
     }
 }

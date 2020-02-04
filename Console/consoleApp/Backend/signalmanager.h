@@ -31,7 +31,7 @@ public:
     void setIsFftDataInitializedFromGpu(bool isFftDataInitializedFromGpu, int index);
 
 public slots:
-    void saveSignal();
+    void saveSignal(int count);
 
 signals:
     void signalSaved();

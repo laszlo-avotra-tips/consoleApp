@@ -986,9 +986,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
     fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    auto smi = SignalManager::instance();
-    cl_bool isBlocking(CL_TRUE);
+
     if(SignalManager::instance()->isFftSource()){
         fftRealOutputMemObj       =
                 clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr , &err );
@@ -999,23 +997,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
             return false;
         }
 
-        err = clEnqueueWriteBuffer (
-                    cl_Commands,
-                    fftRealOutputMemObj,
-                    isBlocking,
-                    0,
-                    fftRealOutputMemObjSize,
-                    smi->getRealDataPointer(),
-                    0,
-                    nullptr,
-                    nullptr);
-
-        if( err != CL_SUCCESS )
-        {
-             displayFailureMessage( tr( "Failed to init fftRealOutputMemObj" ), true );
-             return false;
-        }
-
         fftImaginaryOutputMemObj  =
                 clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr , &err );
         if( err != CL_SUCCESS )
@@ -1023,23 +1004,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
              displayFailureMessage( tr( "Failed to create fftImaginaryOutputMemObj" ), true );
              return false;
         }
-
-        err = clEnqueueWriteBuffer (
-                    cl_Commands,
-                    fftImaginaryOutputMemObj,
-                    isBlocking,
-                    0,
-                    fftImaginaryOutputMemObjSize,
-                    smi->getImagDataPointer(),
-                    0,
-                    nullptr,
-                    nullptr);
-
-        if( err != CL_SUCCESS )
-        {
-             displayFailureMessage( tr( "Failed to init fftImaginaryOutputMemObj" ), true );
-             return false;
-        }
+//        loadFftOutMemoryObjects();
 
     }else{
         fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, nullptr );
@@ -1048,9 +1013,11 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     }
 
+    lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+
     if(SignalManager::instance()->isPreScalingSource()){
         lastFramePreScalingMemObj
-                = clCreateBuffer( context, CL_MEM_READ_WRITE | CL_MEM_ALLOC_HOST_PTR, lastFramePreScalingMemObjSize, smi->getLastFramePrescaling(), &err );
+                = clCreateBuffer( context, CL_MEM_READ_WRITE | CL_MEM_ALLOC_HOST_PTR, lastFramePreScalingMemObjSize, SignalManager::instance()->getLastFramePrescaling(), &err );
 
     } else {
         lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, &err );
@@ -1468,4 +1435,50 @@ unsigned int DSPGPU::rescale( const unsigned short *inputData )
 //    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx())
 
     return 0;
+}
+
+bool DSPGPU::loadFftOutMemoryObjects()
+{
+    cl_int err;
+
+    fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+    fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
+     auto smi = SignalManager::instance();
+    cl_bool isBlocking(CL_TRUE);
+
+    if(SignalManager::instance()->isFftSource()){
+        err = clEnqueueWriteBuffer (
+                    cl_Commands,
+                    fftRealOutputMemObj,
+                    isBlocking,
+                    0,
+                    fftRealOutputMemObjSize,
+                    smi->getRealDataPointer(),
+                    0,
+                    nullptr,
+                    nullptr);
+
+        if( err != CL_SUCCESS )
+        {
+             displayFailureMessage( tr( "Failed to init fftRealOutputMemObj" ), true );
+             return false;
+        }
+
+        err = clEnqueueWriteBuffer (
+                    cl_Commands,
+                    fftImaginaryOutputMemObj,
+                    isBlocking,
+                    0,
+                    fftImaginaryOutputMemObjSize,
+                    smi->getImagDataPointer(),
+                    0,
+                    nullptr,
+                    nullptr);
+
+        if( err != CL_SUCCESS )
+        {
+             displayFailureMessage( tr( "Failed to init fftImaginaryOutputMemObj" ), true );
+             return false;
+        }
+    }
 }

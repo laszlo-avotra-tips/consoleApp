@@ -42,8 +42,8 @@ public:
     bool isRawDataQueue() const;
     bool isFrameDataQueue() const;
     void pushFrameDataQueue(int index);
-    void popFrameRenderingQueue(int index);
     void pushFrameRenderingQueue(int index);
+    void popFrameRenderingQueue(int index);
     bool isFrameRenderingQueue() const;
     int  frontFrameRenderingQueue() const;
     int  frontRawDataQueue() const;

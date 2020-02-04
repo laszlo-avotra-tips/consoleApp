@@ -37,7 +37,7 @@ public:
                int inChannelCount);
 
     bool processData(int);
-
+    bool loadFftOutMemoryObjects();
 
 public slots:
     void setAveraging( bool enable ) { doAveraging = enable; }

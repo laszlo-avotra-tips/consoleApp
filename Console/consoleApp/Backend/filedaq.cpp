@@ -124,14 +124,25 @@ void FileDaq::run()
             auto tgi = TheGlobals::instance();
             tgi->updateRawDataIndex();
             int index = tgi->getRawDataIndex();
-            ++m_count2;
-            m_dsp->processData(index);
-            tgi->incrementRawDataIndexCompleted();
             PlaybackManager::instance()->setCount(m_count2, index);
+            if(!SignalManager::instance()->isFftSource()){
+                if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
+                    m_dsp->processData(m_count2);
+                    SignalManager::instance()->saveSignal(m_count2);
+                }
+            }else{
+                m_dsp->processData(m_count2);
+            }
+            ++m_count2;
+            if(m_count2 == FRAME_BUFFER_SIZE)
+            {
+                m_count2 = 0;
+                m_isRunning = false;
+                break;
+            }
             if(PlaybackManager::instance()->isPlayback()){
                 msleep(PlaybackManager::instance()->playbackLoopSleep());
             }
-            LOG2(tgi->getRawDataIndex(), tgi->getFrameIndex());
         }
 
         if(PlaybackManager::instance()->isSingleStep()){
@@ -139,11 +150,17 @@ void FileDaq::run()
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
+                    SignalManager::instance()->saveSignal(m_count2);
                 }
             }else{
+                m_dsp->loadFftOutMemoryObjects();
                 m_dsp->processData(m_count2);
             }
             ++m_count2;
+            if(m_count2 == FRAME_BUFFER_SIZE)
+            {
+                m_count2 = 0;
+            }
         }
 
         ++m_count1;

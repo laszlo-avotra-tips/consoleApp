@@ -129,7 +129,7 @@ void EngineeringController::handleSaveDataToFile()
 
 void EngineeringController::saveDataToFile()
 {
-    SignalManager::instance()->saveSignal();
+    SignalManager::instance()->saveSignal(0);
 }
 
 void EngineeringController::startPlayback()
