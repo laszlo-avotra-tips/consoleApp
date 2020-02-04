@@ -1,0 +1,113 @@
+[2020-02-04 15:32:54.326] (consoleApp.5868) INFO: ------------------- - ..\consoleApp\main.cpp (91)
+[2020-02-04 15:32:54.326] (consoleApp.5868) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (92)
+[2020-02-04 15:32:54.326] (consoleApp.5868) INFO: OCT Console Process ID (PID) : 3864 - ..\consoleApp\main.cpp (93)
+[2020-02-04 15:32:54.326] (consoleApp.5868) INFO: OCT Console Version: 4.6.5868 - ..\consoleApp\main.cpp (94)
+[2020-02-04 15:32:54.326] (consoleApp.5868) INFO: DEBUG Build - ..\consoleApp\main.cpp (96)
+[2020-02-04 15:32:54.326] (consoleApp.5868) INFO: SQUISH Disabled - ..\consoleApp\main.cpp (106)
+[2020-02-04 15:32:54.326] (consoleApp.5868) INFO: Local time is 2020-02-04 07:32:54 - ..\consoleApp\main.cpp (109)
+[2020-02-04 15:32:54.526] (consoleApp.5868) INFO: EVOA voltage(V)      = 3.17, status = Default - ..\consoleApp\Backend\evoa.cpp (63)
+[2020-02-04 15:32:54.550] (consoleApp.5868) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-04 15:32:54.559] (consoleApp.5868) THR(0xf38)  - EngineeringDialog::EngineeringDialog (14) -> ++m_count=1
+[2020-02-04 15:32:54.562] (consoleApp.5868) THR(0xf38)  - PlaybackManager::instance (15) -> m_instance=0x5586188
+[2020-02-04 15:32:54.563] (consoleApp.5868) THR(0xf38)  - EngineeringModel::setFileName (49) -> m_fileName=C:/Avinger_System/frameRef.data
+[2020-02-04 15:32:54.703] (consoleApp.5868) INFO: ------------------- - ..\..\Common\Utility\util.cpp (38)
+[2020-02-04 15:32:54.703] (consoleApp.5868) FATAL: Unable to load database:. This application needs the SQLITE driver - ..\..\Common\Utility\util.cpp (39)
+[2020-02-04 15:32:56.436] (consoleApp.5868) FATAL: An unrecoverable error has occurred; the software must terminate.. Unable to load database:. This application needs the SQLITE driver. . Contact Customer Service at 650-241-7900 - ..\..\Common\GUI\styledmessagebox.cpp (204)
+[2020-02-04 15:32:57.541] (consoleApp.5868) INFO: ------------------- - ..\..\Common\Utility\util.cpp (38)
+[2020-02-04 15:32:57.541] (consoleApp.5868) FATAL: Database error:. Failed to open capture database for session. - ..\..\Common\Utility\util.cpp (39)
+[2020-02-04 15:32:58.684] (consoleApp.5868) FATAL: An unrecoverable error has occurred; the software must terminate.. Database error:. Failed to open capture database for session.. . Contact Customer Service at 650-241-7900 - ..\..\Common\GUI\styledmessagebox.cpp (204)
+[2020-02-04 15:32:59.682] (consoleApp.5868) INFO: ------------------- - ..\..\Common\Utility\util.cpp (38)
+[2020-02-04 15:32:59.682] (consoleApp.5868) FATAL: Database failure:. Failed to INSERT new session data. - ..\..\Common\Utility\util.cpp (39)
+[2020-02-04 15:33:00.806] (consoleApp.5868) FATAL: An unrecoverable error has occurred; the software must terminate.. Database failure:. Failed to INSERT new session data.. . Contact Customer Service at 650-241-7900 - ..\..\Common\GUI\styledmessagebox.cpp (204)
+[2020-02-04 15:33:01.961] (consoleApp.5868) INFO: Case ID: 03bb9f67-4409-4429-83e0-15fdf1eeba63 - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-04 15:33:01.976] (consoleApp.5868) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-04 15:33:01.976] (consoleApp.5868) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1132)
+[2020-02-04 15:33:01.976] (consoleApp.5868) THR(0xf38)  - SledSupport::stopSled (484) -> setOnSerialCmd=sr0
+[2020-02-04 15:33:03.866] (consoleApp.5868) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2356)
+[2020-02-04 15:33:03.866] (consoleApp.5868) INFO: EVOA voltage(V)      = 3.17, status = Default - ..\consoleApp\Backend\evoa.cpp (63)
+[2020-02-04 15:33:03.868] (consoleApp.5868) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2356)
+[2020-02-04 15:33:03.869] (consoleApp.5868) INFO: EVOA voltage(V)      = 3.17, status = Default - ..\consoleApp\Backend\evoa.cpp (63)
+[2020-02-04 15:33:04.394] (consoleApp.5868) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-04 15:33:05.886] (consoleApp.5868) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (51)
+[2020-02-04 15:33:05.886] (consoleApp.5868) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (52)
+[2020-02-04 15:33:05.886] (consoleApp.5868) INFO:    preDepth:           128 - ..\consoleApp\Backend\daqSettings.cpp (53)
+[2020-02-04 15:33:05.886] (consoleApp.5868) INFO:    recordLength:       4864 - ..\consoleApp\Backend\daqSettings.cpp (54)
+[2020-02-04 15:33:05.886] (consoleApp.5868) INFO:    chAInputRange:      11 - ..\consoleApp\Backend\daqSettings.cpp (55)
+[2020-02-04 15:33:05.886] (consoleApp.5868) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (56)
+[2020-02-04 15:33:05.887] (consoleApp.5868) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (58)
+[2020-02-04 15:33:05.887] (consoleApp.5868) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (59)
+[2020-02-04 15:33:05.887] (consoleApp.5868) THR(0xf38)  - FileDaq::FileDaq (24) -> m_count1=0 m_count2=0
+[2020-02-04 15:33:05.887] (consoleApp.5868) THR(0xf38)  - FileDaq::init (35) -> m_count1=0 m_count2=0
+[2020-02-04 15:33:05.887] (consoleApp.5868) THR(0xf38)  - DSP::init (157) -> recordLength=4864 linesPerFrame=592
+[2020-02-04 15:33:05.887] (consoleApp.5868) THR(0xf38)  - DSP::init (158) -> bytesPerRecord=9728 bytesPerBuffer=5758976
+[2020-02-04 15:33:05.887] (consoleApp.5868) THR(0xf38)  - DSP::loadRescalingData (209) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-04 15:33:05.902] (consoleApp.5868) THR(0xf38)  - DSPGPU::init (179) -> bytesPerBuffer=5758976
+[2020-02-04 15:33:06.037] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (572) -> numPlatforms=1
+[2020-02-04 15:33:06.037] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (607) -> i=0 deviceIndex=0
+[2020-02-04 15:33:06.037] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (608) -> QString(vendor)=Advanced Micro Devices, Inc. QString(name)=AMD Accelerated Parallel Processing
+[2020-02-04 15:33:06.037] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (610) -> vendor=Advanced Micro Devices, Inc. name=AMD Accelerated Parallel Processing version=OpenCL 1.2 AMD-APP (1445.5)
+[2020-02-04 15:33:06.037] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (664) -> err=0 maxComputeUnits=20 returned_size=4
+[2020-02-04 15:33:06.037] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (668) -> err=0 maxWorkItemDimentions=3 returned_size=4
+[2020-02-04 15:33:06.037] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (672) -> err=0 maxWorkItemSizes[0]=256 maxWorkItemSizes[1]=256 maxWorkItemSizes[2]=256
+[2020-02-04 15:33:06.038] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (679) -> err=0 cl_max_workgroup_size=256 returned_size=4
+[2020-02-04 15:33:06.038] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (683) -> err=0 maxWorkGroupSize=256 returned_size=4
+[2020-02-04 15:33:06.038] (consoleApp.5868) THR(0xf38)  - DSPGPU::initOpenCL (696) -> reinterpret_cast<char*>(vendor_name)=Advanced Micro Devices, Inc. reinterpret_cast<char*>(device_name)=Pitcairn
+[2020-02-04 15:33:06.038] (consoleApp.5868) INFO: OpenCL device: Advanced Micro Devices, Inc. Pitcairn - ..\consoleApp\Backend\dspgpu.cpp (704)
+[2020-02-04 15:33:06.056] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (488) -> clSourceFile=C:/Program Files/Avinger/OCTConsole./backend/opencl/rescale.cl kernelName=rescale_kernel
+[2020-02-04 15:33:06.092] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (532) -> buildTimer.elapsed()=36
+[2020-02-04 15:33:06.093] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (488) -> clSourceFile=C:/Program Files/Avinger/OCTConsole./backend/opencl/postproc.cl kernelName=postproc_kernel
+[2020-02-04 15:33:06.138] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (532) -> buildTimer.elapsed()=45
+[2020-02-04 15:33:06.138] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (488) -> clSourceFile=C:/Program Files/Avinger/OCTConsole./backend/opencl/bandc.cl kernelName=bandc_kernel
+[2020-02-04 15:33:06.173] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (532) -> buildTimer.elapsed()=35
+[2020-02-04 15:33:06.173] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (488) -> clSourceFile=C:/Program Files/Avinger/OCTConsole./backend/opencl/warp.cl kernelName=warp_kernel
+[2020-02-04 15:33:06.232] (consoleApp.5868) THR(0xf38)  - DSPGPU::buildOpenCLKernel (532) -> buildTimer.elapsed()=59
+[2020-02-04 15:33:06.496] (consoleApp.5868) THR(0xf38)  - SignalManager::loadSignal (97) -> m_fftFileName.first=C:/Avinger_System/signal/imag.char m_fftFileName.second=C:/Avinger_System/signal/real.char
+[2020-02-04 15:33:06.496] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (817) -> rescaleInputMemObj=0xb0e870 rescaleInputMemObjSize=5758976
+[2020-02-04 15:33:06.496] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (821) -> rescaleOutputMemObj=0xb0e2d0 rescaleOutputMemObjSize=4849664
+[2020-02-04 15:33:06.496] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (825) -> rescaleFracSamplesMemObj=0xb0e000 rescaleFracSamplesMemObjSize=8192
+[2020-02-04 15:33:06.496] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (829) -> rescaleWholeSamplesMemObj=0xb0e690 rescaleWholeSamplesMemObjSize=8192
+[2020-02-04 15:33:06.498] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (833) -> fftImaginaryInputMemObj=0xb0e1e0 fftImaginaryInputMemObjSize=4849664
+[2020-02-04 15:33:06.498] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (838) -> postProcOutputMemObj=0xb0e0f0 postProcOutputMemObjSize=2424832
+[2020-02-04 15:33:06.498] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (846) -> windowMemObj=0xb0df10 windowMemObjSize=8192
+[2020-02-04 15:33:06.498] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (925) -> fftRealOutputMemObj=0xb0dd30 fftRealOutputMemObjSize=4849664
+[2020-02-04 15:33:06.498] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (926) -> fftImaginaryOutputMemObj=0xb0dc40 fftImaginaryOutputMemObjSize=4849664
+[2020-02-04 15:33:06.498] (consoleApp.5868) THR(0xf38)  - DSPGPU::createCLMemObjects (927) -> lastFramePreScalingMemObj=0x1ab3b000 lastFramePreScalingMemObjSize=4849664
+[2020-02-04 15:33:06.499] (consoleApp.5868) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-04 15:33:06.499] (consoleApp.5868) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1122)
+[2020-02-04 15:33:06.706] (consoleApp.5868) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1234)
+[2020-02-04 15:33:06.707] (consoleApp.5868) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (211)
+[2020-02-04 15:33:06.707] (consoleApp.5868) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (232)
+[2020-02-04 15:33:06.707] (consoleApp.5868) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1286)
+[2020-02-04 15:33:06.707] (consoleApp.5868) INFO: Case ID: 03bb9f67-4409-4429-83e0-15fdf1eeba63 - ..\consoleApp\Frontend\Screens\frontend.cpp (1287)
+[2020-02-04 15:33:09.998] (consoleApp.5868) THR(0xf38)  - frontend::on_EgineeringButton_toggled (2885) -> checked=1
+[2020-02-04 15:33:14.197] (consoleApp.5868) THR(0xf38)  - EngineeringDialog::on_pushButtonLoad_clicked (84) -> ++m_count=2
+[2020-02-04 15:33:14.197] (consoleApp.5868) THR(0xf38)  - PlaybackManager::loadBuffer (87) -> m_isPlayback=0 fn=C:/Avinger_System/frameRef.data
+[2020-02-04 15:33:14.303] (consoleApp.5868) THR(0xf38)  - PlaybackManager::loadBuffer (111) -> m_isPlayback=0 frameCount=64
+[2020-02-04 15:33:14.303] (consoleApp.5868) THR(0xf38)  - EngineeringDialog::setFramesAvailable (54) -> frameCount=64
+[2020-02-04 15:33:17.495] (consoleApp.5868) THR(0xf38)  - PlaybackManager::singleStep (157) -> m_isSingleStep=1
+[2020-02-04 15:33:17.496] (consoleApp.5868) THR(0x4e0)  - DSPGPU::processData (222) -> dataBuffer=0x33760040
+[2020-02-04 15:33:17.498] (consoleApp.5868) THR(0x4e0)  - DSPGPU::rescale (1269) -> rescaleInputMemObj=0xb0e870 rescaleInputMemObjSize=5758976
+[2020-02-04 15:33:17.499] (consoleApp.5868) THR(0x4e0)  - DSPGPU::rescale (1294) -> local_unit_dim[ 0 ]=16 local_unit_dim[ 1 ]=16 tgi->getFrameIndex()=0
+[2020-02-04 15:33:17.499] (consoleApp.5868) THR(0x4e0)  - DSPGPU::rescale (1295) -> global_unit_dim[ 0 ]=2048 global_unit_dim[ 1 ]=592 tgi->getRawDataIndex()=0
+[2020-02-04 15:33:21.298] (consoleApp.5868) THR(0xf38)  - EngineeringDialog::setButtonEnabledStatusWhileSavingTheSignal (160) -> buttonStatus=0
+[2020-02-04 15:33:21.300] (consoleApp.5868) THR(0xf38)  - EngineeringDialog::on_pushButtonSaveData_clicked (148) -> 
+[2020-02-04 15:33:21.429] (consoleApp.5868) THR(0xf38)  - SignalManager::saveSignal (57) -> index=0 m_fftFileName.first=C:/Avinger_System/signal/imag.char m_fftFileName.second=C:/Avinger_System/signal/real.char
+[2020-02-04 15:33:21.434] (consoleApp.5868) THR(0xf38)  - SignalManager::saveSignal (70) -> countBytesWritten=4849664 imagSignalSaveDuration=2
+[2020-02-04 15:33:21.437] (consoleApp.5868) THR(0xf38)  - SignalManager::saveSignal (82) -> countBytesWritten=4849664 realSignalSaveDuration=2
+[2020-02-04 15:33:21.437] (consoleApp.5868) THR(0xf38)  - SignalManager::saveSignal (85) -> index=0 m_fftFileName.first=C:/Avinger_System/signal/imag.char m_fftFileName.second=C:/Avinger_System/signal/real.char
+[2020-02-04 15:33:21.437] (consoleApp.5868) THR(0xf38)  - EngineeringDialog::setButtonEnabledStatusWhileSavingTheSignal (160) -> buttonStatus=1
+[2020-02-04 15:33:21.437] (consoleApp.5868) THR(0xf38)  - EngineeringDialog::enableFileButtons (155) -> 
+[2020-02-04 15:33:24.340] (consoleApp.5868) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (648)
+[2020-02-04 15:33:26.734] (consoleApp.5868) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (651)
+[2020-02-04 15:33:26.735] (consoleApp.5868) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (365)
+[2020-02-04 15:33:28.661] (consoleApp.5868) WARNING: Attention:. Database failure:. Failed to query captures. - ..\..\Common\GUI\styledmessagebox.cpp (166)
+[2020-02-04 15:33:29.917] (consoleApp.5868) WARNING: Attention:. Database failure:. Failed to query OCTLoops. - ..\..\Common\GUI\styledmessagebox.cpp (166)
+[2020-02-04 15:33:29.918] (consoleApp.5868) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (713)
+[2020-02-04 15:33:29.918] (consoleApp.5868) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (714)
+[2020-02-04 15:33:29.918] (consoleApp.5868) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (715)
+[2020-02-04 15:33:29.918] (consoleApp.5868) DEBUG: Non-critcal file could not open C:/Avinger_Data/03bb9f67-4409-4429-83e0-15fdf1eeba63/session.db for reading. - ..\..\Common\Utility\sawFile.cpp (70)
+[2020-02-04 15:33:30.920] (consoleApp.5868) THR(0x4e0)  - FileDaq::run (160) -> m_count1=24292 m_count2=0 m_count1-m_count2=24292
+[2020-02-04 15:33:32.102] (consoleApp.5868) WARNING: Attention:. Database failure:. Failed to UPDATE clean exit flag. - ..\..\Common\GUI\styledmessagebox.cpp (166)
+[2020-02-04 15:33:32.102] (consoleApp.5868) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (277)
+[2020-02-04 15:33:32.102] (consoleApp.5868) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (75)
+[2020-02-04 15:33:32.107] (consoleApp.5868) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (101)
