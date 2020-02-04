@@ -153,6 +153,7 @@ void FileDaq::run()
                     SignalManager::instance()->saveSignal(m_count2);
                 }
             }else{
+                SignalManager::instance()->loadSignal();
                 m_dsp->loadFftOutMemoryObjects();
                 m_dsp->processData(m_count2);
             }

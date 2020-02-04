@@ -926,7 +926,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     const char* errorMsg = "failed to allocate memory";
     cl_int err;
 
-    SignalManager::instance()->loadSignal();
+//    SignalManager::instance()->loadSignal();
 
     if(!SignalManager::instance()->isFftSource()){
         rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
