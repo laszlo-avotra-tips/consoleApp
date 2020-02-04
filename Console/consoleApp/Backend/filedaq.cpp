@@ -135,6 +135,7 @@ void FileDaq::run()
         }
 
         if(PlaybackManager::instance()->isSingleStep()){
+            PlaybackManager::instance()->setCount(m_count2, 0);
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
@@ -142,6 +143,7 @@ void FileDaq::run()
             }else{
                 m_dsp->processData(m_count2);
             }
+            ++m_count2;
         }
 
         ++m_count1;

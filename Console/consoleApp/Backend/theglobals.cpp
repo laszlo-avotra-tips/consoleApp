@@ -25,6 +25,11 @@ TheGlobals::TheGlobals()
     allocateFrameData();
 }
 
+int TheGlobals::getFrameRenderingIndex() const
+{
+    return m_frameRenderingIndex;
+}
+
 void TheGlobals::allocateFrameData()
 {
     DaqSettings &settings = DaqSettings::Instance();
@@ -136,6 +141,13 @@ void TheGlobals::pushFrameRenderingQueue(int index)
 {
     QMutexLocker guard(&m_frameDataMutex);
     m_frameRenderingQueue.push(index);
+}
+
+void TheGlobals::popFrameRenderingQueue(int /*index*/)
+{
+    QMutexLocker guard(&m_frameDataMutex);
+    m_frameRenderingIndex = m_frameRenderingQueue.front();
+    m_frameRenderingQueue.pop();
 }
 
 bool TheGlobals::isFrameRenderingQueue() const

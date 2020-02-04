@@ -152,11 +152,10 @@ void DaqDataConsumer::run( void )
 //        {
 //            prevFrame      = currFrame;
 //            TIME_THIS_SCOPE( ddc_run );
-        bool once(true);
-        if(once && TheGlobals::instance()->isFrameRenderingQueue()){
-            once = false;
+        if(TheGlobals::instance()->isFrameRenderingQueue()){
 
             currFrame = TheGlobals::instance()->frontFrameRenderingQueue();
+            TheGlobals::instance()->popFrameRenderingQueue(currFrame);
 
             timeoutCounter = HsVideoTimeoutCount;
 

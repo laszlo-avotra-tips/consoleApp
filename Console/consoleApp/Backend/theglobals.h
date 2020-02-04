@@ -42,11 +42,14 @@ public:
     bool isRawDataQueue() const;
     bool isFrameDataQueue() const;
     void pushFrameDataQueue(int index);
+    void popFrameRenderingQueue(int index);
     void pushFrameRenderingQueue(int index);
     bool isFrameRenderingQueue() const;
     int  frontFrameRenderingQueue() const;
     int  frontRawDataQueue() const;
     int  frontFrameDataQueue() const;
+
+    int getFrameRenderingIndex() const;
 
 private:
     static TheGlobals* m_instance;
@@ -70,6 +73,7 @@ private:
     std::queue<int> m_frameDataQueue;
     std::queue<int> m_frameRenderingQueue;
     std::queue<int> m_ImageQueue;
+    int m_frameRenderingIndex;
 };
 
 #endif // THEGLOBALS_H
