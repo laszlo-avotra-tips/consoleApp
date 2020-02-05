@@ -165,17 +165,18 @@ void EngineeringDialog::setButtonEnabledStatusWhileSavingTheSignal(bool buttonSt
     ui->pushButtonSaveData->setEnabled(buttonStatus);
 
     if(!SignalManager::instance()->isFftSource()){
+        ui->checkBoxPlayback->setEnabled(buttonStatus);
         ui->pushButtonSingleStep->setEnabled(buttonStatus);
         ui->pushButtonLoad->setEnabled(buttonStatus);
     }
-
-    ui->checkBoxPlayback->setEnabled(buttonStatus);
 }
 
 void EngineeringDialog::enableSingleStep()
 {
     if(SignalManager::instance()->isFftSource()){
         ui->pushButtonSingleStep->setEnabled(true);
+        ui->checkBoxPlayback->setEnabled(true);
         ui->pushButtonFile->setEnabled(false);
+        ui->sliderPlaybackSpeed->setEnabled(true);
     }
 }

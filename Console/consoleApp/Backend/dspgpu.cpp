@@ -1481,4 +1481,5 @@ bool DSPGPU::loadFftOutMemoryObjects()
              return false;
         }
     }
+    return true;
 }

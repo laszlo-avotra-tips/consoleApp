@@ -122,8 +122,8 @@ void FileDaq::run()
         if(PlaybackManager::instance()->isPlayback() )
         {
 
-            int fakeIndex = m_count2 ? m_count2 - 1 : 0;
-            PlaybackManager::instance()->setCount(m_count2, fakeIndex);
+            int fakeIndex = m_count2 % FRAME_BUFFER_SIZE;
+            PlaybackManager::instance()->setCount(m_count2 + 1, fakeIndex);
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
@@ -138,9 +138,8 @@ void FileDaq::run()
             ++m_count2;
             if(m_count2 == FRAME_BUFFER_SIZE)
             {
+                SignalManager::instance()->close();
                 m_count2 = 0;
-                m_isRunning = false;
-                break;
             }
             if(PlaybackManager::instance()->isPlayback()){
                 msleep(PlaybackManager::instance()->playbackLoopSleep());
@@ -149,8 +148,8 @@ void FileDaq::run()
 
         if(PlaybackManager::instance()->isSingleStep()){
 
-            int fakeIndex = m_count2 ? m_count2 - 1 : 0;
-            PlaybackManager::instance()->setCount(m_count2, fakeIndex);
+            int fakeIndex = m_count2 % FRAME_BUFFER_SIZE;
+            PlaybackManager::instance()->setCount(m_count2 + 1, fakeIndex);
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
