@@ -22,6 +22,10 @@ EngineeringDialog::EngineeringDialog(QWidget *parent) :
     ui->pushButtonSaveData->setEnabled(false);
 
     enableSingleStep();
+
+    if(SignalManager::instance()->isFftSource()){
+        ui->labelFramesForPlayback->hide();
+    }
 }
 
 EngineeringDialog::~EngineeringDialog()

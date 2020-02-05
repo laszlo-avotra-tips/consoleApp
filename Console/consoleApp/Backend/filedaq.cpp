@@ -79,6 +79,7 @@ bool FileDaq::configure()
 
 void FileDaq::run()
 {
+    int videoFrameCount{0};
     while( !m_isConfigured ) // XXX
     {
         yieldCurrentThread();
@@ -121,9 +122,8 @@ void FileDaq::run()
     {
         if(PlaybackManager::instance()->isPlayback() )
         {
-
-            int fakeIndex = m_count2 % FRAME_BUFFER_SIZE;
-            PlaybackManager::instance()->setCount(m_count2 + 1, fakeIndex);
+            ++videoFrameCount;
+            PlaybackManager::instance()->setCount(videoFrameCount, m_count2);
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
@@ -147,9 +147,8 @@ void FileDaq::run()
         }
 
         if(PlaybackManager::instance()->isSingleStep()){
-
-            int fakeIndex = m_count2 % FRAME_BUFFER_SIZE;
-            PlaybackManager::instance()->setCount(m_count2 + 1, fakeIndex);
+            ++videoFrameCount;
+            PlaybackManager::instance()->setCount(videoFrameCount, m_count2);
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
