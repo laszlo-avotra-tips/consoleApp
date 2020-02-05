@@ -20,7 +20,7 @@ const QString &EngineeringModel::getFileName() const
 void EngineeringModel::setPlaybackSpeed(int speed)
 {
     m_playbackSpeed = speed;
-    LOG1(m_playbackSpeed)
+//    LOG1(m_playbackSpeed)
     emit playbackSpeedChanged(m_playbackSpeed);
 }
 

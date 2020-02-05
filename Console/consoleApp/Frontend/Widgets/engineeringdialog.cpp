@@ -129,7 +129,7 @@ void EngineeringDialog::countChanged(int count, int index)
 
     qts << "Frame count = " << count << ", Frame index = " << index;
 
-    LOG2(count, index);
+//    LOG2(count, index);
     ui->labelStat->setText(msg);
 }
 
