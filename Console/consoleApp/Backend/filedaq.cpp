@@ -121,16 +121,18 @@ void FileDaq::run()
     {
         if(PlaybackManager::instance()->isPlayback() )
         {
-            auto tgi = TheGlobals::instance();
-            tgi->updateRawDataIndex();
-            int index = tgi->getRawDataIndex();
-            PlaybackManager::instance()->setCount(m_count2, index);
+
+            int fakeIndex = m_count2 ? m_count2 - 1 : 0;
+            PlaybackManager::instance()->setCount(m_count2, fakeIndex);
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
                     SignalManager::instance()->saveSignal(m_count2);
                 }
             }else{
+                if(m_count2 == 0) SignalManager::instance()->open();
+                SignalManager::instance()->loadSignal(m_count2);
+                m_dsp->loadFftOutMemoryObjects();
                 m_dsp->processData(m_count2);
             }
             ++m_count2;
@@ -146,7 +148,9 @@ void FileDaq::run()
         }
 
         if(PlaybackManager::instance()->isSingleStep()){
-            PlaybackManager::instance()->setCount(m_count2, 0);
+
+            int fakeIndex = m_count2 ? m_count2 - 1 : 0;
+            PlaybackManager::instance()->setCount(m_count2, fakeIndex);
             if(!SignalManager::instance()->isFftSource()){
                 if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
                     m_dsp->processData(m_count2);
@@ -172,11 +176,6 @@ void FileDaq::run()
         QApplication::processEvents();
         yieldCurrentThread();
         msleep(1);
-
-//        if(m_count1 % 2000 == 0){
-//            LOG3(m_count1,m_count2,m_count1-m_count2);
-//        }
-
     }
 
     LOG3(m_count1,m_count2,m_count1-m_count2);
