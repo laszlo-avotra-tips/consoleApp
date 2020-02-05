@@ -1706,18 +1706,19 @@ void frontend::keyPressEvent( QKeyEvent *event )
  */
 void frontend::captureMouse( bool isEnabled )
 {
-#if USE_MOUSE_CAPTURE
-    if( isEnabled )
-    {
-        connect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
-    }
-    else
-    {
-        disconnect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
-    }
-#else
-    isEnabled; // quiet the compiler warnings
-#endif
+    //lcv
+//#if USE_MOUSE_CAPTURE
+//    if( isEnabled )
+//    {
+//        connect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
+//    }
+//    else
+//    {
+//        disconnect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
+//    }
+//#else
+//    isEnabled; // quiet the compiler warnings
+//#endif
 }
 
 /*

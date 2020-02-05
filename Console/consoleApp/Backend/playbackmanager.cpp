@@ -223,7 +223,8 @@ void PlaybackManager::stopPlayback()
 
 void PlaybackManager::setPlaybackSpeed(int speed)
 {
-    unsigned long maxSleep(1030);
+//    unsigned long maxSleep(1030);
+    unsigned long maxSleep(1001);
     m_playbackLoopSleep = maxSleep - speed;
 }
 
