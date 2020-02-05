@@ -12,7 +12,6 @@ PlaybackManager *PlaybackManager::instance()
 {
     if(!m_instance){
         m_instance = new PlaybackManager();
-        LOG1(m_instance);
     }
     return m_instance;
 }

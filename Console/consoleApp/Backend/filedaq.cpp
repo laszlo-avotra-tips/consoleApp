@@ -20,8 +20,6 @@ FileDaq::FileDaq(): m_isConfigured(false),m_dsp(nullptr),
     {
         LOG( WARNING, "Unable to load DAQ Settings." );
     }
-
-    LOG2(m_count1, m_count2)
 }
 
 FileDaq::~FileDaq()
@@ -32,7 +30,6 @@ FileDaq::~FileDaq()
 void FileDaq::init()
 {
     m_isRunning = false;
-    LOG2(m_count1, m_count2);
 
     // Create the DSP
     m_dsp = new DSPGPU();

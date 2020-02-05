@@ -46,7 +46,6 @@ void EngineeringModel::setMotorSpeed(int speed)
 void EngineeringModel::setFileName(const QString &fn)
 {
     m_fileName = fn;
-    LOG1(m_fileName)
 }
 
 void EngineeringModel::setLaserOn(bool isOn)

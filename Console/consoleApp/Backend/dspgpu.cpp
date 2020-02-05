@@ -171,8 +171,6 @@ void DSPGPU::init( unsigned int inputLength,
     // call the common initilization steps
     DSP::init( inputLength, frameLines, inBytesPerRecord, inBytesPerBuffer, inChannelCount );
 
-    LOG1(bytesPerBuffer);
-
     for( int i = 0; i < inChannelCount; i++ )
     {
         // XXX Need to pass these into the DSP so we dont copy buffers there
@@ -608,7 +606,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
     /*
      * Load, compile, link the source
      */
-    LOG2(clSourceFile,kernelName);
+    LOG1(kernelName)
     char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
     if( !sourceBuf )
     {
@@ -652,8 +650,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
         displayFailureMessage( tr( "Could not create compute kernel, reason %1" ).arg( err ), true );
         return false;
     }
-    LOG1( buildTimer.elapsed());
-//    qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
+//    LOG1( buildTimer.elapsed());
     return true;
 }
 
@@ -759,35 +756,27 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-    {
-//        cl_int clGetDeviceInfo (cl_device_id device,
-//         cl_device_info param_name,
-//         size_t param_value_size,
-//         void *param_value,
-//         size_t *param_value_size_ret)
-    }
-
     size_t returned_size( 0 );
     cl_uint maxComputeUnits;
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(maxComputeUnits), &maxComputeUnits, &returned_size );
     if(!isClReturnValueSuccess(err,__LINE__)){
         return false;
     }
-    LOG2(maxComputeUnits,returned_size)
+//    LOG2(maxComputeUnits,returned_size)
 
     cl_uint maxWorkItemDimentions;
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimentions), &maxWorkItemDimentions, &returned_size );
     if(!isClReturnValueSuccess(err,__LINE__)){
         return false;
     }
-    LOG2(maxWorkItemDimentions,returned_size)
+//    LOG2(maxWorkItemDimentions,returned_size)
 
     size_t maxWorkItemSizes[3];
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(maxWorkItemSizes), &maxWorkItemSizes, &returned_size );
     if(!isClReturnValueSuccess(err,__LINE__)){
         return false;
     }
-    LOG3(maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
+//    LOG3(maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
 
     err = clGetDeviceInfo( cl_ComputeDeviceId,
                            CL_DEVICE_MAX_WORK_GROUP_SIZE,
@@ -797,7 +786,7 @@ bool DSPGPU::initOpenCL()
     if(!isClReturnValueSuccess(err,__LINE__)){
         return false;
     }
-    LOG2(cl_max_workgroup_size, returned_size)
+//    LOG2(cl_max_workgroup_size, returned_size)
 
     size_t maxWorkGroupSize;
     err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, &returned_size );
@@ -805,7 +794,7 @@ bool DSPGPU::initOpenCL()
         displayFailureMessage( tr( "Could not enumerate OpenCL device IDs, reason: %1" ).arg( err ), true );
         return false;
     }
-    LOG2(maxWorkGroupSize,returned_size)
+//    LOG2(maxWorkGroupSize,returned_size)
 
     cl_char vendor_name[ 1024 ] = { 0 };
     cl_char device_name[ 1024 ] = { 0 };
@@ -827,7 +816,6 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-//    cl_Commands = clCreateCommandQueue( cl_Context, cl_ComputeDeviceId, 0, &err );
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
     if( !cl_Commands )
     {

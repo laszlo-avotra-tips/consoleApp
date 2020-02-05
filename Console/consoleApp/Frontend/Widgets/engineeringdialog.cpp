@@ -11,7 +11,6 @@ EngineeringDialog::EngineeringDialog(QWidget *parent) :
     ui(new Ui::EngineeringDialog),m_count(0)
 {
     ui->setupUi(this);
-    LOG1(++m_count);
 
     connect(ui->sliderPlaybackSpeed, SIGNAL(valueChanged(int)), this, SIGNAL(playbackSpeedChanged(int)));
     connect(ui->sliderVoa, SIGNAL(valueChanged(int)), this, SIGNAL(voaAttenuationChanged(int)));

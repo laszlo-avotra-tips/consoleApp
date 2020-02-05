@@ -121,7 +121,6 @@ void DSP::init( unsigned int inputLength,
                 int inBytesPerRecord,
                 int inBytesPerBuffer,
                 int inChannelCount
-//                ,quint16 **inDaqRawData
                 )
 {
     recordLength   = inputLength;
@@ -150,8 +149,8 @@ void DSP::init( unsigned int inputLength,
     }
 
     // populate wholeSamples[] and fractionSamples[]
-    LOG2(recordLength,linesPerFrame);
-    LOG2(bytesPerRecord,bytesPerBuffer);
+//    LOG2(recordLength,linesPerFrame);
+//    LOG2(bytesPerRecord,bytesPerBuffer);
     loadRescalingData();
 
     // Update radius and offset, set to Normal Mode upon new device select
