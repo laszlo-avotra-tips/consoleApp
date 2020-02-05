@@ -133,20 +133,30 @@ bool SignalManager::loadSignal(int index)
 {
     bool success(true);
 
-    LOG2(m_fftFileName.first, m_fftFileName.second);
-    size_t leni(1212416);
-    size_t lenr(1212416);
+    const size_t len(1212416);
 
     QTime durationTimer;
-    durationTimer.start();
-    auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_imagData), leni * int(sizeof(float)));
-    auto imagFileReadDuration = durationTimer.elapsed();
-    LOG2(imagDataSize,imagFileReadDuration)
+    const bool isLogging{false};
 
-    durationTimer.start();
-    auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_realData), lenr * int(sizeof(float)));
-    auto realFileReadDuration = durationTimer.elapsed();
-    LOG2(realDataSize,realFileReadDuration)
+    if(isLogging){
+        LOG2(m_fftFileName.first, m_fftFileName.second)
+                durationTimer.start();
+    }
+
+    auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_imagData), len * int(sizeof(float)));
+
+    if(isLogging){
+        auto imagFileReadDuration = durationTimer.elapsed();
+        LOG2(imagDataSize,imagFileReadDuration)
+        durationTimer.start();
+    }
+
+    auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_realData), len * int(sizeof(float)));
+
+    if(isLogging){
+        auto realFileReadDuration = durationTimer.elapsed();
+        LOG2(realDataSize,realFileReadDuration)
+    }
 
     TheGlobals::instance()->pushFrameDataQueue(index);
     emit signalLoaded();
