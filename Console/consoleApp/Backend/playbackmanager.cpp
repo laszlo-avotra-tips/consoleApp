@@ -118,7 +118,7 @@ bool PlaybackManager::isPlayback() const
 }
 
 PlaybackManager::PlaybackManager()
-    : QObject(nullptr),m_countOfRawDataProcessed(0), m_isPlayback(false),m_playbackLoopSleep(500),m_isSingleStep(false)
+    : QObject(nullptr),m_countOfRawDataProcessed(0), m_isPlayback(false),m_playbackLoopSleep(1),m_isSingleStep(false)
 {
 }
 

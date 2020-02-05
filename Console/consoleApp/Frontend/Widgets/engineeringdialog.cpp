@@ -121,7 +121,6 @@ void EngineeringDialog::on_lineEdit_textChanged(const QString &fn)
 
 void EngineeringDialog::on_checkBoxPlayback_toggled(bool checked)
 {
-    LOG1(checked);
     emit playbackStartStop(checked);
 }
 

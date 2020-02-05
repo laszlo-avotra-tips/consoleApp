@@ -108,7 +108,6 @@ void EngineeringController::loadFrameBuffers()
 
 void EngineeringController::playbackStartStopCommand(bool isStart)
 {
-    LOG1(isStart);
     if(isStart){
         startPlayback();
     }else{

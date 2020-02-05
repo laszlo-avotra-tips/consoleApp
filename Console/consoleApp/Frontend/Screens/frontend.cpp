@@ -2884,5 +2884,4 @@ void frontend::on_EgineeringButton_toggled(bool checked)
 {
     m_ec->setViewPosition(ui.capturesGroupBox->x());
     m_ec->showOrHideView(checked);
-    LOG1(checked)
 }
