@@ -60,6 +60,24 @@ void SignalManager::setIsFftDataInitializedFromGpu(bool isFftDataInitializedFrom
     m_isFftDataInitializedFromGpu[index] = isFftDataInitializedFromGpu;
 }
 
+bool SignalManager::open()
+{
+    bool success{false};
+    if(isFftSource()){
+        success = m_imagFile.open(QIODevice::ReadOnly);
+        if(success){
+            m_realFile.open(QIODevice::ReadOnly);
+        }
+    }
+    return success;
+}
+
+void SignalManager::close()
+{
+    m_imagFile.close();
+    m_realFile.close();
+}
+
 float *SignalManager::getLastFramePrescaling() const
 {
     return m_lastFramePrescaling;
@@ -111,69 +129,27 @@ void SignalManager::saveSignal(int count)
     }
 }
 
-bool SignalManager::loadSignal()
+bool SignalManager::loadSignal(int index)
 {
     bool success(true);
 
     LOG2(m_fftFileName.first, m_fftFileName.second);
     size_t leni(1212416);
     size_t lenr(1212416);
-    int indexi(0);
-    int indexr(0);
-    if(isFftSource()){
-        if(m_imagFile.open(QIODevice::ReadOnly)){
-            if(isFloat){
-                QDataStream qds(&m_imagFile);
-                for(qint64 i = 0; i < leni; ++i){
-                    qds >> m_imagData[i];
-                }
-            }
-            if(isText){
-                char* pImag = reinterpret_cast<char*>(m_imagData);
-                qint64 readCount(leni * sizeof(float));
-                m_imagFile.read(pImag, readCount);
-            }
-            if(isChar){
-                QTime durationTimer;
-                durationTimer.start();
-                auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_imagData), leni * int(sizeof(float)));
-                auto imagFileReadDuration = durationTimer.elapsed();
-                LOG2(imagDataSize,imagFileReadDuration)
-            }
-        }
-        if(m_realFile.open(QIODevice::ReadOnly)){
 
-            if(isFloat){
-                QDataStream qds(&m_realFile);
-                for(qint64 i = 0; i < leni; ++i){
-                    qds >> m_realData[i];
-                }
-            }
+    QTime durationTimer;
+    durationTimer.start();
+    auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_imagData), leni * int(sizeof(float)));
+    auto imagFileReadDuration = durationTimer.elapsed();
+    LOG2(imagDataSize,imagFileReadDuration)
 
-            if(isText){
-                char* pReal = reinterpret_cast<char*>(m_realData);
-                qint64 readCount(lenr * sizeof(float));
-                m_realFile.read(pReal, readCount);
-            }
-            if(isChar){
-                QTime durationTimer;
-                durationTimer.start();
-                auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_realData), lenr * int(sizeof(float)));
-                auto realFileReadDuration = durationTimer.elapsed();
-                LOG2(realDataSize,realFileReadDuration)
-            }
-        }
-    }
-    m_imagFile.close();
-    m_realFile.close();
-    if(indexi == indexr){
-        LOG3(indexi,m_fftFileName.first, m_fftFileName.second);
-        if(isFftSource()){
-            TheGlobals::instance()->pushFrameDataQueue(indexi);
-        } else {
-            emit signalLoaded();
-        }
-    }
+    durationTimer.start();
+    auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_realData), lenr * int(sizeof(float)));
+    auto realFileReadDuration = durationTimer.elapsed();
+    LOG2(realDataSize,realFileReadDuration)
+
+    TheGlobals::instance()->pushFrameDataQueue(index);
+    emit signalLoaded();
 
     return success;
 }

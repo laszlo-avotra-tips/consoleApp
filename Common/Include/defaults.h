@@ -21,7 +21,7 @@
 
 // The size, in sizeof(OCTFile_t) units, of the shared memory buffer for the data producer
 // and consumer.
-#define FRAME_BUFFER_SIZE 32
+#define FRAME_BUFFER_SIZE 64
 
 #define MININTERPOLATIONANGLE_RAD (0.0005)
 

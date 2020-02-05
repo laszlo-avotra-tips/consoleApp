@@ -153,13 +153,15 @@ void FileDaq::run()
                     SignalManager::instance()->saveSignal(m_count2);
                 }
             }else{
-                SignalManager::instance()->loadSignal();
+                if(m_count2 == 0) SignalManager::instance()->open();
+                SignalManager::instance()->loadSignal(m_count2);
                 m_dsp->loadFftOutMemoryObjects();
                 m_dsp->processData(m_count2);
             }
             ++m_count2;
             if(m_count2 == FRAME_BUFFER_SIZE)
             {
+                SignalManager::instance()->close();
                 m_count2 = 0;
             }
         }

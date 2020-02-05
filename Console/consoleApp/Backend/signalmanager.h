@@ -24,11 +24,14 @@ public:
     bool isPreScalingSource()const;
 
     float *getLastFramePrescaling() const;
-    bool loadSignal();
+    bool loadSignal(int index);
 
 
     std::map<int,bool> getIsFftDataInitializedFromGpu() const;
     void setIsFftDataInitializedFromGpu(bool isFftDataInitializedFromGpu, int index);
+
+    bool open();
+    void close();
 
 public slots:
     void saveSignal(int count);
