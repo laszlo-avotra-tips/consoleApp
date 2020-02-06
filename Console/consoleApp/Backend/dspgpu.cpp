@@ -102,26 +102,15 @@ DSPGPU::~DSPGPU()
     /*
      * Clean up openCL objects
      */
-    if(!SignalManager::instance()->isFftSource()){
-        //clAmdFftTeardown();
-        clReleaseKernel( cl_RescaleKernel );
-    }
     clReleaseKernel( cl_PostProcKernel );
     clReleaseKernel( cl_BandCKernel );
     clReleaseKernel( cl_WarpKernel );
 
-    if(!SignalManager::instance()->isFftSource()){
-        clReleaseProgram( cl_RescaleProgram );
-    }
     clReleaseProgram( cl_PostProcProgram );
     clReleaseProgram( cl_BandCProgram );
     clReleaseProgram( cl_WarpProgram );
 
     if(!SignalManager::instance()->isFftSource()){
-        clReleaseMemObject( rescaleInputMemObj );
-        clReleaseMemObject( rescaleOutputMemObj );
-        clReleaseMemObject( rescaleFracSamplesMemObj );
-        clReleaseMemObject( rescaleWholeSamplesMemObj );
         clReleaseMemObject( fftImaginaryInputMemObj );
     }
 
@@ -226,7 +215,6 @@ bool DSPGPU::processData(int index)
  * processData
  *
  * Do all the work we need to do to a frame of A-line data before handing it off to be displayed
- *    - Rescale the data according to the laser characterization data for fine-tuning the waveform
  *    - Transform the data (FFT, magnitude, log)
  *    - Bundle all of the data up for displaying and storing
  *
@@ -338,173 +326,6 @@ QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
         case CL_OUT_OF_HOST_MEMORY :    {cause = "CL_OUT_OF_HOST_MEMORY";} break;
     }
     return cause;
-}
-
-bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOutImag)
-{
-    //short the fft
-//    fftOutImag = fftImaginaryInputMemObj;
-//    fftOutReal = rescaleOut;
-
-    const bool enableThisCode{true};
-    if(enableThisCode){
-        const int fftSize = RescalingDataLength;
-        const int fftBatch = int(linesPerFrame);
-
-        const size_t dataSize = size_t(fftSize * fftBatch);
-        const size_t memSize = dataSize * sizeof(float);
-
-        float* pHostRescaleOutReal = new float[dataSize];
-        float* pHostFftOutImag = new float[dataSize];
-        float* pHostFftOutReal = new float[dataSize];
-        std::complex<float>* hostFftDataIn = new std::complex<float>[dataSize];
-        std::complex<float>* hostFftDataOut = new std::complex<float>[dataSize];
-
-
-        const cl_bool isBlockingCall{CL_TRUE};
-
-        //Real in
-        cl_int ret = clEnqueueReadBuffer(cl_Commands, rescaleOut, isBlockingCall, 0,
-                memSize, pHostRescaleOutReal, 0, nullptr, nullptr);
-        if(!isClReturnValueSuccess(ret,__LINE__)){
-            return false;
-        }
-//        LOG2(fftSize, fftBatch)
-
-        //init the host fft in data
-        for(size_t i = 0; i < dataSize; ++i){
-            auto& data = hostFftDataIn[i];
-            data = std::complex<float>(pHostRescaleOutReal[i],0.0f);
-        }
-        ComputeTheFFT(hostFftDataOut, hostFftDataIn, fftSize, fftBatch);
-
-        //result scaling
-        addjustCoefficientMagnitude(hostFftDataOut, dataSize);
-
-//        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
-
-        //init the fft out data
-        for(size_t i = 0; i < dataSize; ++i){
-            pHostFftOutReal[i] = hostFftDataOut[i].real();
-            pHostFftOutImag[i] = hostFftDataOut[i].imag();
-        }
-
-        //copy host imag to device imag
-        const size_t offset{0};
-        const cl_int num_events_in_wait_list{0};
-        ret = clEnqueueWriteBuffer( cl_Commands,
-                                    fftOutImag,
-                                    isBlockingCall,
-                                    offset,
-                                    memSize,
-                                    pHostFftOutImag,
-                                    num_events_in_wait_list,
-                                    nullptr,
-                                    nullptr );
-
-        if(!isClReturnValueSuccess(ret,__LINE__)){
-            return false;
-        }
-//        LOG2(dataSize,memSize);
-
-        //copy host real to device real
-        ret = clEnqueueWriteBuffer( cl_Commands,
-                                    fftOutReal,
-                                    isBlockingCall,
-                                    offset,
-                                    memSize,
-                                    pHostFftOutReal,
-                                    num_events_in_wait_list,
-                                    nullptr,
-                                    nullptr );
-
-        if(!isClReturnValueSuccess(ret,__LINE__)){
-            return false;
-        }
-//        LOG2(dataSize,memSize);
-        delete [] pHostRescaleOutReal;
-        delete [] pHostFftOutImag;
-        delete [] hostFftDataIn;
-        delete [] pHostFftOutReal;
-    }
-    return true;
-}
-
-bool DSPGPU::computeTheFFT(const quint16 *pDataIn, cl_mem &fftOutReal, cl_mem &fftOutImag)
-{
-    const int fftSize = RescalingDataLength;
-    const int fftBatch = int(linesPerFrame);
-
-    const size_t dataSize = size_t(fftSize * fftBatch);
-    const size_t memSize = dataSize * sizeof(float);
-
-    float* pHostRescaleOutReal = new float[dataSize];
-    float* pHostFftOutImag = new float[dataSize];
-    float* pHostFftOutReal = new float[dataSize];
-    std::complex<float>* hostFftDataIn = new std::complex<float>[dataSize];
-    std::complex<float>* hostFftDataOut = new std::complex<float>[dataSize];
-
-
-    const cl_bool isBlockingCall{CL_TRUE};
-
-    //Real in
-
-    //init the host fft in data
-    for(size_t i = 0; i < dataSize; ++i){
-        auto& data = hostFftDataIn[i];
-        data = std::complex<float>(float(pDataIn[i]),0.0f);
-    }
-    ComputeTheFFT(hostFftDataOut, hostFftDataIn, fftSize, fftBatch);
-
-    //result scaling
-    addjustCoefficientMagnitude(hostFftDataOut, dataSize);
-
-//        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
-
-    //init the fft out data
-    for(size_t i = 0; i < dataSize; ++i){
-        pHostFftOutReal[i] = hostFftDataOut[i].real();
-        pHostFftOutImag[i] = hostFftDataOut[i].imag();
-    }
-
-    //copy host imag to device imag
-    const size_t offset{0};
-    const cl_int num_events_in_wait_list{0};
-    cl_int ret = clEnqueueWriteBuffer( cl_Commands,
-                                fftOutImag,
-                                isBlockingCall,
-                                offset,
-                                memSize,
-                                pHostFftOutImag,
-                                num_events_in_wait_list,
-                                nullptr,
-                                nullptr );
-
-    if(!isClReturnValueSuccess(ret,__LINE__)){
-        return false;
-    }
-//        LOG2(dataSize,memSize);
-
-    //copy host real to device real
-    ret = clEnqueueWriteBuffer( cl_Commands,
-                                fftOutReal,
-                                isBlockingCall,
-                                offset,
-                                memSize,
-                                pHostFftOutReal,
-                                num_events_in_wait_list,
-                                nullptr,
-                                nullptr );
-
-    if(!isClReturnValueSuccess(ret,__LINE__)){
-        return false;
-    }
-//        LOG2(dataSize,memSize);
-    delete [] pHostRescaleOutReal;
-    delete [] pHostFftOutImag;
-    delete [] hostFftDataIn;
-    delete [] pHostFftOutReal;
-    return true;
 }
 
 bool DSPGPU::isClReturnValueSuccess(cl_int ret, int line) const
@@ -842,50 +663,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 //    SignalManager::instance()->loadSignal(0);
 
     if(!SignalManager::instance()->isFftSource()){
-        rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
-        rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, &err );
-        LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
-        if(!rescaleInputMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        rescaleOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-        rescaleOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, rescaleOutputMemObjSize, nullptr, &err );
-        LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize)
-        if(!rescaleOutputMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        rescaleFracSamplesMemObjSize = RescalingDataLength * sizeof(float);
-        rescaleFracSamplesMemObj  = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleFracSamplesMemObjSize, fractionalSamples, &err );
-        LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize)
-        if(!rescaleFracSamplesMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        rescaleWholeSamplesMemObjSize = RescalingDataLength * sizeof(float);
-        rescaleWholeSamplesMemObj = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleWholeSamplesMemObjSize, wholeSamples, &err );
-        LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize)
-        if(!rescaleWholeSamplesMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        windowMemObjSize = RescalingDataLength * sizeof(float);
-        windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, nullptr, &err );
-        LOG2(windowMemObj, windowMemObjSize)
-        if(!windowMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
 
         fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
         fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, &err );
@@ -1034,7 +811,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    if (!SignalManager::instance()->isFftSource()){
 
        //clAmdFftStatus fftStatus;
-       cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
+       cl_mem         inputMemObjects[ 2 ]  = { nullptr, fftImaginaryInputMemObj };
        cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
 
        // XXX: Empirically set to achieve full range at just below detector saturation

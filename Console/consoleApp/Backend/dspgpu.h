@@ -53,12 +53,10 @@ private:
     cl_device_id     cl_ComputeDeviceId;
     cl_context       cl_Context;
 
-    cl_kernel        cl_RescaleKernel;
     cl_kernel        cl_PostProcKernel;
     cl_kernel        cl_BandCKernel;
     cl_kernel        cl_WarpKernel;
 
-    cl_program       cl_RescaleProgram;
     cl_program       cl_PostProcProgram;
     cl_program       cl_BandCProgram;
     cl_program       cl_WarpProgram;
@@ -66,12 +64,6 @@ private:
     cl_command_queue cl_Commands;
 
     size_t           cl_max_workgroup_size;
-
-    cl_mem           rescaleInputMemObj;
-    size_t           rescaleInputMemObjSize;
-
-    cl_mem           rescaleOutputMemObj;
-    size_t           rescaleOutputMemObjSize;
 
     cl_mem           windowMemObj;
     size_t           windowMemObjSize;
@@ -87,12 +79,6 @@ private:
 
     cl_mem           fftImaginaryOutputMemObj;
     size_t           fftImaginaryOutputMemObjSize;
-
-    cl_mem           rescaleWholeSamplesMemObj;
-    size_t           rescaleWholeSamplesMemObjSize;
-
-    cl_mem           rescaleFracSamplesMemObj;
-    size_t           rescaleFracSamplesMemObjSize;
 
     cl_mem           lastFramePreScalingMemObj; // The last frame. Used for frame-averaging
     size_t           lastFramePreScalingMemObjSize;
@@ -132,8 +118,6 @@ private:
     void computeFFTWindow();
     bool initOpenCLFFT();
     QString clCreateBufferErrorVerbose(int clError) const;
-    bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag); //const quint16 *
-    bool computeTheFFT(const quint16 * pDataIn, cl_mem &fftOutReal, cl_mem &fftOutImag);
     bool isClReturnValueSuccess(cl_int ret, int line) const;
 };
 
