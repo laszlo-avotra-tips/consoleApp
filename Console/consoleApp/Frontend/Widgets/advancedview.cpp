@@ -103,10 +103,6 @@ advancedView::advancedView( QWidget *parent )
     ui.evoaControlWidget->setStyleSheet( style );
     ui.evoaControlWidget->show();
 
-#if !ENABLE_LOW_SPEED_DATA_SNAPSHOT
-    ui.saveSignalsPushButton->hide();
-#endif
-
     ui.swEncoder->hide();
 
 #if !ENABLE_SLED_SUPPORT_BOARD_TESTING
@@ -373,15 +369,6 @@ void advancedView::on_evoaSetDefaultButton_clicked()
     ui.evoaControlWidget->setValue( evoa->getCurrVoltage() );
 }
 
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-/*
- * on_saveSignalsPushButton_clicked
- */
-void advancedView::on_saveSignalsPushButton_clicked()
-{
-    emit saveSignals();
-}
-#endif
 
 #if ENABLE_SLED_SUPPORT_BOARD_TESTING
 /*

@@ -1770,10 +1770,6 @@ void frontend::configureHardware( void )
 //        {
 //            daq = new LowSpeedDAQ();
 
-//#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-//            connect( advView, SIGNAL(saveSignals()), daq, SIGNAL(saveSignals()) );
-//#endif
-
 //#if ENABLE_IPP_FFT_TUNING
 //            connect( this, SIGNAL( magScaleValueChanged( int ) ), daq, SIGNAL( magScaleValueChanged( int ) ) );
 //            connect( this, SIGNAL( fftScaleValueChanged( int ) ), daq, SIGNAL( fftScaleValueChanged( int ) ) );
@@ -1838,10 +1834,6 @@ void frontend::setIDAQ(IDAQ *object)
         }
         else
         {
-
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-            connect( advView, SIGNAL(saveSignals()), signalSource, SIGNAL(saveSignals()) );
-#endif
 
 #if ENABLE_IPP_FFT_TUNING
             connect( this, SIGNAL( magScaleValueChanged( int ) ), signalSource, SIGNAL( magScaleValueChanged( int ) ) );

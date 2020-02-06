@@ -55,9 +55,6 @@ signals:
 #if ENABLE_SLED_SUPPORT_BOARD_TESTING
     void checkSledStatus();
 #endif
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-    void saveSignals();
-#endif
 
 private:
     Ui::advancedViewClass ui;
@@ -98,9 +95,6 @@ private slots:
     void on_tdcCheckBox_toggled( bool checked );
     void on_evoaSetDefaultButton_clicked();
 
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-    void on_saveSignalsPushButton_clicked();
-#endif
 #if ENABLE_SLED_SUPPORT_BOARD_TESTING
     void on_getSledStatusButton_clicked();
 #endif

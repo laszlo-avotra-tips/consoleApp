@@ -40,10 +40,6 @@ signals:
     void updateCatheterView();
     void attenuateLaser( bool );
 
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-    void saveSignals();
-#endif
-
 #if ENABLE_IPP_FFT_TUNING
     void magScaleValueChanged( int );
     void fftScaleValueChanged( int );
