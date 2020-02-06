@@ -65,14 +65,7 @@ private:
 
     size_t           cl_max_workgroup_size;
 
-    cl_mem           windowMemObj;
-    size_t           windowMemObjSize;
-
-    cl_mem           fftImaginaryInputMemObj;
-    size_t           fftImaginaryInputMemObjSize;
-
     float           *fftImaginaryBuffer;
-    size_t           fftImaginaryBufferSize;
 
     cl_mem           fftRealOutputMemObj;
     size_t           fftRealOutputMemObjSize;

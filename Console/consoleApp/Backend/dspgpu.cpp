@@ -110,13 +110,8 @@ DSPGPU::~DSPGPU()
     clReleaseProgram( cl_BandCProgram );
     clReleaseProgram( cl_WarpProgram );
 
-    if(!SignalManager::instance()->isFftSource()){
-        clReleaseMemObject( fftImaginaryInputMemObj );
-    }
-
     //clReleaseMemObject( postProcOutputMemObj );
 
-    clReleaseMemObject( windowMemObj );
     clReleaseMemObject( fftRealOutputMemObj );
     clReleaseMemObject( fftImaginaryOutputMemObj );
 
@@ -660,20 +655,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
     const char* errorMsg = "failed to allocate memory";
     cl_int err;
 
-//    SignalManager::instance()->loadSignal(0);
-
-    if(!SignalManager::instance()->isFftSource()){
-
-        fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-        fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, &err );
-        LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
-        if(!fftImaginaryInputMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-    }
-
     fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
     fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
 
@@ -807,87 +788,6 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 
    float scaleFactor = 20000.0f * 255.0f / 65535.0f ;
    const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
-
-   if (!SignalManager::instance()->isFftSource()){
-
-       //clAmdFftStatus fftStatus;
-       cl_mem         inputMemObjects[ 2 ]  = { nullptr, fftImaginaryInputMemObj };
-       cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
-
-       // XXX: Empirically set to achieve full range at just below detector saturation
-       // scaleFactor adjusted for new DAQ Input Range for HS devices. See #1777, #1769
-
-       clStatus = clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                       fftImaginaryOutputMemObj,  // buffer
-                                       false,                     // blocking_read
-                                       0,                         // offset
-                                       sizeof( float ) * 1024,    // number of bytes to read
-                                       imData,                    // ptr
-                                       0,                         // set to zero
-                                       NULL,                      // goes with above zero
-                                       NULL );                    // see page 261 of OpenCL Programming Guide
-
-       clStatus |= clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                        fftRealOutputMemObj,       // buffer
-                                        false,                     // blocking_read
-                                        0,                         // offset
-                                        sizeof( float ) * 1024,    // number of bytes to read
-                                        reData,                    // ptr
-                                        0,                         // set to zero
-                                        NULL,                      // goes with above zero
-                                        NULL );                    // see page 261 of OpenCL Programming Guide
-
-
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to enqueue commands to read from buffer objects: "  << clStatus;
-           return false;
-       }
-
-       // pull out one A-line for the FFT display
-       pData->fftData[ 0 ] = 0;
-       for( int i = 1; i < 1024; i++ )
-       {
-           pData->fftData[ i ] = (unsigned short)( scaleFactor * log10( sqrt( ( imData[i] * imData[i] ) + ( reData[i] * reData[i] ) ) ) - dcNoiseLevel );
-
-           // set out-of-range values to zero (only for the graph)
-           if( pData->fftData[ i ] < 0 || pData->fftData[ i ] > 255 )
-           {
-               pData->fftData[ i ] = 0;
-           }
-       }
-
-//       fftStatus = clAmdFftEnqueueTransform( hCl_fft_plan, CLFFT_FORWARD, 1, &cl_Commands, 0,
-//                                             NULL, NULL, inputMemObjects, outputMemObjects, NULL );
-
-
-//       if( fftStatus != CLFFT_SUCCESS ) {
-//           qDebug() << "DSP: Failed to enqueue fft operation to OpenCL command queue.";
-//       }
-       const bool isBlocking(true);
-       clStatus = clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                       fftImaginaryOutputMemObj,  // buffer
-                                       isBlocking,                     // blocking_read
-                                       0,                         // offset
-                                       SignalManager::instance()->getFftMemSize(),    // number of bytes to read
-                                       SignalManager::instance()->getImagDataPointer() ,                    // ptr
-                                       0,                         // set to zero
-                                       nullptr,                      // goes with above zero
-                                       nullptr );                    // see page 261 of OpenCL Programming Guide
-
-       clStatus |= clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                        fftRealOutputMemObj,       // buffer
-                                        isBlocking,                     // blocking_read
-                                        0,                         // offset
-                                        SignalManager::instance()->getFftMemSize(),    // number of bytes to read
-                                        SignalManager::instance()->getRealDataPointer(),                    // ptr
-                                        0,                         // set to zero
-                                        nullptr,                      // goes with above zero
-                                        nullptr );                    // see page 261 of OpenCL Programming Guide
-       auto index = TheGlobals::instance()->frontFrameDataQueue();
-       SignalManager::instance()->setIsFftDataInitializedFromGpu(clStatus == CL_SUCCESS, index);
-   }
-
 
    unsigned int inputLength = RescalingDataLength;
 
