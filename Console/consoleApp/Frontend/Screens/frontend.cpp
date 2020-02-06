@@ -690,12 +690,7 @@ void frontend::shutdownCleanup()
     session.shutdown();
 
     // give pause for any messages in flight and then continue shutdown
-#ifdef WIN32
     Sleep( 1000 );
-#else
-    sleep( 1 );
-#endif
-
 }
 
 /*
@@ -768,13 +763,9 @@ void frontend::hideMouseTimerExpiry()
  */
 void frontend::storageSpaceTimerExpiry()
 {
-#ifdef WIN32
     // The L in front of the string does some WINAPI magic to convert
     // a string literal into a Windows LPCWSTR beast.
 #define ROOT_PATH L"c:"
-#else
-#define ROOT_PATH "/opt"
-#endif
 
     if( SawFile::getDiskFreeSpaceInGB( ROOT_PATH ) < MinDriveSpace_GB )
     {

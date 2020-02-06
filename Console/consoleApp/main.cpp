@@ -125,11 +125,7 @@ int main(int argc, char *argv[])
     // Run start-up checks
     Initialization init;
 
-#ifdef WIN32
     init.setExeCheck( runExeCheck );
-#else
-    init.setExeCheck( false );
-#endif
 
 #if USE_INIT
     if( !init.init( argc, argv ) )

@@ -69,11 +69,7 @@ private:
     enum ExpectedSDKVersion
     {
         Major = 6,
-#ifdef WIN32
         Minor = 0
-#else
-        Minor = 1
-#endif
     };
 
     // The service date of the console is associated with the configuration of the
