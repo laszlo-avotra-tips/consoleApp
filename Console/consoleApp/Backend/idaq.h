@@ -48,9 +48,6 @@ signals:
     void magScaleValueChanged( int );
     void fftScaleValueChanged( int );
 #endif
-#if CONSOLE_MANUFACTURING_RELEASE
-    void enableOcelotSwEncoder( bool enabled );
-#endif
 
 public slots:
     virtual void enableAuxTriggerAsTriggerEnable( bool ) = 0; //  * R&D only

@@ -52,18 +52,12 @@ advancedView::advancedView( QWidget *parent )
 //    ui.rawDataPlot->setAxisScale( QwtPlot::yLeft, MinADCVal, MaxADCVal );
 
 //    // Set up the FFT display
-//#if CONSOLE_MANUFACTURING_RELEASE
-//    ui.fftDataPlot->init( 512 );
-//    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, 3.3 );
-//    ui.fftDataPlot->drawMmDepthLines();
-//    QwtText fftBottomText( "Depth (mm)" );
-//#else
 //    ui.fftDataPlot->init( MaxDepthVal );
 //    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxDepthVal );
 //    QwtText fftBottomText( "Depth" );
 //    ui.fftDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
 //    ui.rawDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-//#endif
+
 //    fftBottomText.setColor( TitleColor );
 //    ui.fftDataPlot->setAxisTitle( QwtPlot::xBottom, fftBottomText );
 //    ui.fftDataPlot->axisTitle( QwtPlot::xBottom ).setColor( TitleColor );
@@ -113,67 +107,7 @@ advancedView::advancedView( QWidget *parent )
     ui.saveSignalsPushButton->hide();
 #endif
 
-#if CONSOLE_MANUFACTURING_RELEASE
-    /*
-     * Span from the normal starting point to the right edge of the monitor.
-     * Don't change the height of the widget.
-     */
-    setGeometry( 0, 0, width() + 98, height() );
-    ui.backgroundWidget->setGeometry( 0, 0, width(), height() );
-
-    ui.highSpeedLabel->hide();
-    ui.fftDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-    ui.rawDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-
-    ui.tdcCheckBox->hide();
-
-    ui.fftDataPlot->setGeometry( ui.fftDataPlot->x(),
-                                 ui.fftDataPlot->y(),
-                                 this->width(),
-                                 ui.fftDataPlot->height() );
-    ui.rawDataPlot->setGeometry( ui.rawDataPlot->x(),
-                                 ui.rawDataPlot->y(),
-                                 this->width(),
-                                 ui.rawDataPlot->height() );
-
-    ui.gridLayoutWidget->show();
-    ui.gridLayoutWidget->setGeometry( 10,
-                                      ( this->height() - ui.gridLayoutWidget->height() - 10 ),
-                                      ui.gridLayoutWidget->width(),
-                                      ui.gridLayoutWidget->height() );
-
-    ui.laserBox->show();
-    ui.laserBox->setGeometry( ( this->width() - ui.laserBox->width() - 10 ),
-                              ( this->height() - ui.laserBox->height() - 10 ),
-                              ui.laserBox->width(),
-                              ui.laserBox->height() );
-
-
-    ui.evoaBox->show();
-    ui.evoaSetDefaultButton->setGeometry( 10, 77, 161, 41 ); // move the button below the status box
-    ui.evoaBox->setGeometry( ( this->width() - ui.evoaBox->width() - 10 ),
-                             ( this->height() - ui.laserBox->height() - ui.evoaBox->height() - 20 ),
-                             ui.evoaBox->width(),
-                             ui.evoaBox->height() );
-
-    WindowManager &wmgr = WindowManager::Instance();
-    ui.wideDivideLabel->resize( wmgr.getTechnicianDisplayGeometry().width()/2, ui.wideDivideLabel->height() );
-    ui.instructionsLabel->resize( wmgr.getTechnicianDisplayGeometry().width()/2, ui.instructionsLabel->height() );
-    ui.titlebarLabel->resize( wmgr.getTechnicianDisplayGeometry().width()/2, ui.titlebarLabel->height() );
-
-    ui.swEncoder->setGeometry( ( ui.gridLayoutWidget->width() + 10 ),
-                               ( this->height() - 30 - 10 ),
-                               100,
-                               30 );
-    connect( ui.swEncoder, SIGNAL( toggled(bool) ), this, SIGNAL( enableOcelotSwEncoder(bool) ) );
-
-    rawDataMaxLabel = new QLabel( "", this );
-    rawDataMaxLabel->show();
-    rawDataMaxLabel->setGeometry( 330, 35, 300, 30 );
-    rawDataLength = MaxSampleVal; // Use the default value until it is updated from a system INI file.
-#else
     ui.swEncoder->hide();
-#endif
 
 #if !ENABLE_SLED_SUPPORT_BOARD_TESTING
     ui.getSledStatusButton->hide();
@@ -220,23 +154,6 @@ void advancedView::addScanline( const OCTFile::FrameData_t *pData )
         // request an update to the UI to make sure all pieces of the widget
         // refresh periodically
         update();
-
-#if CONSOLE_MANUFACTURING_RELEASE
-        if( pData->rawData )
-        {
-            float max = 0;
-            // find max val in raw data and display in a label
-            for( int i = 0; i < rawDataLength; i++ )
-            {
-                if( max < ( (float)pData->rawData[ i ] / 1000 ) )
-                {
-                    max = ( (float)pData->rawData[ i ] / 1000 );
-                }
-            }
-            // Format the number to display 55232 as 55.2 K, since this is more readable.
-            rawDataMaxLabel->setText( QString( "Raw Data Max: %1 K" ).arg( QString::number( max, 'f', 1 ) ) );
-        }
-#endif
     }
 }
 
@@ -342,9 +259,6 @@ void advancedView::handleRawDataLengthChange( int size )
     // Adjust the axis and amount of data to copy to the chart
 //lcv    ui.rawDataPlot->init( size );
 //lcv    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, size );
-#if CONSOLE_MANUFACTURING_RELEASE
-    rawDataLength = size;
-#endif
 }
 
 /*
@@ -427,20 +341,6 @@ void advancedView::handleDeviceChange()
 //lcv    ui.fftDataPlot->enableDisplayControls();
 
     ui.evoaStatusVal->setText( EvoaStatusDefault );
-
-#if CONSOLE_MANUFACTURING_RELEASE
-    int iMask_px = devSettings.current()->getInternalImagingMask_px();
-    ui.fftDataPlot->drawInternalMaskLine( iMask_px );
-    if( devSettings.current()->isHighSpeed() ) // only show for Low Speed
-    {
-        ui.swEncoder->hide();
-    }
-    else
-    {
-        ui.swEncoder->show();
-        ui.swEncoder->setChecked( false );
-    }
-#endif
 }
 
 /*

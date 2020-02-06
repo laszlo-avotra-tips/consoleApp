@@ -10,15 +10,6 @@
 
 
 /*
- * Build for Lightbox HS Manufacturing
- * 
- * Values:
- *    0  Build for standard release
- *    1  Build for Lightbox HS Manufacturing
- */
-#define CONSOLE_MANUFACTURING_RELEASE 0
-
-/*
  * Common flags to all the applications
  */
 #define USE_MOUSE_CAPTURE 1

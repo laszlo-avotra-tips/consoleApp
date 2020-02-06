@@ -56,13 +56,6 @@ public slots:
 
     void setInvertColors( bool enable ) { doInvertColors = enable; }
 
-#if CONSOLE_MANUFACTURING_RELEASE
-    void enableOcelotSwEncoder( bool enabled )
-    {
-        useSwEncoder = enabled;
-    }
-#endif
-
 protected:
     virtual unsigned int rescale( const unsigned short *inputData ) = 0;
 
@@ -126,10 +119,6 @@ protected:
 
     void loadRescalingData( void );
     bool findLabel( QTextStream *in, QString *currLine, const QString Label );
-
-#if CONSOLE_MANUFACTURING_RELEASE
-    bool useSwEncoder;
-#endif
 
 private:
     // Code for development without a GPU

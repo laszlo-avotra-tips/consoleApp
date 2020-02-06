@@ -58,9 +58,6 @@ signals:
 #if ENABLE_LOW_SPEED_DATA_SNAPSHOT
     void saveSignals();
 #endif
-#if CONSOLE_MANUFACTURING_RELEASE
-    void enableOcelotSwEncoder( bool );
-#endif
 
 private:
     Ui::advancedViewClass ui;
@@ -69,10 +66,6 @@ private:
     int   lineCount;
     int   lastLagValue;
     EVOA  *evoa;
-#if CONSOLE_MANUFACTURING_RELEASE
-    QLabel *rawDataMaxLabel;
-    int    rawDataLength;
-#endif
 
     const int MaxSampleVal {4992};               // Defined by the length of the pre-resampled laser data
     const int MinADCVal {32768};                 // ATS card is +/- full range, start at 0V

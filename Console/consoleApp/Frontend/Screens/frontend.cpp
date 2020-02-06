@@ -270,28 +270,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     origDeviceLabelStyleSheet = ui.deviceFieldLabel->styleSheet();
     origLiveGroupBoxStyleSheet = ui.liveGroupBox->styleSheet();
 
-#if CONSOLE_MANUFACTURING_RELEASE
-    /*
-     * Add labels to both the Technician and Physician screens 
-     * that indicate this release is NOT for distribution outside
-     * of Avinger.
-     */
-    QLabel *mfgLabel = new QLabel( "Manufacturing Use Only", this );
-    mfgLabel->setStyleSheet( "QLabel { font: 72px; color: red;}" );
-    mfgLabel->setGeometry( 10, 700, 991, 131 );
-    mfgLabel->show();
-
-    QLabel *docScreenMfgLabel = new QLabel( "Manufacturing Use Only", docWindow );
-    docScreenMfgLabel->setStyleSheet( "QLabel { font: 72px; color: red;}" );
-    docScreenMfgLabel->setGeometry( 1000, 360, 991, 131 );
-    docScreenMfgLabel->show();
-
-    QLabel *docScreenMfgLabel2 = new QLabel( "Manufacturing Use Only", docWindow );
-    docScreenMfgLabel2->setStyleSheet( "QLabel { font: 72px; color: red;}" );
-    docScreenMfgLabel2->setGeometry( 1000, 980, 991, 131 );
-    docScreenMfgLabel2->show();
-#endif
-
 #if ENABLE_MEASUREMENT_PRECISION
     QLabel *measurementPrecisionLabel = new QLabel( "Measurement Precision Enabled\nNOT FOR HUMAN USE", this );
     measurementPrecisionLabel->setStyleSheet( "QLabel { font: 20px; color: red;}" );
@@ -1835,10 +1813,6 @@ void frontend::configureHardware( void )
 
 //        connect( advView, SIGNAL( tdcToggled(bool) ), daq, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
 
-//#if CONSOLE_MANUFACTURING_RELEASE
-//        connect( advView, SIGNAL( enableOcelotSwEncoder(bool) ), daq, SIGNAL( enableOcelotSwEncoder(bool) ) );
-//#endif
-
 //        // initialize the hardware
 //        daq->init();
 //        sendDaqLevel( daq->getDaqLevel() );  // XXX: no need to signal from here
@@ -1907,10 +1881,6 @@ void frontend::setIDAQ(IDAQ *object)
         connect( viewOption, SIGNAL( setColorModeSepia() ),        scene, SLOT( loadColorModeSepia() ) );
 
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
-
-#if CONSOLE_MANUFACTURING_RELEASE
-        connect( advView, SIGNAL( enableOcelotSwEncoder(bool) ), signalSource, SIGNAL( enableOcelotSwEncoder(bool) ) );
-#endif
 
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
         // initialize the hardware

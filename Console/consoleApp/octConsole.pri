@@ -63,7 +63,6 @@ HEADERS += \
     Backend/evoa.h \
     Backend/powerdistributionboard.h \
     Backend/dsp.h \
-    Backend/softwaredsp.h \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
     Frontend/Widgets/curveswidget.h \
@@ -146,7 +145,6 @@ SOURCES += \
     Backend/evoa.cpp \ 
     Backend/powerdistributionboard.cpp \
     Backend/dsp.cpp \
-    Backend/softwaredsp.cpp \
     Backend/depthsetting.cpp \
     Backend/sledsupport.cpp \
     Frontend/Widgets/curveswidget.cpp \

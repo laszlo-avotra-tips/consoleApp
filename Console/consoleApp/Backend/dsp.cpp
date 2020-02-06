@@ -72,10 +72,6 @@ DSP::DSP()
 
     bytesPerBuffer = 0;
     bytesPerRecord = 0;
-
-#if CONSOLE_MANUFACTURING_RELEASE
-    useSwEncoder = false;
-#endif
 }
 
 /*

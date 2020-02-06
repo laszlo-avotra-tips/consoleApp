@@ -100,9 +100,6 @@ int main(int argc, char *argv[])
 #else
     LOG( INFO, "RELEASE Build" );
 #endif
-#if CONSOLE_MANUFACTURING_RELEASE
-    LOG( INFO, "CONSOLE MANUFACTURING RELEASE" );
-#endif
 #if ENABLE_SQUISH
     LOG( INFO, "SQUISH Enabled" );
 #else
