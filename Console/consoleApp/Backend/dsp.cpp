@@ -82,7 +82,7 @@ DSP::DSP()
 DSP::~DSP()
 {
     qDebug() << "DSP::~DSP()";
-    LOG( INFO, "DSP shutdown" );
+    LOG( INFO, "DSP shutdown" )
 
     if( fractionalSamples )
     {
@@ -111,8 +111,8 @@ void DSP::init( unsigned int inputLength,
 {
     recordLength   = inputLength;
     linesPerFrame  = frameLines;
-    bytesPerRecord = inBytesPerRecord;
-    bytesPerBuffer = inBytesPerBuffer;
+    bytesPerRecord = quint32(inBytesPerRecord);
+    bytesPerBuffer = quint32(inBytesPerBuffer);
     channelCount   = inChannelCount;
 
     qDebug() << "DSP: linesPerFrame"  << linesPerFrame;
@@ -185,7 +185,7 @@ void DSP::loadRescalingData( void )
 {
     // Load the configuration file
     const QString StrRescalingData = SystemDir + "/RescalingData.csv";
-    LOG1(StrRescalingData);
+    LOG1(StrRescalingData)
 
     QFile *input = new QFile( StrRescalingData );
 
@@ -215,13 +215,13 @@ void DSP::loadRescalingData( void )
     {
         QString strDate = currLine.section( ":", 1, 1 ).trimmed();
         serviceDate = QDate::fromString( strDate, "yyyy-MM-dd" );
-        LOG( INFO, "Last service date: " + serviceDate.toString() );
+        LOG( INFO, "Last service date: " + serviceDate.toString() )
 
         // set date service is due
         serviceDate = serviceDate.addYears( 1 );
         
         const QDate Now = QDate::currentDate();
-        const int NumDays = Now.daysTo( serviceDate );
+        const int NumDays = int(Now.daysTo( serviceDate ));
 
         // If the service date has passed (negative number of days), warn the operator
         // but let the application run. If the service date is within 30 days of expiring
@@ -297,12 +297,12 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
 quint32 DSP::getAvgAmplitude( quint16 *pA )
 {
     quint32 average = 0;
-    const int start_idx = (int)( recordLength / 3 );
-    const int end_idx   = (int)( ( 2 * recordLength ) / 3 );
+    const int start_idx = recordLength / 3 ;
+    const int end_idx   = ( 2 * recordLength ) / 3;
 
     for( int i = start_idx; i < end_idx; i++ )
     {
-        average += (quint32)( pA [ i ] );
+        average += pA [ i ];
     }
 
     average /= ( recordLength / 3 );
