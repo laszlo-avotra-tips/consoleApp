@@ -21,7 +21,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QCoreApplication>
-//#include "clAmdFft.h"
 #include "defaults.h"
 #include "dspgpu.h"
 #include "logger.h"
@@ -33,7 +32,6 @@
 //#include "ipp.h"
 #include "theglobals.h"
 #include <complex>
-#include <cudaFFTwrapper.h>
 #include "signalmanager.h"
 #include "playbackmanager.h"
 
@@ -91,13 +89,6 @@ DSPGPU::~DSPGPU()
     {
         delete [] reData;
     }
-
-//    if(!SignalManager::instance()->isFftSource()){
-//        if( fftImaginaryBuffer )
-//        {
-//            free( fftImaginaryBuffer );
-//        }
-//    }
 
     /*
      * Clean up openCL objects
@@ -174,12 +165,6 @@ bool DSPGPU::processData(int index)
 
     void* dataBuffer(nullptr);
     auto pmi = PlaybackManager::instance();
-    if( pmi->isInputQueue() && pmi->findInputBuffer(index, dataBuffer)){
-        LOG1(dataBuffer)
-        if(!SignalManager::instance()->isFftSource()){
-        // walk through the bulk data handling
-        }
-    }
     if(pmi->isFrameQueue() && pmi->findDisplayBuffer(index, pData)){
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
@@ -208,7 +193,7 @@ bool DSPGPU::processData(int index)
  * processData
  *
  * Do all the work we need to do to a frame of A-line data before handing it off to be displayed
- *    - Transform the data (FFT, magnitude, log)
+ *    - Transform the data (magnitude, log)
  *    - Bundle all of the data up for displaying and storing
  *
  * Data is shared across threads via a global data buffer.  A single counter indexes
@@ -261,9 +246,6 @@ void DSPGPU::processData( void )
             }
         }
 
-        if(!SignalManager::instance()->isFftSource()){
-        // walk through the bulk data handling        
-        }
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
             LOG( WARNING, "Failed to transform data on GPU." )

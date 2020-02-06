@@ -64,8 +64,6 @@ private:
 
     size_t           cl_max_workgroup_size;
 
-    float           *fftImaginaryBuffer;
-
     cl_mem           fftRealOutputMemObj;
     size_t           fftRealOutputMemObjSize;
 
@@ -107,7 +105,6 @@ private:
     QByteArray  loadCLProgramBinaryFromFile( QString );
     bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
     bool initOpenCL();
-    void computeFFTWindow();
     QString clCreateBufferErrorVerbose(int clError) const;
     bool isClReturnValueSuccess(cl_int ret, int line) const;
 };
