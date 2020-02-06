@@ -170,61 +170,6 @@ bool DSPGPU::processData(int index)
     return success;
 }
 
-/*
- * processData
- *
- * Do all the work we need to do to a frame of A-line data before handing it off to be displayed
- *    - Transform the data (magnitude, log)
- *    - Bundle all of the data up for displaying and storing
- *
- * Data is shared across threads via a global data buffer.  A single counter indexes
- * this buffer.  The DAQ writes to a slot in the buffer while the consumer alwayes
- * reads one slot behing the current index.  This buffer is lossy on purpose; the
- * laser produces more lines than we can transfer and display; there is no loss of
- * clinically relevant data since many of the lines are of the same view.
- */
-void DSPGPU::processData( void )
-{
-    // initialize prevIndex to the same value that index will get so no
-    // work is done until the DAQ starts up
-     static int prevIndex = TheGlobals::instance()->getPrevRawDataIndex();
-
-    // which index to point into for the raw data
-     int index = TheGlobals::instance()->getPrevRawDataIndex();
-
-    // Only process data if it has been updated
-    if( index != prevIndex )
-    {
-        prevIndex = index;
-
-        TIME_THIS_SCOPE( DSPGPU_processData );
-
-        // determine where to store this frame of data for the Frontend
-        pData = TheGlobals::instance()->getFrameDataPointer();
-
-        if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
-        {
-            LOG( WARNING, "Failed to transform data on GPU." )
-        }
-
-        /*
-         * Frame counts are filled in by the Data Consumer;
-         * this keeps the frame counts continuous.
-         */
-        pData->frameCount      = 0;
-        pData->encoderPosition = 0; // NOT USED for fast-OCT
-        pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = quint16(getMilliseconds());
-
-        // Update the global index into the shared buffer. This must be the last thing in the thread
-        // to make sure that the consumer thread only sees completely filled data structures.
-        TheGlobals::instance()->inrementFrameIndex();
-    }
-
-    yieldCurrentThread();
-}
-
-
 QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
 {
     QString cause;

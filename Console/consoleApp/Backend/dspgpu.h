@@ -97,7 +97,6 @@ private:
 
     // OpenCL support
     bool createCLMemObjects( cl_context context );
-    void processData( void );
     bool transformData( unsigned char *data , unsigned char *videoData );
 
     char       *loadCLProgramSourceFromFile( QString );

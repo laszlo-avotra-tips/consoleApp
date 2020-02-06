@@ -153,7 +153,6 @@ void DSP::run( void )
         while( isRunning )
         {
             // run full-tilt.
-            processData();
         }
 
         qDebug() << "Thread: DSP::run stop";

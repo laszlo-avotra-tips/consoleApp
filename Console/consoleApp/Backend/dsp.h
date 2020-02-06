@@ -34,7 +34,6 @@ public:
                        );
 
     virtual void run( void );
-    virtual void processData( void ) = 0;
 
     quint32 getAvgAmplitude( quint16 *pA );
 
