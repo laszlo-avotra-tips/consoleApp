@@ -1,19 +1,14 @@
 /*
  * dspgpu.cpp
  *
- * Handle raw signal data from the DAQ
- *    - Resample raw laser data
- *    - Process A-lines
- *    - Encoder angle
+ * Handle the fft signal data from the DAQ
+ *    - Post process
+ *    - Transform to polar
  *    - Scale output for display
  *
- * The input data is expected to be in two arrays of double precision, the first
- * are the whole parts of the sample numbers appearing at linear frequency intervals.
- * The second contains the fractional parts. The code then (linearly) interpolates the data
- * values at the whole + fractional sample number based on the preceding and following
- * whole samples.
+ * The input data is expected to be in two arrays of float, the first
  *
- * Author(s): Chris White, Dennis W. Jackson, Ryan Radjabi
+ * Author(s): Chris White, Dennis W. Jackson, Ryan Radjabi modified by lcv
  *
  * Copyright (c) 2012-2018 Avinger, Inc.
  *
@@ -71,14 +66,7 @@ DSPGPU::~DSPGPU()
     wait( 100 ); //ms
 
     // Release working memory
-    for( int i = 0; i < channelCount; i++ )
-    {
-        if( workingBuffer[ i ] )
-        {
-            delete [] workingBuffer[ i ] ;
-            workingBuffer[ i ] = nullptr;
-        }
-    }
+        delete [] workingBuffer;
 
     if( imData )
     {
@@ -123,22 +111,16 @@ DSPGPU::~DSPGPU()
 void DSPGPU::init( unsigned int inputLength,
                    unsigned int frameLines,
                    int inBytesPerRecord,
-                   int inBytesPerBuffer,
-                   int inChannelCount )
+                   int inBytesPerBuffer)
 {
     // call the common initilization steps
-    DSP::init( inputLength, frameLines, inBytesPerRecord, inBytesPerBuffer, inChannelCount );
+    DSP::init( inputLength, frameLines, inBytesPerRecord, inBytesPerBuffer );
 
-    for( int i = 0; i < inChannelCount; i++ )
-    {
-        // XXX Need to pass these into the DSP so we dont copy buffers there
-        // for opencl
-//        workingBuffer[ i ] = static_cast<quint16 *>(malloc( bytesPerBuffer ));
-        workingBuffer[ i ] = new quint16 [bytesPerBuffer / 2];
-    }
+    // XXX Need to pass these into the DSP so we dont copy buffers there
+    // for opencl
+    workingBuffer = new quint16 [bytesPerBuffer];
 
-    if( ( !workingBuffer[ 0 ] ) ||
-        ( ( inChannelCount == 2 ) && ( !workingBuffer[ 1 ] ) ) )
+    if(!workingBuffer)
     {
         emit sendError( tr( "Error allocating space in DSP::init" ) );
     }
@@ -163,7 +145,6 @@ bool DSPGPU::processData(int index)
 {
     bool success(false);
 
-    void* dataBuffer(nullptr);
     auto pmi = PlaybackManager::instance();
     if(pmi->isFrameQueue() && pmi->findDisplayBuffer(index, pData)){
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
@@ -220,31 +201,6 @@ void DSPGPU::processData( void )
 
         // determine where to store this frame of data for the Frontend
         pData = TheGlobals::instance()->getFrameDataPointer();
-
-        // use local pointer into data for easier access
-        const quint16 *pA = nullptr;
-
-        if( channelCount == 1 )
-        {
-            pA = TheGlobals::instance()->getRawDataBufferPointer(size_t(index));
-        }
-        else
-        {
-            // ATS DAQ interleaves Channels A & B.
-            const quint16 *pBothChannels = TheGlobals::instance()->getRawDataBufferPointer(size_t(index));
-
-            // point to the start of each working buffer
-            auto wb0 = workingBuffer[ 0 ];
-            auto wb1 = workingBuffer[ 1 ];
-
-            // De-interleave the data. IPP has a deinterleave function but my first
-            // pass at it failed. Might be faster; doesn't appear to matter.
-            for( unsigned int i = 0, j = 0; i < ( bytesPerBuffer / 2 ); i += 2, j++ )
-            {
-                wb0[ j ] = pBothChannels[ i ];
-                wb1[ j ] = pBothChannels[ i + 1 ];
-            }
-        }
 
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {

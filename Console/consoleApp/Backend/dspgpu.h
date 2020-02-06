@@ -26,11 +26,10 @@ class DSPGPU : public DSP
 public:
     ~DSPGPU();
 
-    void init( unsigned int inputLength,
+    void init(unsigned int inputLength,
                unsigned int frameLines,
                int inBytesPerRecord,
-               int inBytesPerBuffer,
-               int inChannelCount);
+               int inBytesPerBuffer);
 
     bool processData(int);
     bool loadFftOutMemoryObjects();
@@ -85,7 +84,7 @@ private:
     cl_mem           outputVideoImageMemObj;
     size_t           outputVideoImageMemObjSize;
 
-    quint16 *workingBuffer[ 2 ];
+    quint16 *workingBuffer{nullptr};
 
     float prevFrameWeight_percent;
     float currFrameWeight_percent;

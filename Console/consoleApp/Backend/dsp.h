@@ -30,8 +30,7 @@ public:
     virtual void init( unsigned int inputLength,
                        unsigned int frameLines,
                        int inBytesPerRecord,
-                       int inBytesPerBuffer,
-                       int inChannelCount
+                       int inBytesPerBuffer
                        );
 
     virtual void run( void );
@@ -76,8 +75,6 @@ private:
     bool isRunning;
 
 protected:
-    int channelCount;
-
     // pointer into the global data structure for passing frame data around
     OCTFile::FrameData_t *pData;
 

@@ -97,21 +97,18 @@ DSP::~DSP()
 void DSP::init( unsigned int inputLength,
                 unsigned int frameLines,
                 int inBytesPerRecord,
-                int inBytesPerBuffer,
-                int inChannelCount
+                int inBytesPerBuffer
                 )
 {
     recordLength   = inputLength;
     linesPerFrame  = frameLines;
     bytesPerRecord = quint32(inBytesPerRecord);
     bytesPerBuffer = quint32(inBytesPerBuffer);
-    channelCount   = inChannelCount;
 
     qDebug() << "DSP: linesPerFrame"  << linesPerFrame;
     qDebug() << "DSP: recordLength"   << recordLength;
     qDebug() << "DSP: bytesPerRecord" << bytesPerRecord;
     qDebug() << "DSP: bytesPerBuffer" << bytesPerBuffer;
-    qDebug() << "DSP: channelCount"   << channelCount;
 
     useDistalToProximalView = true;
     doInvertColors          = false;

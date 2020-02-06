@@ -55,14 +55,13 @@ void FileDaq::init()
 
     int recordsPerBuffer = deviceSettings::Instance().current()->getLinesPerRevolution();
 
-    int channelCount = 1;
-    int bytesPerBuffer = bytesPerRecord * recordsPerBuffer * channelCount;
+    int bytesPerBuffer = bytesPerRecord * recordsPerBuffer;
 
     // initialize the DSP thread
     m_dsp->init( DaqSettings::Instance().getRecordLength(),
                quint16(deviceSettings::Instance().current()->getLinesPerRevolution()),
                bytesPerRecord,
-               bytesPerBuffer, channelCount );
+               bytesPerBuffer);
 
     emit attenuateLaser( false );
 }
