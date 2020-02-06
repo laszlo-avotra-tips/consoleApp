@@ -7,11 +7,6 @@
  *    - Encoder angle
  *    - Scale output for display
  *
- * Implements a Santec-compatible frequency rescaling algorithm (rescale()).
- * This function takes data which has been sampled at regular time intervals
- * (via a DAQ) and interpolates it to produce data that appears sampled at
- * regular frequency intervals, according to a frequency/time interval function.
- *
  * The input data is expected to be in two arrays of double precision, the first
  * are the whole parts of the sample numbers appearing at linear frequency intervals.
  * The second contains the fractional parts. The code then (linearly) interpolates the data

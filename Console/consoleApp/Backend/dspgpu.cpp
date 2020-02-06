@@ -7,11 +7,6 @@
  *    - Encoder angle
  *    - Scale output for display
  *
- * Implements a Santec-compatible frequency rescaling algorithm (rescale()).
- * This function takes data which has been sampled at regular time intervals
- * (via a DAQ) and interpolates it to produce data that appears sampled at
- * regular frequency intervals, according to a frequency/time interval function.
- *
  * The input data is expected to be in two arrays of double precision, the first
  * are the whole parts of the sample numbers appearing at linear frequency intervals.
  * The second contains the fractional parts. The code then (linearly) interpolates the data
@@ -44,12 +39,10 @@
 
 
 #if _DEBUG
-#   define RESCALE_CL  "./backend/opencl/rescale.cl"
 #   define POSTPROC_CL "./backend/opencl/postproc.cl"
 #   define BANDC_CL    "./backend/opencl/bandc.cl"
 #   define WARP_CL     "./backend/opencl/warp.cl"
 #else
-#   define RESCALE_CL  "./rescale.cl"
 #   define POSTPROC_CL "./postproc.cl"
 #   define BANDC_CL    "./bandc.cl"
 #   define WARP_CL     "./warp.cl"
@@ -203,12 +196,6 @@ bool DSPGPU::processData(int index)
         LOG1(dataBuffer)
         if(!SignalManager::instance()->isFftSource()){
         // walk through the bulk data handling
-            if( !rescale( static_cast<quint16*>(dataBuffer) ) )  //Success if return 0
-            {
-                PlaybackManager::instance()->inputProcessingDone(index);
-            } else {
-                LOG( WARNING, "Failed to rescale data on GPU." )
-            }
         }
     }
     if(pmi->isFrameQueue() && pmi->findDisplayBuffer(index, pData)){
@@ -295,10 +282,6 @@ void DSPGPU::processData( void )
 
         if(!SignalManager::instance()->isFftSource()){
         // walk through the bulk data handling        
-            if( !rescale( pA ))  //Success if return 0
-            {
-                LOG( WARNING, "Failed to rescale data on GPU." )
-            }
         }
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
@@ -771,13 +754,6 @@ bool DSPGPU::initOpenCL()
         qDebug() << "DSP: OpenCL could not create command queue.";
         displayFailureMessage( tr( "Could not create OpenCL command queue, reason %1" ).arg( err ), true );
         return false;
-    }
-
-    if(!SignalManager::instance()->isFftSource()){
-        if( !buildOpenCLKernel( QString( path + RESCALE_CL ), "rescale_kernel", &cl_RescaleProgram, &cl_RescaleKernel ) )
-        {
-            return false;
-        }
     }
 
     if( !buildOpenCLKernel( QString( path + POSTPROC_CL ), "postproc_kernel", &cl_PostProcProgram, &cl_PostProcKernel ) )
@@ -1316,63 +1292,6 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    return true;
 }
 
-/*
- * rescale
- *
- * rescale() operates on input data to produce data which is *as if* the data
- * had been sampled linearly in frequency. Given a set of ideally linear in frequency
- * sample numbers (which are actually floating point, so non-existant), the function
- * interpolates between existing data to produce approximate samples.
- *
- * The input data is assumed to be zeroed before this function is called.
- * offset is subtracted from the final value (if provided) to correct for any
- * DAQ ADC count offset. It may be removed if not deemed necessary.
- *
- */
-unsigned int DSPGPU::rescale( const unsigned short *inputData )
-{
-//    LOG1(inputData)
-    TIME_THIS_SCOPE( dsp_rescale );
-    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
-    int err = clEnqueueWriteBuffer( cl_Commands,
-                                    rescaleInputMemObj,
-                                    true,
-                                    0,
-                                    rescaleInputMemObjSize,
-                                    inputData,
-                                    0,
-                                    nullptr,
-                                    nullptr );
-//    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
-
-    if( err != CL_SUCCESS )
-    {
-        qDebug() << "Error: Failed to enqueue new data to GPU! Err = " << err;
-        return 1;
-    }
-    err  = clSetKernelArg( cl_RescaleKernel, 0, sizeof(cl_mem),       &rescaleInputMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 1, sizeof(cl_mem),       &rescaleOutputMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 2, sizeof(cl_mem),       &rescaleFracSamplesMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 3, sizeof(cl_mem),       &rescaleWholeSamplesMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 4, sizeof(cl_mem),       &windowMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 5, sizeof(unsigned int), &recordLength );
-    err |= clSetKernelArg( cl_RescaleKernel, 6, sizeof(unsigned int), &RescalingDataLength );
-
-    err |= clEnqueueNDRangeKernel( cl_Commands, cl_RescaleKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
-
-    if( err != CL_SUCCESS )
-    {
-        qDebug() << "Error: Failed to execute kernel! Err = " << err;
-        qDebug() << "global_unit_dim[0] = " << global_unit_dim[ 0 ] << "global_unit_dim[1] = " << global_unit_dim[ 1 ] << "\n"
-                 << "local_unit_dim[0]  = " << local_unit_dim[ 0 ]  << "local_unit_dim[1]  = " << local_unit_dim[ 1 ];
-        return 1;
-    }
-//    auto tgi = TheGlobals::instance();
-//    LOG3(local_unit_dim[ 0 ], local_unit_dim[ 1 ], tgi->getGFrameCounter())
-//    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx())
-
-    return 0;
-}
 
 bool DSPGPU::loadFftOutMemoryObjects()
 {

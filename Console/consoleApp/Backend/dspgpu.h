@@ -122,8 +122,6 @@ private:
 
     // OpenCL support
     bool createCLMemObjects( cl_context context );
-
-    unsigned int rescale( const unsigned short *inputData );
     void processData( void );
     bool transformData( unsigned char *data , unsigned char *videoData );
 

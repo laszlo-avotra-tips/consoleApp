@@ -55,8 +55,6 @@ public slots:
     void setInvertColors( bool enable ) { doInvertColors = enable; }
 
 protected:
-    virtual unsigned int rescale( const unsigned short *inputData ) = 0;
-
     bool useDistalToProximalView;
     bool doInvertColors;
 

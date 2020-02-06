@@ -198,6 +198,5 @@ RESOURCES += ./octConsole.qrc \
 win32:RC_FILE += octConsole.rc
 
 OTHER_FILES += \
-    Backend/OpenCL/rescale.cl \
     Backend/OpenCL/postProc.cl \
     Backend/OpenCL/warp.cl
