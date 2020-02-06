@@ -92,12 +92,12 @@ DSPGPU::~DSPGPU()
         delete [] reData;
     }
 
-    if(!SignalManager::instance()->isFftSource()){
-        if( fftImaginaryBuffer )
-        {
-            free( fftImaginaryBuffer );
-        }
-    }
+//    if(!SignalManager::instance()->isFftSource()){
+//        if( fftImaginaryBuffer )
+//        {
+//            free( fftImaginaryBuffer );
+//        }
+//    }
 
     /*
      * Clean up openCL objects
@@ -109,8 +109,6 @@ DSPGPU::~DSPGPU()
     clReleaseProgram( cl_PostProcProgram );
     clReleaseProgram( cl_BandCProgram );
     clReleaseProgram( cl_WarpProgram );
-
-    //clReleaseMemObject( postProcOutputMemObj );
 
     clReleaseMemObject( fftRealOutputMemObj );
     clReleaseMemObject( fftImaginaryOutputMemObj );
@@ -288,26 +286,6 @@ void DSPGPU::processData( void )
     yieldCurrentThread();
 }
 
-
-/*
- * initOpenCLFFT
- *
- * Set up the FFT plan for using clAmdFft.
- *
- */
-bool DSPGPU::initOpenCLFFT( void )
-{
-
-//    fftImaginaryBuffer = static_cast<float *>(malloc( sizeof(float) * RescalingDataLength * linesPerFrame ));
-    fftImaginaryBuffer = new float [ RescalingDataLength * linesPerFrame ];
-    if( !fftImaginaryBuffer )
-    {
-        qDebug() << "new fftImaginaryBuffer failed.";
-        return false;
-    }
-    memset( fftImaginaryBuffer, 0, sizeof(float) * RescalingDataLength * linesPerFrame );
-    return true;
-}
 
 QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
 {
@@ -587,12 +565,6 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-    if( !initOpenCLFFT() )
-    {
-        qDebug() << "initOpenCLFFT() failed.";
-        return false;
-    }
-
     createCLMemObjects( cl_Context );
 
     global_unit_dim[ 0 ] = RescalingDataLength;
@@ -675,7 +647,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
              displayFailureMessage( tr( "Failed to create fftImaginaryOutputMemObj" ), true );
              return false;
         }
-//        loadFftOutMemoryObjects();
 
     }else{
         fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, nullptr );

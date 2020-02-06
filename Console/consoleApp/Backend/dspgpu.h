@@ -12,7 +12,6 @@
 #define DSPGPU_H_
 
 #include <CL/opencl.h>
-//#include "clAmdFft.h"
 #include "dsp.h"
 #include "buildflags.h"
 
@@ -109,7 +108,6 @@ private:
     bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
     bool initOpenCL();
     void computeFFTWindow();
-    bool initOpenCLFFT();
     QString clCreateBufferErrorVerbose(int clError) const;
     bool isClReturnValueSuccess(cl_int ret, int line) const;
 };
