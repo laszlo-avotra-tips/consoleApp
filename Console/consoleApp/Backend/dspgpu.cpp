@@ -684,7 +684,7 @@ bool DSPGPU::initOpenCL()
     }
 
     // Verify the GPU is present
-    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, NULL );
+    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
 
     // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
     if( err == CL_DEVICE_NOT_FOUND )
@@ -696,7 +696,7 @@ bool DSPGPU::initOpenCL()
 #endif
         qDebug() << "GPU not present.  Falling back to the CPU.";
 #endif
-        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, NULL );
+        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, nullptr );
     }
 
     if( err != CL_SUCCESS )
@@ -1049,10 +1049,10 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 {
    int            clStatus;
-   int            averageVal   = (int)doAveraging;
-   int            invertColors = (int)doInvertColors;
+   int            averageVal   = doAveraging;
+   int            invertColors = doInvertColors;
 
-   float scaleFactor = (float) ( ( 20000.0 * 255.0 ) / 65535.0 );
+   float scaleFactor = 20000.0f * 255.0f / 65535.0f ;
    const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
 
    if (!SignalManager::instance()->isFftSource()){
@@ -1197,7 +1197,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 
    global_unit_dim[ 0 ] = FFTDataSize;
    global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_PostProcKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
+   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_PostProcKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
@@ -1229,7 +1229,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
     }
     global_unit_dim[ 0 ] = FFTDataSize;
     global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-    clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_BandCKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
+    clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_BandCKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
@@ -1237,11 +1237,11 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
     }
 
    // Set true by default, means the sector draws Counter-Clockwise. This variable is necessary because we pass an address as an argument.
-   int reverseDirection = (int)useDistalToProximalView;
+   int reverseDirection = useDistalToProximalView;
 
    // get variables and pass into Warp.CL
    depthSetting &depth = depthSetting::Instance();
-   const int   imagingDepth_S   = depth.getDepth_S();
+   const int   imagingDepth_S   = int(depth.getDepth_S());
    const float fractionOfCanvas = depth.getFractionOfCanvas();
 
    deviceSettings &dev = deviceSettings::Instance();
@@ -1272,7 +1272,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    global_unit_dim[ 0 ] = SectorWidth_px;
    global_unit_dim[ 1 ] = SectorHeight_px;
 
-   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_WarpKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
+   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_WarpKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
 
    if( clStatus != CL_SUCCESS )
    {
@@ -1296,7 +1296,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    /*
     * read out the display frame
     */
-   clStatus = clEnqueueReadImage( cl_Commands, outputImageMemObj, CL_TRUE, origin, region, 0, 0, dispData, 0, NULL, NULL );
+   clStatus = clEnqueueReadImage( cl_Commands, outputImageMemObj, CL_TRUE, origin, region, 0, 0, dispData, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to read back final image data from warp kernel: " << clStatus;
@@ -1306,7 +1306,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    /*
     * read out the video frame
     */
-   clStatus = clEnqueueReadImage( cl_Commands, outputVideoImageMemObj, CL_TRUE, origin, region, 0, 0, videoData, 0, NULL, NULL );
+   clStatus = clEnqueueReadImage( cl_Commands, outputVideoImageMemObj, CL_TRUE, origin, region, 0, 0, videoData, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to read back video image data from warp kernel: " << clStatus;
