@@ -67,7 +67,6 @@ private:
 
     size_t           cl_max_workgroup_size;
 
-    float           *windowBuffer;
     cl_mem           rescaleInputMemObj;
     size_t           rescaleInputMemObjSize;
 

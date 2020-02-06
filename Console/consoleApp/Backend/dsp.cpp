@@ -44,9 +44,6 @@
 #include "Utility/userSettings.h"
 
 
-// Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
-//const float NormalizeScalingFactor = float(SectorWidth_px) / 2.0f;
-
 /*
  * constructor
  *

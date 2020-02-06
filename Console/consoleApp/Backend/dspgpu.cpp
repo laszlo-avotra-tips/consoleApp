@@ -66,9 +66,6 @@ size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
 size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
 }
 
-// Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
-const float NormalizeScalingFactor = (float)( (float)SectorWidth_px / (float)2 );
-
 /*
  * destructor
  *
@@ -76,7 +73,7 @@ const float NormalizeScalingFactor = (float)( (float)SectorWidth_px / (float)2 )
  */
 DSPGPU::~DSPGPU()
 {
-    LOG( INFO, "DSP GPU shutdown" );
+    LOG( INFO, "DSP GPU shutdown" )
     qDebug() << "DSPGPU::~DSPGPU()";
 
     stop();
@@ -85,10 +82,10 @@ DSPGPU::~DSPGPU()
     // Release working memory
     for( int i = 0; i < channelCount; i++ )
     {
-        if( workingBuffer[ i ] != NULL )
+        if( workingBuffer[ i ] )
         {
-            free( workingBuffer[ i ] );
-            workingBuffer[ i ] = NULL;
+            delete [] workingBuffer[ i ] ;
+            workingBuffer[ i ] = nullptr;
         }
     }
 
@@ -100,11 +97,6 @@ DSPGPU::~DSPGPU()
     if( reData )
     {
         delete [] reData;
-    }
-
-    if( windowBuffer )
-    {
-        free( windowBuffer );
     }
 
     if(!SignalManager::instance()->isFftSource()){
@@ -175,18 +167,17 @@ void DSPGPU::init( unsigned int inputLength,
     {
         // XXX Need to pass these into the DSP so we dont copy buffers there
         // for opencl
-        workingBuffer[ i ] = (quint16 *)malloc( bytesPerBuffer );
+//        workingBuffer[ i ] = static_cast<quint16 *>(malloc( bytesPerBuffer ));
+        workingBuffer[ i ] = new quint16 [bytesPerBuffer / 2];
     }
 
-    if( ( workingBuffer[ 0 ] == NULL ) ||
-        ( ( inChannelCount == 2 ) && ( workingBuffer[ 1 ] == NULL ) ) )
+    if( ( !workingBuffer[ 0 ] ) ||
+        ( ( inChannelCount == 2 ) && ( !workingBuffer[ 1 ] ) ) )
     {
         emit sendError( tr( "Error allocating space in DSP::init" ) );
     }
 
     // Configure the DSP
-    computeFFTWindow();
-
     if( !initOpenCL() )
     {
         displayFailureMessage( tr( "Could not initialize OpenCL." ), true );
@@ -209,22 +200,21 @@ bool DSPGPU::processData(int index)
     void* dataBuffer(nullptr);
     auto pmi = PlaybackManager::instance();
     if( pmi->isInputQueue() && pmi->findInputBuffer(index, dataBuffer)){
-        LOG1(dataBuffer);
+        LOG1(dataBuffer)
         if(!SignalManager::instance()->isFftSource()){
         // walk through the bulk data handling
-            if( rescale( static_cast<quint16*>(dataBuffer) ) != 0 )  //Success if return 0
+            if( !rescale( static_cast<quint16*>(dataBuffer) ) )  //Success if return 0
             {
-                LOG( WARNING, "Failed to rescale data on GPU." );
-            } else {
                 PlaybackManager::instance()->inputProcessingDone(index);
+            } else {
+                LOG( WARNING, "Failed to rescale data on GPU." )
             }
         }
     }
     if(pmi->isFrameQueue() && pmi->findDisplayBuffer(index, pData)){
-//        pData = TheGlobals::instance()->getFrameDataPointer();
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
-            LOG( WARNING, "Failed to transform data on GPU." );
+            LOG( WARNING, "Failed to transform data on GPU." )
         }
 
         /*
@@ -234,13 +224,13 @@ bool DSPGPU::processData(int index)
         pData->frameCount      = 0;
         pData->encoderPosition = 0; // NOT USED for fast-OCT
         pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = getMilliseconds();
+        pData->milliseconds    = quint16(getMilliseconds());
 
         success = true;
 
         PlaybackManager::instance()->frameReady(index);
     } else{
-        LOG1(pData);
+        LOG1(pData)
     }
     return success;
 }
@@ -279,7 +269,7 @@ void DSPGPU::processData( void )
         pData = TheGlobals::instance()->getFrameDataPointer();
 
         // use local pointer into data for easier access
-        const quint16 *pA = NULL;
+        const quint16 *pA = nullptr;
 
         if( channelCount == 1 )
         {
@@ -303,28 +293,17 @@ void DSPGPU::processData( void )
             }
         }
 
-#if !ENABLE_DEMO_MODE
         if(!SignalManager::instance()->isFftSource()){
         // walk through the bulk data handling        
-            if( rescale( pA ) != 0 )  //Success if return 0
+            if( !rescale( pA ))  //Success if return 0
             {
-                LOG( WARNING, "Failed to rescale data on GPU." );
+                LOG( WARNING, "Failed to rescale data on GPU." )
             }
         }
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
-            LOG( WARNING, "Failed to transform data on GPU." );
+            LOG( WARNING, "Failed to transform data on GPU." )
         }
-#else
-        // zero out the image data, no processing for demo mode
-        memset( pData->dispData, 0, SectorHeight_px * SectorWidth_px * sizeof( unsigned char ) );
-#endif
-
-        // Copy the resampled raw data into the shared memory buffer. The buffer
-        // resampledData is used for in-place transforming of the data so it must be
-        // copied before any other processing takes place.
-//lcv        ippsCopy_16s( (Ipp16s *)pA, (Ipp16s *)pData->rawData, bytesPerRecord / 2 );  // used for Advanced View display
-//lcv        ippsCopy_8u( reinterpret_cast<const quint8*>(pA), reinterpret_cast<quint8*>(pData->rawData), bytesPerRecord );
 
         /*
          * Frame counts are filled in by the Data Consumer;
@@ -333,33 +312,16 @@ void DSPGPU::processData( void )
         pData->frameCount      = 0;
         pData->encoderPosition = 0; // NOT USED for fast-OCT
         pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = getMilliseconds();
+        pData->milliseconds    = quint16(getMilliseconds());
 
         // Update the global index into the shared buffer. This must be the last thing in the thread
         // to make sure that the consumer thread only sees completely filled data structures.
         TheGlobals::instance()->inrementFrameIndex();
-
-//        prevIndex = index;
     }
 
     yieldCurrentThread();
 }
 
-
-/*
- * ComputeFFTWindow
- *
- * Precompute the window function to be applied to the pre-FFT signal.
- */
-void DSPGPU::computeFFTWindow( void )
-{
-    windowBuffer = (float *)malloc(RescalingDataLength  * sizeof(float) );
-//    ippsSet_32f( 1, windowBuffer, RescalingDataLength );
-//    ippsWinHann_32f_I( windowBuffer, RescalingDataLength );
-    for(unsigned int i = 0; i < RescalingDataLength; ++i){
-        windowBuffer[i] = 1.0f;
-    }
-}
 
 /*
  * initOpenCLFFT
@@ -370,10 +332,11 @@ void DSPGPU::computeFFTWindow( void )
 bool DSPGPU::initOpenCLFFT( void )
 {
 
-    fftImaginaryBuffer = static_cast<float *>(malloc( sizeof(float) * RescalingDataLength * linesPerFrame ));
+//    fftImaginaryBuffer = static_cast<float *>(malloc( sizeof(float) * RescalingDataLength * linesPerFrame ));
+    fftImaginaryBuffer = new float [ RescalingDataLength * linesPerFrame ];
     if( !fftImaginaryBuffer )
     {
-        qDebug() << "malloc() fftImaginaryBuffer failed.";
+        qDebug() << "new fftImaginaryBuffer failed.";
         return false;
     }
     memset( fftImaginaryBuffer, 0, sizeof(float) * RescalingDataLength * linesPerFrame );
@@ -592,7 +555,7 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
      * Load, compile, link the source
      */
     LOG1(kernelName)
-    char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
+    const char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
     if( !sourceBuf )
     {
         displayFailureMessage( tr( "Failed to load program source file %1 (%2)" ).arg( clSourceFile ).arg( QDir::currentPath() ), true );
@@ -602,28 +565,28 @@ bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl
     /*
      * Create the compute program(s) from the source buffer
      */
-    *program = clCreateProgramWithSource( cl_Context, 1, (const char **) &sourceBuf, NULL, &err );
+    *program = clCreateProgramWithSource( cl_Context, 1, &sourceBuf, nullptr, &err );
     if( !*program || ( err != CL_SUCCESS ) )
     {
         qDebug() << "DSP: OpenCL could not create program from source: " << err;
         displayFailureMessage( tr( "Could not build OpenCL kernel from source, reason %1" ).arg( err ), true );
         return false;
     }
-    free( sourceBuf );
+    delete [] sourceBuf;
 
-    err = clBuildProgram( *program, 0, NULL, NULL, NULL, NULL );
+    err = clBuildProgram( *program, 0, nullptr, nullptr, nullptr, nullptr);
     if( err != CL_SUCCESS )
     {
         size_t length;
         const int BuildLogLength = 2048;
-        char *build_log = (char *)malloc( BuildLogLength );
+        char *build_log = new char [BuildLogLength];
 
         qDebug() << "DSP: OpenCL build failed: " << err;
         clGetProgramBuildInfo( *program, cl_ComputeDeviceId, CL_PROGRAM_BUILD_LOG, BuildLogLength, build_log, &length );
         qDebug() << "openCl Build log:" << build_log;
 
         displayFailureMessage( tr( "Could not build program, reason %1" ).arg( err ), true );
-        free( build_log );
+        delete []  build_log;
         return false;
     }
 
@@ -671,8 +634,9 @@ bool DSPGPU::initOpenCL()
     }
 
     // Found openCL-capable platforms
-    cl_platform_id* platformIds = ( cl_platform_id* )malloc( sizeof( cl_platform_id ) * numPlatforms );
-    err = clGetPlatformIDs( numPlatforms, platformIds, NULL );
+//    cl_platform_id* platformIds = (cl_platform_id* )malloc( sizeof( cl_platform_id ) * numPlatforms );
+    cl_platform_id* platformIds = new cl_platform_id [numPlatforms];
+    err = clGetPlatformIDs( numPlatforms, platformIds, nullptr );
 
     uint deviceIndex = 99;
 
@@ -711,7 +675,7 @@ bool DSPGPU::initOpenCL()
     platformId = platformIds[ deviceIndex ];
 
     // release the memory.  Error paths do not free the memory since they will shut down the program
-    free( platformIds );
+    delete [] platformIds;
 
     if( err != CL_SUCCESS )
     {
@@ -860,13 +824,13 @@ char *DSPGPU::loadCLProgramSourceFromFile( QString filename )
     if( !sourceFile.open( QIODevice::ReadOnly ) )
     {
         displayFailureMessage( tr( "Failed to load OpenCL source file %1 ").arg( filename ), true );
-        return NULL;
+        return nullptr;
     }
 
-    int srcSize = sourceFileInfo.size();
+    auto srcSize = sourceFileInfo.size();
 
     // memory is freed by the calling routine
-    sourceBuf = (char *)malloc( srcSize + 1 );
+    sourceBuf = new char [size_t(srcSize + 1) ];
     sourceFile.read( sourceBuf, srcSize );
     sourceBuf[ srcSize ] = '\0'; // Very important!
     return sourceBuf;
@@ -882,7 +846,7 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
     if( !objectFile.open( QIODevice::ReadOnly ) )
     {
         displayFailureMessage( tr( "Failed to load OpenCL object file %1 ").arg( filename ), true );
-        return NULL;
+        return nullptr;
     }
 
     QByteArray objectBytes;
@@ -939,7 +903,7 @@ bool DSPGPU::createCLMemObjects( cl_context context )
         }
 
         windowMemObjSize = RescalingDataLength * sizeof(float);
-        windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, &err );
+        windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, nullptr, &err );
         LOG2(windowMemObj, windowMemObjSize)
         if(!windowMemObj){
             LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
