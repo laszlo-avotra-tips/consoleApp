@@ -40,11 +40,6 @@ signals:
     void updateCatheterView();
     void attenuateLaser( bool );
 
-#if ENABLE_IPP_FFT_TUNING
-    void magScaleValueChanged( int );
-    void fftScaleValueChanged( int );
-#endif
-
 public slots:
     virtual void enableAuxTriggerAsTriggerEnable( bool ) = 0; //  * R&D only
 

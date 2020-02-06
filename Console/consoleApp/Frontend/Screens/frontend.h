@@ -147,10 +147,6 @@ signals:
     void setSlidingPoint( int );
 #endif
 
-#if ENABLE_IPP_FFT_TUNING
-    void magScaleValueChanged( int );
-    void fftScaleValueChanged( int );
-#endif
 //    void setSledRotation( bool );
 	void setDoPaint();
 
@@ -260,11 +256,6 @@ private slots:
     void hideMouseTimerExpiry();
     void storageSpaceTimerExpiry();
     void reenableRecordLoopButtonExpiry();
-
-#if ENABLE_IPP_FFT_TUNING
-    void on_magSpinBox_valueChanged( int arg1 );
-    void on_fftSpinBox_valueChanged( int arg1 );
-#endif
 
 #if ENABLE_COLORMAP_OPTIONS
     void on_contrastCurveButton_clicked();

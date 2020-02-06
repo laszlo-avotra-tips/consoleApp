@@ -103,11 +103,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     ui.rawDataPushButton->hide();
     ui.rawSnapshotSpinBox->hide();
 
-#if ENABLE_IPP_FFT_TUNING
-    ui.fftDevelopmentGroupBox->show();
-#else
     ui.fftDevelopmentGroupBox->hide();
-#endif
 
 #if ENABLE_VIDEO_CRF_QUALITY_TESTING
     ui.crfTestLabel->show();
@@ -1766,15 +1762,6 @@ void frontend::configureHardware( void )
 //            connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), daq, SIGNAL(setFrameAverageWeights(int,int)) );
 //            connect( scene, SIGNAL(sendDisplayAngle(float)), daq, SIGNAL(handleDisplayAngle(float)) );
 //        }
-//        else
-//        {
-//            daq = new LowSpeedDAQ();
-
-//#if ENABLE_IPP_FFT_TUNING
-//            connect( this, SIGNAL( magScaleValueChanged( int ) ), daq, SIGNAL( magScaleValueChanged( int ) ) );
-//            connect( this, SIGNAL( fftScaleValueChanged( int ) ), daq, SIGNAL( fftScaleValueChanged( int ) ) );
-//#endif
-//        }
 
 //        // connect error/warning handlers before initializing the hardware
 //        connect( daq, SIGNAL( sendWarning( QString ) ),       this,    SLOT( handleWarning( QString ) ) );
@@ -1831,14 +1818,6 @@ void frontend::setIDAQ(IDAQ *object)
         {
             connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), signalSource, SIGNAL(setFrameAverageWeights(int,int)) );
             connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
-        }
-        else
-        {
-
-#if ENABLE_IPP_FFT_TUNING
-            connect( this, SIGNAL( magScaleValueChanged( int ) ), signalSource, SIGNAL( magScaleValueChanged( int ) ) );
-            connect( this, SIGNAL( fftScaleValueChanged( int ) ), signalSource, SIGNAL( fftScaleValueChanged( int ) ) );
-#endif
         }
 
         // connect error/warning handlers before initializing the hardware
@@ -1906,20 +1885,6 @@ void frontend::shutdownHardware( void )
      */
     Sleep( 500 );
 }
-
-#if ENABLE_IPP_FFT_TUNING
-// R&D only
-void frontend::on_magSpinBox_valueChanged(int arg1)
-{
-    emit magScaleValueChanged( arg1 );
-}
-
-// R&D only
-void frontend::on_fftSpinBox_valueChanged(int arg1)
-{
-    emit fftScaleValueChanged( arg1 );
-}
-#endif
 
 #if ENABLE_COLORMAP_OPTIONS
 // R&D only
