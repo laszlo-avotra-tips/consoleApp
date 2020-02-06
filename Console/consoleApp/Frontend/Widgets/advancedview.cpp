@@ -76,9 +76,7 @@ advancedView::advancedView( QWidget *parent )
 
     ui.versionLabel->setText( getSoftwareVersionNumber() );
 
-#if !ENABLE_TOP_DEAD_CENTER_TOGGLE
     ui.tdcCheckBox->hide(); //lcv
-#endif
 
     /*
      * NOTE: The internal name is EVOA, but the user-facing name will be "Imaging Strength".
@@ -313,9 +311,6 @@ void advancedView::handleDeviceChange()
 //        ui.fftDataPlot->changeBrightness( BrightnessLevels_HighSpeed.defaultValue );
 //        ui.fftDataPlot->changeContrast( ContrastLevels_HighSpeed.defaultValue );
 
-#if ENABLE_TOP_DEAD_CENTER_TOGGLE
-        ui.tdcCheckBox->show();
-#endif
     }
     else
     {

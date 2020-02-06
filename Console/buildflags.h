@@ -58,7 +58,6 @@
  * Debug output of frame processing speeds
  */
 #define ENABLE_LOGGING_TO_DEBUG_WINDOW       0
-#define ENABLE_TOP_DEAD_CENTER_TOGGLE        0
 #define ENABLE_IPP_FFT_TUNING                0
 #define ENABLE_COLORMAP_OPTIONS              0
 #define ENABLE_VIDEO_CRF_QUALITY_TESTING     0
