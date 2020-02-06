@@ -1,9 +1,11 @@
 #include <QtTest/QtTest>
 #include <stdio.h>
 #include <math.h>
-#define UNIT_TEST
-#include "dsp.h"
+
 #include "daqSettings.h"
+
+#define private public
+#include "dsp.h"
 
 /*
    2011-09-12 djackson: 

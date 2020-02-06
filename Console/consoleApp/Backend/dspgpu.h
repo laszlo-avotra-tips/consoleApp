@@ -16,9 +16,6 @@
 #include "dsp.h"
 #include "buildflags.h"
 
-#ifdef UNIT_TEST
-#define private public
-#endif
 
 /*
  * Uses the GPU for DSP calculations

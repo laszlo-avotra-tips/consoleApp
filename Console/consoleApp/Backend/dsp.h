@@ -18,10 +18,6 @@
 #include "octFile.h"
 #include "buildflags.h"
 
-#ifdef UNIT_TEST
-#define private public
-#endif
-
 
 class DSP : public QThread
 {
@@ -57,10 +53,6 @@ public slots:
     void setWhiteLevel( int val ) { whiteLevel = val; }
     void stop( void ) { isRunning = false; }
     void updateCatheterView();
-//    {
-//        userSettings &user = userSettings::Instance();
-//        useDistalToProximalView = user.isDistalToProximalView();
-//    }
 
     void setInvertColors( bool enable ) { doInvertColors = enable; }
 
