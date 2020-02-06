@@ -121,11 +121,6 @@ bool Initialization::init( int argc, char *argv[] )
 //        statusMessage = tr( "ERROR: DAQ Driver Version mismatch." );
 //        isReady = false;
 //    }
-    else if( !DSP::checkIPPVersion() )
-    {
-        statusMessage = tr( "ERROR: IPP SDK Version mismatch." );
-        isReady = false;
-    }
     else if( !ioc.queryDevice() )
     {
         statusMessage = tr( "ERROR: Unable to communicate with the USB DAC hardware." );

@@ -27,8 +27,6 @@ public:
     DSP();
     virtual ~DSP();
 
-    static bool checkIPPVersion( void );
-
     virtual void init( unsigned int inputLength,
                        unsigned int frameLines,
                        int inBytesPerRecord,

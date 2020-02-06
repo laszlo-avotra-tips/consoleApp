@@ -290,44 +290,6 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
 }
 
 /*
- * checkIPPVersion
- *
- * Verify the version of IPP components installed are the ones the
- * software was developed for.
- */
-bool DSP::checkIPPVersion( void )
-{
-    bool status = false;
-
-//    // Check the core library
-//    const IppLibraryVersion* lib = ippGetLibVersion();
-//    LOG( INFO, QString( "IPP Version: %1.%2" ).arg( lib->major ).arg( lib->minor ) );
-
-//    status = ( ( lib->major == Major ) &&
-//               ( lib->minor == Minor ) );
-
-//    if( !status )
-//    {
-//        LOG( FATAL, QString( "Using IPP Version: %1.%2. Expected %3.%4" ).arg( lib->major ).arg( lib->minor ).arg( Major ).arg( Minor ) );
-//    }
-
-//    // Check the signal processing library
-//    lib = ippsGetLibVersion();
-//    LOG( INFO, QString( "IPPS Version: %1.%2" ).arg( lib->major ).arg( lib->minor ) );
-
-//    status = ( status &&
-//              ( lib->major == Major ) &&
-//              ( lib->minor == Minor ) );
-
-//    if( !status )
-//    {
-//        LOG( FATAL, QString( "Using IPPS Version: %1.%2. Expected %3.%4" ).arg( lib->major ).arg( lib->minor ).arg( Major ).arg( Minor ) );
-//    }
-
-    return status;
-}
-
-/*
  * getAvgAmplitude()
  *
  * Calculate the average amplitude of an A-line using rawData between the first
