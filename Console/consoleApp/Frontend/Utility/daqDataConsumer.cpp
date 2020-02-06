@@ -306,19 +306,6 @@ void DaqDataConsumer::run( void )
             // prepare for the next iteration
 //            prevFrame      = currFrame;
             prevDirection  = currDirection;
-
-#if ENABLE_FRAME_COUNTERS_TO_DEBUG
-            // Rough frames/second counter  XXX
-            static int dispFrameCount = 0;
-            dispFrameCount++;
-
-            if( processingTimer.elapsed() > 1000 )
-            {
-                qDebug() << "                                                     DDC frameCount/s:" << dispFrameCount;
-                dispFrameCount = 0;
-                processingTimer.restart();
-            }
-#endif
         }
 
         if( ( timeoutCounter > 0) && isHighSpeedDevice &&

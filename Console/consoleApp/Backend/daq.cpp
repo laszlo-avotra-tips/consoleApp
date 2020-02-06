@@ -167,9 +167,6 @@ void DAQ::run( void )
             frameCount++;
             if( triggerTimer.elapsed() > 1000 )
             {
-#if ENABLE_FRAME_COUNTERS_TO_DEBUG
-                qDebug() << "DAQ frameCount/s:" << frameCount;
-#endif
                 emit frameRate( frameCount );
 
                 // reset for the next measurement

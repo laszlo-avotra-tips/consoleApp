@@ -85,10 +85,6 @@ protected:
     // pointer into the global data structure for passing frame data around
     OCTFile::FrameData_t *pData;
 
-#if ENABLE_FRAME_COUNTERS_TO_DEBUG
-    QTime frameTimer;
-#endif
-
     unsigned int bytesPerRecord; // sending raw data to frontend
     unsigned int bytesPerBuffer; // working buffer space alloc
     unsigned int recordLength;   // Single A-Line sampled data length

@@ -57,7 +57,6 @@
 /*
  * Debug output of frame processing speeds
  */
-#define ENABLE_FRAME_COUNTERS_TO_DEBUG       0
 #define ENABLE_LOGGING_TO_DEBUG_WINDOW       0
 #define ENABLE_LOW_SPEED_DATA_SNAPSHOT       0
 #define ENABLE_TOP_DEAD_CENTER_TOGGLE        0
