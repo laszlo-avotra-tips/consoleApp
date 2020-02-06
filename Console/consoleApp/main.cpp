@@ -186,7 +186,6 @@ int main(int argc, char *argv[])
     if( result == QDialog::Accepted )
     {
         auto idaq = daqfactory::instance()->getdaq();
-//        auto idaq = daqfactory::instance()->getProxy();
         frontEndWindow.setIDAQ(idaq);
 
         QObject::connect( &app, SIGNAL( aboutToQuit() ), &frontEndWindow, SLOT( shutdownCleanup() ) );

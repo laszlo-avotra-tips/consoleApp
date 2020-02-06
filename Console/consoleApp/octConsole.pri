@@ -80,13 +80,11 @@ HEADERS += \
     Backend/ftd2xx.h \
     $$PWD/Backend/daqfactory.h \
     $$PWD/Backend/idaq.h \
-    $$PWD/Backend/idaqproxy.h \
     $$PWD/Frontend/Widgets/engineeringdialog.h \
     $$PWD/Frontend/Widgets/engineeringcontroller.h \
     $$PWD/Frontend/Widgets/enginneringmodel.h \
     $$PWD/Backend/playbackmanager.h \
     $$PWD/Backend/playbackmanager.h \
-    $$PWD/Backend/framequeue.h \
     $$PWD/Backend/filedaq.h \
     $$PWD/Backend/theglobals.h \
     $$PWD/Backend/signalmanager.h
@@ -164,12 +162,10 @@ SOURCES += \
     ../../Common/GUI/backgroundmask.cpp \
     ../../Common/GUI/windowmanager.cpp \
     $$PWD/Backend/daqfactory.cpp \
-    $$PWD/Backend/idaqproxy.cpp \
     $$PWD/Frontend/Widgets/engineeringdialog.cpp \
     $$PWD/Frontend/Widgets/engineeringcontroller.cpp \
     $$PWD/Frontend/Widgets/enginneringmodel.cpp \
     $$PWD/Backend/playbackmanager.cpp \
-    $$PWD/Backend/framequeue.cpp \
     $$PWD/Backend/filedaq.cpp \
     $$PWD/Backend/theglobals.cpp \
     $$PWD/Backend/signalmanager.cpp
