@@ -41,13 +41,7 @@
 #include "util.h"
 #include "buildflags.h"
 #include "depthsetting.h"
-//#include "ipp.h"
 #include "Utility/userSettings.h"
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-#include <QFile>
-#include "Utility/userSettings.h"
-#endif
 
 
 // Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
@@ -79,10 +73,6 @@ DSP::DSP()
     bytesPerBuffer = 0;
     bytesPerRecord = 0;
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    isRecordRaw = false;
-    rawCount    = 0;
-#endif
 #if CONSOLE_MANUFACTURING_RELEASE
     useSwEncoder = false;
 #endif
@@ -371,79 +361,3 @@ void DSP::updateCatheterView()
     userSettings &user = userSettings::Instance();
     useDistalToProximalView = user.isDistalToProximalView();
 }
-
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-/*
- * recordRawData
- */
-void DSP::recordRawData( int rawDataLength )
-{
-    snapshotLength = rawDataLength;
-    isRecordRaw    = true;
-    rawCount       = 0;
-
-    static int fileIteration = 0;
-    QString strIteration = QString( "%1" ).arg( fileIteration, 3, 10, QLatin1Char( '0' ) );
-
-    caseInfo &info = caseInfo::Instance();
-    const QString StorageDir = info.getStorageDir();
-
-    QString filename_bin = QString( StorageDir + "/rawLaserData-%1.hsoct" ).arg( strIteration );
-
-    errorHandler & err = errorHandler::Instance();
-    hRawFile = new QFile( filename_bin );
-    if( !hRawFile )
-    {
-        // fatal error
-        err.fail( tr( "Could not create a new file handle for saving OCT data." ), true );
-    }
-    if( !hRawFile->open( QIODevice::WriteOnly ) )
-    {
-        err.fail( tr( "Could not open OCT file for writing." ), true );
-    }
-    rawOutputStream.setDevice( hRawFile );
-    rawOutputStream.setVersion( QDataStream::Qt_4_6 );
-
-    QString filename_txt = QString( StorageDir + "/rawLaserData-%1.txt" ).arg( strIteration );
-    hRawTextFile = new QFile( filename_txt );
-    if( !hRawTextFile )
-    {
-        // fatal error
-        err.fail( tr( "Could not create a new file handle for saving OCT data." ), true );
-    }
-    if( !hRawTextFile->open( QIODevice::WriteOnly ) )
-    {
-        err.fail( tr( "Could not open the text file for writing." ), true );
-    }
-    outputTextStream.setDevice( hRawTextFile );
-    outputTextStream << "A-lines per Frame: " << linesPerFrame  << " \r\n"
-                     << "Bytes per Record:  " << bytesPerRecord << " \r\n"
-                     << "Bytes per Buffer:  " << bytesPerBuffer;
-
-    if( hRawTextFile )
-    {
-        hRawTextFile->flush();
-        hRawTextFile->close();
-        delete hRawTextFile;
-        hRawTextFile = nullptr;
-    }
-    fileIteration++;
-}
-
-/*
- * closeRawDataFiles
- */
-void DSP::closeRawDataFiles( void )
-{
-    if( hRawFile )
-    {
-        hRawFile->flush();
-        hRawFile->close();
-
-        delete hRawFile;
-        hRawFile = nullptr;
-    }
-}
-
-#endif

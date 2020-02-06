@@ -326,21 +326,6 @@ void DSPGPU::processData( void )
 //lcv        ippsCopy_16s( (Ipp16s *)pA, (Ipp16s *)pData->rawData, bytesPerRecord / 2 );  // used for Advanced View display
 //lcv        ippsCopy_8u( reinterpret_cast<const quint8*>(pA), reinterpret_cast<quint8*>(pData->rawData), bytesPerRecord );
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-        if( isRecordRaw && ( rawCount < snapshotLength ) )
-        {
-            rawOutputStream.writeRawData( (const char *)pA, bytesPerBuffer );
-            rawCount++;
-            
-            qDebug() << "rawcount"<< rawCount;
-            if( rawCount >= snapshotLength )
-            {
-                qDebug() << "closing raw data";
-                closeRawDataFiles();
-            }
-        }
-#endif
-
         /*
          * Frame counts are filled in by the Data Consumer;
          * this keeps the frame counts continuous.

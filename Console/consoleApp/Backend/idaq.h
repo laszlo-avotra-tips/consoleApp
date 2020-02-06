@@ -40,10 +40,6 @@ signals:
     void updateCatheterView();
     void attenuateLaser( bool );
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    void rawDataSnapshot( int );
-#endif
-
 #if ENABLE_LOW_SPEED_DATA_SNAPSHOT
     void saveSignals();
 #endif

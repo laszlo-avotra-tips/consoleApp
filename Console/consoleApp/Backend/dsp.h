@@ -56,11 +56,6 @@ public slots:
 
     void setInvertColors( bool enable ) { doInvertColors = enable; }
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    void recordRawData( int rawDataLength );
-    void closeRawDataFiles( void );
-#endif
-
 #if CONSOLE_MANUFACTURING_RELEASE
     void enableOcelotSwEncoder( bool enabled )
     {
@@ -131,16 +126,6 @@ protected:
 
     void loadRescalingData( void );
     bool findLabel( QTextStream *in, QString *currLine, const QString Label );
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-    QFile       *hRawFile;
-    QDataStream  rawOutputStream;
-    bool         isRecordRaw;
-    int          rawCount;
-    int          snapshotLength;
-    QFile       *hRawTextFile;
-    QTextStream  outputTextStream;
-#endif
 
 #if CONSOLE_MANUFACTURING_RELEASE
     bool useSwEncoder;

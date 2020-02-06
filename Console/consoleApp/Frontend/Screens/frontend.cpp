@@ -100,14 +100,8 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     ui.evoaOffLabel->hide();
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    ui.rawDataPushButton->show();
-    ui.rawSnapshotSpinBox->show();
-    snapshotLength = ui.rawSnapshotSpinBox->value();
-#else
     ui.rawDataPushButton->hide();
     ui.rawSnapshotSpinBox->hide();
-#endif
 
 #if ENABLE_IPP_FFT_TUNING
     ui.fftDevelopmentGroupBox->show();
@@ -1800,9 +1794,6 @@ void frontend::configureHardware( void )
 //        {
 //            daq = new HighSpeedDAQ();
 
-//#if ENABLE_RAW_DATA_SNAPSHOT
-//            connect( this, SIGNAL( rawDataSnapshot( int ) ), daq, SIGNAL( rawDataSnapshot( int ) ) );
-//#endif
 //            connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), daq, SIGNAL(setFrameAverageWeights(int,int)) );
 //            connect( scene, SIGNAL(sendDisplayAngle(float)), daq, SIGNAL(handleDisplayAngle(float)) );
 //        }
@@ -1877,9 +1868,6 @@ void frontend::setIDAQ(IDAQ *object)
     {
         if( dev.current()->isHighSpeed() )
         {
-#if ENABLE_RAW_DATA_SNAPSHOT
-            connect( this, SIGNAL( rawDataSnapshot( int ) ), signalSource, SIGNAL( rawDataSnapshot( int ) ) );
-#endif
             connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), signalSource, SIGNAL(setFrameAverageWeights(int,int)) );
             connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
         }
@@ -1965,19 +1953,6 @@ void frontend::shutdownHardware( void )
      */
     Sleep( 500 );
 }
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-// R&D only
-void frontend::on_rawSnapshotSpinBox_valueChanged(int arg1)
-{
-    snapshotLength = arg1;
-}
-
-void frontend::on_rawDataPushButton_clicked()
-{
-    emit rawDataSnapshot( snapshotLength );
-}
-#endif
 
 #if ENABLE_IPP_FFT_TUNING
 // R&D only

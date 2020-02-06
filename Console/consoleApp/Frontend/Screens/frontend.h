@@ -147,10 +147,6 @@ signals:
     void setSlidingPoint( int );
 #endif
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    void rawDataSnapshot( int );
-#endif
-
 #if ENABLE_IPP_FFT_TUNING
     void magScaleValueChanged( int );
     void fftScaleValueChanged( int );
@@ -213,9 +209,6 @@ private:
     QTimer preventFastRecordingsTimer;
     QTimer hideMouseTimer;
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    int snapshotLength;
-#endif
     bool preventFastRecordings;
     bool isPhysicianPreviewDisplayed;
 
@@ -267,11 +260,6 @@ private slots:
     void hideMouseTimerExpiry();
     void storageSpaceTimerExpiry();
     void reenableRecordLoopButtonExpiry();
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-    void on_rawSnapshotSpinBox_valueChanged( int arg1 );
-    void on_rawDataPushButton_clicked();
-#endif
 
 #if ENABLE_IPP_FFT_TUNING
     void on_magSpinBox_valueChanged( int arg1 );
