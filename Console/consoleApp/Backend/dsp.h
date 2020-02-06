@@ -33,8 +33,6 @@ public:
                        int inBytesPerBuffer
                        );
 
-    virtual void run( void );
-
     quint32 getAvgAmplitude( quint16 *pA );
 
     // The size of the rescaling data is constant for all lasers
@@ -81,11 +79,7 @@ protected:
     unsigned int bytesPerBuffer; // working buffer space alloc
     unsigned int recordLength;   // Single A-Line sampled data length
     unsigned int linesPerFrame;  // Number of lines in a frame to operate on at once
-    int aLineLength_px;
 
-    // rescaling data
-    float *wholeSamples;
-    float *fractionalSamples;
     QDate  serviceDate;
 
     float blackLevel;  // i.e., brightness

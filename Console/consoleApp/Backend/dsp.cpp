@@ -52,7 +52,7 @@ DSP::DSP()
     isRunning = false;
 
     deviceSettings &dev = deviceSettings::Instance();
-    aLineLength_px = dev.current()->getALineLengthDeep_px(); // Always use 1024 depth line, is this a problem in Low Speed?
+//    aLineLength_px = dev.current()->getALineLengthDeep_px(); // Always use 1024 depth line, is this a problem in Low Speed?
 
     // frame data
     timeStamp    = QDateTime::currentDateTime().toUTC().toTime_t();
@@ -75,16 +75,6 @@ DSP::~DSP()
 {
     qDebug() << "DSP::~DSP()";
     LOG( INFO, "DSP shutdown" )
-
-    if( fractionalSamples )
-    {
-        delete [] fractionalSamples;
-    }
-
-    if( wholeSamples )
-    {
-        delete [] wholeSamples;
-    }
 }
 
 
@@ -113,19 +103,6 @@ void DSP::init( unsigned int inputLength,
     useDistalToProximalView = true;
     doInvertColors          = false;
 
-    // Memory for the rescaling data
-    wholeSamples      = new float[ RescalingDataLength ];
-    fractionalSamples = new float[ RescalingDataLength ];
-
-    if( !wholeSamples || !fractionalSamples )
-    {
-        // fatal error
-        displayFailureMessage( tr( "Could not allocate memory for the rescaling values" ), true );
-    }
-
-    // populate wholeSamples[] and fractionSamples[]
-//    LOG2(recordLength,linesPerFrame);
-//    LOG2(bytesPerRecord,bytesPerBuffer);
     loadRescalingData();
 
     // Update radius and offset, set to Normal Mode upon new device select
@@ -133,30 +110,6 @@ void DSP::init( unsigned int inputLength,
     catheterRadius_px = float(settings.current()->getCatheterRadius_px());
     catheterRadius_um = float(settings.current()->getCatheterRadius_um());
     internalImagingMask_px = float(settings.current()->getInternalImagingMask_px());
-}
-
-/*
- * run
- *
- * Data processing thread.  This is the main loop for the DSP.
- */
-void DSP::run( void )
-{
-    qDebug() << "DSP::run start";
-
-    // prevent multiple, simultaneous starts
-    if( !isRunning )
-    {
-        qDebug() << "Thread: DSP::run start";
-        isRunning = true;
-
-        while( isRunning )
-        {
-            // run full-tilt.
-        }
-
-        qDebug() << "Thread: DSP::run stop";
-    }
 }
 
 
@@ -241,8 +194,6 @@ void DSP::loadRescalingData( void )
             else
             {
                 currLine = in.readLine();
-                wholeSamples[ i ]      = currLine.section( ",", 1, 1 ).toFloat();
-                fractionalSamples[ i ] = currLine.section( ",", 2, 2 ).toFloat();
             }
         }
     }
