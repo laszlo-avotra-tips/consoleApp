@@ -52,7 +52,7 @@ bool Initialization::init( int argc, char *argv[] )
     LOG( INFO, QString( "Qt Version: %1" ).arg( qVersion() ) )
     qDebug() << QString( "Qt Version: %1" ).arg( qVersion() );
 
-//lcv    QT_REQUIRE_VERSION( argc, argv, "4.8.1" );
+//    QT_REQUIRE_VERSION( argc, argv, "5.12.6" );
 
     // Verify that an application instance has been created before running these
     // checks.  The hard drive space check and the pop-up at the end need the

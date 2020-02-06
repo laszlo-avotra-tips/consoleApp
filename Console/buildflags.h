@@ -32,7 +32,7 @@
  * Turn on/off init checks. Init is very picky about file locations
  * and file signing.
  */
-#ifdef QT_DEBUG
+#if _DEBUG
 #define USE_INIT 0
 #else
 #define USE_INIT 1
@@ -44,7 +44,7 @@
 #if _DEBUG
 #   define ENABLE_SYSTEM_KEY_CHECK 0
 #else
-#   define ENABLE_SYSTEM_KEY_CHECK 0
+#   define ENABLE_SYSTEM_KEY_CHECK 1
 #endif
 
 
