@@ -115,6 +115,7 @@ private:
     bool isClReturnValueSuccess(cl_int ret, int line) const;
     void initOpenClFileMap();
     cl_platform_id getPlatformId() const;
+    bool getGpuDeviceInfo(cl_platform_id id, bool isLogging = false);
 };
 
 #endif // DSPGPU_H_

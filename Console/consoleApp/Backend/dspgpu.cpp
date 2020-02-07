@@ -260,6 +260,79 @@ cl_platform_id DSPGPU::getPlatformId() const
     return platformId;
 }
 
+bool DSPGPU::getGpuDeviceInfo(cl_platform_id id, bool isLogging)
+{
+    // Verify the GPU is present
+    cl_int err = clGetDeviceIDs( id, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
+
+    // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
+    if( err == CL_DEVICE_NOT_FOUND )
+    {
+        // fall back to CPU when debugging if GPU not present
+        err = clGetDeviceIDs( id, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, nullptr );
+    }
+
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Could not get OpenCL device IDs, reason: %1" ).arg( err ), true );
+        return false;
+    }
+
+    size_t returned_size( 0 );
+    cl_uint maxComputeUnits;
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(maxComputeUnits), &maxComputeUnits, &returned_size );
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+    if(isLogging) LOG2(maxComputeUnits,returned_size)
+
+    cl_uint maxWorkItemDimentions;
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimentions), &maxWorkItemDimentions, &returned_size );
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+    if(isLogging) LOG2(maxWorkItemDimentions,returned_size)
+
+    size_t maxWorkItemSizes[3];
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(maxWorkItemSizes), &maxWorkItemSizes, &returned_size );
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+    if(isLogging) LOG3(maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
+
+    err = clGetDeviceInfo( cl_ComputeDeviceId,
+                           CL_DEVICE_MAX_WORK_GROUP_SIZE,
+                           sizeof( cl_max_workgroup_size ),
+                           &cl_max_workgroup_size,
+                           &returned_size );
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        return false;
+    }
+
+
+    size_t maxWorkGroupSize;
+    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, &returned_size );
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        displayFailureMessage( tr( "Could not enumerate OpenCL device IDs, reason: %1" ).arg( err ), true );
+        return false;
+    }
+    if(isLogging) LOG2(maxWorkGroupSize,returned_size)
+
+    cl_char vendor_name[ 1024 ] = { 0 };
+    cl_char device_name[ 1024 ] = { 0 };
+    err  = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_VENDOR, sizeof( vendor_name ), vendor_name, &returned_size);
+    err |= clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_NAME, sizeof( device_name ), device_name, &returned_size);
+
+    if(!isClReturnValueSuccess(err,__LINE__)){
+        displayFailureMessage( tr( "Could not get OpenCL device info, reason: %1").arg( err ), true );
+        return false;
+    }
+    LOG( INFO, "OpenCL device: " + QString( reinterpret_cast<char*>(vendor_name)) + " " + QString( reinterpret_cast<char*>(device_name)) )
+    if(isLogging) qDebug() << "DSP: Found OpenCL Device " <<  QString( reinterpret_cast<char*>(vendor_name) ) + " " + QString( reinterpret_cast<char*>(device_name) );
+
+    return true;
+}
+
 /*
  * buildOpenCLKernel
  *
@@ -345,74 +418,13 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-    // Verify the GPU is present
-    cl_int err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
+    const bool logInfo{false};
+    bool success = getGpuDeviceInfo(platformId, logInfo);
 
-    // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
-    if( err == CL_DEVICE_NOT_FOUND )
-    {
-        // fall back to CPU when debugging if GPU not present
-        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, nullptr );
-    }
-
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Could not get OpenCL device IDs, reason: %1" ).arg( err ), true );
+    if(!success){
         return false;
     }
-
-    size_t returned_size( 0 );
-    cl_uint maxComputeUnits;
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(maxComputeUnits), &maxComputeUnits, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-//    LOG2(maxComputeUnits,returned_size)
-
-    cl_uint maxWorkItemDimentions;
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimentions), &maxWorkItemDimentions, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-//    LOG2(maxWorkItemDimentions,returned_size)
-
-    size_t maxWorkItemSizes[3];
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(maxWorkItemSizes), &maxWorkItemSizes, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-//    LOG3(maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
-
-    err = clGetDeviceInfo( cl_ComputeDeviceId,
-                           CL_DEVICE_MAX_WORK_GROUP_SIZE,
-                           sizeof( cl_max_workgroup_size ),
-                           &cl_max_workgroup_size,
-                           &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-//    LOG2(cl_max_workgroup_size, returned_size)
-
-    size_t maxWorkGroupSize;
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        displayFailureMessage( tr( "Could not enumerate OpenCL device IDs, reason: %1" ).arg( err ), true );
-        return false;
-    }
-//    LOG2(maxWorkGroupSize,returned_size)
-
-    cl_char vendor_name[ 1024 ] = { 0 };
-    cl_char device_name[ 1024 ] = { 0 };
-    err  = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_VENDOR, sizeof( vendor_name ), vendor_name, &returned_size);
-    err |= clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_NAME, sizeof( device_name ), device_name, &returned_size);
-
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        displayFailureMessage( tr( "Could not get OpenCL device info, reason: %1").arg( err ), true );
-        return false;
-    }
-    LOG( INFO, "OpenCL device: " + QString( reinterpret_cast<char*>(vendor_name)) + " " + QString( reinterpret_cast<char*>(device_name)) )
-    qDebug() << "DSP: Found OpenCL Device " <<  QString( reinterpret_cast<char*>(vendor_name) ) + " " + QString( reinterpret_cast<char*>(device_name) );
-
+    cl_int err;
     cl_Context = clCreateContext( nullptr, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
     if( !cl_Context )
     {
