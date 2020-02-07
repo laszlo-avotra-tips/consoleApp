@@ -26,10 +26,10 @@ class DSPGPU : public DSP
 public:
     ~DSPGPU();
 
-    void init(unsigned int inputLength,
-               unsigned int frameLines,
-               int inBytesPerRecord,
-               int inBytesPerBuffer);
+    void init(size_t inputLength,
+              size_t frameLines,
+              size_t inBytesPerRecord,
+              size_t inBytesPerBuffer);
 
     bool processData(int);
     bool loadFftOutMemoryObjects();

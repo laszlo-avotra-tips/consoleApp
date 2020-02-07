@@ -108,10 +108,10 @@ DSPGPU::~DSPGPU()
  *
  * Initialize memory and the GPU hardware
  */
-void DSPGPU::init( unsigned int inputLength,
-                   unsigned int frameLines,
-                   int inBytesPerRecord,
-                   int inBytesPerBuffer)
+void DSPGPU::init( size_t inputLength,
+                   size_t frameLines,
+                   size_t inBytesPerRecord,
+                   size_t inBytesPerBuffer)
 {
     // call the common initilization steps
     DSP::init( inputLength, frameLines, inBytesPerRecord, inBytesPerBuffer );
@@ -643,7 +643,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    float scaleFactor = 20000.0f * 255.0f / 65535.0f ;
    const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
 
-   unsigned int inputLength = RescalingDataLength;
+   unsigned int postProcInputLength = RescalingDataLength;
 
    // Make this a loop XXX
    clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &fftRealOutputMemObj );
@@ -666,7 +666,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    {
        qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 4, sizeof(int), &inputLength );
+   clStatus |= clSetKernelArg( cl_PostProcKernel, 4, sizeof(int), &postProcInputLength );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;

@@ -44,15 +44,12 @@
  *
  * Common data for all DSPs
  */
-DSP::DSP()
+DSP::DSP() : recordLength(0), linesPerFrame(0), bytesPerRecord(0), bytesPerBuffer(0)
 {
     // default service date
     serviceDate = QDate( 2009, 1, 1 );
 
     isRunning = false;
-
-    deviceSettings &dev = deviceSettings::Instance();
-//    aLineLength_px = dev.current()->getALineLengthDeep_px(); // Always use 1024 depth line, is this a problem in Low Speed?
 
     // frame data
     timeStamp    = QDateTime::currentDateTime().toUTC().toTime_t();
@@ -61,9 +58,6 @@ DSP::DSP()
     // Contrast stretch defaults (no stretch)
     blackLevel = BrightnessLevels_HighSpeed.defaultValue;
     whiteLevel = ContrastLevels_HighSpeed.defaultValue;
-
-    bytesPerBuffer = 0;
-    bytesPerRecord = 0;
 }
 
 /*
@@ -84,16 +78,15 @@ DSP::~DSP()
  * Initialize the common DSP data for use.  Data structures are set up
  * and the laser rescaling values are loaded from disk.
  */
-void DSP::init( unsigned int inputLength,
-                unsigned int frameLines,
-                int inBytesPerRecord,
-                int inBytesPerBuffer
-                )
+void DSP::init(size_t inputLength,
+               size_t frameLines,
+               size_t inBytesPerRecord,
+               size_t inBytesPerBuffer)
 {
     recordLength   = inputLength;
     linesPerFrame  = frameLines;
-    bytesPerRecord = quint32(inBytesPerRecord);
-    bytesPerBuffer = quint32(inBytesPerBuffer);
+    bytesPerRecord = inBytesPerRecord;
+    bytesPerBuffer = inBytesPerBuffer;
 
     qDebug() << "DSP: linesPerFrame"  << linesPerFrame;
     qDebug() << "DSP: recordLength"   << recordLength;
@@ -236,10 +229,10 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
 quint32 DSP::getAvgAmplitude( quint16 *pA )
 {
     quint32 average = 0;
-    const int start_idx = recordLength / 3 ;
-    const int end_idx   = ( 2 * recordLength ) / 3;
+    const size_t start_idx = recordLength / 3 ;
+    const size_t end_idx   = ( 2 * recordLength ) / 3;
 
-    for( int i = start_idx; i < end_idx; i++ )
+    for( size_t i = start_idx; i < end_idx; i++ )
     {
         average += pA [ i ];
     }

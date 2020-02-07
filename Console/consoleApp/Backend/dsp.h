@@ -27,11 +27,10 @@ public:
     DSP();
     virtual ~DSP();
 
-    virtual void init( unsigned int inputLength,
-                       unsigned int frameLines,
-                       int inBytesPerRecord,
-                       int inBytesPerBuffer
-                       );
+    virtual void init(size_t inputLength,
+                      size_t frameLines,
+                      size_t inBytesPerRecord,
+                      size_t inBytesPerBuffer);
 
     quint32 getAvgAmplitude( quint16 *pA );
 
@@ -75,10 +74,10 @@ protected:
     // pointer into the global data structure for passing frame data around
     OCTFile::FrameData_t *pData;
 
-    unsigned int bytesPerRecord; // sending raw data to frontend
-    unsigned int bytesPerBuffer; // working buffer space alloc
-    unsigned int recordLength;   // Single A-Line sampled data length
-    unsigned int linesPerFrame;  // Number of lines in a frame to operate on at once
+    size_t recordLength;   // Single A-Line sampled data length
+    size_t linesPerFrame;  // Number of lines in a frame to operate on at once
+    size_t bytesPerRecord; // sending raw data to frontend
+    size_t bytesPerBuffer; // working buffer space alloc
 
     QDate  serviceDate;
 
