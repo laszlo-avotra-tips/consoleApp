@@ -12,7 +12,7 @@
 /*
  * Common flags to all the applications
  */
-#define USE_MOUSE_CAPTURE 1
+#define USE_MOUSE_CAPTURE 0
 #define ENABLE_EXE_CHECKS 0
 
 /*
@@ -58,7 +58,6 @@
  * Debug output of frame processing speeds
  */
 #define ENABLE_LOGGING_TO_DEBUG_WINDOW       0
-#define ENABLE_IPP_FFT_TUNING                0
 #define ENABLE_COLORMAP_OPTIONS              0
 #define ENABLE_VIDEO_CRF_QUALITY_TESTING     0
 #define ENABLE_SINGLE_STREAM_RECORDING       0
@@ -86,14 +85,5 @@
 #define ENABLE_DEMO_MODE 0
 
 #define ENABLE_LAPTOP_MODE 0
-
-#if ENABLE_DEMO_MODE || ENABLE_LAPTOP_MODE
-
-#   undef  ENABLE_SINGLE_MONITOR_WARNING
-#   define ENABLE_SINGLE_MONITOR_WARNING 0
-
-#   undef  USE_MOUSE_CAPTURE
-#   define USE_MOUSE_CAPTURE 0
-#endif
 
 #endif // BUILDFLAGS_H

@@ -1663,21 +1663,20 @@ void frontend::keyPressEvent( QKeyEvent *event )
  * Enable or disable the mouse capture timer.
  *
  */
-void frontend::captureMouse( bool /*isEnabled*/ )
+void frontend::captureMouse( bool isEnabled )
 {
-    //lcv
-//#if USE_MOUSE_CAPTURE
-//    if( isEnabled )
-//    {
-//        connect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
-//    }
-//    else
-//    {
-//        disconnect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
-//    }
-//#else
-//    isEnabled; // quiet the compiler warnings
-//#endif
+#if USE_MOUSE_CAPTURE
+    if( isEnabled )
+    {
+        connect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
+    }
+    else
+    {
+        disconnect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
+    }
+#else
+    isEnabled; // quiet the compiler warnings
+#endif
 }
 
 /*
