@@ -95,15 +95,11 @@ int main(int argc, char *argv[])
     LOG( INFO, "Application started: OCT HS Console" )
     LOG( INFO, QString( "OCT Console Process ID (PID) : %1" ).arg( app.applicationPid() ) )
     LOG( INFO, QString( "OCT Console Version: %1" ).arg( getSoftwareVersionNumber() ) )
+
 #if _DEBUG
     LOG( INFO, "DEBUG Build" )
 #else
     LOG( INFO, "RELEASE Build" );
-#endif
-#if ENABLE_SQUISH
-    LOG( INFO, "SQUISH Enabled" );
-#else
-    LOG( INFO, "SQUISH Disabled" )
 #endif
 
     LOG( INFO, QString( "Local time is %1" ).arg( QDateTime::currentDateTime().toString( "yyyy-MM-dd HH:mm:ss" ) ) )

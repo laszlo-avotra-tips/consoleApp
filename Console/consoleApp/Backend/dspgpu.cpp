@@ -270,19 +270,8 @@ bool DSPGPU::initOpenCL()
 {
     qDebug() << "initOpenCL start";
 
-//#ifdef QT_DEBUG
-//    QString path = QCoreApplication::applicationDirPath() + QString("/../../consoleApp/");
-//#else
-//    QString path = QCoreApplication::applicationDirPath();
-//#endif
 
-//    m_openClFileMap = {
-//        {"postproc_kernel",  path + POSTPROC_CL},
-//        {"bandc_kernel",  path + BANDC_CL},
-//        {"warp_kernel",  path + WARP_CL}
-//    };
-
-    initFileMap();
+    initOpenClFileMap();
 
     cl_platform_id platformId;
     cl_uint        numPlatforms = 0;
@@ -354,12 +343,6 @@ bool DSPGPU::initOpenCL()
     if( err == CL_DEVICE_NOT_FOUND )
     {
         // fall back to CPU when debugging if GPU not present
-#if !_DEBUG
-#if !ENABLE_SQUISH
-        displayWarningMessage( tr( "GPU not present.  Falling back to the CPU." ) );
-#endif
-        qDebug() << "GPU not present.  Falling back to the CPU.";
-#endif
         err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, nullptr );
     }
 

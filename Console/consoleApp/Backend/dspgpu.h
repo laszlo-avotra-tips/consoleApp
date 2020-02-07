@@ -113,6 +113,7 @@ private:
     bool initOpenCL();
     QString clCreateBufferErrorVerbose(int clError) const;
     bool isClReturnValueSuccess(cl_int ret, int line) const;
+    void initOpenClFileMap();
 };
 
 #endif // DSPGPU_H_

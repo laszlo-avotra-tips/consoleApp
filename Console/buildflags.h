@@ -71,15 +71,6 @@
 #define DISABLE_BACKGROUND_RECORDING         1
 
 /*
- * Enable/disable Squish wrapper for starting octConsole.exe as a sub-process.
- * When enabled, the squish wrapper is used which allows Squish to hook into the
- * sub-process.
- * See locations.h for the location of the Squish wrapper.
- * See homewindow.cpp for the consoleApp.start details.
- */
-#define ENABLE_SQUISH 0
-
-/*
  * Demo mode: release build for Jason Burk. Runs without any Lightbox hardware.
  */
 #define ENABLE_DEMO_MODE 0
