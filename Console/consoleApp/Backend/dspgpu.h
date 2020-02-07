@@ -11,11 +11,16 @@
 #ifndef DSPGPU_H_
 #define DSPGPU_H_
 
+#include <memory>
+#include <map>
+#include <vector>
+
 #include <CL/opencl.h>
+
 #include "dsp.h"
 #include "buildflags.h"
 
-
+using OPenClFunction_type = std::pair<cl_program,cl_kernel>;
 /*
  * Uses the GPU for DSP calculations
  */
@@ -47,13 +52,21 @@ private:
     cl_device_id     cl_ComputeDeviceId;
     cl_context       cl_Context;
 
-    cl_kernel        cl_PostProcKernel;
-    cl_kernel        cl_BandCKernel;
-    cl_kernel        cl_WarpKernel;
+//    cl_kernel        cl_PostProcKernel;
+//    cl_kernel        cl_BandCKernel;
+//    cl_kernel        cl_WarpKernel;
 
-    cl_program       cl_PostProcProgram;
-    cl_program       cl_BandCProgram;
-    cl_program       cl_WarpProgram;
+//    cl_program       cl_PostProcProgram;
+//    cl_program       cl_BandCProgram;
+//    cl_program       cl_WarpProgram;
+
+    std::vector<OPenClFunction_type> m_openClFunctionContainer
+    {
+        {nullptr,nullptr},
+        {nullptr,nullptr},
+        {nullptr,nullptr}
+    };
+
 
     cl_command_queue cl_Commands;
 
@@ -80,16 +93,14 @@ private:
     cl_mem           outputVideoImageMemObj;
     size_t           outputVideoImageMemObjSize;
 
-    quint16 *workingBuffer{nullptr};
+    std::unique_ptr<quint16[]> workingBuffer{nullptr};
+    std::unique_ptr<float[]> imData{nullptr};
+    std::unique_ptr<float[]> reData{nullptr};
 
     float prevFrameWeight_percent;
     float currFrameWeight_percent;
 
-    float *imData;
-    size_t           imDataSize;
-
-    float *reData;
-    size_t           reDataSize;
+    const size_t      complexDataSize{1024};
 
     // OpenCL support
     bool createCLMemObjects( cl_context context );

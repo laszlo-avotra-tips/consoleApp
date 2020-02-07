@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QCoreApplication>
+
 #include "defaults.h"
 #include "dspgpu.h"
 #include "logger.h"
@@ -26,7 +27,6 @@
 #include "Backend/depthsetting.h"
 //#include "ipp.h"
 #include "theglobals.h"
-#include <complex>
 #include "signalmanager.h"
 #include "playbackmanager.h"
 
@@ -65,29 +65,16 @@ DSPGPU::~DSPGPU()
     stop();
     wait( 100 ); //ms
 
-    // Release working memory
-        delete [] workingBuffer;
-
-    if( imData )
-    {
-        delete [] imData;
-    }
-
-    if( reData )
-    {
-        delete [] reData;
-    }
-
     /*
      * Clean up openCL objects
      */
-    clReleaseKernel( cl_PostProcKernel );
-    clReleaseKernel( cl_BandCKernel );
-    clReleaseKernel( cl_WarpKernel );
+    clReleaseKernel( m_openClFunctionContainer[0].second );
+    clReleaseKernel( m_openClFunctionContainer[1].second );
+    clReleaseKernel( m_openClFunctionContainer[2].second );
 
-    clReleaseProgram( cl_PostProcProgram );
-    clReleaseProgram( cl_BandCProgram );
-    clReleaseProgram( cl_WarpProgram );
+    clReleaseProgram( m_openClFunctionContainer[0].first );
+    clReleaseProgram( m_openClFunctionContainer[1].first );
+    clReleaseProgram( m_openClFunctionContainer[2].first );
 
     clReleaseMemObject( fftRealOutputMemObj );
     clReleaseMemObject( fftImaginaryOutputMemObj );
@@ -118,11 +105,12 @@ void DSPGPU::init( size_t inputLength,
 
     // XXX Need to pass these into the DSP so we dont copy buffers there
     // for opencl
-    workingBuffer = new quint16 [bytesPerBuffer];
-
-    if(!workingBuffer)
-    {
-        emit sendError( tr( "Error allocating space in DSP::init" ) );
+    try {
+        workingBuffer = std::make_unique<quint16 []>(bytesPerBuffer / sizeof (quint16));
+        imData = std::make_unique<float []>(complexDataSize);
+        reData = std::make_unique<float []>(complexDataSize);
+    } catch (std::bad_alloc e) {
+        emit sendError( e.what() );
     }
 
     // Configure the DSP
@@ -136,9 +124,6 @@ void DSPGPU::init( size_t inputLength,
 
     currFrameWeight_percent = DefaultCurrFrameWeight_Percent / 100.0;
     prevFrameWeight_percent = 1 - currFrameWeight_percent;
-
-    imData = new float[ 1024 ];
-    reData = new float[ 1024 ];
 }
 
 bool DSPGPU::processData(int index)
@@ -432,18 +417,23 @@ bool DSPGPU::initOpenCL()
         displayFailureMessage( tr( "Could not create OpenCL command queue, reason %1" ).arg( err ), true );
         return false;
     }
-
-    if( !buildOpenCLKernel( QString( path + POSTPROC_CL ), "postproc_kernel", &cl_PostProcProgram, &cl_PostProcKernel ) )
+    auto& oclpp = m_openClFunctionContainer[0];
+//    if( !buildOpenCLKernel( QString( path + POSTPROC_CL ), "postproc_kernel", &cl_PostProcProgram, &cl_PostProcKernel ) )
+    if( !buildOpenCLKernel( QString( path + POSTPROC_CL ), "postproc_kernel", &oclpp.first, &oclpp.second ) )
     {
         return false;
     }
 
-    if( !buildOpenCLKernel( QString( path + BANDC_CL ), "bandc_kernel", &cl_BandCProgram, &cl_BandCKernel ) )
+    auto& oclbc = m_openClFunctionContainer[1];
+//    if( !buildOpenCLKernel( QString( path + BANDC_CL ), "bandc_kernel", &cl_BandCProgram, &cl_BandCKernel ) )
+    if( !buildOpenCLKernel( QString( path + BANDC_CL ), "bandc_kernel", &oclbc.first, &oclbc.second ) )
     {
         return false;
     }
 
-    if( !buildOpenCLKernel( QString( path + WARP_CL ), "warp_kernel", &cl_WarpProgram, &cl_WarpKernel ) )
+    auto& oclw = m_openClFunctionContainer[2];
+//    if( !buildOpenCLKernel( QString( path + WARP_CL ), "warp_kernel", &cl_WarpProgram, &cl_WarpKernel ) )
+    if( !buildOpenCLKernel( QString( path + WARP_CL ), "warp_kernel", &oclw.first, &oclw.second ) )
     {
         return false;
     }
@@ -507,7 +497,6 @@ QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
  */
 bool DSPGPU::createCLMemObjects( cl_context context )
 {
-    const char* errorMsg = "failed to allocate memory";
     cl_int err;
 
     fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
@@ -645,58 +634,59 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 
    unsigned int postProcInputLength = RescalingDataLength;
 
+   auto& oclppk = m_openClFunctionContainer[0].second;
    // Make this a loop XXX
-   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &fftRealOutputMemObj );
+   clStatus  = clSetKernelArg( oclppk, 0, sizeof(cl_mem), &fftRealOutputMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
+   clStatus |= clSetKernelArg( oclppk, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 2, sizeof(cl_mem), &lastFramePreScalingMemObj );
+   clStatus |= clSetKernelArg( oclppk, 2, sizeof(cl_mem), &lastFramePreScalingMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 2, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 3, sizeof(cl_mem), &inputImageMemObj );
+   clStatus |= clSetKernelArg( oclppk, 3, sizeof(cl_mem), &inputImageMemObj );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 4, sizeof(int), &postProcInputLength );
+   clStatus |= clSetKernelArg( oclppk, 4, sizeof(int), &postProcInputLength );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 5, sizeof(float), &scaleFactor );
+   clStatus |= clSetKernelArg( oclppk, 5, sizeof(float), &scaleFactor );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 5, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 6, sizeof(unsigned int), &dcNoiseLevel );
+   clStatus |= clSetKernelArg( oclppk, 6, sizeof(unsigned int), &dcNoiseLevel );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 6, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 7, sizeof(int), &averageVal );
+   clStatus |= clSetKernelArg( oclppk, 7, sizeof(int), &averageVal );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 7, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 8, sizeof(float), &prevFrameWeight_percent );
+   clStatus |= clSetKernelArg( oclppk, 8, sizeof(float), &prevFrameWeight_percent );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 8, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 9, sizeof(float), &currFrameWeight_percent );
+   clStatus |= clSetKernelArg( oclppk, 9, sizeof(float), &currFrameWeight_percent );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
    }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 10, sizeof(int), &invertColors );
+   clStatus |= clSetKernelArg( oclppk, 10, sizeof(int), &invertColors );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;
@@ -704,7 +694,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 
    global_unit_dim[ 0 ] = FFTDataSize;
    global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_PostProcKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+   clStatus = clEnqueueNDRangeKernel( cl_Commands, oclppk, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
@@ -714,29 +704,30 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
     /*
      * Adjust brightness and contrast
      */
-    clStatus  = clSetKernelArg( cl_BandCKernel, 0, sizeof(cl_mem), &inputImageMemObj );
+   auto& oclbck = m_openClFunctionContainer[1].second;
+    clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), &inputImageMemObj );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( cl_BandCKernel, 1, sizeof(cl_mem), &warpInputImageMemObj );
+    clStatus |= clSetKernelArg( oclbck, 1, sizeof(cl_mem), &warpInputImageMemObj );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( cl_BandCKernel, 2, sizeof(float), &blackLevel );
+    clStatus |= clSetKernelArg( oclbck, 2, sizeof(float), &blackLevel );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( cl_BandCKernel, 3, sizeof(float), &whiteLevel );
+    clStatus |= clSetKernelArg( oclbck, 3, sizeof(float), &whiteLevel );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
     }
     global_unit_dim[ 0 ] = FFTDataSize;
     global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-    clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_BandCKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+    clStatus = clEnqueueNDRangeKernel( cl_Commands, oclbck, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
@@ -756,19 +747,20 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    const int   standardDepth_S  = dev.current()->getALineLengthNormal_px();
    reverseDirection ^= int(dev.current()->getRotation());    // apply Sled rotational direction
 
-   clStatus  = clSetKernelArg( cl_WarpKernel,  0, sizeof(cl_mem), &warpInputImageMemObj );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  1, sizeof(cl_mem), &outputImageMemObj );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  2, sizeof(cl_mem), &outputVideoImageMemObj );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  3, sizeof(float),  &catheterRadius_um );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  4, sizeof(float),  &internalImagingMask_px );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  &standardDepth_mm );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    &standardDepth_S );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  &displayAngle_deg );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    &reverseDirection );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    &SectorWidth_px );
-   clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    &SectorHeight_px );
-   clStatus |= clSetKernelArg( cl_WarpKernel, 11, sizeof(float),  &fractionOfCanvas );
-   clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    &imagingDepth_S );
+   auto& oclwk = m_openClFunctionContainer[2].second;
+   clStatus  = clSetKernelArg( oclwk,  0, sizeof(cl_mem), &warpInputImageMemObj );
+   clStatus |= clSetKernelArg( oclwk,  1, sizeof(cl_mem), &outputImageMemObj );
+   clStatus |= clSetKernelArg( oclwk,  2, sizeof(cl_mem), &outputVideoImageMemObj );
+   clStatus |= clSetKernelArg( oclwk,  3, sizeof(float),  &catheterRadius_um );
+   clStatus |= clSetKernelArg( oclwk,  4, sizeof(float),  &internalImagingMask_px );
+   clStatus |= clSetKernelArg( oclwk,  5, sizeof(float),  &standardDepth_mm );
+   clStatus |= clSetKernelArg( oclwk,  6, sizeof(int),    &standardDepth_S );
+   clStatus |= clSetKernelArg( oclwk,  7, sizeof(float),  &displayAngle_deg );
+   clStatus |= clSetKernelArg( oclwk,  8, sizeof(int),    &reverseDirection );
+   clStatus |= clSetKernelArg( oclwk,  9, sizeof(int),    &SectorWidth_px );
+   clStatus |= clSetKernelArg( oclwk, 10, sizeof(int),    &SectorHeight_px );
+   clStatus |= clSetKernelArg( oclwk, 11, sizeof(float),  &fractionOfCanvas );
+   clStatus |= clSetKernelArg( oclwk, 12, sizeof(int),    &imagingDepth_S );
 
    if( clStatus != CL_SUCCESS )
    {
@@ -779,7 +771,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    global_unit_dim[ 0 ] = SectorWidth_px;
    global_unit_dim[ 1 ] = SectorHeight_px;
 
-   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_WarpKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+   clStatus = clEnqueueNDRangeKernel( cl_Commands, oclwk, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
 
    if( clStatus != CL_SUCCESS )
    {
