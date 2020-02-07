@@ -194,6 +194,72 @@ void DSPGPU::initOpenClFileMap()
     };
 }
 
+cl_platform_id DSPGPU::getPlatformId() const
+{
+    cl_platform_id platformId;
+    cl_uint        numPlatforms = 0;
+
+    cl_int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
+    qDebug() << "numPlatforms =" << numPlatforms;
+
+    if( numPlatforms == 0 )
+    {
+        // fatal error
+        displayFailureMessage( tr( "Could not find openCL platform, reason: %1" ).arg( err ), true );
+        return nullptr;
+    }
+
+    // Found openCL-capable platforms
+    cl_platform_id* platformIds = new cl_platform_id [numPlatforms];
+    err = clGetPlatformIDs( numPlatforms, platformIds, nullptr );
+
+    uint deviceIndex = 99;
+
+    const int DefaultStringSize = 128;
+    char vendor[ DefaultStringSize ];
+    char name[ DefaultStringSize ];
+    char version[ DefaultStringSize ];
+
+    for ( cl_uint i = 0; i < numPlatforms; i++ )
+    {
+        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VENDOR,  DefaultStringSize, vendor,  nullptr );
+        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_NAME,    DefaultStringSize, name,    nullptr );
+        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VERSION, DefaultStringSize, version, nullptr );
+
+        if ( err != CL_SUCCESS )
+        {
+            displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
+            return nullptr;
+        }
+        qDebug() << "Platform (" << i << ") Vendor:" << vendor << " Name:" << name << " Version:" << version;
+
+        if ( QString( vendor ) == "Intel(R) Corporation" &&
+             QString( name )   == "Intel(R) OpenCL" )
+        {
+            deviceIndex = i;
+        }
+    }
+
+    if ( deviceIndex > 10 )
+    {
+        displayFailureMessage( tr( "Could not find gpu" ), true );
+        return nullptr;
+    }
+
+    platformId = platformIds[ deviceIndex ];
+
+    // release the memory.  Error paths do not free the memory since they will shut down the program
+    delete [] platformIds;
+
+    if( err != CL_SUCCESS )
+    {
+        displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
+        return nullptr;
+    }
+
+    return platformId;
+}
+
 /*
  * buildOpenCLKernel
  *
@@ -273,71 +339,14 @@ bool DSPGPU::initOpenCL()
 
     initOpenClFileMap();
 
-    cl_platform_id platformId;
-    cl_uint        numPlatforms = 0;
+    cl_platform_id platformId = getPlatformId();
 
-    cl_int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
-    qDebug() << "numPlatforms =" << numPlatforms;
-
-    if( numPlatforms == 0 )
-    {
-        // fatal error
-        displayFailureMessage( tr( "Could not find openCL platform, reason: %1" ).arg( err ), true );
-        return false;
-    }
-
-    // Found openCL-capable platforms
-//    cl_platform_id* platformIds = (cl_platform_id* )malloc( sizeof( cl_platform_id ) * numPlatforms );
-    cl_platform_id* platformIds = new cl_platform_id [numPlatforms];
-    err = clGetPlatformIDs( numPlatforms, platformIds, nullptr );
-
-    uint deviceIndex = 99;
-
-    const int DefaultStringSize = 128;
-    char vendor[ DefaultStringSize ];
-    char name[ DefaultStringSize ];
-    char version[ DefaultStringSize ];
-
-
-    for ( cl_uint i = 0; i < numPlatforms; i++ )
-    {
-        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VENDOR,  DefaultStringSize, vendor,  nullptr );
-        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_NAME,    DefaultStringSize, name,    nullptr );
-        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VERSION, DefaultStringSize, version, nullptr );
-
-        if ( err != CL_SUCCESS )
-        {
-            displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
-            return false;
-        }
-        qDebug() << "Platform (" << i << ") Vendor:" << vendor << " Name:" << name << " Version:" << version;
-
-        if ( QString( vendor ) == "Intel(R) Corporation" &&
-             QString( name )   == "Intel(R) OpenCL" )
-        {
-            deviceIndex = i;
-        }
-    }
-
-    if ( deviceIndex > 10 )
-    {
-        displayFailureMessage( tr( "Could not find gpu" ), true );
-        return false;
-    }
-
-    platformId = platformIds[ deviceIndex ];
-
-    // release the memory.  Error paths do not free the memory since they will shut down the program
-    delete [] platformIds;
-
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
+    if(!platformId){
         return false;
     }
 
     // Verify the GPU is present
-    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
+    cl_int err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, nullptr );
 
     // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
     if( err == CL_DEVICE_NOT_FOUND )
