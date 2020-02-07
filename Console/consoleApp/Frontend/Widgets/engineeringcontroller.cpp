@@ -21,7 +21,6 @@ EngineeringController::EngineeringController(QWidget *parent)
     connect(m_view, SIGNAL(fileNameChanged(const QString&)), m_model, SLOT(setFileName(const QString&)));
     connect(m_view, SIGNAL(isLaserOnChanged(bool)), m_model, SLOT(setLaserOn(bool)));
     connect(m_view, SIGNAL(isMotorOnChanged(bool)), m_model, SLOT(setMotorPowerOn(bool)));
-    connect(&m_statTimer, SIGNAL(timeout()), this, SLOT(updateStat()));
     connect(m_view, SIGNAL(loadFrame()), this, SLOT(loadFrameBuffers()));
     connect(m_view, SIGNAL(saveFrame()), this, SLOT(saveFrameBuffers()));
     connect(m_view, SIGNAL(singleStep()), PlaybackManager::instance(), SLOT(singleStep()));
@@ -43,10 +42,6 @@ EngineeringController::EngineeringController(QWidget *parent)
     connect(m_view, SIGNAL(saveDataToFile()), this, SLOT(handleSaveDataToFile()));
 
     m_view->signalsConnected();
-
-#ifdef QT_NO_DEBUG
-    m_statTimer.start(200);
-#endif
 }
 
 void EngineeringController::setViewPosition(int x, int y)
@@ -67,19 +62,6 @@ void EngineeringController::showOrHideView(bool isShown)
         m_view->show();
     } else{
         m_view->hide();
-    }
-}
-
-void EngineeringController::updateStat()
-{
-    QString msg;
-    QTextStream qt(&msg);
-    qt << "Queued rawData: " <<  PlaybackManager::instance()->queueSize();
-    qt << ", rawData Processed: " << PlaybackManager::instance()->countOfRawDataBuffersProcessed();
-    qt << ", rawData index: " << PlaybackManager::instance()->frameIndex();
-
-    if(!PlaybackManager::instance()->isPlayback()){
-        m_view->setStatMsg(msg);
     }
 }
 

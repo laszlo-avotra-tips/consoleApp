@@ -17,7 +17,6 @@ public:
     void showOrHideView(bool isShown = true);
 
 private slots:
-    void updateStat();
     void saveFrameBuffers();
     void loadFrameBuffers();
     void playbackStartStopCommand(bool isStart);
@@ -32,8 +31,6 @@ private:
     EngineeringDialog* m_view;
     EngineeringModel* m_model;
     bool m_isGeometrySet;
-    QTimer m_statTimer;
-
 };
 
 #endif // ENGINEERINGCONTROLLER_H
