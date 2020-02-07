@@ -17,7 +17,7 @@ public:
     explicit EngineeringDialog(QWidget *parent = nullptr);
     ~EngineeringDialog();
 
-    void setStatMsg(const QString& msg);
+    void setStatMsg(const QString& msg1, const QString& msg2);
     void signalsConnected();
 
 public slots:

@@ -22,9 +22,9 @@ EngineeringDialog::EngineeringDialog(QWidget *parent) :
 
     enableSingleStep();
 
-    if(SignalManager::instance()->isFftSource()){
-        ui->labelFramesForPlayback->hide();
-    }
+//    if(SignalManager::instance()->isFftSource()){
+//        ui->labelFramesForPlayback->hide();
+//    }
 }
 
 EngineeringDialog::~EngineeringDialog()
@@ -32,9 +32,10 @@ EngineeringDialog::~EngineeringDialog()
     delete ui;
 }
 
-void EngineeringDialog::setStatMsg(const QString& msg)
+void EngineeringDialog::setStatMsg(const QString& msg1, const QString& msg2)
 {
-    ui->labelStat->setText(msg);
+    ui->labelStat->setText(msg1);
+    ui->labelFramesForPlayback->setText(msg2);
     //    LOG1(msg);
 }
 

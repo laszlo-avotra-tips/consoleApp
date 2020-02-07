@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QTime>
 
 class EngineeringDialog;
 class EngineeringModel;
@@ -32,6 +33,8 @@ private:
     EngineeringDialog* m_view;
     EngineeringModel* m_model;
     bool m_isGeometrySet;
+    QTime m_frameRateTimer;
+    float m_frameRate{1.0};
 };
 
 #endif // ENGINEERINGCONTROLLER_H

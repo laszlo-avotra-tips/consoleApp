@@ -17,7 +17,7 @@ win32 {
    QT += opengl
 }
 
-CONFIG += c++11
+CONFIG += c++14
 
 DEFINES += QT_XML_LIB QT_SQL_LIB
 

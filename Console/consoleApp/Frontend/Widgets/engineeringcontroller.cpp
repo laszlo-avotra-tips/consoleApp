@@ -125,11 +125,22 @@ void EngineeringController::stopPlayback()
 
 void EngineeringController::onCountChanged(int count, int index)
 {
-    QString msg;
-    QTextStream qts(&msg);
+    std::vector<QString> msg{QString(), QString()};
 
-    qts << "Frame count = " << count << ", Frame index = " << index;
+    QTextStream qts1(&msg[0]);
+    QTextStream qts2(&msg[1]);
 
-    m_view->setStatMsg(msg);
+    if(count == 1){
+        m_frameRateTimer.start();
+    }
+    int timeElapsed = m_frameRateTimer.elapsed();
+    if((count%60 == 1) && (timeElapsed > 0)){
+        m_frameRate = 1000.f * count / timeElapsed;
+    }
+
+    qts1 << "Frame: [count = " << count << ", index = " << index << "]";
+    qts2 << "Frame rate = " << m_frameRate << "[/s]";
+
+    m_view->setStatMsg(msg[0], msg[1]);
 }
 
