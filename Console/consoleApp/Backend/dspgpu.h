@@ -35,13 +35,9 @@ public:
     bool loadFftOutMemoryObjects();
 
 public slots:
-    void setAveraging( bool enable ) { doAveraging = enable; }
-    void setFrameAverageWeights( int inPrevFrameWeight_percent, int inCurrFrameWeight_percent )
-    {
-        prevFrameWeight_percent = inPrevFrameWeight_percent / 100.0f;
-        currFrameWeight_percent = inCurrFrameWeight_percent / 100.0f;
-    }
-    void setDisplayAngle( float angle ) { displayAngle_deg = angle; }
+    void setAveraging( bool enable );
+    void setFrameAverageWeights( int inPrevFrameWeight_percent, int inCurrFrameWeight_percent );
+    void setDisplayAngle( float angle );
 
 private:
     bool  doAveraging; // Instruct the post-process kernel to average two frames at a time.

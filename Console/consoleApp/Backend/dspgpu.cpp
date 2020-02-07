@@ -870,3 +870,19 @@ bool DSPGPU::loadFftOutMemoryObjects()
     }
     return true;
 }
+
+void DSPGPU::setAveraging(bool enable)
+{
+    doAveraging = enable;
+}
+
+void DSPGPU::setFrameAverageWeights(int inPrevFrameWeight_percent, int inCurrFrameWeight_percent)
+{
+    prevFrameWeight_percent = inPrevFrameWeight_percent / 100.0f;
+    currFrameWeight_percent = inCurrFrameWeight_percent / 100.0f;
+}
+
+void DSPGPU::setDisplayAngle(float angle)
+{
+    displayAngle_deg = angle;
+}
