@@ -23,6 +23,7 @@ private slots:
     void setPlaybackSpeed(int speed);
     void handleSaveDataToFile();
     void saveDataToFile();
+    void onCountChanged(int count, int index);
 
 private:
     void startPlayback();

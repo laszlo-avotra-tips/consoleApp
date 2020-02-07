@@ -124,17 +124,6 @@ void EngineeringDialog::on_checkBoxPlayback_toggled(bool checked)
     emit playbackStartStop(checked);
 }
 
-void EngineeringDialog::countChanged(int count, int index)
-{
-    QString msg;
-    QTextStream qts(&msg);
-
-    qts << "Frame count = " << count << ", Frame index = " << index;
-
-//    LOG2(count, index);
-    ui->labelStat->setText(msg);
-}
-
 void EngineeringDialog::on_pushButtonSingleStep_clicked()
 {
     emit singleStep();

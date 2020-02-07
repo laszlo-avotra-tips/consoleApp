@@ -50,8 +50,6 @@ private slots:
 
     void on_checkBoxPlayback_toggled(bool checked);
 
-    void countChanged(int count, int index);
-
     void on_pushButtonSingleStep_clicked();
 
     void on_pushButtonSaveData_clicked();

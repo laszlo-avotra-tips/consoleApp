@@ -31,7 +31,7 @@ EngineeringController::EngineeringController(QWidget *parent)
     connect(m_model, SIGNAL(playbackSpeedChanged(int)), this, SLOT(setPlaybackSpeed(int)));
 
     connect(PlaybackManager::instance(), SIGNAL(countChanged(int, int)),
-            m_view, SLOT(countChanged(int, int)));
+            this, SLOT(onCountChanged(int, int)));
 
     connect(PlaybackManager::instance(), SIGNAL(rawDataBuffersAvailable(int)),
             m_view, SLOT(setFramesAvailable(int)));
@@ -122,3 +122,14 @@ void EngineeringController::stopPlayback()
 {
     PlaybackManager::instance()->stopPlayback();
 }
+
+void EngineeringController::onCountChanged(int count, int index)
+{
+    QString msg;
+    QTextStream qts(&msg);
+
+    qts << "Frame count = " << count << ", Frame index = " << index;
+
+    m_view->setStatMsg(msg);
+}
+
