@@ -31,16 +31,6 @@
 #include "playbackmanager.h"
 
 
-#if _DEBUG
-#   define POSTPROC_CL "./backend/opencl/postproc.cl"
-#   define BANDC_CL    "./backend/opencl/bandc.cl"
-#   define WARP_CL     "./backend/opencl/warp.cl"
-#else
-#   define POSTPROC_CL "./postproc.cl"
-#   define BANDC_CL    "./bandc.cl"
-#   define WARP_CL     "./warp.cl"
-#endif
-
 /*
  * OpenCL core organization parameters
  */
@@ -181,16 +171,10 @@ bool DSPGPU::isClReturnValueSuccess(cl_int ret, int line) const
 
 void DSPGPU::initOpenClFileMap()
 {
-#ifdef QT_DEBUG
-    QString path = QCoreApplication::applicationDirPath() + QString("/../../consoleApp/");
-#else
-    QString path = QCoreApplication::applicationDirPath();
-#endif
-
     m_openClFileMap = {
-        {"postproc_kernel",  path + POSTPROC_CL},
-        {"bandc_kernel",  path + BANDC_CL},
-        {"warp_kernel",  path + WARP_CL}
+        {"postproc_kernel",  ":/kernel/postProc"},
+        {"bandc_kernel",  ":/kernel/bandc"},
+        {"warp_kernel",  ":/kernel/warp"}
     };
 }
 
