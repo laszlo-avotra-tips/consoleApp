@@ -119,6 +119,7 @@ private:
 
     bool callPostProcessKernel() const;
     bool callBandcKernel() const;
+    bool callWarpKernel() const;
 };
 
 #endif // DSPGPU_H_
