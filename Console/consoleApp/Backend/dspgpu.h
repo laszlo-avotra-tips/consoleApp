@@ -101,8 +101,13 @@ private:
     float prevFrameWeight_percent;
     float currFrameWeight_percent;
 
-    const size_t      complexDataSize{1024};
+    const size_t complexDataSize{1024};
+    const size_t oclLocalWorkSize[2]{16,16};
+    const cl_uint oclWorkDimension{2};
+    const size_t* oclGlobalWorkOffset{nullptr};
+    const cl_uint numEventsInWaitlist{0};
 
+private:
     // OpenCL support
     bool createCLMemObjects( cl_context context );
     bool transformData( unsigned char *data , unsigned char *videoData );

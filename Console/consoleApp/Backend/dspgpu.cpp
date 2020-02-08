@@ -37,10 +37,6 @@
 #define DEFAULT_GLOBAL_UNITS ( 2048 )
 #define DEFAULT_LOCAL_UNITS  ( 16 )
 
-namespace{
-size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
-size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
-}
 
 /*
  * destructor
@@ -389,10 +385,9 @@ bool DSPGPU::callPostProcessKernel() const
             qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;
         }
 
+        const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(linesPerFrame)};
 
-        global_unit_dim[ 0 ] = FFTDataSize;
-        global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclppk, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclppk, oclWorkDimension, oclGlobalWorkOffset, globalWorkSize, oclLocalWorkSize, numEventsInWaitlist, nullptr, nullptr );
         if( clStatus != CL_SUCCESS )
         {
             qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
@@ -428,9 +423,10 @@ bool DSPGPU::callBandcKernel() const
          {
              qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
          }
-         global_unit_dim[ 0 ] = FFTDataSize;
-         global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-         clStatus = clEnqueueNDRangeKernel( cl_Commands, oclbck, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+
+         const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(linesPerFrame)};
+
+         clStatus = clEnqueueNDRangeKernel( cl_Commands, oclbck, oclWorkDimension, oclGlobalWorkOffset, globalWorkSize, oclLocalWorkSize, numEventsInWaitlist, nullptr, nullptr );
          if( clStatus != CL_SUCCESS )
          {
              qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
@@ -478,18 +474,16 @@ bool DSPGPU::callWarpKernel() const
             qDebug() << "DSP: Failed to set warp kernel arguments:" << clStatus;
             return false;
         }
-        global_unit_dim[ 0 ] = SectorWidth_px;
-        global_unit_dim[ 1 ] = SectorHeight_px;
 
-        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclwk, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+        const size_t globalWorkSize[] {size_t(SectorWidth_px),size_t(SectorHeight_px)};
+
+        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclwk, oclWorkDimension, oclGlobalWorkOffset, globalWorkSize, oclLocalWorkSize, numEventsInWaitlist, nullptr, nullptr );
 
         if( clStatus != CL_SUCCESS )
         {
             qDebug() << "DSP: Failed to execute warp kernel:" << clStatus;
             return false;
         }
-        global_unit_dim[ 0 ] = RescalingDataLength;
-        global_unit_dim[ 1 ] = linesPerFrame;
 
         // Do all the work that was queued up on the GPU
         clStatus = clFinish( cl_Commands );
@@ -623,9 +617,6 @@ bool DSPGPU::initOpenCL()
     }
 
     createCLMemObjects( cl_Context );
-
-    global_unit_dim[ 0 ] = RescalingDataLength;
-    global_unit_dim[ 1 ] = linesPerFrame;
 
     qDebug() << "DSPGPU: OpenCL init complete.";
 
