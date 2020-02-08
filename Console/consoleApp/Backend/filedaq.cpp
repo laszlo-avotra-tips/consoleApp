@@ -92,15 +92,6 @@ void FileDaq::run()
         qDebug() << "Thread: DAQ::run start";
         m_isRunning = true;
 
-        if( isHighSpeedDevice )
-        {
-            // Start the DSP thread
-            if(!SignalManager::instance()->isFftSource()){
-                m_dsp->start();
-            }
-        }
-
-
         // set the brightness and contrast when the daq starts up
         if( isHighSpeedDevice )
         {
@@ -120,17 +111,10 @@ void FileDaq::run()
         {
             ++videoFrameCount;
             PlaybackManager::instance()->setCount(videoFrameCount, m_count2);
-            if(!SignalManager::instance()->isFftSource()){
-                if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
-                    m_dsp->processData(m_count2);
-                    SignalManager::instance()->saveSignal(m_count2);
-                }
-            }else{
-                if(m_count2 == 0) SignalManager::instance()->open();
-                SignalManager::instance()->loadSignal(m_count2);
-                m_dsp->loadFftOutMemoryObjects();
-                m_dsp->processData(m_count2);
-            }
+            if(m_count2 == 0) SignalManager::instance()->open();
+            SignalManager::instance()->loadSignal(m_count2);
+            m_dsp->loadFftOutMemoryObjects();
+            m_dsp->processData(m_count2);
             ++m_count2;
             if(m_count2 == FRAME_BUFFER_SIZE)
             {
@@ -145,17 +129,10 @@ void FileDaq::run()
         if(PlaybackManager::instance()->isSingleStep()){
             ++videoFrameCount;
             PlaybackManager::instance()->setCount(videoFrameCount, m_count2);
-            if(!SignalManager::instance()->isFftSource()){
-                if(PlaybackManager::instance()->EnqueueBuffer(m_count2)){
-                    m_dsp->processData(m_count2);
-                    SignalManager::instance()->saveSignal(m_count2);
-                }
-            }else{
-                if(m_count2 == 0) SignalManager::instance()->open();
-                SignalManager::instance()->loadSignal(m_count2);
-                m_dsp->loadFftOutMemoryObjects();
-                m_dsp->processData(m_count2);
-            }
+            if(m_count2 == 0) SignalManager::instance()->open();
+            SignalManager::instance()->loadSignal(m_count2);
+            m_dsp->loadFftOutMemoryObjects();
+            m_dsp->processData(m_count2);
             ++m_count2;
             if(m_count2 == FRAME_BUFFER_SIZE)
             {

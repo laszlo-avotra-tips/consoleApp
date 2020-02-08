@@ -21,10 +21,6 @@ EngineeringDialog::EngineeringDialog(QWidget *parent) :
     ui->pushButtonSaveData->setEnabled(false);
 
     enableSingleStep();
-
-//    if(SignalManager::instance()->isFftSource()){
-//        ui->labelFramesForPlayback->hide();
-//    }
 }
 
 EngineeringDialog::~EngineeringDialog()
@@ -43,10 +39,6 @@ void EngineeringDialog::signalsConnected()
 {
     if(!ui->lineEdit->text().isEmpty()){
         emit fileNameChanged(ui->lineEdit->text());
-        if(!SignalManager::instance()->isFftSource()){
-            ui->pushButtonLoad->setEnabled(true);
-            ui->sliderPlaybackSpeed->setEnabled(true);
-        }
     }
 }
 
@@ -57,14 +49,11 @@ void EngineeringDialog::setMotorSpeed(int val)
 
 void EngineeringDialog::setFramesAvailable(int frameCount)
 {
-    LOG1(frameCount);
+    LOG1(frameCount)
     QString msg("Frames for playback: ");
     msg += QString::number(frameCount);
     ui->labelFramesForPlayback->setText(msg);
     ui->checkBoxPlayback->setEnabled(true);
-    if(!SignalManager::instance()->isFftSource()){
-        ui->pushButtonSingleStep->setEnabled(true);
-    }
 }
 
 void EngineeringDialog::on_checkBoxLaserOn_toggled(bool checked)
@@ -80,21 +69,17 @@ void EngineeringDialog::on_checkBoxLaserOff_toggled(bool checked)
 
 void EngineeringDialog::on_groupBoxMotor_toggled(bool isOn)
 {
-    LOG1(isOn);
     emit isMotorOnChanged(isOn);
     ui->sliderMotorSpeed->setEnabled(isOn);
 }
 
 void EngineeringDialog::on_pushButtonLoad_clicked()
 {
-    LOG1(++m_count);
     emit loadFrame();
-//    ui->checkBoxPlayback->setEnabled(true);
 }
 
 void EngineeringDialog::on_pushButtonSave_clicked()
 {
-    LOG1(++m_count);
     emit saveFrame();
 }
 
@@ -128,9 +113,6 @@ void EngineeringDialog::on_checkBoxPlayback_toggled(bool checked)
 void EngineeringDialog::on_pushButtonSingleStep_clicked()
 {
     emit singleStep();
-    if(!SignalManager::instance()->isFftSource()){
-        ui->pushButtonSaveData->setEnabled(true);
-    }
 }
 
 void EngineeringDialog::on_pushButtonSaveData_clicked()
@@ -151,24 +133,16 @@ void EngineeringDialog::enableFileButtons()
 
 void EngineeringDialog::setButtonEnabledStatusWhileSavingTheSignal(bool buttonStatus)
 {
-    LOG1(buttonStatus);
+    LOG1(buttonStatus)
     ui->pushButtonFile->setEnabled(buttonStatus);
     ui->pushButtonSave->setEnabled(buttonStatus);
     ui->pushButtonSaveData->setEnabled(buttonStatus);
-
-    if(!SignalManager::instance()->isFftSource()){
-        ui->checkBoxPlayback->setEnabled(buttonStatus);
-        ui->pushButtonSingleStep->setEnabled(buttonStatus);
-        ui->pushButtonLoad->setEnabled(buttonStatus);
-    }
 }
 
 void EngineeringDialog::enableSingleStep()
 {
-    if(SignalManager::instance()->isFftSource()){
-        ui->pushButtonSingleStep->setEnabled(true);
-        ui->checkBoxPlayback->setEnabled(true);
-        ui->pushButtonFile->setEnabled(false);
-        ui->sliderPlaybackSpeed->setEnabled(true);
-    }
+    ui->pushButtonSingleStep->setEnabled(true);
+    ui->checkBoxPlayback->setEnabled(true);
+    ui->pushButtonFile->setEnabled(false);
+    ui->sliderPlaybackSpeed->setEnabled(true);
 }
