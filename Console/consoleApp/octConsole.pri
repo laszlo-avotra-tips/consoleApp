@@ -200,3 +200,6 @@ win32:RC_FILE += octConsole.rc
 OTHER_FILES += \
     Backend/OpenCL/postProc.cl \
     Backend/OpenCL/warp.cl
+
+DISTFILES += \
+    $$PWD/Backend/OpenCL/bandc.cl

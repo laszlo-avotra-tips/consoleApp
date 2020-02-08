@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/kernel">
+        <file alias="bandc">Backend/OpenCL/bandc.cl</file>
+        <file alias="postProc">Backend/OpenCL/postProc.cl</file>
+        <file alias="warp">Backend/OpenCL/warp.cl</file>
+    </qresource>
+</RCC>

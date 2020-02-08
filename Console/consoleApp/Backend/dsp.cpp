@@ -228,7 +228,7 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
  */
 quint32 DSP::getAvgAmplitude( quint16 *pA )
 {
-    quint32 average = 0;
+    size_t average = 0;
     const size_t start_idx = recordLength / 3 ;
     const size_t end_idx   = ( 2 * recordLength ) / 3;
 
@@ -241,7 +241,7 @@ quint32 DSP::getAvgAmplitude( quint16 *pA )
 
     // XXX: ippsMean_16s_Sfs( (Ipp16s *)pA, (int)( recordLength/3 ), (Ipp16s *)&avg, 0 );
 
-    return average;
+    return quint32(average);
 }
 
 void DSP::updateCatheterView()

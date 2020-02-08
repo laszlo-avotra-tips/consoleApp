@@ -103,3 +103,6 @@ CONFIG( release ) {
     QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
 }
 
+RESOURCES += \
+    OpenClResources.qrc
+
