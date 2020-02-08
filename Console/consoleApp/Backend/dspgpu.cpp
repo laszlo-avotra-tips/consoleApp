@@ -418,6 +418,44 @@ bool DSPGPU::callPostProcessKernel() const
     return success;
 }
 
+bool DSPGPU::callBandcKernel() const
+{
+    auto itbc = m_openClFunctionMap.find("bandc_kernel");
+    if(itbc != m_openClFunctionMap.end())
+    {
+         auto& oclbck = itbc->second.second;
+         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), &inputImageMemObj );
+         if( clStatus != CL_SUCCESS )
+         {
+             qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
+         }
+         clStatus |= clSetKernelArg( oclbck, 1, sizeof(cl_mem), &warpInputImageMemObj );
+         if( clStatus != CL_SUCCESS )
+         {
+             qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
+         }
+         clStatus |= clSetKernelArg( oclbck, 2, sizeof(float), &blackLevel );
+         if( clStatus != CL_SUCCESS )
+         {
+             qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;
+         }
+         clStatus |= clSetKernelArg( oclbck, 3, sizeof(float), &whiteLevel );
+         if( clStatus != CL_SUCCESS )
+         {
+             qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
+         }
+         global_unit_dim[ 0 ] = FFTDataSize;
+         global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
+         clStatus = clEnqueueNDRangeKernel( cl_Commands, oclbck, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+         if( clStatus != CL_SUCCESS )
+         {
+             qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
+             return false;
+         }
+    }
+    return true;
+}
+
 /*
  * buildOpenCLKernel
  *
@@ -726,39 +764,43 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
     /*
      * Adjust brightness and contrast
      */
-   auto itbc = m_openClFunctionMap.find("bandc_kernel");
-   if(itbc != m_openClFunctionMap.end())
-   {
-        auto& oclbck = itbc->second.second;
-        clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), &inputImageMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclbck, 1, sizeof(cl_mem), &warpInputImageMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclbck, 2, sizeof(float), &blackLevel );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclbck, 3, sizeof(float), &whiteLevel );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
-        }
-        global_unit_dim[ 0 ] = FFTDataSize;
-        global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclbck, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
-            return false;
-        }
-   }
+    if(!callBandcKernel()){
+        return false;
+    }
+
+//   auto itbc = m_openClFunctionMap.find("bandc_kernel");
+//   if(itbc != m_openClFunctionMap.end())
+//   {
+//        auto& oclbck = itbc->second.second;
+//        clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), &inputImageMemObj );
+//        if( clStatus != CL_SUCCESS )
+//        {
+//            qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
+//        }
+//        clStatus |= clSetKernelArg( oclbck, 1, sizeof(cl_mem), &warpInputImageMemObj );
+//        if( clStatus != CL_SUCCESS )
+//        {
+//            qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
+//        }
+//        clStatus |= clSetKernelArg( oclbck, 2, sizeof(float), &blackLevel );
+//        if( clStatus != CL_SUCCESS )
+//        {
+//            qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;
+//        }
+//        clStatus |= clSetKernelArg( oclbck, 3, sizeof(float), &whiteLevel );
+//        if( clStatus != CL_SUCCESS )
+//        {
+//            qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
+//        }
+//        global_unit_dim[ 0 ] = FFTDataSize;
+//        global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
+//        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclbck, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+//        if( clStatus != CL_SUCCESS )
+//        {
+//            qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
+//            return false;
+//        }
+//   }
 
    // Set true by default, means the sector draws Counter-Clockwise. This variable is necessary because we pass an address as an argument.
    int reverseDirection = useDistalToProximalView;

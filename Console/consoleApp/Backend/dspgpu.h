@@ -118,6 +118,7 @@ private:
     bool getGpuDeviceInfo(cl_platform_id id, bool isLogging = false);
 
     bool callPostProcessKernel() const;
+    bool callBandcKernel() const;
 };
 
 #endif // DSPGPU_H_
