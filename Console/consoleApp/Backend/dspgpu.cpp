@@ -834,66 +834,6 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
         return false;
     }
 
-
-//   // Set true by default, means the sector draws Counter-Clockwise. This variable is necessary because we pass an address as an argument.
-//   int reverseDirection = useDistalToProximalView;
-
-//   // get variables and pass into Warp.CL
-//   depthSetting &depth = depthSetting::Instance();
-//   const int   imagingDepth_S   = int(depth.getDepth_S());
-//   const float fractionOfCanvas = depth.getFractionOfCanvas();
-
-//   deviceSettings &dev = deviceSettings::Instance();
-//   const float standardDepth_mm = dev.current()->getImagingDepthNormal_mm();
-//   const int   standardDepth_S  = dev.current()->getALineLengthNormal_px();
-//   reverseDirection ^= int(dev.current()->getRotation());    // apply Sled rotational direction
-
-//   auto itw = m_openClFunctionMap.find("warp_kernel");
-//   if(itw != m_openClFunctionMap.end())
-//   {
-//       auto& oclwk = itw->second.second;
-//       clStatus  = clSetKernelArg( oclwk,  0, sizeof(cl_mem), &warpInputImageMemObj );
-//       clStatus |= clSetKernelArg( oclwk,  1, sizeof(cl_mem), &outputImageMemObj );
-//       clStatus |= clSetKernelArg( oclwk,  2, sizeof(cl_mem), &outputVideoImageMemObj );
-//       clStatus |= clSetKernelArg( oclwk,  3, sizeof(float),  &catheterRadius_um );
-//       clStatus |= clSetKernelArg( oclwk,  4, sizeof(float),  &internalImagingMask_px );
-//       clStatus |= clSetKernelArg( oclwk,  5, sizeof(float),  &standardDepth_mm );
-//       clStatus |= clSetKernelArg( oclwk,  6, sizeof(int),    &standardDepth_S );
-//       clStatus |= clSetKernelArg( oclwk,  7, sizeof(float),  &displayAngle_deg );
-//       clStatus |= clSetKernelArg( oclwk,  8, sizeof(int),    &reverseDirection );
-//       clStatus |= clSetKernelArg( oclwk,  9, sizeof(int),    &SectorWidth_px );
-//       clStatus |= clSetKernelArg( oclwk, 10, sizeof(int),    &SectorHeight_px );
-//       clStatus |= clSetKernelArg( oclwk, 11, sizeof(float),  &fractionOfCanvas );
-//       clStatus |= clSetKernelArg( oclwk, 12, sizeof(int),    &imagingDepth_S );
-
-//       if( clStatus != CL_SUCCESS )
-//       {
-//           qDebug() << "DSP: Failed to set warp kernel arguments:" << clStatus;
-//           return false;
-//       }
-
-//       global_unit_dim[ 0 ] = SectorWidth_px;
-//       global_unit_dim[ 1 ] = SectorHeight_px;
-
-//       clStatus = clEnqueueNDRangeKernel( cl_Commands, oclwk, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
-
-//       if( clStatus != CL_SUCCESS )
-//       {
-//           qDebug() << "DSP: Failed to execute warp kernel:" << clStatus;
-//           return false;
-//       }
-//       global_unit_dim[ 0 ] = RescalingDataLength;
-//       global_unit_dim[ 1 ] = linesPerFrame;
-
-//       // Do all the work that was queued up on the GPU
-//       clStatus = clFinish( cl_Commands );
-//       if( clStatus != CL_SUCCESS )
-//       {
-//           qDebug() << "DSP: Failed to issue and complete all queued commands: " << clStatus;
-//           return false;
-//       }
-//   }
-
    size_t origin[ 3 ] = { 0, 0, 0 };
    size_t region[ 3 ] = { SectorWidth_px, SectorHeight_px, 1 };
 
