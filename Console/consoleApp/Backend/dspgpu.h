@@ -116,6 +116,8 @@ private:
     void initOpenClFileMap();
     cl_platform_id getPlatformId() const;
     bool getGpuDeviceInfo(cl_platform_id id, bool isLogging = false);
+
+    bool callPostProcessKernel() const;
 };
 
 #endif // DSPGPU_H_

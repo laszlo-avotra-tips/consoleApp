@@ -333,6 +333,91 @@ bool DSPGPU::getGpuDeviceInfo(cl_platform_id id, bool isLogging)
     return true;
 }
 
+bool DSPGPU::callPostProcessKernel() const
+{
+    bool success{true};
+
+    auto it = m_openClFunctionMap.find("postproc_kernel");
+    if(it != m_openClFunctionMap.end())
+    {
+        const int averageVal   = doAveraging;
+        const int invertColors = doInvertColors;
+        const float scaleFactor = 20000.0f * 255.0f / 65535.0f ;
+        const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
+
+        unsigned int postProcInputLength = RescalingDataLength;
+
+        auto& oclppk = it->second.second;
+        // Make this a loop XXX
+        cl_int clStatus  = clSetKernelArg( oclppk, 0, sizeof(cl_mem), &fftRealOutputMemObj );
+        if( clStatus != CL_SUCCESS )
+        {
+           qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
+        if( clStatus != CL_SUCCESS )
+        {
+           qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 2, sizeof(cl_mem), &lastFramePreScalingMemObj );
+        if( clStatus != CL_SUCCESS )
+        {
+           qDebug() << "DSP: Failed to set post processing argument 2, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 3, sizeof(cl_mem), &inputImageMemObj );
+        if( clStatus != CL_SUCCESS )
+        {
+           qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 4, sizeof(int), &postProcInputLength );
+        if( clStatus != CL_SUCCESS )
+        {
+           qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 5, sizeof(float), &scaleFactor );
+        if( clStatus != CL_SUCCESS )
+        {
+            qDebug() << "DSP: Failed to set post processing argument 5, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 6, sizeof(unsigned int), &dcNoiseLevel );
+        if( clStatus != CL_SUCCESS )
+        {
+            qDebug() << "DSP: Failed to set post processing argument 6, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 7, sizeof(int), &averageVal );
+        if( clStatus != CL_SUCCESS )
+        {
+            qDebug() << "DSP: Failed to set post processing argument 7, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 8, sizeof(float), &prevFrameWeight_percent );
+        if( clStatus != CL_SUCCESS )
+        {
+            qDebug() << "DSP: Failed to set post processing argument 8, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 9, sizeof(float), &currFrameWeight_percent );
+        if( clStatus != CL_SUCCESS )
+        {
+            qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
+        }
+        clStatus |= clSetKernelArg( oclppk, 10, sizeof(int), &invertColors );
+        if( clStatus != CL_SUCCESS )
+        {
+            qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;
+        }
+
+
+        global_unit_dim[ 0 ] = FFTDataSize;
+        global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
+        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclppk, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
+        if( clStatus != CL_SUCCESS )
+        {
+            qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
+            return false;
+        }
+    }
+    return success;
+}
+
 /*
  * buildOpenCLKernel
  *
@@ -632,85 +717,11 @@ bool DSPGPU::createCLMemObjects( cl_context context )
  */
 bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 {
-   int            clStatus;
-   int            averageVal   = doAveraging;
-   int            invertColors = doInvertColors;
+    int            clStatus;
 
-   float scaleFactor = 20000.0f * 255.0f / 65535.0f ;
-   const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
-
-   unsigned int postProcInputLength = RescalingDataLength;
-
-   auto it = m_openClFunctionMap.find("postproc_kernel");
-   if(it != m_openClFunctionMap.end())
-   {
-        auto& oclppk = it->second.second;
-        // Make this a loop XXX
-        clStatus  = clSetKernelArg( oclppk, 0, sizeof(cl_mem), &fftRealOutputMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 2, sizeof(cl_mem), &lastFramePreScalingMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 2, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 3, sizeof(cl_mem), &inputImageMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 4, sizeof(int), &postProcInputLength );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
-        }
-       clStatus |= clSetKernelArg( oclppk, 5, sizeof(float), &scaleFactor );
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to set post processing argument 5, err: "  << clStatus;
-       }
-       clStatus |= clSetKernelArg( oclppk, 6, sizeof(unsigned int), &dcNoiseLevel );
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to set post processing argument 6, err: "  << clStatus;
-       }
-       clStatus |= clSetKernelArg( oclppk, 7, sizeof(int), &averageVal );
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to set post processing argument 7, err: "  << clStatus;
-       }
-       clStatus |= clSetKernelArg( oclppk, 8, sizeof(float), &prevFrameWeight_percent );
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to set post processing argument 8, err: "  << clStatus;
-       }
-       clStatus |= clSetKernelArg( oclppk, 9, sizeof(float), &currFrameWeight_percent );
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
-       }
-       clStatus |= clSetKernelArg( oclppk, 10, sizeof(int), &invertColors );
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;
-       }
-
-       global_unit_dim[ 0 ] = FFTDataSize;
-       global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-       clStatus = clEnqueueNDRangeKernel( cl_Commands, oclppk, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
-           return false;
-       }
-   }
+    if(!callPostProcessKernel()){
+        return false;
+    }
 
     /*
      * Adjust brightness and contrast
