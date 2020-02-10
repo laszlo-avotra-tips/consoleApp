@@ -28,6 +28,7 @@
 #include "theglobals.h"
 #include "signalmanager.h"
 #include "playbackmanager.h"
+#include "kernelfunctionlogarithmicpowerdensity.h"
 
 
 /*
@@ -59,10 +60,6 @@ DSPGPU::~DSPGPU()
         clReleaseKernel(oclf.second);
     }
 
-    clReleaseMemObject( fftRealOutputMemObj );
-    clReleaseMemObject( fftImaginaryOutputMemObj );
-    clReleaseMemObject( lastFramePreScalingMemObj );
-    clReleaseMemObject( inputImageMemObj );
     clReleaseMemObject( warpInputImageMemObj );
     clReleaseMemObject( outputImageMemObj );
     clReleaseMemObject( outputVideoImageMemObj );
@@ -101,10 +98,13 @@ void DSPGPU::init( size_t inputLength,
     }
 
     doAveraging      = false;
+    m_lpd.setIsAveraging(doAveraging);
+
     displayAngle_deg = 0.0;
 
-    currFrameWeight_percent = DefaultCurrFrameWeight_Percent / 100.0;
-    prevFrameWeight_percent = 1 - currFrameWeight_percent;
+    m_lpd.setCurrFrameWeightPercent(DefaultCurrFrameWeight_Percent / 100.0f);
+
+    m_lpd.setPrevFrameWeightPercent(1.0f - DefaultCurrFrameWeight_Percent / 100.0f);
 }
 
 bool DSPGPU::processData(int index)
@@ -312,97 +312,22 @@ bool DSPGPU::getGpuDeviceInfo(cl_platform_id id, bool isLogging)
     return true;
 }
 
-bool DSPGPU::callPostProcessKernel() const
+bool DSPGPU::callPostProcessKernel()
 {
-    bool success{true};
-
-    auto it = m_openClFunctionMap.find("postproc_kernel");
-    if(it != m_openClFunctionMap.end())
-    {
-        const int averageVal   = doAveraging;
-        const int invertColors = doInvertColors;
-        const float scaleFactor = 20000.0f * 255.0f / 65535.0f ;
-        const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
-
-        unsigned int postProcInputLength = RescalingDataLength;
-
-        auto& oclppk = it->second.second;
-        // Make this a loop XXX
-        cl_int clStatus  = clSetKernelArg( oclppk, 0, sizeof(cl_mem), &fftRealOutputMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 2, sizeof(cl_mem), &lastFramePreScalingMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 2, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 3, sizeof(cl_mem), &inputImageMemObj );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 4, sizeof(int), &postProcInputLength );
-        if( clStatus != CL_SUCCESS )
-        {
-           qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 5, sizeof(float), &scaleFactor );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set post processing argument 5, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 6, sizeof(unsigned int), &dcNoiseLevel );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set post processing argument 6, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 7, sizeof(int), &averageVal );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set post processing argument 7, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 8, sizeof(float), &prevFrameWeight_percent );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set post processing argument 8, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 9, sizeof(float), &currFrameWeight_percent );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
-        }
-        clStatus |= clSetKernelArg( oclppk, 10, sizeof(int), &invertColors );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;
-        }
-
-        const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(linesPerFrame)};
-
-        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclppk, oclWorkDimension, oclGlobalWorkOffset, globalWorkSize, oclLocalWorkSize, numEventsInWaitlist, nullptr, nullptr );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
-            return false;
-        }
+    bool success{false};
+    if(cl_Commands){
+        success = m_lpd.enqueueCallKernelFunction(cl_Commands);
     }
     return success;
 }
 
-bool DSPGPU::callBandcKernel() const
+bool DSPGPU::callBandcKernel()
 {
     auto itbc = m_openClFunctionMap.find("bandc_kernel");
     if(itbc != m_openClFunctionMap.end())
     {
          auto& oclbck = itbc->second.second;
-         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), &inputImageMemObj );
+         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), m_lpd.getImageBuffer() );
          if( clStatus != CL_SUCCESS )
          {
              qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
@@ -595,6 +520,8 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
+    m_lpd.setContext(cl_Context);
+
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
     if( !cl_Commands )
     {
@@ -615,6 +542,11 @@ bool DSPGPU::initOpenCL()
         }
     }
 
+    auto it = m_openClFunctionMap.find("postproc_kernel");
+    if(it != m_openClFunctionMap.end())
+    {
+        m_lpd.setKernel(it->second.second);
+    }
     createCLMemObjects( cl_Context );
 
     qDebug() << "DSPGPU: OpenCL init complete.";
@@ -673,36 +605,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 {
     cl_int err;
 
-    fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-
-    fftRealOutputMemObj       =
-            clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr , &err );
-
-    if( err != CL_SUCCESS )
-    {
-         displayFailureMessage( tr( "Failed to create fftRealOutputMemObj" ), true );
-        return false;
-    }
-
-    fftImaginaryOutputMemObj  =
-            clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr , &err );
-    if( err != CL_SUCCESS )
-    {
-         displayFailureMessage( tr( "Failed to create fftImaginaryOutputMemObj" ), true );
-         return false;
-    }
-
-    lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-
-    lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, &err );
-
-    if( err != CL_SUCCESS )
-    {
-         displayFailureMessage( tr( "Failed to create lastFramePreScalingMemObj" ), true );
-         return false;
-    }
-
     const cl_image_format clImageFormat{CL_R,CL_UNSIGNED_INT8};
 
     const cl_mem_object_type image_type{CL_MEM_OBJECT_IMAGE2D};
@@ -746,14 +648,6 @@ bool DSPGPU::createCLMemObjects( cl_context context )
         num_samples,
         {buffer}
     };
-
-
-    inputImageMemObj       = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
 
     warpInputImageMemObj   = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
     if( err != CL_SUCCESS )
@@ -832,58 +726,24 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 
 bool DSPGPU::loadFftOutMemoryObjects()
 {
-    cl_int err;
-
-    fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-     auto smi = SignalManager::instance();
-    cl_bool isBlocking(CL_TRUE);
-
-    err = clEnqueueWriteBuffer (
-                cl_Commands,
-                fftRealOutputMemObj,
-                isBlocking,
-                0,
-                fftRealOutputMemObjSize,
-                smi->getRealDataPointer(),
-                0,
-                nullptr,
-                nullptr);
-
-    if( err != CL_SUCCESS )
-    {
-         displayFailureMessage( tr( "Failed to init fftRealOutputMemObj" ), true );
-         return false;
+    if(cl_Commands){
+        m_lpd.enqueueInputGpuMemory(cl_Commands);
+        return true;
     }
-
-    err = clEnqueueWriteBuffer (
-                cl_Commands,
-                fftImaginaryOutputMemObj,
-                isBlocking,
-                0,
-                fftImaginaryOutputMemObjSize,
-                smi->getImagDataPointer(),
-                0,
-                nullptr,
-                nullptr);
-
-    if( err != CL_SUCCESS )
-    {
-         displayFailureMessage( tr( "Failed to init fftImaginaryOutputMemObj" ), true );
-         return false;
-    }
-    return true;
+    return false;
 }
 
 void DSPGPU::setAveraging(bool enable)
 {
     doAveraging = enable;
+    m_lpd.setIsAveraging(doAveraging);
+
 }
 
 void DSPGPU::setFrameAverageWeights(int inPrevFrameWeight_percent, int inCurrFrameWeight_percent)
 {
-    prevFrameWeight_percent = inPrevFrameWeight_percent / 100.0f;
-    currFrameWeight_percent = inCurrFrameWeight_percent / 100.0f;
+    m_lpd.setPrevFrameWeightPercent(inPrevFrameWeight_percent / 100.0f);
+    m_lpd.setCurrFrameWeightPercent(inCurrFrameWeight_percent / 100.0f);
 }
 
 void DSPGPU::setDisplayAngle(float angle)

@@ -74,18 +74,6 @@ private:
 
     size_t           cl_max_workgroup_size;
 
-    cl_mem           fftRealOutputMemObj;
-    size_t           fftRealOutputMemObjSize;
-
-    cl_mem           fftImaginaryOutputMemObj;
-    size_t           fftImaginaryOutputMemObjSize;
-
-    cl_mem           lastFramePreScalingMemObj; // The last frame. Used for frame-averaging
-    size_t           lastFramePreScalingMemObjSize;
-
-    cl_mem           inputImageMemObj;
-    size_t           inputImageMemObjSize;
-
     cl_mem           warpInputImageMemObj;
     size_t           warpInputImageMemObjSize;
 
@@ -98,9 +86,6 @@ private:
     std::unique_ptr<quint16[]> workingBuffer{nullptr};
     std::unique_ptr<float[]> imData{nullptr};
     std::unique_ptr<float[]> reData{nullptr};
-
-    float prevFrameWeight_percent;
-    float currFrameWeight_percent;
 
     const size_t complexDataSize{1024};
     const size_t oclLocalWorkSize[2]{16,16};
@@ -126,8 +111,8 @@ private:
     cl_platform_id getPlatformId() const;
     bool getGpuDeviceInfo(cl_platform_id id, bool isLogging = false);
 
-    bool callPostProcessKernel() const;
-    bool callBandcKernel() const;
+    bool callPostProcessKernel();
+    bool callBandcKernel();
     bool callWarpKernel() const;
 };
 

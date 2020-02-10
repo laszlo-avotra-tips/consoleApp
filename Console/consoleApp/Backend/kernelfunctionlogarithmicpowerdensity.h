@@ -18,18 +18,18 @@ public:
     void setContext(cl_context context);
     void setIsAveraging(bool isAveraging);
     void setIsInvertColors(bool isInvertColors);
-    void createFftBuffers();
-    cl_mem getFftRealBuffer() const;
-    cl_mem getFftImagBuffer() const;
-    void createLastFrameBuffer();
+    bool createFftBuffers();
+    bool createLastFrameBuffer();
     void setLastFrameBuffer(cl_mem lastFrameBuffer);
-    cl_mem getImageBuffer() const;
-    cl_mem createImageBuffer();
+    cl_mem *getImageBuffer();
+    bool createImageBuffer();
     void setKernel(cl_kernel kernel);
+    bool setKernelParameters();
+    void setPrevFrameWeightPercent(cl_float val);
+    void setCurrFrameWeightPercent(cl_float val);
 
 private:
     void displayFailureMessage(const char* msg, bool isMajor) const;
-    bool setKernelParameters();
     bool init();
 
 private:
