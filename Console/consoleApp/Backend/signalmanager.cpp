@@ -176,11 +176,6 @@ bool SignalManager::isFftSource() const
     return true;
 }
 
-bool SignalManager::isPreScalingSource() const
-{
-    return false;
-}
-
 float *SignalManager::getImagDataPointer() const
 {
     return m_imagData;

@@ -21,7 +21,6 @@ public:
 
     size_t getFftMemSize() const;
     bool isFftSource()const;
-    bool isPreScalingSource()const;
 
     float *getLastFramePrescaling() const;
     bool loadSignal(int index);

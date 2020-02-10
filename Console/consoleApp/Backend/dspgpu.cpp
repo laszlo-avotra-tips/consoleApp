@@ -695,13 +695,8 @@ bool DSPGPU::createCLMemObjects( cl_context context )
 
     lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
 
-    if(SignalManager::instance()->isPreScalingSource()){
-        lastFramePreScalingMemObj
-                = clCreateBuffer( context, CL_MEM_READ_WRITE | CL_MEM_ALLOC_HOST_PTR, lastFramePreScalingMemObjSize, SignalManager::instance()->getLastFramePrescaling(), &err );
+    lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, &err );
 
-    } else {
-        lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, &err );
-    }
     if( err != CL_SUCCESS )
     {
          displayFailureMessage( tr( "Failed to create lastFramePreScalingMemObj" ), true );
