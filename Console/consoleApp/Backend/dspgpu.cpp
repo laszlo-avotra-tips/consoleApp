@@ -520,7 +520,7 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-    m_lpd.setContext(cl_Context);
+    m_lpd.initContext(cl_Context);
 
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
     if( !cl_Commands )

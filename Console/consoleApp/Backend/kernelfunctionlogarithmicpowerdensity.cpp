@@ -13,18 +13,18 @@ KernelFunctionLogarithmicPowerDensity::KernelFunctionLogarithmicPowerDensity() :
 KernelFunctionLogarithmicPowerDensity::KernelFunctionLogarithmicPowerDensity(cl_context context)
     : m_context(context), m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
 {
-    init();
+    initContext(context);
 }
 
-bool KernelFunctionLogarithmicPowerDensity::init()
+bool KernelFunctionLogarithmicPowerDensity::initContext(cl_context context)
 {
     bool success{false};
-    success = createImageBuffer();
+    success = createImageBuffer(context);
     if(success) {
-        success = createFftBuffers();
+        success = createFftBuffers(context);
     }
     if(success){
-        success = createLastFrameBuffer();
+        success = createLastFrameBuffer(context);
     }
     return success;
 }
@@ -84,14 +84,6 @@ bool KernelFunctionLogarithmicPowerDensity::enqueueOutputGpuMemory(cl_command_qu
     return false;
 }
 
-void KernelFunctionLogarithmicPowerDensity::setContext(cl_context context)
-{
-    m_context = context;
-    if(m_context){
-        init();
-    }
-}
-
 void KernelFunctionLogarithmicPowerDensity::setIsAveraging(bool isAveraging){
     m_isAveraging = isAveraging;
 }
@@ -101,18 +93,18 @@ void KernelFunctionLogarithmicPowerDensity::setIsInvertColors(bool isInvertColor
     m_isInvertColors = isInvertColors;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::createFftBuffers()
+bool KernelFunctionLogarithmicPowerDensity::createFftBuffers(cl_context context)
 {
     cl_int err{-1};
     const size_t memSize {m_inputLength * m_linesPerRevolution * sizeof(float)};
-    m_fftRealBuffer = clCreateBuffer( m_context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
+    m_fftRealBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
     if( err != CL_SUCCESS )
     {
          displayFailureMessage( "Failed to create m_fftRealBuffer", true );
     }
 
     if(err == CL_SUCCESS){
-    m_fftImagBuffer = clCreateBuffer( m_context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
+    m_fftImagBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
         if( err != CL_SUCCESS )
         {
              displayFailureMessage( "Failed to create m_fftImagBuffer", true );
@@ -122,23 +114,13 @@ bool KernelFunctionLogarithmicPowerDensity::createFftBuffers()
     return err == CL_SUCCESS;
 }
 
-//cl_mem KernelFunctionLogarithmicPowerDensity::getFftRealBuffer() const
-//{
-//    return m_fftRealBuffer;
-//}
-
-//cl_mem KernelFunctionLogarithmicPowerDensity::getFftImagBuffer() const
-//{
-//    return m_fftImagBuffer;
-//}
-
-bool KernelFunctionLogarithmicPowerDensity::createLastFrameBuffer()
+bool KernelFunctionLogarithmicPowerDensity::createLastFrameBuffer(cl_context context)
 {
     const size_t memSize {m_inputLength *  m_linesPerRevolution * sizeof(float)};
 
     cl_int err{-1};
 
-    m_lastFrameBuffer = clCreateBuffer( m_context, CL_MEM_READ_WRITE, memSize, nullptr, &err ); //lastFramePreScalingMemObj
+    m_lastFrameBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr, &err ); //lastFramePreScalingMemObj
 
     return (err == CL_SUCCESS);
 }
@@ -153,7 +135,7 @@ cl_mem* KernelFunctionLogarithmicPowerDensity::getImageBuffer()
     return &m_image;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::createImageBuffer()
+bool KernelFunctionLogarithmicPowerDensity::createImageBuffer(cl_context context)
 {
     cl_int err{-1};
 
@@ -186,7 +168,7 @@ bool KernelFunctionLogarithmicPowerDensity::createImageBuffer()
         {buffer}
     };
 
-    m_image  = clCreateImage ( m_context, CL_MEM_READ_WRITE, &clImageFormat, &imageDescriptor, nullptr, &err ); //inputImageMemObj
+    m_image  = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &imageDescriptor, nullptr, &err ); //inputImageMemObj
 
     return err == CL_SUCCESS;
 }

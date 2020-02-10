@@ -14,15 +14,15 @@ public:
     bool enqueueInputGpuMemory(cl_command_queue) override;
     bool enqueueCallKernelFunction(cl_command_queue) override;
     bool enqueueOutputGpuMemory(cl_command_queue) override;
+    bool initContext(cl_context);
 
-    void setContext(cl_context context);
     void setIsAveraging(bool isAveraging);
     void setIsInvertColors(bool isInvertColors);
-    bool createFftBuffers();
-    bool createLastFrameBuffer();
+    bool createFftBuffers(cl_context context);
+    bool createLastFrameBuffer(cl_context context);
     void setLastFrameBuffer(cl_mem lastFrameBuffer);
     cl_mem *getImageBuffer();
-    bool createImageBuffer();
+    bool createImageBuffer(cl_context context);
     void setKernel(cl_kernel kernel);
     bool setKernelParameters();
     void setPrevFrameWeightPercent(cl_float val);
@@ -30,7 +30,6 @@ public:
 
 private:
     void displayFailureMessage(const char* msg, bool isMajor) const;
-    bool init();
 
 private:
     cl_context m_context{nullptr};
