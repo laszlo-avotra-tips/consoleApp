@@ -4,6 +4,8 @@
 # -----------------------------------------------------------
 # Header files
 HEADERS += \
+    $$PWD/Backend/ikernelfunction.h \
+    $$PWD/Backend/kernelfunctionlogarithmicpowerdensity.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -90,6 +92,7 @@ HEADERS += \
 
 # Source files
 SOURCES += \
+    $$PWD/Backend/kernelfunctionlogarithmicpowerdensity.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \

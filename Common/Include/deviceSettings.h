@@ -105,36 +105,36 @@ public:
         }
     }
 
-    QString getDeviceName(void)           { return deviceName; }
-    int getInternalImagingMask_px(void)   { return internalImagingMask_px; }
-    int getCatheterRadius_px(void)        { return int( catheterRadius_um * pixelsPerUm ); }
-    int getCatheterRadius_um(void)        { return catheterRadius_um; }
-    int getLinesPerRevolution(void)       { return linesPerRevolution_cnt; }
-    int getRevolutionsPerMin(void)        { return revolutionsPerMin; }
-    int getALineLengthNormal_px(void)     { return aLineLengthNormal_px; }
-    int getALineLengthDeep_px(void)       { return aLineLengthDeep_px; }
-    int getMeaurementVersion(void)        { return measurementVersion; }
-    bool isClockingEnabledByDefault(void) { return clockingEnabledByDefault; }
-    QByteArray getClockingGain(void)      { return clockingGain; }
-    QByteArray getClockingOffset(void)    { return clockingOffset; }
-    QByteArray getTorqueLimit(void)       { return torqueLimit; }
-    int getTimeLimit(void)                { return timeLimit; }
-    int getLimitBlink(void)               { return limitBlinkEnabled; }
-    float getImagingDepthNormal_mm(void)  { return imagingDepthNormal_mm; }
-    float getImagingDepthDeep_mm(void)    { return imagingDepthDeep_mm; }
-    QImage getIcon(void)                  { return icon->copy(); }
-    DeviceType getDeviceType(void)        { return deviceType; }
-    bool isHighSpeed(void)                { return ((deviceType == HighSpeed) || (deviceType == Ocelaris)); }
-    bool isOcelaris(void)                 { return (deviceType == Ocelaris); }
-    QByteArray getSpeed1(void)            { return Speed1; }
-    QByteArray getSpeed2(void)            { return Speed2; }
-    QByteArray getSpeed3(void)            { return Speed3; }
-    bool isBidirectional(void)            { return (deviceType == Ocelaris); }
-    QString getDisclaimerText(void)       { return disclaimerText; }
+    QString getDeviceName(void)           const { return deviceName; }
+    int getInternalImagingMask_px(void)   const { return internalImagingMask_px; }
+    int getCatheterRadius_px(void)        const { return int( catheterRadius_um * pixelsPerUm ); }
+    int getCatheterRadius_um(void)        const { return catheterRadius_um; }
+    int getLinesPerRevolution(void)       const { return linesPerRevolution_cnt; }
+    int getRevolutionsPerMin(void)        const { return revolutionsPerMin; }
+    int getALineLengthNormal_px(void)     const { return aLineLengthNormal_px; }
+    int getALineLengthDeep_px(void)       const { return aLineLengthDeep_px; }
+    int getMeaurementVersion(void)        const { return measurementVersion; }
+    bool isClockingEnabledByDefault(void) const { return clockingEnabledByDefault; }
+    QByteArray getClockingGain(void)      const { return clockingGain; }
+    QByteArray getClockingOffset(void)    const { return clockingOffset; }
+    QByteArray getTorqueLimit(void)       const { return torqueLimit; }
+    int getTimeLimit(void)                const { return timeLimit; }
+    int getLimitBlink(void)               const { return limitBlinkEnabled; }
+    float getImagingDepthNormal_mm(void)  const { return imagingDepthNormal_mm; }
+    float getImagingDepthDeep_mm(void)    const { return imagingDepthDeep_mm; }
+    QImage getIcon(void)                  const { return icon->copy(); }
+    DeviceType getDeviceType(void)        const { return deviceType; }
+    bool isHighSpeed(void)                const { return ((deviceType == HighSpeed) || (deviceType == Ocelaris)); }
+    bool isOcelaris(void)                 const { return (deviceType == Ocelaris); }
+    QByteArray getSpeed1(void)            const { return Speed1; }
+    QByteArray getSpeed2(void)            const { return Speed2; }
+    QByteArray getSpeed3(void)            const { return Speed3; }
+    bool isBidirectional(void)            const { return (deviceType == Ocelaris); }
+    QString getDisclaimerText(void)       const { return disclaimerText; }
     void setLinesPerRevolution(int lines) { linesPerRevolution_cnt = lines; }
     void setRevolutionsPerMin(int speed)  { revolutionsPerMin = speed; }
     void setRotation( int dir )           { rotation = dir; }
-    int getRotation(void)                 { return rotation; }
+    int getRotation(void)                 const { return rotation; }
 
 private:
     QString    deviceName;

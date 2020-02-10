@@ -25,7 +25,6 @@
 #include "buildflags.h"
 #include "deviceSettings.h"
 #include "Backend/depthsetting.h"
-//#include "ipp.h"
 #include "theglobals.h"
 #include "signalmanager.h"
 #include "playbackmanager.h"
