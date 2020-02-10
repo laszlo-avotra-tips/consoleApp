@@ -19,6 +19,7 @@
 
 #include "dsp.h"
 #include "buildflags.h"
+#include "kernelfunctionlogarithmicpowerdensity.h" //lpd
 
 using OpenClFunction_type = std::pair<cl_program,cl_kernel>;
 using OpenClFileMap_type = std::map<QString,QString>; // <kernel function, file name>
@@ -106,6 +107,9 @@ private:
     const cl_uint oclWorkDimension{2};
     const size_t* oclGlobalWorkOffset{nullptr};
     const cl_uint numEventsInWaitlist{0};
+
+private:
+    KernelFunctionLogarithmicPowerDensity m_lpd;
 
 private:
     // OpenCL support
