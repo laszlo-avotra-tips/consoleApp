@@ -522,6 +522,7 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
+    m_postFft.setSignalModel(*SignalModel::instance());
     m_postFft.initContext(cl_Context);
 
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );

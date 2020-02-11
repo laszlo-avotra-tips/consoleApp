@@ -15,7 +15,7 @@ public:
 
     const cl_float* scaleFactor() const;
 
-    const cl_uint* linesPerRevolution() const;
+     cl_uint linesPerRevolution() const;
     void setLinesPerRevolution(const cl_uint &linesPerRevolution);
 
     const cl_uint* dcNoiseLevel() const;

@@ -1,8 +1,11 @@
 #include "signalmodel.h"
+#include <deviceSettings.h>
 
 SignalModel* SignalModel::m_instance{nullptr};
 
-SignalModel::SignalModel(QObject *parent) : QObject(parent)
+SignalModel::SignalModel(QObject *parent)
+    : QObject(parent)
+//      ,m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
 {
 
 }
@@ -25,9 +28,9 @@ const cl_float* SignalModel::scaleFactor() const
     return &m_scaleFactor;
 }
 
-const cl_uint* SignalModel::linesPerRevolution() const
+cl_uint SignalModel::linesPerRevolution() const
 {
-    return &m_linesPerRevolution;
+    return m_linesPerRevolution;
 }
 
 void SignalModel::setLinesPerRevolution(const cl_uint &linesPerRevolution)

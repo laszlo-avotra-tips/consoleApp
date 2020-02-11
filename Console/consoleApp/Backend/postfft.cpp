@@ -43,7 +43,7 @@ bool PostFft::enqueueInputGpuMemory(cl_command_queue cmds)
         return false;
     }
     cl_bool isBlocking(CL_TRUE);
-    const size_t memSize {m_inputLength * m_linesPerRevolution * sizeof(float)};
+    const size_t memSize {*m_signalModel->iputLength() * m_linesPerRevolution * sizeof(float)};
 
     cl_int err = clEnqueueWriteBuffer (
                 cmds,
@@ -89,9 +89,13 @@ bool PostFft::enqueueOutputGpuMemory(cl_command_queue /*cmds*/)
 
 bool PostFft::createFftBuffers(cl_context context)
 {
-    cl_int err{-1};
-    const size_t memSize {m_inputLength * m_linesPerRevolution * sizeof(float)};
+    if(!m_signalModel){
+        return false;
+    }
 
+    const size_t memSize {*m_signalModel->iputLength() * m_linesPerRevolution * sizeof(float)};
+
+    cl_int err{-1};
     m_fftRealBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
     if( err != CL_SUCCESS )
     {
@@ -111,7 +115,11 @@ bool PostFft::createFftBuffers(cl_context context)
 
 bool PostFft::createLastFrameBuffer(cl_context context)
 {
-    const size_t memSize {m_inputLength *  m_linesPerRevolution * sizeof(float)};
+    if(!m_signalModel){
+        return false;
+    }
+
+    const size_t memSize {*m_signalModel->iputLength() * m_linesPerRevolution * sizeof(float)};
 
     cl_int err{-1};
 
