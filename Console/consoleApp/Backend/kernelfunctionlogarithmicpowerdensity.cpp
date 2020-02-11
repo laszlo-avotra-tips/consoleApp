@@ -11,7 +11,7 @@ KernelFunctionLogarithmicPowerDensity::KernelFunctionLogarithmicPowerDensity() :
 }
 
 KernelFunctionLogarithmicPowerDensity::KernelFunctionLogarithmicPowerDensity(cl_context context)
-    : m_context(context), m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
+    : m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
 {
     initContext(context);
 }
@@ -97,6 +97,7 @@ bool KernelFunctionLogarithmicPowerDensity::createFftBuffers(cl_context context)
 {
     cl_int err{-1};
     const size_t memSize {m_inputLength * m_linesPerRevolution * sizeof(float)};
+
     m_fftRealBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
     if( err != CL_SUCCESS )
     {
@@ -104,7 +105,7 @@ bool KernelFunctionLogarithmicPowerDensity::createFftBuffers(cl_context context)
     }
 
     if(err == CL_SUCCESS){
-    m_fftImagBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
+        m_fftImagBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
         if( err != CL_SUCCESS )
         {
              displayFailureMessage( "Failed to create m_fftImagBuffer", true );
@@ -123,11 +124,6 @@ bool KernelFunctionLogarithmicPowerDensity::createLastFrameBuffer(cl_context con
     m_lastFrameBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr, &err ); //lastFramePreScalingMemObj
 
     return (err == CL_SUCCESS);
-}
-
-void KernelFunctionLogarithmicPowerDensity::setLastFrameBuffer(cl_mem lastFrameBuffer)
-{
-    m_lastFrameBuffer = lastFrameBuffer;
 }
 
 cl_mem* KernelFunctionLogarithmicPowerDensity::getImageBuffer()
@@ -177,7 +173,7 @@ void KernelFunctionLogarithmicPowerDensity::setKernel(cl_kernel kernel)
 {
     if(!m_kernel){
         m_kernel = kernel;
-        setKernelParameters();
+        setKernelParameters(kernel);
     }
 }
 
@@ -186,68 +182,67 @@ void KernelFunctionLogarithmicPowerDensity::displayFailureMessage(const char *ms
     qDebug() << msg << ", is major error = " <<isMajor;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::setKernelParameters()
+bool KernelFunctionLogarithmicPowerDensity::setKernelParameters(cl_kernel kernel)
 {
-    if(!m_kernel){
+    if(!kernel){
         return false;
     }
 
-    cl_int clStatus  = clSetKernelArg( m_kernel, 0, sizeof(cl_mem), &m_fftRealBuffer );
+    cl_int clStatus  = clSetKernelArg( kernel, 0, sizeof(cl_mem), &m_fftRealBuffer );
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 1, sizeof(cl_mem), &m_fftImagBuffer );
+    clStatus |= clSetKernelArg( kernel, 1, sizeof(cl_mem), &m_fftImagBuffer );
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 2, sizeof(cl_mem), &m_lastFrameBuffer );
+    clStatus |= clSetKernelArg( kernel, 2, sizeof(cl_mem), &m_lastFrameBuffer );
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 2, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 3, sizeof(cl_mem), &m_image );
+    clStatus |= clSetKernelArg( kernel, 3, sizeof(cl_mem), &m_image );
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 4, sizeof(int), &m_inputLength );
+    clStatus |= clSetKernelArg( kernel, 4, sizeof(int), &m_inputLength );
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 5, sizeof(float), &m_scaleFactor );
+    clStatus |= clSetKernelArg( kernel, 5, sizeof(float), &m_scaleFactor );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 5, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 6, sizeof(unsigned int), &m_dcNoiseLevel );
+    clStatus |= clSetKernelArg( kernel, 6, sizeof(unsigned int), &m_dcNoiseLevel );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 6, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 7, sizeof(int), &m_isAveraging );
+    clStatus |= clSetKernelArg( kernel, 7, sizeof(int), &m_isAveraging );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 7, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 8, sizeof(float), &m_prevFrameWeight_percent );
+    clStatus |= clSetKernelArg( kernel, 8, sizeof(float), &m_prevFrameWeight_percent );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 8, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 9, sizeof(float), &m_currFrameWeight_percent );
+    clStatus |= clSetKernelArg( kernel, 9, sizeof(float), &m_currFrameWeight_percent );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( m_kernel, 10, sizeof(int), &m_isInvertColors );
+    clStatus |= clSetKernelArg( kernel, 10, sizeof(int), &m_isInvertColors );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;
     }
-
 
     return clStatus == CL_SUCCESS;
 }

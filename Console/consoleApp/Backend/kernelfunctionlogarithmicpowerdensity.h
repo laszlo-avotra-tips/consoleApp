@@ -14,25 +14,23 @@ public:
     bool enqueueInputGpuMemory(cl_command_queue) override;
     bool enqueueCallKernelFunction(cl_command_queue) override;
     bool enqueueOutputGpuMemory(cl_command_queue) override;
-    bool initContext(cl_context);
+    bool initContext(cl_context) override;
+    bool setKernelParameters(cl_kernel kernel) override;
 
     void setIsAveraging(bool isAveraging);
     void setIsInvertColors(bool isInvertColors);
-    bool createFftBuffers(cl_context context);
-    bool createLastFrameBuffer(cl_context context);
-    void setLastFrameBuffer(cl_mem lastFrameBuffer);
     cl_mem *getImageBuffer();
-    bool createImageBuffer(cl_context context);
     void setKernel(cl_kernel kernel);
-    bool setKernelParameters();
     void setPrevFrameWeightPercent(cl_float val);
     void setCurrFrameWeightPercent(cl_float val);
 
 private:
     void displayFailureMessage(const char* msg, bool isMajor) const;
+    bool createFftBuffers(cl_context context);
+    bool createLastFrameBuffer(cl_context context);
+    bool createImageBuffer(cl_context context);
 
 private:
-    cl_context m_context{nullptr};
     cl_kernel  m_kernel{nullptr};
     cl_program m_program{nullptr};
 
@@ -40,11 +38,13 @@ private:
     cl_mem m_fftImagBuffer{nullptr}; //1 fftImaginaryOutputMemObj
     cl_mem m_lastFrameBuffer{nullptr}; //2 lastFramePreScalingMemObj
     cl_mem m_image{nullptr}; //3 inputImageMemObj
+
     const cl_uint m_inputLength{2048}; //4 RescalingDataLength
     const cl_uint m_linesPerRevolution{0};
     const cl_float m_scaleFactor{20000.0f * 255.0f / 65535.0f}; //5 scaleFactor
     const cl_uint m_dcNoiseLevel{150}; //6 XXX: Empirically measured
     cl_int m_isAveraging{0}; //7 averageVal
+
     cl_float m_prevFrameWeight_percent{1.0}; //8 prevFrameWeight_percent
     cl_float m_currFrameWeight_percent{1.0}; //9 currFrameWeight_percent
     cl_int m_isInvertColors{0}; //10 invertColors
