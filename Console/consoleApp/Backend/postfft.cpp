@@ -16,6 +16,7 @@ bool PostFft::initContext(cl_context context)
     bool success{false};
     success = createImageBuffer(context);
     if(success) {
+        m_signalModel->setPostFftImageBuffer(m_image);
         success = createFftBuffers(context);
     }
     if(success){
@@ -75,11 +76,6 @@ bool PostFft::enqueueCallKernelFunction(cl_command_queue cmds)
                                               m_oclWorkDimension, m_oclGlobalWorkOffset, globalWorkSize,
                                               m_oclLocalWorkSize, m_numEventsInWaitlist, nullptr, nullptr );
     return clStatus == CL_SUCCESS;
-}
-
-bool PostFft::enqueueOutputGpuMemory(cl_command_queue /*cmds*/)
-{
-    return false;
 }
 
 bool PostFft::createFftBuffers(cl_context context)
@@ -247,7 +243,7 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
     return clStatus == CL_SUCCESS;
 }
 
-void PostFft::setSignalModel(const SignalModel &signalModel)
+void PostFft::setSignalModel(SignalModel &signalModel)
 {
     m_signalModel = &signalModel;
 }

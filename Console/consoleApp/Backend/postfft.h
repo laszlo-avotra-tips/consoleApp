@@ -13,12 +13,10 @@ public:
 
     bool enqueueInputGpuMemory(cl_command_queue) override;
     bool enqueueCallKernelFunction(cl_command_queue) override;
-    bool enqueueOutputGpuMemory(cl_command_queue) override;
     bool initContext(cl_context) override;
     bool setKernelParameters(cl_kernel kernel) override;
-    void setSignalModel(const SignalModel& signalModel) override;
+    void setSignalModel(SignalModel& signalModel) override;
 
-    cl_mem *getImageBuffer();
     void setKernel(cl_kernel kernel);
 
 private:
@@ -26,6 +24,7 @@ private:
     bool createFftBuffers(cl_context context);
     bool createLastFrameBuffer(cl_context context);
     bool createImageBuffer(cl_context context);
+    cl_mem *getImageBuffer();
 
 private:
     cl_kernel  m_kernel{nullptr};
@@ -36,7 +35,7 @@ private:
     cl_mem m_lastFrameBuffer{nullptr}; //2 lastFramePreScalingMemObj
     cl_mem m_image{nullptr}; //3 inputImageMemObj
 
-    const SignalModel* m_signalModel{nullptr};
+    SignalModel* m_signalModel{nullptr};
 };
 
 #endif // POSTFFT_H

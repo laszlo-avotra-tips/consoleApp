@@ -6,6 +6,16 @@ SignalModel::SignalModel()
 {
 }
 
+cl_mem* SignalModel::postFftImageBuffer()
+{
+    return &m_postFftImageBuffer;
+}
+
+void SignalModel::setPostFftImageBuffer(const cl_mem &postFftImageBuffer)
+{
+    m_postFftImageBuffer = postFftImageBuffer;
+}
+
 SignalModel *SignalModel::instance()
 {
     if(!m_instance){

@@ -11,10 +11,9 @@ public:
     virtual ~IKernelFunction() = default;
     virtual bool enqueueInputGpuMemory(cl_command_queue) = 0;
     virtual bool enqueueCallKernelFunction(cl_command_queue) = 0;
-    virtual bool enqueueOutputGpuMemory(cl_command_queue) = 0;
     virtual bool initContext(cl_context) = 0;
     virtual bool setKernelParameters(cl_kernel kernel) = 0;
-    virtual void setSignalModel(const SignalModel& signalModel) = 0;
+    virtual void setSignalModel(SignalModel& signalModel) = 0;
 
 public:
     const size_t m_oclLocalWorkSize[2]{16,16};

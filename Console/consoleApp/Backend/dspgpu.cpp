@@ -328,7 +328,7 @@ bool DSPGPU::callBandcKernel()
     if(itbc != m_openClFunctionMap.end() && m_postFft)
     {
          auto& oclbck = itbc->second.second;
-         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), m_postFft->getImageBuffer() );
+         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), SignalModel::instance()->postFftImageBuffer() );
          if( clStatus != CL_SUCCESS )
          {
              qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
