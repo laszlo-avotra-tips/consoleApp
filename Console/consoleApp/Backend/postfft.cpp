@@ -208,7 +208,7 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
     {
        qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 4, sizeof(int), m_signalModel->iputLength()); //&m_inputLength );
+    clStatus |= clSetKernelArg( kernel, 4, sizeof(int), &m_inputLength );
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;

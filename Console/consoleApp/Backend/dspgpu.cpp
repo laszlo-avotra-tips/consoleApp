@@ -546,8 +546,8 @@ bool DSPGPU::initOpenCL()
     auto it = m_openClFunctionMap.find("postfft_kernel");
     if(it != m_openClFunctionMap.end())
     {
-        m_postFft.setKernel(it->second.second);
         m_postFft.setSignalModel(*SignalModel::instance());
+        m_postFft.setKernel(it->second.second);
     }
     createCLMemObjects( cl_Context );
 
