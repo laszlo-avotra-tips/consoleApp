@@ -98,9 +98,6 @@ protected:
     bool findLabel( QTextStream *in, QString *currLine, const QString Label );
 
 private:
-    // Code for development without a GPU
-    // void postProc_sw( float *input_re, float *input_imag,  unsigned short *output );
-
     // prevent access to copy and assign
     DSP( DSP const & );
     DSP & operator=( DSP const & );

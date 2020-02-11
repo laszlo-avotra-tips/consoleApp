@@ -111,7 +111,7 @@ private:
     cl_platform_id getPlatformId() const;
     bool getGpuDeviceInfo(cl_platform_id id, bool isLogging = false);
 
-    bool callPostProcessKernel();
+    bool callPostFftKernel();
     bool callBandcKernel();
     bool callWarpKernel() const;
 };

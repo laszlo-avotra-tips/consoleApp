@@ -312,7 +312,7 @@ bool DSPGPU::getGpuDeviceInfo(cl_platform_id id, bool isLogging)
     return true;
 }
 
-bool DSPGPU::callPostProcessKernel()
+bool DSPGPU::callPostFftKernel()
 {
     bool success{false};
     if(cl_Commands){
@@ -682,7 +682,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 {
     int            clStatus;
 
-    if(!callPostProcessKernel()){
+    if(!callPostFftKernel()){
         return false;
     }
 
