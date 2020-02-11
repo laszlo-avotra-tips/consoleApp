@@ -37,8 +37,6 @@ private:
     cl_mem m_image{nullptr}; //3 inputImageMemObj
 
     const SignalModel* m_signalModel{nullptr};
-
-    cl_uint m_linesPerRevolution{0};
 };
 
 #endif // POSTFFT_H

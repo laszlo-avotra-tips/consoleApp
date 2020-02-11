@@ -4,10 +4,8 @@
 #include <QObject>
 #include <CL/opencl.h>
 
-class SignalModel : public QObject
+class SignalModel
 {
-    Q_OBJECT
-
 public:
     static SignalModel* instance();
 
@@ -32,10 +30,8 @@ public:
     const cl_int* isInvertColors() const;
     void setIsInvertColors(const cl_int &isInvertColors);
 
-signals:
-
 private:
-    explicit SignalModel(QObject *parent = nullptr);
+    SignalModel();
     static SignalModel* m_instance;
 
 private:

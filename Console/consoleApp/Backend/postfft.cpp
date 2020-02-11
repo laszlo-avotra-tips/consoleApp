@@ -38,7 +38,7 @@ bool PostFft::enqueueInputGpuMemory(cl_command_queue cmds)
         return false;
     }
     cl_bool isBlocking(CL_TRUE);
-    const size_t memSize {*m_signalModel->iputLength() * m_linesPerRevolution * sizeof(float)};
+    const size_t memSize {*(m_signalModel->iputLength()) * m_signalModel->linesPerRevolution() * sizeof(float)};
 
     cl_int err = clEnqueueWriteBuffer (
                 cmds,
@@ -69,7 +69,7 @@ bool PostFft::enqueueInputGpuMemory(cl_command_queue cmds)
 
 bool PostFft::enqueueCallKernelFunction(cl_command_queue cmds)
 {
-    const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(m_linesPerRevolution)};
+    const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(m_signalModel->linesPerRevolution())};
 
     cl_int clStatus = clEnqueueNDRangeKernel( cmds, m_kernel,
                                               m_oclWorkDimension, m_oclGlobalWorkOffset, globalWorkSize,
@@ -88,7 +88,7 @@ bool PostFft::createFftBuffers(cl_context context)
         return false;
     }
 
-    const size_t memSize {*m_signalModel->iputLength() * m_linesPerRevolution * sizeof(float)};
+    const size_t memSize {*m_signalModel->iputLength() * m_signalModel->linesPerRevolution() * sizeof(float)};
 
     cl_int err{-1};
     m_fftRealBuffer = clCreateBuffer( context, CL_MEM_READ_WRITE, memSize, nullptr , &err );
@@ -114,7 +114,7 @@ bool PostFft::createLastFrameBuffer(cl_context context)
         return false;
     }
 
-    const size_t memSize {*m_signalModel->iputLength() * m_linesPerRevolution * sizeof(float)};
+    const size_t memSize {*m_signalModel->iputLength() *  m_signalModel->linesPerRevolution() * sizeof(float)};
 
     cl_int err{-1};
 
@@ -141,7 +141,7 @@ bool PostFft::createImageBuffer(cl_context context)
 
     const size_t image_width{MaxALineLength}; //input_image_width
 
-    const size_t image_height{size_t(m_linesPerRevolution)}; //input_image_height
+    const size_t image_height{size_t( m_signalModel->linesPerRevolution())}; //input_image_height
 
     const size_t image_depth{1};
     const size_t image_array_size{1};
@@ -250,5 +250,4 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
 void PostFft::setSignalModel(const SignalModel &signalModel)
 {
     m_signalModel = &signalModel;
-    m_linesPerRevolution = m_signalModel->linesPerRevolution();
 }
