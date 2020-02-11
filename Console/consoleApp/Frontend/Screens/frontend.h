@@ -36,6 +36,7 @@
 #include "buildflags.h"
 #include "capturewidget.h"
 #include "windowmanager.h"
+#include <memory>
 
 #if ENABLE_COLORMAP_OPTIONS
 #include "Widgets/curvesdialog.h"
@@ -197,7 +198,7 @@ private:
     liveScene *scene;
 
     lagWizard *lagHandler;
-    caseInfoWizard *caseWizard;
+    std::unique_ptr<caseInfoWizard> caseWizard{nullptr};
 
     QTimer mouseCaptureTimer;
     QTimer clockTimer;

@@ -134,7 +134,10 @@ cl_mem* PostFft::getImageBuffer()
 }
 
 bool PostFft::createImageBuffer(cl_context context)
-{
+{   
+    if(!m_signalModel){
+        return false;
+    }
     cl_int err{-1};
 
     const cl_image_format clImageFormat{CL_R,CL_UNSIGNED_INT8};

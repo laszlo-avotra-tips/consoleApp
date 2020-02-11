@@ -252,7 +252,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     updateCatheterViewLabel();
 
     lagHandler = nullptr;
-//    caseWizard = nullptr;
 
     // Set the focus on the Tech window so the menu keys are active
     QApplication::setActiveWindow( ui.centralWidget );
@@ -308,9 +307,6 @@ frontend::~frontend()
 
         delete scene;
         delete lagHandler;
-        if(caseWizard){
-            delete caseWizard;
-        }
     }
     else
     {
@@ -339,7 +335,7 @@ void frontend::init( void )
     lastDirCCW = true;			// make sure bidirectional devices start CCW (passive)
 
     // Require case information before anything else happens
-    caseInfoWizard *caseWizard = new caseInfoWizard( this );
+    caseWizard = std::make_unique<caseInfoWizard>(this); //new caseInfoWizard( this );
 
     /*
      * Create the case info with default values (default doctor, default location, and
@@ -348,7 +344,6 @@ void frontend::init( void )
      */
     caseWizard->init( caseInfoWizard::InitialCaseSetup );
     caseWizard->accept();
-    delete caseWizard;
 
     // Connect the error handler
     errorHandler &err = errorHandler::Instance();
@@ -477,19 +472,19 @@ int frontend::setupCase( bool isInitialSetup )
     {
         ui.directionPushButton->hide();
         // Require case information before anything else happens
-        caseInfoWizard *caseWizard = new caseInfoWizard( this );
+        caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
 
         // reload data for updating
-        caseWizard->init( caseInfoWizard::UpdateCaseSetup );
+        caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
 
         // Force the wizard to the center of the primary monitor
-        int x = ( wmgr->getTechnicianDisplayGeometry().width() - caseWizard->width() ) / 2;
-        int y = ( wmgr->getTechnicianDisplayGeometry().height() - caseWizard->width() ) / 2;
-        caseWizard->setGeometry( x, y, caseWizard->width(), caseWizard->height() );
+        int x = ( wmgr->getTechnicianDisplayGeometry().width() - caseWizardLocal->width() ) / 2;
+        int y = ( wmgr->getTechnicianDisplayGeometry().height() - caseWizardLocal->width() ) / 2;
+        caseWizardLocal->setGeometry( x, y, caseWizardLocal->width(), caseWizardLocal->height() );
 
         // Get the case information.
-        int result = caseWizard->exec();
-        delete caseWizard;
+        int result = caseWizardLocal->exec();
+        delete caseWizardLocal;
         return result;
     }
 }
