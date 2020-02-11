@@ -99,13 +99,14 @@ void DSPGPU::init( size_t inputLength,
     }
 
     doAveraging      = false;
-    m_postFft.setIsAveraging(doAveraging);
+    auto smi = SignalModel::instance();
+    smi->setAverageVal(doAveraging);
 
     displayAngle_deg = 0.0;
 
-    m_postFft.setCurrFrameWeightPercent(DefaultCurrFrameWeight_Percent / 100.0f);
+    smi->setCurrFrameWeight_percent(DefaultCurrFrameWeight_Percent / 100.0f);
 
-    m_postFft.setPrevFrameWeightPercent(1.0f - DefaultCurrFrameWeight_Percent / 100.0f);
+    smi->setPrevFrameWeight_percent(1.0f - DefaultCurrFrameWeight_Percent / 100.0f);
 }
 
 bool DSPGPU::processData(int index)
@@ -738,14 +739,14 @@ bool DSPGPU::loadFftOutMemoryObjects()
 void DSPGPU::setAveraging(bool enable)
 {
     doAveraging = enable;
-    m_postFft.setIsAveraging(doAveraging);
+    SignalModel::instance()->setAverageVal(doAveraging);
 
 }
 
 void DSPGPU::setFrameAverageWeights(int inPrevFrameWeight_percent, int inCurrFrameWeight_percent)
 {
-    m_postFft.setPrevFrameWeightPercent(inPrevFrameWeight_percent / 100.0f);
-    m_postFft.setCurrFrameWeightPercent(inCurrFrameWeight_percent / 100.0f);
+    SignalModel::instance()->setPrevFrameWeight_percent(inPrevFrameWeight_percent / 100.0f);
+    SignalModel::instance()->setCurrFrameWeight_percent(inCurrFrameWeight_percent / 100.0f);
 }
 
 void DSPGPU::setDisplayAngle(float angle)
