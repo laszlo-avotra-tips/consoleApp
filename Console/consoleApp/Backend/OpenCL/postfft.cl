@@ -1,4 +1,4 @@
-__kernel void postproc_kernel(__global const float *input_re,
+__kernel void postfft_kernel(__global const float *input_re,
                               __global const float *input_imag,
                               __global float *prev_frame,
                               __write_only image2d_t output,

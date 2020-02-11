@@ -1,15 +1,15 @@
-#ifndef KERNELFUNCTIONLOGARITHMICPOWERDENSITY_H
-#define KERNELFUNCTIONLOGARITHMICPOWERDENSITY_H
+#ifndef POSTFFT_H
+#define POSTFFT_H
 
 #include <ikernelfunction.h>
 #include <defaults.h>
 
-class KernelFunctionLogarithmicPowerDensity : public IKernelFunction
+class PostFft : public IKernelFunction
 {
 public:
-    KernelFunctionLogarithmicPowerDensity();
-    KernelFunctionLogarithmicPowerDensity(cl_context context);
-    ~KernelFunctionLogarithmicPowerDensity() override;
+    PostFft();
+    PostFft(cl_context context);
+    ~PostFft() override;
 
     bool enqueueInputGpuMemory(cl_command_queue) override;
     bool enqueueCallKernelFunction(cl_command_queue) override;
@@ -32,7 +32,6 @@ private:
     void displayFailureMessage(const char* msg, bool isMajor) const;
 
 private:
-    cl_context m_context{nullptr};
     cl_kernel  m_kernel{nullptr};
     cl_program m_program{nullptr};
 
@@ -51,4 +50,4 @@ private:
 
 };
 
-#endif // KERNELFUNCTIONLOGARITHMICPOWERDENSITY_H
+#endif // POSTFFT_H

@@ -19,7 +19,7 @@
 
 #include "dsp.h"
 #include "buildflags.h"
-#include "kernelfunctionlogarithmicpowerdensity.h" //lpd
+#include "postfft.h"
 
 using OpenClFunction_type = std::pair<cl_program,cl_kernel>;
 using OpenClFileMap_type = std::map<QString,QString>; // <kernel function, file name>
@@ -57,14 +57,14 @@ private:
 
     OpenClFunctionMap_type m_openClFunctionMap
     {
-        {"postproc_kernel",{nullptr,nullptr}},
+        {"postfft_kernel",{nullptr,nullptr}},
         {"bandc_kernel",{nullptr,nullptr}},
         {"warp_kernel",{nullptr,nullptr}},
     };
 
     OpenClFileMap_type m_openClFileMap
     {
-        {"postproc_kernel",""},
+        {"postfft_kernel",""},
         {"bandc_kernel",""},
         {"warp_kernel",""},
     };
@@ -94,7 +94,7 @@ private:
     const cl_uint numEventsInWaitlist{0};
 
 private:
-    KernelFunctionLogarithmicPowerDensity m_lpd;
+    PostFft m_postFft;
 
 private:
     // OpenCL support

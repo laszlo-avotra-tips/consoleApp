@@ -28,7 +28,7 @@
 #include "theglobals.h"
 #include "signalmanager.h"
 #include "playbackmanager.h"
-#include "kernelfunctionlogarithmicpowerdensity.h"
+#include "postfft.h"
 
 
 /*
@@ -98,13 +98,13 @@ void DSPGPU::init( size_t inputLength,
     }
 
     doAveraging      = false;
-    m_lpd.setIsAveraging(doAveraging);
+    m_postFft.setIsAveraging(doAveraging);
 
     displayAngle_deg = 0.0;
 
-    m_lpd.setCurrFrameWeightPercent(DefaultCurrFrameWeight_Percent / 100.0f);
+    m_postFft.setCurrFrameWeightPercent(DefaultCurrFrameWeight_Percent / 100.0f);
 
-    m_lpd.setPrevFrameWeightPercent(1.0f - DefaultCurrFrameWeight_Percent / 100.0f);
+    m_postFft.setPrevFrameWeightPercent(1.0f - DefaultCurrFrameWeight_Percent / 100.0f);
 }
 
 bool DSPGPU::processData(int index)
@@ -167,7 +167,7 @@ bool DSPGPU::isClReturnValueSuccess(cl_int ret, int line) const
 void DSPGPU::initOpenClFileMap()
 {
     m_openClFileMap = {
-        {"postproc_kernel",  ":/kernel/postProc"},
+        {"postfft_kernel",  ":/kernel/postfft"},
         {"bandc_kernel",  ":/kernel/bandc"},
         {"warp_kernel",  ":/kernel/warp"}
     };
@@ -316,7 +316,7 @@ bool DSPGPU::callPostProcessKernel()
 {
     bool success{false};
     if(cl_Commands){
-        success = m_lpd.enqueueCallKernelFunction(cl_Commands);
+        success = m_postFft.enqueueCallKernelFunction(cl_Commands);
     }
     return success;
 }
@@ -327,7 +327,7 @@ bool DSPGPU::callBandcKernel()
     if(itbc != m_openClFunctionMap.end())
     {
          auto& oclbck = itbc->second.second;
-         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), m_lpd.getImageBuffer() );
+         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), m_postFft.getImageBuffer() );
          if( clStatus != CL_SUCCESS )
          {
              qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
@@ -520,7 +520,7 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-    m_lpd.initContext(cl_Context);
+    m_postFft.initContext(cl_Context);
 
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
     if( !cl_Commands )
@@ -542,10 +542,10 @@ bool DSPGPU::initOpenCL()
         }
     }
 
-    auto it = m_openClFunctionMap.find("postproc_kernel");
+    auto it = m_openClFunctionMap.find("postfft_kernel");
     if(it != m_openClFunctionMap.end())
     {
-        m_lpd.setKernel(it->second.second);
+        m_postFft.setKernel(it->second.second);
     }
     createCLMemObjects( cl_Context );
 
@@ -727,7 +727,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 bool DSPGPU::loadFftOutMemoryObjects()
 {
     if(cl_Commands){
-        m_lpd.enqueueInputGpuMemory(cl_Commands);
+        m_postFft.enqueueInputGpuMemory(cl_Commands);
         return true;
     }
     return false;
@@ -736,14 +736,14 @@ bool DSPGPU::loadFftOutMemoryObjects()
 void DSPGPU::setAveraging(bool enable)
 {
     doAveraging = enable;
-    m_lpd.setIsAveraging(doAveraging);
+    m_postFft.setIsAveraging(doAveraging);
 
 }
 
 void DSPGPU::setFrameAverageWeights(int inPrevFrameWeight_percent, int inCurrFrameWeight_percent)
 {
-    m_lpd.setPrevFrameWeightPercent(inPrevFrameWeight_percent / 100.0f);
-    m_lpd.setCurrFrameWeightPercent(inCurrFrameWeight_percent / 100.0f);
+    m_postFft.setPrevFrameWeightPercent(inPrevFrameWeight_percent / 100.0f);
+    m_postFft.setCurrFrameWeightPercent(inCurrFrameWeight_percent / 100.0f);
 }
 
 void DSPGPU::setDisplayAngle(float angle)

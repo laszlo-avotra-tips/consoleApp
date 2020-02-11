@@ -1,22 +1,22 @@
-#include "kernelfunctionlogarithmicpowerdensity.h"
+#include "postfft.h"
 #include <deviceSettings.h>
 #include "CL/opencl.h"
 #include <signalmanager.h>
 
 #include <QDebug>
 
-KernelFunctionLogarithmicPowerDensity::KernelFunctionLogarithmicPowerDensity() :
+PostFft::PostFft() :
      m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
 {
 }
 
-KernelFunctionLogarithmicPowerDensity::KernelFunctionLogarithmicPowerDensity(cl_context context)
-    : m_context(context), m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
+PostFft::PostFft(cl_context context)
+    : m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
 {
     initContext(context);
 }
 
-bool KernelFunctionLogarithmicPowerDensity::initContext(cl_context context)
+bool PostFft::initContext(cl_context context)
 {
     bool success{false};
     success = createImageBuffer(context);
@@ -29,7 +29,7 @@ bool KernelFunctionLogarithmicPowerDensity::initContext(cl_context context)
     return success;
 }
 
-KernelFunctionLogarithmicPowerDensity::~KernelFunctionLogarithmicPowerDensity()
+PostFft::~PostFft()
 {
     clReleaseMemObject(m_fftRealBuffer);
     clReleaseMemObject(m_fftImagBuffer);
@@ -37,7 +37,7 @@ KernelFunctionLogarithmicPowerDensity::~KernelFunctionLogarithmicPowerDensity()
     clReleaseMemObject(m_image );
 }
 
-bool KernelFunctionLogarithmicPowerDensity::enqueueInputGpuMemory(cl_command_queue cmds)
+bool PostFft::enqueueInputGpuMemory(cl_command_queue cmds)
 {
     cl_bool isBlocking(CL_TRUE);
     const size_t memSize {m_inputLength * m_linesPerRevolution * sizeof(float)};
@@ -69,7 +69,7 @@ bool KernelFunctionLogarithmicPowerDensity::enqueueInputGpuMemory(cl_command_que
     return err == CL_SUCCESS;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::enqueueCallKernelFunction(cl_command_queue cmds)
+bool PostFft::enqueueCallKernelFunction(cl_command_queue cmds)
 {
     const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(m_linesPerRevolution)};
 
@@ -79,21 +79,21 @@ bool KernelFunctionLogarithmicPowerDensity::enqueueCallKernelFunction(cl_command
     return clStatus == CL_SUCCESS;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::enqueueOutputGpuMemory(cl_command_queue /*cmds*/)
+bool PostFft::enqueueOutputGpuMemory(cl_command_queue /*cmds*/)
 {
     return false;
 }
 
-void KernelFunctionLogarithmicPowerDensity::setIsAveraging(bool isAveraging){
+void PostFft::setIsAveraging(bool isAveraging){
     m_isAveraging = isAveraging;
 }
 
-void KernelFunctionLogarithmicPowerDensity::setIsInvertColors(bool isInvertColors)
+void PostFft::setIsInvertColors(bool isInvertColors)
 {
     m_isInvertColors = isInvertColors;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::createFftBuffers(cl_context context)
+bool PostFft::createFftBuffers(cl_context context)
 {
     cl_int err{-1};
     const size_t memSize {m_inputLength * m_linesPerRevolution * sizeof(float)};
@@ -114,7 +114,7 @@ bool KernelFunctionLogarithmicPowerDensity::createFftBuffers(cl_context context)
     return err == CL_SUCCESS;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::createLastFrameBuffer(cl_context context)
+bool PostFft::createLastFrameBuffer(cl_context context)
 {
     const size_t memSize {m_inputLength *  m_linesPerRevolution * sizeof(float)};
 
@@ -125,17 +125,17 @@ bool KernelFunctionLogarithmicPowerDensity::createLastFrameBuffer(cl_context con
     return (err == CL_SUCCESS);
 }
 
-void KernelFunctionLogarithmicPowerDensity::setLastFrameBuffer(cl_mem lastFrameBuffer)
+void PostFft::setLastFrameBuffer(cl_mem lastFrameBuffer)
 {
     m_lastFrameBuffer = lastFrameBuffer;
 }
 
-cl_mem* KernelFunctionLogarithmicPowerDensity::getImageBuffer()
+cl_mem* PostFft::getImageBuffer()
 {
     return &m_image;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::createImageBuffer(cl_context context)
+bool PostFft::createImageBuffer(cl_context context)
 {
     cl_int err{-1};
 
@@ -173,7 +173,7 @@ bool KernelFunctionLogarithmicPowerDensity::createImageBuffer(cl_context context
     return err == CL_SUCCESS;
 }
 
-void KernelFunctionLogarithmicPowerDensity::setKernel(cl_kernel kernel)
+void PostFft::setKernel(cl_kernel kernel)
 {
     if(!m_kernel){
         m_kernel = kernel;
@@ -181,12 +181,12 @@ void KernelFunctionLogarithmicPowerDensity::setKernel(cl_kernel kernel)
     }
 }
 
-void KernelFunctionLogarithmicPowerDensity::displayFailureMessage(const char *msg, bool isMajor) const
+void PostFft::displayFailureMessage(const char *msg, bool isMajor) const
 {
     qDebug() << msg << ", is major error = " <<isMajor;
 }
 
-bool KernelFunctionLogarithmicPowerDensity::setKernelParameters()
+bool PostFft::setKernelParameters()
 {
     if(!m_kernel){
         return false;
@@ -252,12 +252,12 @@ bool KernelFunctionLogarithmicPowerDensity::setKernelParameters()
     return clStatus == CL_SUCCESS;
 }
 
-void KernelFunctionLogarithmicPowerDensity::setPrevFrameWeightPercent(cl_float val)
+void PostFft::setPrevFrameWeightPercent(cl_float val)
 {
     m_prevFrameWeight_percent = val;
 }
 
-void KernelFunctionLogarithmicPowerDensity::setCurrFrameWeightPercent(cl_float val)
+void PostFft::setCurrFrameWeightPercent(cl_float val)
 {
     m_currFrameWeight_percent = val;
 }
