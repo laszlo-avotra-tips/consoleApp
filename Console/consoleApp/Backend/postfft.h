@@ -3,6 +3,7 @@
 
 #include <ikernelfunction.h>
 #include <defaults.h>
+#include <signalmodel.h>
 
 class PostFft : public IKernelFunction
 {
@@ -16,6 +17,7 @@ public:
     bool enqueueOutputGpuMemory(cl_command_queue) override;
     bool initContext(cl_context) override;
     bool setKernelParameters(cl_kernel kernel) override;
+    void setSignalModel(const SignalModel& signalModel) override;
 
     void setIsAveraging(bool isAveraging);
     void setIsInvertColors(bool isInvertColors);
@@ -39,12 +41,13 @@ private:
     cl_mem m_lastFrameBuffer{nullptr}; //2 lastFramePreScalingMemObj
     cl_mem m_image{nullptr}; //3 inputImageMemObj
 
+    const SignalModel* m_signalModel{nullptr};
+
     const cl_uint m_inputLength{2048}; //4 RescalingDataLength
     const cl_uint m_linesPerRevolution{0};
     const cl_float m_scaleFactor{20000.0f * 255.0f / 65535.0f}; //5 scaleFactor
     const cl_uint m_dcNoiseLevel{150}; //6 XXX: Empirically measured
     cl_int m_isAveraging{0}; //7 averageVal
-
     cl_float m_prevFrameWeight_percent{1.0}; //8 prevFrameWeight_percent
     cl_float m_currFrameWeight_percent{1.0}; //9 currFrameWeight_percent
     cl_int m_isInvertColors{0}; //10 invertColors

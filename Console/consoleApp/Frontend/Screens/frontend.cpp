@@ -38,6 +38,7 @@
 #include "fileUtil.h"
 #include "idaq.h"
 #include "engineeringcontroller.h"
+#include "signalmodel.h"
 
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0

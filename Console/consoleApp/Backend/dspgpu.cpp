@@ -29,6 +29,7 @@
 #include "signalmanager.h"
 #include "playbackmanager.h"
 #include "postfft.h"
+#include "signalmodel.h"
 
 
 /*
@@ -546,6 +547,7 @@ bool DSPGPU::initOpenCL()
     if(it != m_openClFunctionMap.end())
     {
         m_postFft.setKernel(it->second.second);
+        m_postFft.setSignalModel(*SignalModel::instance());
     }
     createCLMemObjects( cl_Context );
 

@@ -106,3 +106,9 @@ CONFIG( release ) {
 RESOURCES += \
     OpenClResources.qrc
 
+HEADERS += \
+    Backend/signalmodel.h
+
+SOURCES += \
+    Backend/signalmodel.cpp
+

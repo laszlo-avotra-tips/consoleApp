@@ -184,7 +184,7 @@ void PostFft::displayFailureMessage(const char *msg, bool isMajor) const
 
 bool PostFft::setKernelParameters(cl_kernel kernel)
 {
-    if(!kernel){
+    if(!kernel || !m_signalModel){
         return false;
     }
 
@@ -208,7 +208,7 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
     {
        qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 4, sizeof(int), &m_inputLength );
+    clStatus |= clSetKernelArg( kernel, 4, sizeof(int), m_signalModel->iputLength()); //&m_inputLength );
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
@@ -245,6 +245,11 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
     }
 
     return clStatus == CL_SUCCESS;
+}
+
+void PostFft::setSignalModel(const SignalModel &signalModel)
+{
+    m_signalModel = &signalModel;
 }
 
 void PostFft::setPrevFrameWeightPercent(cl_float val)
