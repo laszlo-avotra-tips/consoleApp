@@ -14,6 +14,7 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <memory>
 
 #include <CL/opencl.h>
 
@@ -21,9 +22,12 @@
 #include "buildflags.h"
 #include "postfft.h"
 
+
 using OpenClFunction_type = std::pair<cl_program,cl_kernel>;
 using OpenClFileMap_type = std::map<QString,QString>; // <kernel function, file name>
 using OpenClFunctionMap_type = std::map<QString, OpenClFunction_type >; // <kerlel function < program memory, kerlen memory> >
+
+class PostFft;
 /*
  * Uses the GPU for DSP calculations
  */
@@ -94,7 +98,7 @@ private:
     const cl_uint numEventsInWaitlist{0};
 
 private:
-    PostFft m_postFft;
+    std::unique_ptr<PostFft> m_postFft;
 
 private:
     // OpenCL support

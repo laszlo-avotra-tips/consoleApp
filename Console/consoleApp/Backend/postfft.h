@@ -8,7 +8,6 @@
 class PostFft : public IKernelFunction
 {
 public:
-    PostFft();
     PostFft(cl_context context);
     ~PostFft() override;
 
@@ -39,7 +38,7 @@ private:
 
     const SignalModel* m_signalModel{nullptr};
 
-    const cl_uint m_linesPerRevolution{0};
+    cl_uint m_linesPerRevolution{0};
 };
 
 #endif // POSTFFT_H

@@ -28,7 +28,6 @@
 #include "theglobals.h"
 #include "signalmanager.h"
 #include "playbackmanager.h"
-#include "postfft.h"
 #include "signalmodel.h"
 
 
@@ -317,8 +316,8 @@ bool DSPGPU::getGpuDeviceInfo(cl_platform_id id, bool isLogging)
 bool DSPGPU::callPostFftKernel()
 {
     bool success{false};
-    if(cl_Commands){
-        success = m_postFft.enqueueCallKernelFunction(cl_Commands);
+    if(cl_Commands && m_postFft){
+        success = m_postFft->enqueueCallKernelFunction(cl_Commands);
     }
     return success;
 }
@@ -326,10 +325,10 @@ bool DSPGPU::callPostFftKernel()
 bool DSPGPU::callBandcKernel()
 {
     auto itbc = m_openClFunctionMap.find("bandc_kernel");
-    if(itbc != m_openClFunctionMap.end())
+    if(itbc != m_openClFunctionMap.end() && m_postFft)
     {
          auto& oclbck = itbc->second.second;
-         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), m_postFft.getImageBuffer() );
+         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), m_postFft->getImageBuffer() );
          if( clStatus != CL_SUCCESS )
          {
              qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
@@ -522,8 +521,9 @@ bool DSPGPU::initOpenCL()
         return false;
     }
 
-    m_postFft.setSignalModel(*SignalModel::instance());
-    m_postFft.initContext(cl_Context);
+    m_postFft = std::make_unique<PostFft>(cl_Context);
+    m_postFft->setSignalModel(*SignalModel::instance());
+    m_postFft->initContext(cl_Context);
 
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
     if( !cl_Commands )
@@ -548,8 +548,7 @@ bool DSPGPU::initOpenCL()
     auto it = m_openClFunctionMap.find("postfft_kernel");
     if(it != m_openClFunctionMap.end())
     {
-        m_postFft.setSignalModel(*SignalModel::instance());
-        m_postFft.setKernel(it->second.second);
+        m_postFft->setKernel(it->second.second);
     }
     createCLMemObjects( cl_Context );
 
@@ -730,8 +729,8 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 
 bool DSPGPU::loadFftOutMemoryObjects()
 {
-    if(cl_Commands){
-        m_postFft.enqueueInputGpuMemory(cl_Commands);
+    if(cl_Commands && m_postFft){
+        m_postFft->enqueueInputGpuMemory(cl_Commands);
         return true;
     }
     return false;

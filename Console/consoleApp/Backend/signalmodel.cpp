@@ -5,7 +5,7 @@ SignalModel* SignalModel::m_instance{nullptr};
 
 SignalModel::SignalModel(QObject *parent)
     : QObject(parent)
-//      ,m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
+      ,m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
 {
 
 }

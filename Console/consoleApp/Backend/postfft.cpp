@@ -5,13 +5,8 @@
 
 #include <QDebug>
 
-PostFft::PostFft() :
-     m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
-{
-}
 
 PostFft::PostFft(cl_context context)
-    : m_linesPerRevolution(cl_uint(deviceSettings::Instance().current()->getLinesPerRevolution()))
 {
     initContext(context);
 }
@@ -255,4 +250,5 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
 void PostFft::setSignalModel(const SignalModel &signalModel)
 {
     m_signalModel = &signalModel;
+    m_linesPerRevolution = m_signalModel->linesPerRevolution();
 }
