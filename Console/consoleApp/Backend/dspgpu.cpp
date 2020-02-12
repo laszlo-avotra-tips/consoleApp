@@ -29,6 +29,7 @@
 #include "signalmanager.h"
 #include "playbackmanager.h"
 #include "signalmodel.h"
+#include "postfft.h"
 
 
 /*
@@ -522,6 +523,7 @@ bool DSPGPU::initOpenCL()
     }
 
     m_postFft = std::make_unique<PostFft>(cl_Context);
+
     m_postFft->setSignalModel(*SignalModel::instance());
     m_postFft->initContext(cl_Context);
 

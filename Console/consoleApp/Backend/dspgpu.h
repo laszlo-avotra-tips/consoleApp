@@ -20,7 +20,7 @@
 
 #include "dsp.h"
 #include "buildflags.h"
-#include "postfft.h"
+#include "ikernelfunction.h"
 
 
 using OpenClFunction_type = std::pair<cl_program,cl_kernel>;
@@ -98,7 +98,7 @@ private:
     const cl_uint numEventsInWaitlist{0};
 
 private:
-    std::unique_ptr<IKernelFunction> m_postFft;
+    std::unique_ptr<IKernelFunction> m_postFft{nullptr};
 
 private:
     // OpenCL support
