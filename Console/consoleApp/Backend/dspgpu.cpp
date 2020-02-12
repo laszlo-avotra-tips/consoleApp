@@ -271,70 +271,6 @@ bool DSPGPU::callWarpKernel() const
 }
 
 /*
- * buildOpenCLKernel
- *
- * Load, compile and build the program for the given OpenCL kernel.
- */
-bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel )
-{
-//    qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
-    QTime buildTimer;
-    buildTimer.start();
-
-    int err;
-
-    /*
-     * Load, compile, link the source
-     */
-    LOG1(kernelName)
-    const char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
-    if( !sourceBuf )
-    {
-        displayFailureMessage( tr( "Failed to load program source file %1 (%2)" ).arg( clSourceFile ).arg( QDir::currentPath() ), true );
-        return false;
-    }
-
-    /*
-     * Create the compute program(s) from the source buffer
-     */
-    *program = clCreateProgramWithSource( cl_Context, 1, &sourceBuf, nullptr, &err );
-    if( !*program || ( err != CL_SUCCESS ) )
-    {
-        qDebug() << "DSP: OpenCL could not create program from source: " << err;
-        displayFailureMessage( tr( "Could not build OpenCL kernel from source, reason %1" ).arg( err ), true );
-        return false;
-    }
-    delete [] sourceBuf;
-
-    err = clBuildProgram( *program, 0, nullptr, nullptr, nullptr, nullptr);
-    if( err != CL_SUCCESS )
-    {
-        size_t length;
-        const int BuildLogLength = 2048;
-        char *build_log = new char [BuildLogLength];
-
-        qDebug() << "DSP: OpenCL build failed: " << err;
-        clGetProgramBuildInfo( *program, cl_ComputeDeviceId, CL_PROGRAM_BUILD_LOG, BuildLogLength, build_log, &length );
-        qDebug() << "openCl Build log:" << build_log;
-
-        displayFailureMessage( tr( "Could not build program, reason %1" ).arg( err ), true );
-        delete []  build_log;
-        return false;
-    }
-
-    *kernel = clCreateKernel( *program, kernelName, &err );
-
-    if( err != CL_SUCCESS )
-    {
-        qDebug() << "DSP: OpenCL could not create compute kernel: " << err;
-        displayFailureMessage( tr( "Could not create compute kernel, reason %1" ).arg( err ), true );
-        return false;
-    }
-//    LOG1( buildTimer.elapsed());
-    return true;
-}
-
-/*
  * initOpenCL
  *
  * Enumerate and initialize OpenCL devices, programs and kernels. This
@@ -350,69 +286,33 @@ bool DSPGPU::initOpenCL()
 
     initOpenClFileMap();
 
-//    cl_int err{-1};
     cl_Context = spf->getContext();
     cl_ComputeDeviceId = spf->getComputeDeviceId();
 
-//    m_postFft = spf->getPostFft();
-
-//    cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
-//    if( !cl_Commands )
-//    {
-//        qDebug() << "DSP: OpenCL could not create command queue.";
-//        displayFailureMessage( tr( "Could not create OpenCL command queue, reason %1" ).arg( err ), true );
-//        return false;
-//    }
     cl_Commands = spf->getCommandQueue();
     m_postFft = spf->getPostFft();
 
     for( const auto& sourceCode : m_openClFileMap){
-        const auto& kernelFunction = sourceCode.first;
-        auto it = m_openClFunctionMap.find(kernelFunction);
-        if(it != m_openClFunctionMap.end()){
-            bool success = buildOpenCLKernel(sourceCode.second, sourceCode.first.toLatin1(),
-                                         &it->second.first, &it->second.second);
-            if(!success){
-                return false;
-            }
+        const auto& kernelFunctionName = sourceCode.first;
+        bool success = spf->buildKernelFuncionCode(kernelFunctionName);
+        if(!success){
+            return false;
         }
     }
 
-    auto it = m_openClFunctionMap.find("postfft_kernel");
+    m_openClFunctionMap = spf->getOpenClFunctionMap();
+
+    auto it = m_openClFunctionMap.find("postfft_kernel");//lcv get it from the factory
     if(it != m_openClFunctionMap.end())
     {
         m_postFft->setKernel(it->second.second);
     }
+
     createCLMemObjects( cl_Context );
 
     qDebug() << "DSPGPU: OpenCL init complete.";
 
     return true;
-}
-
-/*
- * loadCLProgramSourceFromFile
- */
-char *DSPGPU::loadCLProgramSourceFromFile( QString filename )
-{
-    QFile     sourceFile( filename );
-    QFileInfo sourceFileInfo( filename );
-
-    char *sourceBuf;
-
-    if( !sourceFile.open( QIODevice::ReadOnly ) )
-    {
-        displayFailureMessage( tr( "Failed to load OpenCL source file %1 ").arg( filename ), true );
-        return nullptr;
-    }
-
-    auto srcSize = sourceFileInfo.size();
-
-    // memory is freed by the calling routine
-    sourceBuf = new char [size_t(srcSize + 1) ];
-    sourceFile.read( sourceBuf, srcSize );
-    sourceBuf[ srcSize ] = '\0'; // Very important!
-    return sourceBuf;
 }
 
 /*

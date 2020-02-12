@@ -247,3 +247,4 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
 
     return clStatus == CL_SUCCESS;
 }
+

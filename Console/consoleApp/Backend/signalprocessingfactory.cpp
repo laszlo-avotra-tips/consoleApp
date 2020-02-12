@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QString>
+#include <QTime>
 
 #include <logger.h>
 
@@ -231,6 +232,23 @@ cl_command_queue SignalProcessingFactory::getCommandQueue() const
     return m_commandQueue;
 }
 
+bool SignalProcessingFactory::buildKernelFuncionCode(const QString &kernelFunctionName)
+{
+    auto fnIt = m_openClFileMap.find(kernelFunctionName);
+    if(fnIt != m_openClFileMap.end()){
+        auto sourceCode = *fnIt;
+        auto it = m_openClFunctionMap.find(kernelFunctionName);
+        if(it != m_openClFunctionMap.end()){
+            bool success = buildOpenCLKernel(sourceCode.second, sourceCode.first.toLatin1(),
+                                         &it->second.first, &it->second.second);
+            if(!success){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 cl_device_id SignalProcessingFactory::getComputeDeviceId() const
 {
     return m_computeDeviceId;
@@ -240,3 +258,98 @@ cl_context SignalProcessingFactory::getContext() const
 {
     return m_context;
 }
+
+/*
+ * buildOpenCLKernel
+ *
+ * Load, compile and build the program for the given OpenCL kernel.
+ */
+bool SignalProcessingFactory::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel )
+{
+//    qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
+    QTime buildTimer;
+    buildTimer.start();
+
+    int err;
+
+    /*
+     * Load, compile, link the source
+     */
+    LOG1(kernelName)
+    const char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
+    if( !sourceBuf )
+    {
+        displayFailureMessage( QString( "Failed to load program source file %1 (%2)" ).arg( clSourceFile ).arg( QDir::currentPath() ), true );
+        return false;
+    }
+
+    /*
+     * Create the compute program(s) from the source buffer
+     */
+    *program = clCreateProgramWithSource( m_context, 1, &sourceBuf, nullptr, &err );
+    if( !*program || ( err != CL_SUCCESS ) )
+    {
+        qDebug() << "DSP: OpenCL could not create program from source: " << err;
+        displayFailureMessage( QString( "Could not build OpenCL kernel from source, reason %1" ).arg( err ), true );
+        return false;
+    }
+    delete [] sourceBuf;
+
+    err = clBuildProgram( *program, 0, nullptr, nullptr, nullptr, nullptr);
+    if( err != CL_SUCCESS )
+    {
+        size_t length;
+        const int BuildLogLength = 2048;
+        char *build_log = new char [BuildLogLength];
+
+        qDebug() << "DSP: OpenCL build failed: " << err;
+        clGetProgramBuildInfo( *program, m_computeDeviceId, CL_PROGRAM_BUILD_LOG, BuildLogLength, build_log, &length );
+        qDebug() << "openCl Build log:" << build_log;
+
+        displayFailureMessage( QString( "Could not build program, reason %1" ).arg( err ), true );
+        delete []  build_log;
+        return false;
+    }
+
+    *kernel = clCreateKernel( *program, kernelName, &err );
+
+    if( err != CL_SUCCESS )
+    {
+        qDebug() << "DSP: OpenCL could not create compute kernel: " << err;
+        displayFailureMessage( QString( "Could not create compute kernel, reason %1" ).arg( err ), true );
+        return false;
+    }
+//    LOG1( buildTimer.elapsed());
+    return true;
+}
+
+OpenClFunctionMap_type SignalProcessingFactory::getOpenClFunctionMap() const
+{
+    return m_openClFunctionMap;
+}
+
+/*
+ * loadCLProgramSourceFromFile
+ */
+char *SignalProcessingFactory::loadCLProgramSourceFromFile( QString filename )
+{
+    QFile     sourceFile( filename );
+    QFileInfo sourceFileInfo( filename );
+
+    char *sourceBuf;
+
+    if( !sourceFile.open( QIODevice::ReadOnly ) )
+    {
+        displayFailureMessage( QString( "Failed to load OpenCL source file %1 ").arg( filename ), true );
+        return nullptr;
+    }
+
+    auto srcSize = sourceFileInfo.size();
+
+    // memory is freed by the calling routine
+    sourceBuf = new char [size_t(srcSize + 1) ];
+    sourceFile.read( sourceBuf, srcSize );
+    sourceBuf[ srcSize ] = '\0'; // Very important!
+    return sourceBuf;
+}
+

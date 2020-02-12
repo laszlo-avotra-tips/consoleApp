@@ -27,6 +27,10 @@ public:
 
     cl_command_queue getCommandQueue() const;
 
+    bool buildKernelFuncionCode(const QString& kernelFunctionName);
+
+    OpenClFunctionMap_type getOpenClFunctionMap() const;
+
 private:
     static SignalProcessingFactory* m_instance;
 
@@ -36,6 +40,8 @@ private:
     cl_platform_id getPlatformId() const;
     bool getGpuDeviceInfo(cl_platform_id id, bool isLogging = false);
     bool isClReturnValueSuccess(cl_int ret, int line) const;
+    bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
+    char* loadCLProgramSourceFromFile( QString fn);
 
 private:
     OpenClFunctionMap_type m_openClFunctionMap

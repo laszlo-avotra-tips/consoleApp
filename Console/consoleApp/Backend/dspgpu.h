@@ -24,8 +24,8 @@
 
 
 using OpenClFunction_type = std::pair<cl_program, cl_kernel>;
-using OpenClFileMap_type = std::map<QString, QString>; // <kernel function, file name>
-using OpenClFunctionMap_type = std::map<QString, OpenClFunction_type >; // <kerlel function < program memory, kerlen memory> >
+using OpenClFileMap_type = std::map<QString, QString>; // <kernel function name, file name>
+using OpenClFunctionMap_type = std::map<QString, OpenClFunction_type >; // <kerlel function name, < program memory, kernel memory> >
 
 class PostFft;
 /*
@@ -105,7 +105,7 @@ private:
     bool createCLMemObjects( cl_context context );
     bool transformData( unsigned char *data , unsigned char *videoData );
 
-    char       *loadCLProgramSourceFromFile( QString );
+//    char       *loadCLProgramSourceFromFile( QString );
     QByteArray  loadCLProgramBinaryFromFile( QString );
     bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
     bool initOpenCL();
