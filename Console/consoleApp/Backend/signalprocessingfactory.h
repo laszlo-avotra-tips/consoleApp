@@ -25,6 +25,8 @@ public:
 
     cl_device_id getComputeDeviceId() const;
 
+    cl_command_queue getCommandQueue() const;
+
 private:
     static SignalProcessingFactory* m_instance;
 
@@ -53,6 +55,7 @@ private:
     cl_platform_id m_platformId{nullptr};
     cl_device_id   m_computeDeviceId{nullptr};
     cl_context     m_context{nullptr};
+    cl_command_queue m_commandQueue{nullptr};
     size_t         m_cl_max_workgroup_size{0};
     bool           m_openClSuccess{false};
 

@@ -53,6 +53,15 @@ SignalProcessingFactory::SignalProcessingFactory()
     if(!m_openClSuccess){
         displayFailureMessage( QString( "Could not allocate OpenCL compute context, reason %1" ).arg( errorLine ), true );
     }
+
+    if(m_openClSuccess){
+        cl_int err{-1};
+        m_commandQueue = clCreateCommandQueueWithProperties( m_context, m_computeDeviceId, nullptr, &err );
+        m_openClSuccess = err == CL_SUCCESS;
+        if(err != CL_SUCCESS){
+            displayFailureMessage( QString( "Could not create OpenCL command queue, reason %1" ).arg( err ), true );
+        }
+    }
 }
 
 void SignalProcessingFactory::initOpenClFileMap()
@@ -215,6 +224,11 @@ bool SignalProcessingFactory::isClReturnValueSuccess(cl_int ret, int line) const
         LOG1(errorMesage)
     }
     return success;
+}
+
+cl_command_queue SignalProcessingFactory::getCommandQueue() const
+{
+    return m_commandQueue;
 }
 
 cl_device_id SignalProcessingFactory::getComputeDeviceId() const

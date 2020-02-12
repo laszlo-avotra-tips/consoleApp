@@ -98,7 +98,6 @@ private:
     const cl_uint numEventsInWaitlist{0};
 
 private:
-//    std::unique_ptr<IKernelFunction> m_postFft{nullptr};
     IKernelFunction* m_postFft{nullptr};
 
 private:
@@ -111,10 +110,7 @@ private:
     bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
     bool initOpenCL();
     QString clCreateBufferErrorVerbose(int clError) const;
-    bool isClReturnValueSuccess(cl_int ret, int line) const;
     void initOpenClFileMap();
-    cl_platform_id getPlatformId() const;
-    bool getGpuDeviceInfo(cl_platform_id id, bool isLogging = false);
 
     bool callPostFftKernel();
     bool callBandcKernel();
