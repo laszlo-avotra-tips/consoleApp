@@ -14,12 +14,11 @@ public:
     bool enqueueInputGpuMemory(cl_command_queue) override;
     bool enqueueCallKernelFunction(cl_command_queue) override;
     bool initContext(cl_context) override;
-    bool setKernelParameters(cl_kernel kernel) override;
     void setSignalModel(SignalModel& signalModel) override;
-
-    void setKernel(cl_kernel kernel);
+    void setKernel(cl_kernel kernel) override;
 
 private:
+    bool setKernelParameters(cl_kernel kernel) ;
     void displayFailureMessage(const char* msg, bool isMajor) const;
     bool createFftBuffers(cl_context context);
     bool createLastFrameBuffer(cl_context context);

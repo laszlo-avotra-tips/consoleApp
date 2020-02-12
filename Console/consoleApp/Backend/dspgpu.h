@@ -98,7 +98,7 @@ private:
     const cl_uint numEventsInWaitlist{0};
 
 private:
-    std::unique_ptr<PostFft> m_postFft;
+    std::unique_ptr<IKernelFunction> m_postFft;
 
 private:
     // OpenCL support
