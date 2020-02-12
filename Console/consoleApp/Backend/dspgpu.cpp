@@ -503,39 +503,11 @@ bool DSPGPU::initOpenCL()
 
     initOpenClFileMap();
 
-//    cl_platform_id platformId = getPlatformId();
-
-//    if(!platformId){
-//        return false;
-//    }
-
-//    const bool logInfo{false};
-//    bool success = getGpuDeviceInfo(platformId, logInfo);
-
-//    if(!success){
-//        return false;
-//    }
-//    cl_int err;
-//    cl_Context = clCreateContext( nullptr, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
-//    if( !cl_Context )
-//    {
-//        qDebug() << "DSP: OpenCL could not create compute context.";
-//        displayFailureMessage( tr( "Could not allocate OpenCL compute context, reason %1" ).arg( err ), true );
-//        return false;
-//    }
     cl_int err{-1};
     cl_Context = spf->getContext();
     cl_ComputeDeviceId = spf->getComputeDeviceId();
 
-//    auto postFft = spf->getPostFft();
-
-//    LOG1(postFft)
-
-//    m_postFft = std::make_unique<PostFft>(cl_Context);
-
     m_postFft = spf->getPostFft();
-    m_postFft->setSignalModel(*SignalModel::instance());
-    m_postFft->initContext(cl_Context);
 
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
     if( !cl_Commands )

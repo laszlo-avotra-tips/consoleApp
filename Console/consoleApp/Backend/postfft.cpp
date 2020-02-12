@@ -2,11 +2,12 @@
 #include <deviceSettings.h>
 #include "CL/opencl.h"
 #include <signalmanager.h>
+#include <signalmodel.h>
 
 #include <QDebug>
 
 
-PostFft::PostFft(cl_context context)
+PostFft::PostFft(cl_context context) : m_signalModel(SignalModel::instance())
 {
     initContext(context);
 }
@@ -245,9 +246,4 @@ bool PostFft::setKernelParameters(cl_kernel kernel)
     }
 
     return clStatus == CL_SUCCESS;
-}
-
-void PostFft::setSignalModel(SignalModel &signalModel)
-{
-    m_signalModel = &signalModel;
 }
