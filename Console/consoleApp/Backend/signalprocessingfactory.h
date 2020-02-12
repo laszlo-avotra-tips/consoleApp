@@ -3,6 +3,7 @@
 
 #include <CL/opencl.h>
 #include <QString>
+#include <QByteArray>
 
 #include <map>
 #include <memory>
@@ -42,6 +43,7 @@ private:
     bool isClReturnValueSuccess(cl_int ret, int line) const;
     bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
     char* loadCLProgramSourceFromFile( QString fn);
+    QByteArray  loadCLProgramBinaryFromFile( QString );
 
 private:
     OpenClFunctionMap_type m_openClFunctionMap

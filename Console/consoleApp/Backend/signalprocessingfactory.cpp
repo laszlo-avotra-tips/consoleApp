@@ -353,3 +353,23 @@ char *SignalProcessingFactory::loadCLProgramSourceFromFile( QString filename )
     return sourceBuf;
 }
 
+/*
+ * loadCLProgramBinaryFromFile
+ */
+QByteArray SignalProcessingFactory::loadCLProgramBinaryFromFile( QString filename )
+{
+    QFile objectFile( filename );
+
+    if( !objectFile.open( QIODevice::ReadOnly ) )
+    {
+        displayFailureMessage( QString( "Failed to load OpenCL object file %1 ").arg( filename ), true );
+        return nullptr;
+    }
+
+    QByteArray objectBytes;
+    objectBytes = objectFile.readAll();
+
+    return objectBytes;
+}
+
+

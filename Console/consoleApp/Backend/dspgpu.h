@@ -105,9 +105,6 @@ private:
     bool createCLMemObjects( cl_context context );
     bool transformData( unsigned char *data , unsigned char *videoData );
 
-//    char       *loadCLProgramSourceFromFile( QString );
-    QByteArray  loadCLProgramBinaryFromFile( QString );
-    bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
     bool initOpenCL();
     QString clCreateBufferErrorVerbose(int clError) const;
     void initOpenClFileMap();

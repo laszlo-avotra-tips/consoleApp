@@ -316,25 +316,6 @@ bool DSPGPU::initOpenCL()
 }
 
 /*
- * loadCLProgramBinaryFromFile
- */
-QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
-{
-    QFile objectFile( filename );
-
-    if( !objectFile.open( QIODevice::ReadOnly ) )
-    {
-        displayFailureMessage( tr( "Failed to load OpenCL object file %1 ").arg( filename ), true );
-        return nullptr;
-    }
-
-    QByteArray objectBytes;
-    objectBytes = objectFile.readAll();
-
-    return objectBytes;
-}
-
-/*
  * createCLMemObjects
  */
 bool DSPGPU::createCLMemObjects( cl_context context )
