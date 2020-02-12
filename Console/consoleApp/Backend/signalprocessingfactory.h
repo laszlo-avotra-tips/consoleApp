@@ -30,7 +30,7 @@ public:
 
     bool buildKernelFuncionCode(const QString& kernelFunctionName);
 
-    OpenClFunctionMap_type getOpenClFunctionMap() const;
+    const OpenClFunctionMap_type& getOpenClFunctionMap() const;
 
 private:
     static SignalProcessingFactory* m_instance;

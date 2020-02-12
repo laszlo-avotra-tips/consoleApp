@@ -302,12 +302,6 @@ bool DSPGPU::initOpenCL()
 
     m_openClFunctionMap = spf->getOpenClFunctionMap();
 
-    auto it = m_openClFunctionMap.find("postfft_kernel");//lcv get it from the factory
-    if(it != m_openClFunctionMap.end())
-    {
-        m_postFft->setKernel(it->second.second);
-    }
-
     createCLMemObjects( cl_Context );
 
     qDebug() << "DSPGPU: OpenCL init complete.";

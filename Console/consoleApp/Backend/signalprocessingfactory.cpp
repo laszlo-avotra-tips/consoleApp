@@ -244,6 +244,9 @@ bool SignalProcessingFactory::buildKernelFuncionCode(const QString &kernelFuncti
             if(!success){
                 return false;
             }
+            if(kernelFunctionName == "postfft_kernel"){
+                m_postFftKernelFunction->setKernel(it->second.second);
+            }
         }
     }
     return true;
@@ -323,7 +326,7 @@ bool SignalProcessingFactory::buildOpenCLKernel( QString clSourceFile, const cha
     return true;
 }
 
-OpenClFunctionMap_type SignalProcessingFactory::getOpenClFunctionMap() const
+const OpenClFunctionMap_type& SignalProcessingFactory::getOpenClFunctionMap() const
 {
     return m_openClFunctionMap;
 }
