@@ -527,12 +527,13 @@ bool DSPGPU::initOpenCL()
     cl_Context = spf->getContext();
     cl_ComputeDeviceId = spf->getComputeDeviceId();
 
-    auto postFft = spf->getPostFft();
+//    auto postFft = spf->getPostFft();
 
-    LOG1(postFft)
+//    LOG1(postFft)
 
-    m_postFft = std::make_unique<PostFft>(cl_Context);
+//    m_postFft = std::make_unique<PostFft>(cl_Context);
 
+    m_postFft = spf->getPostFft();
     m_postFft->setSignalModel(*SignalModel::instance());
     m_postFft->initContext(cl_Context);
 

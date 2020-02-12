@@ -20,6 +20,7 @@ SignalProcessingFactory *SignalProcessingFactory::instance()
 
 IKernelFunction *SignalProcessingFactory::getPostFft()
 {
+//    LOG2(m_openClSuccess, bool(m_postFftKernelFunction))
     if(m_openClSuccess){
         if(!m_postFftKernelFunction){
             m_postFftKernelFunction = std::make_shared<PostFft>(m_context);
