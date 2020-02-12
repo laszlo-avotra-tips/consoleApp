@@ -70,11 +70,15 @@ bool PostFft::enqueueInputGpuMemory(cl_command_queue cmds)
 
 bool PostFft::enqueueCallKernelFunction(cl_command_queue cmds)
 {
+    if(!m_signalModel){
+        return false;
+    }
+
     const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(m_signalModel->linesPerRevolution())};
 
     cl_int clStatus = clEnqueueNDRangeKernel( cmds, m_kernel,
-                                              m_oclWorkDimension, m_oclGlobalWorkOffset, globalWorkSize,
-                                              m_oclLocalWorkSize, m_numEventsInWaitlist, nullptr, nullptr );
+                                              m_signalModel->m_oclWorkDimension, m_signalModel->m_oclGlobalWorkOffset, globalWorkSize,
+                                              m_signalModel->m_oclLocalWorkSize, m_signalModel->m_numEventsInWaitlist, nullptr, nullptr );
     return clStatus == CL_SUCCESS;
 }
 

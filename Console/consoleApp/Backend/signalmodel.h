@@ -7,6 +7,12 @@
 class SignalModel
 {
 public:
+    const size_t m_oclLocalWorkSize[2]{16,16};
+    const cl_uint m_oclWorkDimension{2};
+    const size_t* m_oclGlobalWorkOffset{nullptr};
+    const cl_uint m_numEventsInWaitlist{0};
+
+public:
     static SignalModel* instance();
 
     const cl_uint* iputLength() const;
