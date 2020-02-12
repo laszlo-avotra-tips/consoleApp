@@ -23,8 +23,8 @@
 #include "ikernelfunction.h"
 
 
-using OpenClFunction_type = std::pair<cl_program,cl_kernel>;
-using OpenClFileMap_type = std::map<QString,QString>; // <kernel function, file name>
+using OpenClFunction_type = std::pair<cl_program, cl_kernel>;
+using OpenClFileMap_type = std::map<QString, QString>; // <kernel function, file name>
 using OpenClFunctionMap_type = std::map<QString, OpenClFunction_type >; // <kerlel function < program memory, kerlen memory> >
 
 class PostFft;

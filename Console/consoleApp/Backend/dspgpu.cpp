@@ -30,6 +30,7 @@
 #include "playbackmanager.h"
 #include "signalmodel.h"
 #include "postfft.h"
+#include "signalprocessingfactory.h"
 
 
 /*
@@ -498,29 +499,37 @@ bool DSPGPU::initOpenCL()
 {
     qDebug() << "initOpenCL start";
 
+    auto spf = SignalProcessingFactory::instance();
 
     initOpenClFileMap();
 
-    cl_platform_id platformId = getPlatformId();
+//    cl_platform_id platformId = getPlatformId();
 
-    if(!platformId){
-        return false;
-    }
+//    if(!platformId){
+//        return false;
+//    }
 
-    const bool logInfo{false};
-    bool success = getGpuDeviceInfo(platformId, logInfo);
+//    const bool logInfo{false};
+//    bool success = getGpuDeviceInfo(platformId, logInfo);
 
-    if(!success){
-        return false;
-    }
-    cl_int err;
-    cl_Context = clCreateContext( nullptr, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
-    if( !cl_Context )
-    {
-        qDebug() << "DSP: OpenCL could not create compute context.";
-        displayFailureMessage( tr( "Could not allocate OpenCL compute context, reason %1" ).arg( err ), true );
-        return false;
-    }
+//    if(!success){
+//        return false;
+//    }
+//    cl_int err;
+//    cl_Context = clCreateContext( nullptr, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
+//    if( !cl_Context )
+//    {
+//        qDebug() << "DSP: OpenCL could not create compute context.";
+//        displayFailureMessage( tr( "Could not allocate OpenCL compute context, reason %1" ).arg( err ), true );
+//        return false;
+//    }
+    cl_int err{-1};
+    cl_Context = spf->getContext();
+    cl_ComputeDeviceId = spf->getComputeDeviceId();
+
+    auto postFft = spf->getPostFft();
+
+    LOG1(postFft)
 
     m_postFft = std::make_unique<PostFft>(cl_Context);
 
@@ -539,7 +548,7 @@ bool DSPGPU::initOpenCL()
         const auto& kernelFunction = sourceCode.first;
         auto it = m_openClFunctionMap.find(kernelFunction);
         if(it != m_openClFunctionMap.end()){
-            success = buildOpenCLKernel(sourceCode.second, sourceCode.first.toLatin1(),
+            bool success = buildOpenCLKernel(sourceCode.second, sourceCode.first.toLatin1(),
                                          &it->second.first, &it->second.second);
             if(!success){
                 return false;
