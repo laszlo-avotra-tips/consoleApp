@@ -6,6 +6,7 @@
 HEADERS += \
     $$PWD/Backend/ikernelfunction.h \
     $$PWD/Backend/postfft.h \
+    $$PWD/Backend/signalprocessingfactory.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -93,6 +94,7 @@ HEADERS += \
 # Source files
 SOURCES += \
     $$PWD/Backend/postfft.cpp \
+    $$PWD/Backend/signalprocessingfactory.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
