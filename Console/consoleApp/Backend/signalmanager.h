@@ -6,6 +6,7 @@
 #include <QFile>
 
 #include <map>
+#include <memory>
 
 
 class SignalManager : public QObject
@@ -15,16 +16,14 @@ class SignalManager : public QObject
 public:
     static SignalManager* instance();
 
-    float *getRealDataPointer() const;
+    float *getFftRealDataPointer() const;
 
-    float *getImagDataPointer() const;
+    float *getFftImagDataPointer() const;
 
     size_t getFftMemSize() const;
     bool isFftSource()const;
 
-    float *getLastFramePrescaling() const;
-    bool loadSignal(int index);
-
+    bool loadFftSignalBuffers(int index);
 
     std::map<int,bool> getIsFftDataInitializedFromGpu() const;
     void setIsFftDataInitializedFromGpu(bool isFftDataInitializedFromGpu, int index);
@@ -44,10 +43,9 @@ private:
 
 private:
     static SignalManager* m_instance;
-    float* m_realData;
-    float* m_imagData;
-    float* m_lastFramePrescaling;
-    const size_t m_dataLen;
+    std::unique_ptr<float[]> m_fftRealData{nullptr};
+    std::unique_ptr<float[]> m_fftImagData{nullptr};
+    const qint64 m_dataLen;
     bool m_isSource;
     std::pair<QString,QString> m_fftFileName;
     QFile m_imagFile;

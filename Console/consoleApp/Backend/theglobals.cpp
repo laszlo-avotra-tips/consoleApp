@@ -216,11 +216,11 @@ int TheGlobals::getPrevFrameIndex() const
     return (m_frameIndex + FRAME_BUFFER_SIZE - 1) % FRAME_BUFFER_SIZE;
 }
 
-void TheGlobals::inrementFrameIndex()
-{
-    QMutexLocker guard(&m_frameDataMutex);
-    ++m_frameIndex;
-}
+//void TheGlobals::inrementFrameIndex()
+//{
+//    QMutexLocker guard(&m_frameDataMutex);
+//    ++m_frameIndex;
+//}
 
 int TheGlobals::getRawDataIndexCompleted() const
 {

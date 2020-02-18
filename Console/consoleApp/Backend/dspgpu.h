@@ -28,7 +28,8 @@ class DSPGPU : public QThread
     Q_OBJECT
 
 public:
-    virtual ~DSPGPU();
+    ~DSPGPU() override;
+    void run( void ) override;
 
     void init();
 
@@ -63,6 +64,7 @@ private:
     DSP m_dsp;
 
 private:
+    bool m_dspIsRunning{false};
     bool initOpenCL();
     bool transformData( unsigned char *data , unsigned char *videoData );
 

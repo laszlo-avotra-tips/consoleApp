@@ -71,6 +71,9 @@ void FileDaq::run()
         bool isHighSpeedDevice = devSettings.current()->isHighSpeed();
 
         qDebug() << "Thread: DAQ::run start";
+
+        m_dsp->start();
+
         m_isRunning = true;
 
         // set the brightness and contrast when the daq starts up
@@ -94,8 +97,8 @@ void FileDaq::run()
             if(m_count2 == 0) {
                 smi->open();
             }
-            smi->loadSignal(m_count2);
-            m_dsp->readInputBuffers(smiReadOnly->getImagDataPointer(), smiReadOnly->getRealDataPointer());
+            smi->loadFftSignalBuffers(m_count2);
+            m_dsp->readInputBuffers(smiReadOnly->getFftImagDataPointer(), smiReadOnly->getFftRealDataPointer());
             m_dsp->processData(m_count2);
             ++m_count2;
             if(m_count2 == FRAME_BUFFER_SIZE)

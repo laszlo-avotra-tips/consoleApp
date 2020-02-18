@@ -1,6 +1,5 @@
 #include "signalmanager.h"
 #include <QString>
-//#include <QTextStream>
 #include <QDataStream>
 #include "logger.h"
 #include <QTime>
@@ -8,12 +7,6 @@
 
 SignalManager* SignalManager::m_instance = nullptr;
 
-namespace {
-QString SignalDir("C:/Avinger_System/signal/");
-bool isText(false);
-bool isFloat(false);
-bool isChar(true);
-}
 
 SignalManager *SignalManager::instance()
 {
@@ -24,26 +17,12 @@ SignalManager *SignalManager::instance()
 }
 
 SignalManager::SignalManager():
-    m_realData(nullptr),m_imagData(nullptr),m_lastFramePrescaling(nullptr),m_dataLen(592*2048)
-//  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.float", SignalDir + "real.float"))
-//  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.char", SignalDir + "real.char"))
-//  m_fftFileName(std::pair<QString,QString>(SignalDir + "imag.dat", SignalDir + "real.dat"))
+    m_fftRealData(nullptr),m_fftImagData(nullptr),m_dataLen(592*2048)
 {
-    if(isText){
-        m_fftFileName = std::pair<QString,QString>(SignalDir + "imag.dat", SignalDir + "real.dat");
-    }
+    m_fftFileName = std::pair<QString,QString>("C:/Avinger_System/signal/imag.char", "C:/Avinger_System/signal/real.char");
 
-    if(isFloat){
-         m_fftFileName = std::pair<QString,QString>(SignalDir + "imag.float", SignalDir + "real.float");
-    }
-
-    if(isChar){
-        m_fftFileName = std::pair<QString,QString>(SignalDir + "imag.char", SignalDir + "real.char");
-    }
-
-    m_realData = new float[m_dataLen];
-    m_imagData = new float[m_dataLen];
-    m_lastFramePrescaling = new float[m_dataLen];
+    m_fftRealData = std::make_unique<float []>(size_t(m_dataLen));
+    m_fftImagData = std::make_unique<float []>(size_t(m_dataLen));
 
     m_imagFile.setFileName(m_fftFileName.first);
     m_realFile.setFileName(m_fftFileName.second);
@@ -78,11 +57,6 @@ void SignalManager::close()
     m_realFile.close();
 }
 
-float *SignalManager::getLastFramePrescaling() const
-{
-    return m_lastFramePrescaling;
-}
-
 void SignalManager::saveSignal(int count)
 {
     const auto& signalTable = getIsFftDataInitializedFromGpu();
@@ -90,7 +64,7 @@ void SignalManager::saveSignal(int count)
     if(it != signalTable.end()){
         if(it->second){
             auto index = it->first;
-            LOG3(index, m_fftFileName.first, m_fftFileName.second);
+            LOG3(index, m_fftFileName.first, m_fftFileName.second)
             if(!isFftSource()){
                 bool iFileSuccess(false);
                 bool rFileSuccess(false);
@@ -102,9 +76,9 @@ void SignalManager::saveSignal(int count)
                 if(iFileSuccess){
                     QTime durationTimer;
                     durationTimer.start();
-                    auto countBytesWritten = m_imagFile.write(reinterpret_cast<char*>(m_imagData), m_dataLen * int(sizeof(float)));
+                    auto countBytesWritten = m_imagFile.write(reinterpret_cast<char*>(m_fftImagData.get()), m_dataLen * int(sizeof(float)));
                     auto imagSignalSaveDuration = durationTimer.elapsed();
-                    LOG2(countBytesWritten,imagSignalSaveDuration);
+                    LOG2(countBytesWritten,imagSignalSaveDuration)
                     m_imagFile.close();
                 }
                 if(count == 0){
@@ -115,21 +89,21 @@ void SignalManager::saveSignal(int count)
                 if(rFileSuccess){
                     QTime durationTimer;
                     durationTimer.start();
-                    auto countBytesWritten = m_realFile.write(reinterpret_cast<char*>(m_realData), m_dataLen * int(sizeof(float)));
+                    auto countBytesWritten = m_realFile.write(reinterpret_cast<char*>(m_fftRealData.get()), m_dataLen * int(sizeof(float)));
                     auto realSignalSaveDuration = durationTimer.elapsed();
-                    LOG2(countBytesWritten, realSignalSaveDuration);
+                    LOG2(countBytesWritten, realSignalSaveDuration)
                     m_realFile.close();
                 }
                 if(iFileSuccess && rFileSuccess){
                     emit signalSaved();
                 }
             }
-            LOG3(index, m_fftFileName.first, m_fftFileName.second);
+            LOG3(index, m_fftFileName.first, m_fftFileName.second)
         }
     }
 }
 
-bool SignalManager::loadSignal(int index)
+bool SignalManager::loadFftSignalBuffers(int index)
 {
     bool success(true);
 
@@ -143,7 +117,7 @@ bool SignalManager::loadSignal(int index)
                 durationTimer.start();
     }
 
-    auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_imagData), len * int(sizeof(float)));
+    auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_fftImagData.get()), len * int(sizeof(float)));
 
     if(isLogging){
         auto imagFileReadDuration = durationTimer.elapsed();
@@ -151,7 +125,7 @@ bool SignalManager::loadSignal(int index)
         durationTimer.start();
     }
 
-    auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_realData), len * int(sizeof(float)));
+    auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_fftRealData.get()), len * int(sizeof(float)));
 
     if(isLogging){
         auto realFileReadDuration = durationTimer.elapsed();
@@ -164,11 +138,9 @@ bool SignalManager::loadSignal(int index)
     return success;
 }
 
-
-
 size_t SignalManager::getFftMemSize() const
 {
-    return m_dataLen * sizeof (float);
+    return size_t(m_dataLen) * sizeof (float);
 }
 
 bool SignalManager::isFftSource() const
@@ -176,12 +148,12 @@ bool SignalManager::isFftSource() const
     return true;
 }
 
-float *SignalManager::getImagDataPointer() const
+float *SignalManager::getFftImagDataPointer() const
 {
-    return m_imagData;
+    return m_fftImagData.get();
 }
 
-float *SignalManager::getRealDataPointer() const
+float *SignalManager::getFftRealDataPointer() const
 {
-    return m_realData;
+    return m_fftRealData.get();
 }

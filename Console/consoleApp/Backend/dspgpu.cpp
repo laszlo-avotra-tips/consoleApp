@@ -45,6 +45,19 @@ DSPGPU::~DSPGPU()
     wait( 100 ); //ms
 }
 
+void DSPGPU::run()
+{
+    m_dspIsRunning = true;
+    int count{0};
+    while(m_dspIsRunning){
+        msleep(1);
+        if(++count % 3000 == 0){
+            auto now = QTime::currentTime().toString("HH:mm:ss:zz");
+            LOG2(count, now)
+        }
+    }
+}
+
 /*
  * init
  *
@@ -252,7 +265,7 @@ bool DSPGPU::readInputBuffers(const float *imag, const float *real)
 
 void DSPGPU::stop()
 {
-
+    m_dspIsRunning = false;
 }
 
 void DSPGPU::setAveraging(bool enable)

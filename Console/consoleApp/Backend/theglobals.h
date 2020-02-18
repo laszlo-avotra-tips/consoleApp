@@ -24,7 +24,7 @@ public:
 
     int getFrameIndex() const;
     int getPrevFrameIndex() const;
-    void inrementFrameIndex();
+//    void inrementFrameIndex();
 
     OCTFile::FrameData_t * getFrameDataPointer(int index) const;
     OCTFile::FrameData_t * getFrameDataPointer() const;
