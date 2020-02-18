@@ -8,6 +8,9 @@
 #include <logger.h>
 
 #include <postfft.h>
+#include <bandc.h>
+#include <warp.h>
+
 
 SignalProcessingFactory* SignalProcessingFactory::m_instance{nullptr};
 
@@ -31,6 +34,28 @@ IKernelFunction *SignalProcessingFactory::getPostFft()
     return nullptr;
 }
 
+IKernelFunction *SignalProcessingFactory::getBandC()
+{
+    if(m_openClSuccess){
+        if(!m_bandcKernelFunction){
+            m_bandcKernelFunction = std::make_shared<BeAndCe>(m_context);
+        }
+        return m_bandcKernelFunction.get();
+    }
+    return nullptr;
+}
+
+IKernelFunction *SignalProcessingFactory::getWarp()
+{
+    if(m_openClSuccess){
+        if(!m_warpKernelFunction){
+            m_warpKernelFunction = std::make_shared<Warp>(m_context);
+        }
+        return m_warpKernelFunction.get();
+    }
+    return nullptr;
+}
+
 SignalProcessingFactory::SignalProcessingFactory()
 {
     int errorLine(__LINE__);
@@ -40,7 +65,7 @@ SignalProcessingFactory::SignalProcessingFactory()
     m_openClSuccess = m_platformId;
 
     if(m_openClSuccess){
-        m_openClSuccess = getGpuDeviceInfo(m_platformId, true);
+        m_openClSuccess = getGpuDeviceInfo(m_platformId, false);
     }else{
         errorLine = __LINE__;
     }
@@ -247,19 +272,15 @@ bool SignalProcessingFactory::buildKernelFuncionCode(const QString &kernelFuncti
             if(kernelFunctionName == "postfft_kernel"){
                 m_postFftKernelFunction->setKernel(it->second.second);
             }
+            if(kernelFunctionName == "bandc_kernel"){
+                m_bandcKernelFunction->setKernel(it->second.second);
+            }
+            if(kernelFunctionName == "warp_kernel"){
+                m_warpKernelFunction->setKernel(it->second.second);
+            }
         }
     }
     return true;
-}
-
-cl_device_id SignalProcessingFactory::getComputeDeviceId() const
-{
-    return m_computeDeviceId;
-}
-
-cl_context SignalProcessingFactory::getContext() const
-{
-    return m_context;
 }
 
 /*
@@ -329,6 +350,18 @@ bool SignalProcessingFactory::buildOpenCLKernel( QString clSourceFile, const cha
 const OpenClFunctionMap_type& SignalProcessingFactory::getOpenClFunctionMap() const
 {
     return m_openClFunctionMap;
+}
+
+bool SignalProcessingFactory::buildKernelFunctions()
+{
+    for( const auto& sourceCode : m_openClFileMap){
+        const auto& kernelFunctionName = sourceCode.first;
+        bool success = buildKernelFuncionCode(kernelFunctionName);
+        if(!success){
+            return false;
+        }
+    }
+    return true;
 }
 
 /*

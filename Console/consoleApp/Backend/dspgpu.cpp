@@ -14,8 +14,6 @@
  *
  */
 #include <QDebug>
-#include <QDir>
-#include <QCoreApplication>
 
 #include "defaults.h"
 #include "dspgpu.h"
@@ -24,20 +22,13 @@
 #include "util.h"
 #include "buildflags.h"
 #include "deviceSettings.h"
-#include "Backend/depthsetting.h"
+#include "depthsetting.h"
 #include "theglobals.h"
 #include "signalmanager.h"
 #include "playbackmanager.h"
 #include "signalmodel.h"
-#include "postfft.h"
 #include "signalprocessingfactory.h"
-
-
-/*
- * OpenCL core organization parameters
- */
-#define DEFAULT_GLOBAL_UNITS ( 2048 )
-#define DEFAULT_LOCAL_UNITS  ( 16 )
+#include "daqSettings.h"
 
 
 /*
@@ -48,26 +39,10 @@
 DSPGPU::~DSPGPU()
 {
     LOG( INFO, "DSP GPU shutdown" )
-    qDebug() << "DSPGPU::~DSPGPU()";
+    LOG0
 
     stop();
     wait( 100 ); //ms
-
-    /*
-     * Clean up openCL objects
-     */
-    for(auto oclfp : m_openClFunctionMap){
-        auto oclf = oclfp.second;
-        clReleaseProgram(oclf.first);
-        clReleaseKernel(oclf.second);
-    }
-
-    clReleaseMemObject( warpInputImageMemObj );
-    clReleaseMemObject( outputImageMemObj );
-    clReleaseMemObject( outputVideoImageMemObj );
-
-    clReleaseCommandQueue( cl_Commands );
-    clReleaseContext( cl_Context );
 }
 
 /*
@@ -75,18 +50,34 @@ DSPGPU::~DSPGPU()
  *
  * Initialize memory and the GPU hardware
  */
-void DSPGPU::init( size_t inputLength,
-                   size_t frameLines,
-                   size_t inBytesPerRecord,
-                   size_t inBytesPerBuffer)
+void DSPGPU::init( )
 {
     // call the common initilization steps
-    DSP::init( inputLength, frameLines, inBytesPerRecord, inBytesPerBuffer );
+    m_dsp.init();
+
+    auto &settings = deviceSettings::Instance();
+    auto smi = SignalModel::instance();
+
+    float catheterRadius_um = float(settings.current()->getCatheterRadius_um());
+    smi->setCatheterRadiusUm(catheterRadius_um);
+
+    float internalImagingMask_px = float(settings.current()->getInternalImagingMask_px());
+    smi->setInternalImagingMaskPx(internalImagingMask_px);
+
+    // Contrast stretch defaults (no stretch)
+    float blackLevel = BrightnessLevels_HighSpeed.defaultValue;
+    float whiteLevel = ContrastLevels_HighSpeed.defaultValue;
+    smi->setBlackLevel(int(blackLevel));
+    smi->setWhiteLevel(int(whiteLevel));
+
+
+    const size_t inSamplesPerBuffer = size_t(settings.current()->getLinesPerRevolution()) * DaqSettings::Instance().getRecordLength();
+    LOG1(inSamplesPerBuffer)
 
     // XXX Need to pass these into the DSP so we dont copy buffers there
     // for opencl
     try {
-        workingBuffer = std::make_unique<quint16 []>(bytesPerBuffer / sizeof (quint16));
+        workingBuffer = std::make_unique<quint16 []>(inSamplesPerBuffer);
         imData = std::make_unique<float []>(complexDataSize);
         reData = std::make_unique<float []>(complexDataSize);
     } catch (std::bad_alloc e) {
@@ -99,15 +90,6 @@ void DSPGPU::init( size_t inputLength,
         displayFailureMessage( tr( "Could not initialize OpenCL." ), true );
     }
 
-    doAveraging      = false;
-    auto smi = SignalModel::instance();
-    smi->setAverageVal(doAveraging);
-
-    displayAngle_deg = 0.0;
-
-    smi->setCurrFrameWeight_percent(DefaultCurrFrameWeight_Percent / 100.0f);
-
-    smi->setPrevFrameWeight_percent(1.0f - DefaultCurrFrameWeight_Percent / 100.0f);
 }
 
 bool DSPGPU::processData(int index)
@@ -127,8 +109,8 @@ bool DSPGPU::processData(int index)
          */
         pData->frameCount      = 0;
         pData->encoderPosition = 0; // NOT USED for fast-OCT
-        pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = quint16(getMilliseconds());
+        pData->timeStamp       = m_dsp.getTimeStamp();
+        pData->milliseconds    = quint16(m_dsp.getMilliseconds());
 
         success = true;
 
@@ -139,135 +121,31 @@ bool DSPGPU::processData(int index)
     return success;
 }
 
-QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
-{
-    QString cause;
-    switch(clError){
-        case CL_INVALID_CONTEXT :       {cause = "CL_INVALID_CONTEXT";} break;
-        case CL_INVALID_VALUE :         {cause = "CL_INVALID_VALUE";} break;
-        case CL_INVALID_BUFFER_SIZE :   {cause = "CL_INVALID_BUFFER_SIZE";} break;
-        case CL_INVALID_HOST_PTR :      {cause = "CL_INVALID_HOST_PTR";} break;
-        case CL_MEM_OBJECT_ALLOCATION_FAILURE :  {cause = "CL_MEM_OBJECT_ALLOCATION_FAILURE";} break;
-        case CL_OUT_OF_HOST_MEMORY :    {cause = "CL_OUT_OF_HOST_MEMORY";} break;
-    }
-    return cause;
-}
-
-void DSPGPU::initOpenClFileMap()
-{
-    m_openClFileMap = {
-        {"postfft_kernel",  ":/kernel/postfft"},
-        {"bandc_kernel",  ":/kernel/bandc"},
-        {"warp_kernel",  ":/kernel/warp"}
-    };
-}
-
-bool DSPGPU::callPostFftKernel()
+bool DSPGPU::enqueuePostFftKernelFunction()
 {
     bool success{false};
-    if(cl_Commands && m_postFft){
-        success = m_postFft->enqueueCallKernelFunction(cl_Commands);
+    if(m_postFft){
+        success = m_postFft->enqueueCallKernelFunction();
     }
     return success;
 }
 
-bool DSPGPU::callBandcKernel()
+bool DSPGPU::enqueueBandcKernelFunction()
 {
-    auto itbc = m_openClFunctionMap.find("bandc_kernel");
-    if(itbc != m_openClFunctionMap.end() && m_postFft)
-    {
-         auto& oclbck = itbc->second.second;
-         cl_int clStatus  = clSetKernelArg( oclbck, 0, sizeof(cl_mem), SignalModel::instance()->postFftImageBuffer() );
-         if( clStatus != CL_SUCCESS )
-         {
-             qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
-         }
-         clStatus |= clSetKernelArg( oclbck, 1, sizeof(cl_mem), &warpInputImageMemObj );
-         if( clStatus != CL_SUCCESS )
-         {
-             qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
-         }
-         clStatus |= clSetKernelArg( oclbck, 2, sizeof(float), &blackLevel );
-         if( clStatus != CL_SUCCESS )
-         {
-             qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;
-         }
-         clStatus |= clSetKernelArg( oclbck, 3, sizeof(float), &whiteLevel );
-         if( clStatus != CL_SUCCESS )
-         {
-             qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
-         }
-
-         const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(linesPerFrame)};
-
-         clStatus = clEnqueueNDRangeKernel( cl_Commands, oclbck, oclWorkDimension, oclGlobalWorkOffset, globalWorkSize, oclLocalWorkSize, numEventsInWaitlist, nullptr, nullptr );
-         if( clStatus != CL_SUCCESS )
-         {
-             qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
-             return false;
-         }
+    bool success{false};
+    if(m_bandc){
+        success = m_bandc->enqueueCallKernelFunction();
     }
-    return true;
+    return success;
 }
 
-bool DSPGPU::callWarpKernel() const
+bool DSPGPU::enqueueWarpKernelFunction()
 {
-    // Set true by default, means the sector draws Counter-Clockwise. This variable is necessary because we pass an address as an argument.
-    int reverseDirection = useDistalToProximalView;
-
-    // get variables and pass into Warp.CL
-    depthSetting &depth = depthSetting::Instance();
-    const int   imagingDepth_S   = int(depth.getDepth_S());
-    const float fractionOfCanvas = depth.getFractionOfCanvas();
-
-    deviceSettings &dev = deviceSettings::Instance();
-    const float standardDepth_mm = dev.current()->getImagingDepthNormal_mm();
-    const int   standardDepth_S  = dev.current()->getALineLengthNormal_px();
-    reverseDirection ^= int(dev.current()->getRotation());    // apply Sled rotational direction
-
-    auto itw = m_openClFunctionMap.find("warp_kernel");
-    if(itw != m_openClFunctionMap.end())
-    {
-        auto& oclwk = itw->second.second;
-        cl_int clStatus  = clSetKernelArg( oclwk,  0, sizeof(cl_mem), &warpInputImageMemObj );
-        clStatus |= clSetKernelArg( oclwk,  1, sizeof(cl_mem), &outputImageMemObj );
-        clStatus |= clSetKernelArg( oclwk,  2, sizeof(cl_mem), &outputVideoImageMemObj );
-        clStatus |= clSetKernelArg( oclwk,  3, sizeof(float),  &catheterRadius_um );
-        clStatus |= clSetKernelArg( oclwk,  4, sizeof(float),  &internalImagingMask_px );
-        clStatus |= clSetKernelArg( oclwk,  5, sizeof(float),  &standardDepth_mm );
-        clStatus |= clSetKernelArg( oclwk,  6, sizeof(int),    &standardDepth_S );
-        clStatus |= clSetKernelArg( oclwk,  7, sizeof(float),  &displayAngle_deg );
-        clStatus |= clSetKernelArg( oclwk,  8, sizeof(int),    &reverseDirection );
-        clStatus |= clSetKernelArg( oclwk,  9, sizeof(int),    &SectorWidth_px );
-        clStatus |= clSetKernelArg( oclwk, 10, sizeof(int),    &SectorHeight_px );
-        clStatus |= clSetKernelArg( oclwk, 11, sizeof(float),  &fractionOfCanvas );
-        clStatus |= clSetKernelArg( oclwk, 12, sizeof(int),    &imagingDepth_S );
-
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to set warp kernel arguments:" << clStatus;
-            return false;
-        }
-
-        const size_t globalWorkSize[] {size_t(SectorWidth_px),size_t(SectorHeight_px)};
-
-        clStatus = clEnqueueNDRangeKernel( cl_Commands, oclwk, oclWorkDimension, oclGlobalWorkOffset, globalWorkSize, oclLocalWorkSize, numEventsInWaitlist, nullptr, nullptr );
-
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to execute warp kernel:" << clStatus;
-            return false;
-        }
-
-        // Do all the work that was queued up on the GPU
-        clStatus = clFinish( cl_Commands );
-        if( clStatus != CL_SUCCESS )
-        {
-            qDebug() << "DSP: Failed to issue and complete all queued commands: " << clStatus;
-            return false;
-        }
+    bool success{false};
+    if(m_warp){
+        success = m_warp->enqueueCallKernelFunction();
     }
-    return true;
+    return success;
 }
 
 /*
@@ -282,27 +160,21 @@ bool DSPGPU::initOpenCL()
 {
     qDebug() << "initOpenCL start";
 
+    auto dev = deviceSettings::Instance().current();
+    auto smi = SignalModel::instance();
+
+    auto standardDepthMm = dev->getImagingDepthNormal_mm();
+    smi->setStandardDehthMm(standardDepthMm);
+
+    auto standardDepthS = dev->getALineLengthNormal_px();
+    smi->setStandardDehthS(standardDepthS);
+
     auto spf = SignalProcessingFactory::instance();
-
-    initOpenClFileMap();
-
-    cl_Context = spf->getContext();
-    cl_ComputeDeviceId = spf->getComputeDeviceId();
-
-    cl_Commands = spf->getCommandQueue();
     m_postFft = spf->getPostFft();
+    m_bandc = spf->getBandC();
+    m_warp = spf->getWarp();
 
-    for( const auto& sourceCode : m_openClFileMap){
-        const auto& kernelFunctionName = sourceCode.first;
-        bool success = spf->buildKernelFuncionCode(kernelFunctionName);
-        if(!success){
-            return false;
-        }
-    }
-
-    m_openClFunctionMap = spf->getOpenClFunctionMap();
-
-    createCLMemObjects( cl_Context );
+    spf->buildKernelFunctions();
 
     qDebug() << "DSPGPU: OpenCL init complete.";
 
@@ -310,111 +182,45 @@ bool DSPGPU::initOpenCL()
 }
 
 /*
- * createCLMemObjects
- */
-bool DSPGPU::createCLMemObjects( cl_context context )
-{
-    cl_int err;
-
-    const cl_image_format clImageFormat{CL_R,CL_UNSIGNED_INT8};
-
-    const cl_mem_object_type image_type{CL_MEM_OBJECT_IMAGE2D};
-
-    const size_t input_image_width{MaxALineLength};
-    const size_t output_image_width{SectorWidth_px};
-
-    const size_t input_image_height{linesPerFrame};
-    const size_t output_image_height{SectorHeight_px};
-
-    const size_t image_depth{1};
-    const size_t image_array_size{1};
-    const size_t image_row_pitch{0};
-    const size_t image_slice_pitch{0};
-    const cl_uint num_mip_levels{0};
-    const cl_uint num_samples{0};
-    cl_mem buffer{nullptr};
-
-    const cl_image_desc inputImageDescriptor{
-        image_type,
-        input_image_width,
-        input_image_height,
-        image_depth,
-        image_array_size,
-        image_row_pitch,
-        image_slice_pitch,
-        num_mip_levels,
-        num_samples,
-        {buffer}
-    };
-
-    const cl_image_desc outputImageDescriptor{
-        image_type,
-        output_image_width,
-        output_image_height,
-        image_depth,
-        image_array_size,
-        image_row_pitch,
-        image_slice_pitch,
-        num_mip_levels,
-        num_samples,
-        {buffer}
-    };
-
-    warpInputImageMemObj   = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
-
-    outputImageMemObj      = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
-
-    outputVideoImageMemObj = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
-
-    return true;
-}
-
-/*
  * transformData
  *
- * FFT the input laser signal, post process to 8-bit and warp to sector.
+ * post process the FFT input to 8-bit and warp to sector.
  */
 bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 {
     int            clStatus;
 
-    if(!callPostFftKernel()){
+    if(!enqueuePostFftKernelFunction()){
         return false;
     }
 
     /*
      * Adjust brightness and contrast
      */
-    if(!callBandcKernel()){
+    if(!enqueueBandcKernelFunction()){
         return false;
     }
 
-    if(!callWarpKernel()){
+    if(!enqueueWarpKernelFunction()){
         return false;
     }
 
-   size_t origin[ 3 ] = { 0, 0, 0 };
-   size_t region[ 3 ] = { SectorWidth_px, SectorHeight_px, 1 };
+    auto spf = SignalProcessingFactory::instance();
 
+    // Do all the work that was queued up on the GPU
+    clStatus = clFinish( spf->getCommandQueue() );
+    if( clStatus != CL_SUCCESS )
+    {
+        qDebug() << "DSP: Failed to issue and complete all queued commands: " << clStatus;
+        return false;
+    }
+
+
+   auto smi = SignalModel::instance();
    /*
     * read out the display frame
     */
-   clStatus = clEnqueueReadImage( cl_Commands, outputImageMemObj, CL_TRUE, origin, region, 0, 0, dispData, 0, nullptr, nullptr );
+   clStatus = clEnqueueReadImage(  spf->getCommandQueue(), smi->getWarpImageBuffer(), CL_TRUE, origin, region, 0, 0, dispData, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to read back final image data from warp kernel: " << clStatus;
@@ -424,7 +230,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    /*
     * read out the video frame
     */
-   clStatus = clEnqueueReadImage( cl_Commands, outputVideoImageMemObj, CL_TRUE, origin, region, 0, 0, videoData, 0, nullptr, nullptr );
+   clStatus = clEnqueueReadImage(  spf->getCommandQueue(), smi->getWarpVideoBuffer(), CL_TRUE, origin, region, 0, 0, videoData, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to read back video image data from warp kernel: " << clStatus;
@@ -435,20 +241,23 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 }
 
 
-bool DSPGPU::loadFftOutMemoryObjects()
+bool DSPGPU::readInputBuffers(const float *imag, const float *real)
 {
-    if(cl_Commands && m_postFft){
-        m_postFft->enqueueInputGpuMemory(cl_Commands);
+    if(m_postFft && imag && real){
+        m_postFft->enqueueInputBuffers( imag, real);
         return true;
     }
     return false;
 }
 
+void DSPGPU::stop()
+{
+
+}
+
 void DSPGPU::setAveraging(bool enable)
 {
-    doAveraging = enable;
-    SignalModel::instance()->setAverageVal(doAveraging);
-
+    SignalModel::instance()->setAverageVal(enable);
 }
 
 void DSPGPU::setFrameAverageWeights(int inPrevFrameWeight_percent, int inCurrFrameWeight_percent)
@@ -459,5 +268,5 @@ void DSPGPU::setFrameAverageWeights(int inPrevFrameWeight_percent, int inCurrFra
 
 void DSPGPU::setDisplayAngle(float angle)
 {
-    displayAngle_deg = angle;
+    SignalModel::instance()->setDisplayAngle(angle);
 }

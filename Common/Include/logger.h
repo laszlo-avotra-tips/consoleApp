@@ -39,26 +39,26 @@
                                   log_.logMessage( msg_, #severity_, __FILE__, __LINE__ ); }
 //#endif  // UNIT_TEST
 
-#define LOG0 { Logger &log = Logger::Instance(); log.getTextStream( __FUNCTION__, __LINE__, QThread::currentThreadId()) << endl;}
+#define LOG0 { Logger &log = Logger::Instance(); log.logDebugMessage(QString(""), __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 #define LOG1(var_) { Logger &log = Logger::Instance(); \
     QString logMsg; QTextStream qtextstream(&logMsg); \
-    qtextstream << #var_ << "=" << var_ << endl; \
+    qtextstream << #var_ << "=" << var_ ; \
     log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 #define LOG2(x_,y_) { Logger &log = Logger::Instance(); \
     QString logMsg; QTextStream qtextstream(&logMsg); \
-    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << endl; \
+    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ ; \
     log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 #define LOG3(x_,y_,z_) { Logger &log = Logger::Instance(); \
     QString logMsg; QTextStream qtextstream(&logMsg); \
-    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << endl; \
+    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ ; \
     log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 #define LOG4(x_,y_,z_,zz_) { Logger &log = Logger::Instance(); \
     QString logMsg; QTextStream qtextstream(&logMsg); \
-    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ << endl; \
+    qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ ; \
     log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 class Logger
@@ -73,7 +73,6 @@ public:
 
     void logMessage( QString msg, const char *severity, const char* file, int line );
     void logDebugMessage(const QString& msg, const char* function, int line, Qt::HANDLE tId );
-    QTextStream& getTextStream(const char* function, int line, Qt::HANDLE tId );
 
 private:
     Logger();  // hide ctor

@@ -6,14 +6,144 @@ SignalModel::SignalModel()
 {
 }
 
-cl_mem* SignalModel::postFftImageBuffer()
+cl_mem SignalModel::getWarpVideoBuffer()
 {
-    return &m_postFftImageBuffer;
+    return m_warpVideoBuffer;
 }
 
-void SignalModel::setPostFftImageBuffer(const cl_mem &postFftImageBuffer)
+void SignalModel::setWarpVideoBuffer(const cl_mem &warpVideoBuffer)
 {
-    m_postFftImageBuffer = postFftImageBuffer;
+    m_warpVideoBuffer = warpVideoBuffer;
+}
+
+cl_mem SignalModel::getWarpImageBuffer()
+{
+    return m_warpImageBuffer;
+}
+
+void SignalModel::setWarpImageBuffer(const cl_mem &warpImageBuffer)
+{
+    m_warpImageBuffer = warpImageBuffer;
+}
+
+cl_int* SignalModel::getImagingDepth()
+{
+    return &m_imagingDepth;
+}
+
+void SignalModel::setImagingDepth(const cl_int &imagingDepth)
+{
+    m_imagingDepth = imagingDepth;
+}
+
+cl_float* SignalModel::getFractionOfCanvas()
+{
+    return &m_fractionOfCanvas;
+}
+
+void SignalModel::setFractionOfCanvas(const cl_float &fractionOfCanvas)
+{
+    m_fractionOfCanvas = fractionOfCanvas;
+}
+
+cl_int* SignalModel::getReverseDirection()
+{
+    return &m_reverseDirection;
+}
+
+void SignalModel::setReverseDirection(const cl_int &reverseDirection)
+{
+    m_reverseDirection = reverseDirection;
+}
+
+cl_float* SignalModel::getDisplayAngle()
+{
+    return &m_displayAngle;
+}
+
+void SignalModel::setDisplayAngle(const cl_float &displayAngle)
+{
+    m_displayAngle = displayAngle;
+}
+
+cl_int* SignalModel::getStandardDehthS()
+{
+    return &m_standardDehthS;
+}
+
+void SignalModel::setStandardDehthS(const cl_int &standardDehthS)
+{
+    m_standardDehthS = standardDehthS;
+}
+
+cl_float* SignalModel::getStandardDehthMm()
+{
+    return &m_standardDepthMm;
+}
+
+void SignalModel::setStandardDehthMm(const cl_float &standardDehthMm)
+{
+    m_standardDepthMm = standardDehthMm;
+}
+
+cl_float *SignalModel::getInternalImagingMaskPx()
+{
+    return &m_internalImagingMaskPx;
+}
+
+void SignalModel::setInternalImagingMaskPx(const cl_float &internalImagingMaskPx)
+{
+    m_internalImagingMaskPx = internalImagingMaskPx;
+}
+
+cl_float *SignalModel::getCatheterRadiusUm()
+{
+    return &m_catheterRadiusUm;
+}
+
+void SignalModel::setCatheterRadiusUm(const cl_float &catheterRadiusUm)
+{
+    m_catheterRadiusUm = catheterRadiusUm;
+}
+
+cl_mem* SignalModel::getBeAndCeImageBuffer()
+{
+    return &m_bAndCimageBuffer;
+}
+
+void SignalModel::setPostBandcImageBuffer(const cl_mem &value)
+{
+    m_bAndCimageBuffer = value;
+}
+
+cl_float* SignalModel::whiteLevel()
+{
+    return &m_whiteLevel;
+}
+
+void SignalModel::setWhiteLevel(int whiteLevel)
+{
+    m_whiteLevel = whiteLevel;
+}
+
+cl_float *SignalModel::blackLevel()
+{
+    return &m_blackLevel;
+}
+
+void SignalModel::setBlackLevel(int blackLevel)
+{
+    m_blackLevel = blackLevel;
+}
+
+cl_mem* SignalModel::fftImageBuffer()
+{
+    return &m_fftImageBuffer;
+}
+
+void SignalModel::setFftImageBuffer(const cl_mem &fftImageBuffer)
+{
+    m_fftImageBuffer = fftImageBuffer;
 }
 
 SignalModel *SignalModel::instance()

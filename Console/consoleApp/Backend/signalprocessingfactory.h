@@ -21,16 +21,16 @@ public:
     static SignalProcessingFactory* instance();
 
     IKernelFunction* getPostFft();
-
-    cl_context getContext() const;
-
-    cl_device_id getComputeDeviceId() const;
+    IKernelFunction* getBandC();
+    IKernelFunction* getWarp();
 
     cl_command_queue getCommandQueue() const;
 
     bool buildKernelFuncionCode(const QString& kernelFunctionName);
 
     const OpenClFunctionMap_type& getOpenClFunctionMap() const;
+
+    bool buildKernelFunctions();
 
 private:
     static SignalProcessingFactory* m_instance;
@@ -68,6 +68,8 @@ private:
     bool           m_openClSuccess{false};
 
     std::shared_ptr<IKernelFunction> m_postFftKernelFunction{nullptr};
+    std::shared_ptr<IKernelFunction> m_bandcKernelFunction{nullptr};
+    std::shared_ptr<IKernelFunction> m_warpKernelFunction{nullptr};
 
 };
 

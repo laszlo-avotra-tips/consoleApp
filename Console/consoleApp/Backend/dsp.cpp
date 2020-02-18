@@ -37,6 +37,7 @@
 #include "buildflags.h"
 #include "depthsetting.h"
 #include "Utility/userSettings.h"
+#include "signalmodel.h"
 
 
 /*
@@ -44,31 +45,14 @@
  *
  * Common data for all DSPs
  */
-DSP::DSP() : recordLength(0), linesPerFrame(0), bytesPerRecord(0), bytesPerBuffer(0)
+DSP::DSP()
 {
     // default service date
     serviceDate = QDate( 2009, 1, 1 );
 
-    isRunning = false;
-
     // frame data
     timeStamp    = QDateTime::currentDateTime().toUTC().toTime_t();
     milliseconds = QTime::currentTime().msec();
-
-    // Contrast stretch defaults (no stretch)
-    blackLevel = BrightnessLevels_HighSpeed.defaultValue;
-    whiteLevel = ContrastLevels_HighSpeed.defaultValue;
-}
-
-/*
- * Destructor
- *
- * Release memory
- */
-DSP::~DSP()
-{
-    qDebug() << "DSP::~DSP()";
-    LOG( INFO, "DSP shutdown" )
 }
 
 
@@ -78,31 +62,9 @@ DSP::~DSP()
  * Initialize the common DSP data for use.  Data structures are set up
  * and the laser rescaling values are loaded from disk.
  */
-void DSP::init(size_t inputLength,
-               size_t frameLines,
-               size_t inBytesPerRecord,
-               size_t inBytesPerBuffer)
+void DSP::init()
 {
-    recordLength   = inputLength;
-    linesPerFrame  = frameLines;
-    bytesPerRecord = inBytesPerRecord;
-    bytesPerBuffer = inBytesPerBuffer;
-
-    qDebug() << "DSP: linesPerFrame"  << linesPerFrame;
-    qDebug() << "DSP: recordLength"   << recordLength;
-    qDebug() << "DSP: bytesPerRecord" << bytesPerRecord;
-    qDebug() << "DSP: bytesPerBuffer" << bytesPerBuffer;
-
-    useDistalToProximalView = true;
-    doInvertColors          = false;
-
     loadRescalingData();
-
-    // Update radius and offset, set to Normal Mode upon new device select
-    deviceSettings &settings = deviceSettings::Instance();
-    catheterRadius_px = float(settings.current()->getCatheterRadius_px());
-    catheterRadius_um = float(settings.current()->getCatheterRadius_um());
-    internalImagingMask_px = float(settings.current()->getInternalImagingMask_px());
 }
 
 
@@ -118,6 +80,7 @@ void DSP::init(size_t inputLength,
 void DSP::loadRescalingData( void )
 {
     // Load the configuration file
+    const unsigned int RescalingDataLength{2048};
     const QString StrRescalingData = SystemDir + "/RescalingData.csv";
     LOG1(StrRescalingData)
 
@@ -126,14 +89,14 @@ void DSP::loadRescalingData( void )
     if( !input )
     {
         // fatal error
-        emit sendError( tr( "Could not create QFile to load rescaling data" ) );
+        LOG(INFO,"Could not create QFile to load rescaling data" )
         return;
     }
 
     if( !input->open( QIODevice::ReadOnly ) )
     {
-        QString errString = tr( "Could not open " ) + StrRescalingData;
-        emit sendError( errString );
+        QString errString = QString( "Could not open " ) + StrRescalingData;
+        LOG(INFO, errString )
     }
 
     QTextStream in( input );
@@ -142,7 +105,7 @@ void DSP::loadRescalingData( void )
     // Make sure this is a valid rescaling data file
     if( !findLabel( &in, &currLine, "% Laser Rescaling Data" ) )
     {
-        emit sendError( tr( "Laser Rescaling Data file is missing proper header." ) );
+        emit LOG(INFO, "Laser Rescaling Data file is missing proper header." )
     }
     // Grab the service date so the upper levels can access it
     if( findLabel( &in, &currLine, "% Last Service Date" ) )
@@ -162,11 +125,11 @@ void DSP::loadRescalingData( void )
         // pop up a warning message at start up.
         if( NumDays < 0 )
         {
-            emit sendWarning( QString( tr( "The laser required service on %1.  Please contact Service." ) ).arg( serviceDate.toString() ) );
+            LOG( INFO,  QString("The laser required service on %1.  Please contact Service." ).arg( serviceDate.toString() ) )
         }
         else if( NumDays < NumDaysToWarnForService )
         {
-            emit sendWarning( QString( tr( "The laser will require service by %1.  Please contact Service soon." ) ).arg( serviceDate.toString() ) );
+            LOG( INFO,  QString("The laser will require service by %1.  Please contact Service soon." ).arg( serviceDate.toString() ) )
         }
     }
     // Find and load the rescaling data
@@ -181,7 +144,7 @@ void DSP::loadRescalingData( void )
              */
             if( in.atEnd() && ( i < RescalingDataLength ) )
             {
-                emit sendWarning( tr( "Laser configuration file: Less data found than expected. Imaging may not work." ) );
+                LOG( INFO,  QString( "Laser configuration file: Less data found than expected. Imaging may not work." ) )
                 break;
             }
             else
@@ -192,7 +155,7 @@ void DSP::loadRescalingData( void )
     }
     else
     {
-        emit sendWarning( tr( "Laser configuration file: No data found. Imaging may not work." ) );
+        LOG( INFO,  QString( "Laser configuration file: No data found. Imaging may not work." ) )
     }
 
     // free the pointer.  nullptr check done above.
@@ -228,11 +191,13 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
  */
 quint32 DSP::getAvgAmplitude( quint16 *pA )
 {
-    size_t average = 0;
-    const size_t start_idx = recordLength / 3 ;
-    const size_t end_idx   = ( 2 * recordLength ) / 3;
+    quint32 recordLength{DaqSettings::Instance().getRecordLength()};
 
-    for( size_t i = start_idx; i < end_idx; i++ )
+    size_t average = 0;
+    const quint32 start_idx = recordLength / 3 ;
+    const quint32 end_idx   = ( 2 * recordLength ) / 3;
+
+    for( quint32 i = start_idx; i < end_idx; i++ )
     {
         average += pA [ i ];
     }
@@ -244,8 +209,10 @@ quint32 DSP::getAvgAmplitude( quint16 *pA )
     return quint32(average);
 }
 
-void DSP::updateCatheterView()
-{
-    userSettings &user = userSettings::Instance();
-    useDistalToProximalView = user.isDistalToProximalView();
+unsigned int DSP::getTimeStamp() {
+    return timeStamp;
+}
+
+int DSP::getMilliseconds() {
+    return milliseconds;
 }

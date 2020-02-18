@@ -6,25 +6,23 @@
 #include "dspgpu.h"
 #include "daqSettings.h"
 #include "deviceSettings.h"
-//#include "util.h"
 #include "theglobals.h"
 #include "signalmanager.h"
+#include "signalmodel.h"
 
 
-FileDaq::FileDaq(): m_isConfigured(false),m_dsp(nullptr),
-    m_recordLenght(0),m_isRunning(true),m_count1(0),m_count2(0)
+FileDaq::FileDaq()
 {
     DaqSettings &settings = DaqSettings::Instance();
 
     if( !settings.init() )
     {
-        LOG( WARNING, "Unable to load DAQ Settings." );
+        LOG( WARNING, "Unable to load DAQ Settings." )
     }
 }
 
 FileDaq::~FileDaq()
 {
-    delete m_dsp;
 }
 
 void FileDaq::init()
@@ -32,7 +30,7 @@ void FileDaq::init()
     m_isRunning = false;
 
     // Create the DSP
-    m_dsp = new DSPGPU();
+    m_dsp = std::make_unique<DSPGPU>();
 
     if( !m_dsp )
     {
@@ -46,22 +44,7 @@ void FileDaq::init()
         emit sendError( tr( "DAQ hardware could not be initialized." ) );
     }
 
-    quint8  bitsPerSample        = 16;
-    int bytesPerSample   = ( bitsPerSample + 7 ) / 8;
-    quint32 preTriggerSamples = DaqSettings::Instance().getPreDepth();
-    quint32 postTriggerSamples = DaqSettings::Instance().getRecordLength() - preTriggerSamples;
-    quint32 samplesPerRecord = preTriggerSamples + postTriggerSamples;
-    int bytesPerRecord   = bytesPerSample * int(samplesPerRecord);
-
-    int recordsPerBuffer = deviceSettings::Instance().current()->getLinesPerRevolution();
-
-    int bytesPerBuffer = bytesPerRecord * recordsPerBuffer;
-
-    // initialize the DSP thread
-    m_dsp->init( DaqSettings::Instance().getRecordLength(),
-               quint16(deviceSettings::Instance().current()->getLinesPerRevolution()),
-               bytesPerRecord,
-               bytesPerBuffer);
+    m_dsp->init();
 
     emit attenuateLaser( false );
 }
@@ -81,8 +64,6 @@ void FileDaq::run()
         yieldCurrentThread();
     }
 
-//lcv    LOG1(m_isConfigured);
-
     // prevent multiple, simultaneous starts
     if( !m_isRunning )
     {
@@ -95,49 +76,35 @@ void FileDaq::run()
         // set the brightness and contrast when the daq starts up
         if( isHighSpeedDevice )
         {
-            setBlackLevel( BrightnessLevels_HighSpeed.defaultValue );
-            setWhiteLevel( ContrastLevels_HighSpeed.defaultValue );
-        }
-        else
-        {
-            setBlackLevel( BrightnessLevels_LowSpeed.defaultValue );
-            setWhiteLevel( ContrastLevels_LowSpeed.defaultValue );
+            auto signalModelInstance = SignalModel::instance();
+            signalModelInstance->setBlackLevel( BrightnessLevels_HighSpeed.defaultValue );
+            signalModelInstance->setWhiteLevel( ContrastLevels_HighSpeed.defaultValue );
         }
     }
 
+    const auto& pmi = PlaybackManager::instance();
+    auto smi = SignalManager::instance();
+    const auto * const smiReadOnly = SignalManager::instance();
     while( m_isRunning )
     {
-        if(PlaybackManager::instance()->isPlayback() )
+        if(pmi->isPlayback() || pmi->isSingleStep())
         {
             ++videoFrameCount;
-            PlaybackManager::instance()->setCount(videoFrameCount, m_count2);
-            if(m_count2 == 0) SignalManager::instance()->open();
-            SignalManager::instance()->loadSignal(m_count2);
-            m_dsp->loadFftOutMemoryObjects();
+            pmi->setCount(videoFrameCount, m_count2);
+            if(m_count2 == 0) {
+                smi->open();
+            }
+            smi->loadSignal(m_count2);
+            m_dsp->readInputBuffers(smiReadOnly->getImagDataPointer(), smiReadOnly->getRealDataPointer());
             m_dsp->processData(m_count2);
             ++m_count2;
             if(m_count2 == FRAME_BUFFER_SIZE)
             {
-                SignalManager::instance()->close();
+                smi->close();
                 m_count2 = 0;
             }
-            if(PlaybackManager::instance()->isPlayback()){
-                msleep(PlaybackManager::instance()->playbackLoopSleep());
-            }
-        }
-
-        if(PlaybackManager::instance()->isSingleStep()){
-            ++videoFrameCount;
-            PlaybackManager::instance()->setCount(videoFrameCount, m_count2);
-            if(m_count2 == 0) SignalManager::instance()->open();
-            SignalManager::instance()->loadSignal(m_count2);
-            m_dsp->loadFftOutMemoryObjects();
-            m_dsp->processData(m_count2);
-            ++m_count2;
-            if(m_count2 == FRAME_BUFFER_SIZE)
-            {
-                SignalManager::instance()->close();
-                m_count2 = 0;
+            if(pmi->isPlayback()){
+                msleep(pmi->playbackLoopSleep());
             }
         }
 
@@ -149,7 +116,7 @@ void FileDaq::run()
         msleep(1);
     }
 
-    LOG3(m_count1,m_count2,m_count1-m_count2);
+    LOG3(m_count1,m_count2,m_count1-m_count2)
 }
 
 void FileDaq::stop()

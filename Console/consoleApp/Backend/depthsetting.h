@@ -18,11 +18,11 @@ public:
     // Singleton
     static depthSetting &Instance();
 
-    float getDepth_S( void )             { return imagingDepth_S; }
+    float getDepth_S( void );
     int   getNumReticles( void )         { return numReticles; }
     int   getPixelsPerMm( void )         { return pixelsPerMm; }
     int   getCatheterEdgePosition( void ){ return catheterEdgePosition; }
-    float getFractionOfCanvas( void )    { return fractionOfCanvas; }
+    float getFractionOfCanvas( void );
     void  calculateReticles( void );
     float  getMinVal( void ) { return minDepth_px; }
     float  getMaxVal( void ) { return maxDepth_px; }

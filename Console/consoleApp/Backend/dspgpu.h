@@ -12,106 +12,63 @@
 #define DSPGPU_H_
 
 #include <memory>
-#include <map>
-#include <vector>
-#include <memory>
 
 #include <CL/opencl.h>
 
 #include "dsp.h"
-#include "buildflags.h"
 #include "ikernelfunction.h"
 
+#include <QThread>
 
-using OpenClFunction_type = std::pair<cl_program, cl_kernel>;
-using OpenClFileMap_type = std::map<QString, QString>; // <kernel function name, file name>
-using OpenClFunctionMap_type = std::map<QString, OpenClFunction_type >; // <kerlel function name, < program memory, kernel memory> >
-
-class PostFft;
 /*
  * Uses the GPU for DSP calculations
  */
-class DSPGPU : public DSP
+class DSPGPU : public QThread
 {
     Q_OBJECT
 
 public:
-    ~DSPGPU();
+    virtual ~DSPGPU();
 
-    void init(size_t inputLength,
-              size_t frameLines,
-              size_t inBytesPerRecord,
-              size_t inBytesPerBuffer);
+    void init();
 
     bool processData(int);
-    bool loadFftOutMemoryObjects();
+    bool readInputBuffers(const float* i, const float* r);
+
+signals:
+    void sendWarning( QString );
+    void sendError( QString );
 
 public slots:
+    void stop( void );
     void setAveraging( bool enable );
     void setFrameAverageWeights( int inPrevFrameWeight_percent, int inCurrFrameWeight_percent );
     void setDisplayAngle( float angle );
 
 private:
-    bool  doAveraging; // Instruct the post-process kernel to average two frames at a time.
-    float displayAngle_deg;
-
-    // OpenCL state
-    cl_device_id     cl_ComputeDeviceId;
-    cl_context       cl_Context;
-
-    OpenClFunctionMap_type m_openClFunctionMap
-    {
-        {"postfft_kernel",{nullptr,nullptr}},
-        {"bandc_kernel",{nullptr,nullptr}},
-        {"warp_kernel",{nullptr,nullptr}},
-    };
-
-    OpenClFileMap_type m_openClFileMap
-    {
-        {"postfft_kernel",""},
-        {"bandc_kernel",""},
-        {"warp_kernel",""},
-    };
-
-
-    cl_command_queue cl_Commands;
-
-    size_t           cl_max_workgroup_size;
-
-    cl_mem           warpInputImageMemObj;
-    size_t           warpInputImageMemObjSize;
-
-    cl_mem           outputImageMemObj;
-    size_t           outputImageMemObjSize;
-
-    cl_mem           outputVideoImageMemObj;
-    size_t           outputVideoImageMemObjSize;
+    const size_t complexDataSize{1024};
 
     std::unique_ptr<quint16[]> workingBuffer{nullptr};
     std::unique_ptr<float[]> imData{nullptr};
     std::unique_ptr<float[]> reData{nullptr};
 
-    const size_t complexDataSize{1024};
-    const size_t oclLocalWorkSize[2]{16,16};
-    const cl_uint oclWorkDimension{2};
-    const size_t* oclGlobalWorkOffset{nullptr};
-    const cl_uint numEventsInWaitlist{0};
-
-private:
     IKernelFunction* m_postFft{nullptr};
+    IKernelFunction* m_bandc{nullptr};
+    IKernelFunction* m_warp{nullptr};
+
+    const size_t origin[ 3 ]{ 0, 0, 0 };
+    const size_t region[ 3 ]{ SectorWidth_px, SectorHeight_px, 1 };
+
+    OCTFile::FrameData_t *pData{nullptr};
+    DSP m_dsp;
 
 private:
-    // OpenCL support
-    bool createCLMemObjects( cl_context context );
+    bool initOpenCL();
     bool transformData( unsigned char *data , unsigned char *videoData );
 
-    bool initOpenCL();
-    QString clCreateBufferErrorVerbose(int clError) const;
-    void initOpenClFileMap();
-
-    bool callPostFftKernel();
-    bool callBandcKernel();
-    bool callWarpKernel() const;
+    bool enqueuePostFftKernelFunction();
+    bool enqueueBandcKernelFunction();
+    bool enqueueWarpKernelFunction();
 };
 
 #endif // DSPGPU_H_

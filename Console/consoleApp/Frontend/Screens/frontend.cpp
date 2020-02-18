@@ -1659,7 +1659,7 @@ void frontend::keyPressEvent( QKeyEvent *event )
  * Enable or disable the mouse capture timer.
  *
  */
-void frontend::captureMouse( bool isEnabled )
+void frontend::captureMouse( bool /*isEnabled*/ )
 {
 #if USE_MOUSE_CAPTURE
     if( isEnabled )
@@ -1670,8 +1670,8 @@ void frontend::captureMouse( bool isEnabled )
     {
         disconnect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
     }
-#else
-    isEnabled; // quiet the compiler warnings
+//#else
+//    isEnabled; // quiet the compiler warnings
 #endif
 }
 
@@ -1825,8 +1825,10 @@ void frontend::setIDAQ(IDAQ *object)
         connect( signalSource, SIGNAL( attenuateLaser(bool) ),         advView, SLOT( attenuateLaser(bool) ) );
 
         // frontend controls to daq
-        connect( this,       SIGNAL( brightnessChange( int ) ),    signalSource,   SIGNAL( setBlackLevel( int ) ) );
-        connect( this,       SIGNAL( contrastChange( int ) ),      signalSource,   SIGNAL( setWhiteLevel( int ) ) );
+        connect( this,       SIGNAL( brightnessChange( int ) ),    SignalModel::instance(),  SLOT( setBlackLevel( int ) ) );
+        connect( this,       SIGNAL( contrastChange( int ) ),      SignalModel::instance(),  SLOT( setWhiteLevel( int ) ) );
+        connect( this,       SIGNAL( brightnessChange( int ) ),    signalSource,  SIGNAL( setBlackLevel( int ) ) );
+        connect( this,       SIGNAL( contrastChange( int ) ),      signalSource,  SIGNAL( setWhiteLevel( int ) ) );
 
         // view option controls to daq
         connect( viewOption, SIGNAL( enableAveraging( bool ) ),    signalSource,   SIGNAL( setAveraging( bool ) ) );

@@ -157,7 +157,7 @@ public:
         invertOctColorEnabled = val;
         saveSettings();
     }
-    void setCatheterView( CatheterView_t view ) { catheterViewMode = view; }
+    void setCatheterView( CatheterView_t view );
 
     int  brightness()               { return brightnessVal; }
     int  contrast()                 { return contrastVal; }
@@ -169,17 +169,7 @@ public:
     bool useNoiseReduction()        { return noiseReductionEnabled; }
     bool waterfall()                { return showWaterfall; }
     bool invertOctColor()           { return invertOctColorEnabled; }
-    bool isDistalToProximalView()
-    {
-        if( catheterViewMode == DistalToProximal )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    bool isDistalToProximalView();
 
 private:
     void saveSettings();

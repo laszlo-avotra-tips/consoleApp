@@ -156,7 +156,7 @@ private:
     bool confirmExit( void );
     void playbackControlsVisible( bool state );
     void configureClock( void );
-    void captureMouse( bool state );
+    void captureMouse(bool);
     void enableCaptureButtons( void );
     void disableCaptureButtons( void );
     void closePlayback();

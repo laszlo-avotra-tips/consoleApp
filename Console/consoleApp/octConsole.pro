@@ -37,7 +37,7 @@ win32 {
    #   Zi   Enable debugging info
    QMAKE_CFLAGS_RELEASE   += /Zi
    QMAKE_CXXFLAGS_RELEASE += /Zi
-   
+
    # Turn on additional settings for linking the Windows release
    #   DEBUG    Create debug information
    #   MAP  Create memory map
@@ -105,10 +105,3 @@ CONFIG( release ) {
 
 RESOURCES += \
     OpenClResources.qrc
-
-HEADERS += \
-    Backend/signalmodel.h
-
-SOURCES += \
-    Backend/signalmodel.cpp
-

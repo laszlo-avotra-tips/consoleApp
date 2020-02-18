@@ -98,7 +98,7 @@ bool TheGlobals::enqueueBuffer(int index)
         m_rawDataQueue.push(index);
         success = true;
     }
-    return true;
+    return success;
 }
 
 void TheGlobals::rawDataQueuePop(int index)

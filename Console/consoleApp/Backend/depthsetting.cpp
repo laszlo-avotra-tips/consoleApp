@@ -8,6 +8,7 @@
 #include "depthsetting.h"
 #include "deviceSettings.h"
 #include "defaults.h"
+#include "signalmodel.h"
 
 depthSetting* depthSetting::theDepthManager{nullptr};
 
@@ -18,6 +19,16 @@ depthSetting & depthSetting::Instance()
         theDepthManager = new depthSetting();
     }
     return *theDepthManager;
+}
+
+float depthSetting::getDepth_S()
+{
+    return imagingDepth_S;
+}
+
+float depthSetting::getFractionOfCanvas()
+{
+    return fractionOfCanvas;
 }
 
 /*
@@ -40,8 +51,11 @@ depthSetting::depthSetting()
 
     // 0.475 out of 0.50 is used in Warp.CL, that extra 0.025 is reserved for cardinal tick marks.
     fractionOfCanvas = 0.475f;
+    SignalModel::instance()->setFractionOfCanvas(fractionOfCanvas);
 
     imagingDepth_S = minDepth_px; // set the current depth
+    SignalModel::instance()->setImagingDepth(int(getDepth_S()));
+
     calculateReticles();
 }
 
@@ -62,6 +76,7 @@ void depthSetting::updateImagingDepth( double newDepth )
 {
     imagingDepth_S = float(newDepth);
     calculateReticles();
+    SignalModel::instance()->setImagingDepth(int(getDepth_S()));
 }
 
 /*
@@ -70,6 +85,7 @@ void depthSetting::updateImagingDepth( double newDepth )
 void depthSetting::handleDeviceChange()
 {
     imagingDepth_S = 450;  // Set the initial value half-way between the min and max range.
+    SignalModel::instance()->setImagingDepth(int(getDepth_S()));
     calculateReticles();
 }
 

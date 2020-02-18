@@ -13,50 +13,31 @@
 #ifndef DSP_H_
 #define DSP_H_
 
-#include <QThread>
 #include <QTime>
 #include "octFile.h"
 #include "buildflags.h"
 
 
-class DSP : public QThread
+class DSP
 {
-    Q_OBJECT
-
 public:
     DSP();
-    virtual ~DSP();
 
-    virtual void init(size_t inputLength,
-                      size_t frameLines,
-                      size_t inBytesPerRecord,
-                      size_t inBytesPerBuffer);
+    // prevent access to copy and assign
+    DSP( DSP const & ) = delete;
+    DSP & operator=( DSP const & ) = delete;
+
+    void init();
 
     quint32 getAvgAmplitude( quint16 *pA );
 
-    // The size of the rescaling data is constant for all lasers
-    static const unsigned int RescalingDataLength = 2048;
-
-signals:
-    void sendWarning( QString );
-    void sendError( QString );
-
-public slots:
-    void setBlackLevel( int val ) { blackLevel = val; }
-    void setWhiteLevel( int val ) { whiteLevel = val; }
-    void stop( void ) { isRunning = false; }
-    void updateCatheterView();
-
-    void setInvertColors( bool enable ) { doInvertColors = enable; }
-
-protected:
-    bool useDistalToProximalView;
-    bool doInvertColors;
-
-    // 8-bit full-range value (2^8 - 1)
-    static const unsigned short FullScaleIntensityValue = 255;
+    unsigned int getTimeStamp( void );
+    int getMilliseconds( void );
 
 private:
+    void loadRescalingData( void );
+    bool findLabel( QTextStream *in, QString *currLine, const QString Label );
+
     enum ExpectedSDKVersion
     {
         Major = 6,
@@ -68,39 +49,11 @@ private:
     // date is read and checked when the rescaling values are read from disk.
     static const int NumDaysToWarnForService = 30;
 
-    bool isRunning;
-
-protected:
-    // pointer into the global data structure for passing frame data around
-    OCTFile::FrameData_t *pData;
-
-    size_t recordLength;   // Single A-Line sampled data length
-    size_t linesPerFrame;  // Number of lines in a frame to operate on at once
-    size_t bytesPerRecord; // sending raw data to frontend
-    size_t bytesPerBuffer; // working buffer space alloc
-
     QDate  serviceDate;
 
-    float blackLevel;  // i.e., brightness
-    float whiteLevel;  // i.e., contrast
-    float internalImagingMask_px;
-    float catheterRadius_px;
-    float catheterRadius_um;
-
     // Data related to the current A-line
-    unsigned int   timeStamp;
     int milliseconds;
-
-    unsigned int getTimeStamp( void ) { return timeStamp; }
-    int getMilliseconds( void ) { return milliseconds; }
-
-    void loadRescalingData( void );
-    bool findLabel( QTextStream *in, QString *currLine, const QString Label );
-
-private:
-    // prevent access to copy and assign
-    DSP( DSP const & );
-    DSP & operator=( DSP const & );
+    unsigned int   timeStamp;
 };
 
 

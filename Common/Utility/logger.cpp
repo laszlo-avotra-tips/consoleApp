@@ -179,6 +179,7 @@ bool Logger::rotateLog( const QString systemLogFileName )
  */
 void Logger::logMessage( QString msg, const char *severity, const char *file, int line )
 {
+    return; //lcv
     // Make file writing this thread-safe
     QMutexLocker locker( &mutex );
 
@@ -206,17 +207,10 @@ void Logger::logMessage( QString msg, const char *severity, const char *file, in
 void Logger::logDebugMessage(const QString &msg, const char* function, int line, Qt::HANDLE tId)
 {
     QMutexLocker locker( &mutex );
-    getTextStream(function, line, tId) << msg;
-}
 
-QTextStream &Logger::getTextStream(const char* function, int line, Qt::HANDLE tId )
-{
-//    QMutexLocker locker( &mutex );
     *output << "[" << QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
             << "(" << appName << "." << C_PATCH_VERSION << ") THR(" << tId << ") "
-            << " - " << function << " (" << line << ") -> ";
-//    << " - " << file << " (" << line << ") -> ";
-
-    return *output;
+            << " - " << function << " (" << line << ") -> "
+            << msg << endl;
 }
 

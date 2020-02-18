@@ -30,24 +30,24 @@
  */
 void powerDistributionBoard::powerOn( void )
 {
-#ifdef QT_NO_DEBUG
-    LOG( INFO, "Power Distribution Board Power ON requested." );
+//#ifdef QT_NO_DEBUG
+//    LOG( INFO, "Power Distribution Board Power ON requested." );
 
-    ioController &ioc = ioController::Instance();
-    ioc.configureModule( &ioc.digitalOutModule ); // need to configureModule
-//lcv 1504
-    // Power on the Power Distribution Board.
-    if( !ioc.setDigitalVoltageOut( PdbDigitalVoltageHigh ) )
-    {
-        // Power Distribution Board will not be powered on
-        displayFailureMessage( "IO Controller failed to power on the Power Distribution Board.", true );
-    }
-    else
-    {
-        // Requires a sleep of more than 50 ms before laser.turnDiodeOn() can be called.
-        Sleep( PdbSleepTime_ms );
-    }
-#endif
+//    ioController &ioc = ioController::Instance();
+//    ioc.configureModule( &ioc.digitalOutModule ); // need to configureModule
+
+//    // Power on the Power Distribution Board.
+//    if( !ioc.setDigitalVoltageOut( PdbDigitalVoltageHigh ) )
+//    {
+//        // Power Distribution Board will not be powered on
+//        displayFailureMessage( "IO Controller failed to power on the Power Distribution Board.", true );
+//    }
+//    else
+//    {
+//        // Requires a sleep of more than 50 ms before laser.turnDiodeOn() can be called.
+//        Sleep( PdbSleepTime_ms );
+//    }
+//#endif
 }
 
 /*
@@ -57,13 +57,13 @@ void powerDistributionBoard::powerOn( void )
  */
 void powerDistributionBoard::powerOff( void )
 {
-#ifdef QT_NO_DEBUG
-    LOG( INFO, "Power Distribution Board Power OFF requested." );
+//#ifdef QT_NO_DEBUG
+//    LOG( INFO, "Power Distribution Board Power OFF requested." );
 
-    ioController &ioc = ioController::Instance();
-    if( !ioc.setDigitalVoltageOut( PdbDigitalVoltageLow ) )
-    {
-        displayFailureMessage( "IO Controller failed to power off the Power Distribution Board.", false );
-    }
-#endif
+//    ioController &ioc = ioController::Instance();
+//    if( !ioc.setDigitalVoltageOut( PdbDigitalVoltageLow ) )
+//    {
+//        displayFailureMessage( "IO Controller failed to power off the Power Distribution Board.", false );
+//    }
+//#endif
 }

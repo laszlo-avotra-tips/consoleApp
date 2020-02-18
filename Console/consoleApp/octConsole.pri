@@ -4,9 +4,13 @@
 # -----------------------------------------------------------
 # Header files
 HEADERS += \
+    $$PWD/Backend/bandc.h \
     $$PWD/Backend/ikernelfunction.h \
+    $$PWD/Backend/imagedescriptor.h \
+    $$PWD/Backend/kernelfunctionbase.h \
     $$PWD/Backend/postfft.h \
     $$PWD/Backend/signalprocessingfactory.h \
+    $$PWD/Backend/warp.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -86,15 +90,19 @@ HEADERS += \
     $$PWD/Frontend/Widgets/engineeringcontroller.h \
     $$PWD/Frontend/Widgets/enginneringmodel.h \
     $$PWD/Backend/playbackmanager.h \
-    $$PWD/Backend/playbackmanager.h \
     $$PWD/Backend/filedaq.h \
     $$PWD/Backend/theglobals.h \
-    $$PWD/Backend/signalmanager.h
+    $$PWD/Backend/signalmanager.h \
+    $$PWD/Backend/signalmodel.h
 
 # Source files
 SOURCES += \
+    $$PWD/Backend/bandc.cpp \
+    $$PWD/Backend/imagedescriptor.cpp \
+    $$PWD/Backend/kernelfunctionbase.cpp \
     $$PWD/Backend/postfft.cpp \
     $$PWD/Backend/signalprocessingfactory.cpp \
+    $$PWD/Backend/warp.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
@@ -171,7 +179,8 @@ SOURCES += \
     $$PWD/Backend/playbackmanager.cpp \
     $$PWD/Backend/filedaq.cpp \
     $$PWD/Backend/theglobals.cpp \
-    $$PWD/Backend/signalmanager.cpp
+    $$PWD/Backend/signalmanager.cpp \
+    $$PWD/Backend/signalmodel.cpp
 
 win32:SOURCES += Utility/qtsingleapplication_win.cpp
 unix:SOURCES += Utility/qtsingleapplication_x11.cpp

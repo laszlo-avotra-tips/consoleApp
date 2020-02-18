@@ -43,7 +43,6 @@ public:
     bool isFrameQueue() const;
     void frameReady(int index);
 
-//    std::vector<int> count() const;
     void setCount(int count, int index);
 
     bool isSingleStep();

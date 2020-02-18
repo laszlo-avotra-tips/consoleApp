@@ -4,6 +4,7 @@
 #include "idaq.h"
 #include "octFile.h"
 #include "defaults.h"
+#include <memory>
 
 class DSPGPU;
 
@@ -29,15 +30,15 @@ public:
     void enableAuxTriggerAsTriggerEnable( bool ) override;
 
 private:
-    bool m_isConfigured;
-    DSPGPU  *m_dsp;
+    bool m_isConfigured{false};
+    std::unique_ptr<DSPGPU>  m_dsp;
 
     QString m_daqLevel;
 
-    long m_recordLenght;
-    bool m_isRunning;
-    int m_count1;
-    int m_count2;
+    long m_recordLenght{0};
+    bool m_isRunning{false};
+    int m_count1{0};
+    int m_count2{0};
 };
 
 #endif // FILEDAQ_H

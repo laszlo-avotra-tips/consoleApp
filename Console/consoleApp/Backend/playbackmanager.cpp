@@ -34,14 +34,14 @@ void PlaybackManager::recordRawData(int index, int count)
     m_countOfRawDataProcessed = count;
 }
 
-void PlaybackManager::retrieveRawData(int index, const void *buffer)
+void PlaybackManager::retrieveRawData(int index, const void * /*buffer*/)
 {
 //    LOG1(index);
-    if(isPlayback()){
-        const auto& it = m_rawDataBufferContainer.find(index);
-        buffer = it->second.first;
+//    if(isPlayback()){
+//        const auto& it = m_rawDataBufferContainer.find(index);
+//        buffer = it->second.first;
 //        LOG2(index, buffer);
-    }
+//    }
     m_frameIndex = index;
     ++m_countOfRawDataProcessed;
 }
@@ -49,12 +49,12 @@ void PlaybackManager::retrieveRawData(int index, const void *buffer)
 void PlaybackManager::saveBuffer(const QString &fn)
 {
     if(!fn.isEmpty()){
-        LOG1(fn);
+        LOG1(fn)
         QFile outFile(fn);
         if(!outFile.open(QIODevice::WriteOnly)){
             QString errorMsg("error openeing file ");
             errorMsg += fn;
-            LOG1(errorMsg);
+            LOG1(errorMsg)
             return;
         }
 
@@ -71,7 +71,7 @@ void PlaybackManager::saveBuffer(const QString &fn)
                 auto size = it->second.second;
                 qds.writeRawData(pData, size);
                 if((i == 0) || (i == 194) || (i == 195)){
-                    LOG3(id,pBuffer,size);
+                    LOG3(id,pBuffer,size)
                 }
                 ++i;
             }
@@ -83,12 +83,12 @@ void PlaybackManager::loadBuffer(const QString &fn)
 {
     if(!fn.isEmpty()){
 //        m_isPlayback = true;
-        LOG2(m_isPlayback, fn);
+        LOG2(m_isPlayback, fn)
         QFile inFile(fn);
         if(!inFile.open(QIODevice::ReadOnly)){
             QString errorMsg("error openeing file ");
             errorMsg += fn;
-            LOG1(errorMsg);
+            LOG1(errorMsg)
             return;
         }
 
@@ -102,12 +102,12 @@ void PlaybackManager::loadBuffer(const QString &fn)
             if(readCount != pointerSizePair.second){
                 QString errorMsg("file read error at index ");
                 errorMsg += QString::number(it->first);
-                LOG1(errorMsg);
+                LOG1(errorMsg)
             }
             ++frameCount;
 //            LOG2(readCount,pointerSizePair.first);
         }
-        LOG2(m_isPlayback, frameCount);
+        LOG2(m_isPlayback, frameCount)
         emit rawDataBuffersAvailable(frameCount);
     }
 }
@@ -129,11 +129,6 @@ bool PlaybackManager::isSingleStep()
     return retVal;
 }
 
-//std::vector<int> PlaybackManager::count() const
-//{
-//    return m_countContainer;
-//}
-
 void PlaybackManager::setCount(int count, int index)
 {
     auto it = m_countContainer.begin();
@@ -153,7 +148,7 @@ void PlaybackManager::setCount(int count, int index)
 void PlaybackManager::singleStep()
 {
     m_isSingleStep = true;
-    LOG1(m_isSingleStep);
+    LOG1(m_isSingleStep)
 }
 
 unsigned long PlaybackManager::playbackLoopSleep() const
@@ -211,20 +206,19 @@ void PlaybackManager::frameReady(int index)
 void PlaybackManager::startPlayback()
 {
     m_isPlayback = true;
-    LOG1(m_isPlayback);
+    LOG1(m_isPlayback)
 }
 
 void PlaybackManager::stopPlayback()
 {
     m_isPlayback = false;
-    LOG1(m_isPlayback);
+    LOG1(m_isPlayback)
 }
 
 void PlaybackManager::setPlaybackSpeed(int speed)
 {
-//    unsigned long maxSleep(1030);
     unsigned long maxSleep(1001);
-    m_playbackLoopSleep = maxSleep - speed;
+    m_playbackLoopSleep = maxSleep - quint32(speed);
 }
 
 int PlaybackManager::frameIndex() const

@@ -22,7 +22,6 @@
 #include "ioController.h"
 #include "sledsupport.h"
 #include "windowmanager.h"
-#include "dsp.h"
 
 /*
  * Constructor

@@ -12,6 +12,7 @@
 
 #include "userSettings.h"
 #include "defaults.h"
+#include "signalmodel.h"
 
 userSettings* userSettings::theSettings{nullptr};
 caseInfo* caseInfo::theInfo{nullptr};
@@ -66,6 +67,24 @@ void userSettings::loadSettings()
     laserIndicatorBrightnessVal = settings->value( "image/laserIndicatorBrightness", DefaultLaserIndicatorBrightness ).toInt();
     noiseReductionVal           = settings->value( "image/noiseReduction",           DefaultCurrFrameWeight_Percent ).toInt();
     invertOctColorEnabled       = settings->value( "image/useInvertOctColor",        DefaultUseInvertOctColor ).toBool();
+}
+
+void userSettings::setCatheterView(userSettings::CatheterView_t view)
+{
+    catheterViewMode = view;
+    SignalModel::instance()->setReverseDirection(isDistalToProximalView());
+}
+
+bool userSettings::isDistalToProximalView()
+{
+    if( catheterViewMode == DistalToProximal )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 

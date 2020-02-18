@@ -123,27 +123,27 @@ int main(int argc, char *argv[])
 
     init.setExeCheck( runExeCheck );
 
-#if USE_INIT
-    if( !init.init( argc, argv ) )
-    {
-        // clean up if init checks fail
-        if( ic )
-        {
-            delete ic;
-        }
-        displayFailureMessage( init.getStatusMessage(), true );
-    }
+//#if USE_INIT
+//    if( !init.init( argc, argv ) )
+//    {
+//        // clean up if init checks fail
+//        if( ic )
+//        {
+//            delete ic;
+//        }
+//        displayFailureMessage( init.getStatusMessage(), true );
+//    }
 
-    if( init.warningPosted() )
-    {
-        displayWarningMessage( init.getStatusMessage() );
-    }
-#endif
+//    if( init.warningPosted() )
+//    {
+//        displayWarningMessage( init.getStatusMessage() );
+//    }
+//#endif
 
-#ifdef  QT_NO_DEBUG
-    // Kick off a background thread to run additional start-up functions
-    init.start();
-#endif
+//#ifdef  QT_NO_DEBUG
+//    // Kick off a background thread to run additional start-up functions
+//    init.start();
+//#endif
     // create the main window
     frontend frontEndWindow;
 
