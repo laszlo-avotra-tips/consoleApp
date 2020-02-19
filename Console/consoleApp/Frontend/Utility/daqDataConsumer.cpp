@@ -40,7 +40,6 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     sceneInThread        = s;
     advViewInThread      = adv;
     eventLog             = eLog;
-    currFrame            = 0;
     isRunning            = false;
     isRecordFullCaseOn   = true;
     frameCount           = 0;
@@ -133,18 +132,9 @@ void DaqDataConsumer::run( void )
          */
         if(TheGlobals::instance()->isImageRenderingQueue()){
 
-//            currFrame = TheGlobals::instance()->frontImageRenderingQueue();
-
-            LOG1(currFrame);
-
             m_octData = TheGlobals::instance()->frontImageRenderingQueue();
 
-//            TheGlobals::instance()->popImageRenderingQueue();
-
             timeoutCounter = HsVideoTimeoutCount;
-
-            // grab the data for this frame
-//            m_octData = TheGlobals::instance()->getOctData(currFrame);
 
             if( advViewInThread->isVisible() )
             {

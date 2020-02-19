@@ -34,7 +34,7 @@ public:
     void init();
 
     bool processData(int);
-    bool readInputBuffers(const float* i, const float* r);
+    bool readInputBuffers(int tag, const float* i, const float* r);
 
 signals:
     void sendWarning( QString );

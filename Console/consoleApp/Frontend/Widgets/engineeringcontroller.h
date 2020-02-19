@@ -35,6 +35,7 @@ private:
     bool m_isGeometrySet;
     QTime m_frameRateTimer;
     float m_frameRate{1.0};
+    int m_count[2]{0,0};
 };
 
 #endif // ENGINEERINGCONTROLLER_H

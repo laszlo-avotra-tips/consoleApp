@@ -32,9 +32,8 @@ void Producer::run()
 //            LOG1(count)
             ++count;
         }
-        QApplication::processEvents();
+//        QApplication::processEvents();
         yieldCurrentThread();
-
     }
 }
 

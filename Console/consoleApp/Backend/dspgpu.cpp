@@ -249,10 +249,11 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 }
 
 
-bool DSPGPU::readInputBuffers(const float *imag, const float *real)
+bool DSPGPU::readInputBuffers(int tag, const float *imag, const float *real)
 {
     if(m_postFft && imag && real){
         m_postFft->enqueueInputBuffers( imag, real);
+        processData(tag);
         return true;
     }
     return false;

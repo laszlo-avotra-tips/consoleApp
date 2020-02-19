@@ -99,13 +99,12 @@ void FileDaq::run()
         {
             if(!smi->isSignalContainerEmpty()){
                 const auto& fftSignal = smi->frontOfSignalContainer();
+                smi->popSignalContainer();
                 signalTag = fftSignal.first;
                 ++signalCount;
                 pmi->setCount(signalCount, signalTag);
-                m_dsp->readInputBuffers(fftSignal.second.first, fftSignal.second.second);
-                smi->popSignalContainer();
-                m_dsp->processData(signalTag);
-                LOG1(signalTag)
+                m_dsp->readInputBuffers(signalTag, fftSignal.second.first, fftSignal.second.second);
+                msleep(PlaybackManager::instance()->playbackLoopSleep());
             }
         }
 

@@ -101,6 +101,8 @@ void EngineeringController::playbackStartStopCommand(bool isStart)
 void EngineeringController::setPlaybackSpeed(int speed)
 {
     PlaybackManager::instance()->setPlaybackSpeed(speed);
+    m_frameRateTimer.restart();
+    m_count[1] = m_count[0];
 }
 
 void EngineeringController::handleSaveDataToFile()
@@ -116,6 +118,8 @@ void EngineeringController::saveDataToFile()
 void EngineeringController::startPlayback()
 {
     PlaybackManager::instance()->startPlayback();
+    m_frameRateTimer.restart();
+    m_count[1] = m_count[0];
 }
 
 void EngineeringController::stopPlayback()
@@ -130,15 +134,17 @@ void EngineeringController::onCountChanged(int count, int index)
     QTextStream qts1(&msg[0]);
     QTextStream qts2(&msg[1]);
 
+    m_count[0] = count;
     if(count == 1){
         m_frameRateTimer.start();
     }
     int timeElapsed = m_frameRateTimer.elapsed();
-    if((count%60 == 1) && (timeElapsed > 0)){
-        m_frameRate = 1000.f * count / timeElapsed;
+    auto delta = m_count[0] - m_count[1];
+    if((count % 10 == 1) && (timeElapsed > 0)){
+        m_frameRate = 1000.f * delta / timeElapsed;
     }
 
-    qts1 << "Frame: [count = " << count << ", index = " << index << "]";
+    qts1 << "Frame: [count = " << delta << ", index = " << index << "]";
     qts2 << "Frame rate = " << m_frameRate << "[/s]";
 
     m_view->setStatMsg(msg[0], msg[1]);

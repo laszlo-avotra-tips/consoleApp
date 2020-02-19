@@ -64,5 +64,5 @@ void PlaybackManager::stopPlayback()
 void PlaybackManager::setPlaybackSpeed(int speed)
 {
     unsigned long maxSleep(1001);
-    m_playbackLoopSleep = maxSleep - quint32(speed);
+    m_playbackLoopSleep = 4 * log(maxSleep - quint32(speed));
 }
