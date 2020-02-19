@@ -4,9 +4,11 @@
 #include "idaq.h"
 #include "octFile.h"
 #include "defaults.h"
+
 #include <memory>
 
 class DSPGPU;
+class Producer;
 
 class FileDaq : public IDAQ
 {
@@ -31,7 +33,8 @@ public:
 
 private:
     bool m_isConfigured{false};
-    std::unique_ptr<DSPGPU>  m_dsp;
+    std::unique_ptr<DSPGPU>  m_dsp{nullptr};
+    std::unique_ptr<Producer>  m_producer{nullptr};
 
     QString m_daqLevel;
 

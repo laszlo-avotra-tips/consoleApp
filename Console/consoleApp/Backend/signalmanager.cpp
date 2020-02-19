@@ -57,6 +57,26 @@ void SignalManager::close()
     m_realFile.close();
 }
 
+bool SignalManager::isSignalContainerEmpty() const
+{
+    return m_fftSignalContainer.empty();
+}
+
+const SignalType& SignalManager::frontOfSignalContainer() const
+{
+    return m_fftSignalContainer.front();
+}
+
+void SignalManager::popSignalContainer()
+{
+    m_fftSignalContainer.pop();
+}
+
+void SignalManager::pushSignalContainer(const SignalType &signal)
+{
+    m_fftSignalContainer.push(signal);
+}
+
 void SignalManager::saveSignal(int count)
 {
     const auto& signalTable = getIsFftDataInitializedFromGpu();
@@ -103,7 +123,7 @@ void SignalManager::saveSignal(int count)
     }
 }
 
-bool SignalManager::loadFftSignalBuffers(int index)
+bool SignalManager::loadFftSignalBuffersOld(int index)
 {
     bool success(true);
 
@@ -133,6 +153,51 @@ bool SignalManager::loadFftSignalBuffers(int index)
     }
 
     TheGlobals::instance()->pushFrameDataQueue(index);
+    emit signalLoaded();
+
+    return success;
+}
+
+bool SignalManager::loadFftSignalBuffers()
+{
+    bool success(true);
+
+    const size_t len(1212416);
+
+
+    QTime durationTimer;
+    const bool isLogging{false};
+
+    if(isLogging){
+        LOG2(m_fftFileName.first, m_fftFileName.second)
+                durationTimer.start();
+    }
+
+
+    auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_fftImagData.get()), len * int(sizeof(float)));
+
+    if(isLogging){
+        auto imagFileReadDuration = durationTimer.elapsed();
+        LOG2(imagDataSize,imagFileReadDuration)
+        durationTimer.start();
+    }
+
+    auto realDataSize = m_realFile.read(reinterpret_cast<char*>(m_fftRealData.get()), len * int(sizeof(float)));
+
+    if(isLogging){
+        auto realFileReadDuration = durationTimer.elapsed();
+        LOG2(realDataSize,realFileReadDuration)
+    }
+
+    ++m_readCount;
+    if(m_imagFile.atEnd()){
+        m_imagFile.seek(0);
+        m_realFile.seek(0);
+//        LOG1(m_readCount)
+    }
+
+    SignalType thisFft{m_fftImagData.get(), m_fftRealData.get()};
+    pushSignalContainer(thisFft);
     emit signalLoaded();
 
     return success;

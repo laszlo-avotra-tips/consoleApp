@@ -53,7 +53,7 @@ void DSPGPU::run()
         msleep(1);
         if(++count % 3000 == 0){
             auto now = QTime::currentTime().toString("HH:mm:ss:zz");
-            LOG2(count, now)
+//            LOG2(count, now)
         }
     }
 }
@@ -110,7 +110,7 @@ bool DSPGPU::processData(int index)
     bool success(false);
 
     auto pmi = PlaybackManager::instance();
-    if(pmi->isFrameQueue() && pmi->findDisplayBuffer(index, pData)){
+    if(pmi->findDisplayBuffer(index, pData)){
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
             LOG( WARNING, "Failed to transform data on GPU." )

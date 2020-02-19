@@ -9,6 +9,7 @@ HEADERS += \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/kernelfunctionbase.h \
     $$PWD/Backend/postfft.h \
+    $$PWD/Backend/producer.h \
     $$PWD/Backend/signalprocessingfactory.h \
     $$PWD/Backend/warp.h \
     ../buildflags.h \
@@ -101,6 +102,7 @@ SOURCES += \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/kernelfunctionbase.cpp \
     $$PWD/Backend/postfft.cpp \
+    $$PWD/Backend/producer.cpp \
     $$PWD/Backend/signalprocessingfactory.cpp \
     $$PWD/Backend/warp.cpp \
     Backend/dspgpu.cpp \

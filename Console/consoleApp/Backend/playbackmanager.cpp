@@ -199,7 +199,6 @@ bool PlaybackManager::isFrameQueue() const
 
 void PlaybackManager::frameReady(int index)
 {
-    TheGlobals::instance()->frameDataQueuePop(index);
     TheGlobals::instance()->pushFrameRenderingQueue(index);
 }
 

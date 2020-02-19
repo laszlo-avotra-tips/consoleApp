@@ -9,6 +9,7 @@
 #include "theglobals.h"
 #include "signalmanager.h"
 #include "signalmodel.h"
+#include "producer.h"
 
 
 FileDaq::FileDaq()
@@ -31,6 +32,8 @@ void FileDaq::init()
 
     // Create the DSP
     m_dsp = std::make_unique<DSPGPU>();
+    //m_producer
+    m_producer = std::make_unique<Producer>();
 
     if( !m_dsp )
     {
@@ -73,6 +76,7 @@ void FileDaq::run()
         qDebug() << "Thread: DAQ::run start";
 
         m_dsp->start();
+        m_producer->start();
 
         m_isRunning = true;
 
@@ -87,27 +91,20 @@ void FileDaq::run()
 
     const auto& pmi = PlaybackManager::instance();
     auto smi = SignalManager::instance();
-    const auto * const smiReadOnly = SignalManager::instance();
+//    const auto * const smiReadOnly = SignalManager::instance();
     while( m_isRunning )
     {
         if(pmi->isPlayback() || pmi->isSingleStep())
         {
             ++videoFrameCount;
             pmi->setCount(videoFrameCount, m_count2);
-            if(m_count2 == 0) {
-                smi->open();
-            }
-            smi->loadFftSignalBuffers(m_count2);
-            m_dsp->readInputBuffers(smiReadOnly->getFftImagDataPointer(), smiReadOnly->getFftRealDataPointer());
-            m_dsp->processData(m_count2);
-            ++m_count2;
-            if(m_count2 == FRAME_BUFFER_SIZE)
-            {
-                smi->close();
-                m_count2 = 0;
-            }
-            if(pmi->isPlayback()){
-                msleep(pmi->playbackLoopSleep());
+            if(!smi->isSignalContainerEmpty()){
+                const auto& fftSignal = smi->frontOfSignalContainer();
+                m_dsp->readInputBuffers(fftSignal.first, fftSignal.second);
+                smi->popSignalContainer();
+                m_dsp->processData(m_count2 % FRAME_BUFFER_SIZE);
+//                LOG1(m_count2)
+                ++m_count2;
             }
         }
 

@@ -16,7 +16,8 @@ TheGlobals *TheGlobals::instance()
 }
 
 TheGlobals::TheGlobals()
-    :m_rawDataBufferCount(64),m_frameIndex(0),m_rawDataIndex(0),
+    :m_rawDataBufferCount(128),m_frameIndex(0),m_rawDataIndex(0),
+//    :m_rawDataBufferCount(64),m_frameIndex(0),m_rawDataIndex(0),
 //    :m_rawDataBufferCount(192),m_frameIndex(0),m_rawDataIndex(0),
       m_rawDataIndexCompleted(0)
 {

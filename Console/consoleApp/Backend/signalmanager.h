@@ -7,7 +7,10 @@
 
 #include <map>
 #include <memory>
+#include <queue>
 
+using SignalType = std::pair<float*,float*>;
+using SignalContainerType = std::queue<SignalType>;
 
 class SignalManager : public QObject
 {
@@ -23,13 +26,19 @@ public:
     size_t getFftMemSize() const;
     bool isFftSource()const;
 
-    bool loadFftSignalBuffers(int index);
+    bool loadFftSignalBuffersOld(int index);
+    bool loadFftSignalBuffers();
 
     std::map<int,bool> getIsFftDataInitializedFromGpu() const;
     void setIsFftDataInitializedFromGpu(bool isFftDataInitializedFromGpu, int index);
 
     bool open();
     void close();
+
+    bool isSignalContainerEmpty() const;
+    const SignalType &frontOfSignalContainer() const;
+    void  popSignalContainer();
+    void  pushSignalContainer(const SignalType& signal);
 
 public slots:
     void saveSignal(int count);
@@ -52,6 +61,8 @@ private:
     QFile m_realFile;
     QString m_temp;
     std::map<int,bool> m_isFftDataInitializedFromGpu;
+    SignalContainerType m_fftSignalContainer;
+    int m_readCount{0};
 
 };
 

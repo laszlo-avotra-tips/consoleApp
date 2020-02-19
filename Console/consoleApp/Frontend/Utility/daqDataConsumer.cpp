@@ -118,10 +118,6 @@ DaqDataConsumer::~DaqDataConsumer()
 void DaqDataConsumer::run( void )
 {
     qDebug() << "Thread: frontend::DaqDataConsumer::run()";
-//lcv    LOG( INFO, "DaqDataConsumer Thread started" );
-
-    // access lines per revolution
-    deviceSettings &devSettings = deviceSettings::Instance();
     dirTracker.getEncoderCountsForDevice(); // a new device is selected, find its encoder range.
 
     // Notify Advanced View if full case is being recorded
@@ -142,16 +138,6 @@ void DaqDataConsumer::run( void )
          * DDC is not shut down between device changes so each frame
          * needs to get the latest device information.
          */
-        bool isHighSpeedDevice  = devSettings.current()->isHighSpeed();
-
-//        // wrap-safe method to grab one index behind the frame that is currently being filled
-//        currFrame = TheGlobals::instance()->getPrevFrameIndex();
-
-//        // If we have a new frame, process it.
-//        if( currFrame != prevFrame )
-//        {
-//            prevFrame      = currFrame;
-//            TIME_THIS_SCOPE( ddc_run );
         if(TheGlobals::instance()->isFrameRenderingQueue()){
 
             currFrame = TheGlobals::instance()->frontFrameRenderingQueue();
@@ -175,18 +161,10 @@ void DaqDataConsumer::run( void )
             QSharedPointer<scanframe> frame = QSharedPointer<scanframe>( new scanframe() );
 
             // fill in data to send out to other frontend objects
-            if( isHighSpeedDevice )
-            {
-                frame->angle = 0;                // no angle data in high speed devices
-                frame->depth = SectorHeight_px;
-                frame->width = SectorWidth_px;
-            }
-            else
-            {
-                frame->angle = pData->encoderPosition;
-                frame->depth = 1;
-                frame->width = 512;
-            }
+            frame->angle = 0;                // no angle data in high speed devices
+            frame->depth = SectorHeight_px;
+            frame->width = SectorWidth_px;
+
             frame->frameCount = pData->frameCount; // not used by frontend
             frame->dispData   = new QByteArray( reinterpret_cast<const char *>(pData->dispData), int(frame->depth * frame->width) );
             frame->videoData  = new QByteArray( reinterpret_cast<const char *>(pData->videoData), int(frame->depth * frame->width ) );
@@ -201,30 +179,6 @@ void DaqDataConsumer::run( void )
                 lastTimestamp = pData->timeStamp;
             }
 
-            // Monitor direction changes for Low Speed only
-            if( !isHighSpeedDevice )
-            {
-                int  linesPerRevolution = devSettings.current()->getLinesPerRevolution();
-                // determine the direction of rotation of the encoder and broadcast this information
-                // This must undo the changes from the raw encoder that were added in by the DAQ
-                // for point of view changes. Complement with max encoder value ( encoderCounts - 1 ).
-                // TBD - may want to move encoder stuff to the device level
-                if( useDistalToProximalView )
-                {
-                    dirTracker.updateDirection( quint16(linesPerRevolution - 1  - pData->encoderPosition ));
-                }
-                else
-                {   // proximal to distal view
-                    dirTracker.updateDirection( pData->encoderPosition );
-                }
-                currDirection = dirTracker.getDirection();
-
-                // only signal the system when there is a change
-                if( currDirection != prevDirection )
-                {
-                    emit directionOfRotation( currDirection );
-                }
-            }
 
             /*
              * Allow toggling of background recording on/off. Protect against trying to
@@ -276,30 +230,6 @@ void DaqDataConsumer::run( void )
                         }
                     }
 
-                    /*
-                     * Send image data to the video encoder.
-                     */
-                    if( !isHighSpeedDevice )
-                    {
-                        /*
-                         * Low Speed Device
-                         */
-                        if( frameTimer.elapsed() > millisecondsPerFrame )
-                        {
-                            // all the work of adding this frame to the video should not count against
-                            // the timing of the next frame
-                            frameTimer.restart();
-
-                            // Memcpy is required to keep a consistent pointer for each frame that qt can't
-                            // pull out from under the videoencoder thread.
-                            sceneInThread->lockFrame();
-                            memcpy( safeFrameBuffer, sceneInThread->frameSample(), SectorWidth_px * SectorHeight_px );
-                            sceneInThread->unlockFrame();
-                            sceneInThread->applyClipInfoToBuffer( safeFrameBuffer );
-                            sceneInThread->wfSample( safeFrameBuffer + (SectorWidth_px * SectorHeight_px ) );
-                            emit addFrame( safeFrameBuffer );
-                        }
-                    }
                     clipFrameCount++;
             }
 
@@ -308,7 +238,7 @@ void DaqDataConsumer::run( void )
             prevDirection  = currDirection;
         }
 
-        if( ( timeoutCounter > 0) && isHighSpeedDevice &&
+        if( ( timeoutCounter > 0) &&
                 ( ( recordClip && ( clipFile != nullptr ) ) || ( isRecordFullCaseOn && isAlwaysRecordFullCaseOn ) ) )
         {
             /*
