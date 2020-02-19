@@ -13,15 +13,6 @@ class TheGlobals
 public:
     static TheGlobals* instance();
 
-    int getRawDataIndex() const;
-    int getPrevRawDataIndex() const;
-    void updateRawDataIndex();
-
-    int getRawDataBufferCount() const;
-
-    int getRawDataIndexCompleted() const;
-    void incrementRawDataIndexCompleted();
-
     int getFrameIndex() const;
     int getPrevFrameIndex() const;
 
@@ -30,9 +21,6 @@ public:
     void freeFrameData();
     void allocateFrameData();
 
-//    void freeRawDataBuffer();
-//    void allocateRawDataBuffer(quint32 bufferSize);
-//    void allocateRawDataBuffer();
     void frameDataQueuePop(int index);
     bool isFrameDataQueue() const;
     void pushFrameDataQueue(int index);
@@ -49,22 +37,11 @@ private:
     TheGlobals();
 
 private:
-    // Create a block of memory for storing the data streaming
-    // from the DAQ hardware. The array is indexed by m_gFrameCounter to point
-    // to the current FrameDate_t to write to.  The memory is allocated all
-    // at once to avoid calling on the OS to create and release memory during
-    // run-time.
     std::vector<OCTFile::FrameData_t> m_frameData;
-//    std::vector<quint16*> m_rawData;
-    QMutex m_rawDataMutex;
     QMutex m_frameDataMutex;
-    const int m_rawDataBufferCount;
     int m_frameIndex;
-    int m_rawDataIndex;
-    int m_rawDataIndexCompleted;
     std::queue<int> m_frameDataQueue;
     std::queue<int> m_frameRenderingQueue;
-    std::queue<int> m_ImageQueue;
     int m_frameRenderingIndex;
 };
 

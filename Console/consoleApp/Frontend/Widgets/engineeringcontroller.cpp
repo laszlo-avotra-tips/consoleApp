@@ -33,8 +33,8 @@ EngineeringController::EngineeringController(QWidget *parent)
     connect(PlaybackManager::instance(), SIGNAL(countChanged(int, int)),
             this, SLOT(onCountChanged(int, int)));
 
-    connect(PlaybackManager::instance(), SIGNAL(rawDataBuffersAvailable(int)),
-            m_view, SLOT(setFramesAvailable(int)));
+//    connect(PlaybackManager::instance(), SIGNAL(rawDataBuffersAvailable(int)),
+//            m_view, SLOT(setFramesAvailable(int)));
 
     SledSupport& sledSp = SledSupport::Instance();
     connect(&sledSp, SIGNAL(speedChanged(int)), m_view, SLOT(setMotorSpeed(int)));
@@ -67,7 +67,7 @@ void EngineeringController::showOrHideView(bool isShown)
 
 void EngineeringController::saveFrameBuffers()
 {
-    const auto& fn =  m_model->getFileName();
+//    const auto& fn =  m_model->getFileName();
 
     m_model->setLaserOn(false);
 

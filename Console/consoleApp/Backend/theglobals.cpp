@@ -5,6 +5,8 @@
 #include <QMutexLocker>
 #include "logger.h"
 
+#include <memory>
+
 TheGlobals* TheGlobals::m_instance(nullptr);
 
 TheGlobals *TheGlobals::instance()
@@ -16,13 +18,9 @@ TheGlobals *TheGlobals::instance()
 }
 
 TheGlobals::TheGlobals()
-    :m_rawDataBufferCount(128),m_frameIndex(0),m_rawDataIndex(0),
-//    :m_rawDataBufferCount(64),m_frameIndex(0),m_rawDataIndex(0),
-//    :m_rawDataBufferCount(192),m_frameIndex(0),m_rawDataIndex(0),
-      m_rawDataIndexCompleted(0)
+    :
+      m_frameIndex(0)
 {
-//    allocateRawDataBuffer();
-
     allocateFrameData();
 }
 
@@ -35,46 +33,25 @@ void TheGlobals::allocateFrameData()
 {
     DaqSettings &settings = DaqSettings::Instance();
 
-    quint32 preTriggerSamples = settings.getPreDepth();
+    const size_t rawDataSize{settings.getRecordLength()}; //4096
+    const size_t fftDataSize{FFTDataSize};
+    const size_t dispDataSize{SectorHeight_px * SectorWidth_px};
 
-    // Select the number of post-trigger samples per record
-    quint32 postTriggerSamples = settings.getRecordLength() - preTriggerSamples;
+    LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
     for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
 
         OCTFile::FrameData_t fd;
-        fd.rawData   = static_cast<unsigned short *>(malloc( (postTriggerSamples + preTriggerSamples) * sizeof( unsigned short ) ) ); // XXX: should be resampled size? (2048)
-        fd.fftData   = static_cast<unsigned short *>(malloc( FFTDataSize * sizeof( unsigned short ) ) );
-        fd.dispData  = static_cast<unsigned char *>(malloc( ( SectorHeight_px * SectorWidth_px ) * sizeof( unsigned char ) ) );
-        fd.videoData = static_cast<unsigned char *>(malloc( ( SectorHeight_px * SectorWidth_px ) * sizeof( unsigned char ) ) );
+
+        fd.rawData   = new quint16 [rawDataSize];
+        fd.fftData   = new quint16 [fftDataSize];
+        fd.dispData  = new uchar [dispDataSize];
+        fd.videoData = new uchar [dispDataSize];
 
         m_frameData.push_back(fd);
     }
+
 }
-
-//void TheGlobals::freeRawDataBuffer()
-//{
-//    for(auto it = m_rawData.begin(); it < m_rawData.end(); ++it){
-//        free(*it);
-//    }
-//    m_rawData.clear();
-//}
-
-////5758976
-//void TheGlobals::allocateRawDataBuffer(quint32 bufferSize)
-//{
-//    for(int i = 0; i < m_rawDataBufferCount; ++i){
-//        quint16* buffer = static_cast<quint16 *>(malloc( bufferSize ));
-//        m_rawData.push_back(buffer);
-//        PlaybackManager::instance()->addRawDataBuffer(i,buffer, bufferSize); //TODO - optimize
-//    }
-//}
-
-//void TheGlobals::allocateRawDataBuffer()
-//{
-//    const quint32 bytesPerBuffer(5758976);
-//    allocateRawDataBuffer(bytesPerBuffer);
-//}
 
 void TheGlobals::frameDataQueuePop(int index)
 {
@@ -134,10 +111,10 @@ int TheGlobals::frontFrameDataQueue() const
 void TheGlobals::freeFrameData()
 {
     for(auto it = m_frameData.begin(); it != m_frameData.end(); ++it){
-        free(it->rawData);
-        free(it->fftData);
-        free(it->dispData);
-        free(it->videoData);
+        delete [] it->rawData;
+        delete [] it->fftData;
+        delete [] it->dispData;
+        delete [] it->videoData;
     }
     m_frameData.clear();
 }
@@ -166,35 +143,4 @@ int TheGlobals::getFrameIndex() const
 int TheGlobals::getPrevFrameIndex() const
 {
     return (m_frameIndex + FRAME_BUFFER_SIZE - 1) % FRAME_BUFFER_SIZE;
-}
-
-int TheGlobals::getRawDataIndexCompleted() const
-{
-    return m_rawDataIndexCompleted;
-}
-
-void TheGlobals::incrementRawDataIndexCompleted()
-{
-    QMutexLocker guard(&m_rawDataMutex);
-    ++m_rawDataIndexCompleted;
-}
-
-int TheGlobals::getRawDataBufferCount() const
-{
-    return m_rawDataBufferCount;
-}
-
-int TheGlobals::getRawDataIndex() const
-{
-    return m_rawDataIndex;
-}
-
-int TheGlobals::getPrevRawDataIndex() const
-{
-    return (m_rawDataIndex + m_rawDataBufferCount - 1) % m_rawDataBufferCount;
-}
-
-void TheGlobals::updateRawDataIndex()
-{
-    m_rawDataIndex = m_rawDataIndexCompleted % m_rawDataBufferCount;
 }

@@ -142,9 +142,9 @@ long FileDaq::getRecordLength() const
 
 bool FileDaq::getData()
 {
-    auto tgi = TheGlobals::instance();
-    tgi->updateRawDataIndex();
-    tgi->incrementRawDataIndexCompleted();
+//    auto tgi = TheGlobals::instance();
+//    tgi->updateRawDataIndex();
+//    tgi->incrementRawDataIndexCompleted();
 
     return true;
 }

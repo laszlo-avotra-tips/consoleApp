@@ -109,8 +109,8 @@ bool DSPGPU::processData(int index)
 {
     bool success(false);
 
-    auto pmi = PlaybackManager::instance();
-    if(pmi->findDisplayBuffer(index, pData)){
+    pData = TheGlobals::instance()->getFrameDataPointer(index);
+    if(pData){
         if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
         {
             LOG( WARNING, "Failed to transform data on GPU." )
@@ -127,7 +127,7 @@ bool DSPGPU::processData(int index)
 
         success = true;
 
-        PlaybackManager::instance()->frameReady(index);
+        TheGlobals::instance()->pushFrameRenderingQueue(index);
     } else{
         LOG1(pData)
     }
