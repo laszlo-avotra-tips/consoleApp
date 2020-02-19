@@ -103,7 +103,7 @@ void FileDaq::run()
                 signalTag = fftSignal.first;
                 ++signalCount;
                 pmi->setCount(signalCount, signalTag);
-                m_dsp->readInputBuffers(signalTag, fftSignal.second.first, fftSignal.second.second);
+                m_dsp->processFftBuffers(signalTag, fftSignal.second.first, fftSignal.second.second);
                 msleep(PlaybackManager::instance()->playbackLoopSleep());
             }
         }

@@ -33,8 +33,7 @@ public:
 
     void init();
 
-    bool processData(int);
-    bool readInputBuffers(int tag, const float* i, const float* r);
+    bool processFftBuffers(int tag, const float* i, const float* r);
 
 signals:
     void sendWarning( QString );
@@ -62,9 +61,10 @@ private:
 
     OCTFile::OctData_t *pOctData{nullptr};
     DSP m_dsp;
+    bool m_dspIsRunning{false};
 
 private:
-    bool m_dspIsRunning{false};
+    bool processData(int tag);
     bool initOpenCL();
     bool transformData( unsigned char *data , unsigned char *videoData );
 
