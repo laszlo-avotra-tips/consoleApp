@@ -4,6 +4,7 @@
 #include "logger.h"
 
 #include <QTime>
+#include <QApplication>
 
 Producer::Producer()
 {
@@ -31,6 +32,9 @@ void Producer::run()
 //            LOG1(count)
             ++count;
         }
+        QApplication::processEvents();
+        yieldCurrentThread();
+
     }
 }
 

@@ -189,14 +189,15 @@ bool SignalManager::loadFftSignalBuffers()
         LOG2(realDataSize,realFileReadDuration)
     }
 
-    ++m_readCount;
+    ++m_signalTag;
     if(m_imagFile.atEnd()){
         m_imagFile.seek(0);
         m_realFile.seek(0);
-//        LOG1(m_readCount)
+        m_signalTag = 0;
+//        LOG1(m_signalTag)
     }
 
-    SignalType thisFft{m_fftImagData.get(), m_fftRealData.get()};
+    SignalType thisFft{m_signalTag,{m_fftImagData.get(), m_fftRealData.get()}};
     pushSignalContainer(thisFft);
     emit signalLoaded();
 

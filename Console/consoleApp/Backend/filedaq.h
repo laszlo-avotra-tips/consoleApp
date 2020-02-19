@@ -40,8 +40,6 @@ private:
 
     long m_recordLenght{0};
     bool m_isRunning{false};
-    int m_count1{0};
-    int m_count2{0};
 };
 
 #endif // FILEDAQ_H

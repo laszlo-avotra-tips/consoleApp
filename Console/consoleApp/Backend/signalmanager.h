@@ -9,7 +9,7 @@
 #include <memory>
 #include <queue>
 
-using SignalType = std::pair<float*,float*>;
+using SignalType = std::pair<int, std::pair<float*,float*>>; //<tag, <imag, real>>
 using SignalContainerType = std::queue<SignalType>;
 
 class SignalManager : public QObject
@@ -62,7 +62,7 @@ private:
     QString m_temp;
     std::map<int,bool> m_isFftDataInitializedFromGpu;
     SignalContainerType m_fftSignalContainer;
-    int m_readCount{0};
+    int m_signalTag{0};
 
 };
 

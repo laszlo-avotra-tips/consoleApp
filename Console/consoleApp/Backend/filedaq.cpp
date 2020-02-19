@@ -61,7 +61,9 @@ bool FileDaq::configure()
 
 void FileDaq::run()
 {
-    int videoFrameCount{0};
+    int signalTag{0};
+    int signalCount{0};
+
     while( !m_isConfigured ) // XXX
     {
         yieldCurrentThread();
@@ -91,38 +93,31 @@ void FileDaq::run()
 
     const auto& pmi = PlaybackManager::instance();
     auto smi = SignalManager::instance();
-//    const auto * const smiReadOnly = SignalManager::instance();
     while( m_isRunning )
     {
         if(pmi->isPlayback() || pmi->isSingleStep())
         {
-            ++videoFrameCount;
-            pmi->setCount(videoFrameCount, m_count2);
             if(!smi->isSignalContainerEmpty()){
                 const auto& fftSignal = smi->frontOfSignalContainer();
-                m_dsp->readInputBuffers(fftSignal.first, fftSignal.second);
+                signalTag = fftSignal.first;
+                ++signalCount;
+                pmi->setCount(signalCount, signalTag);
+                m_dsp->readInputBuffers(fftSignal.second.first, fftSignal.second.second);
                 smi->popSignalContainer();
-                m_dsp->processData(m_count2 % FRAME_BUFFER_SIZE);
-//                LOG1(m_count2)
-                ++m_count2;
+                m_dsp->processData(signalTag);
+//                LOG1(signalTag)
             }
         }
-
-        ++m_count1;
 
         // threads do not handle events by default (timer expiration). Do so explicitly.
         QApplication::processEvents();
         yieldCurrentThread();
-        msleep(1);
     }
-
-    LOG3(m_count1,m_count2,m_count1-m_count2)
 }
 
 void FileDaq::stop()
 {
     m_isRunning = false;
-//    LOG1(m_isRunning);
 }
 
 void FileDaq::pause()
