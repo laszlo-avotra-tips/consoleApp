@@ -26,7 +26,6 @@ public:
     size_t getFftMemSize() const;
     bool isFftSource()const;
 
-    bool loadFftSignalBuffersOld(int index);
     bool loadFftSignalBuffers();
 
     std::map<int,bool> getIsFftDataInitializedFromGpu() const;

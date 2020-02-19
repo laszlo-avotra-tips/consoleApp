@@ -40,9 +40,8 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     sceneInThread        = s;
     advViewInThread      = adv;
     eventLog             = eLog;
-    pData                = nullptr;
+    m_octData                = nullptr;
     currFrame            = 0;
-    prevFrame            = 0;
     isRunning            = false;
     isRecordFullCaseOn   = true;
     frameCount           = 0;
@@ -122,11 +121,6 @@ void DaqDataConsumer::run( void )
 
     // Notify Advanced View if full case is being recorded
     emit alwaysRecordingFullCase( isAlwaysRecordFullCaseOn );
-//lcv    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) );
-
-    // initialize prevFrame to the same value that currFrame will get so no
-    // work is done until the DAQ and DSP start up
-    prevFrame = TheGlobals::instance()->getPrevFrameIndex();
 
     timeoutCounter = 0;
     isRunning = true;
@@ -138,15 +132,18 @@ void DaqDataConsumer::run( void )
          * DDC is not shut down between device changes so each frame
          * needs to get the latest device information.
          */
-        if(TheGlobals::instance()->isFrameRenderingQueue()){
+        if(TheGlobals::instance()->isImageRenderingQueue()){
 
-            currFrame = TheGlobals::instance()->frontFrameRenderingQueue();
-            TheGlobals::instance()->popFrameRenderingQueue(currFrame);
+            currFrame = TheGlobals::instance()->frontImageRenderingQueue();
+
+            LOG1(currFrame);
+
+            TheGlobals::instance()->popImageRenderingQueue();
 
             timeoutCounter = HsVideoTimeoutCount;
 
             // grab the data for this frame
-            pData = TheGlobals::instance()->getFrameDataPointer(currFrame);
+            m_octData = TheGlobals::instance()->getOctData(currFrame);
 
             if( advViewInThread->isVisible() )
             {
@@ -154,7 +151,7 @@ void DaqDataConsumer::run( void )
                  *  Send raw and FFT data to the Advanced View plots. This MUST
                  *  be done via signal or the shared pointer does strange things.
                  */
-                emit updateAdvancedView( pData );
+                emit updateAdvancedView( m_octData );
             }
 
             // copy frame data into the shared pointer for this line
@@ -165,18 +162,18 @@ void DaqDataConsumer::run( void )
             frame->depth = SectorHeight_px;
             frame->width = SectorWidth_px;
 
-            frame->frameCount = pData->frameCount; // not used by frontend
-            frame->dispData   = new QByteArray( reinterpret_cast<const char *>(pData->dispData), int(frame->depth * frame->width) );
-            frame->videoData  = new QByteArray( reinterpret_cast<const char *>(pData->videoData), int(frame->depth * frame->width ) );
-            frame->timestamp  = pData->timeStamp;
+            frame->frameCount = m_octData->frameCount; // not used by frontend
+            frame->dispData   = new QByteArray( reinterpret_cast<const char *>(m_octData->dispData), int(frame->depth * frame->width) );
+            frame->videoData  = new QByteArray( reinterpret_cast<const char *>(m_octData->videoData), int(frame->depth * frame->width ) );
+            frame->timestamp  = m_octData->timeStamp;
 
             // Add this line to the scene
             sceneInThread->addScanFrame( frame );
 
             // Optimize a bit, don't always need to be drawing the time
-            if( lastTimestamp != pData->timeStamp )
+            if( lastTimestamp != m_octData->timeStamp )
             {
-                lastTimestamp = pData->timeStamp;
+                lastTimestamp = m_octData->timeStamp;
             }
 
 
@@ -186,19 +183,13 @@ void DaqDataConsumer::run( void )
              */
             if( isRecordFullCaseOn )
             {
-                // Update the frame count for lines consumed and saved
-                frameCount++;
-
-                // Update the original data for processing below
-                pData->frameCount = frameCount;
-
                 // handle any queued events
                 if( !addEventQ.empty() )
                 {
                     mutex.lock();
                     eventLog->addEvent( addEventQ.dequeue(),
-                                        pData->frameCount,
-                                        pData->timeStamp,
+                                        m_octData->frameCount,
+                                        m_octData->timeStamp,
                                         QString( "" ) ); // XXX: event log may be removed
                     mutex.unlock();
                 }
@@ -234,7 +225,6 @@ void DaqDataConsumer::run( void )
             }
 
             // prepare for the next iteration
-//            prevFrame      = currFrame;
             prevDirection  = currDirection;
         }
 
@@ -248,14 +238,14 @@ void DaqDataConsumer::run( void )
             {
                 frameTimer.restart();
                 timeoutCounter--;
-                sceneInThread->applyClipInfoToBuffer( reinterpret_cast<char *>(pData->videoData ) );
+                sceneInThread->applyClipInfoToBuffer( reinterpret_cast<char *>(m_octData->videoData ) );
                 if( clipEncoder )
                 {
-                    clipEncoder->addFrame( reinterpret_cast<char *>(pData->videoData ) );
+                    clipEncoder->addFrame( reinterpret_cast<char *>(m_octData->videoData ) );
                 }
                 if( caseEncoder )
                 {
-                    caseEncoder->addFrame( reinterpret_cast<char *>(pData->videoData ) );
+                    caseEncoder->addFrame( reinterpret_cast<char *>(m_octData->videoData ) );
                 }
             }
         }
@@ -466,7 +456,7 @@ void DaqDataConsumer::recordBackgroundData( bool state )
 void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
 {
     // Only perform the search if data is available
-    if( pData )
+    if( m_octData )
     {
         const int MaxADCVal = 65535; // full range of 16-bit card
         deviceSettings &dev = deviceSettings::Instance();
@@ -482,15 +472,15 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
         for( quint32 i = quint32(dev.current()->getInternalImagingMask_px() ); i < ( FFTDataSize / 2 ); i++ )
         {
             // find min
-            if( pData->fftData[ i ] < minVal )
+            if( m_octData->advancedViewFftData[ i ] < minVal )
             {
-                minVal = pData->fftData[ i ];
+                minVal = m_octData->advancedViewFftData[ i ];
             }
 
             // find max
-            if( pData->fftData[ i ] > maxVal )
+            if( m_octData->advancedViewFftData[ i ] > maxVal )
             {
-                maxVal = pData->fftData[ i ];
+                maxVal = m_octData->advancedViewFftData[ i ];
             }
         }
 

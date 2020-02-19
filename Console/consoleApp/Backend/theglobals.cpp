@@ -18,18 +18,11 @@ TheGlobals *TheGlobals::instance()
 }
 
 TheGlobals::TheGlobals()
-    :
-      m_frameIndex(0)
 {
-    allocateFrameData();
+    allocateOctData();
 }
 
-int TheGlobals::getFrameRenderingIndex() const
-{
-    return m_frameRenderingIndex;
-}
-
-void TheGlobals::allocateFrameData()
+void TheGlobals::allocateOctData()
 {
     DaqSettings &settings = DaqSettings::Instance();
 
@@ -39,108 +32,64 @@ void TheGlobals::allocateFrameData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-    for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
+    for(int i = 0; i < 3; ++i){
+//  for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
 
-        OCTFile::FrameData_t fd;
+        OCTFile::OctData_t oct;
 
-        fd.rawData   = new quint16 [rawDataSize];
-        fd.fftData   = new quint16 [fftDataSize];
-        fd.dispData  = new uchar [dispDataSize];
-        fd.videoData = new uchar [dispDataSize];
+        oct.advancedViewIfftData   = new quint16 [rawDataSize];
+        oct.advancedViewFftData   = new quint16 [fftDataSize];
+        oct.dispData  = new uchar [dispDataSize];
+        oct.videoData = new uchar [dispDataSize];
 
-        m_frameData.push_back(fd);
+        m_octData.push_back(oct);
     }
 
 }
 
-void TheGlobals::frameDataQueuePop(int index)
+void TheGlobals::pushImageRenderingQueue(int index)
 {
-    QMutexLocker guard(&m_frameDataMutex);
-    if(index == m_frameDataQueue.front()){
-        m_frameDataQueue.pop();
-    } else {
-        LOG2(index, m_frameDataQueue.front())
-    }
+    QMutexLocker guard(&m_imageRenderingMutex);
+    m_imageRenderingQueue.push(index);
 }
 
-bool TheGlobals::isFrameDataQueue() const
+void TheGlobals::popImageRenderingQueue()
 {
-    return !m_frameDataQueue.empty();
+    QMutexLocker guard(&m_imageRenderingMutex);
+    m_imageRenderingQueue.pop();
 }
 
-void TheGlobals::pushFrameDataQueue(int index)
+bool TheGlobals::isImageRenderingQueue() const
 {
-    QMutexLocker guard(&m_frameDataMutex);
-    m_frameDataQueue.push(index);
+    return !m_imageRenderingQueue.empty();
 }
 
-void TheGlobals::pushFrameRenderingQueue(int index)
+int TheGlobals::frontImageRenderingQueue() const
 {
-    QMutexLocker guard(&m_frameDataMutex);
-    m_frameRenderingQueue.push(index);
-}
-
-void TheGlobals::popFrameRenderingQueue(int /*index*/)
-{
-    QMutexLocker guard(&m_frameDataMutex);
-    m_frameRenderingIndex = m_frameRenderingQueue.front();
-    m_frameRenderingQueue.pop();
-}
-
-bool TheGlobals::isFrameRenderingQueue() const
-{
-    return !m_frameRenderingQueue.empty();
-}
-
-int TheGlobals::frontFrameRenderingQueue() const
-{
-    if(isFrameRenderingQueue()){
-        return m_frameRenderingQueue.front();
+    if(isImageRenderingQueue()){
+        return m_imageRenderingQueue.front();
     }
     return -1;
 }
 
-int TheGlobals::frontFrameDataQueue() const
+void TheGlobals::freeOctData()
 {
-    if(isFrameDataQueue()){
-        return m_frameDataQueue.front();
-    }
-    return -1;
-}
-
-void TheGlobals::freeFrameData()
-{
-    for(auto it = m_frameData.begin(); it != m_frameData.end(); ++it){
-        delete [] it->rawData;
-        delete [] it->fftData;
+    for(auto it = m_octData.begin(); it != m_octData.end(); ++it){
+        delete [] it->advancedViewIfftData;
+        delete [] it->advancedViewFftData;
         delete [] it->dispData;
         delete [] it->videoData;
     }
-    m_frameData.clear();
+    m_octData.clear();
 }
 
-OCTFile::FrameData_t *TheGlobals::getFrameDataPointer(int index) const
+OCTFile::OctData_t *TheGlobals::getOctData(int index)
 {
-    OCTFile::FrameData_t * retVal(nullptr);
-    if(size_t(index) < m_frameData.size()){
-        auto& val = m_frameData[size_t(index)];
-        retVal = const_cast<OCTFile::FrameData_t *>(&val);
-    }
+    OCTFile::OctData_t * retVal(nullptr);
+
+    size_t frameDataIndex{ size_t(index) % m_octData.size()};
+    auto& val = m_octData[frameDataIndex];
+    val.frameCount = index;
+    retVal = &val;
     return retVal;
-}
-
-OCTFile::FrameData_t *TheGlobals::getFrameDataPointer() const
-{
-    auto index = getFrameIndex() % FRAME_BUFFER_SIZE;
-    return getFrameDataPointer(index);
-}
-
-int TheGlobals::getFrameIndex() const
-{
-    return m_frameIndex;
-}
-
-int TheGlobals::getPrevFrameIndex() const
-{
-    return (m_frameIndex + FRAME_BUFFER_SIZE - 1) % FRAME_BUFFER_SIZE;
 }

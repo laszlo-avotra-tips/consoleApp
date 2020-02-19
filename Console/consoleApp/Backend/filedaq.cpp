@@ -105,7 +105,7 @@ void FileDaq::run()
                 m_dsp->readInputBuffers(fftSignal.second.first, fftSignal.second.second);
                 smi->popSignalContainer();
                 m_dsp->processData(signalTag);
-//                LOG1(signalTag)
+                LOG1(signalTag)
             }
         }
 

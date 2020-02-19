@@ -27,7 +27,7 @@ class OCTFile : public QObject
 public:
     // Changes in this structure must have changes made in writeFileHeader()
     // and writeNumFramesWritten() as well
-    struct FileHeader_t
+    struct OctFileHeader_t
     {
         char magic[ 3 ];
         unsigned char formatVersion;
@@ -35,14 +35,14 @@ public:
         quint32 numFramesWritten;
     };
 
-    struct FrameData_t
+    struct OctData_t
     {
         unsigned long  frameCount;
         unsigned long  timeStamp;
         unsigned short milliseconds;
         unsigned short encoderPosition;  // XXX: hijack for fast OCT direction bit
-        unsigned short *rawData;         // used for Advanced View only
-        unsigned short *fftData;         // used for Advanced View, data storage
+        unsigned short *advancedViewIfftData;         // used for Advanced View only
+        unsigned short *advancedViewFftData;         // used for Advanced View, data storage
         unsigned char  *dispData;        // used for display
         unsigned char  *videoData;       // High Speed only: video frame with appropriate rotation built in
     };
@@ -77,7 +77,7 @@ private:
     unsigned int fileIteration;
     quint32 recordLength;
     quint32 framesWritten;
-    FileHeader_t header;
+    OctFileHeader_t header;
 
     // playback
     QList<int> indexList;

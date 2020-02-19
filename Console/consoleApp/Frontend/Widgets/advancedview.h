@@ -29,7 +29,7 @@ public:
     ~advancedView();
 
 public slots:
-    void addScanline( const OCTFile::FrameData_t *pData );
+    void addScanline( const OCTFile::OctData_t *pData );
     void handleDaqLevel( QString );
     void handleLaserDiodeStatus( bool );
     void handleRawDataLengthChange( int size );

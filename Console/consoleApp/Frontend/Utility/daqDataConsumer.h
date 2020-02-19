@@ -34,7 +34,7 @@ public:
     void disableFullCaseRecording( void ) { isAlwaysRecordFullCaseOn = false; }
 
 signals:
-    void updateAdvancedView( const OCTFile::FrameData_t *data );
+    void updateAdvancedView( const OCTFile::OctData_t *data );
     void clipRecordingStopped();
     void directionOfRotation( directionTracker::Direction_T );
     void alwaysRecordingFullCase(bool);
@@ -63,9 +63,8 @@ private:
     liveScene *sceneInThread;
     advancedView *advViewInThread;
     EventDataLog *eventLog;
-    OCTFile::FrameData_t *pData;
+    OCTFile::OctData_t *m_octData;
     int currFrame;
-    int prevFrame;
     bool isRunning;
     bool isRecordFullCaseOn;
     bool isAlwaysRecordFullCaseOn;

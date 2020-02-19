@@ -109,27 +109,22 @@ bool DSPGPU::processData(int index)
 {
     bool success(false);
 
-    pData = TheGlobals::instance()->getFrameDataPointer(index);
-    if(pData){
-        if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
+    pOctData = TheGlobals::instance()->getOctData(index);
+    if(pOctData){
+        if( !transformData( pOctData->dispData, pOctData->videoData ) )   //Success if return true
         {
             LOG( WARNING, "Failed to transform data on GPU." )
         }
 
-        /*
-         * Frame counts are filled in by the Data Consumer;
-         * this keeps the frame counts continuous.
-         */
-        pData->frameCount      = 0;
-        pData->encoderPosition = 0; // NOT USED for fast-OCT
-        pData->timeStamp       = m_dsp.getTimeStamp();
-        pData->milliseconds    = quint16(m_dsp.getMilliseconds());
+        pOctData->encoderPosition = 0; // NOT USED for fast-OCT
+        pOctData->timeStamp       = m_dsp.getTimeStamp();
+        pOctData->milliseconds    = quint16(m_dsp.getMilliseconds());
 
         success = true;
 
-        TheGlobals::instance()->pushFrameRenderingQueue(index);
+        TheGlobals::instance()->pushImageRenderingQueue(index);
     } else{
-        LOG1(pData)
+        LOG1(pOctData)
     }
     return success;
 }

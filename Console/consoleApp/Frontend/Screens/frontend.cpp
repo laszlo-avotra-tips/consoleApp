@@ -368,7 +368,7 @@ void frontend::init( void )
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
     connect( viewOption, SIGNAL(sendManualLagAngle(double)), this, SLOT(handleManualLagAngle(double)) );
 
-    connect( consumer, SIGNAL(updateAdvancedView(const OCTFile::FrameData_t *)), advView, SLOT(addScanline(const OCTFile::FrameData_t *)) );
+    connect( consumer, SIGNAL(updateAdvancedView(const OCTFile::OctData_t *)), advView, SLOT(addScanline(const OCTFile::OctData_t *)) );
     connect( this, SIGNAL(recordBackgroundData(bool)),  consumer, SLOT(recordBackgroundData(bool)) );
     connect( this, SIGNAL(tagEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 

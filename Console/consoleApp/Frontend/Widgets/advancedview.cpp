@@ -123,17 +123,17 @@ advancedView::~advancedView()
  * maintain interactive performance, this call simply updates their
  * data cache.
  */
-void advancedView::addScanline( const OCTFile::FrameData_t *pData )
+void advancedView::addScanline( const OCTFile::OctData_t *pData )
 {
     LOG1(pData)
-//    if( pData->rawData )
+//    if( pData->advancedViewIfftData )
 //    {
-//        ui.rawDataPlot->plotData( pData->rawData );
+//        ui.rawDataPlot->plotData( pData->advancedViewIfftData );
 //    }
 
-//    if( ( pData->fftData ) )
+//    if( ( pData->advancedViewFftData ) )
 //    {
-//        ui.fftDataPlot->plotData( pData->fftData );
+//        ui.fftDataPlot->plotData( pData->advancedViewFftData );
 //    }
 
     // Rough updates/second counter

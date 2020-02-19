@@ -185,7 +185,7 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
 /*
  * getAvgAmplitude()
  *
- * Calculate the average amplitude of an A-line using rawData between the first
+ * Calculate the average amplitude of an A-line using advancedViewIfftData between the first
  * third and second third samples of the A-line. This is called by
  * setEvoaPowerLevel() to read A-line strength and determine adjustment amount.
  */

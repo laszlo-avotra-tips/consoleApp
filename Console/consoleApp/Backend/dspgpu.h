@@ -60,7 +60,7 @@ private:
     const size_t origin[ 3 ]{ 0, 0, 0 };
     const size_t region[ 3 ]{ SectorWidth_px, SectorHeight_px, 1 };
 
-    OCTFile::FrameData_t *pData{nullptr};
+    OCTFile::OctData_t *pOctData{nullptr};
     DSP m_dsp;
 
 private:
