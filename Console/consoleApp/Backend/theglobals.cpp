@@ -21,7 +21,7 @@ TheGlobals::TheGlobals()
 //    :m_rawDataBufferCount(192),m_frameIndex(0),m_rawDataIndex(0),
       m_rawDataIndexCompleted(0)
 {
-    allocateRawDataBuffer();
+//    allocateRawDataBuffer();
 
     allocateFrameData();
 }
@@ -52,65 +52,29 @@ void TheGlobals::allocateFrameData()
     }
 }
 
-const quint16 *TheGlobals::getRawDataBufferPointer(size_t index) const
-{
-    const quint16* retVal(nullptr);
-    if(index < m_rawData.size()){
-        retVal = m_rawData[index];
-    }
-    return retVal;
-}
+//void TheGlobals::freeRawDataBuffer()
+//{
+//    for(auto it = m_rawData.begin(); it < m_rawData.end(); ++it){
+//        free(*it);
+//    }
+//    m_rawData.clear();
+//}
 
-const quint16 *TheGlobals::getRawDataBufferPointer() const
-{
-    auto index = getRawDataIndex();
-    return getRawDataBufferPointer(size_t(index));
-}
+////5758976
+//void TheGlobals::allocateRawDataBuffer(quint32 bufferSize)
+//{
+//    for(int i = 0; i < m_rawDataBufferCount; ++i){
+//        quint16* buffer = static_cast<quint16 *>(malloc( bufferSize ));
+//        m_rawData.push_back(buffer);
+//        PlaybackManager::instance()->addRawDataBuffer(i,buffer, bufferSize); //TODO - optimize
+//    }
+//}
 
-void TheGlobals::freeRawDataBuffer()
-{
-    for(auto it = m_rawData.begin(); it < m_rawData.end(); ++it){
-        free(*it);
-    }
-    m_rawData.clear();
-}
-
-//5758976
-void TheGlobals::allocateRawDataBuffer(quint32 bufferSize)
-{
-    for(int i = 0; i < m_rawDataBufferCount; ++i){
-        quint16* buffer = static_cast<quint16 *>(malloc( bufferSize ));
-        m_rawData.push_back(buffer);
-        PlaybackManager::instance()->addRawDataBuffer(i,buffer, bufferSize); //TODO - optimize
-    }
-}
-
-void TheGlobals::allocateRawDataBuffer()
-{
-    const quint32 bytesPerBuffer(5758976);
-    allocateRawDataBuffer(bytesPerBuffer);
-}
-
-bool TheGlobals::enqueueBuffer(int index)
-{
-    bool success(false);
-
-    if(index < int(m_rawData.size())){
-        m_rawDataQueue.push(index);
-        success = true;
-    }
-    return success;
-}
-
-void TheGlobals::rawDataQueuePop(int index)
-{
-    QMutexLocker guard(&m_rawDataMutex);
-    if(m_rawDataQueue.front() == index){
-        m_rawDataQueue.pop();
-    } else {
-        LOG2(index, m_rawDataQueue.front())
-    }
-}
+//void TheGlobals::allocateRawDataBuffer()
+//{
+//    const quint32 bytesPerBuffer(5758976);
+//    allocateRawDataBuffer(bytesPerBuffer);
+//}
 
 void TheGlobals::frameDataQueuePop(int index)
 {
@@ -120,11 +84,6 @@ void TheGlobals::frameDataQueuePop(int index)
     } else {
         LOG2(index, m_frameDataQueue.front())
     }
-}
-
-bool TheGlobals::isRawDataQueue() const
-{
-    return !m_rawDataQueue.empty();
 }
 
 bool TheGlobals::isFrameDataQueue() const
@@ -160,14 +119,6 @@ int TheGlobals::frontFrameRenderingQueue() const
 {
     if(isFrameRenderingQueue()){
         return m_frameRenderingQueue.front();
-    }
-    return -1;
-}
-
-int TheGlobals::frontRawDataQueue() const
-{
-    if(isRawDataQueue()){
-        return m_rawDataQueue.front();
     }
     return -1;
 }
@@ -216,12 +167,6 @@ int TheGlobals::getPrevFrameIndex() const
 {
     return (m_frameIndex + FRAME_BUFFER_SIZE - 1) % FRAME_BUFFER_SIZE;
 }
-
-//void TheGlobals::inrementFrameIndex()
-//{
-//    QMutexLocker guard(&m_frameDataMutex);
-//    ++m_frameIndex;
-//}
 
 int TheGlobals::getRawDataIndexCompleted() const
 {

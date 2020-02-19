@@ -30,22 +30,16 @@ public:
     void freeFrameData();
     void allocateFrameData();
 
-    const quint16* getRawDataBufferPointer(size_t index) const;
-    const quint16* getRawDataBufferPointer() const;
-    void freeRawDataBuffer();
-    void allocateRawDataBuffer(quint32 bufferSize);
-    void allocateRawDataBuffer();
-    bool enqueueBuffer(int index);
-    void rawDataQueuePop(int index);
+//    void freeRawDataBuffer();
+//    void allocateRawDataBuffer(quint32 bufferSize);
+//    void allocateRawDataBuffer();
     void frameDataQueuePop(int index);
-    bool isRawDataQueue() const;
     bool isFrameDataQueue() const;
     void pushFrameDataQueue(int index);
     void pushFrameRenderingQueue(int index);
     void popFrameRenderingQueue(int index);
     bool isFrameRenderingQueue() const;
     int  frontFrameRenderingQueue() const;
-    int  frontRawDataQueue() const;
     int  frontFrameDataQueue() const;
 
     int getFrameRenderingIndex() const;
@@ -61,14 +55,13 @@ private:
     // at once to avoid calling on the OS to create and release memory during
     // run-time.
     std::vector<OCTFile::FrameData_t> m_frameData;
-    std::vector<quint16*> m_rawData;
+//    std::vector<quint16*> m_rawData;
     QMutex m_rawDataMutex;
     QMutex m_frameDataMutex;
     const int m_rawDataBufferCount;
     int m_frameIndex;
     int m_rawDataIndex;
     int m_rawDataIndexCompleted;
-    std::queue<int> m_rawDataQueue;
     std::queue<int> m_frameDataQueue;
     std::queue<int> m_frameRenderingQueue;
     std::queue<int> m_ImageQueue;

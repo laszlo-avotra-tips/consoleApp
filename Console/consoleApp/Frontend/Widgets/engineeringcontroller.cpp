@@ -71,7 +71,7 @@ void EngineeringController::saveFrameBuffers()
 
     m_model->setLaserOn(false);
 
-    PlaybackManager::instance()->saveBuffer(fn);
+//lcv removed     PlaybackManager::instance()->saveBuffer(fn);
 
     m_model->setLaserOn(true);
 
@@ -84,7 +84,7 @@ void EngineeringController::loadFrameBuffers()
     if(!fn.isEmpty()){
 //        m_model->setLaserOn(false);
 
-        PlaybackManager::instance()->loadBuffer(fn);
+//lcv removed        PlaybackManager::instance()->loadBuffer(fn);
     }
 }
 
