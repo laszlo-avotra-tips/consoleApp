@@ -7,6 +7,7 @@
 #include <vector>
 #include <queue>
 
+using OctData = OCTFile::OctData_t;
 
 class TheGlobals
 {
@@ -17,19 +18,19 @@ public:
     void freeOctData();
     void allocateOctData();
 
-    void pushImageRenderingQueue(int index);
+    void pushImageRenderingQueue(OctData od);
     void popImageRenderingQueue();
     bool isImageRenderingQueue() const;
-    int  frontImageRenderingQueue() const;
+    OctData  frontImageRenderingQueue();
 
 private:
     static TheGlobals* m_instance;
     TheGlobals();
 
 private:
-    std::vector<OCTFile::OctData_t> m_octData;
+    std::vector<OctData> m_octData;
     QMutex m_imageRenderingMutex;
-    std::queue<int> m_imageRenderingQueue;
+    std::queue<OctData> m_imageRenderingQueue;
 };
 
 #endif // THEGLOBALS_H

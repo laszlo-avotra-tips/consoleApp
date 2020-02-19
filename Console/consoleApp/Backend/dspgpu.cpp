@@ -122,7 +122,7 @@ bool DSPGPU::processData(int index)
 
         success = true;
 
-        TheGlobals::instance()->pushImageRenderingQueue(index);
+        TheGlobals::instance()->pushImageRenderingQueue(*pOctData);
     } else{
         LOG1(pOctData)
     }

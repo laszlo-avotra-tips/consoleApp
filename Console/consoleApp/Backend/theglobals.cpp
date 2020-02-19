@@ -47,10 +47,10 @@ void TheGlobals::allocateOctData()
 
 }
 
-void TheGlobals::pushImageRenderingQueue(int index)
+void TheGlobals::pushImageRenderingQueue(OctData od)
 {
     QMutexLocker guard(&m_imageRenderingMutex);
-    m_imageRenderingQueue.push(index);
+    m_imageRenderingQueue.push(od);
 }
 
 void TheGlobals::popImageRenderingQueue()
@@ -64,12 +64,12 @@ bool TheGlobals::isImageRenderingQueue() const
     return !m_imageRenderingQueue.empty();
 }
 
-int TheGlobals::frontImageRenderingQueue() const
+OctData TheGlobals::frontImageRenderingQueue()
 {
     if(isImageRenderingQueue()){
         return m_imageRenderingQueue.front();
     }
-    return -1;
+    return m_octData[0];
 }
 
 void TheGlobals::freeOctData()

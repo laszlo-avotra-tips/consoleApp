@@ -40,7 +40,6 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     sceneInThread        = s;
     advViewInThread      = adv;
     eventLog             = eLog;
-    m_octData                = nullptr;
     currFrame            = 0;
     isRunning            = false;
     isRecordFullCaseOn   = true;
@@ -134,16 +133,18 @@ void DaqDataConsumer::run( void )
          */
         if(TheGlobals::instance()->isImageRenderingQueue()){
 
-            currFrame = TheGlobals::instance()->frontImageRenderingQueue();
+//            currFrame = TheGlobals::instance()->frontImageRenderingQueue();
 
             LOG1(currFrame);
 
-            TheGlobals::instance()->popImageRenderingQueue();
+            m_octData = TheGlobals::instance()->frontImageRenderingQueue();
+
+//            TheGlobals::instance()->popImageRenderingQueue();
 
             timeoutCounter = HsVideoTimeoutCount;
 
             // grab the data for this frame
-            m_octData = TheGlobals::instance()->getOctData(currFrame);
+//            m_octData = TheGlobals::instance()->getOctData(currFrame);
 
             if( advViewInThread->isVisible() )
             {
@@ -151,7 +152,7 @@ void DaqDataConsumer::run( void )
                  *  Send raw and FFT data to the Advanced View plots. This MUST
                  *  be done via signal or the shared pointer does strange things.
                  */
-                emit updateAdvancedView( m_octData );
+                emit updateAdvancedView( &m_octData );
             }
 
             // copy frame data into the shared pointer for this line
@@ -162,18 +163,18 @@ void DaqDataConsumer::run( void )
             frame->depth = SectorHeight_px;
             frame->width = SectorWidth_px;
 
-            frame->frameCount = m_octData->frameCount; // not used by frontend
-            frame->dispData   = new QByteArray( reinterpret_cast<const char *>(m_octData->dispData), int(frame->depth * frame->width) );
-            frame->videoData  = new QByteArray( reinterpret_cast<const char *>(m_octData->videoData), int(frame->depth * frame->width ) );
-            frame->timestamp  = m_octData->timeStamp;
+            frame->frameCount = m_octData.frameCount; // not used by frontend
+            frame->dispData   = new QByteArray( reinterpret_cast<const char *>(m_octData.dispData), int(frame->depth * frame->width) );
+            frame->videoData  = new QByteArray( reinterpret_cast<const char *>(m_octData.videoData), int(frame->depth * frame->width ) );
+            frame->timestamp  = m_octData.timeStamp;
 
             // Add this line to the scene
             sceneInThread->addScanFrame( frame );
 
             // Optimize a bit, don't always need to be drawing the time
-            if( lastTimestamp != m_octData->timeStamp )
+            if( lastTimestamp != m_octData.timeStamp )
             {
-                lastTimestamp = m_octData->timeStamp;
+                lastTimestamp = m_octData.timeStamp;
             }
 
 
@@ -188,8 +189,8 @@ void DaqDataConsumer::run( void )
                 {
                     mutex.lock();
                     eventLog->addEvent( addEventQ.dequeue(),
-                                        m_octData->frameCount,
-                                        m_octData->timeStamp,
+                                        m_octData.frameCount,
+                                        m_octData.timeStamp,
                                         QString( "" ) ); // XXX: event log may be removed
                     mutex.unlock();
                 }
@@ -226,7 +227,9 @@ void DaqDataConsumer::run( void )
 
             // prepare for the next iteration
             prevDirection  = currDirection;
+            TheGlobals::instance()->popImageRenderingQueue();
         }
+
 
         if( ( timeoutCounter > 0) &&
                 ( ( recordClip && ( clipFile != nullptr ) ) || ( isRecordFullCaseOn && isAlwaysRecordFullCaseOn ) ) )
@@ -238,14 +241,14 @@ void DaqDataConsumer::run( void )
             {
                 frameTimer.restart();
                 timeoutCounter--;
-                sceneInThread->applyClipInfoToBuffer( reinterpret_cast<char *>(m_octData->videoData ) );
+                sceneInThread->applyClipInfoToBuffer( reinterpret_cast<char *>(m_octData.videoData ) );
                 if( clipEncoder )
                 {
-                    clipEncoder->addFrame( reinterpret_cast<char *>(m_octData->videoData ) );
+                    clipEncoder->addFrame( reinterpret_cast<char *>(m_octData.videoData ) );
                 }
                 if( caseEncoder )
                 {
-                    caseEncoder->addFrame( reinterpret_cast<char *>(m_octData->videoData ) );
+                    caseEncoder->addFrame( reinterpret_cast<char *>(m_octData.videoData ) );
                 }
             }
         }
@@ -264,6 +267,7 @@ void DaqDataConsumer::run( void )
 
         // prepare for the next iteration
         prevRecordClip = recordClip;
+
 
         yieldCurrentThread();
     }
@@ -456,7 +460,7 @@ void DaqDataConsumer::recordBackgroundData( bool state )
 void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
 {
     // Only perform the search if data is available
-    if( m_octData )
+    if( m_octData.advancedViewFftData )
     {
         const int MaxADCVal = 65535; // full range of 16-bit card
         deviceSettings &dev = deviceSettings::Instance();
@@ -472,15 +476,15 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
         for( quint32 i = quint32(dev.current()->getInternalImagingMask_px() ); i < ( FFTDataSize / 2 ); i++ )
         {
             // find min
-            if( m_octData->advancedViewFftData[ i ] < minVal )
+            if( m_octData.advancedViewFftData[ i ] < minVal )
             {
-                minVal = m_octData->advancedViewFftData[ i ];
+                minVal = m_octData.advancedViewFftData[ i ];
             }
 
             // find max
-            if( m_octData->advancedViewFftData[ i ] > maxVal )
+            if( m_octData.advancedViewFftData[ i ] > maxVal )
             {
-                maxVal = m_octData->advancedViewFftData[ i ];
+                maxVal = m_octData.advancedViewFftData[ i ];
             }
         }
 

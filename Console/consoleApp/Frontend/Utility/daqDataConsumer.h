@@ -63,7 +63,7 @@ private:
     liveScene *sceneInThread;
     advancedView *advViewInThread;
     EventDataLog *eventLog;
-    OCTFile::OctData_t *m_octData;
+    OCTFile::OctData_t m_octData;
     int currFrame;
     bool isRunning;
     bool isRecordFullCaseOn;
