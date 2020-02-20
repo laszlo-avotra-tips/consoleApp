@@ -130,9 +130,15 @@ void DaqDataConsumer::run( void )
          * DDC is not shut down between device changes so each frame
          * needs to get the latest device information.
          */
-        if(TheGlobals::instance()->isImageRenderingQueue()){
+        if(TheGlobals::instance()->isImageRenderingQueueGTE(2)){
 
-            m_octData = TheGlobals::instance()->frontImageRenderingQueue();
+            const auto& octPair = TheGlobals::instance()->frontImageRenderingQueue();
+
+            if(octPair.first){
+                m_octData = octPair.second;
+            } else {
+                continue;
+            }
 
             timeoutCounter = HsVideoTimeoutCount;
 

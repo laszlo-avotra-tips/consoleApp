@@ -20,8 +20,8 @@ public:
 
     void pushImageRenderingQueue(OctData od);
     void popImageRenderingQueue();
-    bool isImageRenderingQueue() const;
-    OctData  frontImageRenderingQueue();
+    bool isImageRenderingQueueGTE(size_t length) const;
+    std::pair<bool, OctData>  frontImageRenderingQueue();
 
 private:
     static TheGlobals* m_instance;

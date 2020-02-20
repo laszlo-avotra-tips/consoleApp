@@ -21,18 +21,15 @@ Producer::~Producer()
 void Producer::run()
 {
     auto sm = SignalManager::instance();
-//    auto tg = TheGlobals::instance();
     int count{0};
     m_producerIsRunning = true;
     while(m_producerIsRunning)
     {
         msleep(1);
-        if(sm->isSignalContainerEmpty()){
+        if(sm->isSignalQueueLengthLTE(2)){
             sm->loadFftSignalBuffers();
-//            LOG1(count)
             ++count;
         }
-//        QApplication::processEvents();
         yieldCurrentThread();
     }
 }

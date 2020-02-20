@@ -97,7 +97,7 @@ void FileDaq::run()
     {
         if(pmi->isPlayback() || pmi->isSingleStep())
         {
-            if(!smi->isSignalContainerEmpty()){
+            if(!smi->isSignalQueueEmpty()){
                 const auto& fftSignal = smi->frontOfSignalContainer();
                 smi->popSignalContainer();
                 signalTag = fftSignal.first;

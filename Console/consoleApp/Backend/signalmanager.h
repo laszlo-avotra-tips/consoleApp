@@ -9,8 +9,8 @@
 #include <memory>
 #include <queue>
 
-using SignalType = std::pair<int, std::pair<float*,float*>>; //<tag, <imag, real>>
-using SignalContainerType = std::queue<SignalType>;
+using FftSignalType = std::pair<int, std::pair<float*,float*>>; //<tag, <imag, real>>
+using FftSignalQueueType = std::queue<FftSignalType>;
 
 class SignalManager : public QObject
 {
@@ -28,19 +28,15 @@ public:
 
     bool loadFftSignalBuffers();
 
-    std::map<int,bool> getIsFftDataInitializedFromGpu() const;
-    void setIsFftDataInitializedFromGpu(bool isFftDataInitializedFromGpu, int index);
-
     bool open();
     void close();
 
-    bool isSignalContainerEmpty() const;
-    const SignalType &frontOfSignalContainer() const;
-    void  popSignalContainer();
-    void  pushSignalContainer(const SignalType& signal);
+    bool isSignalQueueEmpty() const;
+    bool isSignalQueueLengthLTE(size_t length) const;
 
-public slots:
-    void saveSignal(int count);
+    const FftSignalType &frontOfSignalContainer() const;
+    void  popSignalContainer();
+    void  pushSignalContainer(const FftSignalType& signal);
 
 signals:
     void signalSaved();
@@ -53,14 +49,12 @@ private:
     static SignalManager* m_instance;
     std::unique_ptr<float[]> m_fftRealData{nullptr};
     std::unique_ptr<float[]> m_fftImagData{nullptr};
-    const qint64 m_dataLen;
-    bool m_isSource;
+    const qint64 m_dataLen{592 * 2048};
     std::pair<QString,QString> m_fftFileName;
     QFile m_imagFile;
     QFile m_realFile;
     QString m_temp;
-    std::map<int,bool> m_isFftDataInitializedFromGpu;
-    SignalContainerType m_fftSignalContainer;
+    FftSignalQueueType m_fftSignalQueue;
     int m_signalTag{0};
 
 };

@@ -59,17 +59,19 @@ void TheGlobals::popImageRenderingQueue()
     m_imageRenderingQueue.pop();
 }
 
-bool TheGlobals::isImageRenderingQueue() const
+bool TheGlobals::isImageRenderingQueueGTE(size_t length) const
 {
-    return !m_imageRenderingQueue.empty();
+    return m_imageRenderingQueue.size() >= length;
 }
 
-OctData TheGlobals::frontImageRenderingQueue()
+std::pair<bool, OctData> TheGlobals::frontImageRenderingQueue()
 {
-    if(isImageRenderingQueue()){
-        return m_imageRenderingQueue.front();
+    std::pair<bool, OctData> retVal{false, OctData()};
+    if(isImageRenderingQueueGTE(2)){
+        retVal.second = m_imageRenderingQueue.front();
+        retVal.first = true;
     }
-    return m_octData[0];
+    return retVal;
 }
 
 void TheGlobals::freeOctData()
