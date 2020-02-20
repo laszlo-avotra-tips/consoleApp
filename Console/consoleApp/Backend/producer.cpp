@@ -1,5 +1,4 @@
 #include "producer.h"
-#include "theglobals.h"
 #include "signalmanager.h"
 #include "logger.h"
 

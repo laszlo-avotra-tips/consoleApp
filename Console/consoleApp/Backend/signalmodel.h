@@ -4,6 +4,10 @@
 #include <QObject>
 #include <CL/opencl.h>
 #include "defaults.h"
+#include "octFile.h"
+#include <queue>
+
+using OctData = OCTFile::OctData_t;
 
 class SignalModel : public QObject
 {
@@ -11,6 +15,14 @@ class SignalModel : public QObject
 
 public:
     static SignalModel* instance();
+
+    OCTFile::OctData_t * getOctData(int index);
+    void freeOctData();
+
+    void pushImageRenderingQueue(OctData od);
+    void popImageRenderingQueue();
+    bool isImageRenderingQueueGTE(size_t length) const;
+    std::pair<bool, OctData>  frontImageRenderingQueue();
 
     const cl_uint* iputLength() const;
 
@@ -44,12 +56,13 @@ public slots:
     void setBlackLevel(int blackLevel);
     void setWhiteLevel(int whiteLevel);
 
-public:
+public: //data
     const size_t m_oclLocalWorkSize[2]{16,16};
     const cl_uint m_oclWorkDimension{2};
     const size_t* m_oclGlobalWorkOffset{nullptr};
     const cl_uint m_numEventsInWaitlist{0};
 
+public: //functions
     cl_mem* getBeAndCeImageBuffer();
     void setPostBandcImageBuffer(const cl_mem &value);
 
@@ -83,11 +96,17 @@ public:
     cl_mem getWarpVideoBuffer();
     void setWarpVideoBuffer(const cl_mem &warpVideoBuffwr);
 
-private:
+private: //functions
     SignalModel();
+    void allocateOctData();
+
+private: //data
     static SignalModel* m_instance;
 
-private:
+    std::vector<OctData> m_octData;
+    QMutex m_imageRenderingMutex;
+    std::queue<OctData> m_imageRenderingQueue;
+
     cl_uint m_linesPerRevolution{592};
     //post fft
     const cl_uint m_iputLength{2048};//4 RescalingDataLength

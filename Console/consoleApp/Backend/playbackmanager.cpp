@@ -3,7 +3,6 @@
 
 #include "playbackmanager.h"
 #include "logger.h"
-#include "theglobals.h"
 
 
 PlaybackManager* PlaybackManager::m_instance(nullptr);

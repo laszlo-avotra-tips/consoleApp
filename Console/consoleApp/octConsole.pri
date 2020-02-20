@@ -92,7 +92,6 @@ HEADERS += \
     $$PWD/Frontend/Widgets/enginneringmodel.h \
     $$PWD/Backend/playbackmanager.h \
     $$PWD/Backend/filedaq.h \
-    $$PWD/Backend/theglobals.h \
     $$PWD/Backend/signalmanager.h \
     $$PWD/Backend/signalmodel.h
 
@@ -180,7 +179,6 @@ SOURCES += \
     $$PWD/Frontend/Widgets/enginneringmodel.cpp \
     $$PWD/Backend/playbackmanager.cpp \
     $$PWD/Backend/filedaq.cpp \
-    $$PWD/Backend/theglobals.cpp \
     $$PWD/Backend/signalmanager.cpp \
     $$PWD/Backend/signalmodel.cpp
 

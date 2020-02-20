@@ -3,7 +3,6 @@
 #include <QDataStream>
 #include "logger.h"
 #include <QTime>
-#include "theglobals.h"
 
 SignalManager* SignalManager::m_instance = nullptr;
 

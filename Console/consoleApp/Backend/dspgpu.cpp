@@ -23,7 +23,6 @@
 #include "buildflags.h"
 #include "deviceSettings.h"
 #include "depthsetting.h"
-#include "theglobals.h"
 #include "signalmanager.h"
 #include "playbackmanager.h"
 #include "signalmodel.h"
@@ -109,7 +108,8 @@ bool DSPGPU::processData(int index)
 {
     bool success(false);
 
-    pOctData = TheGlobals::instance()->getOctData(index);
+    pOctData = SignalModel::instance()->getOctData(index);
+
     if(pOctData){
         if( !transformData( pOctData->dispData, pOctData->videoData ) )   //Success if return true
         {
@@ -122,7 +122,8 @@ bool DSPGPU::processData(int index)
 
         success = true;
 
-        TheGlobals::instance()->pushImageRenderingQueue(*pOctData);
+        SignalModel::instance()->pushImageRenderingQueue(*pOctData);
+
     } else{
         LOG1(pOctData)
     }

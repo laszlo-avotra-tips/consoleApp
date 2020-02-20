@@ -6,7 +6,6 @@
 #include "dspgpu.h"
 #include "daqSettings.h"
 #include "deviceSettings.h"
-#include "theglobals.h"
 #include "signalmanager.h"
 #include "signalmodel.h"
 #include "producer.h"
@@ -137,15 +136,6 @@ QString FileDaq::getDaqLevel()
 long FileDaq::getRecordLength() const
 {
     return m_recordLenght;
-}
-
-bool FileDaq::getData()
-{
-//    auto tgi = TheGlobals::instance();
-//    tgi->updateRawDataIndex();
-//    tgi->incrementRawDataIndexCompleted();
-
-    return true;
 }
 
 void FileDaq::enableAuxTriggerAsTriggerEnable(bool)

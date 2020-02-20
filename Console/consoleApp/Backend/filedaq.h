@@ -27,7 +27,6 @@ public:
     long getRecordLength() const override;
 
     bool configure( void ) override;
-    bool getData( void ) override;
 
     void enableAuxTriggerAsTriggerEnable( bool ) override;
 

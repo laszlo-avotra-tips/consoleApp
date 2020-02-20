@@ -18,8 +18,8 @@
 #include "daqSettings.h"
 #include "deviceSettings.h"
 #include "userSettings.h"
-#include "theglobals.h"
 #include "signalmanager.h"
+#include "signalmodel.h"
 
 // shared data with DAQ thread
 const int FullCaseVideoWidth_px( 1024 );
@@ -130,9 +130,9 @@ void DaqDataConsumer::run( void )
          * DDC is not shut down between device changes so each frame
          * needs to get the latest device information.
          */
-        if(TheGlobals::instance()->isImageRenderingQueueGTE(2)){
+        if(SignalModel::instance()->isImageRenderingQueueGTE(2)){
 
-            const auto& octPair = TheGlobals::instance()->frontImageRenderingQueue();
+            const auto& octPair = SignalModel::instance()->frontImageRenderingQueue();
 
             if(octPair.first){
                 m_octData = octPair.second;
@@ -223,7 +223,7 @@ void DaqDataConsumer::run( void )
 
             // prepare for the next iteration
             prevDirection  = currDirection;
-            TheGlobals::instance()->popImageRenderingQueue();
+            SignalModel::instance()->popImageRenderingQueue();
         }
 
 

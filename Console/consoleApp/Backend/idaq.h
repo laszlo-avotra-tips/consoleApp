@@ -24,7 +24,6 @@ public:
     virtual IDAQ* getSignalSource() { return nullptr;}
 
     virtual bool configure( void ) = 0;
-    virtual bool getData( void ) = 0;
 
 signals:
     void sendWarning( QString );
