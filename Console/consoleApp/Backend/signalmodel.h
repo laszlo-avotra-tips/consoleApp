@@ -53,6 +53,10 @@ public:
     cl_float* whiteLevel();
 
 public slots:
+    void setAveraging(bool isOn);
+    void setInvertColors(bool isInverted);
+    void setFrameAverageWeights(int prev,int curr);
+
     void setBlackLevel(int blackLevel);
     void setWhiteLevel(int whiteLevel);
 

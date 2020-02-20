@@ -265,17 +265,6 @@ void DSPGPU::stop()
     m_dspIsRunning = false;
 }
 
-void DSPGPU::setAveraging(bool enable)
-{
-    SignalModel::instance()->setAverageVal(enable);
-}
-
-void DSPGPU::setFrameAverageWeights(int inPrevFrameWeight_percent, int inCurrFrameWeight_percent)
-{
-    SignalModel::instance()->setPrevFrameWeight_percent(inPrevFrameWeight_percent / 100.0f);
-    SignalModel::instance()->setCurrFrameWeight_percent(inCurrFrameWeight_percent / 100.0f);
-}
-
 void DSPGPU::setDisplayAngle(float angle)
 {
     SignalModel::instance()->setDisplayAngle(angle);

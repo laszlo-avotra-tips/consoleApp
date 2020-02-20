@@ -150,6 +150,22 @@ cl_float* SignalModel::whiteLevel()
     return &m_whiteLevel;
 }
 
+void SignalModel::setAveraging(bool isOn)
+{
+    setAverageVal(isOn);
+}
+
+void SignalModel::setInvertColors(bool isInverted)
+{
+    setIsInvertColors(isInverted);
+}
+
+void SignalModel::setFrameAverageWeights(int prev, int curr)
+{
+    setPrevFrameWeight_percent(prev * 0.01f);
+    setCurrFrameWeight_percent(curr * 0.01f);
+}
+
 void SignalModel::setWhiteLevel(int whiteLevel)
 {
     m_whiteLevel = whiteLevel;

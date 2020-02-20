@@ -41,8 +41,6 @@ signals:
 
 public slots:
     void stop( void );
-    void setAveraging( bool enable );
-    void setFrameAverageWeights( int inPrevFrameWeight_percent, int inCurrFrameWeight_percent );
     void setDisplayAngle( float angle );
 
 private:

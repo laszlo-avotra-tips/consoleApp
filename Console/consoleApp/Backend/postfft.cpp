@@ -74,6 +74,9 @@ bool PostFft::enqueueInputBuffers(const float *imag, const float *real)
 
 bool PostFft::enqueueCallKernelFunction()
 {
+    if(m_kernel){
+        setKernelArguments(m_kernel);
+    }
     cl_int clStatus = clEnqueueNDRangeKernel( m_openClCommandQueue, m_kernel,
                                               m_signalModel->m_oclWorkDimension,
                                               m_signalModel->m_oclGlobalWorkOffset,

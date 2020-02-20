@@ -144,8 +144,8 @@ void EngineeringController::onCountChanged(int count, int index)
         m_frameRate = 1000.f * delta / timeElapsed;
     }
 
-    qts1 << "Frame: [count = " << delta << ", index = " << index << "]";
-    qts2 << "Frame rate = " << m_frameRate << "[/s]";
+    qts1 << "Frame: count = " << delta << ", index = " << index << " ";
+    qts2 << "Frames/sec = " << int(m_frameRate);
 
     m_view->setStatMsg(msg[0], msg[1]);
 }

@@ -1754,7 +1754,6 @@ void frontend::configureHardware( void )
 //        {
 //            daq = new HighSpeedDAQ();
 
-//            connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), daq, SIGNAL(setFrameAverageWeights(int,int)) );
 //            connect( scene, SIGNAL(sendDisplayAngle(float)), daq, SIGNAL(handleDisplayAngle(float)) );
 //        }
 
@@ -1770,11 +1769,6 @@ void frontend::configureHardware( void )
 //        // frontend controls to daq
 //        connect( this,       SIGNAL( brightnessChange( int ) ),    daq,   SIGNAL( setBlackLevel( int ) ) );
 //        connect( this,       SIGNAL( contrastChange( int ) ),      daq,   SIGNAL( setWhiteLevel( int ) ) );
-
-//        // view option controls to daq
-//        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    daq,   SIGNAL( setAveraging( bool ) ) );
-//        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), daq,   SIGNAL( setInvertColors( bool ) ) );
-//        connect( viewOption, SIGNAL( updateCatheterView() ),       daq,   SIGNAL( updateCatheterView() ) );
 
 //        // view options to set color mode
 //        connect( viewOption, SIGNAL( setColorModeGray() ),         scene, SLOT( loadColorModeGray() ) );
@@ -1797,7 +1791,7 @@ void frontend::setIDAQ(IDAQ *object)
 {
     idaq = object;
 
-    deviceSettings &dev = deviceSettings::Instance();
+//    deviceSettings &dev = deviceSettings::Instance();
 
     IDAQ* signalSource(nullptr);
 
@@ -1809,11 +1803,9 @@ void frontend::setIDAQ(IDAQ *object)
 
     if(signalSource)
     {
-        if( dev.current()->isHighSpeed() )
-        {
-            connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), signalSource, SIGNAL(setFrameAverageWeights(int,int)) );
-            connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
-        }
+        connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), SignalModel::instance(), SLOT(setFrameAverageWeights(int,int)) );
+
+        connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
 
         // connect error/warning handlers before initializing the hardware
         connect( signalSource, SIGNAL( sendWarning( QString ) ),       this,    SLOT( handleWarning( QString ) ) );
@@ -1831,9 +1823,8 @@ void frontend::setIDAQ(IDAQ *object)
         connect( this,       SIGNAL( contrastChange( int ) ),      signalSource,  SIGNAL( setWhiteLevel( int ) ) );
 
         // view option controls to daq
-        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    signalSource,   SIGNAL( setAveraging( bool ) ) );
-        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), signalSource,   SIGNAL( setInvertColors( bool ) ) );
-        connect( viewOption, SIGNAL( updateCatheterView() ),       signalSource,   SIGNAL( updateCatheterView() ) );
+        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    SignalModel::instance(),   SLOT( setAveraging( bool ) ) );
+        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), SignalModel::instance(),   SLOT( setInvertColors( bool ) ) );
 
         // view options to set color mode
         connect( viewOption, SIGNAL( setColorModeGray() ),         scene, SLOT( loadColorModeGray() ) );

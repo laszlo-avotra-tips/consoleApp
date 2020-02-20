@@ -30,13 +30,9 @@ signals:
     void sendError( QString );
     void setBlackLevel( int );
     void setWhiteLevel( int );
-    void setAveraging( bool );
-    void setInvertColors( bool );
     void frameRate( int );
-    void setFrameAverageWeights( int, int );
     void handleDisplayAngle( float );
     void signalDaqResetToFrontend( void );
-    void updateCatheterView();
     void attenuateLaser( bool );
 
 public slots:
