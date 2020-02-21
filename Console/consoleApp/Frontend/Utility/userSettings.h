@@ -112,16 +112,8 @@ public:
     };
 
     void loadSettings();
-    void setBrightness(int level)
-    {
-        brightnessVal = level;
-        saveSettings();
-    }
-    void setContrast(int level)
-    {
-        contrastVal = level;
-        saveSettings();
-    }
+    void setBrightness(int level);
+    void setContrast(int level);
     void setLag(int lag)
     {
         lagAngleVal = lag;
@@ -159,8 +151,8 @@ public:
     }
     void setCatheterView( CatheterView_t view );
 
-    int  brightness()               { return brightnessVal; }
-    int  contrast()                 { return contrastVal; }
+    int  brightness();
+    int  contrast();
     int  lagAngle()                 { return lagAngleVal; }
     int  waterfallRate()            { return waterfallRateVal; }
     int  reticleBrightness()        { return reticleBrightnessVal; }

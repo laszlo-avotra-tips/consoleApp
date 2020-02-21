@@ -24,6 +24,9 @@ bool Warp::enqueueCallKernelFunction()
     if(!m_signalModel){
         return false;
     }
+    if(m_kernel){
+        setKernelArguments(m_kernel);
+    }
 
     cl_int clStatus = clEnqueueNDRangeKernel( m_openClCommandQueue,
                                               m_kernel,

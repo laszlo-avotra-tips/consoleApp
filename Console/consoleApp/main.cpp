@@ -219,9 +219,9 @@ int main(int argc, char *argv[])
 //                          &frontEndWindow,           SLOT(   handleError(QString) ) );
 //        QObject::connect( &sledSupport, SIGNAL( setDirButton( int ) ),
 //                          &frontEndWindow,           SLOT(   dirButton( int ) ) );
-//#if ENABLE_SLED_SUPPORT_BOARD_TESTING
+//
 //        QObject::connect( &frontEndWindow, SIGNAL( checkSledStatus() ), &sledSupport, SLOT( getAllStatus() ) );
-//#endif
+//
 //#else // !QT_NO_DEBUG
         LOG( INFO, "SLED support board: serial port control is DISABLED" )
 //#endif

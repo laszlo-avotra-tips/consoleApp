@@ -21,6 +21,7 @@
 #include "util.h"
 #include "windowmanager.h"
 #include "logger.h"
+#include <signalmodel.h>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QSplineSeries>
@@ -82,8 +83,8 @@ advancedView::advancedView( QWidget *parent )
 //    ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
 //    ui.fftDataPlot->enableLevels();
 
-//    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
-//    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
+    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
+    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
 
     ui.versionLabel->setText( getSoftwareVersionNumber() );
 
@@ -169,6 +170,7 @@ void advancedView::handleBrightnessChanged(int value)
 //lcv    ui.fftDataPlot->changeBrightness(value);
     emit brightnessChanged(value); // Let the DSP know.
 
+    SignalModel::instance()->setBlackLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( value );
 }
@@ -196,6 +198,7 @@ void advancedView::handleContrastChanged(int value)
     //lcv    ui.fftDataPlot->changeContrast(value);
     emit contrastChanged(value); // Let the DSP know.
 
+    SignalModel::instance()->setWhiteLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setContrast( value );
 }

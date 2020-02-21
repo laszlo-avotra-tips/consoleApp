@@ -124,9 +124,7 @@ signals:
     void checkLaserDiodeStatus();
     void forwardTurnDiodeOn();
     void forwardTurnDiodeOff();
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
     void checkSledStatus();
-#endif
     void announceClockingMode( int );
     void announceFirmwareVersions( QByteArray, QByteArray );
     void updateDeviceForSledSupport();
@@ -297,6 +295,10 @@ private slots:
     void testDisplays();
 
     void on_EgineeringButton_toggled(bool checked);
+
+    void on_horizontalSliderBrigtness_valueChanged(int value);
+
+    void on_horizontalSliderContrast_valueChanged(int value);
 
 protected:
      void closeEvent( QCloseEvent *event );

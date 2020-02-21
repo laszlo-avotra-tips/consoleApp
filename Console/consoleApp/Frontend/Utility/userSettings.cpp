@@ -69,10 +69,32 @@ void userSettings::loadSettings()
     invertOctColorEnabled       = settings->value( "image/useInvertOctColor",        DefaultUseInvertOctColor ).toBool();
 }
 
+void userSettings::setBrightness(int level)
+{
+    brightnessVal = level;
+    saveSettings();
+}
+
+void userSettings::setContrast(int level)
+{
+    contrastVal = level;
+    saveSettings();
+}
+
 void userSettings::setCatheterView(userSettings::CatheterView_t view)
 {
     catheterViewMode = view;
     SignalModel::instance()->setReverseDirection(isDistalToProximalView());
+}
+
+int userSettings::brightness()
+{
+    return brightnessVal;
+}
+
+int userSettings::contrast()
+{
+    return contrastVal;
 }
 
 bool userSettings::isDistalToProximalView()

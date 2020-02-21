@@ -145,9 +145,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     // Hide things that only appear on demand.
     playbackControlsVisible( false );
 
-    // Set up a hotkey for changing the scan sync slider
-    ui.brightnessLabel->setBuddy( ui.displayControlsSlider );
-    ui.displayControlsSlider->setSingleStep( 100 );
 
     ui.recordingLabel->hide();
 
@@ -181,8 +178,9 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     m_ec = new EngineeringController(this);
 
-//    connect( ui.displayControlsSlider, SIGNAL(lowerValueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
-//    connect( ui.displayControlsSlider, SIGNAL(upperValueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
+
+    connect( ui.horizontalSliderBrigtness, SIGNAL(valueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
+    connect( ui.horizontalSliderContrast, SIGNAL(valueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
 
 //    connect( advView, SIGNAL(brightnessChanged(int)), ui.displayControlsSlider, SLOT(setLowerValue(int)) );
 //    connect( advView, SIGNAL(contrastChanged(int)),   ui.displayControlsSlider, SLOT(setUpperValue(int)) );
@@ -195,9 +193,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     connect( advView, SIGNAL(turnDiodeOn()),           this, SIGNAL(forwardTurnDiodeOn()) );
     connect( advView, SIGNAL(turnDiodeOff()),          this, SIGNAL(forwardTurnDiodeOff()) );
     connect( advView, SIGNAL(checkLaserDiodeStatus()), this, SIGNAL(checkLaserDiodeStatus()) );
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
     connect( advView, SIGNAL(checkSledStatus()),       this, SIGNAL(checkSledStatus()) );
-#endif
 
     connect( this, SIGNAL(forwardDaqLevel(QString)),                         advView, SLOT(handleDaqLevel(QString)) );
     connect( this, SIGNAL(forwardLaserDiodeStatus(bool)),                    advView, SLOT(handleLaserDiodeStatus(bool)) );
@@ -206,6 +202,9 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     connect( &session, SIGNAL(sendError(QString)),   this, SLOT(handleError(QString)) );
     connect( &session, SIGNAL(sendWarning(QString)), this, SLOT(handleWarning(QString)) );
+
+    ui.horizontalSliderBrigtness->setValue(settings.brightness());
+    ui.horizontalSliderContrast->setValue(settings.contrast());
 
     docWindow = nullptr;
     auxMon = nullptr;
@@ -529,7 +528,7 @@ void frontend::setupScene( void )
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), viewOption, SLOT(handleDeviceChange()) );
-    connect( &dev, SIGNAL(deviceChanged()), ui.displayControlsSlider, SLOT(updateBrightnessContrastLimits()) );
+//    connect( &dev, SIGNAL(deviceChanged()), ui.displayControlsSlider, SLOT(updateBrightnessContrastLimits()) );
 
     connect( scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
 
@@ -2765,4 +2764,14 @@ void frontend::on_EgineeringButton_toggled(bool checked)
 {
     m_ec->setViewPosition(ui.capturesGroupBox->x());
     m_ec->showOrHideView(checked);
+}
+
+void frontend::on_horizontalSliderBrigtness_valueChanged(int value)
+{
+
+}
+
+void frontend::on_horizontalSliderContrast_valueChanged(int value)
+{
+
 }

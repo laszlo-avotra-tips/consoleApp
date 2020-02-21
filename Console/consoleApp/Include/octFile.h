@@ -37,14 +37,14 @@ public:
 
     struct OctData_t
     {
-        unsigned long  frameCount;
-        unsigned long  timeStamp;
-        unsigned short milliseconds;
-        unsigned short encoderPosition;  // XXX: hijack for fast OCT direction bit
-        unsigned short *advancedViewIfftData;         // used for Advanced View only
-        unsigned short *advancedViewFftData;         // used for Advanced View, data storage
-        unsigned char  *dispData;        // used for display
-        unsigned char  *videoData;       // High Speed only: video frame with appropriate rotation built in
+        unsigned long  frameCount{0};
+        unsigned long  timeStamp{0};
+        unsigned short milliseconds{0};
+        unsigned short encoderPosition{0};  // XXX: hijack for fast OCT direction bit
+        unsigned short *advancedViewIfftData{nullptr};         // used for Advanced View only
+        unsigned short *advancedViewFftData{nullptr};         // used for Advanced View, data storage
+        unsigned char  *dispData{nullptr};        // used for display
+        unsigned char  *videoData{nullptr};       // High Speed only: video frame with appropriate rotation built in
     };
 
     OCTFile( unsigned short numLinesPerRev ); // constructor for the Console

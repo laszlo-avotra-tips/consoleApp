@@ -21,6 +21,10 @@ bool BeAndCe::enqueueCallKernelFunction()
 
     const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(m_signalModel->linesPerRevolution())};
 
+    if(m_kernel){
+        setKernelArguments(m_kernel);
+    }
+
     cl_int clStatus = clEnqueueNDRangeKernel( m_openClCommandQueue,
                                               m_kernel,
                                               m_signalModel->m_oclWorkDimension,
