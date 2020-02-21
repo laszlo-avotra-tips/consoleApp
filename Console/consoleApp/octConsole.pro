@@ -7,15 +7,16 @@ TARGET = octConsole
 
 TEMPLATE = app
 
-QT += sql xml charts
+QT += charts
+QT += sql xml
 
 # XXX this needs to be here to link even though we do not
 # have any openGL code.  QtSingleApplication::sendMessage
 # craps out with an unresolved external symbol (SendMessageTimeoutW)
 # It's all a little odd.
-win32 {
-   QT += opengl
-}
+#win32 {
+#   QT += opengl
+#}
 
 CONFIG += c++14
 
@@ -28,9 +29,9 @@ DEFINES += QT_XML_LIB QT_SQL_LIB
     OPENCL_DIR = "C:/Program Files (x86)/IntelSWTools/sw_dev_tools/OpenCL/sdk"
 #}
 
-    CUDA_DIR1 = "C:\Users\lvincze\Documents\GitHub\cudaUnitTest\cudaFFT"
-    CUDA_DIR2 = "C:\CUDA\lib\x64"
-    CUDA_DIR3 = "C:\Users\lvincze\Documents\GitHub\bin\win64"
+#    CUDA_DIR1 = "C:\Users\lvincze\Documents\GitHub\cudaUnitTest\cudaFFT"
+#    CUDA_DIR2 = "C:\CUDA\lib\x64"
+#    CUDA_DIR3 = "C:\Users\lvincze\Documents\GitHub\bin\win64"
 
 win32 {
    # Turn on additional settings for building the Windows release
@@ -62,8 +63,8 @@ win32 {
      INCLUDEPATH *= $$CUDA_DIR1
 
     LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
-    LIBS += -L$$CUDA_DIR3/Debug -lcudaFFT
-    LIBS += -L$$CUDA_DIR2 -lcudart -lcufft
+#    LIBS += -L$$CUDA_DIR3/Debug -lcudaFFT
+#    LIBS += -L$$CUDA_DIR2 -lcudart -lcufft
 
 
     LIBS +=                                       \
@@ -99,9 +100,9 @@ RCC_DIR += ./Frontend/GeneratedFiles
 #Include file(s)
 include( $${TARGET}.pri )
 
-CONFIG( release ) {
-    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
-}
+#CONFIG( release ) {
+#    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
+#}
 
 RESOURCES += \
     OpenClResources.qrc
