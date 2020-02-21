@@ -20,6 +20,12 @@
 #include "buildflags.h"
 #include "util.h"
 #include "windowmanager.h"
+#include "logger.h"
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QSplineSeries>
+
+QT_CHARTS_USE_NAMESPACE
 
 
 /*
@@ -35,6 +41,11 @@ advancedView::advancedView( QWidget *parent )
     timer.start();
 
     ui.setupUi(this);
+
+    initLinePlot();
+
+//    m_linePlot
+
 //lcv
 //    // Set up the raw data display
 //    ui.rawDataPlot->init( MaxSampleVal );
@@ -102,10 +113,6 @@ advancedView::advancedView( QWidget *parent )
     ui.evoaControlWidget->show();
 
     ui.swEncoder->hide();
-
-#if !ENABLE_SLED_SUPPORT_BOARD_TESTING
-    ui.getSledStatusButton->hide();
-#endif
 }
 
 /*
@@ -125,7 +132,7 @@ advancedView::~advancedView()
  */
 void advancedView::addScanline( const OCTFile::OctData_t *pData )
 {
-    LOG1(pData)
+//    LOG1(pData)
 //    if( pData->advancedViewIfftData )
 //    {
 //        ui.rawDataPlot->plotData( pData->advancedViewIfftData );
@@ -166,6 +173,18 @@ void advancedView::handleBrightnessChanged(int value)
     settings.setBrightness( value );
 }
 
+void advancedView::showRecordingFullCase(bool state)
+{
+    if( state )
+    {
+        ui.fullCaseRecordingValueLabel->setText( "ENABLED" );
+    }
+    else
+    {
+        ui.fullCaseRecordingValueLabel->setText( "DISABLED" );
+    }
+}
+
 /*
  * on_contrastSlider_valueChanged
  *
@@ -174,7 +193,7 @@ void advancedView::handleBrightnessChanged(int value)
  */
 void advancedView::handleContrastChanged(int value)
 {
-//lcv    ui.fftDataPlot->changeContrast(value);
+    //lcv    ui.fftDataPlot->changeContrast(value);
     emit contrastChanged(value); // Let the DSP know.
 
     userSettings &settings = userSettings::Instance();
@@ -365,7 +384,6 @@ void advancedView::on_evoaSetDefaultButton_clicked()
 }
 
 
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
 /*
  * on_getSledStatusButton_clicked
  */
@@ -373,7 +391,74 @@ void advancedView::on_getSledStatusButton_clicked()
 {
     emit checkSledStatus();
 }
-#endif
+
+void advancedView::initLinePlot()
+{
+    auto& rawFrame = ui.rawDataPlot;
+    auto& fftFrame = ui.fftDataPlot;
+
+//    LOG2(rawFrame->height(), rawFrame->width())
+    LOG2(fftFrame->height(), fftFrame->width())
+
+//    m_linePlot = std::make_unique<QChart>();
+
+//![1]
+    QSplineSeries *series = new QSplineSeries();
+//![1]
+
+//![2]
+    QList<QPointF> valueList
+    {
+        {0,4},
+        {200,6},
+        {400,8},
+        {600,4},
+        {800,2},
+        {1000,1},
+    };
+    series->append(valueList);
+    QPen pen;
+//    pen.setWidth(4);
+//    pen.setColor("orange");
+    series->setPen(pen);
+//    series->append(0, 6);
+//    series->append(2, 4);
+//    series->append(3, 8);
+//    series->append(7, 4);
+//    series->append(10, 5);
+//    *series << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
+//![2]
+
+//![3]
+    QChart *chart = new QChart();
+    chart->legend()->hide();
+    chart->addSeries(series);
+    chart->createDefaultAxes();
+    chart->setTheme(QChart::ChartThemeDark);
+    QBrush brush("yellow");
+    chart->setTitle("Energy Spectrum");
+    chart->setTitleBrush(brush);
+    QFont font("courier new",14);
+    font.setBold(true);
+
+    chart->setTitleFont(font);
+//![3]
+
+//![4]
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+//![4]
+
+    QVBoxLayout* vboxLayout = new QVBoxLayout(this);
+
+    vboxLayout->addWidget(chartView);
+    fftFrame->setLayout(vboxLayout);
+
+    auto marg = chart->margins();
+    LOG2(marg.top(), marg.bottom());
+
+//    rawFrame->setLayout(vboxLayout);
+}
 
 /*
  * Update clocking status label

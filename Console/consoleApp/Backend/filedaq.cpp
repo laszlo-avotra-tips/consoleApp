@@ -103,8 +103,9 @@ void FileDaq::run()
                 ++signalCount;
                 pmi->setCount(signalCount, signalTag);
                 m_dsp->processFftBuffers(signalTag, fftSignal.second.first, fftSignal.second.second);
+                msleep(PlaybackManager::instance()->playbackLoopSleep());
             }
-            msleep(PlaybackManager::instance()->playbackLoopSleep());
+            yieldCurrentThread();
         }
 
         // threads do not handle events by default (timer expiration). Do so explicitly.
