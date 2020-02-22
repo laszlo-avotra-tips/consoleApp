@@ -34,7 +34,7 @@ public:
     void disableFullCaseRecording( void ) { isAlwaysRecordFullCaseOn = false; }
 
 signals:
-    void updateAdvancedView( const OCTFile::OctData_t *data );
+    void updateAdvancedView( );
     void clipRecordingStopped();
     void directionOfRotation( directionTracker::Direction_T );
     void alwaysRecordingFullCase(bool);

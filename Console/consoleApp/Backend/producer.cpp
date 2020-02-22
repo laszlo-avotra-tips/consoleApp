@@ -24,7 +24,7 @@ void Producer::run()
     m_producerIsRunning = true;
     while(m_producerIsRunning)
     {
-        msleep(1);
+//        msleep(1);
         if(sm->isSignalQueueLengthLTE(2)){
             sm->loadFftSignalBuffers();
             ++count;

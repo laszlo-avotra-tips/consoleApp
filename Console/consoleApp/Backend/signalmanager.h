@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QString>
 #include <QFile>
+#include <QList>
+#include <QPointF>
+#include <QMutex>
 
 #include <map>
 #include <memory>
@@ -23,6 +26,8 @@ public:
 
     float *getFftImagDataPointer() const;
 
+    const QList<QPointF>& getAdvancedViewFftPlotList() const;
+
     size_t getFftMemSize() const;
     bool isFftSource()const;
 
@@ -33,10 +38,13 @@ public:
 
     bool isSignalQueueEmpty() const;
     bool isSignalQueueLengthLTE(size_t length) const;
+    bool isSignalQueueLengthGTE(size_t length) const;
 
     const FftSignalType &frontOfSignalContainer() const;
     void  popSignalContainer();
     void  pushSignalContainer(const FftSignalType& signal);
+
+    QMutex* getMutex();
 
 signals:
     void signalSaved();
@@ -44,6 +52,7 @@ signals:
 
 private:
     SignalManager();
+    void updateAdvancedViewFftPlotList();
 
 private:
     static SignalManager* m_instance;
@@ -56,6 +65,8 @@ private:
     QString m_temp;
     FftSignalQueueType m_fftSignalQueue;
     int m_signalTag{0};
+    QList<QPointF> m_advancedViewFftPlotList;
+    QMutex m_mutex;
 
 };
 

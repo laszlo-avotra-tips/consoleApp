@@ -27,6 +27,25 @@ SignalManager::SignalManager()
 
 }
 
+void SignalManager::updateAdvancedViewFftPlotList()
+{
+    QMutexLocker guard(&m_mutex);
+    if(m_fftImagData && m_fftRealData){
+        m_advancedViewFftPlotList.clear();
+        for(size_t i = 0; i < 1024; ++i){
+            const auto& imag = m_fftImagData[i];
+            const auto& real = m_fftRealData[i];
+            const float amplitude = log10f(imag*imag + real*real);
+            m_advancedViewFftPlotList.push_back(QPointF(i,amplitude));
+        }
+    }
+}
+
+QMutex *SignalManager::getMutex()
+{
+    return &m_mutex;
+}
+
 bool SignalManager::open()
 {
     bool success{false};
@@ -53,6 +72,11 @@ bool SignalManager::isSignalQueueEmpty() const
 bool SignalManager::isSignalQueueLengthLTE(size_t length) const
 {
     return m_fftSignalQueue.size() <= length;
+}
+
+bool SignalManager::isSignalQueueLengthGTE(size_t length) const
+{
+    return m_fftSignalQueue.size() >= length;
 }
 
 const FftSignalType& SignalManager::frontOfSignalContainer() const
@@ -85,7 +109,6 @@ bool SignalManager::loadFftSignalBuffers()
                 durationTimer.start();
     }
 
-
     auto imagDataSize = m_imagFile.read(reinterpret_cast<char*>(m_fftImagData.get()), len * int(sizeof(float)));
 
     if(isLogging){
@@ -110,6 +133,10 @@ bool SignalManager::loadFftSignalBuffers()
 
     FftSignalType thisFft{m_signalTag,{m_fftImagData.get(), m_fftRealData.get()}};
     pushSignalContainer(thisFft);
+//    if(m_signalTag % 8 == 0)
+    {
+        updateAdvancedViewFftPlotList();
+    }
     emit signalLoaded();
     ++m_signalTag;
 
@@ -129,6 +156,11 @@ bool SignalManager::isFftSource() const
 float *SignalManager::getFftImagDataPointer() const
 {
     return m_fftImagData.get();
+}
+
+const QList<QPointF> &SignalManager::getAdvancedViewFftPlotList() const
+{
+    return m_advancedViewFftPlotList;
 }
 
 float *SignalManager::getFftRealDataPointer() const

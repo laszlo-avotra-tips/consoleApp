@@ -367,7 +367,7 @@ void frontend::init( void )
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
     connect( viewOption, SIGNAL(sendManualLagAngle(double)), this, SLOT(handleManualLagAngle(double)) );
 
-    connect( consumer, SIGNAL(updateAdvancedView(const OCTFile::OctData_t *)), advView, SLOT(addScanline(const OCTFile::OctData_t *)) );
+    connect( consumer, SIGNAL(updateAdvancedView()), advView, SLOT(addScanline()) );
     connect( this, SIGNAL(recordBackgroundData(bool)),  consumer, SLOT(recordBackgroundData(bool)) );
     connect( this, SIGNAL(tagEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
@@ -2764,14 +2764,4 @@ void frontend::on_EgineeringButton_toggled(bool checked)
 {
     m_ec->setViewPosition(ui.capturesGroupBox->x());
     m_ec->showOrHideView(checked);
-}
-
-void frontend::on_horizontalSliderBrigtness_valueChanged(int value)
-{
-
-}
-
-void frontend::on_horizontalSliderContrast_valueChanged(int value)
-{
-
 }

@@ -26,6 +26,7 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QSplineSeries>
 #include <algorithm>
+#include <signalmanager.h>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -41,47 +42,6 @@ advancedView::advancedView( QWidget *parent )
     ui.setupUi(this);
 
     initLinePlot();
-
-//    m_linePlot
-
-//lcv
-//    // Set up the raw data display
-//    ui.rawDataPlot->init( MaxSampleVal );
-//    QwtText rawBottomText( "Samples" );
-//    rawBottomText.setColor( TitleColor );
-//    ui.rawDataPlot->setAxisTitle( QwtPlot::xBottom, rawBottomText );
-//    ui.rawDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
-//    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxSampleVal );
-
-//    QwtText rawLeftText( "ADC Values" );
-//    rawLeftText.setColor( TitleColor );
-//    ui.rawDataPlot->setAxisTitle( QwtPlot::yLeft, rawLeftText );
-//    ui.rawDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
-//    ui.rawDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
-//    ui.rawDataPlot->setAxisScale( QwtPlot::yLeft, MinADCVal, MaxADCVal );
-
-//    // Set up the FFT display
-//    ui.fftDataPlot->init( MaxDepthVal );
-//    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxDepthVal );
-//    QwtText fftBottomText( "Depth" );
-//    ui.fftDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-//    ui.rawDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-
-//    fftBottomText.setColor( TitleColor );
-//    ui.fftDataPlot->setAxisTitle( QwtPlot::xBottom, fftBottomText );
-//    ui.fftDataPlot->axisTitle( QwtPlot::xBottom ).setColor( TitleColor );
-//    ui.fftDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
-
-//    QwtText fftLeftText( "'dB'" );  // the data is in dB but we're not really displaying that
-//    fftLeftText.setColor( TitleColor );
-//    ui.fftDataPlot->setAxisTitle( QwtPlot::yLeft, fftLeftText );
-//    ui.fftDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
-//    ui.fftDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
-//    ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
-//    ui.fftDataPlot->enableLevels();
-
-//    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
-//    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
 
     ui.versionLabel->setText( getSoftwareVersionNumber() );
 
@@ -128,20 +88,10 @@ advancedView::~advancedView()
  * maintain interactive performance, this call simply updates their
  * data cache.
  */
-void advancedView::addScanline( const OCTFile::OctData_t *pData )
+void advancedView::addScanline()
 {
-//    LOG1(pData)
-//    if( pData->advancedViewIfftData )
-//    {
-//        ui.rawDataPlot->plotData( pData->advancedViewIfftData );
-//    }
 
-//    if( ( pData->advancedViewFftData ) )
-//    {
-//        ui.fftDataPlot->plotData( pData->advancedViewFftData );
-//    }
-
-    updatePlot(pData);
+    updatePlot();
 
     // Rough updates/second counter
 
@@ -396,7 +346,7 @@ void advancedView::on_getSledStatusButton_clicked()
 
 void advancedView::initLinePlot()
 {
-    auto& rawFrame = ui.rawDataPlot;
+//    auto& rawFrame = ui.rawDataPlot;
     auto& fftFrame = ui.fftDataPlot;
 
 //    LOG2(rawFrame->height(), rawFrame->width())
@@ -412,10 +362,15 @@ void advancedView::initLinePlot()
 //![2]
     QList<QPointF> values;
     for(size_t i = 0; i < 1024; ++i){
-        values.push_back(QPointF(i, 64*i));
+        if(i%3 == 0){
+            values.push_back(QPointF(i, 3));
+        }else{
+            values.push_back(QPointF(i, 17));
+        }
     }
     series->append(values);
     QPen pen;
+    pen.setWidth(1);
     series->setPen(pen);
 //![2]
 
@@ -426,7 +381,11 @@ void advancedView::initLinePlot()
     chart->addSeries(series);
     chart->createDefaultAxes();
     chart->setTheme(QChart::ChartThemeDark);
-    QBrush brush("yellow");
+//    chart->setTheme(QChart::ChartThemeBlueIcy);
+//    chart->setTheme(QChart::ChartThemeQt);
+//    chart->setTheme(QChart::ChartThemeHighContrast);
+//    chart->setTheme(QChart::ChartThemeBlueNcs);
+    QBrush brush("white");
     chart->setTitle("Energy Spectrum");
     chart->setTitleBrush(brush);
     QFont font("courier new",14);
@@ -451,14 +410,16 @@ void advancedView::initLinePlot()
     //    rawFrame->setLayout(vboxLayout);
 }
 
-void advancedView::updatePlot(const OCTFile::OctData_t *pData)
+void advancedView::updatePlot()
 {
-    quint16* fftVal = pData->advancedViewFftData;
-    QList<QPointF> values;
-    for(size_t i = 0; i < 1024; ++i){
-        values.push_back(QPointF(i,fftVal[i]));
+    QMutexLocker quard(SignalManager::instance()->getMutex());
+
+    const auto& values = SignalManager::instance()->getAdvancedViewFftPlotList();
+    if(m_lineSeries->pointsVector().isEmpty()){
+        m_lineSeries->append(values);
+    } else {
+        m_lineSeries->replace(values);
     }
-    m_lineSeries->replace(values);
 }
 
 /*

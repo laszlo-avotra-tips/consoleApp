@@ -296,10 +296,6 @@ private slots:
 
     void on_EgineeringButton_toggled(bool checked);
 
-    void on_horizontalSliderBrigtness_valueChanged(int value);
-
-    void on_horizontalSliderContrast_valueChanged(int value);
-
 protected:
      void closeEvent( QCloseEvent *event );
      bool eventFilter( QObject *watched, QEvent *event );

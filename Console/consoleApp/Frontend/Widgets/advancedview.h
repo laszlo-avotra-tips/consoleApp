@@ -49,7 +49,7 @@ signals:
     void checkSledStatus();
 
 public slots:
-    void addScanline( const OCTFile::OctData_t *pData );
+    void addScanline();
     void handleDaqLevel( QString );
     void handleLaserDiodeStatus( bool );
     void handleRawDataLengthChange( int size );
@@ -74,7 +74,7 @@ private slots:
 
 private:
     void initLinePlot();
-    void updatePlot(const OCTFile::OctData_t *pData);
+    void updatePlot();
 
 private:
     Ui::advancedViewClass ui;

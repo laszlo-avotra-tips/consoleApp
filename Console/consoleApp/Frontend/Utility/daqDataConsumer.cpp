@@ -142,13 +142,13 @@ void DaqDataConsumer::run( void )
 
             timeoutCounter = HsVideoTimeoutCount;
 
-//lcv            if( advViewInThread->isVisible() )
+            if( advViewInThread->isVisible() )
             {
                 /*
                  *  Send raw and FFT data to the Advanced View plots. This MUST
                  *  be done via signal or the shared pointer does strange things.
                  */
-                emit updateAdvancedView( &m_octData );
+                emit updateAdvancedView( );
             }
 
             // copy frame data into the shared pointer for this line
