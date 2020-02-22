@@ -24,6 +24,7 @@
 
 namespace QtCharts{
 class QChart;
+class QLineSeries;
 }
 
 class advancedView : public QWidget
@@ -73,6 +74,7 @@ private slots:
 
 private:
     void initLinePlot();
+    void updatePlot(const OCTFile::OctData_t *pData);
 
 private:
     Ui::advancedViewClass ui;
@@ -94,4 +96,4 @@ private:
     const QFont AxisFont {"DinPRO-medium", 15};
 
     std::unique_ptr<QtCharts::QChart> m_linePlot;
-};
+    std::unique_ptr<QtCharts::QLineSeries> m_lineSeries;};

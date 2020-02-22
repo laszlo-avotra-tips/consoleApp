@@ -142,7 +142,7 @@ void DaqDataConsumer::run( void )
 
             timeoutCounter = HsVideoTimeoutCount;
 
-            if( advViewInThread->isVisible() )
+//lcv            if( advViewInThread->isVisible() )
             {
                 /*
                  *  Send raw and FFT data to the Advanced View plots. This MUST

@@ -25,6 +25,7 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QSplineSeries>
+#include <algorithm>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -35,10 +36,6 @@ QT_CHARTS_USE_NAMESPACE
 advancedView::advancedView( QWidget *parent )
     : QWidget( parent )
 {
-    // line/sec counting variables
-    lineCount    = 0;
-    lastLagValue = 0;
-    diodeIsOn    = false;
     timer.start();
 
     ui.setupUi(this);
@@ -83,8 +80,8 @@ advancedView::advancedView( QWidget *parent )
 //    ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
 //    ui.fftDataPlot->enableLevels();
 
-    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
-    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
+//    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
+//    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
 
     ui.versionLabel->setText( getSoftwareVersionNumber() );
 
@@ -144,7 +141,10 @@ void advancedView::addScanline( const OCTFile::OctData_t *pData )
 //        ui.fftDataPlot->plotData( pData->advancedViewFftData );
 //    }
 
+    updatePlot(pData);
+
     // Rough updates/second counter
+
     lineCount++;
 
     if( timer.elapsed() > 1000 )
@@ -167,7 +167,6 @@ void advancedView::addScanline( const OCTFile::OctData_t *pData )
  */
 void advancedView::handleBrightnessChanged(int value)
 {
-//lcv    ui.fftDataPlot->changeBrightness(value);
     emit brightnessChanged(value); // Let the DSP know.
 
     SignalModel::instance()->setBlackLevel(value);
@@ -403,29 +402,26 @@ void advancedView::initLinePlot()
 //    LOG2(rawFrame->height(), rawFrame->width())
     LOG2(fftFrame->height(), fftFrame->width())
 
-//    m_linePlot = std::make_unique<QChart>();
+    m_linePlot = std::make_unique<QChart>();
+    m_lineSeries = std::make_unique<QLineSeries>();
 
 //![1]
-    QSplineSeries *series = new QSplineSeries();
+    auto series = m_lineSeries.get();
 //![1]
 
 //![2]
-    QList<QPointF> valueList
-    {
-        {0,4},
-        {200,6},
-        {400,8},
-        {600,4},
-        {800,2},
-        {1000,1},
-    };
-    series->append(valueList);
+    QList<QPointF> values;
+    for(size_t i = 0; i < 1024; ++i){
+        values.push_back(QPointF(i, 64*i));
+    }
+    series->append(values);
     QPen pen;
     series->setPen(pen);
 //![2]
 
 //![3]
-    QChart *chart = new QChart();
+    auto chart = m_linePlot.get();//new QChart();
+
     chart->legend()->hide();
     chart->addSeries(series);
     chart->createDefaultAxes();
@@ -452,7 +448,17 @@ void advancedView::initLinePlot()
     auto marg = chart->margins();
     LOG2(marg.top(), marg.bottom());
 
-//    rawFrame->setLayout(vboxLayout);
+    //    rawFrame->setLayout(vboxLayout);
+}
+
+void advancedView::updatePlot(const OCTFile::OctData_t *pData)
+{
+    quint16* fftVal = pData->advancedViewFftData;
+    QList<QPointF> values;
+    for(size_t i = 0; i < 1024; ++i){
+        values.push_back(QPointF(i,fftVal[i]));
+    }
+    m_lineSeries->replace(values);
 }
 
 /*
