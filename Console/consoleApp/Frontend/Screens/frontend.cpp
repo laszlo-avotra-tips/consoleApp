@@ -182,8 +182,8 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     connect( ui.horizontalSliderBrigtness, SIGNAL(valueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
     connect( ui.horizontalSliderContrast, SIGNAL(valueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
 
-//    connect( advView, SIGNAL(brightnessChanged(int)), ui.displayControlsSlider, SLOT(setLowerValue(int)) );
-//    connect( advView, SIGNAL(contrastChanged(int)),   ui.displayControlsSlider, SLOT(setUpperValue(int)) );
+    connect( advView, SIGNAL(brightnessChanged(int)), ui.horizontalSliderBrigtness , SLOT(setValue(int)) );
+    connect( advView, SIGNAL(contrastChanged(int)),   ui.horizontalSliderContrast, SLOT(setValue(int)) );
 
 //    connect( this,    SIGNAL(brightnessChange(int)), ui.displayControlsSlider, SLOT(setLowerPosition(int)) );
 //    connect( this,    SIGNAL(contrastChange(int)),   ui.displayControlsSlider, SLOT(setUpperPosition(int)) );

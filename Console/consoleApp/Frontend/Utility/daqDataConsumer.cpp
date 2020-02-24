@@ -485,11 +485,12 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
         }
 
         // Set the new brightness at the minimum plus 20% of the range of max to min.
-        int newBrightness = minVal + int(float( RelaxationParameter) * float( maxVal - minVal ) );
+        int newBrightness = 25; //minVal + int(float( RelaxationParameter) * float( maxVal - minVal ) );
+        int newContrast = 235; //maxVal;
 
         // Adjustment algorithm: Set the Brightness and Contrast to Min and Max, respectively.
         emit updateBrightness( newBrightness );
-        emit updateContrast(   maxVal );
+        emit updateContrast( newContrast );
     }
 }
 
