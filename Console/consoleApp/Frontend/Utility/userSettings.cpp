@@ -84,7 +84,7 @@ void userSettings::setContrast(int level)
 void userSettings::setCatheterView(userSettings::CatheterView_t view)
 {
     catheterViewMode = view;
-    SignalModel::instance()->setReverseDirection(isDistalToProximalView());
+    SignalModel::instance()->setIsDistalToProximalView(isDistalToProximalView());
 }
 
 int userSettings::brightness()

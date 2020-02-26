@@ -70,12 +70,12 @@ bool Warp::setKernelArguments(cl_kernel kernel)
 
     clStatus |= clSetKernelArg( kernel,  1, sizeof(cl_mem), &m_warpImageBuffer );
     clStatus |= clSetKernelArg( kernel,  2, sizeof(cl_mem), &m_warpVideoBuffer );
-    clStatus |= clSetKernelArg( kernel,  3, sizeof(cl_float),  smi->getCatheterRadiusUm() );
-    clStatus |= clSetKernelArg( kernel,  4, sizeof(cl_float),  smi->getInternalImagingMaskPx() );
-    clStatus |= clSetKernelArg( kernel,  5, sizeof(cl_float),  smi->getStandardDehthMm() );
-    clStatus |= clSetKernelArg( kernel,  6, sizeof(cl_int),    smi->getStandardDehthS() );
+    clStatus |= clSetKernelArg( kernel,  3, sizeof(cl_float),  smi->getCatheterRadius_um() );
+    clStatus |= clSetKernelArg( kernel,  4, sizeof(cl_float),  smi->getInternalImagingMask_px() );
+    clStatus |= clSetKernelArg( kernel,  5, sizeof(cl_float),  smi->getImagingDehthNormal_mm() );
+    clStatus |= clSetKernelArg( kernel,  6, sizeof(cl_int),    smi->getALineLengthNormal_px() );
     clStatus |= clSetKernelArg( kernel,  7, sizeof(cl_float),  smi->getDisplayAngle() );
-    clStatus |= clSetKernelArg( kernel,  8, sizeof(cl_int),    smi->getReverseDirection() );
+    clStatus |= clSetKernelArg( kernel,  8, sizeof(cl_int),    smi->getIsDistalToProximalView() );
     clStatus |= clSetKernelArg( kernel,  9, sizeof(int),    &SectorWidth_px );
     clStatus |= clSetKernelArg( kernel, 10, sizeof(int),    &SectorHeight_px );
     clStatus |= clSetKernelArg( kernel, 11, sizeof(cl_float), smi->getFractionOfCanvas()  );

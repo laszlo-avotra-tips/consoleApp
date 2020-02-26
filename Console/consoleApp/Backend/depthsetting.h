@@ -22,7 +22,7 @@ public:
     int   getNumReticles( void )         { return numReticles; }
     int   getPixelsPerMm( void )         { return pixelsPerMm; }
     int   getCatheterEdgePosition( void ){ return catheterEdgePosition; }
-    float getFractionOfCanvas( void );
+    float getFractionOfCanvas( void ) const;
     void  calculateReticles( void );
     float  getMinVal( void ) { return minDepth_px; }
     float  getMaxVal( void ) { return maxDepth_px; }
@@ -35,7 +35,7 @@ private:
     float minDepth_px;
     float maxDepth_px;
     float imagingDepth_S;
-    float fractionOfCanvas;
+    const float fractionOfCanvas;
 
     // reticle vars
     int numReticles;

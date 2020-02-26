@@ -26,7 +26,7 @@ float depthSetting::getDepth_S()
     return imagingDepth_S;
 }
 
-float depthSetting::getFractionOfCanvas()
+float depthSetting::getFractionOfCanvas() const
 {
     return fractionOfCanvas;
 }
@@ -34,7 +34,7 @@ float depthSetting::getFractionOfCanvas()
 /*
  * Constructor
  */
-depthSetting::depthSetting()
+depthSetting::depthSetting() : fractionOfCanvas(0.475f)
 {
     /*
      * Number of pixels to display beyond the imaging mask.
@@ -50,7 +50,7 @@ depthSetting::depthSetting()
     maxDepth_px = 600; // 600 is ~3.75mm
 
     // 0.475 out of 0.50 is used in Warp.CL, that extra 0.025 is reserved for cardinal tick marks.
-    fractionOfCanvas = 0.475f;
+//    fractionOfCanvas = 0.475f;
     SignalModel::instance()->setFractionOfCanvas(fractionOfCanvas);
 
     imagingDepth_S = minDepth_px; // set the current depth

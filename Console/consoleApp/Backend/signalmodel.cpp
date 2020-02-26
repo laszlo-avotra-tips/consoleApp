@@ -75,14 +75,14 @@ void SignalModel::setFractionOfCanvas(const cl_float &fractionOfCanvas)
     m_fractionOfCanvas = fractionOfCanvas;
 }
 
-cl_int* SignalModel::getReverseDirection()
+cl_int* SignalModel::getIsDistalToProximalView()
 {
-    return &m_reverseDirection;
+    return &m_isDistalToProximalView;
 }
 
-void SignalModel::setReverseDirection(const cl_int &reverseDirection)
+void SignalModel::setIsDistalToProximalView(const cl_int &isDistalToProximalView)
 {
-    m_reverseDirection = reverseDirection;
+    m_isDistalToProximalView = isDistalToProximalView;
 }
 
 cl_float* SignalModel::getDisplayAngle()
@@ -95,44 +95,44 @@ void SignalModel::setDisplayAngle(const cl_float &displayAngle)
     m_displayAngle = displayAngle;
 }
 
-cl_int* SignalModel::getStandardDehthS()
+cl_int* SignalModel::getALineLengthNormal_px()
 {
-    return &m_standardDehthS;
+    return &m_aLineLengthNormal_px;
 }
 
-void SignalModel::setStandardDehthS(const cl_int &standardDehthS)
+void SignalModel::setALineLengthNormal_px(const cl_int &aLineLengthNormal_px)
 {
-    m_standardDehthS = standardDehthS;
+    m_aLineLengthNormal_px = aLineLengthNormal_px;
 }
 
-cl_float* SignalModel::getStandardDehthMm()
+cl_float* SignalModel::getImagingDehthNormal_mm()
 {
-    return &m_standardDepthMm;
+    return &m_imagingDepthNormal_mm;
 }
 
-void SignalModel::setStandardDehthMm(const cl_float &standardDehthMm)
+void SignalModel::setImagingDepthNormal_mm(const cl_float &imagingDepthNormal_mm)
 {
-    m_standardDepthMm = standardDehthMm;
+    m_imagingDepthNormal_mm = imagingDepthNormal_mm;
 }
 
-cl_float *SignalModel::getInternalImagingMaskPx()
+cl_float *SignalModel::getInternalImagingMask_px()
 {
-    return &m_internalImagingMaskPx;
+    return &m_internalImagingMask_px;
 }
 
-void SignalModel::setInternalImagingMaskPx(const cl_float &internalImagingMaskPx)
+void SignalModel::setInternalImagingMask_px(const cl_float &internalImagingMask_px)
 {
-    m_internalImagingMaskPx = internalImagingMaskPx;
+    m_internalImagingMask_px = internalImagingMask_px;
 }
 
-cl_float *SignalModel::getCatheterRadiusUm()
+cl_float *SignalModel::getCatheterRadius_um()
 {
-    return &m_catheterRadiusUm;
+    return &m_catheterRadius_um;
 }
 
-void SignalModel::setCatheterRadiusUm(const cl_float &catheterRadiusUm)
+void SignalModel::setCatheterRadius_um(const cl_float &catheterRadius_um)
 {
-    m_catheterRadiusUm = catheterRadiusUm;
+    m_catheterRadius_um = catheterRadius_um;
 }
 
 cl_mem* SignalModel::getBeAndCeImageBuffer()

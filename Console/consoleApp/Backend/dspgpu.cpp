@@ -71,10 +71,10 @@ void DSPGPU::init( )
     auto smi = SignalModel::instance();
 
     float catheterRadius_um = float(settings.current()->getCatheterRadius_um());
-    smi->setCatheterRadiusUm(catheterRadius_um);
+    smi->setCatheterRadius_um(catheterRadius_um);
 
     float internalImagingMask_px = float(settings.current()->getInternalImagingMask_px());
-    smi->setInternalImagingMaskPx(internalImagingMask_px);
+    smi->setInternalImagingMask_px(internalImagingMask_px);
 
     // Contrast stretch defaults (no stretch)
     float blackLevel = BrightnessLevels_HighSpeed.defaultValue;
@@ -172,11 +172,11 @@ bool DSPGPU::initOpenCL()
     auto dev = deviceSettings::Instance().current();
     auto smi = SignalModel::instance();
 
-    auto standardDepthMm = dev->getImagingDepthNormal_mm();
-    smi->setStandardDehthMm(standardDepthMm);
+    auto imagingDepthNormal_mm = dev->getImagingDepthNormal_mm();
+    smi->setImagingDepthNormal_mm(imagingDepthNormal_mm);
 
-    auto standardDepthS = dev->getALineLengthNormal_px();
-    smi->setStandardDehthS(standardDepthS);
+    auto aLineLengthNormal_px = dev->getALineLengthNormal_px();
+    smi->setALineLengthNormal_px(aLineLengthNormal_px);
 
     auto spf = SignalProcessingFactory::instance();
     m_postFft = spf->getPostFft();

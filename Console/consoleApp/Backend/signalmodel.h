@@ -70,23 +70,23 @@ public: //functions
     cl_mem* getBeAndCeImageBuffer();
     void setPostBandcImageBuffer(const cl_mem &value);
 
-    cl_float* getCatheterRadiusUm();
-    void setCatheterRadiusUm(const cl_float &catheterRadiusUm);
+    cl_float* getCatheterRadius_um();
+    void setCatheterRadius_um(const cl_float &catheterRadius_um);
 
-    cl_float* getInternalImagingMaskPx();
-    void setInternalImagingMaskPx(const cl_float &internalImagingMaskPx);
+    cl_float* getInternalImagingMask_px();
+    void setInternalImagingMask_px(const cl_float &internalImagingMask_px);
 
-    cl_float* getStandardDehthMm();
-    void setStandardDehthMm(const cl_float &standardDehthMm);
+    cl_float* getImagingDehthNormal_mm();
+    void setImagingDepthNormal_mm(const cl_float &imagingDepthNormal_mm);
 
-    cl_int* getStandardDehthS();
-    void setStandardDehthS(const cl_int &standardDehthS);
+    cl_int* getALineLengthNormal_px();
+    void setALineLengthNormal_px(const cl_int &aLineLengthNormal_px);
 
     cl_float* getDisplayAngle();
     void setDisplayAngle(const cl_float &displayAngle);
 
-    cl_int* getReverseDirection();
-    void setReverseDirection(const cl_int &reverseDirection);
+    cl_int* getIsDistalToProximalView();
+    void setIsDistalToProximalView(const cl_int &isDistalToProximalView);
 
     cl_float* getFractionOfCanvas();
     void setFractionOfCanvas(const cl_float &fractionOfCanvas);
@@ -131,12 +131,12 @@ private: //data
     cl_mem m_bAndCimageBuffer{nullptr};
 
     //warp
-    cl_float m_catheterRadiusUm{0.0f}; //3 catheterRadius_um
-    cl_float m_internalImagingMaskPx{0.0f}; //4 internalImagingMask_px
-    cl_float m_standardDepthMm{0.0f}; //5 standardDepth_mm
-    cl_int m_standardDehthS{0}; //6 standardDepth_S
+    cl_float m_catheterRadius_um{0.0f}; //3 catheterRadius_um
+    cl_float m_internalImagingMask_px{0.0f}; //4 internalImagingMask_px
+    cl_float m_imagingDepthNormal_mm{0.0f}; //5 standardDepth_mm
+    cl_int m_aLineLengthNormal_px{0}; //6 standardDepth_S
     cl_float m_displayAngle{0.0f}; //7 displayAngle_deg
-    cl_int m_reverseDirection{0}; //8 reverseDirection
+    cl_int m_isDistalToProximalView{0}; //8 reverseDirection
     cl_float m_fractionOfCanvas{0.0f}; //11 fractionOfCanvas
     cl_int m_imagingDepth; //12 imagingDepth_S
 
