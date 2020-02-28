@@ -212,7 +212,7 @@ bool PostFft::setKernelArguments(cl_kernel kernel)
     {
         qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 10, sizeof(cl_int), m_signalModel->isInvertColors() );
+    clStatus |= clSetKernelArg( kernel, 10, sizeof(cl_int), m_signalModel->isInvertOctColors() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;

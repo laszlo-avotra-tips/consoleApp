@@ -1823,7 +1823,7 @@ void frontend::setIDAQ(IDAQ *object)
 
         // view option controls to daq
         connect( viewOption, SIGNAL( enableAveraging( bool ) ),    SignalModel::instance(),   SLOT( setIsAveragingNoiseReduction( bool ) ) );
-        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), SignalModel::instance(),   SLOT( setInvertColors( bool ) ) );
+        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), SignalModel::instance(),   SLOT( setIsInvertColors( bool ) ) );
 
         // view options to set color mode
         connect( viewOption, SIGNAL( setColorModeGray() ),         scene, SLOT( loadColorModeGray() ) );

@@ -39,8 +39,7 @@ public:
 
     const cl_float* currFrameWeight_percent() const;
 
-    const cl_int* isInvertColors() const;
-    void setIsInvertColors(const cl_int &isInvertColors);
+    const cl_int* isInvertOctColors() const;
 
     const cl_mem *fftImageBuffer() const;
     void setFftImageBuffer(const cl_mem &fftImageBuffer);
@@ -52,7 +51,7 @@ public:
 public slots:
     void setIsAveragingNoiseReduction(bool isAveragingNoiseReduction);
     void setCurrFrameWeight_percent(int currFrameWeight_percent);
-    void setInvertColors(bool isInverted);
+    void setIsInvertColors(bool isInvertOctColors);
 
     void setBlackLevel(int blackLevel);
     void setWhiteLevel(int whiteLevel);
@@ -117,9 +116,9 @@ private: //data
     const cl_float m_scaleFactor{20000.0f * 255.0f / 65535.0f};//5 scaleFactor
     const cl_uint m_dcNoiseLevel{150};//6 XXX: Empirically measured
     cl_int m_isAveragingNoiseReduction{false};//7 averageVal // Instruct the post-process kernel to average two frames at a time.
-    cl_float m_prevFrameWeight_percent{1.0f - DefaultCurrFrameWeight_Percent / 100.0f}; //8 prevFrameWeight_percent
-    cl_float m_currFrameWeight_percent{DefaultCurrFrameWeight_Percent / 100.0f}; //9 currFrameWeight_percent
-    cl_int m_isInvertColors{0}; //10 invertColors
+    cl_float m_prevFrameWeight_percent{1.0f - DefaultCurrFrameWeight_Percent * 0.01f}; //8 prevFrameWeight_percent
+    cl_float m_currFrameWeight_percent{DefaultCurrFrameWeight_Percent * 0.01f}; //9 currFrameWeight_percent
+    cl_int m_isInvertOctColors{false}; //10 invertColors
 
     //from post fft to B and C
     cl_mem m_fftImageBuffer{nullptr};

@@ -160,11 +160,6 @@ const cl_float* SignalModel::whiteLevel() const
     return &m_whiteLevel;
 }
 
-void SignalModel::setInvertColors(bool isInverted)
-{
-    setIsInvertColors(isInverted);
-}
-
 void SignalModel::setWhiteLevel(int whiteLevel)
 {
     m_whiteLevel = whiteLevel;
@@ -239,14 +234,14 @@ void SignalModel::setCurrFrameWeight_percent(int currFrameWeight_percent)
     m_prevFrameWeight_percent = 0.01f * (100 - currFrameWeight_percent);
 }
 
-const cl_int* SignalModel::isInvertColors() const
+const cl_int* SignalModel::isInvertOctColors() const
 {
-    return &m_isInvertColors;
+    return &m_isInvertOctColors;
 }
 
-void SignalModel::setIsInvertColors(const cl_int &isInvertColors)
+void SignalModel::setIsInvertColors(bool isInvertOctColors)
 {
-    m_isInvertColors = isInvertColors;
+    m_isInvertOctColors = isInvertOctColors;
 }
 
 const cl_int* SignalModel::isAveragingNoiseReduction() const
