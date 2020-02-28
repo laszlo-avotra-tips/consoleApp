@@ -91,14 +91,17 @@ public: //functions
     cl_float* getFractionOfCanvas();
     void setFractionOfCanvas(const cl_float &fractionOfCanvas);
 
-    cl_int* getImagingDepth();
-    void setImagingDepth(const cl_int &imagingDepth);
+    cl_int* getImagingDepth_S();
+    void setImagingDepth_S(const cl_int &imagingDepth_S);
 
     cl_mem getWarpImageBuffer();
     void setWarpImageBuffer(const cl_mem &warpImageBuffer);
 
     cl_mem getWarpVideoBuffer();
     void setWarpVideoBuffer(const cl_mem &warpVideoBuffwr);
+
+    const cl_int* getSectorWidth_px() const;
+    const cl_int* getSectorHeight_px() const;
 
 private: //functions
     SignalModel();
@@ -137,8 +140,10 @@ private: //data
     cl_int m_aLineLengthNormal_px{0}; //6 standardDepth_S
     cl_float m_displayAngle{0.0f}; //7 displayAngle_deg
     cl_int m_isDistalToProximalView{0}; //8 reverseDirection
+    const cl_int& m_sectorWidth_px{SectorWidth_px}; //9
+    const cl_int& m_sectorHeight_px{SectorHeight_px}; //10
     cl_float m_fractionOfCanvas{0.0f}; //11 fractionOfCanvas
-    cl_int m_imagingDepth; //12 imagingDepth_S
+    cl_int m_imagingDepth_S; //12 imagingDepth_S
 
     //post warp
     cl_mem m_warpImageBuffer{nullptr};

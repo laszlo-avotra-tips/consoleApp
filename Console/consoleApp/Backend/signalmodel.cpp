@@ -35,6 +35,16 @@ void SignalModel::allocateOctData()
 
 }
 
+const cl_int* SignalModel::getSectorHeight_px() const
+{
+    return &m_sectorHeight_px;
+}
+
+const cl_int* SignalModel::getSectorWidth_px() const
+{
+    return &m_sectorWidth_px;
+}
+
 cl_mem SignalModel::getWarpVideoBuffer()
 {
     return m_warpVideoBuffer;
@@ -55,14 +65,14 @@ void SignalModel::setWarpImageBuffer(const cl_mem &warpImageBuffer)
     m_warpImageBuffer = warpImageBuffer;
 }
 
-cl_int* SignalModel::getImagingDepth()
+cl_int* SignalModel::getImagingDepth_S()
 {
-    return &m_imagingDepth;
+    return &m_imagingDepth_S;
 }
 
-void SignalModel::setImagingDepth(const cl_int &imagingDepth)
+void SignalModel::setImagingDepth_S(const cl_int &imagingDepth_S)
 {
-    m_imagingDepth = imagingDepth;
+    m_imagingDepth_S = imagingDepth_S;
 }
 
 cl_float* SignalModel::getFractionOfCanvas()

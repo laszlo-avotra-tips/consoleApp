@@ -1178,7 +1178,7 @@ void frontend::startDAQprepareView()
 
     // Want an indicator with 5 positions for High Speed, will be disabled if a LS device is chosen.
     depthSetting &ds = depthSetting::Instance();
-    ui.imagingDepthWidget->init( VariableDepthNumChunks, ds.getDepth_S(), "DEPTH", ds.getMinVal(), ds.getMaxVal() );
+    ui.imagingDepthWidget->init( VariableDepthNumChunks, ds.getImagingDepth_S(), "DEPTH", ds.getMinDepth_px(), ds.getMaxDepth_px() );
     ui.imagingDepthWidget->setToolTip( "Change Imaging Depth." );
     configureControlsForCurrentDevice();
 

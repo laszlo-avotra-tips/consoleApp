@@ -76,10 +76,10 @@ bool Warp::setKernelArguments(cl_kernel kernel)
     clStatus |= clSetKernelArg( kernel,  6, sizeof(cl_int),    smi->getALineLengthNormal_px() );
     clStatus |= clSetKernelArg( kernel,  7, sizeof(cl_float),  smi->getDisplayAngle() );
     clStatus |= clSetKernelArg( kernel,  8, sizeof(cl_int),    smi->getIsDistalToProximalView() );
-    clStatus |= clSetKernelArg( kernel,  9, sizeof(int),    &SectorWidth_px );
-    clStatus |= clSetKernelArg( kernel, 10, sizeof(int),    &SectorHeight_px );
-    clStatus |= clSetKernelArg( kernel, 11, sizeof(cl_float), smi->getFractionOfCanvas()  );
-    clStatus |= clSetKernelArg( kernel, 12, sizeof(cl_int),  smi->getImagingDepth() );
+    clStatus |= clSetKernelArg( kernel,  9, sizeof(cl_int),    smi->getSectorWidth_px() );
+    clStatus |= clSetKernelArg( kernel, 10, sizeof(cl_int),    smi->getSectorHeight_px() );
+    clStatus |= clSetKernelArg( kernel, 11, sizeof(cl_float),  smi->getFractionOfCanvas()  );
+    clStatus |= clSetKernelArg( kernel, 12, sizeof(cl_int),    smi->getImagingDepth_S() );
 
     return  clStatus == CL_SUCCESS;
 }
