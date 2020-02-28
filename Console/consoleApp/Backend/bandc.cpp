@@ -65,6 +65,9 @@ bool BeAndCe::setKernelArguments(cl_kernel kernel)
     if(!kernel || !m_signalModel){
         return false;
     }
+
+    const auto* smi = SignalModel::instance();
+
     cl_int clStatus  = clSetKernelArg( kernel, 0, sizeof(cl_mem), SignalModel::instance()->fftImageBuffer() );
     if( clStatus != CL_SUCCESS )
     {
@@ -75,7 +78,7 @@ bool BeAndCe::setKernelArguments(cl_kernel kernel)
     {
         qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 2, sizeof(float), SignalModel::instance()->blackLevel() );
+    clStatus |= clSetKernelArg( kernel, 2, sizeof(float), smi->blackLevel() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;

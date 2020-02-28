@@ -48,9 +48,9 @@ public:
     cl_mem* fftImageBuffer();
     void setFftImageBuffer(const cl_mem &fftImageBuffer);
 
-    cl_float* blackLevel();
+    const cl_float *blackLevel() const;
 
-    cl_float* whiteLevel();
+    const cl_float *whiteLevel() const;
 
 public slots:
     void setAveraging(bool isOn);

@@ -155,7 +155,7 @@ void SignalModel::setPostBandcImageBuffer(const cl_mem &value)
     m_bAndCimageBuffer = value;
 }
 
-cl_float* SignalModel::whiteLevel()
+const cl_float* SignalModel::whiteLevel() const
 {
     return &m_whiteLevel;
 }
@@ -181,7 +181,7 @@ void SignalModel::setWhiteLevel(int whiteLevel)
     m_whiteLevel = whiteLevel;
 }
 
-cl_float *SignalModel::blackLevel()
+const cl_float *SignalModel::blackLevel() const
 {
     return &m_blackLevel;
 }
