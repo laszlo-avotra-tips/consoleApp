@@ -39,7 +39,7 @@ signals:
     void sendManualLagAngle( double );
     void enableAveraging( bool );
     void enableInvertColors( bool );
-    void weightedAveragesChanged( int, int );
+    void currFrameWeight_percentChanged(int);
     void displayWaterfall( bool );
     void setColorModeSepia();
     void setColorModeGray();

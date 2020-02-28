@@ -221,10 +221,7 @@ void viewOptions::on_noiseReductionSlider_valueChanged( int position )
     userSettings &settings = userSettings::Instance();
     settings.setNoiseReductionVal( position );
 
-    int currFrameWeight_percent = position;
-    int prevFrameWeight_percent = 100 - currFrameWeight_percent;
-
-    emit weightedAveragesChanged( prevFrameWeight_percent, currFrameWeight_percent );
+    emit currFrameWeight_percentChanged(position);
 }
 
 /*

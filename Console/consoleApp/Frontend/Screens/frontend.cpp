@@ -1802,7 +1802,7 @@ void frontend::setIDAQ(IDAQ *object)
 
     if(signalSource)
     {
-        connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), SignalModel::instance(), SLOT(setFrameAverageWeights(int,int)) );
+        connect( viewOption, SIGNAL(currFrameWeight_percentChanged(int)), SignalModel::instance(), SLOT(setCurrFrameWeight_percent(int)) );
 
         connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
 
@@ -1822,7 +1822,7 @@ void frontend::setIDAQ(IDAQ *object)
         connect( this,       SIGNAL( contrastChange( int ) ),      signalSource,  SIGNAL( setWhiteLevel( int ) ) );
 
         // view option controls to daq
-        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    SignalModel::instance(),   SLOT( setAveraging( bool ) ) );
+        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    SignalModel::instance(),   SLOT( setIsAveragingNoiseReduction( bool ) ) );
         connect( viewOption, SIGNAL( enableInvertColors( bool ) ), SignalModel::instance(),   SLOT( setInvertColors( bool ) ) );
 
         // view options to set color mode

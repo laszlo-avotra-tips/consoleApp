@@ -9,7 +9,7 @@
 PostFft::PostFft(cl_context context) :
     KernelFunctionBase(context),
     m_fftMemSize(
-        *(m_signalModel->iputLength()) * m_signalModel->linesPerRevolution() * sizeof(float)
+        *(m_signalModel->getIputLength()) * m_signalModel->linesPerRevolution() * sizeof(float)
         ),
     m_fftGlobalWorkSize{
         size_t(FFTDataSize),
@@ -92,7 +92,7 @@ bool PostFft::createFftBuffers()
         return false;
     }
 
-    const size_t memSize {*m_signalModel->iputLength() * m_signalModel->linesPerRevolution() * sizeof(float)};
+    const size_t memSize {*m_signalModel->getIputLength() * m_signalModel->linesPerRevolution() * sizeof(float)};
 
     cl_int err{-1};
     m_fftRealBuffer = clCreateBuffer( m_baseContext, CL_MEM_READ_WRITE, memSize, nullptr , &err );
@@ -182,37 +182,37 @@ bool PostFft::setKernelArguments(cl_kernel kernel)
     {
        qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 4, sizeof(int), m_signalModel->iputLength());
+    clStatus |= clSetKernelArg( kernel, 4, sizeof(cl_int), m_signalModel->getIputLength());
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 5, sizeof(float), m_signalModel->scaleFactor() );
+    clStatus |= clSetKernelArg( kernel, 5, sizeof(cl_float), m_signalModel->scaleFactor() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 5, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 6, sizeof(unsigned int), m_signalModel->dcNoiseLevel() );
+    clStatus |= clSetKernelArg( kernel, 6, sizeof(cl_uint), m_signalModel->dcNoiseLevel() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 6, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 7, sizeof(int), m_signalModel->averageVal() );
+    clStatus |= clSetKernelArg( kernel, 7, sizeof(cl_int), m_signalModel->isAveragingNoiseReduction() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 7, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 8, sizeof(float), m_signalModel->prevFrameWeight_percent() );
+    clStatus |= clSetKernelArg( kernel, 8, sizeof(cl_float), m_signalModel->prevFrameWeight_percent() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 8, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 9, sizeof(float), m_signalModel->currFrameWeight_percent() );
+    clStatus |= clSetKernelArg( kernel, 9, sizeof(cl_float), m_signalModel->currFrameWeight_percent() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 10, sizeof(int), m_signalModel->isInvertColors() );
+    clStatus |= clSetKernelArg( kernel, 10, sizeof(cl_int), m_signalModel->isInvertColors() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;

@@ -24,7 +24,7 @@ public:
     bool isImageRenderingQueueGTE(size_t length) const;
     std::pair<bool, OctData>  frontImageRenderingQueue();
 
-    const cl_uint* iputLength() const;
+    const cl_uint* getIputLength() const;
 
     const cl_float* scaleFactor() const;
 
@@ -33,19 +33,16 @@ public:
 
     const cl_uint* dcNoiseLevel() const;
 
-    const cl_int* averageVal() const;
-    void setAverageVal(const cl_int &averageVal);
+    const cl_int* isAveragingNoiseReduction() const;
 
     const cl_float* prevFrameWeight_percent() const;
-    void setPrevFrameWeight_percent(const cl_float &prevFrameWeight_percent);
 
     const cl_float* currFrameWeight_percent() const;
-    void setCurrFrameWeight_percent(const cl_float &currFrameWeight_percent);
 
     const cl_int* isInvertColors() const;
     void setIsInvertColors(const cl_int &isInvertColors);
 
-    cl_mem* fftImageBuffer();
+    const cl_mem *fftImageBuffer() const;
     void setFftImageBuffer(const cl_mem &fftImageBuffer);
 
     const cl_float *blackLevel() const;
@@ -53,9 +50,9 @@ public:
     const cl_float *whiteLevel() const;
 
 public slots:
-    void setAveraging(bool isOn);
+    void setIsAveragingNoiseReduction(bool isAveragingNoiseReduction);
+    void setCurrFrameWeight_percent(int currFrameWeight_percent);
     void setInvertColors(bool isInverted);
-    void setFrameAverageWeights(int prev,int curr);
 
     void setBlackLevel(int blackLevel);
     void setWhiteLevel(int whiteLevel);
@@ -119,7 +116,7 @@ private: //data
     const cl_uint m_iputLength{2048};//4 RescalingDataLength
     const cl_float m_scaleFactor{20000.0f * 255.0f / 65535.0f};//5 scaleFactor
     const cl_uint m_dcNoiseLevel{150};//6 XXX: Empirically measured
-    cl_int m_averageVal{0};//7 averageVal // Instruct the post-process kernel to average two frames at a time.
+    cl_int m_isAveragingNoiseReduction{false};//7 averageVal // Instruct the post-process kernel to average two frames at a time.
     cl_float m_prevFrameWeight_percent{1.0f - DefaultCurrFrameWeight_Percent / 100.0f}; //8 prevFrameWeight_percent
     cl_float m_currFrameWeight_percent{DefaultCurrFrameWeight_Percent / 100.0f}; //9 currFrameWeight_percent
     cl_int m_isInvertColors{0}; //10 invertColors

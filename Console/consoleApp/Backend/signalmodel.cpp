@@ -160,20 +160,9 @@ const cl_float* SignalModel::whiteLevel() const
     return &m_whiteLevel;
 }
 
-void SignalModel::setAveraging(bool isOn)
-{
-    setAverageVal(isOn);
-}
-
 void SignalModel::setInvertColors(bool isInverted)
 {
     setIsInvertColors(isInverted);
-}
-
-void SignalModel::setFrameAverageWeights(int prev, int curr)
-{
-    setPrevFrameWeight_percent(prev * 0.01f);
-    setCurrFrameWeight_percent(curr * 0.01f);
 }
 
 void SignalModel::setWhiteLevel(int whiteLevel)
@@ -191,7 +180,7 @@ void SignalModel::setBlackLevel(int blackLevel)
     m_blackLevel = blackLevel;
 }
 
-cl_mem* SignalModel::fftImageBuffer()
+const cl_mem* SignalModel::fftImageBuffer() const
 {
     return &m_fftImageBuffer;
 }
@@ -209,7 +198,7 @@ SignalModel *SignalModel::instance()
     return m_instance;
 }
 
-const cl_uint* SignalModel::iputLength() const
+const cl_uint* SignalModel::getIputLength() const
 {
     return &m_iputLength;
 }
@@ -239,19 +228,15 @@ const cl_float* SignalModel::prevFrameWeight_percent() const
     return &m_prevFrameWeight_percent;
 }
 
-void SignalModel::setPrevFrameWeight_percent(const cl_float &prevFrameWeight_percent)
-{
-    m_prevFrameWeight_percent = prevFrameWeight_percent;
-}
-
 const cl_float* SignalModel::currFrameWeight_percent() const
 {
     return &m_currFrameWeight_percent;
 }
 
-void SignalModel::setCurrFrameWeight_percent(const cl_float &currFrameWeight_percent)
+void SignalModel::setCurrFrameWeight_percent(int currFrameWeight_percent)
 {
-    m_currFrameWeight_percent = currFrameWeight_percent;
+    m_currFrameWeight_percent = 0.01f * currFrameWeight_percent;
+    m_prevFrameWeight_percent = 0.01f * (100 - currFrameWeight_percent);
 }
 
 const cl_int* SignalModel::isInvertColors() const
@@ -264,14 +249,14 @@ void SignalModel::setIsInvertColors(const cl_int &isInvertColors)
     m_isInvertColors = isInvertColors;
 }
 
-const cl_int* SignalModel::averageVal() const
+const cl_int* SignalModel::isAveragingNoiseReduction() const
 {
-    return &m_averageVal;
+    return &m_isAveragingNoiseReduction;
 }
 
-void SignalModel::setAverageVal(const cl_int &averageVal)
+void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 {
-    m_averageVal = averageVal;
+    m_isAveragingNoiseReduction = isAveragingNoiseReduction;
 }
 
 void SignalModel::pushImageRenderingQueue(OctData od)
