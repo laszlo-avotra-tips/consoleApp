@@ -64,7 +64,7 @@ void Warp::setKernel(cl_kernel kernel)
 
 bool Warp::setKernelArguments(cl_kernel kernel)
 {
-    auto smi = SignalModel::instance();
+    const auto* smi = SignalModel::instance();
 
     cl_int clStatus  = clSetKernelArg( kernel,  0, sizeof(cl_mem), smi->getBeAndCeImageBuffer() );
 

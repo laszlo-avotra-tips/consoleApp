@@ -67,31 +67,31 @@ public: //data
     const cl_uint m_numEventsInWaitlist{0};
 
 public: //functions
-    cl_mem* getBeAndCeImageBuffer();
+    const cl_mem* getBeAndCeImageBuffer() const;
     void setPostBandcImageBuffer(const cl_mem &value);
 
-    cl_float* getCatheterRadius_um();
+    const cl_float* getCatheterRadius_um() const;
     void setCatheterRadius_um(const cl_float &catheterRadius_um);
 
-    cl_float* getInternalImagingMask_px();
+    const cl_float* getInternalImagingMask_px() const;
     void setInternalImagingMask_px(const cl_float &internalImagingMask_px);
 
-    cl_float* getImagingDehthNormal_mm();
+    const cl_float* getImagingDehthNormal_mm() const;
     void setImagingDepthNormal_mm(const cl_float &imagingDepthNormal_mm);
 
-    cl_int* getALineLengthNormal_px();
+    const cl_int* getALineLengthNormal_px() const;
     void setALineLengthNormal_px(const cl_int &aLineLengthNormal_px);
 
-    cl_float* getDisplayAngle();
+    const cl_float* getDisplayAngle() const;
     void setDisplayAngle(const cl_float &displayAngle);
 
-    cl_int* getIsDistalToProximalView();
+    const cl_int* getIsDistalToProximalView() const;
     void setIsDistalToProximalView(const cl_int &isDistalToProximalView);
 
-    cl_float* getFractionOfCanvas();
+    const cl_float* getFractionOfCanvas() const;
     void setFractionOfCanvas(const cl_float &fractionOfCanvas);
 
-    cl_int* getImagingDepth_S();
+    const cl_int* getImagingDepth_S() const;
     void setImagingDepth_S(const cl_int &imagingDepth_S);
 
     cl_mem getWarpImageBuffer();
