@@ -58,7 +58,7 @@ private:
     static SignalManager* m_instance;
     std::unique_ptr<float[]> m_fftRealData{nullptr};
     std::unique_ptr<float[]> m_fftImagData{nullptr};
-    const qint64 m_dataLen{592 * 2048};
+    const qint64 m_dataLen{1184 * 1024};
     std::pair<QString,QString> m_fftFileName;
     QFile m_imagFile;
     QFile m_realFile;

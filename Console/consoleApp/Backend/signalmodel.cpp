@@ -193,9 +193,9 @@ SignalModel *SignalModel::instance()
     return m_instance;
 }
 
-const cl_uint* SignalModel::getIputLength() const
+const cl_uint* SignalModel::getInputLength() const
 {
-    return &m_iputLength;
+    return &m_inputLength;
 }
 
 const cl_float* SignalModel::scaleFactor() const

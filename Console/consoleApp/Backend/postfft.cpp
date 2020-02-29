@@ -9,7 +9,7 @@
 PostFft::PostFft(cl_context context) :
     KernelFunctionBase(context),
     m_fftMemSize(
-        *(m_signalModel->getIputLength()) * m_signalModel->linesPerRevolution() * sizeof(float)
+        *(m_signalModel->getInputLength()) * m_signalModel->linesPerRevolution() * sizeof(float)
         ),
     m_fftGlobalWorkSize{
         size_t(FFTDataSize),
@@ -92,7 +92,7 @@ bool PostFft::createFftBuffers()
         return false;
     }
 
-    const size_t memSize {*m_signalModel->getIputLength() * m_signalModel->linesPerRevolution() * sizeof(float)};
+    const size_t memSize {*m_signalModel->getInputLength() * m_signalModel->linesPerRevolution() * sizeof(float)};
 
     cl_int err{-1};
     m_fftRealBuffer = clCreateBuffer( m_baseContext, CL_MEM_READ_WRITE, memSize, nullptr , &err );
@@ -182,7 +182,7 @@ bool PostFft::setKernelArguments(cl_kernel kernel)
     {
        qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 4, sizeof(cl_int), m_signalModel->getIputLength());
+    clStatus |= clSetKernelArg( kernel, 4, sizeof(cl_int), m_signalModel->getInputLength());
     if( clStatus != CL_SUCCESS )
     {
        qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;

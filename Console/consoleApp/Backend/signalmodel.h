@@ -24,7 +24,7 @@ public:
     bool isImageRenderingQueueGTE(size_t length) const;
     std::pair<bool, OctData>  frontImageRenderingQueue();
 
-    const cl_uint* getIputLength() const;
+    const cl_uint* getInputLength() const;
 
     const cl_float* scaleFactor() const;
 
@@ -110,9 +110,9 @@ private: //data
     QMutex m_imageRenderingMutex;
     std::queue<OctData> m_imageRenderingQueue;
 
-    cl_uint m_linesPerRevolution{592};
+    cl_uint m_linesPerRevolution{1184};
     //post fft
-    const cl_uint m_iputLength{2048};//4 RescalingDataLength
+    const cl_uint m_inputLength{1024};//4 RescalingDataLength
     const cl_float m_scaleFactor{20000.0f * 255.0f / 65535.0f};//5 scaleFactor
     const cl_uint m_dcNoiseLevel{150};//6 XXX: Empirically measured
     cl_int m_isAveragingNoiseReduction{false};//7 averageVal // Instruct the post-process kernel to average two frames at a time.
