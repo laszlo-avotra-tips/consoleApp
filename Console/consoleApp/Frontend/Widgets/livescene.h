@@ -43,7 +43,6 @@ public:
     void setZoomFactor( float factor ) { zoomFactor = factor; }
     void setMeasureModeArea( bool state, QColor color );
     void setAnnotateMode( bool state, QColor color );
-    double getSectorDisplayAngle( void ) { return( sector->getDisplayAngle() ); }
     void applyClipInfoToBuffer( char *buffer );
 
     // grab the sector data for the OCT Loop vdideo encoding

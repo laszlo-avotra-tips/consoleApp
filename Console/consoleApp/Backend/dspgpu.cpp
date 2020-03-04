@@ -264,8 +264,3 @@ void DSPGPU::stop()
 {
     m_dspIsRunning = false;
 }
-
-void DSPGPU::setDisplayAngle(float angle)
-{
-    SignalModel::instance()->setDisplayAngle(angle);
-}

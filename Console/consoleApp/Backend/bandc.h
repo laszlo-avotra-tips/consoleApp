@@ -25,6 +25,7 @@ private:
     cl_mem m_beAndCeImage{nullptr}; //1 warpInputImageMemObj
     cl_float m_blackLevel{1.0f}; // 2 blackLevel
     cl_float m_whiteLevel{0.0f}; // 3 whiteLevel
+    const size_t m_beAndCeGlobalWorkSize[2];
 };
 
 #endif // BEANDCE_H

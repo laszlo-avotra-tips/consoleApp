@@ -3,7 +3,11 @@
 
 #include <QDebug>
 
-BeAndCe::BeAndCe(cl_context context) : KernelFunctionBase(context)
+BeAndCe::BeAndCe(cl_context context) : KernelFunctionBase(context),
+    m_beAndCeGlobalWorkSize{
+        size_t(FFTDataSize),
+        size_t(m_signalModel->linesPerRevolution())
+        }
 {
     initContext();
 }
@@ -15,12 +19,6 @@ BeAndCe::~BeAndCe()
 
 bool BeAndCe::enqueueCallKernelFunction()
 {
-    if(!m_signalModel){
-        return false;
-    }
-
-    const size_t globalWorkSize[] {size_t(FFTDataSize),size_t(m_signalModel->linesPerRevolution())};
-
     if(m_kernel){
         setKernelArguments(m_kernel);
     }
@@ -29,7 +27,7 @@ bool BeAndCe::enqueueCallKernelFunction()
                                               m_kernel,
                                               m_signalModel->m_oclWorkDimension,
                                               m_signalModel->m_oclGlobalWorkOffset,
-                                              globalWorkSize,
+                                              m_beAndCeGlobalWorkSize,
                                               m_signalModel->m_oclLocalWorkSize,
                                               m_signalModel->m_numEventsInWaitlist,
                                               nullptr,

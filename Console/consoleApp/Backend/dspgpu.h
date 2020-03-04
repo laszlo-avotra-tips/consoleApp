@@ -41,7 +41,6 @@ signals:
 
 public slots:
     void stop( void );
-    void setDisplayAngle( float angle );
 
 private:
     const size_t complexDataSize{1024};
