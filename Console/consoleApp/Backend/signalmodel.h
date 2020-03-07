@@ -113,7 +113,7 @@ private: //data
     cl_uint m_linesPerRevolution{1184};
     //post fft
     const cl_uint m_inputLength{1024};//4 RescalingDataLength
-    const cl_float m_scaleFactor{20000.0f * 255.0f / 65535.0f};//5 scaleFactor
+    const cl_float m_scaleFactor{10000.0f * 255.0f / 65535.0f};//5 scaleFactor
     const cl_uint m_dcNoiseLevel{150};//6 XXX: Empirically measured
     cl_int m_isAveragingNoiseReduction{false};//7 averageVal // Instruct the post-process kernel to average two frames at a time.
     cl_float m_prevFrameWeight_percent{1.0f - DefaultCurrFrameWeight_Percent * 0.01f}; //8 prevFrameWeight_percent

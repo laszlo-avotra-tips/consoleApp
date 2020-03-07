@@ -18,7 +18,7 @@ __kernel void postfft_kernel(__global const float *input_re,
 
     re = input_re[i + offset];
     im = input_imag[i + offset];
-    magnitude = sqrt( re * re + im * im );
+    magnitude = re * re + im * im;
     magnitude = log10(magnitude) * scaleFactor - dcNoiseLevel;  // Scale to 8-bit, adjustable by caller
     tmp = magnitude;
 
