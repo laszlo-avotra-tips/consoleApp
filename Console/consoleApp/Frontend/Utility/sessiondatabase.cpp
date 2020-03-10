@@ -14,6 +14,7 @@
 #include "util.h"
 #include <QMap>
 #include <QDateTime>
+#include <logger.h>
 
 // Schema layouts for each table are defined in SDS 0007
 #define IMAGE_CAPTURES_SCHEMA_VERSION  5
@@ -201,6 +202,7 @@ void sessionDatabase::createSession( void )
 
     q.prepare( QString( "INSERT INTO session (caseid, timestamp, utcOffset, patient, doctor, location, notes, cleanExit)"
                         "VALUES (?, ?, ?, ?, ? ,?, ?, ?)" ) );
+    LOG1(info.getCaseID() )
     q.addBindValue( info.getCaseID() );
     q.addBindValue( timeStr );
     q.addBindValue( info.getUtcOffset() );
@@ -310,6 +312,7 @@ int sessionDatabase::addCapture( QString tag,
 
     q.prepare( "INSERT INTO captures (id, timestamp, tag, name, deviceName, isHighSpeed, pixelsPerMm)"
                "VALUES (?, ?, ?, ?, ?, ?, ?)" );
+    LOG1(maxID);
     q.addBindValue( maxID );
     q.addBindValue( timeStr );
     q.addBindValue( tag) ;
