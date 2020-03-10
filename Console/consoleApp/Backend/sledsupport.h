@@ -11,7 +11,7 @@
 #include <QMutex>
 #include <QObject>
 #include <QThread>
-//#include <QSerialPort>
+#include <QSerialPort>
 #include <QString>
 #include "ftd2xx.h"
 
@@ -122,10 +122,10 @@ private:
     int m_speed;
 
                                                     // prevent access to:
-    SledSupport();                                  //   default constructor
+    SledSupport();
     ~SledSupport();                                 //   default destructor
-    SledSupport( SledSupport const & );             //   copy
-    SledSupport & operator=( SledSupport const & ); //   assign
+    SledSupport( SledSupport const & ) = delete;             //   copy
+    SledSupport & operator=( SledSupport const & ) = delete; //   assign
 
 private:
     // Commands for accessing the Sled Support Board

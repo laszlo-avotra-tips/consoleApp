@@ -9,6 +9,7 @@ TEMPLATE = app
 
 QT += charts
 QT += sql xml
+QT += serialport
 
 # XXX this needs to be here to link even though we do not
 # have any openGL code.  QtSingleApplication::sendMessage
@@ -60,7 +61,8 @@ win32 {
        Frontend/Widgets                     \
        Frontend
 
-     INCLUDEPATH *= $$CUDA_DIR1
+    INCLUDEPATH *= $$CUDA_DIR1
+    INCLUDEPATH += $$PWD/../../lib/win32/FTDI
 
     LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
 #    LIBS += -L$$CUDA_DIR3/Debug -lcudaFFT
@@ -72,6 +74,8 @@ win32 {
        -lglu32                                            \
        -luser32
 
+#    LIBS += $$PWD/../../lib/win32/FTDI/ftd2xx64.dll
+
 }  #win32
 
 unix {
@@ -82,7 +86,7 @@ unix {
    INCLUDEPATH +=                           \
        .                                    \
        ../../Common/Include                 \
-        Backend                              \
+       Backend                              \
        Include                              \
        Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
@@ -103,6 +107,11 @@ include( $${TARGET}.pri )
 #CONFIG( release ) {
 #    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
 #}
+
+#unix|win32: LIBS += -L$$PWD/../../lib/win32/FTDI/ -lftd2xx
+
+DEPENDPATH += $$PWD/../../lib/win32/FTDI
+
 
 RESOURCES += \
     OpenClResources.qrc
