@@ -75,7 +75,6 @@ QSqlError sessionDatabase::initDb(void)
     // Setup the database only in the case
     // that the tables don't already exist
     QStringList tables = db.tables();
-    LOG1(tables.size());
 
     // Set up the schema version table
     if( !tables.contains( "version", Qt::CaseInsensitive ) )
@@ -89,11 +88,6 @@ QSqlError sessionDatabase::initDb(void)
             return sqlerr;
         }
     }
-
-    //lcv
-    QStringList dbTables = db.tables();
-    LOG1(dbTables.size());
-//    for(auto it = )
 
     // Set up the Captures table
     if( !tables.contains( "captures", Qt::CaseInsensitive ) )

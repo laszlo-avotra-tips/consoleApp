@@ -72,11 +72,11 @@ SledSupport::~SledSupport()
 {
     stop(); // end the running thread cleanly
 
-    if( ftHandle )
-    {
-//        qDebug() << "Closing Serial Port";
-        FT_Close( ftHandle);
-    }
+//    if( ftHandle )
+//    {
+////        qDebug() << "Closing Serial Port";
+//        FT_Close( ftHandle);
+//    }
 }
 
 /*
@@ -87,25 +87,25 @@ bool SledSupport::writeSerial(QByteArray command)
     //qDebug() << "Command to write: " << command;
     bool retVal = true;
     LOG1(&command)
-    if( ftHandle )
-    {
-        int  cmdSize = command.size();
-        char* cmdData = new char(cmdSize);
-        memcpy(cmdData, command.data(), cmdSize);
-        DWORD bytesWritten;
+//    if( ftHandle )
+//    {
+//        int  cmdSize = command.size();
+//        char* cmdData = new char(cmdSize);
+//        memcpy(cmdData, command.data(), cmdSize);
+//        DWORD bytesWritten;
 
-        ftStatus = FT_Write( ftHandle, cmdData, cmdSize, &bytesWritten );
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not write command" << command;
-            retVal = false;
-        }
-    }
-    else
-    {
-        qDebug() << "Serial Port not open";
-        retVal = false;
-    }
+//        ftStatus = FT_Write( ftHandle, cmdData, cmdSize, &bytesWritten );
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Could not write command" << command;
+//            retVal = false;
+//        }
+//    }
+//    else
+//    {
+//        qDebug() << "Serial Port not open";
+//        retVal = false;
+//    }
     return retVal;
 }
 /*
@@ -113,111 +113,111 @@ bool SledSupport::writeSerial(QByteArray command)
  */
 bool SledSupport::init( void )
 {
-    FT_DEVICE_LIST_INFO_NODE *ftdiDeviceInfo;
-    unsigned long ftdiDeviceCount = 0;
-    long COMPORT;
-    QString result = "COM port not found";
+//    FT_DEVICE_LIST_INFO_NODE *ftdiDeviceInfo;
+//    unsigned long ftdiDeviceCount = 0;
+//    long COMPORT;
+//    QString result = "COM port not found";
 
-    newDir = -1;
-    sledRunState = 0;       // stopped
+//    newDir = -1;
+//    sledRunState = 0;       // stopped
 
-    bool status = true;
-    ftStatus = FT_CreateDeviceInfoList(&ftdiDeviceCount);
-    if( ftdiDeviceCount == 0 )
-    {
-        qDebug() << "No FTDI Devices !!!";
-        result = "No FTDI Devices !!!";
-        status = false;
-    }
-    else
-    {
-//        qDebug() << "Number of FTDI Devices" << ftdiDeviceCount;
-        ftdiDeviceInfo = (FT_DEVICE_LIST_INFO_NODE*) malloc (sizeof(FT_DEVICE_LIST_INFO_NODE)*ftdiDeviceCount);
-        ftStatus = FT_GetDeviceInfoList( ftdiDeviceInfo, &ftdiDeviceCount );
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not get FTDI device list";
-            status = false;
-        }
-        if( ftdiDeviceCount > 1)
-        {
-            result = "Too many FTDI devices found";
-            status = false;
-        }
+//    bool status = true;
+//    ftStatus = FT_CreateDeviceInfoList(&ftdiDeviceCount);
+//    if( ftdiDeviceCount == 0 )
+//    {
+//        qDebug() << "No FTDI Devices !!!";
+//        result = "No FTDI Devices !!!";
+//        status = false;
+//    }
+//    else
+//    {
+////        qDebug() << "Number of FTDI Devices" << ftdiDeviceCount;
+//        ftdiDeviceInfo = (FT_DEVICE_LIST_INFO_NODE*) malloc (sizeof(FT_DEVICE_LIST_INFO_NODE)*ftdiDeviceCount);
+//        ftStatus = FT_GetDeviceInfoList( ftdiDeviceInfo, &ftdiDeviceCount );
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Could not get FTDI device list";
+//            status = false;
+//        }
+//        if( ftdiDeviceCount > 1)
+//        {
+//            result = "Too many FTDI devices found";
+//            status = false;
+//        }
 
-        if( ftdiDeviceCount > 0)
-        {
-            ftHandle = ftdiDeviceInfo[0].ftHandle;
-            // make sure device is closed before we open it
-            ftStatus = FT_Close( ftHandle );
-            ftStatus = FT_Open( 0, &ftHandle );
-            if( ftStatus == FT_OK )
-            {
-                ftStatus = FT_GetComPortNumber(ftHandle, &COMPORT);
-//                qDebug() << "FTDI COM port number" << COMPORT;
-                comPort.setNum(COMPORT);
-                result = "Found FTDI device at COM" + comPort;
-            }
-            else
-            {
-                qDebug() << "Could not open FTDI device";
-                status = false;
-            }
-            ftStatus = FT_Close( ftHandle );
-        }
-        else
-        {
-            result = "No FTDI devices found";
-            status = false;
-        }
-    }
+//        if( ftdiDeviceCount > 0)
+//        {
+//            ftHandle = ftdiDeviceInfo[0].ftHandle;
+//            // make sure device is closed before we open it
+//            ftStatus = FT_Close( ftHandle );
+//            ftStatus = FT_Open( 0, &ftHandle );
+//            if( ftStatus == FT_OK )
+//            {
+//                ftStatus = FT_GetComPortNumber(ftHandle, &COMPORT);
+////                qDebug() << "FTDI COM port number" << COMPORT;
+//                comPort.setNum(COMPORT);
+//                result = "Found FTDI device at COM" + comPort;
+//            }
+//            else
+//            {
+//                qDebug() << "Could not open FTDI device";
+//                status = false;
+//            }
+//            ftStatus = FT_Close( ftHandle );
+//        }
+//        else
+//        {
+//            result = "No FTDI devices found";
+//            status = false;
+//        }
+//    }
 
-    if( status )
-    {
-        ftStatus = FT_Open(0, &ftHandle);    // open COM port
-        if( ftStatus != FT_OK )
-        {
-            // error opening COM port
-            displayWarningMessage( QString( tr( "Cannot open sled support serial port " ) ).append( comPort ) );
-            status = false;
-        }
-    }
+//    if( status )
+//    {
+//        ftStatus = FT_Open(0, &ftHandle);    // open COM port
+//        if( ftStatus != FT_OK )
+//        {
+//            // error opening COM port
+//            displayWarningMessage( QString( tr( "Cannot open sled support serial port " ) ).append( comPort ) );
+//            status = false;
+//        }
+//    }
 
-    if( status )
-    {
-        ftStatus = FT_SetBaudRate( ftHandle, 9600);
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not set baud rate";
-            status = false;
-        }
-        ftStatus = FT_SetDataCharacteristics( ftHandle, FT_BITS_8, FT_STOP_BITS_1, FT_PARITY_NONE);
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not set data charecteristics";
-            status = false;
-        }
-        ftStatus = FT_SetFlowControl( ftHandle, FT_FLOW_NONE, 0x11, 0x13 );
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not set flow control";
-            status = false;
-        }
-        ftStatus = FT_SetTimeouts( ftHandle, 50, 1000 );
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not set timeouts ";
-            status = false;
-        }
-        ftStatus = FT_Purge( ftHandle, FT_PURGE_TX | FT_PURGE_RX );
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Purge failed";
-            status = false;
-        }
-    }
-//    qDebug() <<  "SledSupport init: " << result;
-    return status;
+//    if( status )
+//    {
+//        ftStatus = FT_SetBaudRate( ftHandle, 9600);
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Could not set baud rate";
+//            status = false;
+//        }
+//        ftStatus = FT_SetDataCharacteristics( ftHandle, FT_BITS_8, FT_STOP_BITS_1, FT_PARITY_NONE);
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Could not set data charecteristics";
+//            status = false;
+//        }
+//        ftStatus = FT_SetFlowControl( ftHandle, FT_FLOW_NONE, 0x11, 0x13 );
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Could not set flow control";
+//            status = false;
+//        }
+//        ftStatus = FT_SetTimeouts( ftHandle, 50, 1000 );
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Could not set timeouts ";
+//            status = false;
+//        }
+//        ftStatus = FT_Purge( ftHandle, FT_PURGE_TX | FT_PURGE_RX );
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Purge failed";
+//            status = false;
+//        }
+//    }
+////    qDebug() <<  "SledSupport init: " << result;
+//    return status;
     return true;//lcv
 }
 
@@ -226,31 +226,31 @@ bool SledSupport::init( void )
  */
 void SledSupport::getAllStatus()
 {
-    if( ftHandle )
-    {
-        mutex.lock();
+//    if( ftHandle )
+//    {
+//        mutex.lock();
 
-        ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );
-        //qDebug() << "Tx:" << GetClockingMode;
-        writeSerial( GetClockingMode );
-        Sleep( SledCommDelay_ms );
-        QByteArray resp = getResponse();
-        //qDebug() << "Rx:" << resp;
+//        ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );
+//        //qDebug() << "Tx:" << GetClockingMode;
+//        writeSerial( GetClockingMode );
+//        Sleep( SledCommDelay_ms );
+//        QByteArray resp = getResponse();
+//        //qDebug() << "Rx:" << resp;
 
-        //qDebug() << "Tx:" << GetClockingGain;
-        writeSerial( GetClockingGain );
-        Sleep( SledCommDelay_ms );
-        resp = getResponse();
-        //qDebug() << "Rx:" << resp;
+//        //qDebug() << "Tx:" << GetClockingGain;
+//        writeSerial( GetClockingGain );
+//        Sleep( SledCommDelay_ms );
+//        resp = getResponse();
+//        //qDebug() << "Rx:" << resp;
 
-        //qDebug() << "Tx:" << GetClockingOffset;
-        writeSerial( GetClockingOffset );
-        Sleep( SledCommDelay_ms );
-        resp = getResponse();
-        //qDebug() << "Rx:" << resp;
+//        //qDebug() << "Tx:" << GetClockingOffset;
+//        writeSerial( GetClockingOffset );
+//        Sleep( SledCommDelay_ms );
+//        resp = getResponse();
+//        //qDebug() << "Rx:" << resp;
 
-        mutex.unlock();
-    }
+//        mutex.unlock();
+//    }
 }
 
 /*
@@ -272,48 +272,48 @@ void SledSupport::updateClockingMode( void )
  */
 void SledSupport::handleSledResponse( void )
 {
-    prevSledState = currSledState;
+//    prevSledState = currSledState;
 
-    QByteArray resp = getResponse();
+//    QByteArray resp = getResponse();
 
-    if( resp != "" ) // test against an empty string
-    {
-        if( resp.toUpper().contains( "ACK" ) )
-        {
-            currSledState = SledSupport::ConnectedState; // assume connected if ACK
+//    if( resp != "" ) // test against an empty string
+//    {
+//        if( resp.toUpper().contains( "ACK" ) )
+//        {
+//            currSledState = SledSupport::ConnectedState; // assume connected if ACK
 
-            int index = resp.toUpper().lastIndexOf( "GC" );
-            if( index != -1 )
-            {
-                if( resp.toUpper().contains( "1" ) )  // gc=1 if clocking is on
-                {
-                    currClockingMode = SledSupport::NormalMode;
-                }
-                else if( resp.toUpper().contains( "0" ) ) // gc=0 if clocking is off
-                {
-                    currClockingMode = SledSupport::DiagnosticMode;
-                }
-                else  // there is no proper signature in the bytes returned
-                {
-                    currClockingMode = SledSupport::UnknownMode;
-                    LOG( WARNING, QString( "Clocking mode is neither on nor off. Mode: %1, Response: %2" ).arg( currClockingMode ).arg( QString( resp ) ) );
-                }
-            }
-        }
-        else if (resp.toUpper().contains( "NAK") )
-        {
-            currClockingMode = SledSupport::UnknownMode;
-            currSledState = SledSupport::DisconnectedState; // assume disconnected if NAK
-        }
-        else // Something other than ACK or NAK or empty string.
-        {
-            currSledState = SledSupport::UnknownState; // assume it is disconnected
-            qDebug() << "Unknown response: " << resp;
-            LOG( WARNING, QString( "Unknown response from Serial port for clocking mode: %1" ).arg( QString( resp ) ) );
-        }
-    }
+//            int index = resp.toUpper().lastIndexOf( "GC" );
+//            if( index != -1 )
+//            {
+//                if( resp.toUpper().contains( "1" ) )  // gc=1 if clocking is on
+//                {
+//                    currClockingMode = SledSupport::NormalMode;
+//                }
+//                else if( resp.toUpper().contains( "0" ) ) // gc=0 if clocking is off
+//                {
+//                    currClockingMode = SledSupport::DiagnosticMode;
+//                }
+//                else  // there is no proper signature in the bytes returned
+//                {
+//                    currClockingMode = SledSupport::UnknownMode;
+//                    LOG( WARNING, QString( "Clocking mode is neither on nor off. Mode: %1, Response: %2" ).arg( currClockingMode ).arg( QString( resp ) ) );
+//                }
+//            }
+//        }
+//        else if (resp.toUpper().contains( "NAK") )
+//        {
+//            currClockingMode = SledSupport::UnknownMode;
+//            currSledState = SledSupport::DisconnectedState; // assume disconnected if NAK
+//        }
+//        else // Something other than ACK or NAK or empty string.
+//        {
+//            currSledState = SledSupport::UnknownState; // assume it is disconnected
+//            qDebug() << "Unknown response: " << resp;
+//            LOG( WARNING, QString( "Unknown response from Serial port for clocking mode: %1" ).arg( QString( resp ) ) );
+//        }
+//    }
 
-    updateClockingMode();
+//    updateClockingMode();
 }
 
 /*
@@ -330,124 +330,124 @@ void SledSupport::handleSledResponse( void )
  */
 void SledSupport::run( void )
 {
-    int round = 0;
-    QByteArray oSpeed = "1000";
-    deviceSettings &dev = deviceSettings::Instance();
-    LOG1(oSpeed)
+//    int round = 0;
+//    QByteArray oSpeed = "1000";
+//    deviceSettings &dev = deviceSettings::Instance();
+//    LOG1(oSpeed)
 
     isRunning = true;
     while( isRunning )
     {
-        if( newDir >= 0 )
-        {
-            baParam.setNum( newDir );
-            newDir = -1;
-            setSledDirection( baParam );
-        }
+//        if( newDir >= 0 )
+//        {
+//            baParam.setNum( newDir );
+//            newDir = -1;
+//            setSledDirection( baParam );
+//        }
 
-//        if( round++ > 9 )
-        {
-            round = 0;
-            mutex.lock();
-            ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );
-            writeSerial( GetClockingMode );       // poll for the clocking mode
+////        if( round++ > 9 )
+//        {
+//            round = 0;
+//            mutex.lock();
+//            ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );
+//            writeSerial( GetClockingMode );       // poll for the clocking mode
 
-            msleep( SledCommDelay_ms );                 // sleep to wait for a response
+//            msleep( SledCommDelay_ms );                 // sleep to wait for a response
 
-            handleSledResponse();                   // parse the response and update mode
-            mutex.unlock();
+//            handleSledResponse();                   // parse the response and update mode
+//            mutex.unlock();
 
-            // Get firmware version when state changes
-            if( currSledState != prevSledState)
-            {
-    //            qDebug() << "Sled state changed";
-                getFirmwareVersions(); // Read Sled and Sled Support firmware versions and announce to advanced view.
-            }
+//            // Get firmware version when state changes
+//            if( currSledState != prevSledState)
+//            {
+//    //            qDebug() << "Sled state changed";
+//                getFirmwareVersions(); // Read Sled and Sled Support firmware versions and announce to advanced view.
+//            }
 
-            // Reinstate clocking parameters when a state change from Disconnected to Connected is detected.
-            if( prevSledState == SledSupport::DisconnectedState && currSledState == SledSupport::ConnectedState )
-            {
-    //            qDebug() << "Sled connected";
-                setSledParams( sledParams );
-            }
-        }
-        if ( dev.current()->isOcelaris() )
-        {
-            mutex.lock();
-            ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );
-            writeSerial( GetRunningState );     // find out if we are running and which direction
-            msleep( SledCommDelay_ms );                 // sleep to wait for a response
-            auto resp = getResponse();
-//            qDebug() << "getRunning response: " << resp;
-            mutex.unlock();
-            if( resp != "" ) // test against an empty string
-            {
-                if( resp.toUpper().contains( "ACK" ) )
-                {
-                    sledRunState = dev.current()->getRotation();
-                    if( resp.toUpper().contains( "0" ) )  // not running
-                    {
-                        // stop things
-                        dev.current()->setRotation( -1 );
-                        emit setDirButton(-1);
-                    }
-//                    else qDebug() << "current direction: " << sledRunState << resp;
-                    if( resp.toUpper().contains( "1" ) )  // running CW (Passive)
-                    {
-                        if(sledRunState != 0)
-                        {
-                            dev.current()->setRotation( 0 );
-                        }
-                            emit setDirButton(0);
-//                        }
-                    }
-                    if( resp.toUpper().contains( "3" ) )  // running CCW (Active)
-                    {
-                        if(sledRunState != 1)
-                        {
-                            dev.current()->setRotation( 1 );
-                        }
-                            emit setDirButton(1);
-//                        }
-                    }
-                }
-            }
+//            // Reinstate clocking parameters when a state change from Disconnected to Connected is detected.
+//            if( prevSledState == SledSupport::DisconnectedState && currSledState == SledSupport::ConnectedState )
+//            {
+//    //            qDebug() << "Sled connected";
+//                setSledParams( sledParams );
+//            }
+//        }
+//        if ( dev.current()->isOcelaris() )
+//        {
+//            mutex.lock();
+//            ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );
+//            writeSerial( GetRunningState );     // find out if we are running and which direction
+//            msleep( SledCommDelay_ms );                 // sleep to wait for a response
+//            resp = getResponse();
+////            qDebug() << "getRunning response: " << resp;
+//            mutex.unlock();
+//            if( resp != "" ) // test against an empty string
+//            {
+//                if( resp.toUpper().contains( "ACK" ) )
+//                {
+//                    sledRunState = dev.current()->getRotation();
+//                    if( resp.toUpper().contains( "0" ) )  // not running
+//                    {
+//                        // stop things
+//                        dev.current()->setRotation( -1 );
+//						emit setDirButton(-1);
+//                    }
+////                    else qDebug() << "current direction: " << sledRunState << resp;
+//                    if( resp.toUpper().contains( "1" ) )  // running CW (Passive)
+//                    {
+//                        if(sledRunState != 0)
+//                        {
+//                            dev.current()->setRotation( 0 );
+//						}
+//                            emit setDirButton(0);
+////                        }
+//                    }
+//                    if( resp.toUpper().contains( "3" ) )  // running CCW (Active)
+//                    {
+//                        if(sledRunState != 1)
+//                        {
+//                            dev.current()->setRotation( 1 );
+//						}
+//                            emit setDirButton(1);
+////                        }
+//                    }
+//                }
+//            }
 
-            mutex.lock();
-            writeSerial( GetOcelotSpeed );       // poll for the Ocelot speed
-            msleep( SledCommDelay_ms );                 // sleep to wait for a response
-            resp = getResponse();
-            mutex.unlock();
-            if( resp != "" ) // test against an empty string
-            {
-                if( resp.toUpper().contains( "ACK" ) )
-                {
-                    if( resp.toUpper().contains( "1" ) )  // go=1
-                    {
-                        oSpeed = oSpeed1;
-                    }
-                    if( resp.toUpper().contains( "2" ) )  // go=2
-                    {
-                        oSpeed = oSpeed2;
-                    }
-                    if( resp.toUpper().contains( "3" ) )  // go=3
-                    {
-                        oSpeed = oSpeed3;
-                    }
-                    if( oSpeed != lastSpeed )
-                    {
-                        lastSpeed = oSpeed;
-                        int revsPerMin = oSpeed.toInt();
-                        int temp = ((1000*1200) / revsPerMin) - 4;
-                        int aLines = temp - temp%16;
-                        qDebug() << "*** Multi-speed setting:" << oSpeed << "Alines:" << aLines;
-//						emit stopSledNow();
-                        emit changeDeviceSpeed(revsPerMin, aLines);
-                    }
-                }
-            }
-        }
-        else
+//            mutex.lock();
+//            writeSerial( GetOcelotSpeed );       // poll for the Ocelot speed
+//            msleep( SledCommDelay_ms );                 // sleep to wait for a response
+//            resp = getResponse();
+//            mutex.unlock();
+//            if( resp != "" ) // test against an empty string
+//            {
+//                if( resp.toUpper().contains( "ACK" ) )
+//                {
+//                    if( resp.toUpper().contains( "1" ) )  // go=1
+//                    {
+//                        oSpeed = oSpeed1;
+//                    }
+//                    if( resp.toUpper().contains( "2" ) )  // go=2
+//                    {
+//                        oSpeed = oSpeed2;
+//                    }
+//                    if( resp.toUpper().contains( "3" ) )  // go=3
+//                    {
+//                        oSpeed = oSpeed3;
+//                    }
+//                    if( oSpeed != lastSpeed )
+//                    {
+//                        lastSpeed = oSpeed;
+//                        int revsPerMin = oSpeed.toInt();
+//                        int temp = ((1000*1200) / revsPerMin) - 4;
+//                        int aLines = temp - temp%16;
+//                        qDebug() << "*** Multi-speed setting:" << oSpeed << "Alines:" << aLines;
+////						emit stopSledNow();
+//                        emit changeDeviceSpeed(revsPerMin, aLines);
+//                    }
+//                }
+//            }
+//        }
+//        else
         {
             msleep( SledLoopDelay_ms );     // sampling interval
         }
@@ -456,60 +456,60 @@ void SledSupport::run( void )
 
 void SledSupport::stopSled()
 {
-    // Stop sled if running
-    QByteArray setOnSerialCmd = QByteArray( SetSled ).append( "0" ).append( "\r" );
-    mutex.lock();
-    LOG1(setOnSerialCmd);
-    //qDebug() << "Tx:" << setOnSerialCmd;
-    writeSerial( setOnSerialCmd );
-    Sleep( SledCommDelay_ms );
-    QByteArray resp = getResponse();
-    //qDebug() << "**** response: " << resp;
-    mutex.unlock();
+//	// Stop sled if running
+//	QByteArray setOnSerialCmd = QByteArray( SetSled ).append( "0" ).append( "\r" );
+//	mutex.lock();
+//    LOG1(setOnSerialCmd);
+//	//qDebug() << "Tx:" << setOnSerialCmd;
+//	writeSerial( setOnSerialCmd );
+//    Sleep( SledCommDelay_ms );
+//    QByteArray resp = getResponse();
+//	//qDebug() << "**** response: " << resp;
+//    mutex.unlock();
 }
 
 void SledSupport::startSled()
 {
-    deviceSettings &dev = deviceSettings::Instance();
+//    deviceSettings &dev = deviceSettings::Instance();
 
-    sledParams.isHighSpeed = dev.current()->isHighSpeed();
+//    sledParams.isHighSpeed = dev.current()->isHighSpeed();
 
-    // start the thread if a high speed device
-    if( sledParams.isHighSpeed )
-    {
-        sledParams.isEnabled   = dev.current()->isClockingEnabledByDefault();
-        sledParams.gain        = dev.current()->getClockingGain();
-        sledParams.offset      = dev.current()->getClockingOffset();
-        sledParams.speed.setNum( dev.current()->getRevolutionsPerMin() );
-        sledParams.torque      = dev.current()->getTorqueLimit();
-        sledParams.time.setNum( dev.current()->getTimeLimit() );
-        sledParams.blinkEnabled = dev.current()->getLimitBlink();
-        if(dev.current()->isOcelaris())
-        {
-            sledParams.sledMulti = 1;       // Click mode
-        }
-        else
-        {
-            sledParams.sledMulti = 0;       // Standard mode
-        }
-        LOG1(getSpeed());
-    }
-    LOG1(getSpeed());
-    setSledParams( sledParams );
+//    // start the thread if a high speed device
+//    if( sledParams.isHighSpeed )
+//    {
+//        sledParams.isEnabled   = dev.current()->isClockingEnabledByDefault();
+//        sledParams.gain        = dev.current()->getClockingGain();
+//        sledParams.offset      = dev.current()->getClockingOffset();
+//        sledParams.speed.setNum( dev.current()->getRevolutionsPerMin() );
+//        sledParams.torque      = dev.current()->getTorqueLimit();
+//        sledParams.time.setNum( dev.current()->getTimeLimit() );
+//        sledParams.blinkEnabled = dev.current()->getLimitBlink();
+//        if(dev.current()->isOcelaris())
+//        {
+//            sledParams.sledMulti = 1;       // Click mode
+//        }
+//        else
+//        {
+//            sledParams.sledMulti = 0;       // Standard mode
+//        }
+//        LOG1(getSpeed());
+//    }
+//    LOG1(getSpeed());
+//    setSledParams( sledParams );
 }
 
 void SledSupport::setSledRotation( int dir )
 {
     LOG1(dir)
-    deviceSettings &dev = deviceSettings::Instance();
-    int direction = dev.current()->getRotation();
-    qDebug() << "**** sledsupport::setSledRotation()" << direction << dir;
-    if ( dev.current()->isBidirectional() && (dir != direction) )
-    {
-        qDebug() << "**** Setting new direction: " << dir;
-        newDir = dir;
-        dev.current()->setRotation( dir );
-    }
+//    deviceSettings &dev = deviceSettings::Instance();
+//    int direction = dev.current()->getRotation();
+//    qDebug() << "**** sledsupport::setSledRotation()" << direction << dir;
+//    if ( dev.current()->isBidirectional() && (dir != direction) )
+//    {
+//        qDebug() << "**** Setting new direction: " << dir;
+//        newDir = dir;
+//        dev.current()->setRotation( dir );
+//    }
 }
 
 /*
@@ -739,58 +739,58 @@ void SledSupport::setSledSpeed(QByteArray speed)
 void SledSupport::setSledDirection( QByteArray dir )
 {
     LOG1(dir)
-    if( ftHandle )
-    {
-        qDebug() << "*** sledsupport::setDirection(): " << dir;
-        bool running = false;
-        // first get current run mode
-        mutex.lock();
-        ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );   // flush input buffer
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Input flush failed";
-        }
-        writeSerial( GetRunningState );
-        msleep( SledCommDelay_ms );                 // sleep to wait for a response
-        QByteArray resp = getResponse();
-        mutex.unlock();
-        qDebug() << "get running state response:" << resp;
-        if(( resp.toUpper().contains( "1" )) || ( resp.toUpper().contains( "3" ))) running = true;
+//    if( ftHandle )
+//    {
+//        qDebug() << "*** sledsupport::setDirection(): " << dir;
+//        bool running = false;
+//        // first get current run mode
+//        mutex.lock();
+//        ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );   // flush input buffer
+//        if( ftStatus != FT_OK )
+//        {
+//            qDebug() << "Input flush failed";
+//        }
+//        writeSerial( GetRunningState );
+//        msleep( SledCommDelay_ms );                 // sleep to wait for a response
+//        QByteArray resp = getResponse();
+//        mutex.unlock();
+//        qDebug() << "get running state response:" << resp;
+//        if(( resp.toUpper().contains( "1" )) || ( resp.toUpper().contains( "3" ))) running = true;
 
-        // remember direction in case Sled of off-line
-        sledParams.dir =  dir ;
+//        // remember direction in case Sled of off-line
+//        sledParams.dir =  dir ;
 
-        QByteArray setDirSerialCmd = QByteArray( SetDirection ).append( dir ).append( "\r" );
+//        QByteArray setDirSerialCmd = QByteArray( SetDirection ).append( dir ).append( "\r" );
 
-        mutex.lock();
-        //qDebug() << "Tx:" << setDirSerialCmd;
-        writeSerial( setDirSerialCmd );
-        msleep( SledCommDelay_ms );                 // sleep to wait for a response
-        resp = getResponse();
-        mutex.unlock();
-//        qDebug() << "set direction response:" << resp;
+//        mutex.lock();
+//        //qDebug() << "Tx:" << setDirSerialCmd;
+//        writeSerial( setDirSerialCmd );
+//        msleep( SledCommDelay_ms );                 // sleep to wait for a response
+//        resp = getResponse();
+//        mutex.unlock();
+////        qDebug() << "set direction response:" << resp;
 
-        //qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
-        {
-            qDebug() << "set direction returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set direction returned NAK. Response: %1" ).arg( QString( resp ) ) );
-        }
+//        //qDebug() << "Rx:" << resp;
+//        if( resp.toUpper().contains( "NAK" ) )
+//        {
+//            qDebug() << "set direction returned NAK" << resp.toUpper();
+//            LOG( WARNING, QString( "Sled Support Board: set direction returned NAK. Response: %1" ).arg( QString( resp ) ) );
+//        }
 
-        if( running )
-        {
-            msleep( 500 );                 // make sure the Sled is stopped
-            QByteArray setOnSerialCmd = QByteArray( SetSled ).append( "1" ).append( "\r" );
-            mutex.lock();
-            LOG1(setOnSerialCmd);
-//            qDebug() << "Tx:" << setOnSerialCmd;
-            writeSerial( setOnSerialCmd );
-            msleep( SledCommDelay_ms );                 // sleep to wait for a response
-            mutex.unlock();
-        }
-        deviceSettings &dev = deviceSettings::Instance();
-        dev.current()->setRotation( dir.toInt() );    // flip image if CCW
-    }
+//        if( running )
+//        {
+//            msleep( 500 );                 // make sure the Sled is stopped
+//            QByteArray setOnSerialCmd = QByteArray( SetSled ).append( "1" ).append( "\r" );
+//            mutex.lock();
+//            LOG1(setOnSerialCmd);
+////            qDebug() << "Tx:" << setOnSerialCmd;
+//            writeSerial( setOnSerialCmd );
+//            msleep( SledCommDelay_ms );                 // sleep to wait for a response
+//            mutex.unlock();
+//        }
+//        deviceSettings &dev = deviceSettings::Instance();
+//        dev.current()->setRotation( dir.toInt() );    // flip image if CCW
+//    }
 }
 
 /*
@@ -858,36 +858,36 @@ void SledSupport::setSledLimitTime(QByteArray limit)
 void SledSupport::setSledLimitBlink(int blink)
 {
     LOG1(blink)
-    if( ( blink != 0 ) || ( blink != 1 ) )
-    {
-        return;
-    }
+//    if( ( blink != 0 ) || ( blink != 1 ) )
+//    {
+//        return;
+//    }
 
-    char isBlinkEnabled = '1';
-    if(!blink)
-    {
-        isBlinkEnabled = '0';
-    }
-    QByteArray setBlinkSerialCmd = QByteArray( SetLimitBlink ).append( isBlinkEnabled ).append( "\r" );
-    if( ftHandle )
-    {
-        mutex.lock();
+//    char isBlinkEnabled = '1';
+//    if(!blink)
+//    {
+//        isBlinkEnabled = '0';
+//    }
+//    QByteArray setBlinkSerialCmd = QByteArray( SetLimitBlink ).append( isBlinkEnabled ).append( "\r" );
+//    if( ftHandle )
+//    {
+//        mutex.lock();
 
-//        qDebug() << "Tx:" << setBlinkSerialCmd;
-        writeSerial( setBlinkSerialCmd );
-        LOG( INFO, QString( "Sled Support Board: set blink: %1" ).arg( char( isBlinkEnabled ) ) )
+////        qDebug() << "Tx:" << setBlinkSerialCmd;
+//        writeSerial( setBlinkSerialCmd );
+//        LOG( INFO, QString( "Sled Support Board: set blink: %1" ).arg( char( isBlinkEnabled ) ) )
 
-        Sleep( SledCommDelay_ms );
-        QByteArray response = getResponse();
-        mutex.unlock();
+//        Sleep( SledCommDelay_ms );
+//        QByteArray response = getResponse();
+//        mutex.unlock();
 
-//        qDebug() << "Rx:" << resp;
-        if( response.toUpper().contains( "NAK" ) )
-        {
-//            qDebug() << "set blink returned NAK" << resp.toUpper();
-            LOG( WARNING, QString( "Sled Support Board: set blink returned NAK. Response: %1" ).arg( QString( response ) ) )
-        }
-    }
+////        qDebug() << "Rx:" << resp;
+//        if( response.toUpper().contains( "NAK" ) )
+//        {
+////            qDebug() << "set blink returned NAK" << resp.toUpper();
+//            LOG( WARNING, QString( "Sled Support Board: set blink returned NAK. Response: %1" ).arg( QString( response ) ) )
+//        }
+//    }
 }
 
 void SledSupport::setSledMultiMode(int mode)
@@ -1046,22 +1046,22 @@ int SledSupport::getSpeed() const
 QByteArray SledSupport::getResponse( void )
 {
      QByteArray data;
-     DWORD bytesToRead = 256;
-     DWORD bytesRead;
-     char buffer[256];
+//     DWORD bytesToRead = 256;
+//     DWORD bytesRead;
+//     char buffer[256];
 
-     //qDebug() << "Reading Sled Response";
+//     //qDebug() << "Reading Sled Response";
 
-     ftStatus = FT_Read( ftHandle, buffer, bytesToRead, &bytesRead );
-     if( ftStatus != FT_OK )
-     {
-         qDebug() << "Serial read failed";
-     }
-     else
-     {
-         buffer[bytesRead] = '\0';
-         data = buffer;
-         data = data.simplified();
-     }
+//     ftStatus = FT_Read( ftHandle, buffer, bytesToRead, &bytesRead );
+//     if( ftStatus != FT_OK )
+//     {
+//         qDebug() << "Serial read failed";
+//     }
+//     else
+//     {
+//         buffer[bytesRead] = '\0';
+//         data = buffer;
+//         data = data.simplified();
+//     }
      return data;
 }
