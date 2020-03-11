@@ -62,7 +62,6 @@ win32 {
        Frontend
 
     INCLUDEPATH *= $$CUDA_DIR1
-    INCLUDEPATH += $$PWD/../../lib/win32/FTDI
 
     LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
 #    LIBS += -L$$CUDA_DIR3/Debug -lcudaFFT
@@ -74,7 +73,7 @@ win32 {
        -lglu32                                            \
        -luser32
 
-#    LIBS += $$PWD/../../lib/win32/FTDI/ftd2xx64.dll
+    LIBS += -L$$PWD/../../lib/amd64/FTDI/ -lftd2xx
 
 }  #win32
 
@@ -108,10 +107,8 @@ include( $${TARGET}.pri )
 #    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
 #}
 
-#unix|win32: LIBS += -L$$PWD/../../lib/win32/FTDI/ -lftd2xx
-
-DEPENDPATH += $$PWD/../../lib/win32/FTDI
-
+INCLUDEPATH += $$PWD/../../lib/amd64/FTDI
+DEPENDPATH += $$PWD/../../lib/amd64/FTDI
 
 RESOURCES += \
     OpenClResources.qrc
