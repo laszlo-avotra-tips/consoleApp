@@ -131,6 +131,13 @@ QSqlError sessionDatabase::initDb(void)
         }
     }
 
+//lcv
+//    QStringList dbTables = db.tables();
+//    for(auto it = dbTables.begin(); it != dbTables.end(); ++it){
+//        LOG1(*it)
+//    }
+
+
     // Add the current version numbers for this schema
     populateVersionTable();
 
@@ -164,6 +171,7 @@ void sessionDatabase::populateVersionTable( void )
                             "VALUES (?, ?)" ) );
         q.addBindValue( i.key() );
         q.addBindValue( i.value() );
+        LOG2(i.key(), i.value())
 
         q.exec();
 
@@ -172,6 +180,21 @@ void sessionDatabase::populateVersionTable( void )
         {
             displayFailureMessage( QObject::tr( "Database failure:Failed to INSERT new version data." ), true );
         }
+    }
+
+    //SELECT * FROM Customers;
+//lcv
+    auto rec = db.record("version");
+    LOG1(rec.count())
+    for(int i = 0; i < rec.count(); ++i){
+        LOG1(rec.fieldName(i))
+        auto field = rec.field(i);
+        LOG3(i, field.name(), field.value().typeName())
+//        if(field.value().typeName() == QString("int")){
+//            LOG3(i, field.name(), field.value().toInt())
+//        } else {
+//            LOG3(i, field.name(), field.value().toString())
+//        }
     }
 }
 
@@ -291,6 +314,7 @@ int sessionDatabase::addCapture( QString tag,
     // Find next available ID
     int maxID = 0;
     q.prepare( "SELECT MAX(id) FROM captures" );
+
     q.exec();
     sqlerr = q.lastError();
     if( sqlerr.isValid() )

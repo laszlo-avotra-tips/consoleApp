@@ -11,28 +11,13 @@ QT += charts
 QT += sql xml
 QT += serialport
 
-# XXX this needs to be here to link even though we do not
-# have any openGL code.  QtSingleApplication::sendMessage
-# craps out with an unresolved external symbol (SendMessageTimeoutW)
-# It's all a little odd.
-#win32 {
-#   QT += opengl
-#}
 
 CONFIG += c++14
 
 DEFINES += QT_XML_LIB QT_SQL_LIB
 
-#isEmpty(OPENCL_DIR):OPENCL_DIR=$$(OPENCL_DIR)
-
-#isEmpty(OPENCL_DIR) {
-#    message("set OPENCL_DIR as environment variable or qmake variable to get rid of this message")
-    OPENCL_DIR = "C:/Program Files (x86)/IntelSWTools/sw_dev_tools/OpenCL/sdk"
-#}
-
-#    CUDA_DIR1 = "C:\Users\lvincze\Documents\GitHub\cudaUnitTest\cudaFFT"
-#    CUDA_DIR2 = "C:\CUDA\lib\x64"
-#    CUDA_DIR3 = "C:\Users\lvincze\Documents\GitHub\bin\win64"
+OPENCL_DIR = $$PWD/../../lib/amd64/Intel/OpenCL_SDK/6.3
+OPENCL_DIR_7 = $$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0
 
 win32 {
    # Turn on additional settings for building the Windows release
@@ -53,7 +38,7 @@ win32 {
 
     INCLUDEPATH += \
        ../../Common/Include                 \
-       $$OPENCL_DIR/include \
+       $$OPENCL_DIR_7/include \
        ../../lib/win32/DataTranslation/Include \
        Backend                              \
        Include                              \
@@ -63,12 +48,8 @@ win32 {
 
     INCLUDEPATH *= $$CUDA_DIR1
 
-    LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
-#    LIBS += -L$$CUDA_DIR3/Debug -lcudaFFT
-#    LIBS += -L$$CUDA_DIR2 -lcudart -lcufft
+    LIBS += -L$$OPENCL_DIR_7/lib/x64 -lopencl
 
-
-#       -L"../../lib/win32/DataTranslation/"               \
     LIBS +=                                       \
        -lglu32                                            \
        -luser32
@@ -78,9 +59,6 @@ win32 {
 }  #win32
 
 unix {
-
-#   INCLUDEPATH +=                           \
-#       ../../lib/linux32/ipp/6.1.0.039/ia32/include
 
    INCLUDEPATH +=                           \
        .                                    \
