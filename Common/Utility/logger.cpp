@@ -179,7 +179,7 @@ bool Logger::rotateLog( const QString systemLogFileName )
  */
 void Logger::logMessage( QString msg, const char *severity, const char *file, int line )
 {
-    return; //lcv
+//    return; //lcv
     // Make file writing this thread-safe
     QMutexLocker locker( &mutex );
 

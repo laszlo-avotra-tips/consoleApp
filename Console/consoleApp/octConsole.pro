@@ -38,8 +38,7 @@ win32 {
 
     INCLUDEPATH += \
        ../../Common/Include                 \
-       $$OPENCL_DIR_7/include \
-       ../../lib/win32/DataTranslation/Include \
+       $$OPENCL_DIR_7/include               \
        Backend                              \
        Include                              \
        Frontend/GeneratedFiles              \
@@ -51,7 +50,7 @@ win32 {
     LIBS += -L$$OPENCL_DIR_7/lib/x64 -lopencl
 
     LIBS +=                                       \
-       -lglu32                                            \
+       -lglu32                                    \
        -luser32
 
     LIBS += -L$$PWD/../../lib/amd64/FTDI/ -lftd2xx
