@@ -47,13 +47,15 @@ win32 {
 
     INCLUDEPATH *= $$CUDA_DIR1
 
-    LIBS += -L$$OPENCL_DIR_7/lib/x64 -lopencl
+#    LIBS += -L$$OPENCL_DIR_7/lib/x64 -lopencl
+    LIBS += -L$$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/lib/x64/ -lOpenCL
+    LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTCapture
+    LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTControl_LW
+    LIBS += -L$$PWD/../../lib/amd64/FTDI/ -lftd2xx
 
     LIBS +=                                       \
        -lglu32                                    \
        -luser32
-
-    LIBS += -L$$PWD/../../lib/amd64/FTDI/ -lftd2xx
 
 }  #win32
 
@@ -83,6 +85,12 @@ include( $${TARGET}.pri )
 #CONFIG( release ) {
 #    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
 #}
+
+INCLUDEPATH += $$PWD/../../lib/amd64/Axsun
+DEPENDPATH += $$PWD/../../lib/amd64/Axsun
+
+INCLUDEPATH += $$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/include
+DEPENDPATH += $$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/include
 
 INCLUDEPATH += $$PWD/../../lib/amd64/FTDI
 DEPENDPATH += $$PWD/../../lib/amd64/FTDI

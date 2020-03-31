@@ -3,5 +3,7 @@
         <file alias="bandc">Backend/OpenCL/bandc.cl</file>
         <file alias="postfft">Backend/OpenCL/postfft.cl</file>
         <file alias="warp">Backend/OpenCL/warp.cl</file>
+        <file alias="line_avg">Backend/OpenCL/line_avg.cl</file>
+        <file alias="warpBc">Backend/OpenCL/warpBc.cl</file>
     </qresource>
 </RCC>
