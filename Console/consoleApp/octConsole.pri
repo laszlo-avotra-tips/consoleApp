@@ -12,6 +12,7 @@ HEADERS += \
     $$PWD/Backend/producer.h \
     $$PWD/Backend/signalprocessingfactory.h \
     $$PWD/Backend/warp.h \
+    $$PWD/Backend/warpbc.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -104,6 +105,7 @@ SOURCES += \
     $$PWD/Backend/producer.cpp \
     $$PWD/Backend/signalprocessingfactory.cpp \
     $$PWD/Backend/warp.cpp \
+    $$PWD/Backend/warpbc.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \

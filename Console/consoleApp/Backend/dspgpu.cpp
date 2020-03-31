@@ -157,6 +157,15 @@ bool DSPGPU::enqueueWarpKernelFunction()
     return success;
 }
 
+bool DSPGPU::enqueueWarpBcKernelFunction()
+{
+    bool success{false};
+    if(m_warp){
+        success = m_warpBc->enqueueCallKernelFunction();
+    }
+    return success;
+}
+
 /*
  * initOpenCL
  *

@@ -2538,7 +2538,7 @@ void frontend::handleBadMonitorConfig()
     captureMouse( false );
     hideDisplays();
     this->setGeometry( wmgr->getDefaultDisplayGeometry() );
-    this->showFullScreen();
+    show(); //lcv this->showFullScreen();
     wmgr->showInfoMessage( this->parentWidget() );
     captureMouse( true );
 }
@@ -2578,13 +2578,13 @@ void frontend::createDisplays()
 
     this->hide();
     this->setGeometry( wmgr->getTechnicianDisplayGeometry() );
-    this->showFullScreen();
+    show(); //lcv this->showFullScreen();
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
     {
         docWindow->setGeometry( wmgr->getPhysicianDisplayGeometry() );
-        docWindow->showFullScreen();
+        docWindow->show(); //lcv docWindow->showFullScreen();
     }
 
     if( wmgr->isAuxMonPresent() )

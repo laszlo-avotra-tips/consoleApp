@@ -52,6 +52,7 @@ private:
     IKernelFunction* m_postFft{nullptr};
     IKernelFunction* m_bandc{nullptr};
     IKernelFunction* m_warp{nullptr};
+    IKernelFunction* m_warpBc{nullptr};
 
     const size_t origin[ 3 ]{ 0, 0, 0 };
     const size_t region[ 3 ]{ SectorWidth_px, SectorHeight_px, 1 };
@@ -68,6 +69,7 @@ private:
     bool enqueuePostFftKernelFunction();
     bool enqueueBandcKernelFunction();
     bool enqueueWarpKernelFunction();
+    bool enqueueWarpBcKernelFunction();
 };
 
 #endif // DSPGPU_H_
