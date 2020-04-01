@@ -21,6 +21,8 @@
 #include <QXmlStreamReader>
 #include <QSettings>
 #include <QMessageBox>
+#include <logger.h>
+
 
 #define MASK_STEP_SIZE 1
 
@@ -152,7 +154,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
         // read attributes for device
         if( e.tagName() == "device" )
         {
-//            device::DeviceType speedType;
+            device::DeviceType speedType{device::HighSpeed};
             QString type = e.attribute( "deviceType", "" );
 
             // match strings and assign to enumerated type
@@ -209,12 +211,16 @@ bool deviceSettings::loadDevice( QString deviceFile )
                  * unknown device. This ensures that the device will be on the
                  * selection list.
                  */
-                //QImage *d1Img = new QImage;
+                QImage *d1Img = new QImage;
 
-                //if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
-                //{
-                //    d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
-                //}
+                auto fn = deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive);
+
+                LOG1(fn)
+
+                if( !d1Img->load(fn) )
+                {
+                    d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
+                }
 
                 /*
                  * Compute number of A-lines from revolutionsPerMin
@@ -261,7 +267,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                          e.attribute( "Speed3", "0" ).toLatin1(),
                                          e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
                                          speedType,
-                                         NULL );    // d1Img
+                                         d1Img );    // d1Img
 
                 deviceList.append( d1 );
             }
