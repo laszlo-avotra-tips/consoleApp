@@ -7,21 +7,31 @@
 #include "scanconversion.h"
 #include "octFile.h"
 #include "AxsunOCTCapture.h"
+#include "idaq.h"
+#include <cstdint>
 
-typedef unsigned char   uint8_t;
-typedef short           int16_t;
-typedef unsigned short  uint16_t;
-typedef int             int32_t;
-typedef unsigned int    uint32_t;
 
-class DAQ: public QThread
+class DAQ: public IDAQ
 {
     Q_OBJECT
 
 public:
     DAQ();
     ~DAQ();
-    void stop( void ){ isRunning = false; }
+    void init( void ) override;
+    void run( void ) override;
+
+    void stop( void ) override;
+    void pause( void ) override;
+    void resume( void) override;
+
+    QString getDaqLevel() override;
+    long getRecordLength() const override;
+
+    bool configure( void ) override;
+
+    void enableAuxTriggerAsTriggerEnable( bool ) override;
+
     bool getData( bool isFirstReceived );
     bool isRunning;
     int generateSyntheticData( unsigned char *pSyntheticData );
@@ -39,8 +49,8 @@ public slots:
     void setLaserDivider( int divider );
     void setDisplay( float, int );
 
-protected:
-    void run( void );
+//protected:
+//    void run( void );
 
 private:
     AOChandle session = NULL;

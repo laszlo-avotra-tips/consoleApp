@@ -70,6 +70,46 @@ DAQ::~DAQ()
     }
 }
 
+void DAQ::init()
+{
+
+}
+
+void DAQ::stop()
+{
+    isRunning = false;
+}
+
+void DAQ::pause()
+{
+
+}
+
+void DAQ::resume()
+{
+
+}
+
+QString DAQ::getDaqLevel()
+{
+    return "";
+}
+
+long DAQ::getRecordLength() const
+{
+    return 0;
+}
+
+bool DAQ::configure()
+{
+    return true;
+}
+
+void DAQ::enableAuxTriggerAsTriggerEnable(bool)
+{
+
+}
+
 /*
  *  run
  */
