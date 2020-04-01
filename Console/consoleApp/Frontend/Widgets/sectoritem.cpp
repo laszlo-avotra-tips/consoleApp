@@ -621,36 +621,36 @@ void sectorItem::paintSector ( bool force )
     }
 
     // Direction indicator for highspeed bidirectional devices (Ocelaris)
-    if(devSettings.current()->isBidirectional() )
-    {
-		QString spin;
-		QFont font;
-		font.setPixelSize(catheterEdgePosition / 2);
-		font.setBold(true);
-		painter->setFont(font);
+//lcv    if(devSettings.current()->isBidirectional() )
+//    {
+//		QString spin;
+//		QFont font;
+//		font.setPixelSize(catheterEdgePosition / 2);
+//		font.setBold(true);
+//		painter->setFont(font);
 
-        deviceSettings &dev = deviceSettings::Instance();
-        if(dev.current()->getRotation())
-        {
-            painter->setBrush( PassiveSpinColor );
-            spin = "PAS";
-        }
-        else
-        {
-            painter->setBrush( AggressiveSpinColor );
-            spin = "ACT";
-        }
+//        deviceSettings &dev = deviceSettings::Instance();
+//        if(dev.current()->getRotation())
+//        {
+//            painter->setBrush( PassiveSpinColor );
+//            spin = "PAS";
+//        }
+//        else
+//        {
+//            painter->setBrush( AggressiveSpinColor );
+//            spin = "ACT";
+//        }
 
-        // draw direction indicator
-//        const int DirectionEdge = (catheterEdgePosition * 3) / 4;
-        const int DirectionEdge = catheterEdgePosition;
-        QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
-                            QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
+//        // draw direction indicator
+////        const int DirectionEdge = (catheterEdgePosition * 3) / 4;
+//        const int DirectionEdge = catheterEdgePosition;
+//        QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
+//                            QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
 		
-		painter->drawEllipse( center );
-		painter->setPen( Qt::black );
-		painter->drawText( center, Qt::AlignCenter, spin );
-    }
+//		painter->drawEllipse( center );
+//		painter->setPen( Qt::black );
+//		painter->drawText( center, Qt::AlignCenter, spin );
+//    }
 
 #if ENABLE_ON_SCREEN_RULER
     /*

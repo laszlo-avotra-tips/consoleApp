@@ -7,12 +7,12 @@
  *
  * Author: Chris White, Bjarne Christensen
  *
- * Copyright (c) 2010-2018 Avinger, Inc.
+ * Copyright (c) 2010-2017 Avinger, Inc.
  */
 #include <QDebug>
 #include "deviceSettings.h"
 #include "defaults.h"
-#include "util.h"
+//#include "util.h"
 #include "logger.h"
 #include <QDir>
 #include <QFile>
@@ -21,25 +21,15 @@
 #include <QXmlStreamReader>
 #include <QSettings>
 #include <QMessageBox>
-#include "logger.h"
 
-deviceSettings* deviceSettings::theSettings{nullptr};
-
-// singleton
-deviceSettings & deviceSettings::Instance()
-{
-    if(!theSettings){
-        theSettings = new deviceSettings();
-    }
-    return *theSettings;
-}
+#define MASK_STEP_SIZE 1
 
 /*
  * constructor
  */
 deviceSettings::deviceSettings(void) : QObject()
 {
-    settings      = nullptr;
+    settings      = NULL;
     currentDevice = -1;     // No device selected
 }
 
@@ -51,7 +41,7 @@ deviceSettings::~deviceSettings()
     device *dev;
     foreach( dev, deviceList ) 
     {
-        if( dev )
+        if( dev != NULL )
         {
             delete dev;
         }
@@ -67,6 +57,7 @@ int deviceSettings::init( void )
 {
     int  numDevicesLoaded = 0;
     QDir deviceDir( DevicesPath );
+    qDebug() << "Device directory: " << DevicesPath;
     QFileInfoList list = deviceDir.entryInfoList( QStringList( "*.xml" ) );
 
     for( int i = 0; i < list.size(); i++ )
@@ -80,6 +71,14 @@ int deviceSettings::init( void )
     return numDevicesLoaded;
 }
 
+void deviceSettings::setCurrentDevice( int devIndex )
+{
+    qDebug() << "* DeviceSettings - Current device changed";
+    currentDevice = devIndex;
+    deviceSettings::adjustMaskSize( 0 );
+    emit deviceChanged( devIndex );
+}
+
 /*
  * loadDevice
  *
@@ -87,8 +86,12 @@ int deviceSettings::init( void )
  */
 bool deviceSettings::loadDevice( QString deviceFile )
 {
-    errorHandler &err = errorHandler::Instance();
+    int testno = 0;
+    //errorHandler &err = errorHandler::Instance();
 
+    qDebug() << "Loading device from:" << deviceFile;
+
+    device::DeviceType speedType = device::LowSpeed;    // to make compiler happy that it is initialized
     bool retVal = false;
 
     // open the file
@@ -97,15 +100,15 @@ bool deviceSettings::loadDevice( QString deviceFile )
     QFileInfo    fileInfo;
 
     // do not display the file path in the warning message, but use the full path for the LOG message
-    if( ( !file ) || ( !doc ) )
+    if( ( file == NULL ) || ( doc == NULL ) )
     {
-        err.warn( "Failed to open device XML file." );
-        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) )
+        //err.warn( "Failed to open device XML file." );
+        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) );
     }
     else if( !file->open( QFile::ReadOnly | QFile::Text ) )
     {
-        err.warn( "Failed to open device XML file." );
-        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) )
+        //err.warn( "Failed to open device XML file." );
+        LOG( WARNING, QString( "Failed to open device XML file %1." ).arg( deviceFile ) );
     }
     else
     {
@@ -121,19 +124,22 @@ bool deviceSettings::loadDevice( QString deviceFile )
         {
             retVal = false;
             qDebug() << "Failed to parse XML file" << fileInfo.fileName() << errMessage << errLine << errColumn;
-            err.warn( QString( "Failed to parse XML file %1." ).arg( fileInfo.fileName() ) );
+            //err.warn( QString( "Failed to parse XML file %1." ).arg( fileInfo.fileName() ) );
         }
     }
-
+    testno++;
+    if (retVal != true) qDebug() << "test: " << testno;
     // do not continue if the device XML version is wrong
     if( retVal )
     {
         if( !checkVersion( doc ) )
         {
             retVal = false;
-            err.warn( QString( "Failed to load device %1\nReason: Version mismatch" ).arg( fileInfo.fileName() ) );
+            //err.warn( QString( "Failed to load device %1\nReason: Version mismatch" ).arg( fileInfo.fileName() ) );
         }
     }
+    testno++;
+    if (retVal != true) qDebug() << "test: " << testno;
 
     if( retVal )
     {
@@ -146,105 +152,52 @@ bool deviceSettings::loadDevice( QString deviceFile )
         // read attributes for device
         if( e.tagName() == "device" )
         {
-            device::DeviceType speedType{device::HighSpeed};
+//            device::DeviceType speedType;
             QString type = e.attribute( "deviceType", "" );
 
-            // must compare strings and assign to the enumerated type
-            // comment that compare returns 0 if matched.
+            // match strings and assign to enumerated type
+            // match returns 0
             if( !QString::compare( type, "LowSpeed" ) )
             {
                 speedType = device::LowSpeed;
             }
-            else if( !QString::compare( type, "HighSpeed" ) )
+            else if( !QString::compare( type, "HighSpeed") )
             {
                 speedType = device::HighSpeed;
             }
-            else if( !QString::compare( type, "Ocelaris" ) )
+            else if( !QString::compare( type, "Ocelaris") )
             {
-                 speedType = device::Ocelaris;
+                speedType = device::Ocelaris;
             }
             else
             {
                 retVal = false;
-                err.warn( tr( "A device XML file has been altered and will not work." ) );
             }
-
-            // set to false in case this attribute is undefined (Low Speed devices)
-            bool isClockingEnabledByDefault = false;
-
-            if( retVal && ((speedType == device::HighSpeed) || (speedType == device::Ocelaris)) )
+            testno++;
+            if (retVal != true) qDebug() << "test: " << testno;
+            // range check clocking gain
+            int tmpGain = e.attribute( "clockingGain", "0" ).toInt(); // store the value read in temporarily
+            if( tmpGain < 1 || tmpGain > 255 )
             {
-                // High Speed Devices must have clocking attributes defined, or else they
-                // will prompt an warning message and be unavailable.
-                if( !e.hasAttribute( "clockingEnabledByDefault" ) ||
-                    !e.hasAttribute( "clockingGain" ) ||
-                    !e.hasAttribute( "clockingOffset" ) )
-                {
-                    retVal = false;
-                    QString msg = QString( tr( "%1\nThis High Speed device does not have proper clocking attributes and will not work." ) ).arg( fileInfo.fileName() );
-                    err.warn( msg );
-                    LOG( WARNING, msg )
-                }
-                else if( !e.hasAttribute( "torqueLimit" ) ||
-                         !e.hasAttribute( "timeLimit" ) )
-                {
-                    retVal = false;
-                    QString msg = QString( tr( "%1\nThis High Speed device does not have proper torque attributes and will not work." ) ).arg( fileInfo.fileName() );
-                    err.warn( msg );
-                    LOG( WARNING, msg )
-                }
-                else // valid high speed device profile with clocking parameters
-                {
-                    // parse the default clocking mode from string to bool
-                    QString defaultClockingMode = e.attribute( "clockingEnabledByDefault", "" );
-                    if( !QString::compare( defaultClockingMode, "true", Qt::CaseInsensitive ) )
-                    {
-                        isClockingEnabledByDefault = true;
-                    }
-                    else if( !QString::compare( defaultClockingMode, "false", Qt::CaseInsensitive ) )
-                    {
-                        isClockingEnabledByDefault = false;
-                    }
-                    else
-                    {
-                        retVal = false;
-                    }
+                retVal = false;
+            }
+            testno++;
+            if (retVal != true) qDebug() << "test: " << testno;
 
-                    // range check clocking gain
-                    int tmpGain = e.attribute( "clockingGain", "0" ).toInt(); // store the value read in temporarily
-                    if( tmpGain < 1 || tmpGain > 255 )
-                    {
-                        retVal = false;
-                    }
+            // range check clocking offset
+            int tmpOffset = e.attribute( "clockingOffset", "0" ).toInt(); // store the value read in temporarily
+            if( tmpOffset < 1 || tmpOffset > 999 )
+            {
+                retVal = false;
+            }
+            testno++;
+            if (retVal != true) qDebug() << "test: " << testno;
 
-                    // range check clocking offset
-                    int tmpOffset = e.attribute( "clockingOffset", "0" ).toInt(); // store the value read in temporarily
-                    if( tmpOffset < 1 || tmpOffset > 999 )
-                    {
-                        retVal = false;
-                    }
-
-                    // range check torque
-                    float tmpTorque = e.attribute( "torqueLimit", "0" ).toFloat(); // store the value read in temporarily
-                    if( tmpTorque < 1.0f || tmpTorque > 4.5f )
-                    {
-                        retVal = false;
-                    }
-
-                    // range check torque limit timeout
-                    int tmpLimit = e.attribute( "timeLimit", "0" ).toInt(); // store the value read in temporarily
-                    if( tmpLimit < 1 || tmpLimit > 15 )
-                    {
-                        retVal = false;
-                    }
-
-                    if( !retVal )
-                    {
-                        QString msg = QString( tr( "%1\nThis High Speed device does not have proper attributes and will not work." ) ).arg( fileInfo.fileName() );
-                        err.warn( msg );
-                        LOG( WARNING, msg )
-                    }
-                }
+            if( !retVal )
+            {
+                QString msg = QString( tr( "%1\nThis High Speed device does not have proper clocking attributes and will not work." ) ).arg( fileInfo.fileName() );
+                //err.warn( msg );
+                LOG( WARNING, msg );
             }
 
             // Only add the valid devices
@@ -256,12 +209,12 @@ bool deviceSettings::loadDevice( QString deviceFile )
                  * unknown device. This ensures that the device will be on the
                  * selection list.
                  */
-                QImage *d1Img = new QImage;
+                //QImage *d1Img = new QImage;
 
-                if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
-                {
-                    d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
-                }
+                //if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
+                //{
+                //    d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
+                //}
 
                 /*
                  * Compute number of A-lines from revolutionsPerMin
@@ -295,23 +248,26 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                          e.attribute( "aLineLengthDeep_px", "" ).toInt(),
                                          e.attribute( "imagingDepthNormal_mm", "" ).toFloat(),
                                          e.attribute( "imagingDepthDeep_mm", "" ).toFloat(),
-                                         isClockingEnabledByDefault,
+                                         e.attribute( "clockingEnabled", "1" ).toInt(),
                                          e.attribute( "clockingGain", "" ).toLatin1(),
                                          e.attribute( "clockingOffset", "" ).toLatin1(),
-                                         e.attribute( "torqueLimit", "" ).toLatin1(),
-                                         e.attribute( "timeLimit", "" ).toInt(),
+                                         e.attribute( "torqueLimit", "2.5" ).toLatin1(),
+                                         e.attribute( "timeLimit", "1" ).toLatin1(),
                                          e.attribute( "limitBlinkEnabled", "-1" ).toInt(),
+//                                         e.attribute( "reverseAngle", "0" ).toLatin1(),
                                          e.attribute( "measurementVersion", "0" ).toInt(),
                                          e.attribute( "Speed1", "0" ).toLatin1(),
                                          e.attribute( "Speed2", "0" ).toLatin1(),
                                          e.attribute( "Speed3", "0" ).toLatin1(),
                                          e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
                                          speedType,
-                                         d1Img );
+                                         NULL );    // d1Img
 
                 deviceList.append( d1 );
             }
         }
+        testno++;
+        if (retVal != true) qDebug() << "test: " << testno;
 
         // close the XML file
         file->close();
@@ -356,4 +312,21 @@ bool deviceSettings::checkVersion( QDomDocument *doc )
     }
 
     return retVal;
+}
+
+/*
+ *  Change the mask size for engineering tests
+ */
+void deviceSettings::adjustMaskSize( int step )
+{
+    int index = getCurrentDevice();
+    int newMask = deviceAt( index )->getInternalImagingMask_px();
+    deviceAt( index )->setInternalImagingMask_px( newMask + (step * MASK_STEP_SIZE));
+    emit displayMask( newMask );
+    qDebug() << "New Mask: " << deviceAt(index)->getInternalImagingMask_px();
+}
+
+QString device::getDeviceName()
+{
+    return deviceName;
 }

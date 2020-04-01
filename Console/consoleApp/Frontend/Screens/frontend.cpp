@@ -1090,7 +1090,7 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
 
     SledSupport &sled = SledSupport::Instance();
 	sled.stopSled();		// stop sled if running
-    sled.stop();			// stop sled processing
+//    sled.stop();			// stop sled processing
 
     if( isAnnotateOn )
     {
@@ -2704,9 +2704,9 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     //qDebug() << "**** changeSpeed";
     LOG1(revsPerMin)
     deviceSettings &dev = deviceSettings::Instance();
-    dev.current()->setLinesPerRevolution( aLines );
-    dev.current()->setRevolutionsPerMin( revsPerMin );
-    LOG2(revsPerMin, aLines);
+//lcv    dev.current()->setLinesPerRevolution( aLines );
+//    dev.current()->setRevolutionsPerMin( revsPerMin );
+//    LOG2(revsPerMin, aLines);
 
 //    lastDirCCW = dev.current()->getRotation();
     stopDataCapture();
@@ -2729,14 +2729,14 @@ void frontend::on_directionPushButton_clicked()
     ui.directionPushButton->setChecked( false );
     SledSupport &sledSupport = SledSupport::Instance();
     deviceSettings &dev = deviceSettings::Instance();
-    if(dev.current()->getRotation() == 0 )
-    {
-        sledSupport.setSledRotation( 1 );   // CCW
-    }
-    else if(dev.current()->getRotation() == 1 )
-    {
-        sledSupport.setSledRotation( 0 );   // CW
-    }
+//lcv    if(dev.current()->getRotation() == 0 )
+//    {
+//        sledSupport.setSledRotation( 1 );   // CCW
+//    }
+//    else if(dev.current()->getRotation() == 1 )
+//    {
+//        sledSupport.setSledRotation( 0 );   // CW
+//    }
 }
 
 void frontend::dirButton(int mode)

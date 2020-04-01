@@ -795,14 +795,14 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
     // Direction indicator for highspeed bidirectional devices (Ocelaris)
     if(devSettings.current()->isOcelaris() )
     {
-        if(devSettings.current()->getRotation())
-        {
-            pDirRingImage = &passiveIndicatorRingImage;
-        }
-        else
-        {
-            pDirRingImage = &activeIndicatorRingImage;
-        }
+//lcv        if(devSettings.current()->getRotation())
+//        {
+//            pDirRingImage = &passiveIndicatorRingImage;
+//        }
+//        else
+//        {
+//            pDirRingImage = &activeIndicatorRingImage;
+//        }
 
         /*
          * Copy the image into the video frame if it is a Low Speed device. The image is square, so
