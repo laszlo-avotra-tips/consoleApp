@@ -19,13 +19,16 @@ extern "C" {
 #define NUM_OF_FRAME_BUFFERS 4
 #define ALLOCATED_OVERRUN_BUFFER_SIZE ( 256 * FFT_DATA_SIZE )  // Overrun buffer for Ocelot Mode
 
-extern unsigned char *pPolarData;
-extern unsigned char *pSectorData;
+namespace{
+unsigned char *pPolarData;
+unsigned char *pSectorData;
 
 int gFrameNumber = 0;
 int gDaqCounter = 0;
 size_t gBufferLength;
 OCTFile::OctData_t gFrameData[ NUM_OF_FRAME_BUFFERS ];
+}
+
 //static uint8_t gDaqBuffer[ 256 * FFT_DATA_SIZE ];
 
 /*
