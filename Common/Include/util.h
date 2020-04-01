@@ -19,6 +19,7 @@
 //#include <math.h>
 //#endif
 
+#include <defaults.h>
 #include <QObject>
 #include <QDir>
 
@@ -68,8 +69,8 @@ T min( T a, T b )
 //const double degToRad(pi/180.0);
 
 // Conversion constants
-const unsigned long  B_per_KB( 1024 );
-const unsigned long KB_per_MB( 1024 );
+//const unsigned long  B_per_KB( 1024 );
+//const unsigned long KB_per_MB( 1024 );
 const unsigned long MB_per_GB( 1024 );
 const unsigned long  B_per_GB( B_per_KB * ( KB_per_MB * MB_per_GB ) );
 

@@ -217,6 +217,10 @@ public:
 
     bool loadDevice( QString deviceFile );
     bool checkVersion( QDomDocument *doc );
+    void setBrightness (int value ) { brightness = value; }
+    void setContrast( int value ) { contrast = value; }
+    int  getBrightness (void ) { return brightness; }
+    int  getContrast( void ) { return contrast; }
 
 signals:
     void deviceChanged();
@@ -228,6 +232,8 @@ private:
     QList<device *> deviceList;
     QSettings *settings;
     static deviceSettings* theSettings;
+    int brightness;
+    int contrast;
 
     deviceSettings();
     ~deviceSettings();

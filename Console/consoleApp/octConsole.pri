@@ -4,12 +4,17 @@
 # -----------------------------------------------------------
 # Header files
 HEADERS += \
+    $$PWD/Backend/AxsunCommonEnums.h \
+    $$PWD/Backend/AxsunOCTCapture.h \
+    $$PWD/Backend/AxsunOCTControl_LW_C.h \
     $$PWD/Backend/bandc.h \
+    $$PWD/Backend/daq.h \
     $$PWD/Backend/ikernelfunction.h \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/kernelfunctionbase.h \
     $$PWD/Backend/postfft.h \
     $$PWD/Backend/producer.h \
+    $$PWD/Backend/scanconversion.h \
     $$PWD/Backend/signalprocessingfactory.h \
     $$PWD/Backend/warp.h \
     $$PWD/Backend/warpbc.h \
@@ -99,10 +104,12 @@ HEADERS += \
 # Source files
 SOURCES += \
     $$PWD/Backend/bandc.cpp \
+    $$PWD/Backend/daq.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/kernelfunctionbase.cpp \
     $$PWD/Backend/postfft.cpp \
     $$PWD/Backend/producer.cpp \
+    $$PWD/Backend/scanconversion.cpp \
     $$PWD/Backend/signalprocessingfactory.cpp \
     $$PWD/Backend/warp.cpp \
     $$PWD/Backend/warpbc.cpp \
