@@ -208,7 +208,7 @@ public:
     int  getContrast( void ) { return contrast; }
 
 signals:
-    void deviceChanged( int );
+    void deviceChanged( );
     void sendWarning( QString );
     void sendFailure( QString ); // signal to consoleApp frontend
     void displayMask( int );

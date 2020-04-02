@@ -36,8 +36,8 @@ EngineeringController::EngineeringController(QWidget *parent)
 //    connect(PlaybackManager::instance(), SIGNAL(rawDataBuffersAvailable(int)),
 //            m_view, SLOT(setFramesAvailable(int)));
 
-    SledSupport& sledSp = SledSupport::Instance();
-    connect(&sledSp, SIGNAL(speedChanged(int)), m_view, SLOT(setMotorSpeed(int)));
+//lcv    SledSupport& sledSp = SledSupport::Instance();
+//    connect(&sledSp, SIGNAL(speedChanged(int)), m_view, SLOT(setMotorSpeed(int)));
 
     connect(m_view, SIGNAL(saveDataToFile()), this, SLOT(handleSaveDataToFile()));
 
