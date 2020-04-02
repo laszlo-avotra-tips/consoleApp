@@ -175,9 +175,19 @@ int main(int argc, char *argv[])
     if( result == QDialog::Accepted )
     {
         auto idaq = daqfactory::instance()->getdaq();
-        frontEndWindow.setIDAQ(idaq);
 
         QObject::connect( &app, SIGNAL( aboutToQuit() ), &frontEndWindow, SLOT( shutdownCleanup() ) );
+
+        if(!idaq){
+            frontEndWindow.abortStartUp();
+
+            LOG( INFO, "Device not supported. OCT Console cancelled" )
+
+            // user cancelled setup; return normal exit code
+            status = 0;
+            return status;
+        }
+        frontEndWindow.setIDAQ(idaq);
 
 //#if QT_NO_DEBUG
 //        Laser &laser = Laser::Instance();

@@ -2,6 +2,7 @@
 #include "deviceSettings.h"
 #include "daqSettings.h"
 #include "filedaq.h"
+#include "logger.h"
 
 daqfactory* daqfactory::factory(nullptr);
 
@@ -23,10 +24,16 @@ IDAQ *daqfactory::getdaq()
     if( !idaq )
     {
         deviceSettings &setting = deviceSettings::Instance();
+        auto currentDevice = setting.current();
+        auto deviceName = currentDevice->getDeviceName();
+
+        LOG1(deviceName)
 
         if( setting.current()->isHighSpeed() )
         {
-            idaq = new FileDaq();
+            if(deviceName == "Simulation"){
+                idaq = new FileDaq();
+            }
         }
     }
 
