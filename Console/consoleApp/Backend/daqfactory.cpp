@@ -3,6 +3,7 @@
 #include "daqSettings.h"
 #include "filedaq.h"
 #include "logger.h"
+#include "daq.h"
 
 daqfactory* daqfactory::factory(nullptr);
 
@@ -33,6 +34,8 @@ IDAQ *daqfactory::getdaq()
         {
             if(deviceName == "Simulation"){
                 idaq = new FileDaq();
+            } else {
+                idaq = new DAQ();
             }
         }
     }
