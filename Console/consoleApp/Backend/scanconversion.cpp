@@ -590,7 +590,7 @@ bool ScanConversion::createCLMemObjects( cl_context context )
         };
         LOG1(deviceSpecificMemFlags)
 
-        warpInputImageMemObj = clCreateImage( context, deviceSpecificMemFlags, &deviceSpecificImageFormat, &m_warpInputImageDescriptor, nullptr, &err );
+        warpInputImageMemObj = clCreateImage( context, CL_MEM_READ_ONLY, &deviceSpecificImageFormat, &m_warpInputImageDescriptor, nullptr, &err );
     }
     if( err != CL_SUCCESS )
     {
