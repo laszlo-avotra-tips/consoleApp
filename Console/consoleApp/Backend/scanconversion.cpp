@@ -2,6 +2,7 @@
 #include "deviceSettings.h"
 #include "depthsetting.h"
 #include "daq.h"
+#include "logger.h"
 
 int gCounter = 1;
 
@@ -49,7 +50,7 @@ void ScanConversion::generateLutRadiusTheta( int maxDepth, int numberOfLines, in
     float maxOfRadius = 0;
     float maxOfTheta  = 0;
 
-    qDebug() << "DSPGPU LUT: ";
+    qDebug() << "ScanConversion LUT: ";
     qDebug() << "           maxDepth:       " << maxDepth;
     qDebug() << "           numberOfLines:  " << numberOfLines;
     qDebug() << "           catheterRadius: " << catheterRadius;
@@ -337,14 +338,14 @@ bool ScanConversion::initOpenCL()
     global_unit_dim[ 0 ] = FFT_DATA_SIZE;
     global_unit_dim[ 1 ] = MAX_LINES_PER_FRAME;
 
-    qDebug() << "DSPGPU: OpenCL init complete.";
+    qDebug() << "ScanConversion: OpenCL init complete.";
 
     return true;
 }
 
 bool ScanConversion::buildOpenCLKernel( QString clSourceFile, char *kernelName, cl_program *program, cl_kernel *kernel )
 {
-    qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
+    qDebug() << "ScanConversion::buildOpenCLKernel:" << clSourceFile;
 //    QTime buildTimer;
 //    buildTimer.start();
 
@@ -459,7 +460,7 @@ bool ScanConversion::createCLMemObjectsOld( cl_context /*context*/ )
 
 bool ScanConversion::createCLMemObjects( cl_context context )
 {
-    int err{-1};
+    cl_int err{-1};
 
 //    const cl_image_format imageFormat{CL_R,CL_UNSIGNED_INT8};
 
@@ -587,12 +588,16 @@ bool ScanConversion::createCLMemObjects( cl_context context )
             numSamples,
             {buffer}
         };
+        LOG1(deviceSpecificMemFlags)
 
         warpInputImageMemObj = clCreateImage( context, deviceSpecificMemFlags, &deviceSpecificImageFormat, &m_warpInputImageDescriptor, nullptr, &err );
     }
     if( err != CL_SUCCESS )
     {
         qDebug() << "Failed to create GPU image warpInputImageMemObj, reason: " << err;
+        if(err == CL_INVALID_HOST_PTR){
+            qDebug() << err << " = CL_INVALID_HOST_PTR";
+        }
         return false;
     }
 
