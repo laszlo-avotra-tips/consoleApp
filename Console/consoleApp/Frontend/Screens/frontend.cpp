@@ -830,11 +830,11 @@ void frontend::stopDataCapture( void )
  */
 void frontend::startDaq( void )
 {
-//    qDebug() << "frontend::startDAQ()";
-    if( idaq )
-    {
-        idaq->start();
-    }
+    qDebug() << "frontend::startDAQ() disabled";
+//    if( idaq )
+//    {
+//        idaq->start();
+//    }
 }
 
 /*

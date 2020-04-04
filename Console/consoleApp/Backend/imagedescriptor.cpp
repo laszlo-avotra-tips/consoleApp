@@ -3,8 +3,8 @@
 #include <signalmodel.h>
 
 ImageDescriptor::ImageDescriptor() :
-    m_imageWidth{MaxALineLength}, m_imageHeight{size_t( SignalModel::instance()->linesPerRevolution())},
-    m_warpImageWidth{SectorWidth_px}, m_warpImageHeight{SectorHeight_px},
+    m_imageWidth{FFT_DATA_SIZE}, m_imageHeight{size_t(MAX_LINES_PER_FRAME)},
+    m_warpImageWidth{SECTOR_HEIGHT_PX}, m_warpImageHeight{SECTOR_HEIGHT_PX},
     m_inputImageDescriptor{  //inputImageDescriptor
             m_imageType,
             m_imageWidth,

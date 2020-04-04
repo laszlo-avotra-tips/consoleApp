@@ -119,7 +119,7 @@ void DAQ::run( void )
 
     if( !isRunning )
     {
-
+        int count{0};
         isRunning = true;
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
@@ -143,16 +143,20 @@ void DAQ::run( void )
             }
 
             // get data and only procede if the image is new.
-            if( getData() )
-            {
-                gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
-//                LOG1(gFrameNumber)
-                if( scanWorker->isReady )
+            if(!count){
+                ++count;
+                LOG3(count, frameCount,loopCount)
+                if( getData() )
                 {
-                    //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
-                    scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
+                    gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
+                    LOG1(gFrameNumber)
+                    if( scanWorker->isReady )
+                    {
+                        //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
+                        scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
+                    }
+                    emit updateSector();
                 }
-                emit updateSector();
             }
             else
             {
@@ -265,27 +269,32 @@ bool DAQ::startDaq()
 {
     qDebug() << "***** DAQ::startDaq()";
     axRetVal = NO_AxERROR;
-    axRetVal = axStartSession(&session, 200);    // Start Axsun engine session
+
+    try {
+
+        axRetVal = axStartSession(&session, 200);    // Start Axsun engine session
 #if PCIE_MODE
-    axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
-    axRetVal = axImagingCntrlPCIe(session, -1);
-    axRetVal = axPipelineMode(session, EIGHT_BIT);
+        axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
+        axRetVal = axImagingCntrlPCIe(session, -1);
+        axRetVal = axPipelineMode(session, EIGHT_BIT);
 #else
-    axRetVal = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
-    axRetVal = axPipelineMode(session, EIGHT_BIT);
+        axRetVal = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
 #endif
 
 #if USE_LVDS_TRIGGER
-    axRetVal = axWriteFPGAreg(session, 2, 0x0404 ); // Write FPGA register 2 to 0x0404.  Use LVDS trigger input
-    axGetMessage(session, axMessage );
-    qDebug() << "axWriteFPGAreg: " << axRetVal << " message:" << axMessage;
+        axGetMessage(session, axMessage );
+        qDebug() << "message:" << axMessage;
 #else
-    axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
-    axGetMessage( session, axMessage );
-    qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
+        axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
+        axGetMessage( session, axMessage );
+        qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
 //    setLaserDivider(LASER_SCAN_DIVIDER);
-    return true;
+    } catch (...) {
+        qDebug() << "Axsun Error" ;
+    }
+
+    return axRetVal == NO_AxERROR;
 }
 
 /*
