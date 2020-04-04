@@ -1836,6 +1836,10 @@ void frontend::setIDAQ(IDAQ *object)
     }
 
     if(idaq){
+        if(idaq->getSignalSource()){
+            connect( idaq->getSignalSource(), SIGNAL(updateSector()), this, SLOT(updateSector()) );
+//this does not work            connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
+        }
         idaq->init();
         sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
 
@@ -2004,6 +2008,11 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
     {
         measureModeAllowed = true;
     }
+}
+
+void frontend::updateSector()
+{
+    LOG1("TODO")
 }
 
 /*

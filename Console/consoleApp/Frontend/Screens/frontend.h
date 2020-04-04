@@ -103,6 +103,7 @@ public slots:
     void handleScreenChanges();
     void handleBadMonitorConfig();
     void enableDisableMeasurementForCapture( int pixelsPerMm );
+    void updateSector(void);
 
 #if ENABLE_COLORMAP_OPTIONS
     void curvesDialogFinished();

@@ -110,6 +110,11 @@ void DAQ::enableAuxTriggerAsTriggerEnable(bool)
 
 }
 
+IDAQ *DAQ::getSignalSource()
+{
+    return this;
+}
+
 /*
  *  run
  */

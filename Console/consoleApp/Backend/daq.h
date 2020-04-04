@@ -31,6 +31,7 @@ public:
     bool configure( void ) override;
 
     void enableAuxTriggerAsTriggerEnable( bool ) override;
+    IDAQ* getSignalSource() override;
 
     bool getData();
     bool isRunning;
