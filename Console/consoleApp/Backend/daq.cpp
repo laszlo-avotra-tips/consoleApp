@@ -115,7 +115,6 @@ void DAQ::enableAuxTriggerAsTriggerEnable(bool)
  */
 void DAQ::run( void )
 {
-    qDebug() << "***** Thread: DAQ::run()";
 
     if( !isRunning )
     {
@@ -127,6 +126,7 @@ void DAQ::run( void )
         int frameCount = NUM_OF_FRAME_BUFFERS - 1;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(frameCount,loopCount)
+        qDebug() << "***** Thread: DAQ::run()";
         while( isRunning )
         {
             // Rough lines/second counter  XXX
@@ -165,9 +165,9 @@ void DAQ::run( void )
                 loopCount--;
             }
         }
+        shutdownDaq();
+        qDebug() << "Thread: DAQ::run stop";
     }
-    shutdownDaq();
-    qDebug() << "Thread: DAQ::run stop";
 }
 
 /*
