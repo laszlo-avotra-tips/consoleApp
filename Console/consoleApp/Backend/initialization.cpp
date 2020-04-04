@@ -130,22 +130,22 @@ bool Initialization::init( int argc, char *argv[] )
         statusMessage = tr( "ERROR: Unable to communicate with Sled Support Board hardware." );
         isReady = false;
     }
-    else
-    {
-        // Check that the Physician monitor is present, otherwise the process will hang
-        qDebug() << "Initialization::init - checking for Physician monitor";
-        WindowManager &wm = WindowManager::Instance();
-        wm.init();
-        qDebug() << "wm.isPhysicianMonPresent() =" << wm.isPhysicianMonPresent();
-        if( !wm.isPhysicianMonPresent()  )
-        {
-#if ENABLE_SINGLE_MONITOR_WARNING
-            statusMessage = QString( tr( "Physician monitor not found. Check video and power cables and that the monitor is ON." ) );
-            isReady = false;
-#endif
-            docScreenAvailable = false;
-        }
-    }
+//    else
+//    {
+//        // Check that the Physician monitor is present, otherwise the process will hang
+//        qDebug() << "Initialization::init - checking for Physician monitor";
+//        WindowManager &wm = WindowManager::Instance();
+//        wm.init();
+//        qDebug() << "wm.isPhysicianMonPresent() =" << wm.isPhysicianMonPresent();
+//        if( !wm.isPhysicianMonPresent()  )
+//        {
+//#if ENABLE_SINGLE_MONITOR_WARNING
+//            statusMessage = QString( tr( "Physician monitor not found. Check video and power cables and that the monitor is ON." ) );
+//            isReady = false;
+//#endif
+//            docScreenAvailable = false;
+//        }
+//    }
 
     // Make sure the Data directory exists. If not, make it so.
     QDir dataDir( DataDir );

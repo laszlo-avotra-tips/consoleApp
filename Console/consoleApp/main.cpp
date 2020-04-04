@@ -121,7 +121,8 @@ int main(int argc, char *argv[])
     // Run start-up checks
     Initialization init;
 
-    init.setExeCheck( runExeCheck );
+//    init.setExeCheck( runExeCheck );
+    init.init(argc,argv);
 
 //#if USE_INIT
 //    if( !init.init( argc, argv ) )
