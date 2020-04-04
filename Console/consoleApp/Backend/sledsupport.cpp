@@ -236,7 +236,7 @@ bool SledSupport::init( void )
         {
             qDebug() << "Purge failed";
         }
-        start();            // get run thread going
+//        start();            // get run thread going
     }
     return status;
 }

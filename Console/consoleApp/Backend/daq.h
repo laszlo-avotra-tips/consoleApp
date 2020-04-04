@@ -32,7 +32,7 @@ public:
 
     void enableAuxTriggerAsTriggerEnable( bool ) override;
 
-    bool getData( bool isFirstReceived );
+    bool getData();
     bool isRunning;
     int generateSyntheticData( unsigned char *pSyntheticData );
     QTime frameTimer;

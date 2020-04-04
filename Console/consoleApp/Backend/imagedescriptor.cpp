@@ -48,6 +48,16 @@ const cl_image_desc* ImageDescriptor::getWarpImageDescriptor() const
     return &warpImageDescriptor;
 }
 
+const cl_image_desc *ImageDescriptor::getOutputVideoImageDescriptor() const
+{
+    return &warpImageDescriptor;
+}
+
+const cl_image_desc *ImageDescriptor::getOutputImageDescriptor() const
+{
+    return &warpImageDescriptor;
+}
+
 const cl_image_format* ImageDescriptor::getImageFormat() const
 {
     return &m_imageFormat;

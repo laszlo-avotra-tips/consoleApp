@@ -10,16 +10,17 @@ struct ImageDescriptor
     const cl_image_desc* getFftImageDescriptor() const;
     const cl_image_desc* getBeAndCeImageDescriptor() const;
     const cl_image_desc* getWarpImageDescriptor() const;
-    const cl_image_format* getImageFormat() const;
+    const cl_image_desc* getOutputVideoImageDescriptor() const;
+    const cl_image_desc* getOutputImageDescriptor() const;
 
-private:
+    const cl_image_format* getImageFormat() const;
     const cl_image_desc* getInputImageDescriptor() const;
 
 private:
     const cl_image_format m_imageFormat{CL_R,CL_UNSIGNED_INT8};
 
-
     const cl_mem_object_type m_imageType{CL_MEM_OBJECT_IMAGE2D};
+
     const size_t m_imageWidth; //input_image_width
     const size_t m_imageHeight; //input_image_height
     const size_t m_warpImageWidth;

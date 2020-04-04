@@ -40,7 +40,7 @@ void EngineeringModel::setMotorSpeed(int speed)
     const QString qSpeed(QString::number(m_motorSpeed));
     const QByteArray baSpeed(qSpeed.toStdString().c_str());
 
-    SledSupport::Instance().setSledSpeed(baSpeed);
+//    SledSupport::Instance().setSledSpeed(baSpeed);
 }
 
 void EngineeringModel::setFileName(const QString &fn)
@@ -71,9 +71,9 @@ void EngineeringModel::setMotorPowerOn(bool isOn)
         emit motorOnChanged(m_isMotorPowerOn);
 
         if(!m_isMotorPowerOn){
-            SledSupport::Instance().stopSled();
+//            SledSupport::Instance().stopSled();
         } else {
-            SledSupport::Instance().startSled();
+//            SledSupport::Instance().startSled();
         }
     }
 }

@@ -31,7 +31,6 @@ public:
 
     // Initialize serial communication
     bool init( void );
-    void setSledSpeed( QByteArray );
 
     struct DeviceClockingParams_T
     {
@@ -76,8 +75,6 @@ public slots:
     void setDevice( int );
     void setDirection( int );
     void setPower( int count );
-    void stopSled(){} //lcv
-    void startSled(){}
 
 protected:
     void run( void );
@@ -96,6 +93,7 @@ private:
     void setClockingMode( int mode );
     void setClockingGain( QByteArray gain );
     void setClockingOffset( QByteArray offset );
+    void setSledSpeed( QByteArray );
     void setSledTorqueLimit( QByteArray );
     void setSledTimeLimit( QByteArray );
     void setSledLimitBlink( int );

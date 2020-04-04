@@ -41,7 +41,6 @@ private:
     char *loadCLProgramSourceFromFile( QString );
     bool initOpenCL();
     bool createCLMemObjects( cl_context context );
-    bool createCLMemObjectsOld(cl_context);
     cl_mem  warpInputImageMemObj;
     cl_mem  outputImageMemObj;
     cl_mem  outputVideoImageMemObj;

@@ -121,13 +121,12 @@ void DAQ::run( void )
     {
 
         isRunning = true;
-        bool isFirstReceived = false;
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
 
         int frameCount = NUM_OF_FRAME_BUFFERS - 1;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-
+        LOG2(frameCount,loopCount)
         while( isRunning )
         {
             // Rough lines/second counter  XXX
@@ -144,11 +143,10 @@ void DAQ::run( void )
             }
 
             // get data and only procede if the image is new.
-            if( getData(isFirstReceived) )
+            if( getData() )
             {
-                isFirstReceived = true;
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
-                LOG1(gFrameNumber)
+//                LOG1(gFrameNumber)
                 if( scanWorker->isReady )
                 {
                     //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
@@ -171,7 +169,7 @@ void DAQ::run( void )
 /*
  * getData
  */
-bool DAQ::getData(bool isFirstReceived )
+bool DAQ::getData( )
 {
     bool retVal = false;
 
@@ -196,9 +194,7 @@ bool DAQ::getData(bool isFirstReceived )
     {
         qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
         missedImgs = (returned_image_number - lastImageIdx - 1);
-        if(isFirstReceived){
-            LOG1(missedImgs)
-        }
+        LOG1(missedImgs)
     }
     else
     {

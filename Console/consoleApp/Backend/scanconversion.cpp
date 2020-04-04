@@ -24,132 +24,6 @@ ScanConversion::ScanConversion()
     }
 }
 
-/*
- * generateLutRadiusTheta()
- */
-/*
-void ScanConversion::generateLutRadiusTheta( int maxDepth, int numberOfLines, int catheterRadius, int w, int h )
-{
-    // Square sector, so sectorDimension_x = sectorDimension_y = sectorDimension.
-    sectorDimension = SECTOR_HEIGHT_PX;
-
-
-    // create the two dimensional arrays
-
-    rLUT = new float* [ sectorDimension ];
-    tLUT = new float* [ sectorDimension ];
-    for( int i = 0; i < sectorDimension; i++ )
-    {
-        rLUT[ i ] = new float[ sectorDimension ];
-        tLUT[ i ] = new float[ sectorDimension ];
-    }
-
-    // offset for the catheter center
-    int offset = sectorDimension/2;
-
-    float maxOfRadius = 0;
-    float maxOfTheta  = 0;
-
-    qDebug() << "ScanConversion LUT: ";
-    qDebug() << "           maxDepth:       " << maxDepth;
-    qDebug() << "           numberOfLines:  " << numberOfLines;
-    qDebug() << "           catheterRadius: " << catheterRadius;
-    qDebug() << "           w:              " << w;
-    qDebug() << "           h:              " << h;
-    qDebug() << "           offset:         " << offset;
-
-
-    for( int xi = 0; xi < sectorDimension; xi++ )
-    {
-        for( int yi = 0; yi < sectorDimension; yi++ )
-        {
-            int x = xi - offset;
-            int y = yi - offset;
-
-            rLUT[ xi ][ yi ] = qSqrt( ( x*x + y*y ) ) - catheterRadius;
-            tLUT[ xi ][ yi ] = qAtan2( y, x );
-
-            // do not allow radius beyond the depth limits
-            if( rLUT[ xi ][ yi ] > ( maxDepth + catheterRadius ) || rLUT[ xi ][ yi ] < 0 )
-            {
-                rLUT[ xi ][ yi ] = 0;
-            }
-
-            // do not allow negative angles
-            if( tLUT[ xi ][ yi ] < 0 )
-            {
-                tLUT[ xi ][ yi ] = tLUT[ xi ][ yi ] + 2 * 3.14;
-            }
-
-            // Find maximum values for Radius and Theta
-            if( rLUT[ xi ][ yi ] > maxOfRadius )
-            {
-                maxOfRadius = rLUT[ xi ][ yi ];
-            }
-            if( tLUT[ xi ][ yi ] > maxOfTheta )
-            {
-                maxOfTheta = tLUT[ xi ][ yi ];
-            }
-        }
-    }
-
-    // Normalize rLUT to the proper depth
-    for( int xi = 0; xi < sectorDimension; xi++ )
-    {
-        for( int yi = 0; yi < sectorDimension; yi++ )
-        {
-            // Normalize rLUT to the proper depth
-            rLUT[ xi ][ yi ] = rLUT[ xi ][ yi ] / maxOfRadius * maxDepth;
-
-            // normalize tLUT to number of A lines. angles in terms of A lines.
-            tLUT[ xi ][ yi ] = tLUT[ xi ][ yi ] / ( 2 * 3.14 ) * numberOfLines;
-        }
-    }
-
-    lutGenerated = true;
-}
-*/
-/*
- * mapBufferToSector()
- *
- * Walk down the dimensions of the output image (sector). Find the Radius and Angle from LUT,
- * and map at those dimensions from input image to output image (B-scan to Sector).
- *
- * This algorithm speed does not depend on the input image size (6000 lines vs 1000 lines makes
- * no difference), since it operates based on the output image.
- *
- * TODO:
- *      * Interpolation (only uses nearest neighbor currently)
- *      * Adjust output image size.
- */
-/*
-void ScanConversion::mapBufferToSector( unsigned char *pDataIn, unsigned char *pDataOut )
-{
-    for( int yi = 0; yi < sectorDimension; yi++ )
-    {
-        for( int xi = 0; xi < sectorDimension; xi++ )
-        {
-            int ri, ti; // don't need to round to nearest if we use integers, this will cast floats to int;
-
-            ri = rLUT[ xi ][ yi ];
-            ti = tLUT[ xi ][ yi ];
-
-            if( ri < 0 )
-            {
-                ri = 0; // don't index into negatives
-            }
-            if( ti < 0 )
-            {
-                ti = 0; // don't index into negatives
-            }
-
-            // lookup into the sector
-            // XXX: This results in stack overflow if gFlattenedImage is not the full size.
-            pDataOut[ ( yi * sectorDimension ) + xi ] = pDataIn[ ( ti * FFT_DATA_SIZE ) + ri ];
-        }
-    }
-}
-*/
 bool ScanConversion::initOpenCL()
 {
     qDebug() << "initOpenCL start";
@@ -308,7 +182,6 @@ bool ScanConversion::initOpenCL()
         return false;
     }
 
-//    cl_Commands = clCreateCommandQueue( cl_Context, cl_ComputeDeviceId, 0, &err );
     cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, 0, &err );
 
     if( !cl_Commands )
@@ -349,8 +222,7 @@ bool ScanConversion::buildOpenCLKernel( QString clSourceFile, char *kernelName, 
 //    QTime buildTimer;
 //    buildTimer.start();
 
-    int err;
-
+    cl_int err;
 
     // look for CL file
     QDir dir;
@@ -410,7 +282,6 @@ bool ScanConversion::buildOpenCLKernel( QString clSourceFile, char *kernelName, 
         return false;
     }
 
-//    qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
     return true;
 }
 
@@ -439,30 +310,10 @@ char *ScanConversion::loadCLProgramSourceFromFile( QString filename )
     return sourceBuf;
 }
 
-bool ScanConversion::createCLMemObjectsOld( cl_context /*context*/ )
-{
-    int err{-1};
-#if LINE_AVERAGING
-    lineAvgInputMemObj     = clCreateBuffer( context, deviceSpecificMemFlags, FFT_DATA_SIZE * MAX_LINES_PER_FRAME, NULL, &err );
-#endif
-//    warpInputImageMemObj   = clCreateImage2D( context, deviceSpecificMemFlags, &deviceSpecificImageFormat, FFT_DATA_SIZE, MAX_LINES_PER_FRAME, 0, NULL, &err );
-//    outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &deviceSpecificImageFormat, SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, 0, NULL, &err );
-//    outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &deviceSpecificImageFormat, SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, 0, NULL, &err );
-
-    if( err != CL_SUCCESS )
-    {
-        qDebug() << "Failed to create GPU image outputVideoImageMemObj, reason: " << err;
-        return false;
-    }
-
-    return true;
-}
 
 bool ScanConversion::createCLMemObjects( cl_context context )
 {
     cl_int err{-1};
-
-//    const cl_image_format imageFormat{CL_R,CL_UNSIGNED_INT8};
 
     const cl_mem_object_type imageType{CL_MEM_OBJECT_IMAGE2D};
     const size_t imageDepth{1};
@@ -476,41 +327,7 @@ bool ScanConversion::createCLMemObjects( cl_context context )
 #if LINE_AVERAGING
     lineAvgInputMemObj     = clCreateBuffer( context, deviceSpecificMemFlags, FFT_DATA_SIZE * MAX_LINES_PER_FRAME, NULL, &err );
 #endif
-////    warpInputImageMemObj   = clCreateImage2D( context, deviceSpecificMemFlags, &deviceSpecificImageFormat, FFT_DATA_SIZE, MAX_LINES_PER_FRAME, 0, NULL, &err );
-//    {
-////        const cl_image_format* inputImageFormat = m_imageDescriptor.getImageFormat();
-////        const cl_image_desc* inputImageDescriptor = m_imageDescriptor.getInputImageDescriptor();
-
-//        const size_t imageWidth{FFT_DATA_SIZE}; //input_image_width
-//        const size_t imageHeight{MAX_LINES_PER_FRAME}; //input_image_height
-//        cl_mem buffer{nullptr};
-
-//        const cl_image_desc m_warpInputImageDescriptor{
-//            imageType,
-//            imageWidth,
-//            imageHeight,
-//            imageDepth,
-//            imageArraySize,
-//            imageRowPitch,
-//            imageSlicePitch,
-//            numMipLevels,
-//            numSamples,
-//            {buffer}
-//        };
-
-//        warpInputImageMemObj = clCreateImage( context, deviceSpecificMemFlags, &deviceSpecificImageFormat, &m_warpInputImageDescriptor, nullptr, &err );
-//    }
-//    if( err != CL_SUCCESS )
-//    {
-//        qDebug() << "Failed to create GPU image warpInputImageMemObj, reason: " << err;
-//        return false;
-//    }
-
-//    outputImageMemObj      = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &deviceSpecificImageFormat, SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, 0, NULL, &err );
     {
-//        const cl_image_format* outputImageFormat = m_imageDescriptor.getImageFormat();
-//        const cl_image_desc* outputImageDescriptor = m_imageDescriptor.getOutputImageDescriptor();
-
         const size_t imageWidth{SECTOR_HEIGHT_PX}; //input_image_width
         const size_t imageHeight{SECTOR_HEIGHT_PX}; //input_image_height
         cl_mem buffer{nullptr};
@@ -527,7 +344,6 @@ bool ScanConversion::createCLMemObjects( cl_context context )
             numSamples,
             {buffer}
         };
-
         outputImageMemObj = clCreateImage( context, CL_MEM_WRITE_ONLY, &deviceSpecificImageFormat, &outputImageDescriptor, nullptr, &err );
     }
     if( err != CL_SUCCESS )
@@ -536,12 +352,7 @@ bool ScanConversion::createCLMemObjects( cl_context context )
         return false;
     }
 
-//    outputVideoImageMemObj = clCreateImage2D( context, CL_MEM_WRITE_ONLY, &deviceSpecificImageFormat, SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, 0, NULL, &err );
-    {
-//        const cl_image_format* outputVideoImageFormat = m_imageDescriptor.getImageFormat();
-//        const cl_image_desc* outputVideoImageDescriptor = m_imageDescriptor.getWarpImageDescriptor();
-
-        const size_t imageWidth{SECTOR_HEIGHT_PX}; //input_image_width
+    {        const size_t imageWidth{SECTOR_HEIGHT_PX}; //input_image_width
         const size_t imageHeight{SECTOR_HEIGHT_PX}; //input_image_height
         cl_mem buffer{nullptr};
 
@@ -559,7 +370,6 @@ bool ScanConversion::createCLMemObjects( cl_context context )
         };
 
         outputVideoImageMemObj = clCreateImage( context, CL_MEM_WRITE_ONLY, &deviceSpecificImageFormat, &outputVideoImageDescriptor, nullptr, &err );
-
     }
     if( err != CL_SUCCESS )
     {
@@ -567,11 +377,7 @@ bool ScanConversion::createCLMemObjects( cl_context context )
         return false;
     }
 
-//    warpInputImageMemObj   = clCreateImage2D( context, deviceSpecificMemFlags, &deviceSpecificImageFormat, FFT_DATA_SIZE, MAX_LINES_PER_FRAME, 0, NULL, &err );
     {
-//        const cl_image_format* inputImageFormat = m_imageDescriptor.getImageFormat();
-//        const cl_image_desc* inputImageDescriptor = m_imageDescriptor.getInputImageDescriptor();
-
         const size_t imageWidth{FFT_DATA_SIZE}; //input_image_width
         const size_t imageHeight{MAX_LINES_PER_FRAME}; //input_image_height
         cl_mem buffer{nullptr};
@@ -588,16 +394,16 @@ bool ScanConversion::createCLMemObjects( cl_context context )
             numSamples,
             {buffer}
         };
-        LOG1(deviceSpecificMemFlags)
-
+        if(deviceSpecificMemFlags == CL_MEM_COPY_HOST_PTR){
+            qDebug() << __LINE__ <<": deviceSpecificMemFlags=CL_MEM_COPY_HOST_PTR";
+        }else {
+            qDebug() << __LINE__ <<": deviceSpecificMemFlags=" << deviceSpecificMemFlags;
+        }
         warpInputImageMemObj = clCreateImage( context, CL_MEM_READ_ONLY, &deviceSpecificImageFormat, &m_warpInputImageDescriptor, nullptr, &err );
     }
     if( err != CL_SUCCESS )
     {
         qDebug() << "Failed to create GPU image warpInputImageMemObj, reason: " << err;
-        if(err == CL_INVALID_HOST_PTR){
-            qDebug() << err << " = CL_INVALID_HOST_PTR";
-        }
         return false;
     }
 
@@ -611,8 +417,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     cl_int clStatus{-1};
     cl_int err{-1};
 
-//    const cl_image_format imageFormat{CL_R,CL_UNSIGNED_INT8};
-
     const cl_mem_object_type imageType{CL_MEM_OBJECT_IMAGE2D};
     const size_t imageDepth{1};
     const size_t imageArraySize{1};
@@ -620,12 +424,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     const size_t imageSlicePitch{0};
     const cl_uint numMipLevels{0};
     const cl_uint numSamples{0};
-
-//    qDebug() << "=================================";
-//    for( int i = 0; i < FFT_DATA_SIZE * pBufferLength; i += (FFT_DATA_SIZE*128) )
-//    {
-//        qDebug() << (i/FFT_DATA_SIZE) << ":       warp data IN: " << pDataIn[ i + (FFT_DATA_SIZE/6) ] << pDataIn[ i + (FFT_DATA_SIZE/5) ] << pDataIn[ i + (FFT_DATA_SIZE/4) ] << pDataIn[ i + (FFT_DATA_SIZE/3) ] << pDataIn[ i + (FFT_DATA_SIZE/2) ]<< pDataIn[ i + (FFT_DATA_SIZE/1) ] ;
-//    }
 
     /* RFR
      * Remember that buffer input lengths need to be multiples of 16 for some reason.
@@ -635,7 +433,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
      */
 
     size_t subsampledBufferLength = pBufferLength;
-
 
 #if LINE_AVERAGING
     int numLinesToAverage = 3;
@@ -657,17 +454,8 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
         return false;
     }
 #endif
-//    for( int i = 0; i < FFT_DATA_SIZE * pBufferLength; i += (FFT_DATA_SIZE*128) )
-//    {
-//        qDebug() << (i/FFT_DATA_SIZE) << ":       warp data IN: " << pDataIn[ i + (FFT_DATA_SIZE/6) ] << pDataIn[ i + (FFT_DATA_SIZE/5) ] << pDataIn[ i + (FFT_DATA_SIZE/4) ] << pDataIn[ i + (FFT_DATA_SIZE/3) ] << pDataIn[ i + (FFT_DATA_SIZE/2) ]<< pDataIn[ i + (FFT_DATA_SIZE/1) ] ;
-//    }
 
-    // read the B-scan input data
-//    warpInputImageMemObj = clCreateImage2D( cl_Context, deviceSpecificMemFlags, &deviceSpecificImageFormat, FFT_DATA_SIZE, subsampledBufferLength, 0, pDataIn, &err );
     {
-//        const cl_image_format* warpImageFormat = m_imageDescriptor.getImageFormat();
-//        const cl_image_desc* warpImageDescriptor = m_imageDescriptor.getWarpImageDescriptor();
-
         const size_t imageWidth{FFT_DATA_SIZE};
         const size_t imageHeight{subsampledBufferLength};
         cl_mem buffer{nullptr};
@@ -685,7 +473,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
             {buffer}
         };
         warpInputImageMemObj = clCreateImage( cl_Context, deviceSpecificMemFlags, &deviceSpecificImageFormat, &warpInputImageDescriptor, pDataIn, &err );
-
     }
 
     if( err != CL_SUCCESS )
@@ -753,17 +540,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     int contrast =   device.getContrast();
 
     float displayAngle = displayAngle_deg;
-/*
-    if( reverseDirection == 1 )
-    {
-        displayAngle = displayAngle_deg + device.deviceAt(index)->getReverseAngle().toFloat();
-    }
-    else
-    {
-        displayAngle = displayAngle_deg;
-    }
-*/
-//    qDebug() << "Direction:" << reverseDirection << "Angle:" << displayAngle;
 
     clStatus  = clSetKernelArg( cl_WarpKernel,  0, sizeof(cl_mem), &warpInputImageMemObj );
     clStatus |= clSetKernelArg( cl_WarpKernel,  1, sizeof(cl_mem), &outputImageMemObj );
@@ -787,8 +563,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
         return false;
     }
 
-//    qDebug() << "===========2";
-
     global_unit_dim[ 0 ] = SectorWidth_px;
     global_unit_dim[ 1 ] = SectorHeight_px;
 
@@ -799,12 +573,8 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
         return false;
     }
 
-//    qDebug() << "===========3";
-
     // Do all the work that was queued up on the GPU
     clFinish( cl_Commands );
-
-//    qDebug() << "===========4";
 
     size_t origin[ 3 ] = { 0, 0, 0 };
     size_t region[ 3 ] = { SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, 1 };
@@ -818,12 +588,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
         qDebug() << "DSP: Failed to read back final image data from warp kernel: " << clStatus;
         return false;
     }
-
-//    qDebug() << "=================================";
-//    for( int i = 0; i < SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX; i += (SECTOR_HEIGHT_PX*64) )
-//    {
-//        qDebug() << (i/SECTOR_HEIGHT_PX) << ":       warp data OUT: " << pDataOut[ i + (SECTOR_HEIGHT_PX/6) ] << pDataOut[ i + (SECTOR_HEIGHT_PX/5) ] << pDataOut[ i + (SECTOR_HEIGHT_PX/4) ] << pDataOut[ i + (SECTOR_HEIGHT_PX/3) ] << pDataOut[ i + (SECTOR_HEIGHT_PX/2) ]<< pDataOut[ i + (SECTOR_HEIGHT_PX/1) ] ;
-//    }
 
     clReleaseMemObject( warpInputImageMemObj );
 #if LINE_AVERAGING

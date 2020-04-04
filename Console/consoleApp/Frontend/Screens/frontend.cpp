@@ -1089,7 +1089,7 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
     ui.deviceSelectButton->setChecked( true );
 
     SledSupport &sled = SledSupport::Instance();
-	sled.stopSled();		// stop sled if running
+//	sled.stopSled();		// stop sled if running
 //    sled.stop();			// stop sled processing
 
     if( isAnnotateOn )
