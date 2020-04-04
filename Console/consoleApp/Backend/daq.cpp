@@ -118,7 +118,6 @@ void DAQ::run( void )
 
     if( !isRunning )
     {
-        int count{0};
         isRunning = true;
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
@@ -143,20 +142,16 @@ void DAQ::run( void )
             }
 
             // get data and only procede if the image is new.
-            if(!count){
-                ++count;
-                LOG3(count, frameCount,loopCount)
-                if( getData() )
+            if( getData() )
+            {
+                gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
+                LOG3(loopCount,frameCount,gFrameNumber)
+                if( scanWorker->isReady )
                 {
-                    gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
-                    LOG1(gFrameNumber)
-                    if( scanWorker->isReady )
-                    {
-                        //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
-                        scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
-                    }
-                    emit updateSector();
+                    //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
+                    scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
                 }
+                emit updateSector();
             }
             else
             {
@@ -165,9 +160,9 @@ void DAQ::run( void )
                 loopCount--;
             }
         }
-        shutdownDaq();
-        qDebug() << "Thread: DAQ::run stop";
     }
+    shutdownDaq();
+    qDebug() << "Thread: DAQ::run stop";
 }
 
 /*
