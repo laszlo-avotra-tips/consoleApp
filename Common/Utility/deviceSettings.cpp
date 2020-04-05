@@ -333,6 +333,16 @@ void deviceSettings::adjustMaskSize( int step )
     qDebug() << "New Mask: " << deviceAt(index)->getInternalImagingMask_px();
 }
 
+bool deviceSettings::getIsSimulation() const
+{
+    return m_isSimulation;
+}
+
+void deviceSettings::setIsSimulation(bool isSimulation)
+{
+    m_isSimulation = isSimulation;
+}
+
 QString device::getDeviceName()
 {
     return deviceName;

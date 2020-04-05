@@ -34,8 +34,10 @@ IDAQ *daqfactory::getdaq()
         {
             if(deviceName == "Simulation"){
                 idaq = new FileDaq();
+                setting.setIsSimulation(true);
             } else {
                 idaq = new DAQ();
+                setting.setIsSimulation(false);
             }
         }
     }

@@ -28,6 +28,7 @@
 #include "sledsupport.h"
 #include "daqfactory.h"
 #include "signalmanager.h"
+#include "deviceSettings.h"
 
 void parseOptions( QCommandLineOption &options, QStringList args );
 
@@ -257,7 +258,10 @@ int main(int argc, char *argv[])
 
         // Start the daq and data consumer threads  // XXX needed here?  device select will start the HW
         frontEndWindow.startDaq();
-        frontEndWindow.startDataCapture();
+        auto& setting = deviceSettings::Instance();
+        if(setting.getIsSimulation()){
+            frontEndWindow.startDataCapture();
+        }
 
 //#if QT_NO_DEBUG
 //        frontEndWindow.setupDeviceForSledSupport();
@@ -266,7 +270,9 @@ int main(int argc, char *argv[])
         status = app.exec();
 
         // Shutdown the data consumer thread and the hardware
-        frontEndWindow.stopDataCapture();
+        if(setting.getIsSimulation()){
+            frontEndWindow.stopDataCapture();
+        }
         frontEndWindow.stopDaq(); // merge into stopDataCapture()?
 
 //#if QT_NO_DEBUG

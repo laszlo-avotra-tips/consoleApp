@@ -21,10 +21,10 @@ private:
 
     const cl_mem_object_type m_imageType{CL_MEM_OBJECT_IMAGE2D};
 
-    const size_t m_imageWidth; //input_image_width
-    const size_t m_imageHeight; //input_image_height
-    const size_t m_warpImageWidth;
-    const size_t m_warpImageHeight;
+    size_t m_imageWidth; //input_image_width
+    size_t m_imageHeight; //input_image_height
+    size_t m_warpImageWidth;
+    size_t m_warpImageHeight;
     const size_t m_imageDepth{1};
     const size_t m_imageArraySize{1};
     const size_t m_imageRowPitch{0};
@@ -34,8 +34,8 @@ private:
 
     cl_mem m_buffer{nullptr};
 
-    const cl_image_desc m_inputImageDescriptor; //inputImageDescriptor
-    const cl_image_desc warpImageDescriptor;
+    cl_image_desc m_inputImageDescriptor; //inputImageDescriptor
+    cl_image_desc warpImageDescriptor;
 };
 
 #endif // IMAGEDESCRIPTOR_H

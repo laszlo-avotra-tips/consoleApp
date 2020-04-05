@@ -207,6 +207,9 @@ public:
     int  getBrightness (void ) { return brightness; }
     int  getContrast( void ) { return contrast; }
 
+    bool getIsSimulation() const;
+    void setIsSimulation(bool isSimulation);
+
 signals:
     void deviceChanged( );
     void sendWarning( QString );
@@ -223,6 +226,7 @@ private:
 
     int brightness = 0;
     int contrast = 0;
+    bool m_isSimulation{false};
 
     deviceSettings();
     ~deviceSettings();
