@@ -103,7 +103,7 @@ public slots:
     void handleScreenChanges();
     void handleBadMonitorConfig();
     void enableDisableMeasurementForCapture( int pixelsPerMm );
-    void updateSector(void);
+    void updateSector(const OCTFile::OctData_t*);
 
 #if ENABLE_COLORMAP_OPTIONS
     void curvesDialogFinished();

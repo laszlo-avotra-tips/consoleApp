@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QString>
 #include "buildflags.h"
+#include "octFile.h"
 
 class IDAQ : public QThread
 {
@@ -34,7 +35,7 @@ signals:
     void handleDisplayAngle( float );
     void signalDaqResetToFrontend( void );
     void attenuateLaser( bool );
-    void updateSector();
+    void updateSector(const OCTFile::OctData_t*);
 
 public slots:
     virtual void enableAuxTriggerAsTriggerEnable( bool ) = 0; //  * R&D only

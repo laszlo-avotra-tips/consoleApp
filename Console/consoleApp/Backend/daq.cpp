@@ -150,13 +150,16 @@ void DAQ::run( void )
             if( getData() )
             {
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
-                LOG3(loopCount,frameCount,gFrameNumber)
                 if( scanWorker->isReady )
                 {
+                    static int count{0};
+                    if(++count%17 == 0){
+                        LOG3(gFrameNumber, gBufferLength, &gFrameData[ gFrameNumber ])
+                    }
                     //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
                     scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
+                    emit updateSector(&gFrameData[ gFrameNumber ]);
                 }
-                emit updateSector();
             }
             else
             {

@@ -40,7 +40,7 @@ public:
     QTime fileTimer;
 
 signals:
-    void updateSector();
+    void updateSector(const OCTFile::OctData_t*);
     void fpsCount( int );
     void linesPerFrameCount( int );
     void missedImagesCount( int );

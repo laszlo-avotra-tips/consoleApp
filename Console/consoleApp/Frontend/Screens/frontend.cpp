@@ -1837,7 +1837,7 @@ void frontend::setIDAQ(IDAQ *object)
 
     if(idaq){
         if(idaq->getSignalSource()){
-            connect( idaq->getSignalSource(), SIGNAL(updateSector()), this, SLOT(updateSector()) );
+            connect( idaq->getSignalSource(), SIGNAL(updateSector(const OCTFile::OctData_t*)), this, SLOT(updateSector(const OCTFile::OctData_t*)) );
 //this does not work            connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
         }
         idaq->init();
@@ -2010,9 +2010,10 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
     }
 }
 
-void frontend::updateSector()
+void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
-    LOG1("TODO")
+    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
+    LOG2(frameData, SectorSize)
 }
 
 /*
