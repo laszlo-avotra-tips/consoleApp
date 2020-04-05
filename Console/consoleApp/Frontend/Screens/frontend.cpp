@@ -43,6 +43,8 @@
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0
 
+#define AXSUN_DATA
+
 #if ENABLE_COLORMAP_OPTIONS
 extern QImage sampleMap;
 #endif
@@ -453,6 +455,10 @@ void frontend::init( void )
     connect( &storageSpaceTimer, SIGNAL(timeout()), this, SLOT(storageSpaceTimerExpiry()) );
 
     connect( &preventFastRecordingsTimer, SIGNAL(timeout()), this, SLOT(reenableRecordLoopButtonExpiry()) );
+
+#ifdef AXSUN_DATA
+    initAxsunCanvas();
+#endif
 }
 
 /*
@@ -563,9 +569,11 @@ void frontend::setupScene( void )
     ui.liveGraphicsView->setMatrix( QMatrix() );
 
     // Scale to fit
+#ifndef AXSUN_DATA
     ui.liveGraphicsView->setScene( scene );
     ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
     centerLiveGraphicsView(); // center the panning position of the view over the sector
+#endif
 
     docWindow->setScene( scene );
     auxMon->setScene( scene );
@@ -1650,6 +1658,21 @@ void frontend::keyPressEvent( QKeyEvent *event )
         }
         event->accept();
     }
+}
+
+void frontend::initAxsunCanvas()
+{
+    qDebug() << "Init Canvas";
+    // Create the canvas
+    m_axsunImage = new QImage( SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, QImage::Format_Indexed8 );
+    m_axsunImage->fill( 0x00 );
+    m_axsunSectorItem = new QGraphicsPixmapItem();
+    m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunImage ) );
+    m_axsunScene = new QGraphicsScene( this );
+    m_axsunScene->addItem( m_axsunSectorItem );
+
+    ui.liveGraphicsView->setScene( m_axsunScene );
+    ui.liveGraphicsView->fitInView( m_axsunScene->sceneRect(), Qt::KeepAspectRatio );
 }
 
 /*

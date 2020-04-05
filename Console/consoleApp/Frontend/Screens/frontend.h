@@ -301,6 +301,15 @@ protected:
      void closeEvent( QCloseEvent *event );
      bool eventFilter( QObject *watched, QEvent *event );
      void keyPressEvent( QKeyEvent *event );
+
+private:
+     void initAxsunCanvas( void );
+     QGraphicsScene *m_axsunScene{nullptr};
+     QGraphicsView  *m_axsunView{nullptr};
+
+     QImage *m_axsunImage{nullptr};
+     QGraphicsPixmapItem* m_axsunSectorItem{nullptr};
+
 };
 
 #endif // FRONTEND_H
