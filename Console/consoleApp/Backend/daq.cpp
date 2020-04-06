@@ -64,10 +64,6 @@ DAQ::DAQ()
 
 DAQ::~DAQ()
 {
-    if( !shutdownDaq() )
-    {
-        qDebug() << "DAQ: Failed to shutdown DAQ";
-    }
 }
 
 void DAQ::init()
@@ -153,9 +149,9 @@ void DAQ::run( void )
                 if( scanWorker->isReady )
                 {
                     static int count{0};
-                    if(++count%17 == 0){
-                        LOG3(gFrameNumber, gBufferLength, &gFrameData[ gFrameNumber ])
-                    }
+//                    if(++count%17 == 0){
+//                        LOG3(gFrameNumber, gBufferLength, &gFrameData[ gFrameNumber ])
+//                    }
                     //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
                     scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
                     emit updateSector(&gFrameData[ gFrameNumber ]);
@@ -169,8 +165,11 @@ void DAQ::run( void )
             }
         }
     }
-    shutdownDaq();
-    qDebug() << "Thread: DAQ::run stop";
+    if(shutdownDaq()){
+        qDebug() << "Thread: DAQ::run stop";
+    } else {
+        qDebug() << "Thread: DAQ::run failed to shut down";
+    }
 }
 
 /*
@@ -310,7 +309,7 @@ bool DAQ::shutdownDaq()
     qDebug() << "***** DAQ::shutdownDaq()";
     axRetVal = NO_AxERROR;
     axRetVal = axStopSession(session);    // Stop Axsun engine session
-    return (bool) axRetVal;
+    return axRetVal == NO_AxERROR;
 }
 
 void DAQ::setLaserDivider( int divider)

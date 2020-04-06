@@ -3,6 +3,7 @@
 #include "depthsetting.h"
 #include "daq.h"
 #include "logger.h"
+#include "signalmodel.h"
 
 int gCounter = 1;
 
@@ -540,6 +541,9 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     int contrast =   device.getContrast();
 
     float displayAngle = displayAngle_deg;
+//    const auto* smi = SignalModel::instance();
+//    LOG2(*smi->whiteLevel(),brightness)
+//    LOG2(*smi->blackLevel(),contrast)
 
     clStatus  = clSetKernelArg( cl_WarpKernel,  0, sizeof(cl_mem), &warpInputImageMemObj );
     clStatus |= clSetKernelArg( cl_WarpKernel,  1, sizeof(cl_mem), &outputImageMemObj );
@@ -556,6 +560,8 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    &imagingDepth_S );
     clStatus |= clSetKernelArg( cl_WarpKernel, 13, sizeof(int),    &brightness );
     clStatus |= clSetKernelArg( cl_WarpKernel, 14, sizeof(int),    &contrast );
+//    clStatus |= clSetKernelArg( cl_WarpKernel, 13, sizeof(int),    smi->whiteLevel() );
+//    clStatus |= clSetKernelArg( cl_WarpKernel, 14, sizeof(int),    smi->blackLevel() );
 
     if( clStatus != CL_SUCCESS )
     {
