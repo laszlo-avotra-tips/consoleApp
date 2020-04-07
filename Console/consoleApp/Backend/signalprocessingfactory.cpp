@@ -95,9 +95,9 @@ void SignalProcessingFactory::initOpenClFileMap()
     m_openClFileMap = {
         {"postfft_kernel",  ":/kernel/postfft"},
         {"bandc_kernel",  ":/kernel/bandc"},
-        {"warp_kernel",  ":/kernel/warp"},
-        {"warpBc_kernel",  ":/kernel/warpBc"},
-        {"line_avg_kernel",  ":/kernel/line_avg"}
+        {"warp_kernel",  ":/kernel/warp"}
+//        {"warpBc_kernel",  ":/kernel/warpBc"},
+//        {"line_avg_kernel",  ":/kernel/line_avg"}
     };
 }
 
