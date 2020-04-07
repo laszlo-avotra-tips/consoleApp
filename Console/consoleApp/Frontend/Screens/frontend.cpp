@@ -2510,6 +2510,11 @@ void frontend::on_autoAdjustBrightnessContrastButton_clicked()
 {
     LOG( INFO, "Auto-adjust brightness and contrast clicked" )
     emit autoAdjustBrightnessAndContrast();
+    auto* sm = SignalModel::instance();
+    sm->setWhiteLevel(0);
+    sm->setBlackLevel(0);
+    ui.horizontalSliderBrigtness->setValue(0);
+    ui.horizontalSliderContrast->setValue(0);
 }
 
 /*

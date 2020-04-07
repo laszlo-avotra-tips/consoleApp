@@ -1533,23 +1533,29 @@ QPushButton:hover {
        <property name="autoFillBackground">
         <bool>false</bool>
        </property>
+       <property name="minimum">
+        <number>-255</number>
+       </property>
        <property name="maximum">
         <number>255</number>
        </property>
        <property name="pageStep">
-        <number>16</number>
+        <number>10</number>
        </property>
        <property name="value">
-        <number>250</number>
+        <number>0</number>
+       </property>
+       <property name="sliderPosition">
+        <number>0</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="tickPosition">
-        <enum>QSlider::TicksBelow</enum>
+        <enum>QSlider::NoTicks</enum>
        </property>
        <property name="tickInterval">
-        <number>32</number>
+        <number>0</number>
        </property>
       </widget>
      </item>
@@ -1568,19 +1574,19 @@ QPushButton:hover {
         </size>
        </property>
        <property name="minimum">
-        <number>0</number>
+        <number>-255</number>
        </property>
        <property name="maximum">
         <number>255</number>
        </property>
        <property name="pageStep">
-        <number>16</number>
+        <number>10</number>
        </property>
        <property name="value">
-        <number>5</number>
+        <number>0</number>
        </property>
        <property name="sliderPosition">
-        <number>5</number>
+        <number>0</number>
        </property>
        <property name="tracking">
         <bool>true</bool>
@@ -1589,10 +1595,10 @@ QPushButton:hover {
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="tickPosition">
-        <enum>QSlider::TicksBelow</enum>
+        <enum>QSlider::NoTicks</enum>
        </property>
        <property name="tickInterval">
-        <number>32</number>
+        <number>0</number>
        </property>
       </widget>
      </item>

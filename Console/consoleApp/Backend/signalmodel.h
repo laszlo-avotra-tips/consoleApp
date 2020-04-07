@@ -44,9 +44,9 @@ public:
     const cl_mem *fftImageBuffer() const;
     void setFftImageBuffer(const cl_mem &fftImageBuffer);
 
-    const cl_float *blackLevel() const;
+    const cl_int *blackLevel() const;
 
-    const cl_float *whiteLevel() const;
+    const cl_int *whiteLevel() const;
 
 public slots:
     void setIsAveragingNoiseReduction(bool isAveragingNoiseReduction);
@@ -123,8 +123,8 @@ private: //data
     //from post fft to B and C
     cl_mem m_fftImageBuffer{nullptr};
 
-    cl_float m_blackLevel{10.0f}; //2 blackLevel
-    cl_float m_whiteLevel{250.0f}; //3 whiteLevel
+    cl_int m_blackLevel{0}; //2 blackLevel
+    cl_int m_whiteLevel{0}; //3 whiteLevel
 
     //from B and C to warp
     cl_mem m_bAndCimageBuffer{nullptr};
