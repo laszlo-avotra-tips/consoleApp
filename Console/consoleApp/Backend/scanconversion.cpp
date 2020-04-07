@@ -191,15 +191,17 @@ bool ScanConversion::initOpenCL()
         return false;
     }
 
-    char warpkernelname[] = "warp_kernel";
+    char warpkernelname[] = "warpBc_kernel";
 
-    if( !buildOpenCLKernel( QString( path + "warp.cl" ), warpkernelname, &cl_WarpProgram, &cl_WarpKernel ) )
+//    if( !buildOpenCLKernel( QString( path + "warp.cl" ), warpkernelname, &cl_WarpProgram, &cl_WarpKernel ) )
+    if( !buildOpenCLKernel( QString( ":/kernel/warpBc" ), warpkernelname, &cl_WarpProgram, &cl_WarpKernel ) )
     {
         return false;
     }
 
     char lineavgkernelname[] = "line_avg_kernel";
-    if( !buildOpenCLKernel( QString( path + "line_avg.cl" ), lineavgkernelname, &cl_LineAvgProgram, &cl_LineAvgKernel ) )
+//    if( !buildOpenCLKernel( QString( path + "line_avg.cl" ), lineavgkernelname, &cl_LineAvgProgram, &cl_LineAvgKernel ) )
+    if( !buildOpenCLKernel( QString( ":/kernel/line_avg"), lineavgkernelname, &cl_LineAvgProgram, &cl_LineAvgKernel ) )
     {
         qDebug() << "Unable to build line_avg.cl";
         return false;

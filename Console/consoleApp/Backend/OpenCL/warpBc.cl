@@ -1,6 +1,6 @@
 constant sampler_t NORM_SMPLR = CLK_NORMALIZED_COORDS_TRUE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_LINEAR;
 
-__kernel void warp_kernel(__read_only image2d_t srcImg,
+__kernel void warpBc_kernel(__read_only image2d_t srcImg,
                           __write_only image2d_t dstImg,
                           __write_only image2d_t videoImg,
                           float catheterRadius_um,
