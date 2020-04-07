@@ -35,7 +35,7 @@
 #if _DEBUG
 #define USE_INIT 0
 #else
-#define USE_INIT 1
+#define USE_INIT 0
 #endif
 
 /*
@@ -44,7 +44,7 @@
 #if _DEBUG
 #   define ENABLE_SYSTEM_KEY_CHECK 0
 #else
-#   define ENABLE_SYSTEM_KEY_CHECK 1
+#   define ENABLE_SYSTEM_KEY_CHECK 0
 #endif
 
 

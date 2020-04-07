@@ -75,18 +75,19 @@ bool Initialization::init( int argc, char *argv[] )
 #if _DEBUG
     isExeOk = true;
 #else
-    if( runExeCheck )
-    {
-        // Verify the EXE is installed in the correct location
-        const QString applicationDirPath = QCoreApplication::applicationDirPath();
-        isExeOk = ( applicationDirPath == ExpectedApplicationDirPath );
+    //lcv
+//    if( runExeCheck )
+//    {
+//        // Verify the EXE is installed in the correct location
+//        const QString applicationDirPath = QCoreApplication::applicationDirPath();
+//        isExeOk = ( applicationDirPath == ExpectedApplicationDirPath );
 
-        // Verify the EXE matches the digital signature that it was installed with
-        Keys exeKey( applicationDirPath + "/octConsole.key", Keys::ReadOnly );
-        exeKey.init();
-        isExeOk = isExeOk && exeKey.isValid();
-    }
-    else
+//        // Verify the EXE matches the digital signature that it was installed with
+//        Keys exeKey( applicationDirPath + "/octConsole.key", Keys::ReadOnly );
+//        exeKey.init();
+//        isExeOk = isExeOk && exeKey.isValid();
+//    }
+//    else
     {
         // overridden from the command line
         isExeOk = true;
