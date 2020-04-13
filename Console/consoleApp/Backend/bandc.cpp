@@ -64,6 +64,10 @@ bool BeAndCe::setKernelArguments(cl_kernel kernel)
         return false;
     }
 
+    //lcv debug Brightness and contrast
+    float br = 227.0f;
+    float cntr = 27.0f;
+
     const auto* smi = SignalModel::instance();
 
     cl_int clStatus  = clSetKernelArg( kernel, 0, sizeof(cl_mem), smi->fftImageBuffer() );
@@ -76,12 +80,12 @@ bool BeAndCe::setKernelArguments(cl_kernel kernel)
     {
         qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 2, sizeof(float), smi->blackLevel() );
+    clStatus |= clSetKernelArg( kernel, 2, sizeof(float), &cntr); //smi->blackLevel() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;
     }
-    clStatus |= clSetKernelArg( kernel, 3, sizeof(float), smi->whiteLevel() );
+    clStatus |= clSetKernelArg( kernel, 3, sizeof(float), &br); //smi->whiteLevel() );
     if( clStatus != CL_SUCCESS )
     {
         qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
