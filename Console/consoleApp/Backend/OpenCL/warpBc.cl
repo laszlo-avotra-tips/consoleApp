@@ -13,8 +13,9 @@ __kernel void warpBc_kernel(__read_only image2d_t srcImg,
                           int height_px,
                           float fFractionOfCanvas,
                           int maxDepth_S,
-			  int brightness,
-			  int contrast )
+                          int brightness,
+                          int contrast,
+                          int doInvert              )
 {
     /*
      * Max depth in samples from FFT Output. Samples are not the same as Pixels since we don't display
@@ -118,35 +119,48 @@ __kernel void warpBc_kernel(__read_only image2d_t srcImg,
     float fcontrast;
     float contrastCorrection;
 
+    uint4 clr = 0;
     /*
      * Draw black if:
      *   corners of the canvas,
      *   looking up outside the load image,
      *   looking up inside the internalImagingMask.
      */
-    if( ( r > r_max ) || ( loadCoord_norm.x > 1.0f ) || ( loadCoord_norm.x < y_val_loadNorm ) )
+    const bool outsideofthecircle = ( r > r_max ) || ( loadCoord_norm.x > 1.0f ) || ( loadCoord_norm.x < y_val_loadNorm );
+    if( outsideofthecircle )
     {
         pixel = (uint4){ 0, 0, 0, 1 }; // give a black center circle to the sector
+        clr = pixel;
     }
     else // everything else inside should be the pixel from the load image
     {
         pixel = read_imageui( srcImg, NORM_SMPLR, videoLoadCoord_norm );
         ipixel = pixel.s0;
-	ipixel = ipixel + brightness;
-	if(ipixel < 0) ipixel = 0;
-	if(ipixel > 255) ipixel = 255;
-	pixel.s0 = ipixel;
+        ipixel = ipixel + brightness;
+        if(ipixel < 0) ipixel = 0;
+        if(ipixel > 255) ipixel = 255;
+        pixel.s0 = ipixel;
 
-	fcontrast = contrast;
+        fcontrast = contrast;
         contrastCorrection = (259.0f*(fcontrast+255.0f))/(255.0f*(259.0f-fcontrast));
-	fpixel = pixel.s0;
+        fpixel = pixel.s0;
         fpixel = contrastCorrection*(fpixel-128.0f) + 128.0f;
-	ipixel = fpixel;
+        ipixel = fpixel;
         if( ipixel < 0 ) ipixel = 0;
         if( ipixel > 255 ) ipixel = 255;
-	pixel.s0 = ipixel;
+        pixel.s0 = ipixel;
+    }
+    uint4 maxVal = (uint4) 255;
+    if( doInvert )
+    {
+        if(!outsideofthecircle)
+            clr = maxVal - pixel;
+    }
+    else
+    {
+        clr = pixel;
     }
 
     // Write to the image for display and for the video
-    write_imageui(   dstImg, storeCoord, pixel );
+     write_imageui(   dstImg, storeCoord, clr );
 }

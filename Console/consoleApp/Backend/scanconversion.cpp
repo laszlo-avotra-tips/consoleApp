@@ -554,6 +554,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    &imagingDepth_S );
     clStatus |= clSetKernelArg( cl_WarpKernel, 13, sizeof(int),    smi->whiteLevel() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 14, sizeof(int),    smi->blackLevel() );
+    clStatus |= clSetKernelArg( cl_WarpKernel, 15, sizeof(int),    smi->isInvertOctColors() );
 
     if( clStatus != CL_SUCCESS )
     {
