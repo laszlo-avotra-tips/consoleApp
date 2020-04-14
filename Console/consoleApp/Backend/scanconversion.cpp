@@ -547,7 +547,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  &standardDepth_mm );
     clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    &standardDepth_S );
     clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  &displayAngle );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    &reverseDirection );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    smi->getIsDistalToProximalView() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    &SectorWidth_px );
     clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    &SectorHeight_px );
     clStatus |= clSetKernelArg( cl_WarpKernel, 11, sizeof(float),  &fractionOfCanvas );

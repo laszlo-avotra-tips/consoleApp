@@ -60,7 +60,7 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     currDirection = directionTracker::Stopped;
     videoEncoder::initVideoLibrary();
 
-    useDistalToProximalView = true;
+//    useDistalToProximalView = true;
     processingTimer.start();
 
     safeFrameBuffer = static_cast<char*>(malloc( ( SectorHeight_px + WaterfallWidth_px ) * SectorWidth_px ) );
@@ -503,6 +503,6 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
 void DaqDataConsumer::updateCatheterView()
 {
     userSettings &user = userSettings::Instance();
-    useDistalToProximalView = user.isDistalToProximalView();
+//    useDistalToProximalView = user.isDistalToProximalView();
 }
 

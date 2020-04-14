@@ -87,7 +87,7 @@ private:
     directionTracker::Direction_T prevDirection;
     directionTracker::Direction_T currDirection;
 
-    bool useDistalToProximalView;
+//    bool useDistalToProximalView;
 
     QTime processingTimer;
     QTime frameTimer;
