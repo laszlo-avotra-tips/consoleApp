@@ -55,7 +55,7 @@ public:
     void unlockFrame() {
         frameLock.unlock();
     }
-    QGraphicsItem *sectorHandle( void ) { return sector; }
+    QGraphicsPixmapItem *sectorHandle( void ) { return sector; }
     void hideAnnotations();
     void showAnnotations();
 

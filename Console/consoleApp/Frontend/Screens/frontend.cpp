@@ -524,7 +524,7 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     scene = new liveScene( this );
-    m_axsunScene = new QGraphicsScene( this );
+    m_axsunScene = new liveScene( this );
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -1653,11 +1653,13 @@ void frontend::initAxsunCanvas()
 {
     qDebug() << "Init Canvas";
     // Create the canvas
+//    m_axsunScene = new liveScene( this );
+
     m_axsunImage = new QImage( SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, QImage::Format_Indexed8 );
     m_axsunImage->fill( 0x00 );
-    m_axsunSectorItem = new QGraphicsPixmapItem();
+    m_axsunSectorItem = m_axsunScene->sectorHandle();
     m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunImage ) );
-    m_axsunScene = new QGraphicsScene( this );
+    m_axsunScene = new liveScene( this );
 
     m_axsunScene->addItem( m_axsunSectorItem );
     ui.liveGraphicsView->setScene( m_axsunScene );
@@ -1821,7 +1823,7 @@ void frontend::setIDAQ(IDAQ *object)
         // Create the canvas
         m_axsunImage = new QImage( SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, QImage::Format_Indexed8 );
         m_axsunImage->fill( 0x00 );
-        m_axsunSectorItem = new QGraphicsPixmapItem();
+        m_axsunSectorItem = m_axsunScene->sectorHandle();
         m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunImage ) );
 //        m_axsunScene = new QGraphicsScene( this );
 
@@ -1830,12 +1832,13 @@ void frontend::setIDAQ(IDAQ *object)
 
         ui.liveGraphicsView->fitInView( m_axsunScene->sceneRect(), Qt::KeepAspectRatio );
         centerLiveGraphicsView(); // center the panning position of the view over the sector
+        centerLiveGraphicsView(); // center the panning position of the view over the sector
 
     } else {
         ui.liveGraphicsView->setScene( scene );
         ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
+        centerLiveGraphicsView(); // center the panning position of the view over the sector
     }
-    centerLiveGraphicsView(); // center the panning position of the view over the sector
 
     if(signalSource)
     {
@@ -1870,6 +1873,10 @@ void frontend::setIDAQ(IDAQ *object)
 
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
         // initialize the hardware
+
+        // view options to set color mode
+        connect( viewOption, SIGNAL( setColorModeGray() ),         m_axsunScene, SLOT( loadColorModeGray() ) );
+        connect( viewOption, SIGNAL( setColorModeSepia() ),        m_axsunScene, SLOT( loadColorModeSepia() ) );
     }
 
     if(idaq){

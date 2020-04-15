@@ -61,7 +61,7 @@ liveScene::liveScene( QObject *parent )
     addItem( sector );
 
     wf = new waterfall();
-    addItem( wf );
+//    addItem( wf );
 
     // Background image rendering for movies
     videoSector = new sectorItem();
@@ -873,7 +873,7 @@ void liveScene::updateGrayScaleMap( QVector<unsigned char> map )
 void liveScene::loadColormap( QString colormapFile )
 {
     QFile *input = new QFile( colormapFile );
-
+    LOG1(colormapFile)
     if( !input )
     {
         // warn and do not update the colormap
@@ -911,8 +911,9 @@ void liveScene::loadColormap( QString colormapFile )
 #endif
 
     sector->updateColorMap( currColorMap );
-    wf->updateColorMap( currColorMap );
+//    wf->updateColorMap( currColorMap );
 
+    LOG1("done")
 
     // free the pointer.  nullptr check done above.
     delete input;
@@ -923,6 +924,7 @@ void liveScene::loadColormap( QString colormapFile )
  */
 void liveScene::loadColorModeGray()
 {
+    LOG1(SystemDir)
     loadColormap( SystemDir + "/colormaps/" + "gray.csv" );
 }
 
@@ -931,6 +933,7 @@ void liveScene::loadColorModeGray()
  */
 void liveScene::loadColorModeSepia()
 {
+    LOG1(SystemDir)
     loadColormap( SystemDir + "/colormaps/" + "sepia.csv" );
 }
 

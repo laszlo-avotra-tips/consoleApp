@@ -304,7 +304,7 @@ protected:
 
 private:
      void initAxsunCanvas( void );
-     QGraphicsScene *m_axsunScene{nullptr};
+     liveScene *m_axsunScene{nullptr};
      QGraphicsView  *m_axsunView{nullptr};
 
      QImage *m_axsunImage{nullptr};
