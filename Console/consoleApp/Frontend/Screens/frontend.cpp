@@ -1659,6 +1659,8 @@ void frontend::initAxsunCanvas()
     m_axsunImage->fill( 0x00 );
     m_axsunSectorItem = m_axsunScene->sectorHandle();
     m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunImage ) );
+    //    m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunScene->sectorImage() ) );
+
     ui.liveGraphicsView->setScene( m_axsunScene );
     ui.liveGraphicsView->fitInView( m_axsunScene->sceneRect(), Qt::KeepAspectRatio );
 }
@@ -2035,11 +2037,7 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 
 void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
-    static int count=0;
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-//    if(++count%17 == 0){
-//        LOG2(frameData, SectorSize)
-//    }
     memcpy( m_axsunImage->bits(), frameData->dispData, SectorSize );
     QPixmap tmpPixmap = QPixmap::fromImage( *(m_axsunImage) );
     m_axsunSectorItem->setPixmap(tmpPixmap);

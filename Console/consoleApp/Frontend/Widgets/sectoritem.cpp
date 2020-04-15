@@ -281,7 +281,17 @@ void sectorItem::rotateSector( double angle_deg )
     matrix.rotate( angle_deg );
     matrix.translate( -xTranslation, -yTranslation );
     setTransform( matrix, false );
- }
+}
+
+QImage *sectorItem::getSectorImage() const
+{
+    return sectorImage;
+}
+
+void sectorItem::setSectorImage(QImage *value)
+{
+    sectorImage = value;
+}
 
 /*
  * addFrame

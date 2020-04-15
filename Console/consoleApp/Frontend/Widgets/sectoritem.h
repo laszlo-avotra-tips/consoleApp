@@ -183,6 +183,9 @@ public:
     }
 #endif
 
+    QImage *getSectorImage() const;
+    void setSectorImage(QImage *value);
+
 private:
     int status;
     void render(void);
