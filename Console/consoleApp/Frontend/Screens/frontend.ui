@@ -1058,160 +1058,6 @@ IMAGE</string>
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QGroupBox" name="fftDevelopmentGroupBox">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>790</y>
-      <width>181</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>FFT Development</string>
-    </property>
-    <widget class="QSpinBox" name="fftSpinBox">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>70</y>
-       <width>49</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>-20</number>
-     </property>
-     <property name="maximum">
-      <number>20</number>
-     </property>
-     <property name="singleStep">
-      <number>1</number>
-     </property>
-     <property name="value">
-      <number>5</number>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="magSpinBox">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>40</y>
-       <width>49</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>-20</number>
-     </property>
-     <property name="maximum">
-      <number>20</number>
-     </property>
-     <property name="value">
-      <number>1</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="fftLabel">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>70</y>
-       <width>32</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>120</red>
-           <green>120</green>
-           <blue>120</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="text">
-      <string>FFT</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="magLabel">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>40</y>
-       <width>36</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>120</red>
-           <green>120</green>
-           <blue>120</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="text">
-      <string>Mag</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QLabel" name="evoaOffLabel">
     <property name="geometry">
      <rect>
@@ -1994,7 +1840,6 @@ Passive</string>
    <zorder>rawSnapshotSpinBox</zorder>
    <zorder>crfFrame</zorder>
    <zorder>annotateImagePushButton</zorder>
-   <zorder>fftDevelopmentGroupBox</zorder>
    <zorder>evoaOffLabel</zorder>
    <zorder>measureModePushButton</zorder>
    <zorder>capturesGroupBox</zorder>
@@ -2053,8 +1898,6 @@ Passive</string>
   <tabstop>liveViewPushButton</tabstop>
   <tabstop>liveGraphicsView</tabstop>
   <tabstop>colormapListWidget</tabstop>
-  <tabstop>magSpinBox</tabstop>
-  <tabstop>fftSpinBox</tabstop>
  </tabstops>
  <resources>
   <include location="../../octConsole.qrc"/>

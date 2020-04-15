@@ -105,8 +105,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     ui.rawDataPushButton->hide();
     ui.rawSnapshotSpinBox->hide();
 
-    ui.fftDevelopmentGroupBox->hide();
-
 #if ENABLE_VIDEO_CRF_QUALITY_TESTING
     ui.crfTestLabel->show();
     ui.crfTestSpinBox->show();
