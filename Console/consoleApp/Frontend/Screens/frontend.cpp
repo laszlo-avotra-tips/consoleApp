@@ -524,7 +524,6 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     scene = new liveScene( this );
-    m_axsunScene = scene; //new liveScene( this );
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -1649,22 +1648,6 @@ void frontend::keyPressEvent( QKeyEvent *event )
     }
 }
 
-void frontend::initAxsunCanvas()
-{
-    qDebug() << "Init Canvas";
-
-    // Create the canvas
-
-    m_axsunImage = new QImage( SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, QImage::Format_Indexed8 );
-    m_axsunImage->fill( 0x00 );
-    m_axsunSectorItem = m_axsunScene->sectorHandle();
-    m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunImage ) );
-    //    m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunScene->sectorImage() ) );
-
-    ui.liveGraphicsView->setScene( m_axsunScene );
-    ui.liveGraphicsView->fitInView( m_axsunScene->sceneRect(), Qt::KeepAspectRatio );
-}
-
 /*
  * captureMouse
  *
@@ -1803,8 +1786,6 @@ void frontend::setIDAQ(IDAQ *object)
 {
     idaq = object;
 
-    deviceSettings &dev = deviceSettings::Instance();
-
     IDAQ* signalSource(nullptr);
 
     if(object->getSignalSource()){
@@ -1813,12 +1794,8 @@ void frontend::setIDAQ(IDAQ *object)
         signalSource = object;
     }
 
-    if(!dev.getIsSimulation()){
-        initAxsunCanvas();
-    } else {
-        ui.liveGraphicsView->setScene( scene );
-        ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
-    }
+    ui.liveGraphicsView->setScene( scene );
+    ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
     centerLiveGraphicsView(); // center the panning position of the view over the sector
 
     if(signalSource)
@@ -1853,11 +1830,6 @@ void frontend::setIDAQ(IDAQ *object)
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
 
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
-        // initialize the hardware
-
-        // view options to set color mode
-        connect( viewOption, SIGNAL( setColorModeGray() ),         m_axsunScene, SLOT( loadColorModeGray() ) );
-        connect( viewOption, SIGNAL( setColorModeSepia() ),        m_axsunScene, SLOT( loadColorModeSepia() ) );
     }
 
     if(idaq){
@@ -2038,11 +2010,10 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    //auto image = m_axsunImage;
     auto image = scene->sectorImage();
     memcpy( image->bits(), frameData->dispData, SectorSize );
     QPixmap tmpPixmap = QPixmap::fromImage( *image );
-    m_axsunSectorItem->setPixmap(tmpPixmap);
+    scene->sectorHandle()->setPixmap(tmpPixmap);
 }
 
 /*
