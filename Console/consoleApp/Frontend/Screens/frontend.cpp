@@ -524,7 +524,7 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     scene = new liveScene( this );
-    m_axsunScene = new liveScene( this );
+    m_axsunScene = scene; //new liveScene( this );
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -1652,22 +1652,15 @@ void frontend::keyPressEvent( QKeyEvent *event )
 void frontend::initAxsunCanvas()
 {
     qDebug() << "Init Canvas";
+
     // Create the canvas
-//    m_axsunScene = new liveScene( this );
 
     m_axsunImage = new QImage( SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, QImage::Format_Indexed8 );
     m_axsunImage->fill( 0x00 );
     m_axsunSectorItem = m_axsunScene->sectorHandle();
     m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunImage ) );
-    m_axsunScene = new liveScene( this );
-
-    m_axsunScene->addItem( m_axsunSectorItem );
     ui.liveGraphicsView->setScene( m_axsunScene );
-//    scene->addItem(m_axsunSectorItem);
-//    ui.liveGraphicsView->setScene(scene);
-
     ui.liveGraphicsView->fitInView( m_axsunScene->sceneRect(), Qt::KeepAspectRatio );
-//    ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
 }
 
 /*
@@ -1819,26 +1812,12 @@ void frontend::setIDAQ(IDAQ *object)
     }
 
     if(!dev.getIsSimulation()){
-//        initAxsunCanvas();
-        // Create the canvas
-        m_axsunImage = new QImage( SECTOR_HEIGHT_PX, SECTOR_HEIGHT_PX, QImage::Format_Indexed8 );
-        m_axsunImage->fill( 0x00 );
-        m_axsunSectorItem = m_axsunScene->sectorHandle();
-        m_axsunSectorItem->setPixmap( QPixmap::fromImage( *m_axsunImage ) );
-//        m_axsunScene = new QGraphicsScene( this );
-
-        m_axsunScene->addItem( m_axsunSectorItem );
-        ui.liveGraphicsView->setScene( m_axsunScene );
-
-        ui.liveGraphicsView->fitInView( m_axsunScene->sceneRect(), Qt::KeepAspectRatio );
-        centerLiveGraphicsView(); // center the panning position of the view over the sector
-        centerLiveGraphicsView(); // center the panning position of the view over the sector
-
+        initAxsunCanvas();
     } else {
         ui.liveGraphicsView->setScene( scene );
         ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
-        centerLiveGraphicsView(); // center the panning position of the view over the sector
     }
+    centerLiveGraphicsView(); // center the panning position of the view over the sector
 
     if(signalSource)
     {
