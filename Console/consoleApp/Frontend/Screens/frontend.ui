@@ -374,13 +374,16 @@ border-radius: 4px;
 }</string>
      </property>
      <property name="minimum">
-      <number>100</number>
+      <number>90</number>
      </property>
      <property name="maximum">
       <number>400</number>
      </property>
+     <property name="pageStep">
+      <number>10</number>
+     </property>
      <property name="value">
-      <number>100</number>
+      <number>90</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
