@@ -2038,8 +2038,10 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    memcpy( m_axsunImage->bits(), frameData->dispData, SectorSize );
-    QPixmap tmpPixmap = QPixmap::fromImage( *(m_axsunImage) );
+    //auto image = m_axsunImage;
+    auto image = scene->sectorImage();
+    memcpy( image->bits(), frameData->dispData, SectorSize );
+    QPixmap tmpPixmap = QPixmap::fromImage( *image );
     m_axsunSectorItem->setPixmap(tmpPixmap);
 }
 
