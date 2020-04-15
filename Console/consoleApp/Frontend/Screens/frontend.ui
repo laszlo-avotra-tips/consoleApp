@@ -750,42 +750,6 @@ border-radius: 4px;
       <number>0</number>
      </property>
     </widget>
-    <widget class="QGroupBox" name="colormapGroupBox">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>820</y>
-       <width>301</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Colormap</string>
-     </property>
-     <widget class="QLabel" name="colormapLabel">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>40</y>
-        <width>21</width>
-        <height>171</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="colormapListWidget">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>120</y>
-        <width>231</width>
-        <height>91</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
     <zorder>instructionsLabel</zorder>
     <zorder>liveGraphicsView</zorder>
     <zorder>recordingLabel</zorder>
@@ -799,7 +763,6 @@ border-radius: 4px;
     <zorder>line</zorder>
     <zorder>catheterViewLabel</zorder>
     <zorder>rulerSlidingPointSpinbox</zorder>
-    <zorder>colormapGroupBox</zorder>
    </widget>
    <widget class="QPushButton" name="deviceSelectButton">
     <property name="geometry">
@@ -1897,7 +1860,6 @@ Passive</string>
   <tabstop>zoomResetPushButton</tabstop>
   <tabstop>liveViewPushButton</tabstop>
   <tabstop>liveGraphicsView</tabstop>
-  <tabstop>colormapListWidget</tabstop>
  </tabstops>
  <resources>
   <include location="../../octConsole.qrc"/>

@@ -131,7 +131,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     // Set default linear value map
     curveDlg = nullptr;
 #else
-    ui.colormapGroupBox->hide();
     ui.contrastCurveButton->hide();
 #endif
 
