@@ -119,11 +119,6 @@ public:
         lagAngleVal = lag;
         saveSettings();
     }
-    void setWaterfallRate(int rate)
-    {
-        waterfallRateVal = rate;
-        saveSettings();
-    }
     void setReticleBrightness(int val)
     {
         reticleBrightnessVal = val;
@@ -139,11 +134,6 @@ public:
         noiseReductionVal = val;
         saveSettings();
     }
-    void setWaterfall( bool val )
-    {
-        showWaterfall = val;
-        saveSettings();
-    }
     void setInvertOctColor( bool val )
     {
         invertOctColorEnabled = val;
@@ -154,12 +144,10 @@ public:
     int  brightness();
     int  contrast();
     int  lagAngle()                 { return lagAngleVal; }
-    int  waterfallRate()            { return waterfallRateVal; }
     int  reticleBrightness()        { return reticleBrightnessVal; }
     int  noiseReduction()           { return noiseReductionVal; }
     int  laserIndicatorBrightness() { return laserIndicatorBrightnessVal; }
     bool useNoiseReduction()        { return noiseReductionEnabled; }
-    bool waterfall()                { return showWaterfall; }
     bool invertOctColor()           { return invertOctColorEnabled; }
     bool isDistalToProximalView();
 
@@ -169,12 +157,10 @@ private:
     int  brightnessVal;               // or "black-level"
     int  contrastVal;                 // or "white-level"
     int  lagAngleVal;                 // catheter rotational lag
-    int  waterfallRateVal;            // how fast the waterfall scrolls across the screen
     int  reticleBrightnessVal;        // how bright the reticle is on the screen
     int  laserIndicatorBrightnessVal; // how bright the laser indicator pointer is on the screen
     int  noiseReductionVal;           //
     bool noiseReductionEnabled;       //
-    bool showWaterfall;               //
     bool invertOctColorEnabled;       //
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
     CatheterView_t catheterViewMode;  //

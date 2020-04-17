@@ -403,62 +403,6 @@ QWidget#backgroundWidget
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>347</y>
-      <width>320</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>DINPro-medium</family>
-      <pointsize>-1</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="title">
-     <string>&amp;Waterfall Rate</string>
-    </property>
-    <widget class="QSlider" name="waterfallRateSlider">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>300</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>5</number>
-     </property>
-     <property name="maximum">
-      <number>32</number>
-     </property>
-     <property name="value">
-      <number>22</number>
-     </property>
-     <property name="sliderPosition">
-      <number>22</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksAbove</enum>
-     </property>
-     <property name="tickInterval">
-      <number>5</number>
-     </property>
-    </widget>
-   </widget>
    <widget class="QLabel" name="titlebarLabel">
     <property name="geometry">
      <rect>
@@ -649,6 +593,15 @@ QWidget#backgroundWidget
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
        </active>
        <inactive>
         <colorrole role="WindowText">
@@ -705,6 +658,15 @@ QWidget#backgroundWidget
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
        </inactive>
        <disabled>
         <colorrole role="WindowText">
@@ -758,6 +720,15 @@ QWidget#backgroundWidget
            <red>117</red>
            <green>117</green>
            <blue>117</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
           </color>
          </brush>
         </colorrole>
@@ -840,6 +811,15 @@ QWidget#backgroundWidget
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
        </active>
        <inactive>
         <colorrole role="WindowText">
@@ -896,6 +876,15 @@ QWidget#backgroundWidget
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
        </inactive>
        <disabled>
         <colorrole role="WindowText">
@@ -949,6 +938,15 @@ QWidget#backgroundWidget
            <red>117</red>
            <green>117</green>
            <blue>117</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
           </color>
          </brush>
         </colorrole>
@@ -1038,45 +1036,6 @@ QWidget#backgroundWidget
      </property>
     </widget>
     <widget class="QRadioButton" name="invertColorsRadioButton_no">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>30</y>
-       <width>43</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>NO</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_7">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>350</y>
-      <width>241</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Show Waterfall</string>
-    </property>
-    <widget class="QRadioButton" name="showWaterfallRadioButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>48</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>YES</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="showWaterfallRadioButton_no">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -1230,14 +1189,12 @@ QWidget#backgroundWidget
    <zorder>titlebarLabel</zorder>
    <zorder>instructionsLabel</zorder>
    <zorder>groupBox_4</zorder>
-   <zorder>groupBox_3</zorder>
    <zorder>groupBox_6</zorder>
    <zorder>groupBox_2</zorder>
    <zorder>scanSyncFrame</zorder>
    <zorder>lowSpeedLabel</zorder>
    <zorder>highSpeedLabel</zorder>
    <zorder>groupBox</zorder>
-   <zorder>groupBox_7</zorder>
    <zorder>groupBox_8</zorder>
    <zorder>groupBox_9</zorder>
    <zorder>groupBox_10</zorder>

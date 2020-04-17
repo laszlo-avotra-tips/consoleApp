@@ -2,8 +2,8 @@
  * viewoptions.h
  *
  * Overlay widget to adjust view options and preferences
- * for the sector and waterfall views, such as laser line
- * brightness, reticle brightness, and waterfall rate.
+ * for the sector view, such as laser line
+ * brightness, reticle brightness.
  *
  * Author: Ryan Radjabi
  *
@@ -40,7 +40,6 @@ signals:
     void enableAveraging( bool );
     void enableInvertColors( bool );
     void currFrameWeight_percentChanged(int);
-    void displayWaterfall( bool );
     void setColorModeSepia();
     void setColorModeGray();
 
@@ -50,14 +49,12 @@ public slots:
     void handleDeviceChange();
 
 private slots:
-    void on_waterfallRateSlider_valueChanged(int value);
     void on_reticleSlider_valueChanged(int value);
     void on_laserIndicatorSlider_valueChanged(int value);
     void on_distalToProximalViewRadioButton_toggled(bool checked);
     void on_scanSyncSlider_valueChanged(int value);
     void on_useNoiseReductionRadioButton_toggled(bool checked);
     void on_noiseReductionSlider_valueChanged(int position);
-    void on_showWaterfallRadioButton_toggled(bool checked);
     void on_invertColorsRadioButton_toggled(bool checked);
     void on_sepiaColorRadioButton_clicked();
     void on_grayscaleColorRadioButton_clicked();

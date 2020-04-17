@@ -129,9 +129,7 @@ void AreaMeasurementOverlay::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
     const int Left   = 0;
     const int Right  = SectorWidth_px;
     const int Bottom = SectorHeight_px; // XXX we have to restrict the area measurement overlay to sector region for
-                                        // unknown reasons. It would be nice to be able to draw in the lower (waterfall)
-                                        // region, but those mouse events are not getting passed down to this object.
-
+                                        // unknown reasons.
     if( event->pos().toPoint().x() < Left )
     {
         event->setPos( QPointF( Left, event->pos().toPoint().y() ) );

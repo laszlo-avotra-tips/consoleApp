@@ -3,7 +3,7 @@
  *
  * The secondary window for the OCT application. This window
  * presents the physician with a stripped down view of
- * the GUI, focused on the sector and waterfall.
+ * the GUI, focused on the sector
  *
  * Author: Chris White
  *
@@ -79,7 +79,7 @@ docscreen::~docscreen()
 /*
  * setScene()
  *
- * Associate a scene (waterfall + sector) with the view on
+ * Associate a scene (sector) with the view on
  * the doc screen. Set up the rotation, etc. for the portrait
  * orientation.
  */
@@ -91,10 +91,6 @@ void docscreen::setScene( QGraphicsScene *scene )
     // Associate the view with the scene
     ui.liveGraphicsView->setScene( scene );
     ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
-//#if HIGH_QUALITY_RENDERING
-//    // High quality rendering hints
-//    ui.liveGraphicsView->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
-//#endif
 }
 
 /*

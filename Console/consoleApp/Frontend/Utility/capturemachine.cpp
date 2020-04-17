@@ -39,16 +39,15 @@ captureMachine::captureMachine()
 /*
  * capture()
  *
- * Given the waterfall and sector images (and procedure data TBD),
+ * Given the sector image (and procedure data TBD),
  * add the images to the file archive and the database.
  */
-void captureMachine::imageCapture( QImage decoratedImage, QImage wf, QImage sector, QString tagText, unsigned int timestamp, int pixelsPerMm, float zoomFactor )
+void captureMachine::imageCapture( QImage decoratedImage, QImage sector, QString tagText, unsigned int timestamp, int pixelsPerMm, float zoomFactor )
 {
     // create the item to put on the queue for processing
     CaptureItem_t c;
 
     c.decoratedImage = decoratedImage;
-    c.waterfallImage = wf;
     c.sectorImage    = sector;
     c.tagText        = tagText;
     c.timestamp      = timestamp;
@@ -106,24 +105,10 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
     // Store the capture
     const QString SecName            = saveDirName + "/"        + saveName + SectorImageSuffix    + ".png";
     const QString ThumbSecName       = saveDirName + "/.thumb_" + saveName + SectorImageSuffix    + ".png";
-    const QString WfName             = saveDirName + "/"        + saveName + WaterfallImageSuffix + ".png";
     const QString DecoratedImageName = saveDirName + "/"        + saveName + DecoratedImageSuffix + ".png";
 
-    // Save the waterfall so it is the same orientation as on the screen
     QMatrix m;
     m.rotate( 90 );
-
-    /*
-     * Save and key image files. Do not post an error but log it for analysis
-     */
-    if( !capture.waterfallImage.transformed( m ).save( WfName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Image Capture: waterfall capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( WfName );
-    }
 
     if( !secRGB.save( SecName, "PNG", 100 ) )
     {
@@ -188,15 +173,14 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
 /*
  * clipCapture()
  *
- * Given the waterfall and sector images (and procedure data TBD),
+ * Given the sector image (and procedure data TBD),
  * add the images to the file archive and the database.
  */
-void captureMachine::clipCapture( QImage wf, QImage sector, QString strClipNumber, unsigned int timestamp )
+void captureMachine::clipCapture( QImage sector, QString strClipNumber, unsigned int timestamp )
 {
     // create the item to put on the queue for processing
     ClipItem_t c;
 
-    c.waterfallImage = wf;
     c.sectorImage    = sector;
     c.strClipNumber  = strClipNumber;
     c.timestamp      = timestamp;
@@ -247,23 +231,10 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     // Store the capture
     const QString SecName      = saveDirName + "/"        + saveName + SectorImageSuffix    + ".png";
     const QString ThumbSecName = saveDirName + "/.thumb_" + saveName + SectorImageSuffix    + ".png";
-    const QString WfName       = saveDirName + "/"        + saveName + WaterfallImageSuffix + ".png";
 
-    // Save the waterfall so it is the same orientation as on the screen
     QMatrix m;
     m.rotate( 90 );
 
-    /*
-     * Save and key image files. Do not post an error but log it for analysis
-     */
-    if( !loop.waterfallImage.transformed( m ).save( WfName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Loop capture: waterfall capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( WfName );
-    }
 
     if( !secRGB.save( SecName, "PNG", 100 ) )
     {

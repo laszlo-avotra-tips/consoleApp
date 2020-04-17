@@ -23,10 +23,10 @@
 
 // shared data with DAQ thread
 const int FullCaseVideoWidth_px( 1024 );
-const int FullCaseVideoHeight_px( int(double( SectorHeight_px + WaterfallHeight_px ) * double(FullCaseVideoWidth_px) / double(SectorWidth_px) ) );
+const int FullCaseVideoHeight_px( int(double( SectorHeight_px ) * double(FullCaseVideoWidth_px) / double(SectorWidth_px) ) );
 
 const int LoopVideoWidth_px( 1024 );
-const int LoopVideoHeight_px( int(double( SectorHeight_px + WaterfallHeight_px ) * double(LoopVideoWidth_px) / double(SectorWidth_px ) ) );
+const int LoopVideoHeight_px( int(double( SectorHeight_px ) * double(LoopVideoWidth_px) / double(SectorWidth_px ) ) );
 
 const int ThreadWaitTimeout_ms = 5000;  // XXX: Make sure the video threads exit.  Would prefer to know why they sometimes do not
 
@@ -63,7 +63,7 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
 //    useDistalToProximalView = true;
     processingTimer.start();
 
-    safeFrameBuffer = static_cast<char*>(malloc( ( SectorHeight_px + WaterfallWidth_px ) * SectorWidth_px ) );
+    safeFrameBuffer = static_cast<char*>(malloc( SectorHeight_px * SectorWidth_px ) );
 
     /*
      * Get the state of the Full Case recording flag from the system settings. The
@@ -309,25 +309,12 @@ void DaqDataConsumer::setupEncoder( videoEncoder **cdc, const QString VidFilenam
     }
     qDebug() << "Starting new clip encoding at " << fps << "fps (millisecondsPerFrame" << millisecondsPerFrame << ")";
 
-    if( isHighSpeedDevice )
-    {
-        *cdc = new videoEncoder( VidFilename.toLatin1().data(),
-                                 SectorWidth_px,
-                                 SectorHeight_px,
-                                 Width_px,
-                                 Width_px,   // 1:1 aspect ratio for high speed, no waterfall.
-                                 fps );
-    }
-    else
-    {
-        // Include space for the waterfall XXX Where to get canonical wf size?
-        *cdc = new videoEncoder( VidFilename.toLatin1().data(),
-                                 SectorWidth_px,
-                                 SectorHeight_px + WaterfallHeight_px,
-                                 Width_px,
-                                 Height_px,
-                                 fps );
-    }
+    *cdc = new videoEncoder( VidFilename.toLatin1().data(),
+                             SectorWidth_px,
+                             SectorHeight_px,
+                             Width_px,
+                             Width_px,   // 1:1 aspect ratio for high speed.
+                             fps );
 
     if( IsRaw )
     {

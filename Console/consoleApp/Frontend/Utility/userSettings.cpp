@@ -33,8 +33,6 @@ void userSettings::saveSettings()
 {
     settings->setValue( "image/brightness",               brightnessVal );
     settings->setValue( "image/contrast",                 contrastVal );
-    settings->setValue( "image/waterfallRateVal",         waterfallRateVal );
-    settings->setValue( "image/showWaterfall",            showWaterfall );
     settings->setValue( "image/reticleBrightness",        reticleBrightnessVal );
     settings->setValue( "image/laserIndicatorBrightness", laserIndicatorBrightnessVal );
     settings->setValue( "image/noiseReduction",           noiseReductionVal );
@@ -61,8 +59,6 @@ void userSettings::loadSettings()
 
     brightnessVal               = settings->value( "image/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
     contrastVal                 = settings->value( "image/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
-    waterfallRateVal            = settings->value( "image/waterfallRateVal",         DefaultWaterfallRate ).toInt();
-    showWaterfall               = settings->value( "image/showWaterfall",            DefaultShowWaterfall ).toBool();
     reticleBrightnessVal        = settings->value( "image/reticleBrightness",        DefaultReticleBrightness ).toInt();
     laserIndicatorBrightnessVal = settings->value( "image/laserIndicatorBrightness", DefaultLaserIndicatorBrightness ).toInt();
     noiseReductionVal           = settings->value( "image/noiseReduction",           DefaultCurrFrameWeight_Percent ).toInt();

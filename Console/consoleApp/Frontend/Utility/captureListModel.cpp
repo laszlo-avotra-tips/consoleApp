@@ -151,7 +151,7 @@ int captureListModel::getLastCaptureId( void )
 /*
  * loadImage()
  *
- * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
+ * Give a type of image to load (specified in image filter as sector, etc.)
  * load it from disk and return a QImage representing it.
  */
 QImage captureItem::loadImage( QString imageFilter )

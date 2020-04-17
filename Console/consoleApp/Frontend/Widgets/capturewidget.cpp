@@ -308,12 +308,12 @@ void captureWidget::displayCapture( QModelIndex index )
         float zoomFactor = 1.0;
         if( displayDecoratedImages )
         {
-            emit showCapture( item->loadDecoratedImage( item->getName() ), QImage() );
+            emit showCapture( item->loadDecoratedImage( item->getName() ));
             zoomFactor = selectedCaptureItem->getZoomFactor(); // only apply the saved zoom factor for decorated images
         }
         else
         {
-            emit showCapture( item->loadSector( item->getName() ), item->loadWaterfall( item->getName() ) );
+            emit showCapture( item->loadSector( item->getName() ));
         }
 
         QString str = QString( tr( "REVIEW: %1 (%2)" ) ).arg( item->getTag() ).arg( item->getIdNumber(), 3, 10, QLatin1Char( '0' ) );
@@ -369,9 +369,6 @@ void captureWidget::loopSelected( QModelIndex index )
 //// TBD: Do not load the clip into the preview window
 //    QIcon icon(QPixmap::fromImage(item->loadSector( item->getTag() ).scaled(ui->sectorCaptureButton->size())));
 //    ui->sectorCaptureButton->setIcon(icon);
-
-//    icon = QPixmap::fromImage(item->loadWaterfall( item->getTag() ).scaled(ui->waterfallCaptureButton->size()));
-//    ui->waterfallCaptureButton->setIcon(icon);
 
 //    emit currentCaptureChanged( index );
 //#endif

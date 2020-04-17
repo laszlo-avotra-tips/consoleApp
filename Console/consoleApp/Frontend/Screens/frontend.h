@@ -170,7 +170,6 @@ private:
     bool appAborted;
     bool disableCapturing;
     bool isAnnotateOn;
-    bool prevIsWaterfallVisible;
 
     QString origDeviceLabelStyleSheet;
     QString origLiveGroupBoxStyleSheet;

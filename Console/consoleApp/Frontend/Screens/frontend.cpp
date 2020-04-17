@@ -65,7 +65,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     appAborted        = false;
     isAnnotateOn        = false;
-    prevIsWaterfallVisible = true;
 
     isMeasureModeActive = false;
 
@@ -160,7 +159,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     // set the initial state
     userSettings &settings = userSettings::Instance();
-    prevIsWaterfallVisible = settings.waterfall();
 
     advView->setGeometry( ui.liveGroupBox->x() + ui.liveGroupBox->width() + 10, // 10 px to the right of liveGroupBox
                           0,
@@ -223,7 +221,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     handleStatusText( tr( "Initializing..." ) );
 
     /*
-     * Set up all the items in the live view (sector, waterfall, indicators, etc.)
+     * Set up all the items in the live view (sector, indicators, etc.)
      */
     setupScene();
 
@@ -514,7 +512,7 @@ void frontend::disableStorage( bool disable )
  * setupScene
  *
  * Create the QGraphicsScene which contains the essential rendering items
- * used for the OCT images (waterfall, sector, etc.)
+ * used for the OCT images (sector, etc.)
  */
 void frontend::setupScene( void )
 {
@@ -530,8 +528,8 @@ void frontend::setupScene( void )
 
     connect( scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
 
-    connect( ui.reviewWidget, SIGNAL(showCapture(const QImage &, const QImage &)),
-             scene,           SLOT(showReview(const QImage &, const QImage &)) );
+    connect( ui.reviewWidget, SIGNAL(showCapture(const QImage &)),
+             scene,           SLOT(showReview( const QImage & )) );
 			 
 	connect( this,	SIGNAL(setDoPaint()),		scene, SLOT(setDoPaint()) );
 
@@ -551,7 +549,6 @@ void frontend::setupScene( void )
              scene,      SLOT(handleReticleBrightnessChanged(int)) );
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
              scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
-    connect( viewOption, SIGNAL(displayWaterfall(bool)), scene, SLOT(displayWaterfall(bool)) );
     connect( scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
 
     // Auto fill the background with black
@@ -1435,14 +1432,11 @@ void frontend::updateCatheterViewLabel()
 void frontend::handleLoopLoaded( QString loopFilename )
 {
     /*
-     * Hide the live view waterfall if it is enabled in Display Options. Only
+     * Only
      * check this the first time a loop is loaded so the state is correctly restored.
      */
     if( !isLoopLoaded )
     {
-        prevIsWaterfallVisible = scene->getWaterfallVisible();
-        scene->displayWaterfall( false );
-
         isLoopLoaded = true;
     }
 
@@ -2282,7 +2276,6 @@ void frontend::handleDisplayingCapture()
 {
     if( !isImageCaptureLoaded )
     {
-        prevIsWaterfallVisible = scene->getWaterfallVisible();
         isImageCaptureLoaded = true;
     }
 
@@ -2310,7 +2303,7 @@ void frontend::handleDisplayingCapture()
  */
 void frontend::configureDisplayForReview()
 {
-    // Display a normal arrow over the sector and waterfall when reviewing
+    // Display a normal arrow over the sector when reviewing
     ui.liveGraphicsView->setToolTip( "" );
 
     disableCaptureButtons();
@@ -2345,8 +2338,6 @@ void frontend::configureDisplayForReview()
     auxMon->configureDisplayForReview();
     ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 16pt DinPRO-Medium; color: yellow; }" );
     ui.liveGroupBox->setStyleSheet( "QGroupBox { color: yellow; }" );
-
-    scene->displayWaterfall( false );
 }
 
 /*
@@ -2369,7 +2360,6 @@ void frontend::on_liveViewPushButton_clicked()
     if( isImageCaptureLoaded )
     {
         scene->dismissReviewImages();
-        scene->displayWaterfall( prevIsWaterfallVisible );
     }
 
     if( isLoopLoaded )
@@ -2433,11 +2423,6 @@ void frontend::on_liveViewPushButton_clicked()
     docWindow->configureDisplayForLiveView();
     auxMon->configureDisplayForLiveView();
     ui.physicianPreviewButton->setEnabled( true ); // re-enable this button
-
-    /*
-     * Restore visibility of the waterfall if it was turned off when switching to Review
-     */
-    scene->displayWaterfall( prevIsWaterfallVisible );
 
     deviceSettings &dev = deviceSettings::Instance();
     ui.deviceFieldLabel->setText( dev.current()->getDeviceName() );

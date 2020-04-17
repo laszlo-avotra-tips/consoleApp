@@ -122,7 +122,6 @@ const QString DeviceXmlSchemaVersion     = "3.0";
 // Image capture
 const QString ImagePrefix          = "img-";
 const QString SectorImageSuffix    = "-sector";
-const QString WaterfallImageSuffix = "-waterfall";
 const QString DecoratedImageSuffix = "-decorated";
 const int ThumbnailHeight_px = 150;
 const int ThumbnailWidth_px  = 150;
@@ -148,9 +147,7 @@ const DisplayLevel_T ContrastLevels_LowSpeed  = { 0, 65535, 55000 };
 
 const int  DefaultReticleBrightness        = 127;
 const int  DefaultLaserIndicatorBrightness = 255;
-const int  DefaultWaterfallRate            = 22;
 const int  DefaultCurrFrameWeight_Percent  = 75;
-const bool DefaultShowWaterfall            = true;
 const bool DefaultUseNoiseReduction        = false;
 const bool DefaultUseInvertOctColor        = false;
 
@@ -161,10 +158,6 @@ const unsigned int FFTDataSize_bytes = FFTDataSize * sizeof( short );
 // Size of the sector on the 27" (2560x1440) monitor
 //const int SectorHeight_px = 1408;  // must be factor of 16 (GPU requirement)
 //const int SectorWidth_px  = 1408;
-
-// Size of the waterfall for rendering purposes
-const int WaterfallHeight_px = 512;
-const int WaterfallWidth_px  = SectorHeight_px;
 
 /*
  * Video settings

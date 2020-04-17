@@ -37,7 +37,6 @@ HEADERS += \
     Frontend/Widgets/livescene.h \
     Frontend/Widgets/liveview.h \
     Frontend/Widgets/sectoritem.h \
-    Frontend/Widgets/waterfall.h \
     Frontend/Utility/capturemachine.h \
     Frontend/Widgets/capturewidget.h \
     Frontend/Widgets/gridOverlay.h \
@@ -129,7 +128,6 @@ SOURCES += \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/liveview.cpp \
     Frontend/Widgets/sectoritem.cpp \
-    Frontend/Widgets/waterfall.cpp \
     main.cpp \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Widgets/capturewidget.cpp \
