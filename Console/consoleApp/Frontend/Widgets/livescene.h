@@ -91,9 +91,7 @@ public slots:
         wf->deviceChanged();
     }
 
-    void handleReticleBrightnessChanged( int value ) {
-        sector->setReticleBrightness( value );
-    }
+    void handleReticleBrightnessChanged( int value );
 
     void handleLaserIndicatorBrightnessChanged( int value ) {
         sector->setLaserIndicatorBrightness( value );

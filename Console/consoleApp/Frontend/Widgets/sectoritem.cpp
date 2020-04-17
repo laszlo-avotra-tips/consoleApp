@@ -179,6 +179,12 @@ void sectorItem::deviceChanged(void)
     rotateSector( displayRotationAngle_deg );
 }
 
+void sectorItem::setReticleBrightness(int value)
+{
+    reticleBrightness = value;
+    sectorShouldPaint = true;
+}
+
 /*
  * computeAngleForPosition
  *

@@ -102,11 +102,7 @@ public:
     {
         fullRotationFlag = false;
     }
-    void setReticleBrightness( int value )
-    {
-        reticleBrightness = value;
-        sectorShouldPaint = true;
-    }
+    void setReticleBrightness( int value );
     int getReticleBrightness( void )
     {
         return reticleBrightness;

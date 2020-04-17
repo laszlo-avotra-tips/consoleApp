@@ -254,12 +254,13 @@ void liveScene::setAnnotateMode( bool state, QColor color )
 void liveScene::refresh( void )
 {
     TIME_THIS_SCOPE( liveScene_render );
+
     if( doPaint )
     {
         doPaint = false;
         sector->paintSector( force );
         videoSector->paintSector( force );
-        wf->render();
+//        wf->render();
         overlays->render();
     }
     update();
@@ -309,6 +310,11 @@ void liveScene::showReview( const QImage & sec, const QImage & waterFall )
 void liveScene::resetRotationCounter( )
 {
     sector->clearRotationFlag();
+}
+
+void liveScene::handleReticleBrightnessChanged(int value)
+{
+    sector->setReticleBrightness( value );
 }
 
 /*

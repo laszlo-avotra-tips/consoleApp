@@ -2011,6 +2011,7 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     memcpy( image->bits(), frameData->dispData, SectorSize );
     QPixmap tmpPixmap = QPixmap::fromImage( *image );
     scene->sectorHandle()->setPixmap(tmpPixmap);
+    scene->setDoPaint();
 }
 
 /*
