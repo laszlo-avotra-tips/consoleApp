@@ -241,11 +241,15 @@ void liveScene::refresh( void )
     if( doPaint )
     {
         doPaint = false;
-        sector->paintSector( force );
-        videoSector->paintSector( force );
+        if(deviceSettings::Instance().getIsSimulation()){
+            sector->paintSector( force );
+            videoSector->paintSector( force );
+        }
         overlays->render();
     }
-    update();
+    if(deviceSettings::Instance().getIsSimulation()){
+        update();
+    }
 }
 
 /*
