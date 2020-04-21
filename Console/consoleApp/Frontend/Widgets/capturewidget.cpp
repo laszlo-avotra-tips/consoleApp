@@ -530,7 +530,7 @@ void captureWidget::on_selectedCaptureLineEdit_editingFinished()
         selectedCaptureItem->setTag( ui->selectedCaptureLineEdit->text() );
 
         // Save the new tag name to the session database
-        sessionDatabase &db = sessionDatabase::Instance();
+        sessionDatabase db; //lcv = sessionDatabase::Instance();
         captureItem *item = ui->capListView->currentIndex().data( Qt::DisplayRole ).value<captureItem *>();
         db.updateCaptureTag( item->getdbKey(), ui->selectedCaptureLineEdit->text() );
 
@@ -558,7 +558,7 @@ void captureWidget::on_selectedLoopLineEdit_editingFinished()
         selectedLoopItem->setTag( ui->selectedLoopLineEdit->text() );
 
         // Save the new tag name to the session database
-        sessionDatabase &db = sessionDatabase::Instance();
+        sessionDatabase db; //lcv = sessionDatabase::Instance();
         clipItem *item = ui->loopsListView->currentIndex().data( Qt::DisplayRole ).value<clipItem *>();
         db.updateLoopTag( item->getdbKey(), ui->selectedLoopLineEdit->text() );
 

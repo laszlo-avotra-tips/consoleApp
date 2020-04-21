@@ -306,8 +306,8 @@ frontend::~frontend()
     else
     {
         // Close the session db file.
-        sessionDatabase &db = sessionDatabase::Instance();
-        db.close();
+//lcv        sessionDatabase &db = sessionDatabase::Instance();
+//        db.close();
 
         // Shutdown session info.
         session.shutdown();
@@ -659,7 +659,7 @@ void frontend::shutdownCleanup()
     }
 
     // get capture and loop statistics for the case before session ends
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db; //lcv = sessionDatabase::Instance();
     int numCaptures = db.getNumCaptures();
     sessionDatabase::LoopStat loopStat = db.getLoopsStats();
 

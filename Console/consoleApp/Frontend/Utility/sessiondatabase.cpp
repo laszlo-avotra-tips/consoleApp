@@ -21,7 +21,7 @@
 #define OCT_LOOPS_SCHEMA_VERSION       4
 #define SESSION_SCHEMA_VERSION         3
 
-sessionDatabase* sessionDatabase::theDB{nullptr};
+//sessionDatabase* sessionDatabase::theDB{nullptr};
 
 /*
  * constructor
@@ -36,6 +36,13 @@ sessionDatabase::sessionDatabase()
         // TBD:  this should fail earlier.  don't allow app to start up?
         displayFailureMessage( QObject::tr( "Unable to load database:\nThis application needs the SQLITE driver" ), true );
     }
+    initDb();
+//    createSession();
+}
+
+sessionDatabase::~sessionDatabase()
+{
+    db.close();
 }
 
 /*
@@ -45,12 +52,12 @@ sessionDatabase::sessionDatabase()
  * specified by the user. Sets up the SQLite file,
  * the schema and tables.
  */
-sessionDatabase &sessionDatabase::Instance() {
-    if(!theDB){
-        theDB = new sessionDatabase();
-    }
-    return *theDB;
-}
+//sessionDatabase &sessionDatabase::Instance() {
+//    if(!theDB){
+//        theDB = new sessionDatabase();
+//    }
+//    return *theDB;
+//}
 
 QSqlError sessionDatabase::initDb(void)
 {

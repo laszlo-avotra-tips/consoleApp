@@ -19,7 +19,10 @@ class sessionDatabase
 public:
 
     // singleton
-    static sessionDatabase & Instance(void);
+//    static sessionDatabase & Instance(void);
+    // do not hide ctor
+    sessionDatabase();
+    ~sessionDatabase();
 
     QSqlError initDb(void);
     void close( void );
@@ -55,7 +58,7 @@ public:
 
 private:
     // hide ctor
-    sessionDatabase();
+//    sessionDatabase();
 
     void populateVersionTable( void );
 
@@ -66,7 +69,7 @@ private:
     // Searchable database
     QSqlDatabase db;
 
-    static sessionDatabase* theDB;
+//    sessionDatabase* theDB{nullptr};
 };
 
 #endif // SESSIONDATABASE_H

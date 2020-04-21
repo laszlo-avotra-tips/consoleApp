@@ -102,7 +102,7 @@ int captureListModel::addCapture(QString tag,
 
     QDateTime timeVal = QDateTime::fromTime_t(timestamp);
     // Find next available ID
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db;//lcv = sessionDatabase::Instance();
     int maxID = db.addCapture( tag, timestamp, name, deviceName, isHighSpeed, pixelsPerMm );
     if( maxID < 0 )
     {

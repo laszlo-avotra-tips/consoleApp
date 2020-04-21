@@ -115,7 +115,7 @@ bool caseInfoWizardPage::validatePage()
      * fields given by the user.
      */
     caseInfo &info      = caseInfo::Instance();
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db; //lcv = sessionDatabase::Instance();
 
     // if patientId is empty, provide the current dateAndTime string.
     QString sPatientId = field( "PatientId" ).toString().trimmed();
