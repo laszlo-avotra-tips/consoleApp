@@ -21,8 +21,6 @@
 #define OCT_LOOPS_SCHEMA_VERSION       4
 #define SESSION_SCHEMA_VERSION         3
 
-//sessionDatabase* sessionDatabase::theDB{nullptr};
-
 /*
  * constructor
  */
@@ -37,14 +35,10 @@ sessionDatabase::sessionDatabase()
         displayFailureMessage( QObject::tr( "Unable to load database:\nThis application needs the SQLITE driver" ), true );
     }
     initDb();
-    LOG1("c")
 }
 
 sessionDatabase::~sessionDatabase()
 {
-    db.removeDatabase(m_dbName);
-    db.close();
-    LOG1("d")
 }
 
 /*
@@ -63,13 +57,14 @@ QSqlError sessionDatabase::initDb(void)
     {
         return QSqlError();
     }
-    m_dbName = info.getStorageDir().append( "/" ).append( SessionDatabaseFileName );
-
-    if(!db.contains("QSQLITE")){
-        db = QSqlDatabase::addDatabase("QSQLITE");
-        LOG1(db.databaseName())
-          db.setDatabaseName( m_dbName );
+    QStringList names = QSqlDatabase::connectionNames();
+    if(!names.isEmpty()){
+        QSqlDatabase::removeDatabase("qt_sql_default_connection");
     }
+    m_dbName = info.getStorageDir().append( "/" ).append( SessionDatabaseFileName );
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName( m_dbName );
+
     QSqlError sqlerr;
 
     if( !db.open() )
@@ -137,9 +132,6 @@ QSqlError sessionDatabase::initDb(void)
         }
     }
 
-    // Add the current version numbers for this schema
-//    populateVersionTable();
-
     return sqlerr;
 }
 
@@ -170,7 +162,7 @@ void sessionDatabase::populateVersionTable( void )
                             "VALUES (?, ?)" ) );
         q.addBindValue( i.key() );
         q.addBindValue( i.value() );
-        LOG2(i.key(), i.value())
+//        LOG2(i.key(), i.value())
 
         q.exec();
 
@@ -180,16 +172,6 @@ void sessionDatabase::populateVersionTable( void )
             displayFailureMessage( QObject::tr( "Database failure:Failed to INSERT new version data." ), true );
         }
     }
-}
-
-/*
- * close()
- *
- * Public call to close.
- */
-void sessionDatabase::close( void )
-{
-    db.close();
 }
 
 /*

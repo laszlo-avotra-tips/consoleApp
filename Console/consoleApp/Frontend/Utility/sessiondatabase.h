@@ -22,7 +22,6 @@ public:
     ~sessionDatabase();
 
     QSqlError initDb(void);
-    void close( void );
 
     void createSession(void);
     void updateSession(void);
@@ -60,11 +59,7 @@ private:
     sessionDatabase(sessionDatabase const &);
     sessionDatabase& operator = (sessionDatabase const &);
 
-    // Searchable database
-    QSqlDatabase db;
     QString m_dbName;
-
-//    sessionDatabase* theDB{nullptr};
 };
 
 #endif // SESSIONDATABASE_H
