@@ -37,12 +37,14 @@ sessionDatabase::sessionDatabase()
         displayFailureMessage( QObject::tr( "Unable to load database:\nThis application needs the SQLITE driver" ), true );
     }
     initDb();
-//    createSession();
+    LOG1("c")
 }
 
 sessionDatabase::~sessionDatabase()
 {
+    db.removeDatabase(m_dbName);
     db.close();
+    LOG1("d")
 }
 
 /*
@@ -52,13 +54,6 @@ sessionDatabase::~sessionDatabase()
  * specified by the user. Sets up the SQLite file,
  * the schema and tables.
  */
-//sessionDatabase &sessionDatabase::Instance() {
-//    if(!theDB){
-//        theDB = new sessionDatabase();
-//    }
-//    return *theDB;
-//}
-
 QSqlError sessionDatabase::initDb(void)
 {
     caseInfo &info = caseInfo::Instance();
@@ -68,9 +63,13 @@ QSqlError sessionDatabase::initDb(void)
     {
         return QSqlError();
     }
+    m_dbName = info.getStorageDir().append( "/" ).append( SessionDatabaseFileName );
 
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName( info.getStorageDir().append( "/" ).append( SessionDatabaseFileName ) );
+    if(!db.contains("QSQLITE")){
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        LOG1(db.databaseName())
+          db.setDatabaseName( m_dbName );
+    }
     QSqlError sqlerr;
 
     if( !db.open() )
@@ -138,15 +137,8 @@ QSqlError sessionDatabase::initDb(void)
         }
     }
 
-//lcv
-//    QStringList dbTables = db.tables();
-//    for(auto it = dbTables.begin(); it != dbTables.end(); ++it){
-//        LOG1(*it)
-//    }
-
-
     // Add the current version numbers for this schema
-    populateVersionTable();
+//    populateVersionTable();
 
     return sqlerr;
 }
@@ -188,21 +180,6 @@ void sessionDatabase::populateVersionTable( void )
             displayFailureMessage( QObject::tr( "Database failure:Failed to INSERT new version data." ), true );
         }
     }
-
-    //SELECT * FROM Customers;
-//lcv
-    auto rec = db.record("version");
-    LOG1(rec.count())
-    for(int i = 0; i < rec.count(); ++i){
-        LOG1(rec.fieldName(i))
-        auto field = rec.field(i);
-        LOG3(i, field.name(), field.value().typeName())
-//        if(field.value().typeName() == QString("int")){
-//            LOG3(i, field.name(), field.value().toInt())
-//        } else {
-//            LOG3(i, field.name(), field.value().toString())
-//        }
-    }
 }
 
 /*
@@ -226,6 +203,8 @@ void sessionDatabase::createSession( void )
     caseInfo &info = caseInfo::Instance();
     QSqlQuery q;
     QSqlError sqlerr;
+
+    populateVersionTable();
 
     // Session start time is UTC
     QString timeStr = QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss" );

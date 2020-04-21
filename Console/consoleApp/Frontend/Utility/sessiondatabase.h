@@ -18,9 +18,6 @@ class sessionDatabase
 {
 public:
 
-    // singleton
-//    static sessionDatabase & Instance(void);
-    // do not hide ctor
     sessionDatabase();
     ~sessionDatabase();
 
@@ -55,12 +52,9 @@ public:
         int totLength;
     };
     LoopStat getLoopsStats();
+    void populateVersionTable( void );
 
 private:
-    // hide ctor
-//    sessionDatabase();
-
-    void populateVersionTable( void );
 
     // Hide copy and assign operator
     sessionDatabase(sessionDatabase const &);
@@ -68,6 +62,7 @@ private:
 
     // Searchable database
     QSqlDatabase db;
+    QString m_dbName;
 
 //    sessionDatabase* theDB{nullptr};
 };

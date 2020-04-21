@@ -282,8 +282,8 @@ int main(int argc, char *argv[])
 //#endif
 
         // Set the flag indicating all has been closed properly for this session
-//lcv        sessionDatabase &db = sessionDatabase::Instance();
-//        db.markExitAsClean();
+        sessionDatabase db ; //lcv = sessionDatabase::Instance();
+        db.markExitAsClean();
 
         LOG( INFO, "Application stopped: OCT Console" )
     }

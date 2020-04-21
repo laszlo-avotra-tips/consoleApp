@@ -305,10 +305,6 @@ frontend::~frontend()
     }
     else
     {
-        // Close the session db file.
-//lcv        sessionDatabase &db = sessionDatabase::Instance();
-//        db.close();
-
         // Shutdown session info.
         session.shutdown();
 
@@ -2021,13 +2017,16 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
 void frontend::on_saveMeasurementButton_clicked()
 {
     // capture the screen and overwrite the decorated image of the current capture.
-    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
+//    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
+    QImage p = docWindow->ui.liveGraphicsView->grab().toImage();
 
     // Take the tech screen view if zoomed because overlays may be out of view on doc screen.
     if( ( ui.zoomSlider->value() / 100.0 ) > 1.0 )
     {
         float scaledImageFactor = 1.0;
-        p = QPixmap::grabWidget( ui.liveGraphicsView ).toImage();
+        //p = QPixmap::grabWidget( ui.liveGraphicsView ).toImage();
+        QImage p = ui.liveGraphicsView->grab().toImage();
+
         p = p.scaledToWidth( docWindow->ui.liveGraphicsView->height(), Qt::SmoothTransformation );
 
         QTransform trans;
@@ -2469,7 +2468,8 @@ void frontend::on_captureImageButton_clicked()
 
     // tag the images as "img-001, img-002, ..."
     currImgNumber++;
-    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
+//    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
+    QImage p = docWindow->ui.liveGraphicsView->grab().toImage();
     scene->capture( p, QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) ) );
 }
 
