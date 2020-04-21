@@ -1720,10 +1720,10 @@ OPTIONS</string>
    <widget class="QPushButton" name="saveMeasurementButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>360</y>
-      <width>75</width>
-      <height>41</height>
+      <width>98</width>
+      <height>66</height>
      </rect>
     </property>
     <property name="toolTip">
