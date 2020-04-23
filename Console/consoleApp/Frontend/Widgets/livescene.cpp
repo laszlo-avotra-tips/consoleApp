@@ -95,7 +95,7 @@ liveScene::liveScene( QObject *parent )
 
     reviewSector    = nullptr;
 
-    connect( this, SIGNAL(capture(QImage,QImage,QString,unsigned int,int,float)), &capturer, SLOT(imageCapture(QImage,QImage,QString,uint,int,float)) );
+    connect( this, SIGNAL(captureAll(QImage,QImage,QString,unsigned int,int,float)), &capturer, SLOT(imageCapture(QImage,QImage,QString,uint,int,float)) );
     connect( this, SIGNAL(clipCapture(QImage,QString,unsigned int)), &capturer, SLOT(clipCapture(QImage,QString,unsigned int)) );
 
     connect( &capturer, SIGNAL(warning( QString ) ),     this, SIGNAL(sendWarning( QString ) ) );
@@ -327,7 +327,7 @@ void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
  * updating the capture database as necessary and notifying
  * interested parties that a new capture is loaded.
  */
-void liveScene::capture( QImage decoratedImage, QString tagText )
+void liveScene::captureDi( QImage decoratedImage, QString tagText )
 {
     TIME_THIS_SCOPE( captureTotal );
 
@@ -356,7 +356,7 @@ void liveScene::capture( QImage decoratedImage, QString tagText )
      */
     {
         TIME_THIS_SCOPE( captureSave );
-        emit capture( decoratedImage, secImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
+        emit captureAll( decoratedImage, secImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
     }
 }
 

@@ -71,18 +71,18 @@ void captureMachine::imageCapture( QImage decoratedImage, QImage sector, QString
  *
  * Paint session data on the image and store it to disk.
  */
-void captureMachine::processImageCapture( CaptureItem_t capture )
+void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
     // TBD: cannot be global to the class?
     const QImage LogoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
 
     caseInfo &info = caseInfo::Instance();
-    QImage secRGB( capture.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    QImage secRGB( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Obtain the current timestamp
-    const QDateTime currTime = QDateTime().fromTime_t( capture.timestamp );
+    const QDateTime currTime = QDateTime().fromTime_t( captureItem.timestamp );
 
     // capture number is tracked here
     currCaptureNumber++;
@@ -136,7 +136,7 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
     m.rotate( 180 );
 
     // Paint the logo on the decorated image in the upper right corner
-    QImage tmpImage = capture.decoratedImage.transformed( m );
+    QImage tmpImage = captureItem.decoratedImage.transformed( m );
     painter.begin( &tmpImage );
     painter.drawImage( tmpImage.width() - LogoImage.width(), 0, LogoImage );
     painter.end();
@@ -152,13 +152,13 @@ void captureMachine::processImageCapture( CaptureItem_t capture )
 
     // update the model
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
-    if( capList.addCapture( capture.tagText,
+    if( capList.addCapture( captureItem.tagText,
                             currTime.toTime_t(),
                             saveName,
                             devSettings.current()->getDeviceName(),
                             devSettings.current()->isHighSpeed(),
-                            capture.pixelsPerMm,
-                            capture.zoomFactor ) < 0 )
+                            captureItem.pixelsPerMm,
+                            captureItem.zoomFactor ) < 0 )
     {
         return;   // Failure warnings generated in the call
     }

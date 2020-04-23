@@ -60,7 +60,7 @@ public:
 
 public slots:
     void addScanFrame( QSharedPointer<scanframe> &data );
-    void capture( QImage decoratedImage, QString tagText );
+    void captureDi( QImage decoratedImage, QString tagText );
     void captureClip( QString strIter );
     void generateClipInfo();
     void resetRotationCounter();
@@ -193,7 +193,7 @@ signals:
     void sendFileToKey( QString );
     void sendCaptureTag( QString );
     void sendStatusText( QString );
-    void capture( QImage, QImage, QString, unsigned int, int, float );
+    void captureAll( QImage, QImage, QString, unsigned int, int, float );
     void clipCapture( QImage , QString, unsigned int );
     void updateCaptureCount();
     void updateClipCount();

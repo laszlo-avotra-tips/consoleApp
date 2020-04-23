@@ -67,7 +67,7 @@ private:
 
     int currCaptureNumber;
 
-    void processImageCapture( CaptureItem_t imageCapture );
+    void processImageCapture(CaptureItem_t captureItem );
     void processLoopRecording( ClipItem_t loop );
 
     QMutex mutex;
