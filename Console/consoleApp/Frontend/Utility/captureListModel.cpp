@@ -147,6 +147,10 @@ int captureListModel::getLastCaptureId( void )
 /*
  * class captureItem implementation
  */
+void captureItem::replaceDecoratedImage(QImage p)
+{
+    saveDecoratedImage( p, name + DecoratedImageSuffix + ".png" );
+}
 
 /*
  * loadImage()
@@ -154,6 +158,7 @@ int captureListModel::getLastCaptureId( void )
  * Give a type of image to load (specified in image filter as sector, etc.)
  * load it from disk and return a QImage representing it.
  */
+
 QImage captureItem::loadImage( QString imageFilter )
 {
     QStringList filters;
