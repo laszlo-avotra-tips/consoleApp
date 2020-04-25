@@ -240,7 +240,7 @@ QGroupBox::title {
      <rect>
       <x>98</x>
       <y>0</y>
-      <width>900</width>
+      <width>1024</width>
       <height>1080</height>
      </rect>
     </property>
@@ -261,8 +261,8 @@ QGroupBox::title {
       <rect>
        <x>0</x>
        <y>66</y>
-       <width>900</width>
-       <height>1014</height>
+       <width>1024</width>
+       <height>1024</height>
       </rect>
      </property>
      <property name="cursor" stdset="0">
@@ -1828,15 +1828,15 @@ Passive</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>liveView</class>
+   <extends>QGraphicsView</extends>
+   <header>liveview.h</header>
+  </customwidget>
+  <customwidget>
    <class>levelGauge</class>
    <extends>QWidget</extends>
    <header>levelgauge.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>liveView</class>
-   <extends>QGraphicsView</extends>
-   <header>liveview.h</header>
   </customwidget>
   <customwidget>
    <class>transport</class>

@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2560</width>
-    <height>1440</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1050</width>
-    <height>1200</height>
+    <height>1080</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
       <x>316</x>
       <y>16</y>
       <width>1920</width>
-      <height>1408</height>
+      <height>1080</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -248,14 +248,14 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>liveView</class>
-   <extends>QGraphicsView</extends>
-   <header>liveview.h</header>
-  </customwidget>
-  <customwidget>
    <class>captureListView</class>
    <extends>QListView</extends>
    <header>Widgets/capturelistview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>liveView</class>
+   <extends>QGraphicsView</extends>
+   <header>liveview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

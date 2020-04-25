@@ -77,7 +77,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     const QImage LogoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
 
     caseInfo &info = caseInfo::Instance();
-    QImage secRGB( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     deviceSettings &devSettings = deviceSettings::Instance();
 
@@ -91,7 +91,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     /*
      * Paint the procedure data to the sector image.
      */
-    QPainter painter( &secRGB );
+    QPainter painter( &sectorImage );
 
     //    Upper Right -- Logo
     painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
@@ -108,9 +108,10 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     const QString DecoratedImageName = saveDirName + "/"        + saveName + DecoratedImageSuffix + ".png";
 
     QMatrix m;
-    m.rotate( 90 );
+//    m.rotate( 90 );
+    qDebug() << __FUNCTION__ << ": width=" << sectorImage.width() << ", height=" << sectorImage.height();
 
-    if( !secRGB.save( SecName, "PNG", 100 ) )
+    if( !sectorImage.save( SecName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector capture failed" )
     }
@@ -120,7 +121,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     }
 
     // save a thumbnail image for the UI to use
-    if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
+    if( !sectorImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
     }
@@ -133,15 +134,16 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
      * save the decorated image
      */
     // rotate the decorated image to match the display
-    m.rotate( 180 );
+//    m.rotate( 90 );
 
     // Paint the logo on the decorated image in the upper right corner
-    QImage tmpImage = captureItem.decoratedImage.transformed( m );
-    painter.begin( &tmpImage );
-    painter.drawImage( tmpImage.width() - LogoImage.width(), 0, LogoImage );
+//    QImage decoratedImage = captureItem.decoratedImage.transformed( m );
+    QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    painter.begin( &decoratedImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
     painter.end();
 
-    if( !tmpImage.save( DecoratedImageName, "PNG", 100 ) )
+    if( !decoratedImage.save( DecoratedImageName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: decorated image capture failed" )
     }

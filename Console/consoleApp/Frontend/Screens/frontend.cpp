@@ -2468,10 +2468,10 @@ void frontend::on_captureImageButton_clicked()
 
     // tag the images as "img-001, img-002, ..."
     currImgNumber++;
-//    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
     QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
     LOG1(tag);
-    QImage p = docWindow->ui.liveGraphicsView->grab().toImage();
+    QRect rectangle = ui.liveGraphicsView->rect();
+    QImage p = ui.liveGraphicsView->grab(rectangle).toImage();
     scene->captureDi( p, tag );
 }
 

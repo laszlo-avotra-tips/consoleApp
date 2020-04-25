@@ -62,8 +62,8 @@ const int MinNumberMonitors = 2;
 
 const int TechScreenWidth  = 1920;
 const int TechScreenHeight = 1080;
-const int PhysicianScreenWidth  = 2560; // height of the monitor in portrait mode
-const int PhysicianScreenHeight = 1440;
+const int PhysicianScreenWidth  = 1920; // height of the monitor in portrait mode
+const int PhysicianScreenHeight = 1080;
 const int AuxScreenWidthMin  = 1024;
 const int AuxScreenHeightMin = 720;
 
