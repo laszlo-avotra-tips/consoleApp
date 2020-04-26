@@ -175,7 +175,7 @@ private:
     QString origLiveGroupBoxStyleSheet;
 
     bool isMeasureModeActive;
-    bool measureModeAllowed;
+    bool measureModeAllowed{true};
 
     Ui::frontendClass ui;
     docscreen *docWindow;

@@ -113,7 +113,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 #endif
 
     // these are always hidden at start-up
-    ui.measureModePushButton->hide();
+//    ui.measureModePushButton->hide();
     ui.saveMeasurementButton->hide();
     ui.directionPushButton->hide();
 
@@ -1958,7 +1958,7 @@ void frontend::setMeasurementMode( bool enable )
         scene->setMeasureModeArea( true, Qt::magenta );
         setSceneCursor( QCursor( Qt::CrossCursor ) );
         ui.liveGraphicsView->setToolTip( "" );
-        ui.saveMeasurementButton->show();
+//        ui.saveMeasurementButton->show();
         ui.measureModePushButton->setChecked( true );
         LOG( INFO, "Measure Mode: start" )
     }
@@ -1966,7 +1966,7 @@ void frontend::setMeasurementMode( bool enable )
     {
         scene->setMeasureModeArea( false, Qt::magenta );
         setSceneCursor( QCursor( Qt::OpenHandCursor ) );
-        ui.saveMeasurementButton->hide();
+//        ui.saveMeasurementButton->hide();
         ui.measureModePushButton->setChecked( false );
         LOG( INFO, "Measure Mode: stop" )
     }
@@ -2016,6 +2016,8 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
  */
 void frontend::on_saveMeasurementButton_clicked()
 {
+    return; //lcv
+
     // capture the screen and overwrite the decorated image of the current capture.
 //    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
     QImage p = docWindow->ui.liveGraphicsView->grab().toImage();
@@ -2353,7 +2355,7 @@ void frontend::on_liveViewPushButton_clicked()
     setSceneCursor( QCursor( Qt::OpenHandCursor ) );
 
     ui.liveViewPushButton->hide();
-    ui.measureModePushButton->hide(); // Hide the Measurement button.
+//    ui.measureModePushButton->hide(); // Hide the Measurement button.
     setMeasurementMode( false ); // Dismiss measurement groupbox and overlays if they remain.
 
     if( isImageCaptureLoaded )

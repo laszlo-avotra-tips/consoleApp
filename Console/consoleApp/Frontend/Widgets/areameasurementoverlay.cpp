@@ -330,7 +330,7 @@ void AreaMeasurementOverlay::setCalibrationScale( const int CalValMm )
                  << "currPxPerMm = (float)l.length() / (float)diameterMm / 1000" << ( (float)l.length() / (float)CalValMm / 1000 );
     }
 #else
-    currPxPerMm = CalValMm;
+    currPxPerMm = 136; //lcv CalValMm;
 #endif
 }
 
@@ -584,6 +584,12 @@ void AreaMeasurementOverlay::calculate()
  */
 void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 {
+//lcv - debug live measurement calculation box
+//    static float cppm{0.0f};
+//    if((cppm > currPxPerMm) || (cppm < currPxPerMm)){
+//        qDebug() << __FUNCTION__ << ": currPxPerMm" << currPxPerMm; //lcv
+//        cppm = currPxPerMm;
+//    }
 #ifndef MEASUREMENT_APP
     const int FontSize = 24;
 #else
