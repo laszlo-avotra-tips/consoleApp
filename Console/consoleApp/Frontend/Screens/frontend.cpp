@@ -526,7 +526,10 @@ void frontend::setupScene( void )
 
     connect( ui.reviewWidget, SIGNAL(showCapture(const QImage &)),
              scene,           SLOT(showReview( const QImage & )) );
-			 
+
+    connect( ui.reviewWidget, SIGNAL(initCaptureWidget()),
+             this,           SLOT(hideDecoration()) );
+
 	connect( this,	SIGNAL(setDoPaint()),		scene, SLOT(setDoPaint()) );
 
     /*
@@ -2767,3 +2770,13 @@ void frontend::on_EgineeringButton_toggled(bool checked)
     m_ec->setViewPosition(ui.capturesGroupBox->x());
     m_ec->showOrHideView(checked);
 }
+
+void frontend::hideDecoration(void)
+{
+    if(ui.measureModePushButton->isChecked())
+    {
+        ui.measureModePushButton->clicked();
+    }
+}
+
+

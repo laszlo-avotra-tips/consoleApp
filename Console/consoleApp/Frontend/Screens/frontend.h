@@ -295,6 +295,7 @@ private slots:
     void testDisplays();
 
     void on_EgineeringButton_toggled(bool checked);
+    void hideDecoration();
 
 protected:
      void closeEvent( QCloseEvent *event );

@@ -305,6 +305,7 @@ void captureWidget::displayCapture( QModelIndex index )
 
     if( item )
     {
+        emit initCaptureWidget();
         float zoomFactor = 1.0;
         if( displayDecoratedImages )
         {
