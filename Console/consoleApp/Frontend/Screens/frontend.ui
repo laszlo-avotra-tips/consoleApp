@@ -79,7 +79,7 @@ QGraphicsView {
 /* --------- General font and layout defaults ----------*/
 
 QDialog {
- font: 18px &quot;DinPRO-Medium&quot;;
+ font: 12px &quot;DinPRO-Medium&quot;;
  color: white;
  background-color: rgb( 147, 147, 147 );
  border: 1px solid rgb( 147, 147, 147 );
@@ -92,7 +92,7 @@ QWidget {
 }
 
 QLabel {
- font: 18px &quot;DinPRO-Medium&quot;;
+ font: 32px &quot;DinPRO-Medium&quot;;
 }
 
 QLabel#titlebarLabel {
@@ -120,9 +120,9 @@ QPushButton
     background: rgb( 51, 74, 94 );
     border: 1px solid rgb( 51, 74, 94 );
     color: white;
-    font: 12pt &quot;DinPRO-Medium&quot;;
+    font: 24pt &quot;DinPRO-Medium&quot;;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 32px;
     border-width: 2px;
 }
 
@@ -142,7 +142,7 @@ QPushButton::hover
 
 QPushButton:checked 
 {
-    background:  rgb(  191, 191, 191  ); 
+    background:  rgb(111, 111, 111)
     border: rgb(  191, 191, 191  ); 
     color: rgb( 52, 73, 94 );
  }
@@ -256,7 +256,20 @@ QGroupBox::title {
      subcontrol-position: top left; /* position at the top center */
      left: 10px;
      padding: 1px;
- }</string>
+ }
+ 
+QToolButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 24pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 32px;
+    border-width: 2px;
+}
+
+</string>
      </property>
      <widget class="QGroupBox" name="liveGroupBox">
       <property name="geometry">
@@ -269,8 +282,8 @@ QGroupBox::title {
       </property>
       <property name="font">
        <font>
-        <family>DINPro-medium</family>
-        <pointsize>15</pointsize>
+        <family>DinPRO-Medium</family>
+        <pointsize>36</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -874,7 +887,7 @@ SYNC</string>
       <property name="font">
        <font>
         <family>DinPRO-Medium</family>
-        <pointsize>12</pointsize>
+        <pointsize>24</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -1095,8 +1108,8 @@ IMAGE</string>
       </property>
       <property name="font">
        <font>
-        <family>DINPro-medium</family>
-        <pointsize>15</pointsize>
+        <family>DinPRO-Medium</family>
+        <pointsize>36</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -1729,7 +1742,7 @@ OVERLAY</string>
       <property name="font">
        <font>
         <family>DinPRO-Medium</family>
-        <pointsize>12</pointsize>
+        <pointsize>24</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
