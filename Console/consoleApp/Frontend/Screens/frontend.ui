@@ -274,7 +274,7 @@ QToolButton
      <widget class="QGroupBox" name="liveGroupBox">
       <property name="geometry">
        <rect>
-        <x>98</x>
+        <x>200</x>
         <y>0</y>
         <width>1421</width>
         <height>1421</height>
@@ -814,7 +814,7 @@ border-radius: 4px;
        <rect>
         <x>0</x>
         <y>66</y>
-        <width>98</width>
+        <width>181</width>
         <height>66</height>
        </rect>
       </property>
@@ -847,7 +847,7 @@ SELECT</string>
        <rect>
         <x>0</x>
         <y>140</y>
-        <width>98</width>
+        <width>181</width>
         <height>66</height>
        </rect>
       </property>
@@ -880,7 +880,7 @@ SYNC</string>
        <rect>
         <x>0</x>
         <y>288</y>
-        <width>98</width>
+        <width>181</width>
         <height>66</height>
        </rect>
       </property>
@@ -918,7 +918,7 @@ SYNC</string>
        <rect>
         <x>0</x>
         <y>740</y>
-        <width>98</width>
+        <width>191</width>
         <height>66</height>
        </rect>
       </property>
@@ -942,7 +942,7 @@ Grayscale</string>
        <rect>
         <x>0</x>
         <y>830</y>
-        <width>98</width>
+        <width>191</width>
         <height>66</height>
        </rect>
       </property>
@@ -967,8 +967,8 @@ Snapshot</string>
        <rect>
         <x>30</x>
         <y>920</y>
-        <width>51</width>
-        <height>25</height>
+        <width>161</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="suffix">
@@ -1004,8 +1004,8 @@ Snapshot</string>
         <rect>
          <x>10</x>
          <y>50</y>
-         <width>41</width>
-         <height>25</height>
+         <width>181</width>
+         <height>91</height>
         </rect>
        </property>
        <property name="maximum">
@@ -1038,7 +1038,7 @@ CRF</string>
        <rect>
         <x>0</x>
         <y>214</y>
-        <width>98</width>
+        <width>181</width>
         <height>66</height>
        </rect>
       </property>
@@ -1070,9 +1070,9 @@ IMAGE</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>1030</y>
-        <width>84</width>
-        <height>23</height>
+        <y>1130</y>
+        <width>181</width>
+        <height>81</height>
        </rect>
       </property>
       <property name="font">
@@ -1100,8 +1100,8 @@ IMAGE</string>
      <widget class="QGroupBox" name="capturesGroupBox">
       <property name="geometry">
        <rect>
-        <x>1760</x>
-        <y>10</y>
+        <x>1650</x>
+        <y>20</y>
         <width>681</width>
         <height>1111</height>
        </rect>
@@ -1461,10 +1461,10 @@ QPushButton:hover {
      <widget class="QPushButton" name="endCaseButton">
       <property name="geometry">
        <rect>
-        <x>2380</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
+        <x>2317</x>
+        <y>1145</y>
+        <width>201</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1484,10 +1484,10 @@ CASE</string>
      <widget class="QPushButton" name="recordLoopButton">
       <property name="geometry">
        <rect>
-        <x>2450</x>
+        <x>2337</x>
         <y>610</y>
-        <width>98</width>
-        <height>66</height>
+        <width>211</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1549,9 +1549,9 @@ LOOP</string>
       <property name="geometry">
        <rect>
         <x>2090</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
+        <y>1145</y>
+        <width>191</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1654,10 +1654,10 @@ QPushButton:hover {
      <widget class="QPushButton" name="advancedViewButton">
       <property name="geometry">
        <rect>
-        <x>1930</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
+        <x>1907</x>
+        <y>1145</y>
+        <width>161</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1680,10 +1680,10 @@ VIEW</string>
      <widget class="QPushButton" name="displayOptionsButton">
       <property name="geometry">
        <rect>
-        <x>1760</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
+        <x>1657</x>
+        <y>1145</y>
+        <width>241</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1708,7 +1708,7 @@ OPTIONS</string>
        <rect>
         <x>0</x>
         <y>552</y>
-        <width>98</width>
+        <width>171</width>
         <height>105</height>
        </rect>
       </property>
@@ -1718,7 +1718,7 @@ OPTIONS</string>
        <rect>
         <x>0</x>
         <y>360</y>
-        <width>98</width>
+        <width>181</width>
         <height>66</height>
        </rect>
       </property>
@@ -1735,7 +1735,7 @@ OVERLAY</string>
        <rect>
         <x>0</x>
         <y>480</y>
-        <width>98</width>
+        <width>181</width>
         <height>66</height>
        </rect>
       </property>
@@ -1774,7 +1774,7 @@ Passive</string>
        <rect>
         <x>1970</x>
         <y>1360</y>
-        <width>251</width>
+        <width>301</width>
         <height>51</height>
        </rect>
       </property>
@@ -1821,10 +1821,10 @@ Passive</string>
      <widget class="QPushButton" name="captureImageButton">
       <property name="geometry">
        <rect>
-        <x>2450</x>
+        <x>2347</x>
         <y>40</y>
-        <width>98</width>
-        <height>66</height>
+        <width>201</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="focusPolicy">
