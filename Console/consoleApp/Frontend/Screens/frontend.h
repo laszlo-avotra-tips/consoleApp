@@ -47,6 +47,7 @@ const int mouseSamplingInterval(50); // msec
 //class DAQ;
 class IDAQ;
 class EngineeringController;
+class FormL300;
 
 class frontend : public QWidget
 {
@@ -303,6 +304,9 @@ protected:
      void closeEvent( QCloseEvent *event );
      bool eventFilter( QObject *watched, QEvent *event );
      void keyPressEvent( QKeyEvent *event );
+
+private:
+     FormL300* m_formL300{nullptr};
 };
 
 #endif // FRONTEND_H

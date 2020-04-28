@@ -15,6 +15,9 @@ public:
     explicit FormL300(QWidget *parent = nullptr);
     ~FormL300();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::FormL300 *ui;
 };

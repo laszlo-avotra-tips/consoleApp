@@ -12,3 +12,8 @@ FormL300::~FormL300()
 {
     delete ui;
 }
+
+void FormL300::on_pushButton_clicked()
+{
+    hide();
+}

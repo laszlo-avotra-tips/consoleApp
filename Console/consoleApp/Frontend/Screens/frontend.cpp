@@ -39,6 +39,7 @@
 #include "idaq.h"
 #include "engineeringcontroller.h"
 #include "signalmodel.h"
+#include "forml300.h"
 
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0
@@ -2784,4 +2785,9 @@ void frontend::hideDecoration(void)
 void frontend::on_pushButtonLogo_clicked()
 {
     qDebug() << __FUNCTION__;
+//    hide();
+    if(!m_formL300){
+        m_formL300 = new FormL300(this);
+    }
+    m_formL300->show();
 }
