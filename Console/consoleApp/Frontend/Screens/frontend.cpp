@@ -2544,7 +2544,7 @@ void frontend::handleBadMonitorConfig()
     captureMouse( false );
     hideDisplays();
     this->setGeometry( wmgr->getDefaultDisplayGeometry() );
-    show(); //lcv this->showFullScreen();
+    this->showFullScreen();//show(); //lcv this->showFullScreen();
     wmgr->showInfoMessage( this->parentWidget() );
     captureMouse( true );
 }
@@ -2584,7 +2584,7 @@ void frontend::createDisplays()
 
     this->hide();
     this->setGeometry( wmgr->getTechnicianDisplayGeometry() );
-    show(); //lcv this->showFullScreen();
+    this->showFullScreen();//show(); //lcv this->showFullScreen();
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
@@ -2789,5 +2789,5 @@ void frontend::on_pushButtonLogo_clicked()
     if(!m_formL300){
         m_formL300 = new FormL300(this);
     }
-    m_formL300->show();
+    m_formL300->showFullScreen();
 }

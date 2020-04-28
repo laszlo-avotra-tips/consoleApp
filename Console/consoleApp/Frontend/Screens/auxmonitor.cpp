@@ -254,8 +254,7 @@ void AuxMonitor::forceResize()
     {
         optimizeSceneSize();
         testAndMoveInfo();
-        show(); //lcv showFullScreen();
-
+        showFullScreen();//show(); //lcv showFullScreen();
     }
 }
 
