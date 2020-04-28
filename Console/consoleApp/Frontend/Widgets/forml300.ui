@@ -240,6 +240,12 @@ QGroupBox::title {
    </property>
    <item>
     <widget class="QWidget" name="widget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">QWidget{
    background: url(:images/background_texture.png); 
@@ -461,6 +467,18 @@ QGroupBox::title {
       </property>
       <item>
        <widget class="QPushButton" name="pushButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>90</height>
+         </size>
+        </property>
         <property name="text">
          <string>PushButton</string>
         </property>
