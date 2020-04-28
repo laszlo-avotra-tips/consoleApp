@@ -18,6 +18,7 @@ HEADERS += \
     $$PWD/Backend/signalprocessingfactory.h \
     $$PWD/Backend/warp.h \
     $$PWD/Backend/warpbc.h \
+    $$PWD/Frontend/Widgets/forml300.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -112,6 +113,7 @@ SOURCES += \
     $$PWD/Backend/signalprocessingfactory.cpp \
     $$PWD/Backend/warp.cpp \
     $$PWD/Backend/warpbc.cpp \
+    $$PWD/Frontend/Widgets/forml300.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
@@ -194,6 +196,7 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 
 # Forms
 FORMS += Frontend/Screens/docscreen.ui \
+    $$PWD/Frontend/Widgets/forml300.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/advancedview.ui \
     Frontend/Widgets/capturewidget.ui \
