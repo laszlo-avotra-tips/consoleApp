@@ -263,8 +263,8 @@ QGroupBox::title {
        <rect>
         <x>98</x>
         <y>0</y>
-        <width>1491</width>
-        <height>1441</height>
+        <width>1421</width>
+        <height>1421</height>
        </rect>
       </property>
       <property name="font">
@@ -287,6 +287,12 @@ QGroupBox::title {
          <width>1491</width>
          <height>1381</height>
         </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="cursor" stdset="0">
         <cursorShape>OpenHandCursor</cursorShape>
@@ -1105,7 +1111,7 @@ IMAGE</string>
          <x>0</x>
          <y>30</y>
          <width>681</width>
-         <height>775</height>
+         <height>1081</height>
         </rect>
        </property>
        <property name="font">
@@ -1149,8 +1155,8 @@ QGroupBox::title {
         <widget class="transport" name="transportWidget" native="true">
          <property name="geometry">
           <rect>
-           <x>70</x>
-           <y>90</y>
+           <x>100</x>
+           <y>180</y>
            <width>495</width>
            <height>225</height>
           </rect>

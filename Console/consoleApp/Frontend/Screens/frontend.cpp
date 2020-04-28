@@ -2590,7 +2590,7 @@ void frontend::createDisplays()
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
     {
         docWindow->setGeometry( wmgr->getPhysicianDisplayGeometry() );
-        docWindow->show(); //lcv docWindow->showFullScreen();
+        docWindow->showFullScreen();//docWindow->show(); //lcv docWindow->showFullScreen();
     }
 
     if( wmgr->isAuxMonPresent() )
