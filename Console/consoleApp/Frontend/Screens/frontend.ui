@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2560</width>
-    <height>1440</height>
+    <width>3240</width>
+    <height>2160</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>2560</width>
-    <height>1440</height>
+    <width>3240</width>
+    <height>2160</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>2560</width>
-    <height>1440</height>
+    <width>3240</width>
+    <height>2160</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -274,10 +274,10 @@ QToolButton
      <widget class="QGroupBox" name="liveGroupBox">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>320</x>
         <y>0</y>
-        <width>1421</width>
-        <height>1421</height>
+        <width>1971</width>
+        <height>2121</height>
        </rect>
       </property>
       <property name="font">
@@ -295,10 +295,10 @@ QToolButton
       <widget class="liveView" name="liveGraphicsView">
        <property name="geometry">
         <rect>
-         <x>0</x>
-         <y>66</y>
-         <width>1491</width>
-         <height>1381</height>
+         <x>20</x>
+         <y>170</y>
+         <width>1941</width>
+         <height>1941</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -332,8 +332,8 @@ QToolButton
       <widget class="QLabel" name="recordingLabel">
        <property name="geometry">
         <rect>
-         <x>95</x>
-         <y>70</y>
+         <x>40</x>
+         <y>110</y>
          <width>165</width>
          <height>46</height>
         </rect>
@@ -358,10 +358,10 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
       <widget class="QSlider" name="zoomSlider">
        <property name="geometry">
         <rect>
-         <x>303</x>
-         <y>35</y>
-         <width>271</width>
-         <height>31</height>
+         <x>630</x>
+         <y>40</y>
+         <width>701</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -436,8 +436,8 @@ border-radius: 4px;
         <rect>
          <x>133</x>
          <y>40</y>
-         <width>98</width>
-         <height>20</height>
+         <width>201</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="palette">
@@ -582,10 +582,10 @@ border-radius: 4px;
       <widget class="QLabel" name="zoomFactorLabel">
        <property name="geometry">
         <rect>
-         <x>237</x>
-         <y>39</y>
-         <width>56</width>
-         <height>23</height>
+         <x>450</x>
+         <y>40</y>
+         <width>151</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -612,10 +612,10 @@ border-radius: 4px;
       <widget class="QPushButton" name="zoomResetPushButton">
        <property name="geometry">
         <rect>
-         <x>583</x>
-         <y>39</y>
-         <width>91</width>
-         <height>21</height>
+         <x>1360</x>
+         <y>40</y>
+         <width>251</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -632,10 +632,10 @@ border-radius: 4px;
       <widget class="QPushButton" name="liveViewPushButton">
        <property name="geometry">
         <rect>
-         <x>706</x>
-         <y>39</y>
-         <width>91</width>
-         <height>21</height>
+         <x>1660</x>
+         <y>40</y>
+         <width>251</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -718,8 +718,8 @@ border-radius: 4px;
         <rect>
          <x>0</x>
          <y>33</y>
-         <width>900</width>
-         <height>33</height>
+         <width>1951</width>
+         <height>61</height>
         </rect>
        </property>
        <property name="text">
@@ -761,10 +761,10 @@ border-radius: 4px;
       <widget class="QSpinBox" name="rulerSlidingPointSpinbox">
        <property name="geometry">
         <rect>
-         <x>386</x>
-         <y>70</y>
-         <width>231</width>
-         <height>22</height>
+         <x>320</x>
+         <y>110</y>
+         <width>431</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -812,8 +812,8 @@ border-radius: 4px;
      <widget class="QPushButton" name="deviceSelectButton">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>66</y>
+        <x>20</x>
+        <y>70</y>
         <width>181</width>
         <height>66</height>
        </rect>
@@ -845,8 +845,8 @@ SELECT</string>
      <widget class="QPushButton" name="scanSyncButton">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>140</y>
+        <x>20</x>
+        <y>520</y>
         <width>181</width>
         <height>66</height>
        </rect>
@@ -878,8 +878,8 @@ SYNC</string>
      <widget class="QPushButton" name="measureModePushButton">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>288</y>
+        <x>30</x>
+        <y>840</y>
         <width>181</width>
         <height>66</height>
        </rect>
@@ -916,8 +916,8 @@ SYNC</string>
      <widget class="QPushButton" name="contrastCurveButton">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>740</y>
+        <x>30</x>
+        <y>1390</y>
         <width>191</width>
         <height>66</height>
        </rect>
@@ -940,8 +940,8 @@ Grayscale</string>
      <widget class="QPushButton" name="rawDataPushButton">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>830</y>
+        <x>20</x>
+        <y>1530</y>
         <width>191</width>
         <height>66</height>
        </rect>
@@ -966,7 +966,7 @@ Snapshot</string>
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>920</y>
+        <y>1640</y>
         <width>161</width>
         <height>71</height>
        </rect>
@@ -999,22 +999,6 @@ Snapshot</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QSpinBox" name="crfTestSpinBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>50</y>
-         <width>181</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="maximum">
-        <number>51</number>
-       </property>
-       <property name="value">
-        <number>25</number>
-       </property>
-      </widget>
       <widget class="QLabel" name="crfTestLabel">
        <property name="geometry">
         <rect>
@@ -1036,8 +1020,8 @@ CRF</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>214</y>
+        <x>40</x>
+        <y>700</y>
         <width>181</width>
         <height>66</height>
        </rect>
@@ -1069,8 +1053,8 @@ IMAGE</string>
      <widget class="QLabel" name="evoaOffLabel">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>1130</y>
+        <x>30</x>
+        <y>1960</y>
         <width>181</width>
         <height>81</height>
        </rect>
@@ -1100,10 +1084,10 @@ IMAGE</string>
      <widget class="QGroupBox" name="capturesGroupBox">
       <property name="geometry">
        <rect>
-        <x>1650</x>
-        <y>20</y>
+        <x>2320</x>
+        <y>0</y>
         <width>681</width>
-        <height>1111</height>
+        <height>1741</height>
        </rect>
       </property>
       <property name="font">
@@ -1124,7 +1108,7 @@ IMAGE</string>
          <x>0</x>
          <y>30</y>
          <width>681</width>
-         <height>1081</height>
+         <height>1711</height>
         </rect>
        </property>
        <property name="font">
@@ -1142,7 +1126,7 @@ IMAGE</string>
           <x>0</x>
           <y>-2</y>
           <width>681</width>
-          <height>571</height>
+          <height>1081</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1180,9 +1164,9 @@ QGroupBox::title {
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>570</y>
+          <y>1080</y>
           <width>681</width>
-          <height>201</height>
+          <height>631</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1197,8 +1181,8 @@ QGroupBox::title {
      <widget class="QGroupBox" name="imageSettingsGroupBox">
       <property name="geometry">
        <rect>
-        <x>1750</x>
-        <y>1270</y>
+        <x>2460</x>
+        <y>1940</y>
         <width>331</width>
         <height>71</height>
        </rect>
@@ -1461,8 +1445,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="endCaseButton">
       <property name="geometry">
        <rect>
-        <x>2317</x>
-        <y>1145</y>
+        <x>3010</x>
+        <y>1790</y>
         <width>201</width>
         <height>91</height>
        </rect>
@@ -1484,8 +1468,8 @@ CASE</string>
      <widget class="QPushButton" name="recordLoopButton">
       <property name="geometry">
        <rect>
-        <x>2337</x>
-        <y>610</y>
+        <x>3010</x>
+        <y>630</y>
         <width>211</width>
         <height>91</height>
        </rect>
@@ -1517,8 +1501,8 @@ LOOP</string>
      <widget class="QLabel" name="timeFieldLabel">
       <property name="geometry">
        <rect>
-        <x>2300</x>
-        <y>1360</y>
+        <x>3000</x>
+        <y>2060</y>
         <width>181</width>
         <height>41</height>
        </rect>
@@ -1548,8 +1532,8 @@ LOOP</string>
      <widget class="QPushButton" name="physicianPreviewButton">
       <property name="geometry">
        <rect>
-        <x>2090</x>
-        <y>1145</y>
+        <x>2780</x>
+        <y>1800</y>
         <width>191</width>
         <height>91</height>
        </rect>
@@ -1571,8 +1555,8 @@ PREVIEW</string>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>2190</x>
-        <y>1260</y>
+        <x>2840</x>
+        <y>1940</y>
         <width>331</width>
         <height>71</height>
        </rect>
@@ -1654,8 +1638,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="advancedViewButton">
       <property name="geometry">
        <rect>
-        <x>1907</x>
-        <y>1145</y>
+        <x>2590</x>
+        <y>1800</y>
         <width>161</width>
         <height>91</height>
        </rect>
@@ -1680,8 +1664,8 @@ VIEW</string>
      <widget class="QPushButton" name="displayOptionsButton">
       <property name="geometry">
        <rect>
-        <x>1657</x>
-        <y>1145</y>
+        <x>2320</x>
+        <y>1800</y>
         <width>241</width>
         <height>91</height>
        </rect>
@@ -1706,18 +1690,18 @@ OPTIONS</string>
      <widget class="levelGauge" name="imagingDepthWidget" native="true">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>552</y>
-        <width>171</width>
-        <height>105</height>
+        <x>20</x>
+        <y>1230</y>
+        <width>251</width>
+        <height>131</height>
        </rect>
       </property>
      </widget>
      <widget class="QPushButton" name="saveMeasurementButton">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>360</y>
+        <x>40</x>
+        <y>990</y>
         <width>181</width>
         <height>66</height>
        </rect>
@@ -1733,8 +1717,8 @@ OVERLAY</string>
      <widget class="QPushButton" name="directionPushButton">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>480</y>
+        <x>30</x>
+        <y>1130</y>
         <width>181</width>
         <height>66</height>
        </rect>
@@ -1772,8 +1756,8 @@ Passive</string>
      <widget class="QPushButton" name="EgineeringButton">
       <property name="geometry">
        <rect>
-        <x>1970</x>
-        <y>1360</y>
+        <x>2680</x>
+        <y>2050</y>
         <width>301</width>
         <height>51</height>
        </rect>
@@ -1797,8 +1781,8 @@ Passive</string>
      <widget class="QPushButton" name="pushButtonLogo">
       <property name="geometry">
        <rect>
-        <x>1750</x>
-        <y>1360</y>
+        <x>2460</x>
+        <y>2050</y>
         <width>201</width>
         <height>51</height>
        </rect>
@@ -1821,8 +1805,8 @@ Passive</string>
      <widget class="QPushButton" name="captureImageButton">
       <property name="geometry">
        <rect>
-        <x>2347</x>
-        <y>40</y>
+        <x>3020</x>
+        <y>60</y>
         <width>201</width>
         <height>101</height>
        </rect>
@@ -1843,6 +1827,22 @@ Passive</string>
       <property name="text">
        <string>CAPTURE
 IMAGE</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="crfTestSpinBox">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>1800</y>
+        <width>181</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>51</number>
+      </property>
+      <property name="value">
+       <number>25</number>
       </property>
      </widget>
      <zorder>liveGroupBox</zorder>
@@ -1870,6 +1870,7 @@ IMAGE</string>
      <zorder>EgineeringButton</zorder>
      <zorder>pushButtonLogo</zorder>
      <zorder>captureImageButton</zorder>
+     <zorder>crfTestSpinBox</zorder>
     </widget>
    </item>
   </layout>

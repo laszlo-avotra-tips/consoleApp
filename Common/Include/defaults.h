@@ -6,7 +6,7 @@
 #include <QSettings>
 #include <QPainter>
 
-#define SECTOR_HEIGHT_PX 1440
+#define SECTOR_HEIGHT_PX 2560
 #define FFT_DATA_SIZE    1024
 //#define MAX_LINES_PER_FRAME 6120 // divisible by 360 seems necessary for Ocelot Synthetic mode
 #define MAX_LINES_PER_FRAME 7200 // must be larger than 6144 for Pantheris at 100 kHz
