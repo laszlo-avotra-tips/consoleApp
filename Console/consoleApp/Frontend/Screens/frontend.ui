@@ -6,20 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>2560</width>
+    <height>1440</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1680</width>
-    <height>1050</height>
+    <width>2560</width>
+    <height>1440</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>2600</width>
-    <height>1700</height>
+    <width>2560</width>
+    <height>1440</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -257,8 +263,8 @@ QGroupBox::title {
        <rect>
         <x>98</x>
         <y>0</y>
-        <width>1024</width>
-        <height>1080</height>
+        <width>1491</width>
+        <height>1441</height>
        </rect>
       </property>
       <property name="font">
@@ -278,8 +284,8 @@ QGroupBox::title {
         <rect>
          <x>0</x>
          <y>66</y>
-         <width>1024</width>
-         <height>1024</height>
+         <width>1491</width>
+         <height>1381</height>
         </rect>
        </property>
        <property name="cursor" stdset="0">
@@ -1075,10 +1081,10 @@ IMAGE</string>
      <widget class="QGroupBox" name="capturesGroupBox">
       <property name="geometry">
        <rect>
-        <x>1142</x>
-        <y>0</y>
+        <x>1760</x>
+        <y>10</y>
         <width>681</width>
-        <height>811</height>
+        <height>1111</height>
        </rect>
       </property>
       <property name="font">
@@ -1117,7 +1123,7 @@ IMAGE</string>
           <x>0</x>
           <y>-2</y>
           <width>681</width>
-          <height>391</height>
+          <height>571</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1155,9 +1161,9 @@ QGroupBox::title {
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>390</y>
+          <y>570</y>
           <width>681</width>
-          <height>381</height>
+          <height>201</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1172,8 +1178,8 @@ QGroupBox::title {
      <widget class="QGroupBox" name="imageSettingsGroupBox">
       <property name="geometry">
        <rect>
-        <x>1141</x>
-        <y>920</y>
+        <x>1750</x>
+        <y>1270</y>
         <width>331</width>
         <height>71</height>
        </rect>
@@ -1436,8 +1442,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="endCaseButton">
       <property name="geometry">
        <rect>
-        <x>1684</x>
-        <y>835</y>
+        <x>2380</x>
+        <y>1170</y>
         <width>138</width>
         <height>66</height>
        </rect>
@@ -1459,8 +1465,8 @@ CASE</string>
      <widget class="QPushButton" name="recordLoopButton">
       <property name="geometry">
        <rect>
-        <x>1823</x>
-        <y>450</y>
+        <x>2450</x>
+        <y>610</y>
         <width>98</width>
         <height>66</height>
        </rect>
@@ -1492,8 +1498,8 @@ LOOP</string>
      <widget class="QLabel" name="timeFieldLabel">
       <property name="geometry">
        <rect>
-        <x>1641</x>
-        <y>1010</y>
+        <x>2300</x>
+        <y>1360</y>
         <width>181</width>
         <height>41</height>
        </rect>
@@ -1523,8 +1529,8 @@ LOOP</string>
      <widget class="QPushButton" name="physicianPreviewButton">
       <property name="geometry">
        <rect>
-        <x>1436</x>
-        <y>835</y>
+        <x>2090</x>
+        <y>1170</y>
         <width>138</width>
         <height>66</height>
        </rect>
@@ -1543,38 +1549,11 @@ PREVIEW</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="captureImageButton">
-      <property name="geometry">
-       <rect>
-        <x>1823</x>
-        <y>60</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>Save a new image. (Shortcut: 0 - zero)</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton
-{
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>CAPTURE
-IMAGE</string>
-      </property>
-     </widget>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>1491</x>
-        <y>920</y>
+        <x>2190</x>
+        <y>1260</y>
         <width>331</width>
         <height>71</height>
        </rect>
@@ -1656,8 +1635,8 @@ QPushButton:hover {
      <widget class="QPushButton" name="advancedViewButton">
       <property name="geometry">
        <rect>
-        <x>1289</x>
-        <y>835</y>
+        <x>1930</x>
+        <y>1170</y>
         <width>138</width>
         <height>66</height>
        </rect>
@@ -1682,8 +1661,8 @@ VIEW</string>
      <widget class="QPushButton" name="displayOptionsButton">
       <property name="geometry">
        <rect>
-        <x>1142</x>
-        <y>835</y>
+        <x>1760</x>
+        <y>1170</y>
         <width>138</width>
         <height>66</height>
        </rect>
@@ -1774,8 +1753,8 @@ Passive</string>
      <widget class="QPushButton" name="EgineeringButton">
       <property name="geometry">
        <rect>
-        <x>1370</x>
-        <y>1005</y>
+        <x>1970</x>
+        <y>1360</y>
         <width>251</width>
         <height>51</height>
        </rect>
@@ -1799,8 +1778,8 @@ Passive</string>
      <widget class="QPushButton" name="pushButtonLogo">
       <property name="geometry">
        <rect>
-        <x>1150</x>
-        <y>1002</y>
+        <x>1750</x>
+        <y>1360</y>
         <width>201</width>
         <height>51</height>
        </rect>
@@ -1820,6 +1799,33 @@ Passive</string>
        </size>
       </property>
      </widget>
+     <widget class="QPushButton" name="captureImageButton">
+      <property name="geometry">
+       <rect>
+        <x>2450</x>
+        <y>40</y>
+        <width>98</width>
+        <height>66</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>Save a new image. (Shortcut: 0 - zero)</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton
+{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}</string>
+      </property>
+      <property name="text">
+       <string>CAPTURE
+IMAGE</string>
+      </property>
+     </widget>
      <zorder>liveGroupBox</zorder>
      <zorder>deviceSelectButton</zorder>
      <zorder>scanSyncButton</zorder>
@@ -1836,7 +1842,6 @@ Passive</string>
      <zorder>recordLoopButton</zorder>
      <zorder>timeFieldLabel</zorder>
      <zorder>physicianPreviewButton</zorder>
-     <zorder>captureImageButton</zorder>
      <zorder>groupBox</zorder>
      <zorder>advancedViewButton</zorder>
      <zorder>displayOptionsButton</zorder>
@@ -1845,6 +1850,7 @@ Passive</string>
      <zorder>directionPushButton</zorder>
      <zorder>EgineeringButton</zorder>
      <zorder>pushButtonLogo</zorder>
+     <zorder>captureImageButton</zorder>
     </widget>
    </item>
   </layout>
@@ -1852,15 +1858,15 @@ Passive</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>liveView</class>
-   <extends>QGraphicsView</extends>
-   <header>liveview.h</header>
-  </customwidget>
-  <customwidget>
    <class>levelGauge</class>
    <extends>QWidget</extends>
    <header>levelgauge.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>liveView</class>
+   <extends>QGraphicsView</extends>
+   <header>liveview.h</header>
   </customwidget>
   <customwidget>
    <class>transport</class>
