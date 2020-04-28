@@ -97,3 +97,12 @@ DEPENDPATH += $$PWD/../../lib/amd64/FTDI
 
 RESOURCES += \
     OpenClResources.qrc
+
+FORMS += \
+    Frontend/Widgets/forml300.ui
+
+HEADERS += \
+    Frontend/Widgets/forml300.h
+
+SOURCES += \
+    Frontend/Widgets/forml300.cpp

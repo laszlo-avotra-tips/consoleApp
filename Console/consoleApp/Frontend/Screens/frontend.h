@@ -48,12 +48,12 @@ const int mouseSamplingInterval(50); // msec
 class IDAQ;
 class EngineeringController;
 
-class frontend : public QMainWindow
+class frontend : public QWidget
 {
     Q_OBJECT
 
 public:
-    frontend(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
+    frontend(QWidget *parent = nullptr);
     ~frontend();
     void init( void );
     void abortStartUp( void ) { appAborted = true; }
@@ -296,6 +296,8 @@ private slots:
 
     void on_EgineeringButton_toggled(bool checked);
     void hideDecoration();
+
+    void on_pushButtonLogo_clicked();
 
 protected:
      void closeEvent( QCloseEvent *event );

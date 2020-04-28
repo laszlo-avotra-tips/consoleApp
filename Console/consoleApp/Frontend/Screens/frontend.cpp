@@ -57,8 +57,8 @@ const int VariableDepthNumChunks = 5;
 /*
  * Constructor
  */
-frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
-    : QMainWindow(parent, flags), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
+frontend::frontend(QWidget *parent)
+    : QWidget(parent), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
 {
     scene    = nullptr;
     consumer = nullptr;
@@ -2780,3 +2780,8 @@ void frontend::hideDecoration(void)
 }
 
 
+
+void frontend::on_pushButtonLogo_clicked()
+{
+    qDebug() << __FUNCTION__;
+}
