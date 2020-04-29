@@ -277,7 +277,7 @@ QToolButton
         <x>320</x>
         <y>0</y>
         <width>1971</width>
-        <height>2121</height>
+        <height>2160</height>
        </rect>
       </property>
       <property name="font">
@@ -312,10 +312,10 @@ QGroupBox::title {
       <widget class="liveView" name="liveGraphicsView">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>0</x>
          <y>170</y>
-         <width>1941</width>
-         <height>1941</height>
+         <width>1971</width>
+         <height>1991</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -375,9 +375,9 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
       <widget class="QSlider" name="zoomSlider">
        <property name="geometry">
         <rect>
-         <x>630</x>
+         <x>440</x>
          <y>40</y>
-         <width>701</width>
+         <width>841</width>
          <height>51</height>
         </rect>
        </property>
@@ -451,7 +451,7 @@ border-radius: 4px;
       <widget class="QLabel" name="zoomLevelLabel">
        <property name="geometry">
         <rect>
-         <x>133</x>
+         <x>40</x>
          <y>40</y>
          <width>201</width>
          <height>51</height>
@@ -599,8 +599,8 @@ border-radius: 4px;
       <widget class="QLabel" name="zoomFactorLabel">
        <property name="geometry">
         <rect>
-         <x>450</x>
-         <y>40</y>
+         <x>320</x>
+         <y>50</y>
          <width>151</width>
          <height>41</height>
         </rect>
@@ -629,10 +629,10 @@ border-radius: 4px;
       <widget class="QPushButton" name="zoomResetPushButton">
        <property name="geometry">
         <rect>
-         <x>1360</x>
+         <x>1320</x>
          <y>40</y>
          <width>251</width>
-         <height>41</height>
+         <height>50</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -652,7 +652,7 @@ border-radius: 4px;
          <x>1660</x>
          <y>40</y>
          <width>251</width>
-         <height>41</height>
+         <height>50</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -735,7 +735,7 @@ border-radius: 4px;
         <rect>
          <x>0</x>
          <y>33</y>
-         <width>1951</width>
+         <width>1971</width>
          <height>71</height>
         </rect>
        </property>
@@ -778,8 +778,8 @@ border-radius: 4px;
       <widget class="QSpinBox" name="rulerSlidingPointSpinbox">
        <property name="geometry">
         <rect>
-         <x>320</x>
-         <y>120</y>
+         <x>230</x>
+         <y>110</y>
          <width>431</width>
          <height>51</height>
         </rect>
@@ -830,10 +830,16 @@ border-radius: 4px;
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>70</y>
-        <width>261</width>
-        <height>66</height>
+        <y>100</y>
+        <width>300</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -863,10 +869,16 @@ SELECT</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>520</y>
-        <width>281</width>
-        <height>66</height>
+        <y>300</y>
+        <width>300</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -895,11 +907,17 @@ SYNC</string>
      <widget class="QPushButton" name="measureModePushButton">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>840</y>
-        <width>261</width>
-        <height>66</height>
+        <x>20</x>
+        <y>620</y>
+        <width>300</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="font">
        <font>
@@ -933,11 +951,17 @@ SYNC</string>
      <widget class="QPushButton" name="contrastCurveButton">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>20</x>
         <y>1390</y>
-        <width>191</width>
-        <height>66</height>
+        <width>300</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -959,8 +983,8 @@ Grayscale</string>
        <rect>
         <x>20</x>
         <y>1530</y>
-        <width>191</width>
-        <height>66</height>
+        <width>300</width>
+        <height>100</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -982,10 +1006,10 @@ Snapshot</string>
      <widget class="QSpinBox" name="rawSnapshotSpinBox">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>20</x>
         <y>1640</y>
-        <width>161</width>
-        <height>71</height>
+        <width>300</width>
+        <height>80</height>
        </rect>
       </property>
       <property name="suffix">
@@ -1004,11 +1028,17 @@ Snapshot</string>
      <widget class="QFrame" name="crfFrame">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>930</y>
-        <width>261</width>
-        <height>81</height>
+        <width>300</width>
+        <height>120</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -1037,11 +1067,17 @@ CRF</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>670</y>
-        <width>251</width>
-        <height>66</height>
+        <x>20</x>
+        <y>460</y>
+        <width>300</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -1070,10 +1106,10 @@ IMAGE</string>
      <widget class="QLabel" name="evoaOffLabel">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>20</x>
         <y>1960</y>
-        <width>181</width>
-        <height>81</height>
+        <width>300</width>
+        <height>80</height>
        </rect>
       </property>
       <property name="font">
@@ -1520,10 +1556,10 @@ CASE</string>
      <widget class="QPushButton" name="recordLoopButton">
       <property name="geometry">
        <rect>
-        <x>2990</x>
+        <x>2980</x>
         <y>940</y>
-        <width>241</width>
-        <height>91</height>
+        <width>240</width>
+        <height>100</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1761,22 +1797,41 @@ OPTIONS</string>
        <rect>
         <x>20</x>
         <y>1230</y>
-        <width>251</width>
+        <width>300</width>
         <height>131</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
      </widget>
      <widget class="QPushButton" name="saveMeasurementButton">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>1040</y>
-        <width>221</width>
-        <height>66</height>
+        <x>20</x>
+        <y>800</y>
+        <width>300</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="toolTip">
        <string>Save Measurement Overlay.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
       </property>
       <property name="text">
        <string>SAVE
@@ -1786,11 +1841,17 @@ OVERLAY</string>
      <widget class="QPushButton" name="directionPushButton">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>1130</y>
-        <width>221</width>
-        <height>66</height>
+        <x>20</x>
+        <y>1070</y>
+        <width>300</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="font">
        <font>
@@ -1874,11 +1935,17 @@ Passive</string>
      <widget class="QPushButton" name="captureImageButton">
       <property name="geometry">
        <rect>
-        <x>2990</x>
-        <y>10</y>
-        <width>231</width>
-        <height>101</height>
+        <x>2980</x>
+        <y>100</y>
+        <width>240</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -1901,11 +1968,17 @@ IMAGE</string>
      <widget class="QSpinBox" name="crfTestSpinBox">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>20</x>
         <y>1800</y>
-        <width>181</width>
-        <height>91</height>
+        <width>300</width>
+        <height>80</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="maximum">
        <number>51</number>
