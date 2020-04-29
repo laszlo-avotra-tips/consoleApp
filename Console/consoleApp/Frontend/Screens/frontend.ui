@@ -2037,8 +2037,8 @@ IMAGE</string>
      <widget class="QPushButton" name="pushButtonLogo">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>10</y>
+        <x>2290</x>
+        <y>2050</y>
         <width>201</width>
         <height>80</height>
        </rect>
