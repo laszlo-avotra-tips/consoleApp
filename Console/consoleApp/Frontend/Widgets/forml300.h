@@ -2,6 +2,7 @@
 #define FORML300_H
 
 #include <QWidget>
+#include <livescene.h>
 
 namespace Ui {
 class FormL300;
@@ -20,6 +21,7 @@ private slots:
 
 private:
     Ui::FormL300 *ui;
+    liveScene* m_liveScene{nullptr};
 };
 
 #endif // FORML300_H
