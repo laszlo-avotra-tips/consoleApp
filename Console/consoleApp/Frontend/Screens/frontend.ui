@@ -1104,7 +1104,7 @@ IMAGE</string>
         <x>2300</x>
         <y>10</y>
         <width>681</width>
-        <height>1771</height>
+        <height>1700</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -1112,6 +1112,18 @@ IMAGE</string>
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>681</width>
+        <height>1700</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>681</width>
+        <height>1700</height>
+       </size>
       </property>
       <property name="font">
        <font>
@@ -1206,7 +1218,7 @@ QGroupBox::title {
           <x>0</x>
           <y>900</y>
           <width>681</width>
-          <height>811</height>
+          <height>771</height>
          </rect>
         </property>
         <property name="styleSheet">
