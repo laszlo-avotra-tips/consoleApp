@@ -109,8 +109,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     QMatrix m;
 //    m.rotate( 90 );
-    qDebug() << __FUNCTION__ << ": width=" << sectorImage.width() << ", height=" << sectorImage.height();
+    qDebug() << __FUNCTION__ << ": sector width=" << sectorImage.width() << ", height=" << sectorImage.height();
 
+    auto imageRect = sectorImage.rect();
     if( !sectorImage.save( SecName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector capture failed" )
@@ -143,7 +144,10 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
     painter.end();
 
-    if( !decoratedImage.save( DecoratedImageName, "PNG", 100 ) )
+    QImage dim = decoratedImage.copy(imageRect);
+
+    if( !dim.save( DecoratedImageName, "PNG", 100 ) )
+//    if( !decoratedImage.save( DecoratedImageName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: decorated image capture failed" )
     }
@@ -151,6 +155,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     {
         emit sendFileToKey( DecoratedImageName );
     }
+    qDebug() << __FUNCTION__ << ": decorated width=" << dim.width() << ", height=" << dim.height();
 
     // update the model
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo

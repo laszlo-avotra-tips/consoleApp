@@ -2500,6 +2500,9 @@ void frontend::on_captureImageButton_clicked()
     QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
     LOG1(tag);
     QRect rectangle = ui.liveGraphicsView->rect();
+//    rectangle.setWidth(1440);
+//    rectangle.setHeight(1440);
+    qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
     QImage p = ui.liveGraphicsView->grab(rectangle).toImage();
     scene->captureDi( p, tag );
 }
