@@ -469,8 +469,8 @@ QGroupBox::title {
      <rect>
       <x>0</x>
       <y>160</y>
-      <width>200</width>
-      <height>100</height>
+      <width>300</width>
+      <height>200</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -481,13 +481,13 @@ QGroupBox::title {
     </property>
     <property name="minimumSize">
      <size>
-      <width>200</width>
-      <height>100</height>
+      <width>300</width>
+      <height>200</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>200</width>
+      <width>300</width>
       <height>61</height>
      </size>
     </property>
@@ -501,8 +501,8 @@ QGroupBox::title {
     </property>
     <property name="iconSize">
      <size>
-      <width>120</width>
-      <height>120</height>
+      <width>200</width>
+      <height>200</height>
      </size>
     </property>
    </widget>
@@ -569,9 +569,9 @@ QGroupBox::title {
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>360</y>
-      <width>200</width>
-      <height>100</height>
+      <y>480</y>
+      <width>300</width>
+      <height>200</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -582,14 +582,14 @@ QGroupBox::title {
     </property>
     <property name="minimumSize">
      <size>
-      <width>200</width>
-      <height>100</height>
+      <width>300</width>
+      <height>200</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>200</width>
-      <height>61</height>
+      <width>300</width>
+      <height>200</height>
      </size>
     </property>
     <property name="text">
@@ -602,8 +602,8 @@ QGroupBox::title {
     </property>
     <property name="iconSize">
      <size>
-      <width>120</width>
-      <height>120</height>
+      <width>240</width>
+      <height>240</height>
      </size>
     </property>
    </widget>
