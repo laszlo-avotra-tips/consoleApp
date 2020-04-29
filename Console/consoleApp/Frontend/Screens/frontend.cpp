@@ -516,6 +516,9 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     scene = new liveScene( this );
+    m_formL300 = new FormL300( this );
+
+    liveScene* sceneL300 = m_formL300->scene();
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -547,8 +550,12 @@ void frontend::setupScene( void )
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              scene,      SLOT(handleReticleBrightnessChanged(int)) );
+    connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
+             sceneL300,      SLOT(handleReticleBrightnessChanged(int)) );
+
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
              scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
+
     connect( scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
 
     // Auto fill the background with black
@@ -2000,12 +2007,28 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 
 void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
+    QImage* image{nullptr};
+    QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    auto image = scene->sectorImage();
-    memcpy( image->bits(), frameData->dispData, SectorSize );
-    QPixmap tmpPixmap = QPixmap::fromImage( *image );
-    scene->sectorHandle()->setPixmap(tmpPixmap);
-    scene->setDoPaint();
+    if(!m_formL300->isVisible()){
+        image = scene->sectorImage();
+        pixmap = scene->sectorHandle();
+    }else {
+        image = m_formL300->sectorImage();
+        pixmap = m_formL300->sectorHandle();
+    }
+
+    if(image){
+        memcpy( image->bits(), frameData->dispData, SectorSize );
+    }
+    if(pixmap){
+        QPixmap tmpPixmap = QPixmap::fromImage( *image );
+        pixmap->setPixmap(tmpPixmap);
+    }
+    if(!m_formL300->isVisible()){
+        scene->setDoPaint();
+    }
+//    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
 }
 
 /*
@@ -2477,6 +2500,9 @@ void frontend::on_captureImageButton_clicked()
     QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
     LOG1(tag);
     QRect rectangle = ui.liveGraphicsView->rect();
+//    rectangle.setWidth(1440);
+//    rectangle.setHeight(1440);
+    qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
     QImage p = ui.liveGraphicsView->grab(rectangle).toImage();
     scene->captureDi( p, tag );
 }
