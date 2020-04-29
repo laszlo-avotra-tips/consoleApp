@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>97</width>
-    <height>105</height>
+    <width>300</width>
+    <height>149</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel:enabled{
- font: 18px &quot;DinPRO-Medium&quot;;
+ font: 32px &quot;DinPRO-Medium&quot;;
 color: blue;
 }
 QLabel:disabled{
@@ -110,10 +110,10 @@ QProgressBar::disabled {
    </property>
    <property name="geometry">
     <rect>
-     <x>1</x>
-     <y>78</y>
-     <width>96</width>
-     <height>25</height>
+     <x>0</x>
+     <y>110</y>
+     <width>300</width>
+     <height>40</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -122,10 +122,16 @@ QProgressBar::disabled {
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>40</height>
+    </size>
+   </property>
    <property name="maximumSize">
     <size>
-     <width>200</width>
-     <height>16777215</height>
+     <width>300</width>
+     <height>40</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -149,15 +155,27 @@ QProgressBar::disabled {
     <rect>
      <x>0</x>
      <y>2</y>
-     <width>98</width>
+     <width>300</width>
      <height>41</height>
     </rect>
    </property>
    <property name="sizePolicy">
-    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>300</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>300</width>
+     <height>16777215</height>
+    </size>
    </property>
    <property name="styleSheet">
     <string notr="true">QLabel { color : white; }</string>
@@ -175,10 +193,10 @@ QProgressBar::disabled {
   <widget class="QPushButton" name="rightButton">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>47</y>
-     <width>47</width>
-     <height>29</height>
+     <x>220</x>
+     <y>50</y>
+     <width>80</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -201,7 +219,7 @@ QProgressBar::disabled {
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-    font: 16pt &quot;DinPRO-Medium&quot;;
+    font: 32pt &quot;DinPRO-Medium&quot;;
 }</string>
    </property>
    <property name="text">
@@ -213,8 +231,8 @@ QProgressBar::disabled {
     <rect>
      <x>1</x>
      <y>47</y>
-     <width>47</width>
-     <height>29</height>
+     <width>80</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -237,7 +255,7 @@ QProgressBar::disabled {
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-    font: 16pt &quot;DinPRO-Medium&quot;;
+    font: 32pt &quot;DinPRO-Medium&quot;;
 }</string>
    </property>
    <property name="text">
