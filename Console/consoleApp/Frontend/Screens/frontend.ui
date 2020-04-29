@@ -263,7 +263,7 @@ QGroupBox::title {
        <rect>
         <x>98</x>
         <y>0</y>
-        <width>1421</width>
+        <width>1491</width>
         <height>1421</height>
        </rect>
       </property>
@@ -1169,7 +1169,7 @@ QGroupBox::title {
           <x>0</x>
           <y>570</y>
           <width>681</width>
-          <height>201</height>
+          <height>511</height>
          </rect>
         </property>
         <property name="styleSheet">
