@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <sectoritem.h>
-#include <QGraphicsScene>
+#include <livescene.h>
 
 namespace Ui {
 class FormL300;
@@ -20,7 +20,7 @@ public:
     QImage* sectorImage() const;
     bool isVisible() const;
     sectorItem* sector();
-    QGraphicsScene* scene();
+    liveScene* scene();
 
 private slots:
     void on_pushButton_clicked();
@@ -29,7 +29,7 @@ private:
     Ui::FormL300 *ui;
     sectorItem* m_sector{nullptr};
     QGraphicsView* m_graphicsView{nullptr};
-    QGraphicsScene* m_scene{nullptr};
+    liveScene* m_scene{nullptr};
 };
 
 #endif // FORML300_H

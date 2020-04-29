@@ -518,6 +518,8 @@ void frontend::setupScene( void )
     scene = new liveScene( this );
     m_formL300 = new FormL300( this );
 
+    liveScene* sceneL300 = m_formL300->scene();
+
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );
@@ -548,8 +550,12 @@ void frontend::setupScene( void )
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              scene,      SLOT(handleReticleBrightnessChanged(int)) );
+    connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
+             sceneL300,      SLOT(handleReticleBrightnessChanged(int)) );
+
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
              scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
+
     connect( scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
 
     // Auto fill the background with black

@@ -7,7 +7,7 @@ FormL300::FormL300(QWidget *parent) :
 {
     ui->setupUi(this);
     m_sector = new sectorItem();
-    m_scene = new QGraphicsScene(this);
+    m_scene = new liveScene(this);
     m_graphicsView = ui->graphicsView;
     m_scene->addItem(m_sector);
     m_graphicsView->setScene(m_scene);
@@ -40,7 +40,7 @@ sectorItem *FormL300::sector()
     return m_sector;
 }
 
-QGraphicsScene *FormL300::scene()
+liveScene *FormL300::scene()
 {
     return m_scene;
 }
