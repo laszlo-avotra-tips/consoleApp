@@ -952,7 +952,7 @@ SYNC</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>1390</y>
+        <y>1420</y>
         <width>300</width>
         <height>100</height>
        </rect>
@@ -982,7 +982,7 @@ Grayscale</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>1530</y>
+        <y>1590</y>
         <width>300</width>
         <height>100</height>
        </rect>
@@ -1007,7 +1007,7 @@ Snapshot</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>1640</y>
+        <y>1750</y>
         <width>300</width>
         <height>80</height>
        </rect>
@@ -1856,7 +1856,7 @@ OPTIONS</string>
         <x>20</x>
         <y>1230</y>
         <width>300</width>
-        <height>131</height>
+        <height>150</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -2040,7 +2040,7 @@ IMAGE</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>1800</y>
+        <y>1850</y>
         <width>300</width>
         <height>80</height>
        </rect>
