@@ -489,7 +489,7 @@ QGroupBox::title {
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QPushButton" name="pushButtonLogo">
+         <widget class="QPushButton" name="pushButtonAvinger">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>

@@ -52,34 +52,6 @@ void FormL300::on_pushButton_clicked()
     hide();
 }
 
-void FormL300::on_pushButtonLogo_clicked()
-{
-
-}
-
-
-void FormL300::on_pushButtonLogo_clicked(bool checked)
-{
-    QParallelAnimationGroup *group = new QParallelAnimationGroup(ui->pushButtonMeasure);
-    if (checked)
-    {
-        animateShow(ui->pushButton, group, 1.0f);
-        animateShow(ui->pushButtonMeasure, group);
-        animateShow(ui->pushButtonRecord, group, 1.0f);
-        animateShow(ui->pushButtonZoom, group);
-//        animateShow(ui.endCaseButton, group);
-        animateShow(ui->pushButtonCamera, group);
-    } else {
-        animateHide(ui->pushButton, group);
-        animateHide(ui->pushButtonMeasure, group);
-        animateHide(ui->pushButtonRecord, group);
-        animateHide(ui->pushButtonZoom, group);
-//        animateHide(ui.endCaseButton, group);
-        animateHide(ui->pushButtonCamera, group);
-    }
-    group->start();
-}
-
 void FormL300::animateHide(QWidget *wid, QParallelAnimationGroup *group)
 {
     int duration_ms=1500;
@@ -117,4 +89,27 @@ void FormL300::hideButtons()
     animateHide(ui->pushButtonCamera, group);
 //    animateShow(ui.pushButton_2,group);
     group->start();
+}
+
+void FormL300::on_pushButtonAvinger_clicked(bool checked)
+{
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(ui->pushButtonMeasure);
+    if (checked)
+    {
+        animateShow(ui->pushButton, group, 1.0f);
+        animateShow(ui->pushButtonMeasure, group);
+        animateShow(ui->pushButtonRecord, group, 1.0f);
+        animateShow(ui->pushButtonZoom, group);
+//        animateShow(ui.endCaseButton, group);
+        animateShow(ui->pushButtonCamera, group);
+    } else {
+        animateHide(ui->pushButton, group);
+        animateHide(ui->pushButtonMeasure, group);
+        animateHide(ui->pushButtonRecord, group);
+        animateHide(ui->pushButtonZoom, group);
+//        animateHide(ui.endCaseButton, group);
+        animateHide(ui->pushButtonCamera, group);
+    }
+    group->start();
+
 }
