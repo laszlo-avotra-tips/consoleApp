@@ -37,6 +37,7 @@
 #include "capturewidget.h"
 #include "windowmanager.h"
 #include <memory>
+#include <forml300.h>
 
 #if ENABLE_COLORMAP_OPTIONS
 #include "Widgets/curvesdialog.h"

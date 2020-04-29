@@ -516,6 +516,7 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     scene = new liveScene( this );
+    m_formL300 = new FormL300( this );
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -2000,12 +2001,28 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 
 void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
+    QImage* image{nullptr};
+    QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    auto image = scene->sectorImage();
-    memcpy( image->bits(), frameData->dispData, SectorSize );
-    QPixmap tmpPixmap = QPixmap::fromImage( *image );
-    scene->sectorHandle()->setPixmap(tmpPixmap);
-    scene->setDoPaint();
+    if(!m_formL300->isVisible()){
+        image = scene->sectorImage();
+        pixmap = scene->sectorHandle();
+    }else {
+        image = m_formL300->sectorImage();
+        pixmap = m_formL300->sectorHandle();
+    }
+
+    if(image){
+        memcpy( image->bits(), frameData->dispData, SectorSize );
+    }
+    if(pixmap){
+        QPixmap tmpPixmap = QPixmap::fromImage( *image );
+        pixmap->setPixmap(tmpPixmap);
+    }
+    if(!m_formL300->isVisible()){
+        scene->setDoPaint();
+    }
+    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
 }
 
 /*
