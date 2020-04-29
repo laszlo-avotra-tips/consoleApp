@@ -23,5 +23,9 @@
         <file>Frontend/Resources/counterClockwiseArrow.png</file>
         <file>Frontend/Resources/activeIndicator.png</file>
         <file>Frontend/Resources/passiveIndicator.png</file>
+        <file alias="capture">Frontend/Resources/L300capture.png</file>
+        <file alias="aLogo">Frontend/Resources/L300logo.png</file>
+        <file alias="measure">Frontend/Resources/L300measure.png</file>
+        <file alias="record">Frontend/Resources/L300record.png</file>
     </qresource>
 </RCC>
