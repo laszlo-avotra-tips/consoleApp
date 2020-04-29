@@ -719,7 +719,7 @@ border-radius: 4px;
          <x>0</x>
          <y>33</y>
          <width>1951</width>
-         <height>61</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="text">
@@ -762,7 +762,7 @@ border-radius: 4px;
        <property name="geometry">
         <rect>
          <x>320</x>
-         <y>110</y>
+         <y>120</y>
          <width>431</width>
          <height>51</height>
         </rect>
@@ -814,7 +814,7 @@ border-radius: 4px;
        <rect>
         <x>20</x>
         <y>70</y>
-        <width>181</width>
+        <width>261</width>
         <height>66</height>
        </rect>
       </property>
@@ -847,7 +847,7 @@ SELECT</string>
        <rect>
         <x>20</x>
         <y>520</y>
-        <width>181</width>
+        <width>281</width>
         <height>66</height>
        </rect>
       </property>
@@ -880,7 +880,7 @@ SYNC</string>
        <rect>
         <x>30</x>
         <y>840</y>
-        <width>181</width>
+        <width>261</width>
         <height>66</height>
        </rect>
       </property>
@@ -987,9 +987,9 @@ Snapshot</string>
      <widget class="QFrame" name="crfFrame">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>950</y>
-        <width>91</width>
+        <x>10</x>
+        <y>930</y>
+        <width>261</width>
         <height>81</height>
        </rect>
       </property>
@@ -1020,9 +1020,9 @@ CRF</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>700</y>
-        <width>181</width>
+        <x>50</x>
+        <y>670</y>
+        <width>251</width>
         <height>66</height>
        </rect>
       </property>
@@ -1084,11 +1084,17 @@ IMAGE</string>
      <widget class="QGroupBox" name="capturesGroupBox">
       <property name="geometry">
        <rect>
-        <x>2320</x>
-        <y>0</y>
+        <x>2300</x>
+        <y>50</y>
         <width>681</width>
-        <height>1741</height>
+        <height>1731</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="font">
        <font>
@@ -1126,7 +1132,7 @@ IMAGE</string>
           <x>0</x>
           <y>-2</y>
           <width>681</width>
-          <height>1081</height>
+          <height>901</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1164,9 +1170,9 @@ QGroupBox::title {
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>1080</y>
+          <y>900</y>
           <width>681</width>
-          <height>631</height>
+          <height>811</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1468,9 +1474,9 @@ CASE</string>
      <widget class="QPushButton" name="recordLoopButton">
       <property name="geometry">
        <rect>
-        <x>3010</x>
-        <y>630</y>
-        <width>211</width>
+        <x>2990</x>
+        <y>980</y>
+        <width>241</width>
         <height>91</height>
        </rect>
       </property>
@@ -1700,9 +1706,9 @@ OPTIONS</string>
      <widget class="QPushButton" name="saveMeasurementButton">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>990</y>
-        <width>181</width>
+        <x>50</x>
+        <y>1040</y>
+        <width>221</width>
         <height>66</height>
        </rect>
       </property>
@@ -1717,9 +1723,9 @@ OVERLAY</string>
      <widget class="QPushButton" name="directionPushButton">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>60</x>
         <y>1130</y>
-        <width>181</width>
+        <width>221</width>
         <height>66</height>
        </rect>
       </property>
@@ -1805,9 +1811,9 @@ Passive</string>
      <widget class="QPushButton" name="captureImageButton">
       <property name="geometry">
        <rect>
-        <x>3020</x>
+        <x>2990</x>
         <y>60</y>
-        <width>201</width>
+        <width>231</width>
         <height>101</height>
        </rect>
       </property>
