@@ -529,10 +529,22 @@ QGroupBox::title {
       </item>
       <item>
        <widget class="QGraphicsView" name="graphicsView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>1440</width>
-          <height>1440</height>
+          <width>2160</width>
+          <height>2160</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>2160</width>
+          <height>2160</height>
          </size>
         </property>
        </widget>
