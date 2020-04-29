@@ -354,7 +354,7 @@ QPushButton::hover
 
 QPushButton:checked 
 {
-    background:  rgb(  191, 191, 191  ); 
+    background:  rgb(  111, 111, 111  ); 
     border: rgb(  191, 191, 191  ); 
     color: rgb( 52, 73, 94 );
  }
@@ -521,6 +521,12 @@ QGroupBox::title {
             <width>200</width>
             <height>200</height>
            </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

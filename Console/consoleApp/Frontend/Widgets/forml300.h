@@ -26,7 +26,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void on_pushButtonAvinger_clicked(bool checked);
+    void on_pushButtonAvinger_toggled(bool checked);
 
 private:
     void animateHide(QWidget* wid, QParallelAnimationGroup* group);

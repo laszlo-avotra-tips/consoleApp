@@ -13,6 +13,8 @@ FormL300::FormL300(QWidget *parent) :
     m_graphicsView = ui->graphicsView;
     m_scene->addItem(m_sector);
     m_graphicsView->setScene(m_scene);
+//    ui->pushButtonAvinger->setWindowOpacity(0.5f);
+    hideButtons();
 }
 
 FormL300::~FormL300()
@@ -87,11 +89,11 @@ void FormL300::hideButtons()
     animateHide(ui->pushButtonZoom, group);
 //    animateHide(ui.endCaseButton, group);
     animateHide(ui->pushButtonCamera, group);
-//    animateShow(ui.pushButton_2,group);
+    animateShow(ui->pushButtonAvinger,group);
     group->start();
 }
 
-void FormL300::on_pushButtonAvinger_clicked(bool checked)
+void FormL300::on_pushButtonAvinger_toggled(bool checked)
 {
     QParallelAnimationGroup *group = new QParallelAnimationGroup(ui->pushButtonMeasure);
     if (checked)
