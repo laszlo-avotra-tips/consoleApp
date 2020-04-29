@@ -599,7 +599,7 @@ QWidget#backgroundWidget
          <item row="2" column="2">
           <widget class="QCheckBox" name="checkBoxPlayback">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text">
             <string>Playback</string>
@@ -724,10 +724,10 @@ QWidget#backgroundWidget
             <number>100</number>
            </property>
            <property name="value">
-            <number>1000</number>
+            <number>10</number>
            </property>
            <property name="sliderPosition">
-            <number>1000</number>
+            <number>10</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>

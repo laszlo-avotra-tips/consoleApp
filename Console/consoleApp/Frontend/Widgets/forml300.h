@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <sectoritem.h>
 #include <livescene.h>
+#include <QParallelAnimationGroup>
+
 
 namespace Ui {
 class FormL300;
@@ -24,6 +26,15 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_pushButtonLogo_clicked();
+
+    void on_pushButtonLogo_clicked(bool checked);
+
+private:
+    void animateHide(QWidget* wid, QParallelAnimationGroup* group);
+    void animateShow(QWidget* wid, QParallelAnimationGroup* group, float opacity=0.5f);
+    void hideButtons();
 
 private:
     Ui::FormL300 *ui;
