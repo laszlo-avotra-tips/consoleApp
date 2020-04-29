@@ -2022,7 +2022,7 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     if(!m_formL300->isVisible()){
         scene->setDoPaint();
     }
-    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
+//    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
 }
 
 /*

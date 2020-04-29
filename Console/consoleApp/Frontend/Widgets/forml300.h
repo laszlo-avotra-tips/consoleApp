@@ -19,6 +19,8 @@ public:
     QGraphicsPixmapItem *sectorHandle( void );
     QImage* sectorImage() const;
     bool isVisible() const;
+    sectorItem* sector();
+    QGraphicsScene* scene();
 
 private slots:
     void on_pushButton_clicked();

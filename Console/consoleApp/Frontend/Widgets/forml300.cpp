@@ -35,6 +35,16 @@ bool FormL300::isVisible() const
     return !region.isEmpty();
 }
 
+sectorItem *FormL300::sector()
+{
+    return m_sector;
+}
+
+QGraphicsScene *FormL300::scene()
+{
+    return m_scene;
+}
+
 void FormL300::on_pushButton_clicked()
 {
     hide();
