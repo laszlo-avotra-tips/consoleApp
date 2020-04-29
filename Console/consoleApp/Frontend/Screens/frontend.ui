@@ -1102,9 +1102,9 @@ IMAGE</string>
       <property name="geometry">
        <rect>
         <x>2300</x>
-        <y>30</y>
+        <y>10</y>
         <width>681</width>
-        <height>1751</height>
+        <height>1771</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -1221,7 +1221,7 @@ QGroupBox::title {
      <widget class="QGroupBox" name="imageSettingsGroupBox">
       <property name="geometry">
        <rect>
-        <x>2460</x>
+        <x>2330</x>
         <y>1940</y>
         <width>331</width>
         <height>71</height>
@@ -1486,7 +1486,7 @@ QPushButton:hover {
       <property name="geometry">
        <rect>
         <x>3010</x>
-        <y>1790</y>
+        <y>1800</y>
         <width>201</width>
         <height>91</height>
        </rect>
@@ -1509,7 +1509,7 @@ CASE</string>
       <property name="geometry">
        <rect>
         <x>2990</x>
-        <y>980</y>
+        <y>940</y>
         <width>241</width>
         <height>91</height>
        </rect>
@@ -1541,7 +1541,7 @@ LOOP</string>
      <widget class="QLabel" name="timeFieldLabel">
       <property name="geometry">
        <rect>
-        <x>3000</x>
+        <x>3020</x>
         <y>2060</y>
         <width>181</width>
         <height>41</height>
@@ -1595,7 +1595,7 @@ PREVIEW</string>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>2840</x>
+        <x>2710</x>
         <y>1940</y>
         <width>331</width>
         <height>71</height>
@@ -1695,9 +1695,9 @@ QPushButton:hover {
      <widget class="QPushButton" name="advancedViewButton">
       <property name="geometry">
        <rect>
-        <x>2590</x>
+        <x>2580</x>
         <y>1800</y>
-        <width>161</width>
+        <width>191</width>
         <height>91</height>
        </rect>
       </property>
@@ -1813,7 +1813,7 @@ Passive</string>
      <widget class="QPushButton" name="EgineeringButton">
       <property name="geometry">
        <rect>
-        <x>2680</x>
+        <x>2590</x>
         <y>2050</y>
         <width>301</width>
         <height>51</height>
@@ -1838,7 +1838,7 @@ Passive</string>
      <widget class="QPushButton" name="pushButtonLogo">
       <property name="geometry">
        <rect>
-        <x>2460</x>
+        <x>2330</x>
         <y>2050</y>
         <width>201</width>
         <height>51</height>
@@ -1863,7 +1863,7 @@ Passive</string>
       <property name="geometry">
        <rect>
         <x>2990</x>
-        <y>60</y>
+        <y>10</y>
         <width>231</width>
         <height>101</height>
        </rect>
