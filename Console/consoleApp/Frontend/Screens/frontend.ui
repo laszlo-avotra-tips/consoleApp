@@ -1269,22 +1269,28 @@ QGroupBox::title {
      <widget class="QGroupBox" name="imageSettingsGroupBox">
       <property name="geometry">
        <rect>
-        <x>2330</x>
-        <y>1940</y>
-        <width>331</width>
-        <height>71</height>
+        <x>2290</x>
+        <y>1910</y>
+        <width>400</width>
+        <height>80</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="minimumSize">
        <size>
-        <width>331</width>
-        <height>71</height>
+        <width>400</width>
+        <height>80</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>331</width>
-        <height>71</height>
+        <width>400</width>
+        <height>80</height>
        </size>
       </property>
       <property name="title">
@@ -1545,6 +1551,19 @@ QPushButton:hover {
       <property name="toolTip">
        <string>Save case data and quit. (Shortcut: Alt-F12)</string>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 20pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 32px;
+    border-width: 2px;
+}
+</string>
+      </property>
       <property name="text">
        <string>END
 CASE</string>
@@ -1557,7 +1576,7 @@ CASE</string>
       <property name="geometry">
        <rect>
         <x>2980</x>
-        <y>940</y>
+        <y>990</y>
         <width>240</width>
         <height>100</height>
        </rect>
@@ -1590,9 +1609,9 @@ LOOP</string>
       <property name="geometry">
        <rect>
         <x>3020</x>
-        <y>2060</y>
+        <y>2050</y>
         <width>181</width>
-        <height>41</height>
+        <height>80</height>
        </rect>
       </property>
       <property name="font">
@@ -1620,7 +1639,7 @@ LOOP</string>
      <widget class="QPushButton" name="physicianPreviewButton">
       <property name="geometry">
        <rect>
-        <x>2780</x>
+        <x>2720</x>
         <y>1800</y>
         <width>191</width>
         <height>91</height>
@@ -1631,6 +1650,19 @@ LOOP</string>
       </property>
       <property name="toolTip">
        <string>Display the capture thumbnails on the Physician Screen.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 20pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 32px;
+    border-width: 2px;
+}
+</string>
       </property>
       <property name="text">
        <string>PHYSICIAN
@@ -1643,10 +1675,10 @@ PREVIEW</string>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>2710</x>
-        <y>1940</y>
-        <width>331</width>
-        <height>71</height>
+        <x>2740</x>
+        <y>1910</y>
+        <width>461</width>
+        <height>80</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -1743,7 +1775,7 @@ QPushButton:hover {
      <widget class="QPushButton" name="advancedViewButton">
       <property name="geometry">
        <rect>
-        <x>2580</x>
+        <x>2510</x>
         <y>1800</y>
         <width>191</width>
         <height>91</height>
@@ -1754,6 +1786,19 @@ QPushButton:hover {
       </property>
       <property name="toolTip">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show advanced controls and indicators. (Shortcut: Alt-F6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 20pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 32px;
+    border-width: 2px;
+}
+</string>
       </property>
       <property name="text">
        <string>ADVANCED
@@ -1769,9 +1814,9 @@ VIEW</string>
      <widget class="QPushButton" name="displayOptionsButton">
       <property name="geometry">
        <rect>
-        <x>2320</x>
+        <x>2290</x>
         <y>1800</y>
-        <width>241</width>
+        <width>191</width>
         <height>91</height>
        </rect>
       </property>
@@ -1780,6 +1825,19 @@ VIEW</string>
       </property>
       <property name="toolTip">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Modify display settings for viewing live OCT images. (Shortcut: Alt-F8)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 20pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 32px;
+    border-width: 2px;
+}
+</string>
       </property>
       <property name="text">
        <string>DISPLAY
@@ -1889,7 +1947,7 @@ Passive</string>
         <x>2590</x>
         <y>2050</y>
         <width>301</width>
-        <height>51</height>
+        <height>80</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1897,6 +1955,19 @@ Passive</string>
       </property>
       <property name="toolTip">
        <string>Save case data and quit. (Shortcut: Alt-F12)</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 20pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 32px;
+    border-width: 2px;
+}
+</string>
       </property>
       <property name="text">
        <string>Engineering Dialog</string>
@@ -1911,10 +1982,10 @@ Passive</string>
      <widget class="QPushButton" name="pushButtonLogo">
       <property name="geometry">
        <rect>
-        <x>2330</x>
+        <x>2290</x>
         <y>2050</y>
         <width>201</width>
-        <height>51</height>
+        <height>80</height>
        </rect>
       </property>
       <property name="text">
@@ -1936,7 +2007,7 @@ Passive</string>
       <property name="geometry">
        <rect>
         <x>2980</x>
-        <y>100</y>
+        <y>150</y>
         <width>240</width>
         <height>100</height>
        </rect>
