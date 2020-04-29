@@ -282,12 +282,29 @@ QToolButton
       </property>
       <property name="font">
        <font>
-        <family>DinPRO-Medium</family>
-        <pointsize>36</pointsize>
+        <family>DINPro-medium</family>
+        <pointsize>15</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> QGroupBox {
+    font: 14.75pt DINPro-medium;
+    color: white;
+    background-color: rgb( 51, 51, 51 );
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 0px;
+}
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* position at the top center */
+     left: 10px;
+     padding: 1px;
+ }</string>
       </property>
       <property name="title">
        <string>LIVE</string>
@@ -1085,9 +1102,9 @@ IMAGE</string>
       <property name="geometry">
        <rect>
         <x>2300</x>
-        <y>50</y>
+        <y>30</y>
         <width>681</width>
-        <height>1731</height>
+        <height>1751</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -1098,12 +1115,29 @@ IMAGE</string>
       </property>
       <property name="font">
        <font>
-        <family>DinPRO-Medium</family>
-        <pointsize>36</pointsize>
+        <family>DINPro-medium</family>
+        <pointsize>15</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> QGroupBox {
+    font: 14.75pt DINPro-medium;
+    color: white;
+    background-color: rgb( 51, 51, 51 );
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 0px;
+}
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* position at the top center */
+     left: 10px;
+     padding: 1px;
+ }</string>
       </property>
       <property name="title">
        <string>REVIEW</string>
@@ -1567,6 +1601,23 @@ PREVIEW</string>
         <height>71</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true"> QGroupBox {
+    font: 14.75pt DINPro-medium;
+    color: white;
+    background-color: rgb( 51, 51, 51 );
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 0px;
+}
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* position at the top center */
+     left: 10px;
+     padding: 1px;
+ }</string>
+      </property>
       <property name="title">
        <string>PATIENT</string>
       </property>
@@ -1581,7 +1632,7 @@ PREVIEW</string>
        </property>
        <property name="font">
         <font>
-         <family>DinPRO-Medium</family>
+         <family>DINPro-medium</family>
          <pointsize>13</pointsize>
          <weight>50</weight>
          <italic>false</italic>
@@ -1589,8 +1640,8 @@ PREVIEW</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">    color: white;
-    font: 13pt &quot;DinPRO-Medium&quot;;
+        <string notr="true">    font: 13pt DINPro-medium;
+    color: white;
 </string>
        </property>
        <property name="text">
