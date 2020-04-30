@@ -123,7 +123,7 @@ void FormL300::on_pushButtonAvinger_toggled(bool checked)
 
 }
 
-void FormL300::on_pushButtonZoomOut_clicked()
+void FormL300::on_pushButtonZoomIn_clicked()
 {
     auto* slider = ui->horizontalSliderZoom;
     int value = slider->value();
@@ -133,7 +133,7 @@ void FormL300::on_pushButtonZoomOut_clicked()
     }
 }
 
-void FormL300::on_pushButtonZoomIn_clicked()
+void FormL300::on_pushButtonZoomOut_clicked()
 {
     auto* slider = ui->horizontalSliderZoom;
     int value = slider->value();
