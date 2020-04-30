@@ -127,11 +127,10 @@ void FormL300::on_pushButtonZoomIn_clicked()
 {
     auto* slider = ui->horizontalSliderZoom;
     int value = slider->value();
-    const int maxValue{4};
+    const int maxValue{int(m_imagingDepth.size())};
     if(value < maxValue){
         slider->setValue(value + 1);
     }
-    SignalModel::instance()->setImagingDepth_S(m_imagingDepth[value]);
 }
 
 void FormL300::on_pushButtonZoomOut_clicked()
@@ -142,5 +141,10 @@ void FormL300::on_pushButtonZoomOut_clicked()
     if(value > minValue){
         slider->setValue(value - 1);
     }
-    SignalModel::instance()->setImagingDepth_S(m_imagingDepth[value]);
+}
+
+void FormL300::on_horizontalSliderZoom_valueChanged(int value)
+{
+    int depth = m_imagingDepth[value];
+    SignalModel::instance()->setImagingDepth_S(depth);
 }
