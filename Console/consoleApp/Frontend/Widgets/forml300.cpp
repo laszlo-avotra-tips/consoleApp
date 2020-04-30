@@ -70,10 +70,10 @@ void FormL300::animateHide(QWidget *wid, QParallelAnimationGroup *group)
 void FormL300::animateShow(QWidget *wid, QParallelAnimationGroup *group, float opacity)
 {
     int duration_ms=1500;
-    QGraphicsOpacityEffect * hiding_effect = new QGraphicsOpacityEffect(wid);
-    QPropertyAnimation* animation = new QPropertyAnimation(hiding_effect, "opacity");
+    QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(wid);
+    QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
 
-    wid->setGraphicsEffect(hiding_effect);
+    wid->setGraphicsEffect(showing_effect);
     animation->setStartValue(0);
     animation->setEndValue(opacity);
     animation->setDuration(duration_ms);
@@ -87,7 +87,7 @@ void FormL300::hideButtons()
     animateHide(ui->pushButtonMeasure, group);
     animateHide(ui->pushButtonRecord, group);
     animateHide(ui->pushButtonZoom, group);
-//    animateHide(ui.endCaseButton, group);
+    animateHide(ui->pushButtonFlip, group);
     animateHide(ui->pushButtonCamera, group);
     animateShow(ui->pushButtonAvinger,group);
     group->start();
@@ -98,18 +98,18 @@ void FormL300::on_pushButtonAvinger_toggled(bool checked)
     QParallelAnimationGroup *group = new QParallelAnimationGroup(ui->pushButtonMeasure);
     if (checked)
     {
-        animateShow(ui->pushButton, group, 1.0f);
+        animateShow(ui->pushButton, group);
         animateShow(ui->pushButtonMeasure, group);
-        animateShow(ui->pushButtonRecord, group, 1.0f);
+        animateShow(ui->pushButtonRecord, group);
         animateShow(ui->pushButtonZoom, group);
-//        animateShow(ui.endCaseButton, group);
+        animateShow(ui->pushButtonFlip, group);
         animateShow(ui->pushButtonCamera, group);
     } else {
         animateHide(ui->pushButton, group);
         animateHide(ui->pushButtonMeasure, group);
         animateHide(ui->pushButtonRecord, group);
         animateHide(ui->pushButtonZoom, group);
-//        animateHide(ui.endCaseButton, group);
+        animateHide(ui->pushButtonFlip, group);
         animateHide(ui->pushButtonCamera, group);
     }
     group->start();
