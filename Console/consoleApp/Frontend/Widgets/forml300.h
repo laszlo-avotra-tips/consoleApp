@@ -5,6 +5,7 @@
 #include <sectoritem.h>
 #include <livescene.h>
 #include <QParallelAnimationGroup>
+#include <vector>
 
 
 namespace Ui {
@@ -42,6 +43,7 @@ private:
     sectorItem* m_sector{nullptr};
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
+    const std::vector<int> m_imagingDepth{300,375,450,525,600};
 };
 
 #endif // FORML300_H
