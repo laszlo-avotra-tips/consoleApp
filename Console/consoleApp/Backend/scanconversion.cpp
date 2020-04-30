@@ -534,7 +534,6 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     int SectorHeight_px = SECTOR_HEIGHT_PX;
     depthSetting &depth = depthSetting::Instance();
     float fractionOfCanvas = depth.getFractionOfCanvas();
-    int imagingDepth_S = depth.getImagingDepth_S();
 
     float displayAngle = displayAngle_deg;
     const auto* smi = SignalModel::instance();
@@ -551,7 +550,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    &SectorWidth_px );
     clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    &SectorHeight_px );
     clStatus |= clSetKernelArg( cl_WarpKernel, 11, sizeof(float),  &fractionOfCanvas );
-    clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    &imagingDepth_S );
+    clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    smi->getImagingDepth_S() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 13, sizeof(int),    smi->whiteLevel() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 14, sizeof(int),    smi->blackLevel() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 15, sizeof(int),    smi->isInvertOctColors() );
