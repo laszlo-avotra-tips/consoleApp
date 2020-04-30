@@ -2,6 +2,7 @@
 #include "ui_forml300.h"
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
+#include <QSlider>
 
 FormL300::FormL300(QWidget *parent) :
     QWidget(parent),
@@ -86,7 +87,9 @@ void FormL300::hideButtons()
     animateHide(ui->pushButton, group);
     animateHide(ui->pushButtonMeasure, group);
     animateHide(ui->pushButtonRecord, group);
-    animateHide(ui->pushButtonZoom, group);
+    animateHide(ui->pushButtonZoomIn, group);
+    animateHide(ui->pushButtonZoomOut, group);
+    animateHide(ui->horizontalSliderZoom, group);
     animateHide(ui->pushButtonFlip, group);
     animateHide(ui->pushButtonCamera, group);
     animateShow(ui->pushButtonAvinger,group);
@@ -101,17 +104,41 @@ void FormL300::on_pushButtonAvinger_toggled(bool checked)
         animateShow(ui->pushButton, group);
         animateShow(ui->pushButtonMeasure, group);
         animateShow(ui->pushButtonRecord, group);
-        animateShow(ui->pushButtonZoom, group);
+        animateShow(ui->pushButtonZoomIn, group);
+        animateShow(ui->pushButtonZoomOut, group);
+        animateShow(ui->horizontalSliderZoom, group);
         animateShow(ui->pushButtonFlip, group);
         animateShow(ui->pushButtonCamera, group);
     } else {
         animateHide(ui->pushButton, group);
         animateHide(ui->pushButtonMeasure, group);
         animateHide(ui->pushButtonRecord, group);
-        animateHide(ui->pushButtonZoom, group);
+        animateHide(ui->pushButtonZoomIn, group);
+        animateHide(ui->pushButtonZoomOut, group);
+        animateHide(ui->horizontalSliderZoom, group);
         animateHide(ui->pushButtonFlip, group);
         animateHide(ui->pushButtonCamera, group);
     }
     group->start();
 
+}
+
+void FormL300::on_pushButtonZoomOut_clicked()
+{
+    auto* slider = ui->horizontalSliderZoom;
+    int value = slider->value();
+    const int maxValue{5};
+    if(value < maxValue){
+        slider->setValue(value + 1);
+    }
+}
+
+void FormL300::on_pushButtonZoomIn_clicked()
+{
+    auto* slider = ui->horizontalSliderZoom;
+    int value = slider->value();
+    const int minValue{0};
+    if(value > minValue){
+        slider->setValue(value - 1);
+    }
 }

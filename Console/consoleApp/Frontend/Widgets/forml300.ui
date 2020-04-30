@@ -34,7 +34,7 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -273,7 +273,7 @@ QGroupBox::title {
      padding: 1px;
  }</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
        <number>237</number>
       </property>
@@ -290,7 +290,7 @@ QGroupBox::title {
        <number>0</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <widget class="QPushButton" name="pushButtonAvinger">
           <property name="sizePolicy">
@@ -347,15 +347,12 @@ QGroupBox::title {
          </spacer>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
           <property name="spacing">
            <number>240</number>
           </property>
-          <property name="sizeConstraint">
-           <enum>QLayout::SetFixedSize</enum>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
+          <property name="bottomMargin">
+           <number>200</number>
           </property>
           <item>
            <widget class="QPushButton" name="pushButtonCamera">
@@ -466,35 +463,170 @@ QGroupBox::title {
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButtonZoom">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>20</number>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>300</width>
-              <height>200</height>
-             </size>
+            <property name="bottomMargin">
+             <number>20</number>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>300</width>
-              <height>200</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>ZOOM</string>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>240</width>
-              <height>240</height>
-             </size>
-            </property>
-           </widget>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <property name="spacing">
+               <number>60</number>
+              </property>
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="pushButtonZoomOut">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../octConsole.qrc">
+                  <normaloff>:/octConsole/zoomOut</normaloff>:/octConsole/zoomOut</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>80</width>
+                  <height>80</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonZoomIn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../octConsole.qrc">
+                  <normaloff>:/octConsole/zoomIn</normaloff>:/octConsole/zoomIn</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>80</width>
+                  <height>80</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QSlider" name="horizontalSliderZoom">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>300</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"> /* ---------- Sliders ------------*/
+
+QSlider::groove:horizontal {
+border: 1px solid rgb(  191, 191, 191 );
+background: white;
+height: 10px;
+border-radius: 5px;
+}
+
+QSlider::sub-page:horizontal {
+background: rgb( 51, 51, 51 );
+border: 1px solid rgb( 51, 51, 51 );
+height: 10px;
+border-radius: 6px;
+}
+
+QSlider::add-page:horizontal   /* to the right of the handle */
+{
+background: rgb(  191, 191, 191  );
+border: 1px solid rgb(  191, 191, 191  );
+height: 10px;
+border-radius: 6px;
+}
+
+QSlider::handle:horizontal {
+  image: url(:images/handle_normal.png);
+  margin: -15px 0;
+    background:   rgb( 128, 128, 128 ); 
+}
+
+QSlider::handle:horizontal:hover {
+	image: url(:images/handle_rollover.png);
+    margin: -15px 0;
+    background:   rgb( 128, 128, 128 ); 
+}
+
+QSlider::sub-page:horizontal:disabled {
+    background:   rgb(  191, 191, 191  );
+    border-color:  rgb(  191, 191, 191  );
+border-radius: 6px;
+}
+
+QSlider::add-page:horizontal:disabled {
+    background:    rgb(  191, 191, 191  );
+    border-color:  rgb(  191, 191, 191  );
+border-radius: 6px;
+}
+
+QSlider::handle:horizontal:disabled {
+	image: url(:images/handle_disabled.png);
+background:  rgb( 128, 128, 128 );
+border: 1px solid  rgb(  128, 128, 128  );
+border-radius: -15px;
+}
+</string>
+              </property>
+              <property name="maximum">
+               <number>5</number>
+              </property>
+              <property name="pageStep">
+               <number>1</number>
+              </property>
+              <property name="value">
+               <number>3</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -649,6 +781,8 @@ QGroupBox::title {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../octConsole.qrc"/>
+ </resources>
  <connections/>
 </ui>

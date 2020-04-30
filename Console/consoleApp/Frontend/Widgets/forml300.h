@@ -28,6 +28,10 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButtonAvinger_toggled(bool checked);
 
+    void on_pushButtonZoomOut_clicked();
+
+    void on_pushButtonZoomIn_clicked();
+
 private:
     void animateHide(QWidget* wid, QParallelAnimationGroup* group);
     void animateShow(QWidget* wid, QParallelAnimationGroup* group, float opacity=0.5f);
