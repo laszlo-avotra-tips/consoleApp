@@ -347,7 +347,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
         <rect>
          <x>303</x>
          <y>35</y>
-         <width>271</width>
+         <width>561</width>
          <height>31</height>
         </rect>
        </property>
@@ -599,8 +599,8 @@ border-radius: 4px;
       <widget class="QPushButton" name="zoomResetPushButton">
        <property name="geometry">
         <rect>
-         <x>583</x>
-         <y>39</y>
+         <x>1070</x>
+         <y>40</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -619,8 +619,8 @@ border-radius: 4px;
       <widget class="QPushButton" name="liveViewPushButton">
        <property name="geometry">
         <rect>
-         <x>706</x>
-         <y>39</y>
+         <x>1250</x>
+         <y>40</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -641,7 +641,7 @@ border-radius: 4px;
       <widget class="QLabel" name="timeFieldLabel_mini">
        <property name="geometry">
         <rect>
-         <x>265</x>
+         <x>310</x>
          <y>0</y>
          <width>86</width>
          <height>27</height>
@@ -672,8 +672,8 @@ border-radius: 4px;
       <widget class="QLabel" name="deviceFieldLabel">
        <property name="geometry">
         <rect>
-         <x>372</x>
-         <y>2</y>
+         <x>610</x>
+         <y>0</y>
          <width>261</width>
          <height>23</height>
         </rect>
@@ -705,7 +705,7 @@ border-radius: 4px;
         <rect>
          <x>0</x>
          <y>33</y>
-         <width>900</width>
+         <width>1491</width>
          <height>33</height>
         </rect>
        </property>
@@ -716,8 +716,8 @@ border-radius: 4px;
       <widget class="Line" name="line">
        <property name="geometry">
         <rect>
-         <x>641</x>
-         <y>5</y>
+         <x>1000</x>
+         <y>0</y>
          <width>3</width>
          <height>21</height>
         </rect>
@@ -729,9 +729,9 @@ border-radius: 4px;
       <widget class="QLabel" name="catheterViewLabel">
        <property name="geometry">
         <rect>
-         <x>650</x>
-         <y>2</y>
-         <width>161</width>
+         <x>1070</x>
+         <y>0</y>
+         <width>381</width>
          <height>23</height>
         </rect>
        </property>
@@ -743,43 +743,6 @@ border-radius: 4px;
        </property>
        <property name="text">
         <string>Catheter Down</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="rulerSlidingPointSpinbox">
-       <property name="geometry">
-        <rect>
-         <x>386</x>
-         <y>70</y>
-         <width>231</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="suffix">
-        <string> px</string>
-       </property>
-       <property name="prefix">
-        <string>Ruler Sliding Point </string>
-       </property>
-       <property name="maximum">
-        <number>1024</number>
-       </property>
-       <property name="singleStep">
-        <number>1</number>
-       </property>
-       <property name="value">
-        <number>0</number>
        </property>
       </widget>
       <zorder>instructionsLabel</zorder>
@@ -794,7 +757,6 @@ border-radius: 4px;
       <zorder>deviceFieldLabel</zorder>
       <zorder>line</zorder>
       <zorder>catheterViewLabel</zorder>
-      <zorder>rulerSlidingPointSpinbox</zorder>
      </widget>
      <widget class="QGroupBox" name="capturesGroupBox">
       <property name="geometry">

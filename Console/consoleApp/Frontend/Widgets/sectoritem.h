@@ -172,13 +172,6 @@ public:
     }
     void updateColorMap( QVector<QRgb> map );
     void setVideoOnly() { isVideoOnly = true; }
-#if ENABLE_ON_SCREEN_RULER
-    void setSlidingPoint( int val )
-    {
-        slidingPoint = val;
-    }
-#endif
-
     QImage *getSectorImage() const;
     void setSectorImage(QImage *value);
 
@@ -199,10 +192,6 @@ private:
     int centerX;
     int centerY;
     int secWidth;
-
-#if ENABLE_ON_SCREEN_RULER
-    int slidingPoint;
-#endif
 
     unwindMachine unwinder;
     Integrator angleInt;

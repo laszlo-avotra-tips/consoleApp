@@ -104,11 +104,6 @@ frontend::frontend(QWidget *parent)
 //    ui.measureModePushButton->hide();
     ui.saveMeasurementButton->hide();
 
-#if ENABLE_ON_SCREEN_RULER
-    ui.rulerSlidingPointSpinbox->show();
-#else
-    ui.rulerSlidingPointSpinbox->hide();
-#endif
 
     ui.zoomLevelLabel->setBuddy( ui.zoomSlider );
     ui.zoomResetPushButton->hide();
@@ -351,10 +346,6 @@ void frontend::init( void )
 
     connect( this, SIGNAL(disableMouseRotateSector()), scene, SLOT(handleDisableMouseRotateSector()) );
     connect( this, SIGNAL(enableMouseRotateSector()),  scene, SLOT(handleEnableMouseRotateSector()) );
-
-#if ENABLE_ON_SCREEN_RULER
-    connect( this, SIGNAL( setSlidingPoint( int ) ),     scene, SLOT( setSlidingPoint( int ) ) );
-#endif
 
     connect( &session, SIGNAL(sendSessionEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
@@ -2516,15 +2507,6 @@ void frontend::on_annotateImagePushButton_clicked()
     }
 }
 
-#if ENABLE_ON_SCREEN_RULER
-/*
- * on_rulerSlidingPointSpinbox_valueChanged
- */
-void frontend::on_rulerSlidingPointSpinbox_valueChanged( int val )
-{
-    emit setSlidingPoint( val );
-}
-#endif
 
 /*
  * handleScreenChanges

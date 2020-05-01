@@ -144,10 +144,6 @@ signals:
     void directionOfRotation( directionTracker::Direction_T );
     void sendLagAngle( double );
 
-#if ENABLE_ON_SCREEN_RULER
-    void setSlidingPoint( int );
-#endif
-
 //    void setSledRotation( bool );
 	void setDoPaint();
 
@@ -285,10 +281,6 @@ private slots:
     void on_autoAdjustBrightnessContrastButton_clicked();
     void on_captureImageButton_clicked();
     void on_annotateImagePushButton_clicked();
-
-#if ENABLE_ON_SCREEN_RULER
-    void on_rulerSlidingPointSpinbox_valueChanged( int val );
-#endif
 
     void createDisplays();
     void hideDisplays();

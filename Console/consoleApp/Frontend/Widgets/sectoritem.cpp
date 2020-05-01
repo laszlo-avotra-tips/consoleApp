@@ -112,10 +112,6 @@ sectorItem::sectorItem( QGraphicsItem *parent )
     sectorDecoratedImage = sectorImage->copy();
 
     isVideoOnly = false;
-
-#if ENABLE_ON_SCREEN_RULER
-    slidingPoint = 0;
-#endif
 }
 
 /*
@@ -667,48 +663,6 @@ void sectorItem::paintSector ( bool force )
 //		painter->setPen( Qt::black );
 //		painter->drawText( center, Qt::AlignCenter, spin );
 //    }
-
-#if ENABLE_ON_SCREEN_RULER
-    /*
-     * Draw a ruler for easy measurement of reticle line depths and catheter radius distances.
-     */
-    QPen tmpPen( QPen( Qt::white, 1, Qt::SolidLine, Qt::RoundCap) );
-    painter->setPen( tmpPen );
-
-    int lineSz = 20;
-    for( int kr = 0; kr < SectorWidth_px; kr++)
-    {
-        if( kr % 10 == 0 )
-        {
-            lineSz = 20;
-            if( kr % 50 == 0 )
-            {
-                lineSz = 30;
-            }
-            if( kr % 100 == 0 )
-            {
-                lineSz = 50;
-            }
-        }
-        else
-        {
-            lineSz = 1;
-        }
-        painter->drawLine( x1 + kr, y1, x1 + kr, y1-lineSz );
-    }
-
-    /*
-     * The sliding point set in the spinbox is offset from the catheter radius.
-     * This can be used to measure the internal imaging mask of a new device by
-     * setting the mask to zero, and moving the sliding point out to the visually
-     * confirmed point of the catheter outer edge. Use this value in the spinbox
-     * for the new internal imaging mask.
-     */
-    lineSz = 100;
-    QPen sliderPen( QPen( Qt::red, 1, Qt::SolidLine, Qt::RoundCap ) );
-    painter->setPen( sliderPen );
-    painter->drawLine( ( x1 + slidingPoint + catheterRadius_px ), y1, ( x1 + slidingPoint + catheterRadius_px ), ( y1 - lineSz ) );
-#endif
 
     setPixmap( tmpPixmap );
     painter->end();
