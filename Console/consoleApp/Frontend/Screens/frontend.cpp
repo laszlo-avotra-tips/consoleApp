@@ -98,7 +98,7 @@ frontend::frontend(QWidget *parent)
     // save the tip as defined in Designer so it can be restored as necessary
     defaultSceneToolTip = ui.liveGraphicsView->toolTip();
 
-    ui.loopMaskLabel->hide();
+//    ui.loopMaskLabel->hide();
 
     // these are always hidden at start-up
 //    ui.measureModePushButton->hide();
@@ -1269,7 +1269,7 @@ void frontend::on_recordLoopButton_clicked()
         ui.recordingLabel->show();
         docWindow->ui.recordingLabel->show();
         auxMon->setText( AuxMonitor::Recording, true );
-        ui.loopMaskLabel->show();
+//        ui.loopMaskLabel->show();
 
         // record the start time
         clipTimestamp = QDateTime::currentDateTime().toUTC();
@@ -1339,7 +1339,7 @@ void frontend::handleClipRecordingStopped( void )
     ui.recordingLabel->hide();
     docWindow->ui.recordingLabel->hide();
     auxMon->setText( AuxMonitor::Recording, false );
-    ui.loopMaskLabel->hide();
+//    ui.loopMaskLabel->hide();
 
     viewOption->enableButtons();
     ui.reviewWidget->enableClipSelection();
@@ -2290,7 +2290,7 @@ void frontend::handleDisplayingCapture()
 
     ui.liveViewPushButton->show();
     ui.reviewWidget->disableClipSelection();
-    ui.loopMaskLabel->show();
+//    ui.loopMaskLabel->show();
     ui.measureModePushButton->show(); // Allow access to Measurement during capture review
     ui.measureModePushButton->setEnabled( true );
     configureDisplayForReview();
@@ -2380,7 +2380,7 @@ void frontend::on_liveViewPushButton_clicked()
     else
     {
         ui.reviewWidget->enableClipSelection();
-        ui.loopMaskLabel->hide();
+//        ui.loopMaskLabel->hide();
     }
 
     enableCaptureButtons();

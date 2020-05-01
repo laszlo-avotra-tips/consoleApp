@@ -805,6 +805,18 @@ border-radius: 4px;
         <height>1111</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>681</width>
+        <height>1111</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>681</width>
+        <height>1111</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <family>DINPro-medium</family>
@@ -817,35 +829,77 @@ border-radius: 4px;
       <property name="title">
        <string>REVIEW</string>
       </property>
-      <widget class="captureWidget" name="reviewWidget" native="true">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>30</y>
-         <width>681</width>
-         <height>1081</height>
-        </rect>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="spacing">
+        <number>0</number>
        </property>
-       <property name="font">
-        <font>
-         <family>DinPRO-Medium</family>
-         <pointsize>36</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
+       <property name="leftMargin">
+        <number>0</number>
        </property>
-       <widget class="QGroupBox" name="playbackGroupBox">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>-2</y>
-          <width>681</width>
-          <height>571</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="captureWidget" name="reviewWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>681</width>
+           <height>1081</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>681</width>
+           <height>1081</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>DinPRO-Medium</family>
+           <pointsize>36</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QGroupBox" name="playbackGroupBox">
+            <property name="minimumSize">
+             <size>
+              <width>681</width>
+              <height>571</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>681</width>
+              <height>571</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
 QGroupBox {    
 	background: url(:/octConsole/Frontend/Resources/blank_texture.png);
     border-radius: 5px;
@@ -860,44 +914,42 @@ QGroupBox::title {
       padding-top: 7px;
 }
 </string>
-        </property>
-        <property name="title">
-         <string/>
-        </property>
-        <widget class="transport" name="transportWidget" native="true">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>180</y>
-           <width>495</width>
-           <height>225</height>
-          </rect>
-         </property>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="transport" name="transportWidget" native="true"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
-       </widget>
-       <widget class="QLabel" name="loopMaskLabel">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>570</y>
-          <width>681</width>
-          <height>511</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">     background: rgba( 51, 51, 51, 192 );</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QPushButton" name="recordLoopButton">
       <property name="geometry">
        <rect>
         <x>2450</x>
-        <y>610</y>
+        <y>630</y>
         <width>98</width>
         <height>66</height>
        </rect>
@@ -930,7 +982,7 @@ LOOP</string>
       <property name="geometry">
        <rect>
         <x>2450</x>
-        <y>40</y>
+        <y>60</y>
         <width>98</width>
         <height>66</height>
        </rect>
@@ -1199,7 +1251,7 @@ OVERLAY</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>1760</x>
@@ -1836,19 +1888,6 @@ QPushButton:hover {
        </item>
       </layout>
      </widget>
-     <zorder>layoutWidget</zorder>
-     <zorder>layoutWidget</zorder>
-     <zorder>layoutWidget</zorder>
-     <zorder>liveGroupBox</zorder>
-     <zorder>capturesGroupBox</zorder>
-     <zorder>recordLoopButton</zorder>
-     <zorder>timeFieldLabel</zorder>
-     <zorder>EgineeringButton</zorder>
-     <zorder>pushButtonLogo</zorder>
-     <zorder>captureImageButton</zorder>
-     <zorder>layoutWidget</zorder>
-     <zorder></zorder>
-     <zorder>layoutWidget</zorder>
     </widget>
    </item>
   </layout>
