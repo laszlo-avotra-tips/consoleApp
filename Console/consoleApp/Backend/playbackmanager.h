@@ -21,7 +21,7 @@ public:
     bool isPlayback() const;
     void startPlayback();
     void stopPlayback();
-    void setPlaybackSpeed(int speed);
+    void setPlaybackLoopDelay(int speed);
 
     unsigned long playbackLoopSleep() const;
 
@@ -40,7 +40,7 @@ private:
 
     static PlaybackManager* m_instance;
     bool m_isPlayback;
-    unsigned long m_playbackLoopSleep;
+    unsigned long m_playbackLoopSleep{1000};
     bool m_isSingleStep;
 };
 
