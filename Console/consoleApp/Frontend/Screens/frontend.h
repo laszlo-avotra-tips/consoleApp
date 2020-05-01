@@ -75,7 +75,6 @@ public slots:
     void handleDaqReset();
     void setupDeviceForSledSupport();
     void changeDeviceSpeed(int, int);
-    void dirButton( int );
 
 
     // These are sent from external objects to the frontend:
@@ -286,7 +285,6 @@ private slots:
     void on_autoAdjustBrightnessContrastButton_clicked();
     void on_captureImageButton_clicked();
     void on_annotateImagePushButton_clicked();
-    void on_directionPushButton_clicked();
 
 #if ENABLE_ON_SCREEN_RULER
     void on_rulerSlidingPointSpinbox_valueChanged( int val );

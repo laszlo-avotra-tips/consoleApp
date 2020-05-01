@@ -261,7 +261,7 @@ QGroupBox::title {
      <widget class="QGroupBox" name="liveGroupBox">
       <property name="geometry">
        <rect>
-        <x>98</x>
+        <x>100</x>
         <y>0</y>
         <width>1491</width>
         <height>1421</height>
@@ -795,294 +795,6 @@ border-radius: 4px;
       <zorder>line</zorder>
       <zorder>catheterViewLabel</zorder>
       <zorder>rulerSlidingPointSpinbox</zorder>
-     </widget>
-     <widget class="QPushButton" name="deviceSelectButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>66</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>Change the current device. (Shortcut: F1)</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton 
-{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>DEVICE
-SELECT</string>
-      </property>
-      <property name="shortcut">
-       <string>F1</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="scanSyncButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>140</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>Configure Scan Sync. (Shortcut: F3)</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton 
-{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>SCAN
-SYNC</string>
-      </property>
-      <property name="shortcut">
-       <string>F3</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="measureModePushButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>288</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>DinPRO-Medium</family>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string notr="true">Toggle Measurement mode.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton 
-{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>MEASURE</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="contrastCurveButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>740</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton 
-{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>Adjust
-Grayscale</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="rawDataPushButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>830</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton 
-{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>Save
-Raw
-Snapshot</string>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="rawSnapshotSpinBox">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>920</y>
-        <width>51</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="suffix">
-       <string/>
-      </property>
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>999</number>
-      </property>
-      <property name="value">
-       <number>34</number>
-      </property>
-     </widget>
-     <widget class="QFrame" name="crfFrame">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>950</y>
-        <width>91</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QSpinBox" name="crfTestSpinBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>50</y>
-         <width>41</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="maximum">
-        <number>51</number>
-       </property>
-       <property name="value">
-        <number>25</number>
-       </property>
-      </widget>
-      <widget class="QLabel" name="crfTestLabel">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>0</y>
-         <width>45</width>
-         <height>46</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Video
-CRF</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QPushButton" name="annotateImagePushButton">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>214</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>Toggle Annotation mode. (Shortcut: F4)</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton 
-{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>ANNOTATE
-IMAGE</string>
-      </property>
-      <property name="shortcut">
-       <string>F4</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="evoaOffLabel">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>1030</y>
-        <width>84</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>DinPRO-Medium</family>
-        <pointsize>-1</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>EVOA OFF</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="indent">
-       <number>7</number>
-      </property>
      </widget>
      <widget class="QGroupBox" name="capturesGroupBox">
       <property name="geometry">
@@ -1690,72 +1402,6 @@ OPTIONS</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="levelGauge" name="imagingDepthWidget" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>552</y>
-        <width>98</width>
-        <height>105</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="saveMeasurementButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>360</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Save Measurement Overlay.</string>
-      </property>
-      <property name="text">
-       <string>SAVE
-OVERLAY</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="directionPushButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>480</y>
-        <width>98</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>DinPRO-Medium</family>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string notr="true">Change Catheter Direction</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton 
-{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}</string>
-      </property>
-      <property name="text">
-       <string>DIRECTION
-Passive</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QPushButton" name="EgineeringButton">
       <property name="geometry">
        <rect>
@@ -1832,15 +1478,256 @@ Passive</string>
 IMAGE</string>
       </property>
      </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-3</y>
+        <width>101</width>
+        <height>921</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_buttonsOnTheLeft">
+       <property name="spacing">
+        <number>80</number>
+       </property>
+       <property name="topMargin">
+        <number>70</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="deviceSelectButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Change the current device. (Shortcut: F1)</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+         </property>
+         <property name="text">
+          <string>DEVICE
+SELECT</string>
+         </property>
+         <property name="shortcut">
+          <string>F1</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="scanSyncButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Configure Scan Sync. (Shortcut: F3)</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+         </property>
+         <property name="text">
+          <string>SCAN
+SYNC</string>
+         </property>
+         <property name="shortcut">
+          <string>F3</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="annotateImagePushButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Toggle Annotation mode. (Shortcut: F4)</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+         </property>
+         <property name="text">
+          <string>ANNOTATE
+IMAGE</string>
+         </property>
+         <property name="shortcut">
+          <string>F4</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="measureModePushButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>DinPRO-Medium</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string notr="true">Toggle Measurement mode.</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+         </property>
+         <property name="text">
+          <string>MEASURE</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="saveMeasurementButton">
+         <property name="minimumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>99</width>
+           <height>66</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Save Measurement Overlay.</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton 
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}</string>
+         </property>
+         <property name="text">
+          <string>SAVE
+OVERLAY</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="levelGauge" name="imagingDepthWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>99</width>
+           <height>120</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>99</width>
+           <height>120</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <zorder>liveGroupBox</zorder>
      <zorder>deviceSelectButton</zorder>
      <zorder>scanSyncButton</zorder>
-     <zorder>contrastCurveButton</zorder>
-     <zorder>rawDataPushButton</zorder>
-     <zorder>rawSnapshotSpinBox</zorder>
-     <zorder>crfFrame</zorder>
      <zorder>annotateImagePushButton</zorder>
-     <zorder>evoaOffLabel</zorder>
      <zorder>measureModePushButton</zorder>
      <zorder>capturesGroupBox</zorder>
      <zorder>imageSettingsGroupBox</zorder>
@@ -1853,7 +1740,6 @@ IMAGE</string>
      <zorder>displayOptionsButton</zorder>
      <zorder>imagingDepthWidget</zorder>
      <zorder>saveMeasurementButton</zorder>
-     <zorder>directionPushButton</zorder>
      <zorder>EgineeringButton</zorder>
      <zorder>pushButtonLogo</zorder>
      <zorder>captureImageButton</zorder>
@@ -1891,10 +1777,6 @@ IMAGE</string>
   <tabstop>deviceSelectButton</tabstop>
   <tabstop>scanSyncButton</tabstop>
   <tabstop>measureModePushButton</tabstop>
-  <tabstop>contrastCurveButton</tabstop>
-  <tabstop>rawDataPushButton</tabstop>
-  <tabstop>rawSnapshotSpinBox</tabstop>
-  <tabstop>crfTestSpinBox</tabstop>
   <tabstop>zoomSlider</tabstop>
   <tabstop>zoomResetPushButton</tabstop>
   <tabstop>liveViewPushButton</tabstop>

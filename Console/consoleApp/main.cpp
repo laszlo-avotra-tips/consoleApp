@@ -229,8 +229,6 @@ int main(int argc, char *argv[])
 //                          &frontEndWindow,           SLOT(   changeDeviceSpeed( int, int ) ) );
 //        QObject::connect( &sledSupport, SIGNAL( handleError(QString ) ),
 //                          &frontEndWindow,           SLOT(   handleError(QString) ) );
-//        QObject::connect( &sledSupport, SIGNAL( setDirButton( int ) ),
-//                          &frontEndWindow,           SLOT(   dirButton( int ) ) );
 //
 //        QObject::connect( &frontEndWindow, SIGNAL( checkSledStatus() ), &sledSupport, SLOT( getAllStatus() ) );
 //

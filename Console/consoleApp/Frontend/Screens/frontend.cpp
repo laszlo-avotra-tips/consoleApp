@@ -100,23 +100,9 @@ frontend::frontend(QWidget *parent)
 
     ui.loopMaskLabel->hide();
 
-    ui.evoaOffLabel->hide();
-
-    ui.rawDataPushButton->hide();
-    ui.rawSnapshotSpinBox->hide();
-
-#if ENABLE_VIDEO_CRF_QUALITY_TESTING
-    ui.crfTestLabel->show();
-    ui.crfTestSpinBox->show();
-#else
-    ui.crfTestLabel->hide();
-    ui.crfTestSpinBox->hide();
-#endif
-
     // these are always hidden at start-up
 //    ui.measureModePushButton->hide();
     ui.saveMeasurementButton->hide();
-    ui.directionPushButton->hide();
 
 #if ENABLE_ON_SCREEN_RULER
     ui.rulerSlidingPointSpinbox->show();
@@ -124,21 +110,10 @@ frontend::frontend(QWidget *parent)
     ui.rulerSlidingPointSpinbox->hide();
 #endif
 
-#if ENABLE_COLORMAP_OPTIONS
-    populateColormapList();
-    ui.contrastCurveButton->show();
-    ui.colormapGroupBox->show();
-    // Set default linear value map
-    curveDlg = nullptr;
-#else
-    ui.contrastCurveButton->hide();
-#endif
-
     ui.zoomLevelLabel->setBuddy( ui.zoomSlider );
     ui.zoomResetPushButton->hide();
 
     ui.liveViewPushButton->hide();
-
 
     // Hide things that only appear on demand.
     playbackControlsVisible( false );
@@ -464,7 +439,6 @@ int frontend::setupCase( bool isInitialSetup )
     }
     else // Launched from the case details button.
     {
-        ui.directionPushButton->hide();
         // Require case information before anything else happens
         caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
 
@@ -2712,20 +2686,6 @@ void frontend::setupDeviceForSledSupport()
 {
     qDebug() << "**** setupDevice";
     emit updateDeviceForSledSupport();
-/*
-    deviceSettings &ds = deviceSettings::Instance();
-    if(ds.current()->isBidirectional())
-    {
-        ui.directionPushButton->show();
-//		ui.directionPushButton->setChecked( lastDirCCW );
-//      on_directionPushButton_clicked();	// change to Passive direction (CCW)
-    }
-    else
-    {
-        ui.directionPushButton->hide();
-    }
-*/
-//    qDebug() << "***** new device: " << ds.current()->getDeviceName();
 }
 
 /*
@@ -2750,47 +2710,6 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     setupDeviceForSledSupport();
 }
 
-/*
- * on_directionPushButton_clicked()
- *
- * Change catheter direction upon request.
- */
-void frontend::on_directionPushButton_clicked()
-{
-    qDebug() << "direction button clicked";
-    ui.directionPushButton->setChecked( false );
-    SledSupport &sledSupport = SledSupport::Instance();
-    deviceSettings &dev = deviceSettings::Instance();
-//lcv    if(dev.current()->getRotation() == 0 )
-//    {
-//        sledSupport.setSledRotation( 1 );   // CCW
-//    }
-//    else if(dev.current()->getRotation() == 1 )
-//    {
-//        sledSupport.setSledRotation( 0 );   // CW
-//    }
-}
-
-void frontend::dirButton(int mode)
-{
-//    qDebug() << "dirButton" << mode;
-    if(mode == 0)
-    {
-        ui.directionPushButton->setText("DIRECTION\nSet Passive");
-        ui.directionPushButton->setStyleSheet("color: black; background-color: #2A8C91;");     // bluish (3/5)
-        ui.directionPushButton->show();
-    }
-    else if(mode == 1)
-    {
-        ui.directionPushButton->setText("DIRECTION\nSet Active");
-        ui.directionPushButton->setStyleSheet("color: black; background-color: #8E8E4E;");     // yellowish (3/5)
-        ui.directionPushButton->show();
-    }
-	else
-	{
-        ui.directionPushButton->hide();
-	}
-}
 
 void frontend::on_EgineeringButton_toggled(bool checked)
 {
@@ -2805,7 +2724,6 @@ void frontend::hideDecoration(void)
         ui.measureModePushButton->clicked();
     }
 }
-
 
 
 void frontend::on_pushButtonLogo_clicked()
