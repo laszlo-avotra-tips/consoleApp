@@ -353,6 +353,8 @@ void frontend::init( void )
                                     advView,
                                     session.getCurrentEventLog() );
 
+    connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
+
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), consumer,  SLOT( updateCatheterView() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), scene,     SLOT( clearSector() ) );
@@ -1832,12 +1834,10 @@ void frontend::setIDAQ(IDAQ *object)
 
     if(idaq){
         if(idaq->getSignalSource()){
-            connect( idaq->getSignalSource(), SIGNAL(updateSector(const OCTFile::OctData_t*)), this, SLOT(updateSector(const OCTFile::OctData_t*)) );
-//this does not work            connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
+            connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
         }
         idaq->init();
-        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
-
+//        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
     }
     // Sync the view options from the System.ini
     viewOption->updateValues();

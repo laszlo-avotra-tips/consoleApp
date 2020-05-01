@@ -20,9 +20,6 @@ extern "C" {
 #define ALLOCATED_OVERRUN_BUFFER_SIZE ( 256 * FFT_DATA_SIZE )  // Overrun buffer for Ocelot Mode
 
 namespace{
-unsigned char *pPolarData;
-unsigned char *pSectorData;
-
 int gFrameNumber = 0;
 int gDaqCounter = 0;
 size_t gBufferLength;
@@ -51,10 +48,6 @@ DAQ::DAQ()
         gFrameData[ i ].acqData = (uint8_t *)malloc( MAX_ACQ_IMAGE_SIZE );
         gFrameData[ i ].dispData = (unsigned char *)malloc( SECTOR_SIZE_B );
     }
-
-    // set pointer to the first frame
-    pPolarData  = gFrameData[ gFrameNumber ].acqData;
-    pSectorData = gFrameData[ gFrameNumber ].dispData;
 
     if( !startDaq() )
     {
@@ -219,12 +212,6 @@ bool DAQ::getData( )
     }
     lastImageIdx = returned_image_number;
 
-    if( required_buffer_size > MAX_ACQ_IMAGE_SIZE )
-    {
-        qDebug() << "DAQ -  buffer required too big:" << required_buffer_size;
-        force_trig = 1;
-    }
-
     if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) )
     {
         axRetVal = axRequestImage( session,
@@ -235,10 +222,6 @@ bool DAQ::getData( )
                                    &data_type,
                                    gFrameData[ gFrameNumber ].acqData,
                                    MAX_ACQ_IMAGE_SIZE );
-//        qDebug() << "***** axRequestImage: " << axRetVal << "data type: " << data_type;
-
-        pPolarData = gFrameData[ gFrameNumber ].acqData;
-        pSectorData = gFrameData[ gFrameNumber ].dispData;
         gBufferLength = width;
 
         // write in frame information for recording/playback
@@ -256,8 +239,6 @@ bool DAQ::getData( )
     {
         qDebug() << "Data Not Ready - force_trig:" << force_trig;
     }
-
-//    qDebug() << "===============";
 
     return retVal;
 }

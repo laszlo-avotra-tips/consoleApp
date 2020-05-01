@@ -44,6 +44,7 @@ signals:
     void sendVideoDuration( int );
     void updateBrightness( int );
     void updateContrast( int );
+    void updateSector(const OCTFile::OctData_t*);
 
 public slots:
     void handleTagEvent( QString );

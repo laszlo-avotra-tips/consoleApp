@@ -164,6 +164,10 @@ void DaqDataConsumer::run( void )
             frame->videoData  = new QByteArray( reinterpret_cast<const char *>(m_octData.videoData), int(frame->depth * frame->width ) );
             frame->timestamp  = m_octData.timeStamp;
 
+//lcv            qDebug() << __FILE__ << ":" << __LINE__ << " frame->depth * frame->width = " << frame->depth * frame->width;
+            memcpy(m_octData.acqData,m_octData.dispData,int(frame->depth * frame->width));
+            emit  updateSector(&m_octData);
+
             // Add this line to the scene
             sceneInThread->addScanFrame( frame );
 

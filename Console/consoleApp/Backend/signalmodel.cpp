@@ -29,6 +29,7 @@ void SignalModel::allocateOctData()
         oct.advancedViewFftData   = new quint16 [fftDataSize];
         oct.dispData  = new uchar [dispDataSize];
         oct.videoData = new uchar [dispDataSize];
+        oct.acqData   = new uint8_t [MAX_ACQ_IMAGE_SIZE];
 
         m_octData.push_back(oct);
     }
