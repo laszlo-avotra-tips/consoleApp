@@ -1157,29 +1157,6 @@ QPushButton:hover {
        </item>
       </layout>
      </widget>
-     <widget class="QPushButton" name="endCaseButton">
-      <property name="geometry">
-       <rect>
-        <x>2380</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>Save case data and quit. (Shortcut: Alt-F12)</string>
-      </property>
-      <property name="text">
-       <string>END
-CASE</string>
-      </property>
-      <property name="shortcut">
-       <string>Alt+F12</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="recordLoopButton">
       <property name="geometry">
        <rect>
@@ -1242,29 +1219,6 @@ LOOP</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="physicianPreviewButton">
-      <property name="geometry">
-       <rect>
-        <x>2090</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>Display the capture thumbnails on the Physician Screen.</string>
-      </property>
-      <property name="text">
-       <string>PHYSICIAN
-PREVIEW</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
       </property>
      </widget>
      <widget class="QGroupBox" name="groupBox">
@@ -1349,58 +1303,6 @@ QPushButton:hover {
         <bool>true</bool>
        </property>
       </widget>
-     </widget>
-     <widget class="QPushButton" name="advancedViewButton">
-      <property name="geometry">
-       <rect>
-        <x>1930</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show advanced controls and indicators. (Shortcut: Alt-F6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>ADVANCED
-VIEW</string>
-      </property>
-      <property name="shortcut">
-       <string>Alt+F6</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="displayOptionsButton">
-      <property name="geometry">
-       <rect>
-        <x>1760</x>
-        <y>1170</y>
-        <width>138</width>
-        <height>66</height>
-       </rect>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Modify display settings for viewing live OCT images. (Shortcut: Alt-F8)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>DISPLAY
-OPTIONS</string>
-      </property>
-      <property name="shortcut">
-       <string>Alt+F8</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
      </widget>
      <widget class="QPushButton" name="EgineeringButton">
       <property name="geometry">
@@ -1724,6 +1626,135 @@ OVERLAY</string>
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>1760</x>
+        <y>1170</y>
+        <width>782</width>
+        <height>53</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_controlButton">
+       <property name="spacing">
+        <number>30</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="displayOptionsButton">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>51</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Modify display settings for viewing live OCT images. (Shortcut: Alt-F8)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>DISPLAY
+OPTIONS</string>
+         </property>
+         <property name="shortcut">
+          <string>Alt+F8</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="advancedViewButton">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>51</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show advanced controls and indicators. (Shortcut: Alt-F6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>ADVANCED
+VIEW</string>
+         </property>
+         <property name="shortcut">
+          <string>Alt+F6</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="physicianPreviewButton">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>51</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Display the capture thumbnails on the Physician Screen.</string>
+         </property>
+         <property name="text">
+          <string>PHYSICIAN
+PREVIEW</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>80</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="endCaseButton">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>51</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Save case data and quit. (Shortcut: Alt-F12)</string>
+         </property>
+         <property name="text">
+          <string>END
+CASE</string>
+         </property>
+         <property name="shortcut">
+          <string>Alt+F12</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <zorder>liveGroupBox</zorder>
      <zorder>deviceSelectButton</zorder>
      <zorder>scanSyncButton</zorder>
@@ -1743,6 +1774,7 @@ OVERLAY</string>
      <zorder>EgineeringButton</zorder>
      <zorder>pushButtonLogo</zorder>
      <zorder>captureImageButton</zorder>
+     <zorder>horizontalSpacer</zorder>
     </widget>
    </item>
   </layout>
