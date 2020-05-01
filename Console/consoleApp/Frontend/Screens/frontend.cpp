@@ -2315,7 +2315,7 @@ void frontend::configureDisplayForReview()
     ui.scanSyncButton->setEnabled( false );
     ui.displayOptionsButton->setDisabled( true );
     ui.deviceSelectButton->setDisabled( true );
-    ui.imageSettingsGroupBox->setDisabled( true );
+    ui.GroupBoxBandC->setDisabled( true );
     advView->setReviewState();
     ui.advancedViewButton->setDisabled( true );
     ui.recordLoopButton->setDisabled( true );
@@ -2390,7 +2390,7 @@ void frontend::on_liveViewPushButton_clicked()
 
     ui.displayOptionsButton->setEnabled( true );
     ui.deviceSelectButton->setEnabled( true );
-    ui.imageSettingsGroupBox->setEnabled( true );
+    ui.GroupBoxBandC->setEnabled( true );
     advView->setLiveState();
     ui.advancedViewButton->setEnabled( true );
     viewOption->enableButtons();
