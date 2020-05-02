@@ -131,7 +131,7 @@ frontend::frontend(QWidget *parent)
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( ui.liveGraphicsView->x() + ui.liveGraphicsView->width() + 150, // 10 px to the right of liveGroupBox
+    advView->setGeometry( ui.liveGraphicsView->x() + ui.liveGraphicsView->width() + 50, // 10 px to the right of liveGraphicsView
                           0,
                           advView->width(),
                           advView->height() );
@@ -230,7 +230,6 @@ frontend::frontend(QWidget *parent)
 
     // Save the style sheet for restoring after using review mode
     origDeviceLabelStyleSheet = ui.deviceFieldLabel->styleSheet();
-    origLiveGroupBoxStyleSheet = ui.liveGroupBox->styleSheet();
     origLiveQLabelStyleSheet = ui.label_live->styleSheet();
 
 #if ENABLE_MEASUREMENT_PRECISION
@@ -1536,7 +1535,6 @@ void frontend::playbackControlsVisible( bool state )
  */
 void frontend::handleStatusText( QString status )
 {
-    ui.liveGroupBox->setTitle( status );
     ui.label_live->setText( status );
 //lcv    docWindow->ui.statusLabel->setText( status );
     auxMon->setText( AuxMonitor::Status, true, status );
@@ -2332,7 +2330,6 @@ void frontend::configureDisplayForReview()
     docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
     ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 14.75pt DinPRO-Medium; color: yellow; }" );
-    ui.liveGroupBox->setStyleSheet( "QGroupBox { color: yellow; }" );
     ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 14.75pt DINPro-medium;}" );
 }
 
@@ -2423,7 +2420,6 @@ void frontend::on_liveViewPushButton_clicked()
     deviceSettings &dev = deviceSettings::Instance();
     ui.deviceFieldLabel->setText( dev.current()->getDeviceName() );
     ui.deviceFieldLabel->setStyleSheet( origDeviceLabelStyleSheet );
-    ui.liveGroupBox->setStyleSheet( origLiveGroupBoxStyleSheet );
     ui.label_live->setStyleSheet( origLiveQLabelStyleSheet );
 }
 

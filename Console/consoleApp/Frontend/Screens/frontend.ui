@@ -253,65 +253,6 @@ QGroupBox::title {
      padding: 1px;
  }</string>
      </property>
-     <widget class="QGroupBox" name="liveGroupBox">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>80</y>
-        <width>1491</width>
-        <height>1421</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>DINPro-medium</family>
-        <pointsize>15</pointsize>
-        <weight>50</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="title">
-       <string>LIVE</string>
-      </property>
-      <widget class="liveView" name="liveGraphicsView">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>66</y>
-         <width>1491</width>
-         <height>1381</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="cursor" stdset="0">
-        <cursorShape>OpenHandCursor</cursorShape>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Fluoro Sync: Click on the Sector to&lt;br&gt;align the middle marker on the OCT&lt;br&gt;display with the middle marker on&lt;br&gt;the Fluoro display.&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-      </widget>
-     </widget>
      <widget class="QGroupBox" name="capturesGroupBox">
       <property name="geometry">
        <rect>
@@ -2144,6 +2085,49 @@ border-radius: 4px;
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="liveView" name="liveGraphicsView">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>70</y>
+        <width>1491</width>
+        <height>1371</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>1491</width>
+        <height>1371</height>
+       </size>
+      </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>OpenHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Fluoro Sync: Click on the Sector to&lt;br&gt;align the middle marker on the OCT&lt;br&gt;display with the middle marker on&lt;br&gt;the Fluoro display.&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
      </widget>
     </widget>
    </item>
