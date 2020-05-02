@@ -622,7 +622,7 @@ void WindowManager::centerChildOverParent( QWidget *child )
 
     if( isFullScreen )
     {
-        child->showFullScreen();
+        child->showFullScreen();//child->show(); //lcv child->showFullScreen();
     }
 }
 

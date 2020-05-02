@@ -17,7 +17,7 @@ AnnotateOverlay::AnnotateOverlay( QGraphicsItem *parent )
     : QGraphicsPixmapItem( parent )
 {
     // Set the drawing surface
-    overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px + WaterfallHeight_px );
+    overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px );
     setPixmap( *overlayPixmap );
 
     currentColor    = Qt::blue;

@@ -18,15 +18,15 @@
 #include "daqSettings.h"
 #include "deviceSettings.h"
 #include "userSettings.h"
-#include "theglobals.h"
 #include "signalmanager.h"
+#include "signalmodel.h"
 
 // shared data with DAQ thread
 const int FullCaseVideoWidth_px( 1024 );
-const int FullCaseVideoHeight_px( int(double( SectorHeight_px + WaterfallHeight_px ) * double(FullCaseVideoWidth_px) / double(SectorWidth_px) ) );
+const int FullCaseVideoHeight_px( int(double( SectorHeight_px ) * double(FullCaseVideoWidth_px) / double(SectorWidth_px) ) );
 
 const int LoopVideoWidth_px( 1024 );
-const int LoopVideoHeight_px( int(double( SectorHeight_px + WaterfallHeight_px ) * double(LoopVideoWidth_px) / double(SectorWidth_px ) ) );
+const int LoopVideoHeight_px( int(double( SectorHeight_px ) * double(LoopVideoWidth_px) / double(SectorWidth_px ) ) );
 
 const int ThreadWaitTimeout_ms = 5000;  // XXX: Make sure the video threads exit.  Would prefer to know why they sometimes do not
 
@@ -40,9 +40,6 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     sceneInThread        = s;
     advViewInThread      = adv;
     eventLog             = eLog;
-    pData                = nullptr;
-    currFrame            = 0;
-    prevFrame            = 0;
     isRunning            = false;
     isRecordFullCaseOn   = true;
     frameCount           = 0;
@@ -63,10 +60,10 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     currDirection = directionTracker::Stopped;
     videoEncoder::initVideoLibrary();
 
-    useDistalToProximalView = true;
+//    useDistalToProximalView = true;
     processingTimer.start();
 
-    safeFrameBuffer = static_cast<char*>(malloc( ( SectorHeight_px + WaterfallWidth_px ) * SectorWidth_px ) );
+    safeFrameBuffer = static_cast<char*>(malloc( SectorHeight_px * SectorWidth_px ) );
 
     /*
      * Get the state of the Full Case recording flag from the system settings. The
@@ -118,19 +115,10 @@ DaqDataConsumer::~DaqDataConsumer()
 void DaqDataConsumer::run( void )
 {
     qDebug() << "Thread: frontend::DaqDataConsumer::run()";
-//lcv    LOG( INFO, "DaqDataConsumer Thread started" );
-
-    // access lines per revolution
-    deviceSettings &devSettings = deviceSettings::Instance();
     dirTracker.getEncoderCountsForDevice(); // a new device is selected, find its encoder range.
 
     // Notify Advanced View if full case is being recorded
     emit alwaysRecordingFullCase( isAlwaysRecordFullCaseOn );
-//lcv    LOG( INFO, QString( "Full case recording: %1" ).arg( isAlwaysRecordFullCaseOn ) );
-
-    // initialize prevFrame to the same value that currFrame will get so no
-    // work is done until the DAQ and DSP start up
-    prevFrame = TheGlobals::instance()->getPrevFrameIndex();
 
     timeoutCounter = 0;
     isRunning = true;
@@ -142,25 +130,17 @@ void DaqDataConsumer::run( void )
          * DDC is not shut down between device changes so each frame
          * needs to get the latest device information.
          */
-        bool isHighSpeedDevice  = devSettings.current()->isHighSpeed();
+        if(SignalModel::instance()->isImageRenderingQueueGTE(2)){
 
-//        // wrap-safe method to grab one index behind the frame that is currently being filled
-//        currFrame = TheGlobals::instance()->getPrevFrameIndex();
+            const auto& octPair = SignalModel::instance()->frontImageRenderingQueue();
 
-//        // If we have a new frame, process it.
-//        if( currFrame != prevFrame )
-//        {
-//            prevFrame      = currFrame;
-//            TIME_THIS_SCOPE( ddc_run );
-        if(TheGlobals::instance()->isFrameRenderingQueue()){
-
-            currFrame = TheGlobals::instance()->frontFrameRenderingQueue();
-            TheGlobals::instance()->popFrameRenderingQueue(currFrame);
+            if(octPair.first){
+                m_octData = octPair.second;
+            } else {
+                continue;
+            }
 
             timeoutCounter = HsVideoTimeoutCount;
-
-            // grab the data for this frame
-            pData = TheGlobals::instance()->getFrameDataPointer(currFrame);
 
             if( advViewInThread->isVisible() )
             {
@@ -168,63 +148,35 @@ void DaqDataConsumer::run( void )
                  *  Send raw and FFT data to the Advanced View plots. This MUST
                  *  be done via signal or the shared pointer does strange things.
                  */
-                emit updateAdvancedView( pData );
+                emit updateAdvancedView( );
             }
 
             // copy frame data into the shared pointer for this line
             QSharedPointer<scanframe> frame = QSharedPointer<scanframe>( new scanframe() );
 
             // fill in data to send out to other frontend objects
-            if( isHighSpeedDevice )
-            {
-                frame->angle = 0;                // no angle data in high speed devices
-                frame->depth = SectorHeight_px;
-                frame->width = SectorWidth_px;
-            }
-            else
-            {
-                frame->angle = pData->encoderPosition;
-                frame->depth = 1;
-                frame->width = 512;
-            }
-            frame->frameCount = pData->frameCount; // not used by frontend
-            frame->dispData   = new QByteArray( reinterpret_cast<const char *>(pData->dispData), int(frame->depth * frame->width) );
-            frame->videoData  = new QByteArray( reinterpret_cast<const char *>(pData->videoData), int(frame->depth * frame->width ) );
-            frame->timestamp  = pData->timeStamp;
+            frame->angle = 0;                // no angle data in high speed devices
+            frame->depth = SectorHeight_px;
+            frame->width = SectorWidth_px;
+
+            frame->frameCount = m_octData.frameCount; // not used by frontend
+            frame->dispData   = new QByteArray( reinterpret_cast<const char *>(m_octData.dispData), int(frame->depth * frame->width) );
+            frame->videoData  = new QByteArray( reinterpret_cast<const char *>(m_octData.videoData), int(frame->depth * frame->width ) );
+            frame->timestamp  = m_octData.timeStamp;
+
+//lcv            qDebug() << __FILE__ << ":" << __LINE__ << " frame->depth * frame->width = " << frame->depth * frame->width;
+            memcpy(m_octData.acqData,m_octData.dispData,int(frame->depth * frame->width));
+            emit  updateSector(&m_octData);
 
             // Add this line to the scene
             sceneInThread->addScanFrame( frame );
 
             // Optimize a bit, don't always need to be drawing the time
-            if( lastTimestamp != pData->timeStamp )
+            if( lastTimestamp != m_octData.timeStamp )
             {
-                lastTimestamp = pData->timeStamp;
+                lastTimestamp = m_octData.timeStamp;
             }
 
-            // Monitor direction changes for Low Speed only
-            if( !isHighSpeedDevice )
-            {
-                int  linesPerRevolution = devSettings.current()->getLinesPerRevolution();
-                // determine the direction of rotation of the encoder and broadcast this information
-                // This must undo the changes from the raw encoder that were added in by the DAQ
-                // for point of view changes. Complement with max encoder value ( encoderCounts - 1 ).
-                // TBD - may want to move encoder stuff to the device level
-                if( useDistalToProximalView )
-                {
-                    dirTracker.updateDirection( quint16(linesPerRevolution - 1  - pData->encoderPosition ));
-                }
-                else
-                {   // proximal to distal view
-                    dirTracker.updateDirection( pData->encoderPosition );
-                }
-                currDirection = dirTracker.getDirection();
-
-                // only signal the system when there is a change
-                if( currDirection != prevDirection )
-                {
-                    emit directionOfRotation( currDirection );
-                }
-            }
 
             /*
              * Allow toggling of background recording on/off. Protect against trying to
@@ -232,19 +184,13 @@ void DaqDataConsumer::run( void )
              */
             if( isRecordFullCaseOn )
             {
-                // Update the frame count for lines consumed and saved
-                frameCount++;
-
-                // Update the original data for processing below
-                pData->frameCount = frameCount;
-
                 // handle any queued events
                 if( !addEventQ.empty() )
                 {
                     mutex.lock();
                     eventLog->addEvent( addEventQ.dequeue(),
-                                        pData->frameCount,
-                                        pData->timeStamp,
+                                        m_octData.frameCount,
+                                        m_octData.timeStamp,
                                         QString( "" ) ); // XXX: event log may be removed
                     mutex.unlock();
                 }
@@ -276,52 +222,16 @@ void DaqDataConsumer::run( void )
                         }
                     }
 
-                    /*
-                     * Send image data to the video encoder.
-                     */
-                    if( !isHighSpeedDevice )
-                    {
-                        /*
-                         * Low Speed Device
-                         */
-                        if( frameTimer.elapsed() > millisecondsPerFrame )
-                        {
-                            // all the work of adding this frame to the video should not count against
-                            // the timing of the next frame
-                            frameTimer.restart();
-
-                            // Memcpy is required to keep a consistent pointer for each frame that qt can't
-                            // pull out from under the videoencoder thread.
-                            sceneInThread->lockFrame();
-                            memcpy( safeFrameBuffer, sceneInThread->frameSample(), SectorWidth_px * SectorHeight_px );
-                            sceneInThread->unlockFrame();
-                            sceneInThread->applyClipInfoToBuffer( safeFrameBuffer );
-                            sceneInThread->wfSample( safeFrameBuffer + (SectorWidth_px * SectorHeight_px ) );
-                            emit addFrame( safeFrameBuffer );
-                        }
-                    }
                     clipFrameCount++;
             }
 
             // prepare for the next iteration
-//            prevFrame      = currFrame;
             prevDirection  = currDirection;
-
-#if ENABLE_FRAME_COUNTERS_TO_DEBUG
-            // Rough frames/second counter  XXX
-            static int dispFrameCount = 0;
-            dispFrameCount++;
-
-            if( processingTimer.elapsed() > 1000 )
-            {
-                qDebug() << "                                                     DDC frameCount/s:" << dispFrameCount;
-                dispFrameCount = 0;
-                processingTimer.restart();
-            }
-#endif
+            SignalModel::instance()->popImageRenderingQueue();
         }
 
-        if( ( timeoutCounter > 0) && isHighSpeedDevice &&
+
+        if( ( timeoutCounter > 0) &&
                 ( ( recordClip && ( clipFile != nullptr ) ) || ( isRecordFullCaseOn && isAlwaysRecordFullCaseOn ) ) )
         {
             /*
@@ -331,14 +241,14 @@ void DaqDataConsumer::run( void )
             {
                 frameTimer.restart();
                 timeoutCounter--;
-                sceneInThread->applyClipInfoToBuffer( reinterpret_cast<char *>(pData->videoData ) );
+                sceneInThread->applyClipInfoToBuffer( reinterpret_cast<char *>(m_octData.videoData ) );
                 if( clipEncoder )
                 {
-                    clipEncoder->addFrame( reinterpret_cast<char *>(pData->videoData ) );
+                    clipEncoder->addFrame( reinterpret_cast<char *>(m_octData.videoData ) );
                 }
                 if( caseEncoder )
                 {
-                    caseEncoder->addFrame( reinterpret_cast<char *>(pData->videoData ) );
+                    caseEncoder->addFrame( reinterpret_cast<char *>(m_octData.videoData ) );
                 }
             }
         }
@@ -357,6 +267,7 @@ void DaqDataConsumer::run( void )
 
         // prepare for the next iteration
         prevRecordClip = recordClip;
+
 
         yieldCurrentThread();
     }
@@ -402,25 +313,12 @@ void DaqDataConsumer::setupEncoder( videoEncoder **cdc, const QString VidFilenam
     }
     qDebug() << "Starting new clip encoding at " << fps << "fps (millisecondsPerFrame" << millisecondsPerFrame << ")";
 
-    if( isHighSpeedDevice )
-    {
-        *cdc = new videoEncoder( VidFilename.toLatin1().data(),
-                                 SectorWidth_px,
-                                 SectorHeight_px,
-                                 Width_px,
-                                 Width_px,   // 1:1 aspect ratio for high speed, no waterfall.
-                                 fps );
-    }
-    else
-    {
-        // Include space for the waterfall XXX Where to get canonical wf size?
-        *cdc = new videoEncoder( VidFilename.toLatin1().data(),
-                                 SectorWidth_px,
-                                 SectorHeight_px + WaterfallHeight_px,
-                                 Width_px,
-                                 Height_px,
-                                 fps );
-    }
+    *cdc = new videoEncoder( VidFilename.toLatin1().data(),
+                             SectorWidth_px,
+                             SectorHeight_px,
+                             Width_px,
+                             Width_px,   // 1:1 aspect ratio for high speed.
+                             fps );
 
     if( IsRaw )
     {
@@ -549,7 +447,7 @@ void DaqDataConsumer::recordBackgroundData( bool state )
 void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
 {
     // Only perform the search if data is available
-    if( pData )
+    if( m_octData.advancedViewFftData )
     {
         const int MaxADCVal = 65535; // full range of 16-bit card
         deviceSettings &dev = deviceSettings::Instance();
@@ -565,24 +463,25 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
         for( quint32 i = quint32(dev.current()->getInternalImagingMask_px() ); i < ( FFTDataSize / 2 ); i++ )
         {
             // find min
-            if( pData->fftData[ i ] < minVal )
+            if( m_octData.advancedViewFftData[ i ] < minVal )
             {
-                minVal = pData->fftData[ i ];
+                minVal = m_octData.advancedViewFftData[ i ];
             }
 
             // find max
-            if( pData->fftData[ i ] > maxVal )
+            if( m_octData.advancedViewFftData[ i ] > maxVal )
             {
-                maxVal = pData->fftData[ i ];
+                maxVal = m_octData.advancedViewFftData[ i ];
             }
         }
 
         // Set the new brightness at the minimum plus 20% of the range of max to min.
-        int newBrightness = minVal + int(float( RelaxationParameter) * float( maxVal - minVal ) );
+        int newBrightness = 25; //minVal + int(float( RelaxationParameter) * float( maxVal - minVal ) );
+        int newContrast = 235; //maxVal;
 
         // Adjustment algorithm: Set the Brightness and Contrast to Min and Max, respectively.
         emit updateBrightness( newBrightness );
-        emit updateContrast(   maxVal );
+        emit updateContrast( newContrast );
     }
 }
 
@@ -595,6 +494,6 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
 void DaqDataConsumer::updateCatheterView()
 {
     userSettings &user = userSettings::Instance();
-    useDistalToProximalView = user.isDistalToProximalView();
+//    useDistalToProximalView = user.isDistalToProximalView();
 }
 

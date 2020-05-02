@@ -17,7 +17,7 @@ public:
     explicit EngineeringDialog(QWidget *parent = nullptr);
     ~EngineeringDialog();
 
-    void setStatMsg(const QString& msg);
+    void setStatMsg(const QString& msg1, const QString& msg2);
     void signalsConnected();
 
 public slots:
@@ -49,8 +49,6 @@ private slots:
     void on_lineEdit_textChanged(const QString &arg1);
 
     void on_checkBoxPlayback_toggled(bool checked);
-
-    void countChanged(int count, int index);
 
     void on_pushButtonSingleStep_clicked();
 

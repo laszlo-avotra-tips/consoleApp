@@ -21,7 +21,6 @@ EngineeringController::EngineeringController(QWidget *parent)
     connect(m_view, SIGNAL(fileNameChanged(const QString&)), m_model, SLOT(setFileName(const QString&)));
     connect(m_view, SIGNAL(isLaserOnChanged(bool)), m_model, SLOT(setLaserOn(bool)));
     connect(m_view, SIGNAL(isMotorOnChanged(bool)), m_model, SLOT(setMotorPowerOn(bool)));
-    connect(&m_statTimer, SIGNAL(timeout()), this, SLOT(updateStat()));
     connect(m_view, SIGNAL(loadFrame()), this, SLOT(loadFrameBuffers()));
     connect(m_view, SIGNAL(saveFrame()), this, SLOT(saveFrameBuffers()));
     connect(m_view, SIGNAL(singleStep()), PlaybackManager::instance(), SLOT(singleStep()));
@@ -32,21 +31,17 @@ EngineeringController::EngineeringController(QWidget *parent)
     connect(m_model, SIGNAL(playbackSpeedChanged(int)), this, SLOT(setPlaybackSpeed(int)));
 
     connect(PlaybackManager::instance(), SIGNAL(countChanged(int, int)),
-            m_view, SLOT(countChanged(int, int)));
+            this, SLOT(onCountChanged(int, int)));
 
-    connect(PlaybackManager::instance(), SIGNAL(rawDataBuffersAvailable(int)),
-            m_view, SLOT(setFramesAvailable(int)));
+//    connect(PlaybackManager::instance(), SIGNAL(rawDataBuffersAvailable(int)),
+//            m_view, SLOT(setFramesAvailable(int)));
 
-    SledSupport& sledSp = SledSupport::Instance();
-    connect(&sledSp, SIGNAL(speedChanged(int)), m_view, SLOT(setMotorSpeed(int)));
+//lcv    SledSupport& sledSp = SledSupport::Instance();
+//    connect(&sledSp, SIGNAL(speedChanged(int)), m_view, SLOT(setMotorSpeed(int)));
 
     connect(m_view, SIGNAL(saveDataToFile()), this, SLOT(handleSaveDataToFile()));
 
     m_view->signalsConnected();
-
-#ifdef QT_NO_DEBUG
-    m_statTimer.start(200);
-#endif
 }
 
 void EngineeringController::setViewPosition(int x, int y)
@@ -70,26 +65,13 @@ void EngineeringController::showOrHideView(bool isShown)
     }
 }
 
-void EngineeringController::updateStat()
-{
-    QString msg;
-    QTextStream qt(&msg);
-    qt << "Queued rawData: " <<  PlaybackManager::instance()->queueSize();
-    qt << ", rawData Processed: " << PlaybackManager::instance()->countOfRawDataBuffersProcessed();
-    qt << ", rawData index: " << PlaybackManager::instance()->frameIndex();
-
-    if(!PlaybackManager::instance()->isPlayback()){
-        m_view->setStatMsg(msg);
-    }
-}
-
 void EngineeringController::saveFrameBuffers()
 {
-    const auto& fn =  m_model->getFileName();
+//    const auto& fn =  m_model->getFileName();
 
     m_model->setLaserOn(false);
 
-    PlaybackManager::instance()->saveBuffer(fn);
+//lcv removed     PlaybackManager::instance()->saveBuffer(fn);
 
     m_model->setLaserOn(true);
 
@@ -102,13 +84,12 @@ void EngineeringController::loadFrameBuffers()
     if(!fn.isEmpty()){
 //        m_model->setLaserOn(false);
 
-        PlaybackManager::instance()->loadBuffer(fn);
+//lcv removed        PlaybackManager::instance()->loadBuffer(fn);
     }
 }
 
 void EngineeringController::playbackStartStopCommand(bool isStart)
 {
-    LOG1(isStart);
     if(isStart){
         startPlayback();
     }else{
@@ -119,7 +100,9 @@ void EngineeringController::playbackStartStopCommand(bool isStart)
 
 void EngineeringController::setPlaybackSpeed(int speed)
 {
-    PlaybackManager::instance()->setPlaybackSpeed(speed);
+    PlaybackManager::instance()->setPlaybackLoopDelay(speed);
+    m_frameRateTimer.restart();
+    m_count[1] = m_count[0];
 }
 
 void EngineeringController::handleSaveDataToFile()
@@ -129,15 +112,41 @@ void EngineeringController::handleSaveDataToFile()
 
 void EngineeringController::saveDataToFile()
 {
-    SignalManager::instance()->saveSignal(0);
+//    SignalManager::instance()->saveSignal(0);
 }
 
 void EngineeringController::startPlayback()
 {
     PlaybackManager::instance()->startPlayback();
+    m_frameRateTimer.restart();
+    m_count[1] = m_count[0];
 }
 
 void EngineeringController::stopPlayback()
 {
     PlaybackManager::instance()->stopPlayback();
 }
+
+void EngineeringController::onCountChanged(int count, int index)
+{
+    std::vector<QString> msg{QString(), QString()};
+
+    QTextStream qts1(&msg[0]);
+    QTextStream qts2(&msg[1]);
+
+    m_count[0] = count;
+    if(count == 1){
+        m_frameRateTimer.start();
+    }
+    int timeElapsed = m_frameRateTimer.elapsed();
+    auto delta = m_count[0] - m_count[1];
+    if((count % 10 == 1) && (timeElapsed > 0)){
+        m_frameRate = 1000.f * delta / timeElapsed;
+    }
+
+    qts1 << "Frame: count = " << delta << ", index = " << index << " ";
+    qts2 << "Frames/sec = " << int(m_frameRate);
+
+    m_view->setStatMsg(msg[0], msg[1]);
+}
+

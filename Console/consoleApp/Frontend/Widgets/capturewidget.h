@@ -78,7 +78,8 @@ public:
     void init( void );
 
 signals:
-    void showCapture( const QImage &, const QImage &);
+    void initCaptureWidget();
+    void showCapture( const QImage &);
     void currentCaptureChanged( QModelIndex );
     void sendLoopFilename( QString );
     void sendStatusText( QString );

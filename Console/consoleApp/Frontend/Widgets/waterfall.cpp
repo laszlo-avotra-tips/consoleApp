@@ -100,11 +100,7 @@ void waterfall::scrollWaterfall(void)
     // Shift all data linecount rows down
     unsigned char *dstaddr = rawPixels + ( dataSize * count );
     const size_t length = size_t(dataSize * ( wfImage->height() - count ) );
-#ifdef WIN32
     memmove_s( dstaddr, length, rawPixels, length );
-#else
-    memmove( dstaddr, rawPixels, length );
-#endif
 
     // Consume the lines in the cache to update the waterfall.  Use the count
     // that was determined above instead of lineCache.count() since lines

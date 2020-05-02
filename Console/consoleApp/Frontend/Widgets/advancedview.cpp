@@ -20,6 +20,15 @@
 #include "buildflags.h"
 #include "util.h"
 #include "windowmanager.h"
+#include "logger.h"
+#include <signalmodel.h>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QSplineSeries>
+#include <algorithm>
+#include <signalmanager.h>
+
+QT_CHARTS_USE_NAMESPACE
 
 
 /*
@@ -28,63 +37,15 @@
 advancedView::advancedView( QWidget *parent )
     : QWidget( parent )
 {
-    // line/sec counting variables
-    lineCount    = 0;
-    lastLagValue = 0;
-    diodeIsOn    = false;
     timer.start();
 
     ui.setupUi(this);
-//lcv
-//    // Set up the raw data display
-//    ui.rawDataPlot->init( MaxSampleVal );
-//    QwtText rawBottomText( "Samples" );
-//    rawBottomText.setColor( TitleColor );
-//    ui.rawDataPlot->setAxisTitle( QwtPlot::xBottom, rawBottomText );
-//    ui.rawDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
-//    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxSampleVal );
 
-//    QwtText rawLeftText( "ADC Values" );
-//    rawLeftText.setColor( TitleColor );
-//    ui.rawDataPlot->setAxisTitle( QwtPlot::yLeft, rawLeftText );
-//    ui.rawDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
-//    ui.rawDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
-//    ui.rawDataPlot->setAxisScale( QwtPlot::yLeft, MinADCVal, MaxADCVal );
-
-//    // Set up the FFT display
-//#if CONSOLE_MANUFACTURING_RELEASE
-//    ui.fftDataPlot->init( 512 );
-//    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, 3.3 );
-//    ui.fftDataPlot->drawMmDepthLines();
-//    QwtText fftBottomText( "Depth (mm)" );
-//#else
-//    ui.fftDataPlot->init( MaxDepthVal );
-//    ui.fftDataPlot->setAxisScale( QwtPlot::xBottom, 0, MaxDepthVal );
-//    QwtText fftBottomText( "Depth" );
-//    ui.fftDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-//    ui.rawDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-//#endif
-//    fftBottomText.setColor( TitleColor );
-//    ui.fftDataPlot->setAxisTitle( QwtPlot::xBottom, fftBottomText );
-//    ui.fftDataPlot->axisTitle( QwtPlot::xBottom ).setColor( TitleColor );
-//    ui.fftDataPlot->setAxisFont( QwtPlot::xBottom, AxisFont );
-
-//    QwtText fftLeftText( "'dB'" );  // the data is in dB but we're not really displaying that
-//    fftLeftText.setColor( TitleColor );
-//    ui.fftDataPlot->setAxisTitle( QwtPlot::yLeft, fftLeftText );
-//    ui.fftDataPlot->axisTitle( QwtPlot::yLeft ).setColor( TitleColor );
-//    ui.fftDataPlot->setAxisFont( QwtPlot::yLeft, AxisFont );
-//    ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
-//    ui.fftDataPlot->enableLevels();
-
-//    connect( ui.fftDataPlot, SIGNAL(updateBrightness(int)), this, SLOT(handleBrightnessChanged(int)) );
-//    connect( ui.fftDataPlot, SIGNAL(updateContrast(int)), this, SLOT(handleContrastChanged(int)) );
+    initLinePlot();
 
     ui.versionLabel->setText( getSoftwareVersionNumber() );
 
-#if !ENABLE_TOP_DEAD_CENTER_TOGGLE
     ui.tdcCheckBox->hide(); //lcv
-#endif
 
     /*
      * NOTE: The internal name is EVOA, but the user-facing name will be "Imaging Strength".
@@ -109,75 +70,7 @@ advancedView::advancedView( QWidget *parent )
     ui.evoaControlWidget->setStyleSheet( style );
     ui.evoaControlWidget->show();
 
-#if !ENABLE_LOW_SPEED_DATA_SNAPSHOT
-    ui.saveSignalsPushButton->hide();
-#endif
-
-#if CONSOLE_MANUFACTURING_RELEASE
-    /*
-     * Span from the normal starting point to the right edge of the monitor.
-     * Don't change the height of the widget.
-     */
-    setGeometry( 0, 0, width() + 98, height() );
-    ui.backgroundWidget->setGeometry( 0, 0, width(), height() );
-
-    ui.highSpeedLabel->hide();
-    ui.fftDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-    ui.rawDataPlot->setStyleSheet("background: rgb( 60, 60, 60 );");
-
-    ui.tdcCheckBox->hide();
-
-    ui.fftDataPlot->setGeometry( ui.fftDataPlot->x(),
-                                 ui.fftDataPlot->y(),
-                                 this->width(),
-                                 ui.fftDataPlot->height() );
-    ui.rawDataPlot->setGeometry( ui.rawDataPlot->x(),
-                                 ui.rawDataPlot->y(),
-                                 this->width(),
-                                 ui.rawDataPlot->height() );
-
-    ui.gridLayoutWidget->show();
-    ui.gridLayoutWidget->setGeometry( 10,
-                                      ( this->height() - ui.gridLayoutWidget->height() - 10 ),
-                                      ui.gridLayoutWidget->width(),
-                                      ui.gridLayoutWidget->height() );
-
-    ui.laserBox->show();
-    ui.laserBox->setGeometry( ( this->width() - ui.laserBox->width() - 10 ),
-                              ( this->height() - ui.laserBox->height() - 10 ),
-                              ui.laserBox->width(),
-                              ui.laserBox->height() );
-
-
-    ui.evoaBox->show();
-    ui.evoaSetDefaultButton->setGeometry( 10, 77, 161, 41 ); // move the button below the status box
-    ui.evoaBox->setGeometry( ( this->width() - ui.evoaBox->width() - 10 ),
-                             ( this->height() - ui.laserBox->height() - ui.evoaBox->height() - 20 ),
-                             ui.evoaBox->width(),
-                             ui.evoaBox->height() );
-
-    WindowManager &wmgr = WindowManager::Instance();
-    ui.wideDivideLabel->resize( wmgr.getTechnicianDisplayGeometry().width()/2, ui.wideDivideLabel->height() );
-    ui.instructionsLabel->resize( wmgr.getTechnicianDisplayGeometry().width()/2, ui.instructionsLabel->height() );
-    ui.titlebarLabel->resize( wmgr.getTechnicianDisplayGeometry().width()/2, ui.titlebarLabel->height() );
-
-    ui.swEncoder->setGeometry( ( ui.gridLayoutWidget->width() + 10 ),
-                               ( this->height() - 30 - 10 ),
-                               100,
-                               30 );
-    connect( ui.swEncoder, SIGNAL( toggled(bool) ), this, SIGNAL( enableOcelotSwEncoder(bool) ) );
-
-    rawDataMaxLabel = new QLabel( "", this );
-    rawDataMaxLabel->show();
-    rawDataMaxLabel->setGeometry( 330, 35, 300, 30 );
-    rawDataLength = MaxSampleVal; // Use the default value until it is updated from a system INI file.
-#else
     ui.swEncoder->hide();
-#endif
-
-#if !ENABLE_SLED_SUPPORT_BOARD_TESTING
-    ui.getSledStatusButton->hide();
-#endif
 }
 
 /*
@@ -195,20 +88,13 @@ advancedView::~advancedView()
  * maintain interactive performance, this call simply updates their
  * data cache.
  */
-void advancedView::addScanline( const OCTFile::FrameData_t *pData )
+void advancedView::addScanline()
 {
-    LOG1(pData)
-//    if( pData->rawData )
-//    {
-//        ui.rawDataPlot->plotData( pData->rawData );
-//    }
 
-//    if( ( pData->fftData ) )
-//    {
-//        ui.fftDataPlot->plotData( pData->fftData );
-//    }
+    updatePlot();
 
     // Rough updates/second counter
+
     lineCount++;
 
     if( timer.elapsed() > 1000 )
@@ -220,23 +106,6 @@ void advancedView::addScanline( const OCTFile::FrameData_t *pData )
         // request an update to the UI to make sure all pieces of the widget
         // refresh periodically
         update();
-
-#if CONSOLE_MANUFACTURING_RELEASE
-        if( pData->rawData )
-        {
-            float max = 0;
-            // find max val in raw data and display in a label
-            for( int i = 0; i < rawDataLength; i++ )
-            {
-                if( max < ( (float)pData->rawData[ i ] / 1000 ) )
-                {
-                    max = ( (float)pData->rawData[ i ] / 1000 );
-                }
-            }
-            // Format the number to display 55232 as 55.2 K, since this is more readable.
-            rawDataMaxLabel->setText( QString( "Raw Data Max: %1 K" ).arg( QString::number( max, 'f', 1 ) ) );
-        }
-#endif
     }
 }
 
@@ -248,11 +117,23 @@ void advancedView::addScanline( const OCTFile::FrameData_t *pData )
  */
 void advancedView::handleBrightnessChanged(int value)
 {
-//lcv    ui.fftDataPlot->changeBrightness(value);
     emit brightnessChanged(value); // Let the DSP know.
 
+    SignalModel::instance()->setBlackLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( value );
+}
+
+void advancedView::showRecordingFullCase(bool state)
+{
+    if( state )
+    {
+        ui.fullCaseRecordingValueLabel->setText( "ENABLED" );
+    }
+    else
+    {
+        ui.fullCaseRecordingValueLabel->setText( "DISABLED" );
+    }
 }
 
 /*
@@ -263,9 +144,10 @@ void advancedView::handleBrightnessChanged(int value)
  */
 void advancedView::handleContrastChanged(int value)
 {
-//lcv    ui.fftDataPlot->changeContrast(value);
+    //lcv    ui.fftDataPlot->changeContrast(value);
     emit contrastChanged(value); // Let the DSP know.
 
+    SignalModel::instance()->setWhiteLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setContrast( value );
 }
@@ -342,9 +224,6 @@ void advancedView::handleRawDataLengthChange( int size )
     // Adjust the axis and amount of data to copy to the chart
 //lcv    ui.rawDataPlot->init( size );
 //lcv    ui.rawDataPlot->setAxisScale( QwtPlot::xBottom, 0, size );
-#if CONSOLE_MANUFACTURING_RELEASE
-    rawDataLength = size;
-#endif
 }
 
 /*
@@ -403,9 +282,6 @@ void advancedView::handleDeviceChange()
 //        ui.fftDataPlot->changeBrightness( BrightnessLevels_HighSpeed.defaultValue );
 //        ui.fftDataPlot->changeContrast( ContrastLevels_HighSpeed.defaultValue );
 
-#if ENABLE_TOP_DEAD_CENTER_TOGGLE
-        ui.tdcCheckBox->show();
-#endif
     }
     else
     {
@@ -427,20 +303,6 @@ void advancedView::handleDeviceChange()
 //lcv    ui.fftDataPlot->enableDisplayControls();
 
     ui.evoaStatusVal->setText( EvoaStatusDefault );
-
-#if CONSOLE_MANUFACTURING_RELEASE
-    int iMask_px = devSettings.current()->getInternalImagingMask_px();
-    ui.fftDataPlot->drawInternalMaskLine( iMask_px );
-    if( devSettings.current()->isHighSpeed() ) // only show for Low Speed
-    {
-        ui.swEncoder->hide();
-    }
-    else
-    {
-        ui.swEncoder->show();
-        ui.swEncoder->setChecked( false );
-    }
-#endif
 }
 
 /*
@@ -473,17 +335,7 @@ void advancedView::on_evoaSetDefaultButton_clicked()
     ui.evoaControlWidget->setValue( evoa->getCurrVoltage() );
 }
 
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-/*
- * on_saveSignalsPushButton_clicked
- */
-void advancedView::on_saveSignalsPushButton_clicked()
-{
-    emit saveSignals();
-}
-#endif
 
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
 /*
  * on_getSledStatusButton_clicked
  */
@@ -491,7 +343,84 @@ void advancedView::on_getSledStatusButton_clicked()
 {
     emit checkSledStatus();
 }
-#endif
+
+void advancedView::initLinePlot()
+{
+//    auto& rawFrame = ui.rawDataPlot;
+    auto& fftFrame = ui.fftDataPlot;
+
+//    LOG2(rawFrame->height(), rawFrame->width())
+    LOG2(fftFrame->height(), fftFrame->width())
+
+    m_linePlot = std::make_unique<QChart>();
+    m_lineSeries = std::make_unique<QLineSeries>();
+
+//![1]
+    auto series = m_lineSeries.get();
+//![1]
+
+//![2]
+    QList<QPointF> values;
+    for(size_t i = 0; i < 1024; ++i){
+        if(i%3 == 0){
+            values.push_back(QPointF(i, 3));
+        }else{
+            values.push_back(QPointF(i, 17));
+        }
+    }
+    series->append(values);
+    QPen pen;
+    pen.setWidth(1);
+    series->setPen(pen);
+//![2]
+
+//![3]
+    auto chart = m_linePlot.get();//new QChart();
+
+    chart->legend()->hide();
+    chart->addSeries(series);
+    chart->createDefaultAxes();
+    chart->setTheme(QChart::ChartThemeDark);
+//    chart->setTheme(QChart::ChartThemeBlueIcy);
+//    chart->setTheme(QChart::ChartThemeQt);
+//    chart->setTheme(QChart::ChartThemeHighContrast);
+//    chart->setTheme(QChart::ChartThemeBlueNcs);
+    QBrush brush("white");
+    chart->setTitle("Energy Spectrum");
+    chart->setTitleBrush(brush);
+    QFont font("courier new",14);
+    font.setBold(true);
+
+    chart->setTitleFont(font);
+//![3]
+
+//![4]
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+//![4]
+
+    QVBoxLayout* vboxLayout = new QVBoxLayout(this);
+
+    vboxLayout->addWidget(chartView);
+    fftFrame->setLayout(vboxLayout);
+
+    auto marg = chart->margins();
+    LOG2(marg.top(), marg.bottom());
+
+    //    rawFrame->setLayout(vboxLayout);
+}
+
+void advancedView::updatePlot()
+{
+    QMutexLocker quard(SignalManager::instance()->getMutex());
+
+    const auto& values = SignalManager::instance()->getAdvancedViewFftPlotList();
+    if(m_lineSeries->pointsVector().isEmpty()){
+        m_lineSeries->append(values);
+    } else {
+        m_lineSeries->replace(values);
+    }
+}
 
 /*
  * Update clocking status label

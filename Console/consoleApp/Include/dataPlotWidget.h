@@ -35,10 +35,6 @@
 //    void plotData( unsigned char * );
 //    void enableDisplayControls() { displayControlsEnabled = true; }
 //    void disableDisplayControls() { displayControlsEnabled = false; }
-//#if CONSOLE_MANUFACTURING_RELEASE
-//    void drawMmDepthLines( void );
-//    void drawInternalMaskLine( int iMask_px );
-//#endif
 
 //signals:
 //    void updateBrightness(int);
@@ -74,9 +70,6 @@
 //    QPen brightnessPen;
 //    QPen contrastPen;
 //    QwtPlotGrid *grid;
-//#if CONSOLE_MANUFACTURING_RELEASE
-//    QwtPlotMarker *maskMarker;
-//#endif
 
 //    bool showLevels;
 //    bool displayControlsEnabled;

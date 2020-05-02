@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormL300</class>
+ <widget class="QWidget" name="FormL300">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>2560</width>
+    <height>1440</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>2560</width>
+    <height>1440</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>2560</width>
+    <height>1440</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>2560</width>
+       <height>1440</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>2560</width>
+       <height>1440</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+   background: url(:images/background_texture.png); 
+} 
+
+QGraphicsView {
+	border: none;
+	background: black;
+}
+
+/* Looking for slider styles? Look in the individual widget style sheet, as they needed to
+ * be distinct (span slider vs. normal)
+*/
+
+
+
+/****************
+ *         v3.0            *
+ ****************/
+
+
+/* --------- General font and layout defaults ----------*/
+
+QDialog {
+ font: 18px &quot;DinPRO-Medium&quot;;
+ color: white;
+ background-color: rgb( 147, 147, 147 );
+ border: 1px solid rgb( 147, 147, 147 );
+ border-radius: 5px;
+}
+
+/* this QWidget affects the labels on the Physician screen. Why? Good question.*/
+QWidget {
+ font: 36pt &quot;DinPRO-Medium&quot;;
+}
+
+QLabel {
+ font: 18px &quot;DinPRO-Medium&quot;;
+}
+
+QLabel#titlebarLabel {
+	background: rgb( 51, 51, 51 );
+}
+QLabel#titlebarTextLabel {
+    font: 24pt &quot;DINPro-Medium&quot;;
+    color: white;
+}
+
+QLabel#instructionsLabel
+{
+    background: rgb( 191, 191, 191 );
+}
+
+QLabel#instructionsTextLabel
+{
+    font: 12pt &quot;DINPro-Medium&quot;;
+}
+
+/* ---------------- Pushbuttons ----------------*/
+
+QPushButton 
+{
+    background: rgb( 51, 74, 94 );
+    border: 1px solid rgb( 51, 74, 94 );
+    color: white;
+    font: 32pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 10px;
+    border-width: 2px;
+}
+
+QPushButton::hover 
+{
+    background: rgb(51, 74, 94 );
+    border-color: rgb( 166, 166, 166 );
+    color: rgb( 214, 214, 214);
+    border-width: 1px;
+    border-radius: 10px;
+}
+
+ QPushButton:default 
+{
+     background: rgb( 51, 51, 51 );
+ }
+
+QPushButton:checked 
+{
+    background:  rgb(  51, 74, 94  ); 
+    border: rgb(  191, 191, 191  ); 
+    color: rgb( 52, 73, 94 );
+ }
+
+QPushButton:disabled 
+{
+     background:  rgb( 51, 51, 51 ); 
+     border: rgb( 51, 51, 51 ); 
+     color: rgb( 128, 128, 128 );
+ }
+
+/* --------- Spin Boxes -----------*/
+
+QAbstractSpinBox {
+	font: 18px DinPRO-medium;
+	border: 0;
+    border-radius: 5px;
+}
+
+QAbstractSpinBox::up-button {
+	border: 0;
+   background: rgba(233,233,235,255);
+   border-top-right-radius: 8px;
+   margin-top: -2px;
+   margin-bottom: -1px;
+   padding-bottom: -5px;
+   width: 15px;
+}
+
+QAbstractSpinBox::up-arrow  {
+  image: url(:/images/arrow_up_normal.png);
+}
+
+QAbstractSpinBox::up-arrow:hover {
+  image: url(:images/arrow_up_rollover.png);
+}
+
+QAbstractSpinBox::down-button {
+   border: 0;
+   background: rgba(233,233,235,255);
+   border-bottom-right-radius: 8px;
+   padding-top: -5px;
+   margin-bottom: -2px;
+   margin-top: -1px;
+   width: 15px;
+}
+
+QAbstractSpinBox::down-arrow:hover {
+  image: url(:/images/arrow_down_rollover.png);
+}
+
+QAbstractSpinBox::down-arrow {
+  image: url(:/images/arrow_down_normal.png);
+}
+
+/* group boxes */
+
+
+/* ------------- Line edits and list views ---------------*/
+
+QLineEdit, QListView {
+    color: #808080;
+	font: 18px DinPro-medium;
+    selection-color: white;   
+    border: 2px groove white;
+    border-radius: 4px;
+}
+
+
+/* --------- Check Boxes ----------*/
+
+QCheckBox {
+	spacing: 5px;
+}
+
+QCheckBox::indicator {
+	border: #909090;
+    background: #909090;
+	width: 20px;
+	height: 20px;
+	margin-top: 4px;
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(:images/checkBox_normal.png);
+}
+
+QCheckBox::indicator:checked {
+	image: url(:images/checkBox_active.png);
+}
+
+QDialogButtonBox
+{
+   button-layout: 1;
+}
+
+
+/* ---------- Group Boxes ---------- */
+
+ QGroupBox {
+    font: 14.75pt DINPro-medium;
+    color: white;
+    background-color: rgb( 51, 51, 51 );
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 0px;
+}
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* position at the top center */
+     left: 10px;
+     padding: 1px;
+ }</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>136</number>
+      </property>
+      <property name="leftMargin">
+       <number>100</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="topMargin">
+         <number>100</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="pushButtonAvinger">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/octConsole/aLogo</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>240</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>40</number>
+          </property>
+          <property name="bottomMargin">
+           <number>100</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButtonCamera">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/octConsole/capture</normalon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>200</width>
+              <height>200</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonMeasure">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/octConsole/measure</normalon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>200</width>
+              <height>200</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonRecord">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/octConsole/record</normalon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>200</width>
+              <height>200</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <property name="spacing">
+               <number>40</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="pushButtonZoomOut">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../octConsole.qrc">
+                  <normaloff>:/octConsole/zoomOut</normaloff>:/octConsole/zoomOut</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>80</width>
+                  <height>80</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonZoomIn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../octConsole.qrc">
+                  <normaloff>:/octConsole/zoomIn</normaloff>:/octConsole/zoomIn</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>80</width>
+                  <height>80</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QSlider" name="horizontalSliderZoom">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>300</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"> /* ---------- Sliders ------------*/
+
+QSlider::groove:horizontal {
+border: 1px solid rgb(  191, 191, 191 );
+background: white;
+height: 30px;
+border-radius: 5px;
+}
+
+QSlider::sub-page:horizontal {
+background: rgb( 51, 51, 51 );
+border: 1px solid rgb( 51, 51, 51 );
+height: 30px;
+border-radius: 6px;
+}
+
+QSlider::add-page:horizontal   /* to the right of the handle */
+{
+background: rgb(  191, 191, 191  );
+border: 1px solid rgb(  191, 191, 191  );
+height: 30px;
+border-radius: 6px;
+}
+
+QSlider::handle:horizontal {
+/*  image: url(:images/handle_normal.png);*/
+ width: 50px;
+  margin: -30px 0;
+   background:   rgb( 128, 128, 128 );
+}
+
+QSlider::handle:horizontal:hover {
+	image: url(:images/handle_rollover.png);
+    margin: -30px 0;
+    background:   rgb( 128, 128, 128 ); 
+}
+
+QSlider::sub-page:horizontal:disabled {
+    background:   rgb(  191, 191, 191  );
+    border-color:  rgb(  191, 191, 191  );
+border-radius: 6px;
+}
+
+QSlider::add-page:horizontal:disabled {
+    background:    rgb(  191, 191, 191  );
+    border-color:  rgb(  191, 191, 191  );
+border-radius: 6px;
+}
+
+QSlider::handle:horizontal:disabled {
+	image: url(:images/handle_disabled.png);
+background:  rgb( 128, 128, 128 );
+border: 1px solid  rgb(  128, 128, 128  );
+border-radius: -15px;
+}
+</string>
+              </property>
+              <property name="maximum">
+               <number>4</number>
+              </property>
+              <property name="pageStep">
+               <number>1</number>
+              </property>
+              <property name="value">
+               <number>2</number>
+              </property>
+              <property name="sliderPosition">
+               <number>2</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QGraphicsView" name="graphicsView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>1440</width>
+          <height>1440</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>1440</width>
+          <height>1440</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="bottomMargin">
+         <number>100</number>
+        </property>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>791</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>100</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>150</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>600</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>600</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>.
+.
+.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>545</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonFlip">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/octConsole/flip</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>150</width>
+            <height>150</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../octConsole.qrc"/>
+ </resources>
+ <connections/>
+</ui>

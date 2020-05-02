@@ -2,8 +2,8 @@
  * viewoptions.cpp
  *
  * Overlay widget to adjust view options and preferences
- * for the sector and waterfall views, such as laser line
- * brightness, reticle brightness, and waterfall rate.
+ * for the sector view, such as laser line
+ * brightness, reticle brightness.
  *
  * Author: Ryan Radjabi
  *
@@ -26,9 +26,6 @@ viewOptions::viewOptions(QWidget *parent) :
 
     ui->reticleSlider->setValue(                      settings.reticleBrightness() );
     ui->laserIndicatorSlider->setValue(               settings.laserIndicatorBrightness() );
-    ui->showWaterfallRadioButton->setChecked(         settings.waterfall() );
-    ui->showWaterfallRadioButton_no->setChecked(     !ui->showWaterfallRadioButton->isChecked() );
-    ui->waterfallRateSlider->setValue(                settings.waterfallRate() );
     ui->invertColorsRadioButton->setChecked(          settings.invertOctColor() );
     ui->invertColorsRadioButton_no->setChecked(      !ui->invertColorsRadioButton->isChecked() );
 
@@ -62,18 +59,6 @@ void viewOptions::disableButtons( void )
 void viewOptions::enableButtons( void )
 {
    ui->scanSyncSlider->setEnabled( true );
-}
-
-
-/*
- * on_waterfallRateSlider_valueChanged
- *
- * Save the new setting for the waterfall rate
- */
-void viewOptions::on_waterfallRateSlider_valueChanged(int value)
-{
-    userSettings &settings = userSettings::Instance();
-    settings.setWaterfallRate( value );
 }
 
 /*
@@ -178,9 +163,6 @@ void viewOptions::handleDeviceChange()
     {
         ui->scanSyncSlider->setDisabled( true );
         ui->laserIndicatorSlider->setDisabled( true );
-        ui->waterfallRateSlider->setDisabled( true );
-        ui->showWaterfallRadioButton->setDisabled( true );
-        ui->showWaterfallRadioButton_no->setDisabled( true );
         ui->useNoiseReductionRadioButton->setEnabled( true );
         ui->useNoiseReductionRadioButton_no->setEnabled( true );
         ui->noiseReductionSlider->setEnabled( false ); // disable by default
@@ -189,9 +171,6 @@ void viewOptions::handleDeviceChange()
     {
         ui->scanSyncSlider->setDisabled( false );
         ui->laserIndicatorSlider->setDisabled( false );
-        ui->waterfallRateSlider->setDisabled( false );
-        ui->showWaterfallRadioButton->setDisabled( false );
-        ui->showWaterfallRadioButton_no->setDisabled( false );
         ui->useNoiseReductionRadioButton->setEnabled( false );
         ui->useNoiseReductionRadioButton_no->setEnabled( false );
         ui->noiseReductionSlider->setEnabled( false );
@@ -221,23 +200,7 @@ void viewOptions::on_noiseReductionSlider_valueChanged( int position )
     userSettings &settings = userSettings::Instance();
     settings.setNoiseReductionVal( position );
 
-    int currFrameWeight_percent = position;
-    int prevFrameWeight_percent = 100 - currFrameWeight_percent;
-
-    emit weightedAveragesChanged( prevFrameWeight_percent, currFrameWeight_percent );
-}
-
-/*
- * on_showWaterfallRadioButton_toggled
- *
- * Handle toggling the checkbox for displaying the waterfall
- */
-void viewOptions::on_showWaterfallRadioButton_toggled(bool checked)
-{
-    userSettings &settings = userSettings::Instance();
-    settings.setWaterfall( checked );
-
-    emit displayWaterfall( checked == true );
+    emit currFrameWeight_percentChanged(position);
 }
 
 /*
@@ -263,7 +226,6 @@ void viewOptions::updateValues( void )
 {
     emit reticleBrightnessChanged( ui->reticleSlider->value() );
     emit laserIndicatorBrightnessChanged( ui->laserIndicatorSlider->value() );
-    emit displayWaterfall( ui->showWaterfallRadioButton->isChecked() );
     emit enableInvertColors( ui->invertColorsRadioButton->isChecked() );
     emit enableAveraging( ui->useNoiseReductionRadioButton->isChecked() );
 }

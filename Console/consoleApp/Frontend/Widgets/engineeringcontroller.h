@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QTime>
 
 class EngineeringDialog;
 class EngineeringModel;
@@ -17,13 +18,13 @@ public:
     void showOrHideView(bool isShown = true);
 
 private slots:
-    void updateStat();
     void saveFrameBuffers();
     void loadFrameBuffers();
     void playbackStartStopCommand(bool isStart);
     void setPlaybackSpeed(int speed);
     void handleSaveDataToFile();
     void saveDataToFile();
+    void onCountChanged(int count, int index);
 
 private:
     void startPlayback();
@@ -32,8 +33,9 @@ private:
     EngineeringDialog* m_view;
     EngineeringModel* m_model;
     bool m_isGeometrySet;
-    QTimer m_statTimer;
-
+    QTime m_frameRateTimer;
+    float m_frameRate{1.0};
+    int m_count[2]{0,0};
 };
 
 #endif // ENGINEERINGCONTROLLER_H

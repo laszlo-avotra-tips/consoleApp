@@ -102,7 +102,7 @@ int captureListModel::addCapture(QString tag,
 
     QDateTime timeVal = QDateTime::fromTime_t(timestamp);
     // Find next available ID
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db;
     int maxID = db.addCapture( tag, timestamp, name, deviceName, isHighSpeed, pixelsPerMm );
     if( maxID < 0 )
     {
@@ -147,13 +147,18 @@ int captureListModel::getLastCaptureId( void )
 /*
  * class captureItem implementation
  */
+void captureItem::replaceDecoratedImage(QImage p)
+{
+    saveDecoratedImage( p, name + DecoratedImageSuffix + ".png" );
+}
 
 /*
  * loadImage()
  *
- * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
+ * Give a type of image to load (specified in image filter as sector, etc.)
  * load it from disk and return a QImage representing it.
  */
+
 QImage captureItem::loadImage( QString imageFilter )
 {
     QStringList filters;

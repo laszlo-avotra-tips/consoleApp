@@ -7,7 +7,7 @@
  *
  * Author: Chris White
  *
- * Copyright (c) 2010-2018 Avinger, Inc
+ * Copyright (c) 2010-2017 Avinger, Inc
  */
 #pragma once
 
@@ -15,8 +15,8 @@
 #include <QImage>
 #include <QSettings>
 #include <QDomDocument>
-#include "defaults.h"
 #include <QDebug>
+#include "defaults.h"
 
 /*
  * Device class
@@ -41,21 +41,22 @@ public:
             int         inRevolutionsPerMin        = 500,   // magic
             int         inALineLengthNormal_px     = 512,   // magic
             int         inALineLengthDeep_px       = 1024,  // magic
-            float       inImagingDepthNormal_mm    = 3.3f,   // magic
-            float       inImagingDepthDeep_mm      = 6.0f,   // magic
-            bool        inClockingEnabledByDefault = false,
+            float       inImagingDepthNormal_mm    = 3.3,   // magic
+            float       inImagingDepthDeep_mm      = 6.0,   // magic
+            int         inClockingEnabled          = 1,
             QByteArray  inClockingGain             = "25",  // magic
             QByteArray  inClockingOffset           = "400", // magic
-            QByteArray  inTorqueLimit              = "4.5",
-            int         inTimeLimit                = 1,
+            QByteArray  inTorqueLimit              = "45",
+            QByteArray  inTimeLimit                = "1",
             int         inLimitBlinkEnabled        = -1,
+//            QByteArray  inReverseAngle             = "0",
             int         inMeasurementVersion       = 0,
             QByteArray  inSpeed1                   = "1000",
             QByteArray  inSpeed2                   = "1500",
             QByteArray  inSpeed3                   = "2000",
             QString     inDisclaimerText           = InvestigationalDeviceWarning,
             DeviceType  inDeviceType               = LowSpeed,
-            QImage     *inIcon                     = nullptr )
+            QImage     *inIcon                     = NULL )
     {
         deviceName               = inDeviceName;
         internalImagingMask_px   = inInternalImagingMask_px;
@@ -66,60 +67,46 @@ public:
         aLineLengthDeep_px       = inALineLengthDeep_px;
         imagingDepthNormal_mm    = inImagingDepthNormal_mm;
         imagingDepthDeep_mm      = inImagingDepthDeep_mm;
-        clockingEnabledByDefault = inClockingEnabledByDefault;
+        clockingEnabled          = inClockingEnabled;
         clockingGain             = inClockingGain;
         clockingOffset           = inClockingOffset;
         torqueLimit              = inTorqueLimit;
         timeLimit                = inTimeLimit;
         limitBlinkEnabled        = inLimitBlinkEnabled;
-        Speed1                   = inSpeed1;
-        Speed2                   = inSpeed2;
-        Speed3                   = inSpeed3;
-
-
-
-
-
-
-
-
-
-
-
-
+//        reverseAngle             = inReverseAngle;
 
         disclaimerText           = inDisclaimerText;
         measurementVersion       = inMeasurementVersion;
         deviceType               = inDeviceType;
         icon                     = inIcon;
-        pixelsPerMm              = static_cast<float>(aLineLengthNormal_px) / static_cast<float>(imagingDepthNormal_mm);
-        pixelsPerUm              = pixelsPerMm / 1000.0f;
-        rotation                 = -1;
+        pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
+        pixelsPerUm              = pixelsPerMm / (float)1000;
     }
 
     ~device()
     {
-        if( icon )
+        if( icon != NULL )
         {
             delete icon;
         }
     }
 
-    QString getDeviceName(void)           { return deviceName; }
+    QString getDeviceName(void);
     int getInternalImagingMask_px(void)   { return internalImagingMask_px; }
-    int getCatheterRadius_px(void)        { return int( catheterRadius_um * pixelsPerUm ); }
+    int getCatheterRadius_px(void)        { return ( catheterRadius_um * pixelsPerUm ); }
     int getCatheterRadius_um(void)        { return catheterRadius_um; }
     int getLinesPerRevolution(void)       { return linesPerRevolution_cnt; }
     int getRevolutionsPerMin(void)        { return revolutionsPerMin; }
     int getALineLengthNormal_px(void)     { return aLineLengthNormal_px; }
     int getALineLengthDeep_px(void)       { return aLineLengthDeep_px; }
     int getMeaurementVersion(void)        { return measurementVersion; }
-    bool isClockingEnabledByDefault(void) { return clockingEnabledByDefault; }
+    int getClockingEnabled(void)          { return clockingEnabled; }
     QByteArray getClockingGain(void)      { return clockingGain; }
     QByteArray getClockingOffset(void)    { return clockingOffset; }
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
-    int getTimeLimit(void)                { return timeLimit; }
-    int getLimitBlink(void)               { return limitBlinkEnabled; }
+    QByteArray getTimeLimit(void)         { return timeLimit; }
+    int getLimitBlinkEnabled(void)        { return limitBlinkEnabled; }
+//    QByteArray getReverseAngle(void)      { return reverseAngle; }
     float getImagingDepthNormal_mm(void)  { return imagingDepthNormal_mm; }
     float getImagingDepthDeep_mm(void)    { return imagingDepthDeep_mm; }
     QImage getIcon(void)                  { return icon->copy(); }
@@ -129,12 +116,8 @@ public:
     QByteArray getSpeed1(void)            { return Speed1; }
     QByteArray getSpeed2(void)            { return Speed2; }
     QByteArray getSpeed3(void)            { return Speed3; }
-    bool isBidirectional(void)            { return (deviceType == Ocelaris); }
     QString getDisclaimerText(void)       { return disclaimerText; }
-    void setLinesPerRevolution(int lines) { linesPerRevolution_cnt = lines; }
-    void setRevolutionsPerMin(int speed)  { revolutionsPerMin = speed; }
-    void setRotation( int dir )           { rotation = dir; }
-    int getRotation(void)                 { return rotation; }
+    void setInternalImagingMask_px(int mask)  { internalImagingMask_px = mask; }
 
 private:
     QString    deviceName;
@@ -147,12 +130,13 @@ private:
     int        aLineLengthNormal_px;
     int        aLineLengthDeep_px;
     int        measurementVersion;
-    bool       clockingEnabledByDefault;
+    int        clockingEnabled;
     QByteArray clockingGain;
     QByteArray clockingOffset;
     QByteArray torqueLimit;
-    int        timeLimit;
+    QByteArray timeLimit;
     int        limitBlinkEnabled;
+//    QByteArray reverseAngle;
     float      imagingDepthNormal_mm;
     float      imagingDepthDeep_mm;
     float      pixelsPerMm;
@@ -162,7 +146,6 @@ private:
     QByteArray Speed3;
     QString    disclaimerText;
     DeviceType deviceType;
-    int        rotation;
 };
 
 /*
@@ -174,16 +157,17 @@ class deviceSettings : public QObject
 
 public:
     // singleton
-    static deviceSettings & Instance();
-    int init( void );
-
-    void setCurrentDevice( int devIndex )
+    static deviceSettings & Instance()
     {
-        currentDevice = devIndex;
-        emit deviceChanged();
+        static deviceSettings theSettings;
+        return theSettings;
     }
 
-    int getCurrentDevice( void ) { return currentDevice; }
+    int init( void );
+
+    void setCurrentDevice( int devIndex );
+
+    int getCurrentDevice( void ) { return currentDevice; };
     device *deviceAt( int devIndex ) { return( deviceList.at( devIndex ) ); }
 
     device *current(void)
@@ -194,7 +178,7 @@ public:
         }
         else
         {
-            return nullptr;
+            return NULL;
         }
     }
 
@@ -218,16 +202,31 @@ public:
     bool loadDevice( QString deviceFile );
     bool checkVersion( QDomDocument *doc );
 
+    void setBrightness (int value ) { brightness = value; }
+    void setContrast( int value ) { contrast = value; }
+    int  getBrightness (void ) { return brightness; }
+    int  getContrast( void ) { return contrast; }
+
+    bool getIsSimulation() const;
+    void setIsSimulation(bool isSimulation);
+
 signals:
-    void deviceChanged();
+    void deviceChanged( );
     void sendWarning( QString );
     void sendFailure( QString ); // signal to consoleApp frontend
+    void displayMask( int );
+
+public slots:
+    void adjustMaskSize( int );
 
 private:
     int currentDevice;
     QList<device *> deviceList;
     QSettings *settings;
-    static deviceSettings* theSettings;
+
+    int brightness = 0;
+    int contrast = 0;
+    bool m_isSimulation{false};
 
     deviceSettings();
     ~deviceSettings();

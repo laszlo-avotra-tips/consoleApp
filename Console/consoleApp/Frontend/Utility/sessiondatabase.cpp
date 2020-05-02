@@ -14,13 +14,12 @@
 #include "util.h"
 #include <QMap>
 #include <QDateTime>
+#include <logger.h>
 
 // Schema layouts for each table are defined in SDS 0007
 #define IMAGE_CAPTURES_SCHEMA_VERSION  5
 #define OCT_LOOPS_SCHEMA_VERSION       4
 #define SESSION_SCHEMA_VERSION         3
-
-sessionDatabase* sessionDatabase::theDB{nullptr};
 
 /*
  * constructor
@@ -35,6 +34,11 @@ sessionDatabase::sessionDatabase()
         // TBD:  this should fail earlier.  don't allow app to start up?
         displayFailureMessage( QObject::tr( "Unable to load database:\nThis application needs the SQLITE driver" ), true );
     }
+    initDb();
+}
+
+sessionDatabase::~sessionDatabase()
+{
 }
 
 /*
@@ -44,13 +48,6 @@ sessionDatabase::sessionDatabase()
  * specified by the user. Sets up the SQLite file,
  * the schema and tables.
  */
-sessionDatabase &sessionDatabase::Instance() {
-    if(!theDB){
-        theDB = new sessionDatabase();
-    }
-    return *theDB;
-}
-
 QSqlError sessionDatabase::initDb(void)
 {
     caseInfo &info = caseInfo::Instance();
@@ -60,9 +57,14 @@ QSqlError sessionDatabase::initDb(void)
     {
         return QSqlError();
     }
+    QStringList names = QSqlDatabase::connectionNames();
+    if(!names.isEmpty()){
+        QSqlDatabase::removeDatabase("qt_sql_default_connection");
+    }
+    m_dbName = info.getStorageDir().append( "/" ).append( SessionDatabaseFileName );
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName( m_dbName );
 
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName( info.getStorageDir().append( "/" ).append( SessionDatabaseFileName ) );
     QSqlError sqlerr;
 
     if( !db.open() )
@@ -130,9 +132,6 @@ QSqlError sessionDatabase::initDb(void)
         }
     }
 
-    // Add the current version numbers for this schema
-    populateVersionTable();
-
     return sqlerr;
 }
 
@@ -163,6 +162,7 @@ void sessionDatabase::populateVersionTable( void )
                             "VALUES (?, ?)" ) );
         q.addBindValue( i.key() );
         q.addBindValue( i.value() );
+//        LOG2(i.key(), i.value())
 
         q.exec();
 
@@ -172,16 +172,6 @@ void sessionDatabase::populateVersionTable( void )
             displayFailureMessage( QObject::tr( "Database failure:Failed to INSERT new version data." ), true );
         }
     }
-}
-
-/*
- * close()
- *
- * Public call to close.
- */
-void sessionDatabase::close( void )
-{
-    db.close();
 }
 
 /*
@@ -196,11 +186,14 @@ void sessionDatabase::createSession( void )
     QSqlQuery q;
     QSqlError sqlerr;
 
+    populateVersionTable();
+
     // Session start time is UTC
     QString timeStr = QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss" );
 
     q.prepare( QString( "INSERT INTO session (caseid, timestamp, utcOffset, patient, doctor, location, notes, cleanExit)"
                         "VALUES (?, ?, ?, ?, ? ,?, ?, ?)" ) );
+    LOG1(info.getCaseID() )
     q.addBindValue( info.getCaseID() );
     q.addBindValue( timeStr );
     q.addBindValue( info.getUtcOffset() );
@@ -289,6 +282,7 @@ int sessionDatabase::addCapture( QString tag,
     // Find next available ID
     int maxID = 0;
     q.prepare( "SELECT MAX(id) FROM captures" );
+
     q.exec();
     sqlerr = q.lastError();
     if( sqlerr.isValid() )
@@ -310,6 +304,7 @@ int sessionDatabase::addCapture( QString tag,
 
     q.prepare( "INSERT INTO captures (id, timestamp, tag, name, deviceName, isHighSpeed, pixelsPerMm)"
                "VALUES (?, ?, ?, ?, ?, ?, ?)" );
+    LOG1(maxID);
     q.addBindValue( maxID );
     q.addBindValue( timeStr );
     q.addBindValue( tag) ;

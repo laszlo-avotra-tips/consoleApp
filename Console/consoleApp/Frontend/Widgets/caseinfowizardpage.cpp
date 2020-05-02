@@ -115,7 +115,7 @@ bool caseInfoWizardPage::validatePage()
      * fields given by the user.
      */
     caseInfo &info      = caseInfo::Instance();
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db;
 
     // if patientId is empty, provide the current dateAndTime string.
     QString sPatientId = field( "PatientId" ).toString().trimmed();
@@ -186,7 +186,6 @@ bool caseInfoWizardPage::validatePage()
             info.setUtcOffset( now.time().hour() - ( now.toUTC().time().hour() + dayOffset ) );
 
             // Create and save the session information to the case database
-//QSLITE lcv - comment out the next two lines
             db.initDb();
             db.createSession();
 

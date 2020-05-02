@@ -5,7 +5,10 @@
 #include "octFile.h"
 #include "defaults.h"
 
+#include <memory>
+
 class DSPGPU;
+class Producer;
 
 class FileDaq : public IDAQ
 {
@@ -24,20 +27,18 @@ public:
     long getRecordLength() const override;
 
     bool configure( void ) override;
-    bool getData( void ) override;
 
     void enableAuxTriggerAsTriggerEnable( bool ) override;
 
 private:
-    bool m_isConfigured;
-    DSPGPU  *m_dsp;
+    bool m_isConfigured{false};
+    std::unique_ptr<DSPGPU>  m_dsp{nullptr};
+    std::unique_ptr<Producer>  m_producer{nullptr};
 
     QString m_daqLevel;
 
-    long m_recordLenght;
-    bool m_isRunning;
-    int m_count1;
-    int m_count2;
+    long m_recordLenght{0};
+    bool m_isRunning{false};
 };
 
 #endif // FILEDAQ_H

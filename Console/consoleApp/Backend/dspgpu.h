@@ -11,136 +11,65 @@
 #ifndef DSPGPU_H_
 #define DSPGPU_H_
 
-#include <CL/opencl.h>
-//#include "clAmdFft.h"
-#include "dsp.h"
-#include "buildflags.h"
+#include <memory>
 
-#ifdef UNIT_TEST
-#define private public
-#endif
+#include <CL/opencl.h>
+
+#include "dsp.h"
+#include "ikernelfunction.h"
+
+#include <QThread>
 
 /*
  * Uses the GPU for DSP calculations
  */
-class DSPGPU : public DSP
+class DSPGPU : public QThread
 {
     Q_OBJECT
 
 public:
-    ~DSPGPU();
+    ~DSPGPU() override;
+    void run( void ) override;
 
-    void init( unsigned int inputLength,
-               unsigned int frameLines,
-               int inBytesPerRecord,
-               int inBytesPerBuffer,
-               int inChannelCount);
+    void init();
 
-    bool processData(int);
-    bool loadFftOutMemoryObjects();
+    bool processFftBuffers(int tag, const float* i, const float* r);
+
+signals:
+    void sendWarning( QString );
+    void sendError( QString );
 
 public slots:
-    void setAveraging( bool enable ) { doAveraging = enable; }
-    void setFrameAverageWeights( int inPrevFrameWeight_percent, int inCurrFrameWeight_percent )
-    {
-        prevFrameWeight_percent = inPrevFrameWeight_percent / 100.0f;
-        currFrameWeight_percent = inCurrFrameWeight_percent / 100.0f;
-    }
-    void setDisplayAngle( float angle ) { displayAngle_deg = angle; }
+    void stop( void );
 
 private:
-    bool  doAveraging; // Instruct the post-process kernel to average two frames at a time.
-    float displayAngle_deg;
+    const size_t complexDataSize{1024};
 
-    // OpenCL state
-    cl_device_id     cl_ComputeDeviceId;
-    cl_context       cl_Context;
+    std::unique_ptr<quint16[]> workingBuffer{nullptr};
+    std::unique_ptr<float[]> imData{nullptr};
+    std::unique_ptr<float[]> reData{nullptr};
 
-    cl_kernel        cl_RescaleKernel;
-    cl_kernel        cl_PostProcKernel;
-    cl_kernel        cl_BandCKernel;
-    cl_kernel        cl_WarpKernel;
+    IKernelFunction* m_postFft{nullptr};
+    IKernelFunction* m_bandc{nullptr};
+    IKernelFunction* m_warp{nullptr};
+    IKernelFunction* m_warpBc{nullptr};
 
-    cl_program       cl_RescaleProgram;
-    cl_program       cl_PostProcProgram;
-    cl_program       cl_BandCProgram;
-    cl_program       cl_WarpProgram;
+    const size_t origin[ 3 ]{ 0, 0, 0 };
+    const size_t region[ 3 ]{ SectorWidth_px, SectorHeight_px, 1 };
 
-    cl_command_queue cl_Commands;
+    OCTFile::OctData_t *pOctData{nullptr};
+    DSP m_dsp;
+    bool m_dspIsRunning{false};
 
-    size_t           cl_max_workgroup_size;
-
-    float           *windowBuffer;
-    cl_mem           rescaleInputMemObj;
-    size_t           rescaleInputMemObjSize;
-
-    cl_mem           rescaleOutputMemObj;
-    size_t           rescaleOutputMemObjSize;
-
-    cl_mem           windowMemObj;
-    size_t           windowMemObjSize;
-
-    cl_mem           fftImaginaryInputMemObj;
-    size_t           fftImaginaryInputMemObjSize;
-
-    float           *fftImaginaryBuffer;
-    size_t           fftImaginaryBufferSize;
-
-    cl_mem           fftRealOutputMemObj;
-    size_t           fftRealOutputMemObjSize;
-
-    cl_mem           fftImaginaryOutputMemObj;
-    size_t           fftImaginaryOutputMemObjSize;
-
-    cl_mem           rescaleWholeSamplesMemObj;
-    size_t           rescaleWholeSamplesMemObjSize;
-
-    cl_mem           rescaleFracSamplesMemObj;
-    size_t           rescaleFracSamplesMemObjSize;
-
-    cl_mem           lastFramePreScalingMemObj; // The last frame. Used for frame-averaging
-    size_t           lastFramePreScalingMemObjSize;
-
-    cl_mem           inputImageMemObj;
-    size_t           inputImageMemObjSize;
-
-    cl_mem           warpInputImageMemObj;
-    size_t           warpInputImageMemObjSize;
-
-    cl_mem           outputImageMemObj;
-    size_t           outputImageMemObjSize;
-
-    cl_mem           outputVideoImageMemObj;
-    size_t           outputVideoImageMemObjSize;
-
-    quint16 *workingBuffer[ 2 ];
-
-    float prevFrameWeight_percent;
-    float currFrameWeight_percent;
-
-    float *imData;
-    size_t           imDataSize;
-
-    float *reData;
-    size_t           reDataSize;
-
-    // OpenCL support
-    bool createCLMemObjects( cl_context context );
-
-    unsigned int rescale( const unsigned short *inputData );
-    void processData( void );
+private:
+    bool processData(int tag);
+    bool initOpenCL();
     bool transformData( unsigned char *data , unsigned char *videoData );
 
-    char       *loadCLProgramSourceFromFile( QString );
-    QByteArray  loadCLProgramBinaryFromFile( QString );
-    bool buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel );
-    bool initOpenCL();
-    void computeFFTWindow();
-    bool initOpenCLFFT();
-    QString clCreateBufferErrorVerbose(int clError) const;
-    bool computeTheFFT(cl_mem rescaleOut, cl_mem &fftOutReal, cl_mem &fftOutImag); //const quint16 *
-    bool computeTheFFT(const quint16 * pDataIn, cl_mem &fftOutReal, cl_mem &fftOutImag);
-    bool isClReturnValueSuccess(cl_int ret, int line) const;
+    bool enqueuePostFftKernelFunction();
+    bool enqueueBandcKernelFunction();
+    bool enqueueWarpKernelFunction();
+    bool enqueueWarpBcKernelFunction();
 };
 
 #endif // DSPGPU_H_

@@ -1,32 +1,20 @@
 /*
  * dspgpu.cpp
  *
- * Handle raw signal data from the DAQ
- *    - Resample raw laser data
- *    - Process A-lines
- *    - Encoder angle
+ * Handle the fft signal data from the DAQ
+ *    - Post process
+ *    - Transform to polar
  *    - Scale output for display
  *
- * Implements a Santec-compatible frequency rescaling algorithm (rescale()).
- * This function takes data which has been sampled at regular time intervals
- * (via a DAQ) and interpolates it to produce data that appears sampled at
- * regular frequency intervals, according to a frequency/time interval function.
+ * The input data is expected to be in two arrays of float, the first
  *
- * The input data is expected to be in two arrays of double precision, the first
- * are the whole parts of the sample numbers appearing at linear frequency intervals.
- * The second contains the fractional parts. The code then (linearly) interpolates the data
- * values at the whole + fractional sample number based on the preceding and following
- * whole samples.
- *
- * Author(s): Chris White, Dennis W. Jackson, Ryan Radjabi
+ * Author(s): Chris White, Dennis W. Jackson, Ryan Radjabi modified by lcv
  *
  * Copyright (c) 2012-2018 Avinger, Inc.
  *
  */
 #include <QDebug>
-#include <QDir>
-#include <QCoreApplication>
-//#include "clAmdFft.h"
+
 #include "defaults.h"
 #include "dspgpu.h"
 #include "logger.h"
@@ -34,40 +22,13 @@
 #include "util.h"
 #include "buildflags.h"
 #include "deviceSettings.h"
-#include "Backend/depthsetting.h"
-//#include "ipp.h"
-#include "theglobals.h"
-#include <complex>
-#include <cudaFFTwrapper.h>
+#include "depthsetting.h"
 #include "signalmanager.h"
 #include "playbackmanager.h"
+#include "signalmodel.h"
+#include "signalprocessingfactory.h"
+#include "daqSettings.h"
 
-
-#if _DEBUG
-#   define RESCALE_CL  "./backend/opencl/rescale.cl"
-#   define POSTPROC_CL "./backend/opencl/postproc.cl"
-#   define BANDC_CL    "./backend/opencl/bandc.cl"
-#   define WARP_CL     "./backend/opencl/warp.cl"
-#else
-#   define RESCALE_CL  "./rescale.cl"
-#   define POSTPROC_CL "./postproc.cl"
-#   define BANDC_CL    "./bandc.cl"
-#   define WARP_CL     "./warp.cl"
-#endif
-
-/*
- * OpenCL core organization parameters
- */
-#define DEFAULT_GLOBAL_UNITS ( 2048 )
-#define DEFAULT_LOCAL_UNITS  ( 16 )
-
-namespace{
-size_t global_unit_dim[] = { DEFAULT_GLOBAL_UNITS, DEFAULT_GLOBAL_UNITS };
-size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
-}
-
-// Normalize distances in pixels to (1/2) SectorWidth, makes distances in the range of 0.0->1.0
-const float NormalizeScalingFactor = (float)( (float)SectorWidth_px / (float)2 );
 
 /*
  * destructor
@@ -76,85 +37,24 @@ const float NormalizeScalingFactor = (float)( (float)SectorWidth_px / (float)2 )
  */
 DSPGPU::~DSPGPU()
 {
-    LOG( INFO, "DSP GPU shutdown" );
-    qDebug() << "DSPGPU::~DSPGPU()";
+    LOG( INFO, "DSP GPU shutdown" )
+    LOG0
 
     stop();
     wait( 100 ); //ms
+}
 
-    // Release working memory
-    for( int i = 0; i < channelCount; i++ )
-    {
-        if( workingBuffer[ i ] != NULL )
-        {
-            free( workingBuffer[ i ] );
-            workingBuffer[ i ] = NULL;
+void DSPGPU::run()
+{
+    m_dspIsRunning = true;
+    int count{0};
+    while(m_dspIsRunning){
+        msleep(1);
+        if(++count % 3000 == 0){
+            auto now = QTime::currentTime().toString("HH:mm:ss:zz");
+//            LOG2(count, now)
         }
     }
-
-    if( imData )
-    {
-        delete [] imData;
-    }
-
-    if( reData )
-    {
-        delete [] reData;
-    }
-
-    if( windowBuffer )
-    {
-        free( windowBuffer );
-    }
-
-    if(!SignalManager::instance()->isFftSource()){
-        if( fftImaginaryBuffer )
-        {
-            free( fftImaginaryBuffer );
-        }
-    }
-
-    /*
-     * Clean up openCL objects
-     */
-    if(!SignalManager::instance()->isFftSource()){
-        //clAmdFftTeardown();
-        clReleaseKernel( cl_RescaleKernel );
-    }
-    clReleaseKernel( cl_PostProcKernel );
-    clReleaseKernel( cl_BandCKernel );
-    clReleaseKernel( cl_WarpKernel );
-
-    if(!SignalManager::instance()->isFftSource()){
-        clReleaseProgram( cl_RescaleProgram );
-    }
-    clReleaseProgram( cl_PostProcProgram );
-    clReleaseProgram( cl_BandCProgram );
-    clReleaseProgram( cl_WarpProgram );
-
-    if(!SignalManager::instance()->isFftSource()){
-        clReleaseMemObject( rescaleInputMemObj );
-        clReleaseMemObject( rescaleOutputMemObj );
-        clReleaseMemObject( rescaleFracSamplesMemObj );
-        clReleaseMemObject( rescaleWholeSamplesMemObj );
-        clReleaseMemObject( fftImaginaryInputMemObj );
-    }
-
-    //clReleaseMemObject( postProcOutputMemObj );
-
-    clReleaseMemObject( windowMemObj );
-    clReleaseMemObject( fftRealOutputMemObj );
-    clReleaseMemObject( fftImaginaryOutputMemObj );
-
-    clReleaseMemObject( lastFramePreScalingMemObj );
-
-    clReleaseMemObject( inputImageMemObj );
-    clReleaseMemObject( warpInputImageMemObj );
-    clReleaseMemObject( outputImageMemObj );
-    clReleaseMemObject( outputVideoImageMemObj );
-
-    clReleaseCommandQueue( cl_Commands );
-    clReleaseContext( cl_Context );
 }
 
 /*
@@ -162,499 +62,108 @@ DSPGPU::~DSPGPU()
  *
  * Initialize memory and the GPU hardware
  */
-void DSPGPU::init( unsigned int inputLength,
-                   unsigned int frameLines,
-                   int inBytesPerRecord,
-                   int inBytesPerBuffer,
-                   int inChannelCount )
+void DSPGPU::init( )
 {
     // call the common initilization steps
-    DSP::init( inputLength, frameLines, inBytesPerRecord, inBytesPerBuffer, inChannelCount );
+    m_dsp.init();
 
-    LOG1(bytesPerBuffer);
+    auto &settings = deviceSettings::Instance();
+    auto smi = SignalModel::instance();
 
-    for( int i = 0; i < inChannelCount; i++ )
-    {
-        // XXX Need to pass these into the DSP so we dont copy buffers there
-        // for opencl
-        workingBuffer[ i ] = (quint16 *)malloc( bytesPerBuffer );
-    }
+    float catheterRadius_um = float(settings.current()->getCatheterRadius_um());
+    smi->setCatheterRadius_um(catheterRadius_um);
 
-    if( ( workingBuffer[ 0 ] == NULL ) ||
-        ( ( inChannelCount == 2 ) && ( workingBuffer[ 1 ] == NULL ) ) )
-    {
-        emit sendError( tr( "Error allocating space in DSP::init" ) );
+    float internalImagingMask_px = float(settings.current()->getInternalImagingMask_px());
+    smi->setInternalImagingMask_px(internalImagingMask_px);
+
+    // Contrast stretch defaults (no stretch)
+    float blackLevel = BrightnessLevels_HighSpeed.defaultValue;
+    float whiteLevel = ContrastLevels_HighSpeed.defaultValue;
+    smi->setBlackLevel(int(blackLevel));
+    smi->setWhiteLevel(int(whiteLevel));
+
+
+    const size_t inSamplesPerBuffer = size_t(settings.current()->getLinesPerRevolution()) * DaqSettings::Instance().getRecordLength();
+    LOG1(inSamplesPerBuffer)
+
+    // XXX Need to pass these into the DSP so we dont copy buffers there
+    // for opencl
+    try {
+        workingBuffer = std::make_unique<quint16 []>(inSamplesPerBuffer);
+        imData = std::make_unique<float []>(complexDataSize);
+        reData = std::make_unique<float []>(complexDataSize);
+    } catch (std::bad_alloc e) {
+        emit sendError( e.what() );
     }
 
     // Configure the DSP
-    computeFFTWindow();
-
     if( !initOpenCL() )
     {
         displayFailureMessage( tr( "Could not initialize OpenCL." ), true );
     }
 
-    doAveraging      = false;
-    displayAngle_deg = 0.0;
-
-    currFrameWeight_percent = DefaultCurrFrameWeight_Percent / 100.0;
-    prevFrameWeight_percent = 1 - currFrameWeight_percent;
-
-    imData = new float[ 1024 ];
-    reData = new float[ 1024 ];
 }
 
 bool DSPGPU::processData(int index)
 {
     bool success(false);
 
-    void* dataBuffer(nullptr);
-    auto pmi = PlaybackManager::instance();
-    if( pmi->isInputQueue() && pmi->findInputBuffer(index, dataBuffer)){
-        LOG1(dataBuffer);
-        if(!SignalManager::instance()->isFftSource()){
-        // walk through the bulk data handling
-            if( rescale( static_cast<quint16*>(dataBuffer) ) != 0 )  //Success if return 0
-            {
-                LOG( WARNING, "Failed to rescale data on GPU." );
-            } else {
-                PlaybackManager::instance()->inputProcessingDone(index);
-            }
-        }
-    }
-    if(pmi->isFrameQueue() && pmi->findDisplayBuffer(index, pData)){
-//        pData = TheGlobals::instance()->getFrameDataPointer();
-        if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
+    pOctData = SignalModel::instance()->getOctData(index);
+
+    if(pOctData){
+        if( !transformData( pOctData->dispData, pOctData->videoData ) )   //Success if return true
         {
-            LOG( WARNING, "Failed to transform data on GPU." );
+            LOG( WARNING, "Failed to transform data on GPU." )
         }
 
-        /*
-         * Frame counts are filled in by the Data Consumer;
-         * this keeps the frame counts continuous.
-         */
-        pData->frameCount      = 0;
-        pData->encoderPosition = 0; // NOT USED for fast-OCT
-        pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = getMilliseconds();
+        pOctData->encoderPosition = 0; // NOT USED for fast-OCT
+        pOctData->timeStamp       = m_dsp.getTimeStamp();
+        pOctData->milliseconds    = quint16(m_dsp.getMilliseconds());
 
         success = true;
 
-        PlaybackManager::instance()->frameReady(index);
+        SignalModel::instance()->pushImageRenderingQueue(*pOctData);
+
     } else{
-        LOG1(pData);
+        LOG1(pOctData)
     }
     return success;
 }
 
-/*
- * processData
- *
- * Do all the work we need to do to a frame of A-line data before handing it off to be displayed
- *    - Rescale the data according to the laser characterization data for fine-tuning the waveform
- *    - Transform the data (FFT, magnitude, log)
- *    - Bundle all of the data up for displaying and storing
- *
- * Data is shared across threads via a global data buffer.  A single counter indexes
- * this buffer.  The DAQ writes to a slot in the buffer while the consumer alwayes
- * reads one slot behing the current index.  This buffer is lossy on purpose; the
- * laser produces more lines than we can transfer and display; there is no loss of
- * clinically relevant data since many of the lines are of the same view.
- */
-void DSPGPU::processData( void )
+bool DSPGPU::enqueuePostFftKernelFunction()
 {
-    // initialize prevIndex to the same value that index will get so no
-    // work is done until the DAQ starts up
-     static int prevIndex = TheGlobals::instance()->getPrevRawDataIndex();
-
-    // which index to point into for the raw data
-     int index = TheGlobals::instance()->getPrevRawDataIndex();
-
-    // Only process data if it has been updated
-    if( index != prevIndex )
-    {
-        prevIndex = index;
-
-        TIME_THIS_SCOPE( DSPGPU_processData );
-
-        // determine where to store this frame of data for the Frontend
-        pData = TheGlobals::instance()->getFrameDataPointer();
-
-        // use local pointer into data for easier access
-        const quint16 *pA = NULL;
-
-        if( channelCount == 1 )
-        {
-            pA = TheGlobals::instance()->getRawDataBufferPointer(size_t(index));
-        }
-        else
-        {
-            // ATS DAQ interleaves Channels A & B.
-            const quint16 *pBothChannels = TheGlobals::instance()->getRawDataBufferPointer(size_t(index));
-
-            // point to the start of each working buffer
-            auto wb0 = workingBuffer[ 0 ];
-            auto wb1 = workingBuffer[ 1 ];
-
-            // De-interleave the data. IPP has a deinterleave function but my first
-            // pass at it failed. Might be faster; doesn't appear to matter.
-            for( unsigned int i = 0, j = 0; i < ( bytesPerBuffer / 2 ); i += 2, j++ )
-            {
-                wb0[ j ] = pBothChannels[ i ];
-                wb1[ j ] = pBothChannels[ i + 1 ];
-            }
-        }
-
-#if !ENABLE_DEMO_MODE
-        if(!SignalManager::instance()->isFftSource()){
-        // walk through the bulk data handling        
-            if( rescale( pA ) != 0 )  //Success if return 0
-            {
-                LOG( WARNING, "Failed to rescale data on GPU." );
-            }
-        }
-        if( !transformData( pData->dispData, pData->videoData ) )   //Success if return true
-        {
-            LOG( WARNING, "Failed to transform data on GPU." );
-        }
-#else
-        // zero out the image data, no processing for demo mode
-        memset( pData->dispData, 0, SectorHeight_px * SectorWidth_px * sizeof( unsigned char ) );
-#endif
-
-        // Copy the resampled raw data into the shared memory buffer. The buffer
-        // resampledData is used for in-place transforming of the data so it must be
-        // copied before any other processing takes place.
-//lcv        ippsCopy_16s( (Ipp16s *)pA, (Ipp16s *)pData->rawData, bytesPerRecord / 2 );  // used for Advanced View display
-//lcv        ippsCopy_8u( reinterpret_cast<const quint8*>(pA), reinterpret_cast<quint8*>(pData->rawData), bytesPerRecord );
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-        if( isRecordRaw && ( rawCount < snapshotLength ) )
-        {
-            rawOutputStream.writeRawData( (const char *)pA, bytesPerBuffer );
-            rawCount++;
-            
-            qDebug() << "rawcount"<< rawCount;
-            if( rawCount >= snapshotLength )
-            {
-                qDebug() << "closing raw data";
-                closeRawDataFiles();
-            }
-        }
-#endif
-
-        /*
-         * Frame counts are filled in by the Data Consumer;
-         * this keeps the frame counts continuous.
-         */
-        pData->frameCount      = 0;
-        pData->encoderPosition = 0; // NOT USED for fast-OCT
-        pData->timeStamp       = getTimeStamp();
-        pData->milliseconds    = getMilliseconds();
-
-        // Update the global index into the shared buffer. This must be the last thing in the thread
-        // to make sure that the consumer thread only sees completely filled data structures.
-        TheGlobals::instance()->inrementFrameIndex();
-
-//        prevIndex = index;
-    }
-
-    yieldCurrentThread();
-}
-
-
-/*
- * ComputeFFTWindow
- *
- * Precompute the window function to be applied to the pre-FFT signal.
- */
-void DSPGPU::computeFFTWindow( void )
-{
-    windowBuffer = (float *)malloc(RescalingDataLength  * sizeof(float) );
-//    ippsSet_32f( 1, windowBuffer, RescalingDataLength );
-//    ippsWinHann_32f_I( windowBuffer, RescalingDataLength );
-    for(unsigned int i = 0; i < RescalingDataLength; ++i){
-        windowBuffer[i] = 1.0f;
-    }
-}
-
-/*
- * initOpenCLFFT
- *
- * Set up the FFT plan for using clAmdFft.
- *
- */
-bool DSPGPU::initOpenCLFFT( void )
-{
-
-    fftImaginaryBuffer = static_cast<float *>(malloc( sizeof(float) * RescalingDataLength * linesPerFrame ));
-    if( !fftImaginaryBuffer )
-    {
-        qDebug() << "malloc() fftImaginaryBuffer failed.";
-        return false;
-    }
-    memset( fftImaginaryBuffer, 0, sizeof(float) * RescalingDataLength * linesPerFrame );
-    return true;
-}
-
-QString DSPGPU::clCreateBufferErrorVerbose(int clError) const
-{
-    QString cause;
-    switch(clError){
-        case CL_INVALID_CONTEXT :       {cause = "CL_INVALID_CONTEXT";} break;
-        case CL_INVALID_VALUE :         {cause = "CL_INVALID_VALUE";} break;
-        case CL_INVALID_BUFFER_SIZE :   {cause = "CL_INVALID_BUFFER_SIZE";} break;
-        case CL_INVALID_HOST_PTR :      {cause = "CL_INVALID_HOST_PTR";} break;
-        case CL_MEM_OBJECT_ALLOCATION_FAILURE :  {cause = "CL_MEM_OBJECT_ALLOCATION_FAILURE";} break;
-        case CL_OUT_OF_HOST_MEMORY :    {cause = "CL_OUT_OF_HOST_MEMORY";} break;
-    }
-    return cause;
-}
-
-bool DSPGPU::computeTheFFT(cl_mem rescaleOut, cl_mem& fftOutReal, cl_mem& fftOutImag)
-{
-    //short the fft
-//    fftOutImag = fftImaginaryInputMemObj;
-//    fftOutReal = rescaleOut;
-
-    const bool enableThisCode{true};
-    if(enableThisCode){
-        const int fftSize = RescalingDataLength;
-        const int fftBatch = int(linesPerFrame);
-
-        const size_t dataSize = size_t(fftSize * fftBatch);
-        const size_t memSize = dataSize * sizeof(float);
-
-        float* pHostRescaleOutReal = new float[dataSize];
-        float* pHostFftOutImag = new float[dataSize];
-        float* pHostFftOutReal = new float[dataSize];
-        std::complex<float>* hostFftDataIn = new std::complex<float>[dataSize];
-        std::complex<float>* hostFftDataOut = new std::complex<float>[dataSize];
-
-
-        const cl_bool isBlockingCall{CL_TRUE};
-
-        //Real in
-        cl_int ret = clEnqueueReadBuffer(cl_Commands, rescaleOut, isBlockingCall, 0,
-                memSize, pHostRescaleOutReal, 0, nullptr, nullptr);
-        if(!isClReturnValueSuccess(ret,__LINE__)){
-            return false;
-        }
-//        LOG2(fftSize, fftBatch)
-
-        //init the host fft in data
-        for(size_t i = 0; i < dataSize; ++i){
-            auto& data = hostFftDataIn[i];
-            data = std::complex<float>(pHostRescaleOutReal[i],0.0f);
-        }
-        ComputeTheFFT(hostFftDataOut, hostFftDataIn, fftSize, fftBatch);
-
-        //result scaling
-        addjustCoefficientMagnitude(hostFftDataOut, dataSize);
-
-//        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
-
-        //init the fft out data
-        for(size_t i = 0; i < dataSize; ++i){
-            pHostFftOutReal[i] = hostFftDataOut[i].real();
-            pHostFftOutImag[i] = hostFftDataOut[i].imag();
-        }
-
-        //copy host imag to device imag
-        const size_t offset{0};
-        const cl_int num_events_in_wait_list{0};
-        ret = clEnqueueWriteBuffer( cl_Commands,
-                                    fftOutImag,
-                                    isBlockingCall,
-                                    offset,
-                                    memSize,
-                                    pHostFftOutImag,
-                                    num_events_in_wait_list,
-                                    nullptr,
-                                    nullptr );
-
-        if(!isClReturnValueSuccess(ret,__LINE__)){
-            return false;
-        }
-//        LOG2(dataSize,memSize);
-
-        //copy host real to device real
-        ret = clEnqueueWriteBuffer( cl_Commands,
-                                    fftOutReal,
-                                    isBlockingCall,
-                                    offset,
-                                    memSize,
-                                    pHostFftOutReal,
-                                    num_events_in_wait_list,
-                                    nullptr,
-                                    nullptr );
-
-        if(!isClReturnValueSuccess(ret,__LINE__)){
-            return false;
-        }
-//        LOG2(dataSize,memSize);
-        delete [] pHostRescaleOutReal;
-        delete [] pHostFftOutImag;
-        delete [] hostFftDataIn;
-        delete [] pHostFftOutReal;
-    }
-    return true;
-}
-
-bool DSPGPU::computeTheFFT(const quint16 *pDataIn, cl_mem &fftOutReal, cl_mem &fftOutImag)
-{
-    const int fftSize = RescalingDataLength;
-    const int fftBatch = int(linesPerFrame);
-
-    const size_t dataSize = size_t(fftSize * fftBatch);
-    const size_t memSize = dataSize * sizeof(float);
-
-    float* pHostRescaleOutReal = new float[dataSize];
-    float* pHostFftOutImag = new float[dataSize];
-    float* pHostFftOutReal = new float[dataSize];
-    std::complex<float>* hostFftDataIn = new std::complex<float>[dataSize];
-    std::complex<float>* hostFftDataOut = new std::complex<float>[dataSize];
-
-
-    const cl_bool isBlockingCall{CL_TRUE};
-
-    //Real in
-
-    //init the host fft in data
-    for(size_t i = 0; i < dataSize; ++i){
-        auto& data = hostFftDataIn[i];
-        data = std::complex<float>(float(pDataIn[i]),0.0f);
-    }
-    ComputeTheFFT(hostFftDataOut, hostFftDataIn, fftSize, fftBatch);
-
-    //result scaling
-    addjustCoefficientMagnitude(hostFftDataOut, dataSize);
-
-//        printTheData(hostFftDataIn, hostFftDataOut, 8, 0);
-
-    //init the fft out data
-    for(size_t i = 0; i < dataSize; ++i){
-        pHostFftOutReal[i] = hostFftDataOut[i].real();
-        pHostFftOutImag[i] = hostFftDataOut[i].imag();
-    }
-
-    //copy host imag to device imag
-    const size_t offset{0};
-    const cl_int num_events_in_wait_list{0};
-    cl_int ret = clEnqueueWriteBuffer( cl_Commands,
-                                fftOutImag,
-                                isBlockingCall,
-                                offset,
-                                memSize,
-                                pHostFftOutImag,
-                                num_events_in_wait_list,
-                                nullptr,
-                                nullptr );
-
-    if(!isClReturnValueSuccess(ret,__LINE__)){
-        return false;
-    }
-//        LOG2(dataSize,memSize);
-
-    //copy host real to device real
-    ret = clEnqueueWriteBuffer( cl_Commands,
-                                fftOutReal,
-                                isBlockingCall,
-                                offset,
-                                memSize,
-                                pHostFftOutReal,
-                                num_events_in_wait_list,
-                                nullptr,
-                                nullptr );
-
-    if(!isClReturnValueSuccess(ret,__LINE__)){
-        return false;
-    }
-//        LOG2(dataSize,memSize);
-    delete [] pHostRescaleOutReal;
-    delete [] pHostFftOutImag;
-    delete [] hostFftDataIn;
-    delete [] pHostFftOutReal;
-    return true;
-}
-
-bool DSPGPU::isClReturnValueSuccess(cl_int ret, int line) const
-{
-    QString errorMesage;
-    QTextStream qts(&errorMesage);
-
-    bool success{true};
-    if(ret != CL_SUCCESS){
-        success = false;
-        qts << " Open CL failes at line " << line;
-        LOG1(errorMesage)
+    bool success{false};
+    if(m_postFft){
+        success = m_postFft->enqueueCallKernelFunction();
     }
     return success;
 }
 
-/*
- * buildOpenCLKernel
- *
- * Load, compile and build the program for the given OpenCL kernel.
- */
-bool DSPGPU::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel )
+bool DSPGPU::enqueueBandcKernelFunction()
 {
-//    qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
-    QTime buildTimer;
-    buildTimer.start();
-
-    int err;
-
-    /*
-     * Load, compile, link the source
-     */
-    LOG2(clSourceFile,kernelName);
-    char *sourceBuf = loadCLProgramSourceFromFile( clSourceFile ); // XXX: We should switch to pre-compiled binary. See #1057
-    if( !sourceBuf )
-    {
-        displayFailureMessage( tr( "Failed to load program source file %1 (%2)" ).arg( clSourceFile ).arg( QDir::currentPath() ), true );
-        return false;
+    bool success{false};
+    if(m_bandc){
+        success = m_bandc->enqueueCallKernelFunction();
     }
+    return success;
+}
 
-    /*
-     * Create the compute program(s) from the source buffer
-     */
-    *program = clCreateProgramWithSource( cl_Context, 1, (const char **) &sourceBuf, NULL, &err );
-    if( !*program || ( err != CL_SUCCESS ) )
-    {
-        qDebug() << "DSP: OpenCL could not create program from source: " << err;
-        displayFailureMessage( tr( "Could not build OpenCL kernel from source, reason %1" ).arg( err ), true );
-        return false;
+bool DSPGPU::enqueueWarpKernelFunction()
+{
+    bool success{false};
+    if(m_warp){
+        success = m_warp->enqueueCallKernelFunction();
     }
-    free( sourceBuf );
+    return success;
+}
 
-    err = clBuildProgram( *program, 0, NULL, NULL, NULL, NULL );
-    if( err != CL_SUCCESS )
-    {
-        size_t length;
-        const int BuildLogLength = 2048;
-        char *build_log = (char *)malloc( BuildLogLength );
-
-        qDebug() << "DSP: OpenCL build failed: " << err;
-        clGetProgramBuildInfo( *program, cl_ComputeDeviceId, CL_PROGRAM_BUILD_LOG, BuildLogLength, build_log, &length );
-        qDebug() << "openCl Build log:" << build_log;
-
-        displayFailureMessage( tr( "Could not build program, reason %1" ).arg( err ), true );
-        free( build_log );
-        return false;
+bool DSPGPU::enqueueWarpBcKernelFunction()
+{
+    bool success{false};
+    if(m_warp){
+        success = m_warpBc->enqueueCallKernelFunction();
     }
-
-    *kernel = clCreateKernel( *program, kernelName, &err );
-
-    if( err != CL_SUCCESS )
-    {
-        qDebug() << "DSP: OpenCL could not create compute kernel: " << err;
-        displayFailureMessage( tr( "Could not create compute kernel, reason %1" ).arg( err ), true );
-        return false;
-    }
-    LOG1( buildTimer.elapsed());
-//    qDebug() << "Build time:" << buildTimer.elapsed() << "ms";
-    return true;
+    return success;
 }
 
 /*
@@ -669,205 +178,21 @@ bool DSPGPU::initOpenCL()
 {
     qDebug() << "initOpenCL start";
 
-#ifdef QT_DEBUG
-    QString path = QCoreApplication::applicationDirPath() + QString("/../../consoleApp/");
-#else
-    QString path = QCoreApplication::applicationDirPath();
-#endif
+    auto dev = deviceSettings::Instance().current();
+    auto smi = SignalModel::instance();
 
-    cl_platform_id platformId;
-    cl_uint        numPlatforms = 0;
+    auto imagingDepthNormal_mm = dev->getImagingDepthNormal_mm();
+    smi->setImagingDepthNormal_mm(imagingDepthNormal_mm);
 
-    cl_int err = clGetPlatformIDs( 0, nullptr, &numPlatforms );
-    qDebug() << "numPlatforms =" << numPlatforms;
+    auto aLineLengthNormal_px = dev->getALineLengthNormal_px();
+    smi->setALineLengthNormal_px(aLineLengthNormal_px);
 
-    if( numPlatforms == 0 )
-    {
-        // fatal error
-        displayFailureMessage( tr( "Could not find openCL platform, reason: %1" ).arg( err ), true );
-        return false;
-    }
+    auto spf = SignalProcessingFactory::instance();
+    m_postFft = spf->getPostFft();
+    m_bandc = spf->getBandC();
+    m_warp = spf->getWarp();
 
-    // Found openCL-capable platforms
-    cl_platform_id* platformIds = ( cl_platform_id* )malloc( sizeof( cl_platform_id ) * numPlatforms );
-    err = clGetPlatformIDs( numPlatforms, platformIds, NULL );
-
-    uint deviceIndex = 99;
-
-    const int DefaultStringSize = 128;
-    char vendor[ DefaultStringSize ];
-    char name[ DefaultStringSize ];
-    char version[ DefaultStringSize ];
-
-
-    for ( cl_uint i = 0; i < numPlatforms; i++ )
-    {
-        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VENDOR,  DefaultStringSize, vendor,  nullptr );
-        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_NAME,    DefaultStringSize, name,    nullptr );
-        err |= clGetPlatformInfo( platformIds[ i ], CL_PLATFORM_VERSION, DefaultStringSize, version, nullptr );
-
-        if ( err != CL_SUCCESS )
-        {
-            displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
-            return false;
-        }
-        qDebug() << "Platform (" << i << ") Vendor:" << vendor << " Name:" << name << " Version:" << version;
-
-        if ( QString( vendor ) == "Intel(R) Corporation" &&
-             QString( name )   == "Intel(R) OpenCL" )
-        {
-            deviceIndex = i;
-        }
-    }
-
-    if ( deviceIndex > 10 )
-    {
-        displayFailureMessage( tr( "Could not find gpu" ), true );
-        return false;
-    }
-
-    platformId = platformIds[ deviceIndex ];
-
-    // release the memory.  Error paths do not free the memory since they will shut down the program
-    free( platformIds );
-
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Could not enumerate OpenCL platform IDs, reason: %1" ).arg( err ), true );
-        return false;
-    }
-
-    // Verify the GPU is present
-    err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_GPU, 1, &cl_ComputeDeviceId, NULL );
-
-    // If not, fall back to the CPU. Display a warning if this occurs on the release hardware
-    if( err == CL_DEVICE_NOT_FOUND )
-    {
-        // fall back to CPU when debugging if GPU not present
-#if !_DEBUG
-#if !ENABLE_SQUISH
-        displayWarningMessage( tr( "GPU not present.  Falling back to the CPU." ) );
-#endif
-        qDebug() << "GPU not present.  Falling back to the CPU.";
-#endif
-        err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, NULL );
-    }
-
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Could not get OpenCL device IDs, reason: %1" ).arg( err ), true );
-        return false;
-    }
-
-    {
-//        cl_int clGetDeviceInfo (cl_device_id device,
-//         cl_device_info param_name,
-//         size_t param_value_size,
-//         void *param_value,
-//         size_t *param_value_size_ret)
-    }
-
-    size_t returned_size( 0 );
-    cl_uint maxComputeUnits;
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(maxComputeUnits), &maxComputeUnits, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-    LOG2(maxComputeUnits,returned_size)
-
-    cl_uint maxWorkItemDimentions;
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(maxWorkItemDimentions), &maxWorkItemDimentions, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-    LOG2(maxWorkItemDimentions,returned_size)
-
-    size_t maxWorkItemSizes[3];
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(maxWorkItemSizes), &maxWorkItemSizes, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-    LOG3(maxWorkItemSizes[0],maxWorkItemSizes[1],maxWorkItemSizes[2])
-
-    err = clGetDeviceInfo( cl_ComputeDeviceId,
-                           CL_DEVICE_MAX_WORK_GROUP_SIZE,
-                           sizeof( cl_max_workgroup_size ),
-                           &cl_max_workgroup_size,
-                           &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        return false;
-    }
-    LOG2(cl_max_workgroup_size, returned_size)
-
-    size_t maxWorkGroupSize;
-    err = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(maxWorkGroupSize), &maxWorkGroupSize, &returned_size );
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        displayFailureMessage( tr( "Could not enumerate OpenCL device IDs, reason: %1" ).arg( err ), true );
-        return false;
-    }
-    LOG2(maxWorkGroupSize,returned_size)
-
-    cl_char vendor_name[ 1024 ] = { 0 };
-    cl_char device_name[ 1024 ] = { 0 };
-    err  = clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_VENDOR, sizeof( vendor_name ), vendor_name, &returned_size);
-    err |= clGetDeviceInfo( cl_ComputeDeviceId, CL_DEVICE_NAME, sizeof( device_name ), device_name, &returned_size);
-
-    if(!isClReturnValueSuccess(err,__LINE__)){
-        displayFailureMessage( tr( "Could not get OpenCL device info, reason: %1").arg( err ), true );
-        return false;
-    }
-    LOG( INFO, "OpenCL device: " + QString( reinterpret_cast<char*>(vendor_name)) + " " + QString( reinterpret_cast<char*>(device_name)) )
-    qDebug() << "DSP: Found OpenCL Device " <<  QString( reinterpret_cast<char*>(vendor_name) ) + " " + QString( reinterpret_cast<char*>(device_name) );
-
-    cl_Context = clCreateContext( nullptr, 1, &cl_ComputeDeviceId, nullptr, nullptr, &err );
-    if( !cl_Context )
-    {
-        qDebug() << "DSP: OpenCL could not create compute context.";
-        displayFailureMessage( tr( "Could not allocate OpenCL compute context, reason %1" ).arg( err ), true );
-        return false;
-    }
-
-//    cl_Commands = clCreateCommandQueue( cl_Context, cl_ComputeDeviceId, 0, &err );
-    cl_Commands = clCreateCommandQueueWithProperties( cl_Context, cl_ComputeDeviceId, nullptr, &err );
-    if( !cl_Commands )
-    {
-        qDebug() << "DSP: OpenCL could not create command queue.";
-        displayFailureMessage( tr( "Could not create OpenCL command queue, reason %1" ).arg( err ), true );
-        return false;
-    }
-
-    if(!SignalManager::instance()->isFftSource()){
-        if( !buildOpenCLKernel( QString( path + RESCALE_CL ), "rescale_kernel", &cl_RescaleProgram, &cl_RescaleKernel ) )
-        {
-            return false;
-        }
-    }
-
-    if( !buildOpenCLKernel( QString( path + POSTPROC_CL ), "postproc_kernel", &cl_PostProcProgram, &cl_PostProcKernel ) )
-    {
-        return false;
-    }
-
-    if( !buildOpenCLKernel( QString( path + BANDC_CL ), "bandc_kernel", &cl_BandCProgram, &cl_BandCKernel ) )
-    {
-        return false;
-    }
-
-    if( !buildOpenCLKernel( QString( path + WARP_CL ), "warp_kernel", &cl_WarpProgram, &cl_WarpKernel ) )
-    {
-        return false;
-    }
-
-    if( !initOpenCLFFT() )
-    {
-        qDebug() << "initOpenCLFFT() failed.";
-        return false;
-    }
-
-    createCLMemObjects( cl_Context );
-
-    global_unit_dim[ 0 ] = RescalingDataLength;
-    global_unit_dim[ 1 ] = linesPerFrame;
+    spf->buildKernelFunctions();
 
     qDebug() << "DSPGPU: OpenCL init complete.";
 
@@ -875,491 +200,45 @@ bool DSPGPU::initOpenCL()
 }
 
 /*
- * loadCLProgramSourceFromFile
- */
-char *DSPGPU::loadCLProgramSourceFromFile( QString filename )
-{
-    QFile     sourceFile( filename );
-    QFileInfo sourceFileInfo( filename );
-
-    char *sourceBuf;
-
-    if( !sourceFile.open( QIODevice::ReadOnly ) )
-    {
-        displayFailureMessage( tr( "Failed to load OpenCL source file %1 ").arg( filename ), true );
-        return NULL;
-    }
-
-    int srcSize = sourceFileInfo.size();
-
-    // memory is freed by the calling routine
-    sourceBuf = (char *)malloc( srcSize + 1 );
-    sourceFile.read( sourceBuf, srcSize );
-    sourceBuf[ srcSize ] = '\0'; // Very important!
-    return sourceBuf;
-}
-
-/*
- * loadCLProgramBinaryFromFile
- */
-QByteArray DSPGPU::loadCLProgramBinaryFromFile( QString filename )
-{
-    QFile objectFile( filename );
-
-    if( !objectFile.open( QIODevice::ReadOnly ) )
-    {
-        displayFailureMessage( tr( "Failed to load OpenCL object file %1 ").arg( filename ), true );
-        return NULL;
-    }
-
-    QByteArray objectBytes;
-    objectBytes = objectFile.readAll();
-
-    return objectBytes;
-}
-
-/*
- * createCLMemObjects
- */
-bool DSPGPU::createCLMemObjects( cl_context context )
-{
-    const char* errorMsg = "failed to allocate memory";
-    cl_int err;
-
-//    SignalManager::instance()->loadSignal(0);
-
-    if(!SignalManager::instance()->isFftSource()){
-        rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
-        rescaleInputMemObj        = clCreateBuffer( context, CL_MEM_READ_ONLY, rescaleInputMemObjSize, nullptr, &err );
-        LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
-        if(!rescaleInputMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        rescaleOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-        rescaleOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, rescaleOutputMemObjSize, nullptr, &err );
-        LOG2(rescaleOutputMemObj, rescaleOutputMemObjSize)
-        if(!rescaleOutputMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        rescaleFracSamplesMemObjSize = RescalingDataLength * sizeof(float);
-        rescaleFracSamplesMemObj  = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleFracSamplesMemObjSize, fractionalSamples, &err );
-        LOG2(rescaleFracSamplesMemObj, rescaleFracSamplesMemObjSize)
-        if(!rescaleFracSamplesMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        rescaleWholeSamplesMemObjSize = RescalingDataLength * sizeof(float);
-        rescaleWholeSamplesMemObj = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, rescaleWholeSamplesMemObjSize, wholeSamples, &err );
-        LOG2(rescaleWholeSamplesMemObj, rescaleWholeSamplesMemObjSize)
-        if(!rescaleWholeSamplesMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        windowMemObjSize = RescalingDataLength * sizeof(float);
-        windowMemObj              = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, windowMemObjSize, windowBuffer, &err );
-        LOG2(windowMemObj, windowMemObjSize)
-        if(!windowMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-
-        fftImaginaryInputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-        fftImaginaryInputMemObj   = clCreateBuffer( context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, fftImaginaryInputMemObjSize, fftImaginaryBuffer, &err );
-        LOG2(fftImaginaryInputMemObj, fftImaginaryInputMemObjSize)
-        if(!fftImaginaryInputMemObj){
-            LOG3(errorMsg,err,clCreateBufferErrorVerbose(err))
-            displayFailureMessage( QString("Failed to create GPU memory, ") + clCreateBufferErrorVerbose(err), true );
-            return false;
-        }
-    }
-
-    fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-
-    if(SignalManager::instance()->isFftSource()){
-        fftRealOutputMemObj       =
-                clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr , &err );
-
-        if( err != CL_SUCCESS )
-        {
-             displayFailureMessage( tr( "Failed to create fftRealOutputMemObj" ), true );
-            return false;
-        }
-
-        fftImaginaryOutputMemObj  =
-                clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr , &err );
-        if( err != CL_SUCCESS )
-        {
-             displayFailureMessage( tr( "Failed to create fftImaginaryOutputMemObj" ), true );
-             return false;
-        }
-//        loadFftOutMemoryObjects();
-
-    }else{
-        fftRealOutputMemObj       = clCreateBuffer( context, CL_MEM_READ_WRITE, fftRealOutputMemObjSize, nullptr, nullptr );
-
-        fftImaginaryOutputMemObj  = clCreateBuffer( context, CL_MEM_READ_WRITE, fftImaginaryOutputMemObjSize, nullptr, nullptr );
-
-    }
-
-    lastFramePreScalingMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-
-    if(SignalManager::instance()->isPreScalingSource()){
-        lastFramePreScalingMemObj
-                = clCreateBuffer( context, CL_MEM_READ_WRITE | CL_MEM_ALLOC_HOST_PTR, lastFramePreScalingMemObjSize, SignalManager::instance()->getLastFramePrescaling(), &err );
-
-    } else {
-        lastFramePreScalingMemObj = clCreateBuffer( context, CL_MEM_READ_WRITE, lastFramePreScalingMemObjSize, nullptr, &err );
-    }
-    if( err != CL_SUCCESS )
-    {
-         displayFailureMessage( tr( "Failed to create lastFramePreScalingMemObj" ), true );
-         return false;
-    }
-
-    const cl_image_format clImageFormat{CL_R,CL_UNSIGNED_INT8};
-
-    const cl_mem_object_type image_type{CL_MEM_OBJECT_IMAGE2D};
-
-    const size_t input_image_width{MaxALineLength};
-    const size_t output_image_width{SectorWidth_px};
-
-    const size_t input_image_height{linesPerFrame};
-    const size_t output_image_height{SectorHeight_px};
-
-    const size_t image_depth{1};
-    const size_t image_array_size{1};
-    const size_t image_row_pitch{0};
-    const size_t image_slice_pitch{0};
-    const cl_uint num_mip_levels{0};
-    const cl_uint num_samples{0};
-    cl_mem buffer{nullptr};
-
-    const cl_image_desc inputImageDescriptor{
-        image_type,
-        input_image_width,
-        input_image_height,
-        image_depth,
-        image_array_size,
-        image_row_pitch,
-        image_slice_pitch,
-        num_mip_levels,
-        num_samples,
-        {buffer}
-    };
-
-    const cl_image_desc outputImageDescriptor{
-        image_type,
-        output_image_width,
-        output_image_height,
-        image_depth,
-        image_array_size,
-        image_row_pitch,
-        image_slice_pitch,
-        num_mip_levels,
-        num_samples,
-        {buffer}
-    };
-
-
-    inputImageMemObj       = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
-
-    warpInputImageMemObj   = clCreateImage ( context, CL_MEM_READ_WRITE, &clImageFormat, &inputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
-
-    outputImageMemObj      = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
-
-    outputVideoImageMemObj = clCreateImage( context, CL_MEM_WRITE_ONLY, &clImageFormat, &outputImageDescriptor, nullptr, &err );
-    if( err != CL_SUCCESS )
-    {
-        displayFailureMessage( tr( "Failed to create GPU images" ), true );
-        return false;
-    }
-
-    return true;
-}
-
-/*
  * transformData
  *
- * FFT the input laser signal, post process to 8-bit and warp to sector.
+ * post process the FFT input to 8-bit and warp to sector.
  */
 bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
 {
-   int            clStatus;
-   int            averageVal   = (int)doAveraging;
-   int            invertColors = (int)doInvertColors;
+    int            clStatus;
 
-   float scaleFactor = (float) ( ( 20000.0 * 255.0 ) / 65535.0 );
-   const unsigned int dcNoiseLevel = 150.0f; // XXX: Empirically measured
-
-   if (!SignalManager::instance()->isFftSource()){
-
-       //clAmdFftStatus fftStatus;
-       cl_mem         inputMemObjects[ 2 ]  = { rescaleOutputMemObj, fftImaginaryInputMemObj };
-       cl_mem         outputMemObjects[ 2 ] = { fftRealOutputMemObj, fftImaginaryOutputMemObj };
-
-       // XXX: Empirically set to achieve full range at just below detector saturation
-       // scaleFactor adjusted for new DAQ Input Range for HS devices. See #1777, #1769
-
-       clStatus = clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                       fftImaginaryOutputMemObj,  // buffer
-                                       false,                     // blocking_read
-                                       0,                         // offset
-                                       sizeof( float ) * 1024,    // number of bytes to read
-                                       imData,                    // ptr
-                                       0,                         // set to zero
-                                       NULL,                      // goes with above zero
-                                       NULL );                    // see page 261 of OpenCL Programming Guide
-
-       clStatus |= clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                        fftRealOutputMemObj,       // buffer
-                                        false,                     // blocking_read
-                                        0,                         // offset
-                                        sizeof( float ) * 1024,    // number of bytes to read
-                                        reData,                    // ptr
-                                        0,                         // set to zero
-                                        NULL,                      // goes with above zero
-                                        NULL );                    // see page 261 of OpenCL Programming Guide
-
-
-       if( clStatus != CL_SUCCESS )
-       {
-           qDebug() << "DSP: Failed to enqueue commands to read from buffer objects: "  << clStatus;
-           return false;
-       }
-
-       // pull out one A-line for the FFT display
-       pData->fftData[ 0 ] = 0;
-       for( int i = 1; i < 1024; i++ )
-       {
-           pData->fftData[ i ] = (unsigned short)( scaleFactor * log10( sqrt( ( imData[i] * imData[i] ) + ( reData[i] * reData[i] ) ) ) - dcNoiseLevel );
-
-           // set out-of-range values to zero (only for the graph)
-           if( pData->fftData[ i ] < 0 || pData->fftData[ i ] > 255 )
-           {
-               pData->fftData[ i ] = 0;
-           }
-       }
-
-//       fftStatus = clAmdFftEnqueueTransform( hCl_fft_plan, CLFFT_FORWARD, 1, &cl_Commands, 0,
-//                                             NULL, NULL, inputMemObjects, outputMemObjects, NULL );
-
-
-//       if( fftStatus != CLFFT_SUCCESS ) {
-//           qDebug() << "DSP: Failed to enqueue fft operation to OpenCL command queue.";
-//       }
-       const bool isBlocking(true);
-       clStatus = clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                       fftImaginaryOutputMemObj,  // buffer
-                                       isBlocking,                     // blocking_read
-                                       0,                         // offset
-                                       SignalManager::instance()->getFftMemSize(),    // number of bytes to read
-                                       SignalManager::instance()->getImagDataPointer() ,                    // ptr
-                                       0,                         // set to zero
-                                       nullptr,                      // goes with above zero
-                                       nullptr );                    // see page 261 of OpenCL Programming Guide
-
-       clStatus |= clEnqueueReadBuffer( cl_Commands,               // command_queue
-                                        fftRealOutputMemObj,       // buffer
-                                        isBlocking,                     // blocking_read
-                                        0,                         // offset
-                                        SignalManager::instance()->getFftMemSize(),    // number of bytes to read
-                                        SignalManager::instance()->getRealDataPointer(),                    // ptr
-                                        0,                         // set to zero
-                                        nullptr,                      // goes with above zero
-                                        nullptr );                    // see page 261 of OpenCL Programming Guide
-       auto index = TheGlobals::instance()->frontFrameDataQueue();
-       SignalManager::instance()->setIsFftDataInitializedFromGpu(clStatus == CL_SUCCESS, index);
-   }
-
-
-   unsigned int inputLength = RescalingDataLength;
-
-   // Make this a loop XXX
-   clStatus  = clSetKernelArg( cl_PostProcKernel, 0, sizeof(cl_mem), &fftRealOutputMemObj );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 0 , err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 1, sizeof(cl_mem), &fftImaginaryOutputMemObj );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 1, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 2, sizeof(cl_mem), &lastFramePreScalingMemObj );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 2, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 3, sizeof(cl_mem), &inputImageMemObj );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 3, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 4, sizeof(int), &inputLength );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 4, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 5, sizeof(float), &scaleFactor );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 5, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 6, sizeof(unsigned int), &dcNoiseLevel );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 6, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 7, sizeof(int), &averageVal );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 7, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 8, sizeof(float), &prevFrameWeight_percent );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 8, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 9, sizeof(float), &currFrameWeight_percent );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 9, err: "  << clStatus;
-   }
-   clStatus |= clSetKernelArg( cl_PostProcKernel, 10, sizeof(int), &invertColors );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set post processing argument 10, err: "  << clStatus;
-   }
-
-   global_unit_dim[ 0 ] = FFTDataSize;
-   global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_PostProcKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to execute post-processing kernel, reason: " << clStatus;
-       return false;
-   }
+    if(!enqueuePostFftKernelFunction()){
+        return false;
+    }
 
     /*
      * Adjust brightness and contrast
      */
-    clStatus  = clSetKernelArg( cl_BandCKernel, 0, sizeof(cl_mem), &inputImageMemObj );
-    if( clStatus != CL_SUCCESS )
-    {
-        qDebug() << "DSP: Failed to set B and C argument 0 , err: "  << clStatus;
-    }
-    clStatus |= clSetKernelArg( cl_BandCKernel, 1, sizeof(cl_mem), &warpInputImageMemObj );
-    if( clStatus != CL_SUCCESS )
-    {
-        qDebug() << "DSP: Failed to set B and C argument 1, err: "  << clStatus;
-    }
-    clStatus |= clSetKernelArg( cl_BandCKernel, 2, sizeof(float), &blackLevel );
-    if( clStatus != CL_SUCCESS )
-    {
-        qDebug() << "DSP: Failed to set B and C argument 2, err: "  << clStatus;
-    }
-    clStatus |= clSetKernelArg( cl_BandCKernel, 3, sizeof(float), &whiteLevel );
-    if( clStatus != CL_SUCCESS )
-    {
-        qDebug() << "DSP: Failed to set B and C argument 3, err: "  << clStatus;
-    }
-    global_unit_dim[ 0 ] = FFTDataSize;
-    global_unit_dim[ 1 ] = linesPerFrame; // Operate on 1/2 of 1/2 of FFT data (3mm depth). How to change this cleanly? Make a post-proc global dim. XXX
-    clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_BandCKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
-    if( clStatus != CL_SUCCESS )
-    {
-        qDebug() << "DSP: Failed to execute B and C kernel, reason: " << clStatus;
+    if(!enqueueBandcKernelFunction()){
         return false;
     }
 
-   // Set true by default, means the sector draws Counter-Clockwise. This variable is necessary because we pass an address as an argument.
-   int reverseDirection = (int)useDistalToProximalView;
+    if(!enqueueWarpKernelFunction()){
+        return false;
+    }
 
-   // get variables and pass into Warp.CL
-   depthSetting &depth = depthSetting::Instance();
-   const int   imagingDepth_S   = depth.getDepth_S();
-   const float fractionOfCanvas = depth.getFractionOfCanvas();
+    auto spf = SignalProcessingFactory::instance();
 
-   deviceSettings &dev = deviceSettings::Instance();
-   const float standardDepth_mm = dev.current()->getImagingDepthNormal_mm();
-   const int   standardDepth_S  = dev.current()->getALineLengthNormal_px();
-   reverseDirection ^= int(dev.current()->getRotation());    // apply Sled rotational direction
+    // Do all the work that was queued up on the GPU
+    clStatus = clFinish( spf->getCommandQueue() );
+    if( clStatus != CL_SUCCESS )
+    {
+        qDebug() << "DSP: Failed to issue and complete all queued commands: " << clStatus;
+        return false;
+    }
 
-   clStatus  = clSetKernelArg( cl_WarpKernel,  0, sizeof(cl_mem), &warpInputImageMemObj );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  1, sizeof(cl_mem), &outputImageMemObj );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  2, sizeof(cl_mem), &outputVideoImageMemObj );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  3, sizeof(float),  &catheterRadius_um );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  4, sizeof(float),  &internalImagingMask_px );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  &standardDepth_mm );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    &standardDepth_S );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  &displayAngle_deg );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    &reverseDirection );
-   clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    &SectorWidth_px );
-   clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    &SectorHeight_px );
-   clStatus |= clSetKernelArg( cl_WarpKernel, 11, sizeof(float),  &fractionOfCanvas );
-   clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    &imagingDepth_S );
 
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to set warp kernel arguments:" << clStatus;
-       return false;
-   }
-
-   global_unit_dim[ 0 ] = SectorWidth_px;
-   global_unit_dim[ 1 ] = SectorHeight_px;
-
-   clStatus = clEnqueueNDRangeKernel( cl_Commands, cl_WarpKernel, 2, NULL, global_unit_dim, local_unit_dim, 0, NULL, NULL );
-
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to execute warp kernel:" << clStatus;
-       return false;
-   }
-   global_unit_dim[ 0 ] = RescalingDataLength;
-   global_unit_dim[ 1 ] = linesPerFrame;
-
-   // Do all the work that was queued up on the GPU
-   clStatus = clFinish( cl_Commands );
-   if( clStatus != CL_SUCCESS )
-   {
-       qDebug() << "DSP: Failed to issue and complete all queued commands: " << clStatus;
-       return false;
-   }
-
-   size_t origin[ 3 ] = { 0, 0, 0 };
-   size_t region[ 3 ] = { SectorWidth_px, SectorHeight_px, 1 };
-
+   auto smi = SignalModel::instance();
    /*
     * read out the display frame
     */
-   clStatus = clEnqueueReadImage( cl_Commands, outputImageMemObj, CL_TRUE, origin, region, 0, 0, dispData, 0, NULL, NULL );
+   clStatus = clEnqueueReadImage(  spf->getCommandQueue(), smi->getWarpImageBuffer(), CL_TRUE, origin, region, 0, 0, dispData, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to read back final image data from warp kernel: " << clStatus;
@@ -1369,7 +248,7 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    /*
     * read out the video frame
     */
-   clStatus = clEnqueueReadImage( cl_Commands, outputVideoImageMemObj, CL_TRUE, origin, region, 0, 0, videoData, 0, NULL, NULL );
+   clStatus = clEnqueueReadImage(  spf->getCommandQueue(), smi->getWarpVideoBuffer(), CL_TRUE, origin, region, 0, 0, videoData, 0, nullptr, nullptr );
    if( clStatus != CL_SUCCESS )
    {
        qDebug() << "DSP: Failed to read back video image data from warp kernel: " << clStatus;
@@ -1379,107 +258,18 @@ bool DSPGPU::transformData( unsigned char *dispData, unsigned char *videoData )
    return true;
 }
 
-/*
- * rescale
- *
- * rescale() operates on input data to produce data which is *as if* the data
- * had been sampled linearly in frequency. Given a set of ideally linear in frequency
- * sample numbers (which are actually floating point, so non-existant), the function
- * interpolates between existing data to produce approximate samples.
- *
- * The input data is assumed to be zeroed before this function is called.
- * offset is subtracted from the final value (if provided) to correct for any
- * DAQ ADC count offset. It may be removed if not deemed necessary.
- *
- */
-unsigned int DSPGPU::rescale( const unsigned short *inputData )
+
+bool DSPGPU::processFftBuffers(int tag, const float *imag, const float *real)
 {
-//    LOG1(inputData)
-    TIME_THIS_SCOPE( dsp_rescale );
-    rescaleInputMemObjSize = linesPerFrame * recordLength * sizeof(unsigned short);
-    int err = clEnqueueWriteBuffer( cl_Commands,
-                                    rescaleInputMemObj,
-                                    true,
-                                    0,
-                                    rescaleInputMemObjSize,
-                                    inputData,
-                                    0,
-                                    nullptr,
-                                    nullptr );
-//    LOG2(rescaleInputMemObj, rescaleInputMemObjSize)
-
-    if( err != CL_SUCCESS )
-    {
-        qDebug() << "Error: Failed to enqueue new data to GPU! Err = " << err;
-        return 1;
+    if(m_postFft && imag && real){
+        m_postFft->enqueueInputBuffers( imag, real);
+        processData(tag);
+        return true;
     }
-    err  = clSetKernelArg( cl_RescaleKernel, 0, sizeof(cl_mem),       &rescaleInputMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 1, sizeof(cl_mem),       &rescaleOutputMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 2, sizeof(cl_mem),       &rescaleFracSamplesMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 3, sizeof(cl_mem),       &rescaleWholeSamplesMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 4, sizeof(cl_mem),       &windowMemObj );
-    err |= clSetKernelArg( cl_RescaleKernel, 5, sizeof(unsigned int), &recordLength );
-    err |= clSetKernelArg( cl_RescaleKernel, 6, sizeof(unsigned int), &RescalingDataLength );
-
-    err |= clEnqueueNDRangeKernel( cl_Commands, cl_RescaleKernel, 2, nullptr, global_unit_dim, local_unit_dim, 0, nullptr, nullptr );
-
-    if( err != CL_SUCCESS )
-    {
-        qDebug() << "Error: Failed to execute kernel! Err = " << err;
-        qDebug() << "global_unit_dim[0] = " << global_unit_dim[ 0 ] << "global_unit_dim[1] = " << global_unit_dim[ 1 ] << "\n"
-                 << "local_unit_dim[0]  = " << local_unit_dim[ 0 ]  << "local_unit_dim[1]  = " << local_unit_dim[ 1 ];
-        return 1;
-    }
-//    auto tgi = TheGlobals::instance();
-//    LOG3(local_unit_dim[ 0 ], local_unit_dim[ 1 ], tgi->getGFrameCounter())
-//    LOG3(global_unit_dim[ 0 ], global_unit_dim[ 1 ], tgi->getGDaqRawData_idx())
-
-    return 0;
+    return false;
 }
 
-bool DSPGPU::loadFftOutMemoryObjects()
+void DSPGPU::stop()
 {
-    cl_int err;
-
-    fftRealOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-    fftImaginaryOutputMemObjSize = linesPerFrame * RescalingDataLength * sizeof(float);
-     auto smi = SignalManager::instance();
-    cl_bool isBlocking(CL_TRUE);
-
-    if(SignalManager::instance()->isFftSource()){
-        err = clEnqueueWriteBuffer (
-                    cl_Commands,
-                    fftRealOutputMemObj,
-                    isBlocking,
-                    0,
-                    fftRealOutputMemObjSize,
-                    smi->getRealDataPointer(),
-                    0,
-                    nullptr,
-                    nullptr);
-
-        if( err != CL_SUCCESS )
-        {
-             displayFailureMessage( tr( "Failed to init fftRealOutputMemObj" ), true );
-             return false;
-        }
-
-        err = clEnqueueWriteBuffer (
-                    cl_Commands,
-                    fftImaginaryOutputMemObj,
-                    isBlocking,
-                    0,
-                    fftImaginaryOutputMemObjSize,
-                    smi->getImagDataPointer(),
-                    0,
-                    nullptr,
-                    nullptr);
-
-        if( err != CL_SUCCESS )
-        {
-             displayFailureMessage( tr( "Failed to init fftImaginaryOutputMemObj" ), true );
-             return false;
-        }
-    }
-    return true;
+    m_dspIsRunning = false;
 }

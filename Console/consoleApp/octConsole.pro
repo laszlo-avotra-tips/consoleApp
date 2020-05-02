@@ -7,37 +7,24 @@ TARGET = octConsole
 
 TEMPLATE = app
 
+QT += charts
 QT += sql xml
+QT += serialport
 
-# XXX this needs to be here to link even though we do not
-# have any openGL code.  QtSingleApplication::sendMessage
-# craps out with an unresolved external symbol (SendMessageTimeoutW)
-# It's all a little odd.
-win32 {
-   QT += opengl
-}
 
-CONFIG += c++11
+CONFIG += c++14
 
 DEFINES += QT_XML_LIB QT_SQL_LIB
 
-#isEmpty(OPENCL_DIR):OPENCL_DIR=$$(OPENCL_DIR)
-
-#isEmpty(OPENCL_DIR) {
-#    message("set OPENCL_DIR as environment variable or qmake variable to get rid of this message")
-    OPENCL_DIR = "C:/Program Files (x86)/IntelSWTools/sw_dev_tools/OpenCL/sdk"
-#}
-
-    CUDA_DIR1 = "C:\Users\lvincze\Documents\GitHub\cudaUnitTest\cudaFFT"
-    CUDA_DIR2 = "C:\CUDA\lib\x64"
-    CUDA_DIR3 = "C:\Users\lvincze\Documents\GitHub\bin\win64"
+OPENCL_DIR = $$PWD/../../lib/amd64/Intel/OpenCL_SDK/6.3
+OPENCL_DIR_7 = $$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0
 
 win32 {
    # Turn on additional settings for building the Windows release
    #   Zi   Enable debugging info
    QMAKE_CFLAGS_RELEASE   += /Zi
    QMAKE_CXXFLAGS_RELEASE += /Zi
-   
+
    # Turn on additional settings for linking the Windows release
    #   DEBUG    Create debug information
    #   MAP  Create memory map
@@ -51,37 +38,33 @@ win32 {
 
     INCLUDEPATH += \
        ../../Common/Include                 \
-       $$OPENCL_DIR/include \
-       ../../lib/win32/DataTranslation/Include \
+       $$OPENCL_DIR_7/include               \
        Backend                              \
        Include                              \
        Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
        Frontend
 
-     INCLUDEPATH *= $$CUDA_DIR1
+    INCLUDEPATH *= $$CUDA_DIR1
 
-    LIBS += -L$$OPENCL_DIR/lib/x64 -lopencl
-    LIBS += -L$$CUDA_DIR3/Debug -lcudaFFT
-    LIBS += -L$$CUDA_DIR2 -lcudart -lcufft
-
+#    LIBS += -L$$OPENCL_DIR_7/lib/x64 -lopencl
+    LIBS += -L$$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/lib/x64/ -lOpenCL
+    LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTCapture
+    LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTControl_LW
+    LIBS += -L$$PWD/../../lib/amd64/FTDI/ -lftd2xx
 
     LIBS +=                                       \
-       -L"../../lib/win32/DataTranslation/"               \
-       -lglu32                                            \
+       -lglu32                                    \
        -luser32
 
 }  #win32
 
 unix {
 
-#   INCLUDEPATH +=                           \
-#       ../../lib/linux32/ipp/6.1.0.039/ia32/include
-
    INCLUDEPATH +=                           \
        .                                    \
        ../../Common/Include                 \
-        Backend                              \
+       Backend                              \
        Include                              \
        Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
@@ -99,7 +82,24 @@ RCC_DIR += ./Frontend/GeneratedFiles
 #Include file(s)
 include( $${TARGET}.pri )
 
-CONFIG( release ) {
-    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
-}
+#CONFIG( release ) {
+#    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
+#}
 
+INCLUDEPATH += $$PWD/../../lib/amd64/Axsun
+DEPENDPATH += $$PWD/../../lib/amd64/Axsun
+
+INCLUDEPATH += $$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/include
+DEPENDPATH += $$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/include
+
+INCLUDEPATH += $$PWD/../../lib/amd64/FTDI
+DEPENDPATH += $$PWD/../../lib/amd64/FTDI
+
+RESOURCES += \
+    OpenClResources.qrc
+
+FORMS +=
+
+HEADERS +=
+
+SOURCES +=

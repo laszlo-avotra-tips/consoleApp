@@ -96,7 +96,7 @@ int clipListModel::addClipCapture( QString name,
     QDateTime timeVal = QDateTime::fromTime_t(timestamp);
 
     // Find next available ID
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db; //lcv = sessionDatabase::Instance();
     int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName, isHighSpeed );
 
     if ( maxID < 0 ) {
@@ -134,7 +134,7 @@ int clipListModel::addClipCapture( QString name,
 void clipListModel::updateClipInfo( int clipLength_ms )
 {
     // update the database
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db; //lcv = sessionDatabase::Instance();
     db.updateClipCapture( lastClipID, clipLength_ms );
 
     // update the in-memory cache
@@ -172,7 +172,7 @@ int clipListModel::getLastCaptureId( void )
 /*
  * loadImage()
  *
- * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
+ * Give a type of image to load (specified in image filter as sector, etc.)
  * load it from disk and return a QImage representing it.
  */
 QImage clipItem::loadImage( QString imageFilter )

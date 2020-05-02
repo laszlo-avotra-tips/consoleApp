@@ -3,7 +3,7 @@
  *
  * The secondary window for the OCT application. This window
  * presents the physician with a stripped down view of
- * the GUI, focused on the sector and waterfall.
+ * the GUI, focused on the sector
  *
  * Author: Chris White
  *

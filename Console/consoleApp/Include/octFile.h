@@ -25,9 +25,14 @@ class OCTFile : public QObject
     Q_OBJECT
 
 public:
+    // define which system is using this file
+    enum FileAccessMode {
+        Console,    // write-only access
+        Player      // read-only access
+    };
     // Changes in this structure must have changes made in writeFileHeader()
     // and writeNumFramesWritten() as well
-    struct FileHeader_t
+    struct OctFileHeader_t
     {
         char magic[ 3 ];
         unsigned char formatVersion;
@@ -35,16 +40,17 @@ public:
         quint32 numFramesWritten;
     };
 
-    struct FrameData_t
+    struct OctData_t
     {
-        unsigned long  frameCount;
-        unsigned long  timeStamp;
-        unsigned short milliseconds;
-        unsigned short encoderPosition;  // XXX: hijack for fast OCT direction bit
-        unsigned short *rawData;         // used for Advanced View only
-        unsigned short *fftData;         // used for Advanced View, data storage
-        unsigned char  *dispData;        // used for display
-        unsigned char  *videoData;       // High Speed only: video frame with appropriate rotation built in
+        unsigned long  frameCount{0};
+        unsigned long  timeStamp{0};
+        unsigned short milliseconds{0};
+        unsigned short encoderPosition{0};  // XXX: hijack for fast OCT direction bit
+        uint8_t  *acqData;
+        unsigned short *advancedViewIfftData{nullptr};         // used for Advanced View only
+        unsigned short *advancedViewFftData{nullptr};         // used for Advanced View, data storage
+        unsigned char  *dispData{nullptr};        // used for display
+        unsigned char  *videoData{nullptr};       // High Speed only: video frame with appropriate rotation built in
     };
 
     OCTFile( unsigned short numLinesPerRev ); // constructor for the Console
@@ -77,7 +83,7 @@ private:
     unsigned int fileIteration;
     quint32 recordLength;
     quint32 framesWritten;
-    FileHeader_t header;
+    OctFileHeader_t header;
 
     // playback
     QList<int> indexList;

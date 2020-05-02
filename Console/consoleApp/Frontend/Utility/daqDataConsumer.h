@@ -34,7 +34,7 @@ public:
     void disableFullCaseRecording( void ) { isAlwaysRecordFullCaseOn = false; }
 
 signals:
-    void updateAdvancedView( const OCTFile::FrameData_t *data );
+    void updateAdvancedView( );
     void clipRecordingStopped();
     void directionOfRotation( directionTracker::Direction_T );
     void alwaysRecordingFullCase(bool);
@@ -44,6 +44,7 @@ signals:
     void sendVideoDuration( int );
     void updateBrightness( int );
     void updateContrast( int );
+    void updateSector(const OCTFile::OctData_t*);
 
 public slots:
     void handleTagEvent( QString );
@@ -63,9 +64,7 @@ private:
     liveScene *sceneInThread;
     advancedView *advViewInThread;
     EventDataLog *eventLog;
-    OCTFile::FrameData_t *pData;
-    int currFrame;
-    int prevFrame;
+    OCTFile::OctData_t m_octData;
     bool isRunning;
     bool isRecordFullCaseOn;
     bool isAlwaysRecordFullCaseOn;
@@ -89,7 +88,7 @@ private:
     directionTracker::Direction_T prevDirection;
     directionTracker::Direction_T currDirection;
 
-    bool useDistalToProximalView;
+//    bool useDistalToProximalView;
 
     QTime processingTimer;
     QTime frameTimer;

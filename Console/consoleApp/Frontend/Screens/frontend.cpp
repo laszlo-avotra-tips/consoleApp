@@ -38,9 +38,12 @@
 #include "fileUtil.h"
 #include "idaq.h"
 #include "engineeringcontroller.h"
+#include "signalmodel.h"
+#include "forml300.h"
 
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0
+
 
 #if ENABLE_COLORMAP_OPTIONS
 extern QImage sampleMap;
@@ -55,15 +58,14 @@ const int VariableDepthNumChunks = 5;
 /*
  * Constructor
  */
-frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
-    : QMainWindow(parent, flags), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
+frontend::frontend(QWidget *parent)
+    : QWidget(parent), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
 {
     scene    = nullptr;
     consumer = nullptr;
 
     appAborted        = false;
     isAnnotateOn        = false;
-    prevIsWaterfallVisible = true;
 
     isMeasureModeActive = false;
 
@@ -96,67 +98,21 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     // save the tip as defined in Designer so it can be restored as necessary
     defaultSceneToolTip = ui.liveGraphicsView->toolTip();
 
-    ui.loopMaskLabel->hide();
-
-    ui.evoaOffLabel->hide();
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-    ui.rawDataPushButton->show();
-    ui.rawSnapshotSpinBox->show();
-    snapshotLength = ui.rawSnapshotSpinBox->value();
-#else
-    ui.rawDataPushButton->hide();
-    ui.rawSnapshotSpinBox->hide();
-#endif
-
-#if ENABLE_IPP_FFT_TUNING
-    ui.fftDevelopmentGroupBox->show();
-#else
-    ui.fftDevelopmentGroupBox->hide();
-#endif
-
-#if ENABLE_VIDEO_CRF_QUALITY_TESTING
-    ui.crfTestLabel->show();
-    ui.crfTestSpinBox->show();
-#else
-    ui.crfTestLabel->hide();
-    ui.crfTestSpinBox->hide();
-#endif
+//    ui.loopMaskLabel->hide();
 
     // these are always hidden at start-up
-    ui.measureModePushButton->hide();
+//    ui.measureModePushButton->hide();
     ui.saveMeasurementButton->hide();
-    ui.directionPushButton->hide();
 
-#if ENABLE_ON_SCREEN_RULER
-    ui.rulerSlidingPointSpinbox->show();
-#else
-    ui.rulerSlidingPointSpinbox->hide();
-#endif
-
-#if ENABLE_COLORMAP_OPTIONS
-    populateColormapList();
-    ui.contrastCurveButton->show();
-    ui.colormapGroupBox->show();
-    // Set default linear value map
-    curveDlg = nullptr;
-#else
-    ui.colormapGroupBox->hide();
-    ui.contrastCurveButton->hide();
-#endif
 
     ui.zoomLevelLabel->setBuddy( ui.zoomSlider );
     ui.zoomResetPushButton->hide();
 
     ui.liveViewPushButton->hide();
 
-
     // Hide things that only appear on demand.
     playbackControlsVisible( false );
 
-    // Set up a hotkey for changing the scan sync slider
-    ui.brightnessLabel->setBuddy( ui.displayControlsSlider );
-    ui.displayControlsSlider->setSingleStep( 100 );
 
     ui.recordingLabel->hide();
 
@@ -174,9 +130,8 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     // set the initial state
     userSettings &settings = userSettings::Instance();
-    prevIsWaterfallVisible = settings.waterfall();
 
-    advView->setGeometry( ui.liveGroupBox->x() + ui.liveGroupBox->width() + 10, // 10 px to the right of liveGroupBox
+    advView->setGeometry( ui.liveGraphicsView->x() + ui.liveGraphicsView->width() + 50, // 10 px to the right of liveGraphicsView
                           0,
                           advView->width(),
                           advView->height() );
@@ -190,11 +145,12 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     m_ec = new EngineeringController(this);
 
-//    connect( ui.displayControlsSlider, SIGNAL(lowerValueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
-//    connect( ui.displayControlsSlider, SIGNAL(upperValueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
 
-//    connect( advView, SIGNAL(brightnessChanged(int)), ui.displayControlsSlider, SLOT(setLowerValue(int)) );
-//    connect( advView, SIGNAL(contrastChanged(int)),   ui.displayControlsSlider, SLOT(setUpperValue(int)) );
+    connect( ui.horizontalSliderBrigtness, SIGNAL(valueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
+    connect( ui.horizontalSliderContrast, SIGNAL(valueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
+
+    connect( advView, SIGNAL(brightnessChanged(int)), ui.horizontalSliderBrigtness , SLOT(setValue(int)) );
+    connect( advView, SIGNAL(contrastChanged(int)),   ui.horizontalSliderContrast, SLOT(setValue(int)) );
 
 //    connect( this,    SIGNAL(brightnessChange(int)), ui.displayControlsSlider, SLOT(setLowerPosition(int)) );
 //    connect( this,    SIGNAL(contrastChange(int)),   ui.displayControlsSlider, SLOT(setUpperPosition(int)) );
@@ -204,9 +160,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     connect( advView, SIGNAL(turnDiodeOn()),           this, SIGNAL(forwardTurnDiodeOn()) );
     connect( advView, SIGNAL(turnDiodeOff()),          this, SIGNAL(forwardTurnDiodeOff()) );
     connect( advView, SIGNAL(checkLaserDiodeStatus()), this, SIGNAL(checkLaserDiodeStatus()) );
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
     connect( advView, SIGNAL(checkSledStatus()),       this, SIGNAL(checkSledStatus()) );
-#endif
 
     connect( this, SIGNAL(forwardDaqLevel(QString)),                         advView, SLOT(handleDaqLevel(QString)) );
     connect( this, SIGNAL(forwardLaserDiodeStatus(bool)),                    advView, SLOT(handleLaserDiodeStatus(bool)) );
@@ -215,6 +169,9 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     connect( &session, SIGNAL(sendError(QString)),   this, SLOT(handleError(QString)) );
     connect( &session, SIGNAL(sendWarning(QString)), this, SLOT(handleWarning(QString)) );
+
+    ui.horizontalSliderBrigtness->setValue(settings.brightness());
+    ui.horizontalSliderContrast->setValue(settings.contrast());
 
     docWindow = nullptr;
     auxMon = nullptr;
@@ -235,7 +192,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     handleStatusText( tr( "Initializing..." ) );
 
     /*
-     * Set up all the items in the live view (sector, waterfall, indicators, etc.)
+     * Set up all the items in the live view (sector, indicators, etc.)
      */
     setupScene();
 
@@ -261,7 +218,6 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
     updateCatheterViewLabel();
 
     lagHandler = nullptr;
-//    caseWizard = nullptr;
 
     // Set the focus on the Tech window so the menu keys are active
     QApplication::setActiveWindow( ui.centralWidget );
@@ -274,29 +230,7 @@ frontend::frontend( QWidget *parent, Qt::WindowFlags flags )
 
     // Save the style sheet for restoring after using review mode
     origDeviceLabelStyleSheet = ui.deviceFieldLabel->styleSheet();
-    origLiveGroupBoxStyleSheet = ui.liveGroupBox->styleSheet();
-
-#if CONSOLE_MANUFACTURING_RELEASE
-    /*
-     * Add labels to both the Technician and Physician screens 
-     * that indicate this release is NOT for distribution outside
-     * of Avinger.
-     */
-    QLabel *mfgLabel = new QLabel( "Manufacturing Use Only", this );
-    mfgLabel->setStyleSheet( "QLabel { font: 72px; color: red;}" );
-    mfgLabel->setGeometry( 10, 700, 991, 131 );
-    mfgLabel->show();
-
-    QLabel *docScreenMfgLabel = new QLabel( "Manufacturing Use Only", docWindow );
-    docScreenMfgLabel->setStyleSheet( "QLabel { font: 72px; color: red;}" );
-    docScreenMfgLabel->setGeometry( 1000, 360, 991, 131 );
-    docScreenMfgLabel->show();
-
-    QLabel *docScreenMfgLabel2 = new QLabel( "Manufacturing Use Only", docWindow );
-    docScreenMfgLabel2->setStyleSheet( "QLabel { font: 72px; color: red;}" );
-    docScreenMfgLabel2->setGeometry( 1000, 980, 991, 131 );
-    docScreenMfgLabel2->show();
-#endif
+    origLiveQLabelStyleSheet = ui.label_live->styleSheet();
 
 #if ENABLE_MEASUREMENT_PRECISION
     QLabel *measurementPrecisionLabel = new QLabel( "Measurement Precision Enabled\nNOT FOR HUMAN USE", this );
@@ -339,16 +273,9 @@ frontend::~frontend()
 
         delete scene;
         delete lagHandler;
-        if(caseWizard){
-            delete caseWizard;
-        }
     }
     else
     {
-        // Close the session db file.
-        sessionDatabase &db = sessionDatabase::Instance();
-        db.close();
-
         // Shutdown session info.
         session.shutdown();
 
@@ -370,7 +297,7 @@ void frontend::init( void )
     lastDirCCW = true;			// make sure bidirectional devices start CCW (passive)
 
     // Require case information before anything else happens
-    caseInfoWizard *caseWizard = new caseInfoWizard( this );
+    caseWizard = std::make_unique<caseInfoWizard>(this); //new caseInfoWizard( this );
 
     /*
      * Create the case info with default values (default doctor, default location, and
@@ -379,7 +306,6 @@ void frontend::init( void )
      */
     caseWizard->init( caseInfoWizard::InitialCaseSetup );
     caseWizard->accept();
-    delete caseWizard;
 
     // Connect the error handler
     errorHandler &err = errorHandler::Instance();
@@ -397,6 +323,8 @@ void frontend::init( void )
                                     advView,
                                     session.getCurrentEventLog() );
 
+    connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
+
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), consumer,  SLOT( updateCatheterView() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), scene,     SLOT( clearSector() ) );
@@ -404,7 +332,7 @@ void frontend::init( void )
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
     connect( viewOption, SIGNAL(sendManualLagAngle(double)), this, SLOT(handleManualLagAngle(double)) );
 
-    connect( consumer, SIGNAL(updateAdvancedView(const OCTFile::FrameData_t *)), advView, SLOT(addScanline(const OCTFile::FrameData_t *)) );
+    connect( consumer, SIGNAL(updateAdvancedView()), advView, SLOT(addScanline()) );
     connect( this, SIGNAL(recordBackgroundData(bool)),  consumer, SLOT(recordBackgroundData(bool)) );
     connect( this, SIGNAL(tagEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
@@ -418,10 +346,6 @@ void frontend::init( void )
 
     connect( this, SIGNAL(disableMouseRotateSector()), scene, SLOT(handleDisableMouseRotateSector()) );
     connect( this, SIGNAL(enableMouseRotateSector()),  scene, SLOT(handleEnableMouseRotateSector()) );
-
-#if ENABLE_ON_SCREEN_RULER
-    connect( this, SIGNAL( setSlidingPoint( int ) ),     scene, SLOT( setSlidingPoint( int ) ) );
-#endif
 
     connect( &session, SIGNAL(sendSessionEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
@@ -506,21 +430,20 @@ int frontend::setupCase( bool isInitialSetup )
     }
     else // Launched from the case details button.
     {
-        ui.directionPushButton->hide();
         // Require case information before anything else happens
-        caseInfoWizard *caseWizard = new caseInfoWizard( this );
+        caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
 
         // reload data for updating
-        caseWizard->init( caseInfoWizard::UpdateCaseSetup );
+        caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
 
         // Force the wizard to the center of the primary monitor
-        int x = ( wmgr->getTechnicianDisplayGeometry().width() - caseWizard->width() ) / 2;
-        int y = ( wmgr->getTechnicianDisplayGeometry().height() - caseWizard->width() ) / 2;
-        caseWizard->setGeometry( x, y, caseWizard->width(), caseWizard->height() );
+        int x = ( wmgr->getTechnicianDisplayGeometry().width() - caseWizardLocal->width() ) / 2;
+        int y = ( wmgr->getTechnicianDisplayGeometry().height() - caseWizardLocal->width() ) / 2;
+        caseWizardLocal->setGeometry( x, y, caseWizardLocal->width(), caseWizardLocal->height() );
 
         // Get the case information.
-        int result = caseWizard->exec();
-        delete caseWizard;
+        int result = caseWizardLocal->exec();
+        delete caseWizardLocal;
         return result;
     }
 }
@@ -553,25 +476,31 @@ void frontend::disableStorage( bool disable )
  * setupScene
  *
  * Create the QGraphicsScene which contains the essential rendering items
- * used for the OCT images (waterfall, sector, etc.)
+ * used for the OCT images (sector, etc.)
  */
 void frontend::setupScene( void )
 {
     deviceSettings &dev = deviceSettings::Instance();
 
     scene = new liveScene( this );
+    m_formL300 = new FormL300( this );
+
+    liveScene* sceneL300 = m_formL300->scene();
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), viewOption, SLOT(handleDeviceChange()) );
-    connect( &dev, SIGNAL(deviceChanged()), ui.displayControlsSlider, SLOT(updateBrightnessContrastLimits()) );
+//    connect( &dev, SIGNAL(deviceChanged()), ui.displayControlsSlider, SLOT(updateBrightnessContrastLimits()) );
 
     connect( scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
 
-    connect( ui.reviewWidget, SIGNAL(showCapture(const QImage &, const QImage &)),
-             scene,           SLOT(showReview(const QImage &, const QImage &)) );
-			 
+    connect( ui.reviewWidget, SIGNAL(showCapture(const QImage &)),
+             scene,           SLOT(showReview( const QImage & )) );
+
+    connect( ui.reviewWidget, SIGNAL(initCaptureWidget()),
+             this,           SLOT(hideDecoration()) );
+
 	connect( this,	SIGNAL(setDoPaint()),		scene, SLOT(setDoPaint()) );
 
     /*
@@ -588,9 +517,12 @@ void frontend::setupScene( void )
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              scene,      SLOT(handleReticleBrightnessChanged(int)) );
+    connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
+             sceneL300,      SLOT(handleReticleBrightnessChanged(int)) );
+
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
              scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
-    connect( viewOption, SIGNAL(displayWaterfall(bool)), scene, SLOT(displayWaterfall(bool)) );
+
     connect( scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
 
     // Auto fill the background with black
@@ -598,11 +530,6 @@ void frontend::setupScene( void )
 
     // Associate the views with the scene
     ui.liveGraphicsView->setMatrix( QMatrix() );
-
-    // Scale to fit
-    ui.liveGraphicsView->setScene( scene );
-    ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
-    centerLiveGraphicsView(); // center the panning position of the view over the sector
 
     docWindow->setScene( scene );
     auxMon->setScene( scene );
@@ -706,7 +633,7 @@ void frontend::shutdownCleanup()
     }
 
     // get capture and loop statistics for the case before session ends
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db; //lcv = sessionDatabase::Instance();
     int numCaptures = db.getNumCaptures();
     sessionDatabase::LoopStat loopStat = db.getLoopsStats();
 
@@ -718,12 +645,7 @@ void frontend::shutdownCleanup()
     session.shutdown();
 
     // give pause for any messages in flight and then continue shutdown
-#ifdef WIN32
     Sleep( 1000 );
-#else
-    sleep( 1 );
-#endif
-
 }
 
 /*
@@ -796,13 +718,9 @@ void frontend::hideMouseTimerExpiry()
  */
 void frontend::storageSpaceTimerExpiry()
 {
-#ifdef WIN32
     // The L in front of the string does some WINAPI magic to convert
     // a string literal into a Windows LPCWSTR beast.
 #define ROOT_PATH L"c:"
-#else
-#define ROOT_PATH "/opt"
-#endif
 
     if( SawFile::getDiskFreeSpaceInGB( ROOT_PATH ) < MinDriveSpace_GB )
     {
@@ -876,9 +794,9 @@ void frontend::stopDataCapture( void )
  */
 void frontend::startDaq( void )
 {
-//    qDebug() << "frontend::startDAQ()";
     if( idaq )
     {
+        qDebug() << "frontend::startDAQ()";
         idaq->start();
     }
 }
@@ -1135,8 +1053,8 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
     ui.deviceSelectButton->setChecked( true );
 
     SledSupport &sled = SledSupport::Instance();
-	sled.stopSled();		// stop sled if running
-    sled.stop();			// stop sled processing
+//	sled.stopSled();		// stop sled if running
+//    sled.stop();			// stop sled processing
 
     if( isAnnotateOn )
     {
@@ -1224,7 +1142,7 @@ void frontend::startDAQprepareView()
 
     // Want an indicator with 5 positions for High Speed, will be disabled if a LS device is chosen.
     depthSetting &ds = depthSetting::Instance();
-    ui.imagingDepthWidget->init( VariableDepthNumChunks, ds.getDepth_S(), "DEPTH", ds.getMinVal(), ds.getMaxVal() );
+    ui.imagingDepthWidget->init( VariableDepthNumChunks, ds.getImagingDepth_S(), "DEPTH", ds.getMinDepth_px(), ds.getMaxDepth_px() );
     ui.imagingDepthWidget->setToolTip( "Change Imaging Depth." );
     configureControlsForCurrentDevice();
 
@@ -1342,7 +1260,7 @@ void frontend::on_recordLoopButton_clicked()
         ui.recordingLabel->show();
         docWindow->ui.recordingLabel->show();
         auxMon->setText( AuxMonitor::Recording, true );
-        ui.loopMaskLabel->show();
+//        ui.loopMaskLabel->show();
 
         // record the start time
         clipTimestamp = QDateTime::currentDateTime().toUTC();
@@ -1412,7 +1330,7 @@ void frontend::handleClipRecordingStopped( void )
     ui.recordingLabel->hide();
     docWindow->ui.recordingLabel->hide();
     auxMon->setText( AuxMonitor::Recording, false );
-    ui.loopMaskLabel->hide();
+//    ui.loopMaskLabel->hide();
 
     viewOption->enableButtons();
     ui.reviewWidget->enableClipSelection();
@@ -1488,14 +1406,11 @@ void frontend::updateCatheterViewLabel()
 void frontend::handleLoopLoaded( QString loopFilename )
 {
     /*
-     * Hide the live view waterfall if it is enabled in Display Options. Only
+     * Only
      * check this the first time a loop is loaded so the state is correctly restored.
      */
     if( !isLoopLoaded )
     {
-        prevIsWaterfallVisible = scene->getWaterfallVisible();
-        scene->displayWaterfall( false );
-
         isLoopLoaded = true;
     }
 
@@ -1620,7 +1535,7 @@ void frontend::playbackControlsVisible( bool state )
  */
 void frontend::handleStatusText( QString status )
 {
-    ui.liveGroupBox->setTitle( status );
+    ui.label_live->setText( status );
 //lcv    docWindow->ui.statusLabel->setText( status );
     auxMon->setText( AuxMonitor::Status, true, status );
 }
@@ -1704,7 +1619,7 @@ void frontend::keyPressEvent( QKeyEvent *event )
  * Enable or disable the mouse capture timer.
  *
  */
-void frontend::captureMouse( bool isEnabled )
+void frontend::captureMouse( bool /*isEnabled*/ )
 {
 #if USE_MOUSE_CAPTURE
     if( isEnabled )
@@ -1715,8 +1630,8 @@ void frontend::captureMouse( bool isEnabled )
     {
         disconnect( &mouseCaptureTimer, SIGNAL(timeout()), this, SLOT(mouseTimerExpiry()) );
     }
-#else
-    isEnabled; // quiet the compiler warnings
+//#else
+//    isEnabled; // quiet the compiler warnings
 #endif
 }
 
@@ -1799,24 +1714,7 @@ void frontend::configureHardware( void )
 //        {
 //            daq = new HighSpeedDAQ();
 
-//#if ENABLE_RAW_DATA_SNAPSHOT
-//            connect( this, SIGNAL( rawDataSnapshot( int ) ), daq, SIGNAL( rawDataSnapshot( int ) ) );
-//#endif
-//            connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), daq, SIGNAL(setFrameAverageWeights(int,int)) );
 //            connect( scene, SIGNAL(sendDisplayAngle(float)), daq, SIGNAL(handleDisplayAngle(float)) );
-//        }
-//        else
-//        {
-//            daq = new LowSpeedDAQ();
-
-//#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-//            connect( advView, SIGNAL(saveSignals()), daq, SIGNAL(saveSignals()) );
-//#endif
-
-//#if ENABLE_IPP_FFT_TUNING
-//            connect( this, SIGNAL( magScaleValueChanged( int ) ), daq, SIGNAL( magScaleValueChanged( int ) ) );
-//            connect( this, SIGNAL( fftScaleValueChanged( int ) ), daq, SIGNAL( fftScaleValueChanged( int ) ) );
-//#endif
 //        }
 
 //        // connect error/warning handlers before initializing the hardware
@@ -1832,20 +1730,11 @@ void frontend::configureHardware( void )
 //        connect( this,       SIGNAL( brightnessChange( int ) ),    daq,   SIGNAL( setBlackLevel( int ) ) );
 //        connect( this,       SIGNAL( contrastChange( int ) ),      daq,   SIGNAL( setWhiteLevel( int ) ) );
 
-//        // view option controls to daq
-//        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    daq,   SIGNAL( setAveraging( bool ) ) );
-//        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), daq,   SIGNAL( setInvertColors( bool ) ) );
-//        connect( viewOption, SIGNAL( updateCatheterView() ),       daq,   SIGNAL( updateCatheterView() ) );
-
 //        // view options to set color mode
 //        connect( viewOption, SIGNAL( setColorModeGray() ),         scene, SLOT( loadColorModeGray() ) );
 //        connect( viewOption, SIGNAL( setColorModeSepia() ),        scene, SLOT( loadColorModeSepia() ) );
 
 //        connect( advView, SIGNAL( tdcToggled(bool) ), daq, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
-
-//#if CONSOLE_MANUFACTURING_RELEASE
-//        connect( advView, SIGNAL( enableOcelotSwEncoder(bool) ), daq, SIGNAL( enableOcelotSwEncoder(bool) ) );
-//#endif
 
 //        // initialize the hardware
 //        daq->init();
@@ -1862,8 +1751,6 @@ void frontend::setIDAQ(IDAQ *object)
 {
     idaq = object;
 
-    deviceSettings &dev = deviceSettings::Instance();
-
     IDAQ* signalSource(nullptr);
 
     if(object->getSignalSource()){
@@ -1872,28 +1759,15 @@ void frontend::setIDAQ(IDAQ *object)
         signalSource = object;
     }
 
+    ui.liveGraphicsView->setScene( scene );
+    ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
+    centerLiveGraphicsView(); // center the panning position of the view over the sector
+
     if(signalSource)
     {
-        if( dev.current()->isHighSpeed() )
-        {
-#if ENABLE_RAW_DATA_SNAPSHOT
-            connect( this, SIGNAL( rawDataSnapshot( int ) ), signalSource, SIGNAL( rawDataSnapshot( int ) ) );
-#endif
-            connect( viewOption, SIGNAL(weightedAveragesChanged(int,int)), signalSource, SIGNAL(setFrameAverageWeights(int,int)) );
-            connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
-        }
-        else
-        {
+        connect( viewOption, SIGNAL(currFrameWeight_percentChanged(int)), SignalModel::instance(), SLOT(setCurrFrameWeight_percent(int)) );
 
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-            connect( advView, SIGNAL(saveSignals()), signalSource, SIGNAL(saveSignals()) );
-#endif
-
-#if ENABLE_IPP_FFT_TUNING
-            connect( this, SIGNAL( magScaleValueChanged( int ) ), signalSource, SIGNAL( magScaleValueChanged( int ) ) );
-            connect( this, SIGNAL( fftScaleValueChanged( int ) ), signalSource, SIGNAL( fftScaleValueChanged( int ) ) );
-#endif
-        }
+        connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
 
         // connect error/warning handlers before initializing the hardware
         connect( signalSource, SIGNAL( sendWarning( QString ) ),       this,    SLOT( handleWarning( QString ) ) );
@@ -1905,13 +1779,14 @@ void frontend::setIDAQ(IDAQ *object)
         connect( signalSource, SIGNAL( attenuateLaser(bool) ),         advView, SLOT( attenuateLaser(bool) ) );
 
         // frontend controls to daq
-        connect( this,       SIGNAL( brightnessChange( int ) ),    signalSource,   SIGNAL( setBlackLevel( int ) ) );
-        connect( this,       SIGNAL( contrastChange( int ) ),      signalSource,   SIGNAL( setWhiteLevel( int ) ) );
+        connect( this,       SIGNAL( brightnessChange( int ) ),    SignalModel::instance(),  SLOT( setBlackLevel( int ) ) );
+        connect( this,       SIGNAL( contrastChange( int ) ),      SignalModel::instance(),  SLOT( setWhiteLevel( int ) ) );
+        connect( this,       SIGNAL( brightnessChange( int ) ),    signalSource,  SIGNAL( setBlackLevel( int ) ) );
+        connect( this,       SIGNAL( contrastChange( int ) ),      signalSource,  SIGNAL( setWhiteLevel( int ) ) );
 
         // view option controls to daq
-        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    signalSource,   SIGNAL( setAveraging( bool ) ) );
-        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), signalSource,   SIGNAL( setInvertColors( bool ) ) );
-        connect( viewOption, SIGNAL( updateCatheterView() ),       signalSource,   SIGNAL( updateCatheterView() ) );
+        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    SignalModel::instance(),   SLOT( setIsAveragingNoiseReduction( bool ) ) );
+        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), SignalModel::instance(),   SLOT( setIsInvertColors( bool ) ) );
 
         // view options to set color mode
         connect( viewOption, SIGNAL( setColorModeGray() ),         scene, SLOT( loadColorModeGray() ) );
@@ -1919,18 +1794,15 @@ void frontend::setIDAQ(IDAQ *object)
 
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
 
-#if CONSOLE_MANUFACTURING_RELEASE
-        connect( advView, SIGNAL( enableOcelotSwEncoder(bool) ), signalSource, SIGNAL( enableOcelotSwEncoder(bool) ) );
-#endif
-
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
-        // initialize the hardware
     }
 
     if(idaq){
+        if(idaq->getSignalSource()){
+            connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
+        }
         idaq->init();
-        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
-
+//        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
     }
     // Sync the view options from the System.ini
     viewOption->updateValues();
@@ -1964,33 +1836,6 @@ void frontend::shutdownHardware( void )
      */
     Sleep( 500 );
 }
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-// R&D only
-void frontend::on_rawSnapshotSpinBox_valueChanged(int arg1)
-{
-    snapshotLength = arg1;
-}
-
-void frontend::on_rawDataPushButton_clicked()
-{
-    emit rawDataSnapshot( snapshotLength );
-}
-#endif
-
-#if ENABLE_IPP_FFT_TUNING
-// R&D only
-void frontend::on_magSpinBox_valueChanged(int arg1)
-{
-    emit magScaleValueChanged( arg1 );
-}
-
-// R&D only
-void frontend::on_fftSpinBox_valueChanged(int arg1)
-{
-    emit fftScaleValueChanged( arg1 );
-}
-#endif
 
 #if ENABLE_COLORMAP_OPTIONS
 // R&D only
@@ -2089,7 +1934,7 @@ void frontend::setMeasurementMode( bool enable )
         scene->setMeasureModeArea( true, Qt::magenta );
         setSceneCursor( QCursor( Qt::CrossCursor ) );
         ui.liveGraphicsView->setToolTip( "" );
-        ui.saveMeasurementButton->show();
+//        ui.saveMeasurementButton->show();
         ui.measureModePushButton->setChecked( true );
         LOG( INFO, "Measure Mode: start" )
     }
@@ -2097,7 +1942,7 @@ void frontend::setMeasurementMode( bool enable )
     {
         scene->setMeasureModeArea( false, Qt::magenta );
         setSceneCursor( QCursor( Qt::OpenHandCursor ) );
-        ui.saveMeasurementButton->hide();
+//        ui.saveMeasurementButton->hide();
         ui.measureModePushButton->setChecked( false );
         LOG( INFO, "Measure Mode: stop" )
     }
@@ -2125,6 +1970,32 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
     }
 }
 
+void frontend::updateSector(const OCTFile::OctData_t* frameData)
+{
+    QImage* image{nullptr};
+    QGraphicsPixmapItem* pixmap{nullptr};
+    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
+    if(!m_formL300->isVisible()){
+        image = scene->sectorImage();
+        pixmap = scene->sectorHandle();
+    }else {
+        image = m_formL300->sectorImage();
+        pixmap = m_formL300->sectorHandle();
+    }
+
+    if(image){
+        memcpy( image->bits(), frameData->dispData, SectorSize );
+    }
+    if(pixmap){
+        QPixmap tmpPixmap = QPixmap::fromImage( *image );
+        pixmap->setPixmap(tmpPixmap);
+    }
+    if(!m_formL300->isVisible()){
+        scene->setDoPaint();
+    }
+//    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
+}
+
 /*
  * on_saveMeasurementButton_clicked
  *
@@ -2137,14 +2008,19 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
  */
 void frontend::on_saveMeasurementButton_clicked()
 {
+    return; //lcv
+
     // capture the screen and overwrite the decorated image of the current capture.
-    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
+//    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
+    QImage p = docWindow->ui.liveGraphicsView->grab().toImage();
 
     // Take the tech screen view if zoomed because overlays may be out of view on doc screen.
     if( ( ui.zoomSlider->value() / 100.0 ) > 1.0 )
     {
         float scaledImageFactor = 1.0;
-        p = QPixmap::grabWidget( ui.liveGraphicsView ).toImage();
+        //p = QPixmap::grabWidget( ui.liveGraphicsView ).toImage();
+        QImage p = ui.liveGraphicsView->grab().toImage();
+
         p = p.scaledToWidth( docWindow->ui.liveGraphicsView->height(), Qt::SmoothTransformation );
 
         QTransform trans;
@@ -2393,7 +2269,6 @@ void frontend::handleDisplayingCapture()
 {
     if( !isImageCaptureLoaded )
     {
-        prevIsWaterfallVisible = scene->getWaterfallVisible();
         isImageCaptureLoaded = true;
     }
 
@@ -2406,7 +2281,7 @@ void frontend::handleDisplayingCapture()
 
     ui.liveViewPushButton->show();
     ui.reviewWidget->disableClipSelection();
-    ui.loopMaskLabel->show();
+//    ui.loopMaskLabel->show();
     ui.measureModePushButton->show(); // Allow access to Measurement during capture review
     ui.measureModePushButton->setEnabled( true );
     configureDisplayForReview();
@@ -2421,7 +2296,7 @@ void frontend::handleDisplayingCapture()
  */
 void frontend::configureDisplayForReview()
 {
-    // Display a normal arrow over the sector and waterfall when reviewing
+    // Display a normal arrow over the sector when reviewing
     ui.liveGraphicsView->setToolTip( "" );
 
     disableCaptureButtons();
@@ -2431,7 +2306,7 @@ void frontend::configureDisplayForReview()
     ui.scanSyncButton->setEnabled( false );
     ui.displayOptionsButton->setDisabled( true );
     ui.deviceSelectButton->setDisabled( true );
-    ui.imageSettingsGroupBox->setDisabled( true );
+    ui.GroupBoxBandC->setDisabled( true );
     advView->setReviewState();
     ui.advancedViewButton->setDisabled( true );
     ui.recordLoopButton->setDisabled( true );
@@ -2454,10 +2329,8 @@ void frontend::configureDisplayForReview()
     scene->hideAnnotations();
     docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
-    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 16pt DinPRO-Medium; color: yellow; }" );
-    ui.liveGroupBox->setStyleSheet( "QGroupBox { color: yellow; }" );
-
-    scene->displayWaterfall( false );
+    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 14.75pt DinPRO-Medium; color: yellow; }" );
+    ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 14.75pt DINPro-medium;}" );
 }
 
 /*
@@ -2474,13 +2347,12 @@ void frontend::on_liveViewPushButton_clicked()
     setSceneCursor( QCursor( Qt::OpenHandCursor ) );
 
     ui.liveViewPushButton->hide();
-    ui.measureModePushButton->hide(); // Hide the Measurement button.
+//    ui.measureModePushButton->hide(); // Hide the Measurement button.
     setMeasurementMode( false ); // Dismiss measurement groupbox and overlays if they remain.
 
     if( isImageCaptureLoaded )
     {
         scene->dismissReviewImages();
-        scene->displayWaterfall( prevIsWaterfallVisible );
     }
 
     if( isLoopLoaded )
@@ -2499,7 +2371,7 @@ void frontend::on_liveViewPushButton_clicked()
     else
     {
         ui.reviewWidget->enableClipSelection();
-        ui.loopMaskLabel->hide();
+//        ui.loopMaskLabel->hide();
     }
 
     enableCaptureButtons();
@@ -2509,7 +2381,7 @@ void frontend::on_liveViewPushButton_clicked()
 
     ui.displayOptionsButton->setEnabled( true );
     ui.deviceSelectButton->setEnabled( true );
-    ui.imageSettingsGroupBox->setEnabled( true );
+    ui.GroupBoxBandC->setEnabled( true );
     advView->setLiveState();
     ui.advancedViewButton->setEnabled( true );
     viewOption->enableButtons();
@@ -2545,15 +2417,10 @@ void frontend::on_liveViewPushButton_clicked()
     auxMon->configureDisplayForLiveView();
     ui.physicianPreviewButton->setEnabled( true ); // re-enable this button
 
-    /*
-     * Restore visibility of the waterfall if it was turned off when switching to Review
-     */
-    scene->displayWaterfall( prevIsWaterfallVisible );
-
     deviceSettings &dev = deviceSettings::Instance();
     ui.deviceFieldLabel->setText( dev.current()->getDeviceName() );
     ui.deviceFieldLabel->setStyleSheet( origDeviceLabelStyleSheet );
-    ui.liveGroupBox->setStyleSheet( origLiveGroupBoxStyleSheet );
+    ui.label_live->setStyleSheet( origLiveQLabelStyleSheet );
 }
 
 /*
@@ -2576,6 +2443,11 @@ void frontend::on_autoAdjustBrightnessContrastButton_clicked()
 {
     LOG( INFO, "Auto-adjust brightness and contrast clicked" )
     emit autoAdjustBrightnessAndContrast();
+    auto* sm = SignalModel::instance();
+    sm->setWhiteLevel(0);
+    sm->setBlackLevel(0);
+    ui.horizontalSliderBrigtness->setValue(0);
+    ui.horizontalSliderContrast->setValue(0);
 }
 
 /*
@@ -2590,8 +2462,14 @@ void frontend::on_captureImageButton_clicked()
 
     // tag the images as "img-001, img-002, ..."
     currImgNumber++;
-    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
-    scene->capture( p, QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) ) );
+    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
+    LOG1(tag);
+    QRect rectangle = ui.liveGraphicsView->rect();
+//    rectangle.setWidth(1440);
+//    rectangle.setHeight(1440);
+    qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
+    QImage p = ui.liveGraphicsView->grab(rectangle).toImage();
+    scene->captureDi( p, tag );
 }
 
 /*
@@ -2629,15 +2507,6 @@ void frontend::on_annotateImagePushButton_clicked()
     }
 }
 
-#if ENABLE_ON_SCREEN_RULER
-/*
- * on_rulerSlidingPointSpinbox_valueChanged
- */
-void frontend::on_rulerSlidingPointSpinbox_valueChanged( int val )
-{
-    emit setSlidingPoint( val );
-}
-#endif
 
 /*
  * handleScreenChanges
@@ -2657,7 +2526,7 @@ void frontend::handleBadMonitorConfig()
     captureMouse( false );
     hideDisplays();
     this->setGeometry( wmgr->getDefaultDisplayGeometry() );
-    this->showFullScreen();
+    this->showFullScreen();//show(); //lcv this->showFullScreen();
     wmgr->showInfoMessage( this->parentWidget() );
     captureMouse( true );
 }
@@ -2697,13 +2566,13 @@ void frontend::createDisplays()
 
     this->hide();
     this->setGeometry( wmgr->getTechnicianDisplayGeometry() );
-    this->showFullScreen();
+    this->showFullScreen();//show(); //lcv this->showFullScreen();
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
     {
         docWindow->setGeometry( wmgr->getPhysicianDisplayGeometry() );
-        docWindow->showFullScreen();
+        docWindow->showFullScreen();//docWindow->show(); //lcv docWindow->showFullScreen();
     }
 
     if( wmgr->isAuxMonPresent() )
@@ -2799,20 +2668,6 @@ void frontend::setupDeviceForSledSupport()
 {
     qDebug() << "**** setupDevice";
     emit updateDeviceForSledSupport();
-/*
-    deviceSettings &ds = deviceSettings::Instance();
-    if(ds.current()->isBidirectional())
-    {
-        ui.directionPushButton->show();
-//		ui.directionPushButton->setChecked( lastDirCCW );
-//      on_directionPushButton_clicked();	// change to Passive direction (CCW)
-    }
-    else
-    {
-        ui.directionPushButton->hide();
-    }
-*/
-//    qDebug() << "***** new device: " << ds.current()->getDeviceName();
 }
 
 /*
@@ -2823,9 +2678,9 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     //qDebug() << "**** changeSpeed";
     LOG1(revsPerMin)
     deviceSettings &dev = deviceSettings::Instance();
-    dev.current()->setLinesPerRevolution( aLines );
-    dev.current()->setRevolutionsPerMin( revsPerMin );
-    LOG2(revsPerMin, aLines);
+//lcv    dev.current()->setLinesPerRevolution( aLines );
+//    dev.current()->setRevolutionsPerMin( revsPerMin );
+//    LOG2(revsPerMin, aLines);
 
 //    lastDirCCW = dev.current()->getRotation();
     stopDataCapture();
@@ -2837,51 +2692,28 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     setupDeviceForSledSupport();
 }
 
-/*
- * on_directionPushButton_clicked()
- *
- * Change catheter direction upon request.
- */
-void frontend::on_directionPushButton_clicked()
-{
-    qDebug() << "direction button clicked";
-    ui.directionPushButton->setChecked( false );
-    SledSupport &sledSupport = SledSupport::Instance();
-    deviceSettings &dev = deviceSettings::Instance();
-    if(dev.current()->getRotation() == 0 )
-    {
-        sledSupport.setSledRotation( 1 );   // CCW
-    }
-    else if(dev.current()->getRotation() == 1 )
-    {
-        sledSupport.setSledRotation( 0 );   // CW
-    }
-}
-
-void frontend::dirButton(int mode)
-{
-//    qDebug() << "dirButton" << mode;
-    if(mode == 0)
-    {
-        ui.directionPushButton->setText("DIRECTION\nSet Passive");
-        ui.directionPushButton->setStyleSheet("color: black; background-color: #2A8C91;");     // bluish (3/5)
-        ui.directionPushButton->show();
-    }
-    else if(mode == 1)
-    {
-        ui.directionPushButton->setText("DIRECTION\nSet Active");
-        ui.directionPushButton->setStyleSheet("color: black; background-color: #8E8E4E;");     // yellowish (3/5)
-        ui.directionPushButton->show();
-    }
-	else
-	{
-        ui.directionPushButton->hide();
-	}
-}
 
 void frontend::on_EgineeringButton_toggled(bool checked)
 {
     m_ec->setViewPosition(ui.capturesGroupBox->x());
     m_ec->showOrHideView(checked);
-    LOG1(checked)
+}
+
+void frontend::hideDecoration(void)
+{
+    if(ui.measureModePushButton->isChecked())
+    {
+        ui.measureModePushButton->clicked();
+    }
+}
+
+
+void frontend::on_pushButtonLogo_clicked()
+{
+    qDebug() << __FUNCTION__;
+//    hide();
+    if(!m_formL300){
+        m_formL300 = new FormL300(this);
+    }
+    m_formL300->showFullScreen();
 }

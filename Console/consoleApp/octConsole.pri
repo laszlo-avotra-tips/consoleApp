@@ -4,6 +4,21 @@
 # -----------------------------------------------------------
 # Header files
 HEADERS += \
+    $$PWD/Backend/AxsunCommonEnums.h \
+    $$PWD/Backend/AxsunOCTCapture.h \
+    $$PWD/Backend/AxsunOCTControl_LW_C.h \
+    $$PWD/Backend/bandc.h \
+    $$PWD/Backend/daq.h \
+    $$PWD/Backend/ikernelfunction.h \
+    $$PWD/Backend/imagedescriptor.h \
+    $$PWD/Backend/kernelfunctionbase.h \
+    $$PWD/Backend/postfft.h \
+    $$PWD/Backend/producer.h \
+    $$PWD/Backend/scanconversion.h \
+    $$PWD/Backend/signalprocessingfactory.h \
+    $$PWD/Backend/warp.h \
+    $$PWD/Backend/warpbc.h \
+    $$PWD/Frontend/Widgets/forml300.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -23,7 +38,6 @@ HEADERS += \
     Frontend/Widgets/livescene.h \
     Frontend/Widgets/liveview.h \
     Frontend/Widgets/sectoritem.h \
-    Frontend/Widgets/waterfall.h \
     Frontend/Utility/capturemachine.h \
     Frontend/Widgets/capturewidget.h \
     Frontend/Widgets/gridOverlay.h \
@@ -63,7 +77,6 @@ HEADERS += \
     Backend/evoa.h \
     Backend/powerdistributionboard.h \
     Backend/dsp.h \
-    Backend/softwaredsp.h \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
     Frontend/Widgets/curveswidget.h \
@@ -80,19 +93,27 @@ HEADERS += \
     Backend/ftd2xx.h \
     $$PWD/Backend/daqfactory.h \
     $$PWD/Backend/idaq.h \
-    $$PWD/Backend/idaqproxy.h \
     $$PWD/Frontend/Widgets/engineeringdialog.h \
     $$PWD/Frontend/Widgets/engineeringcontroller.h \
     $$PWD/Frontend/Widgets/enginneringmodel.h \
     $$PWD/Backend/playbackmanager.h \
-    $$PWD/Backend/playbackmanager.h \
-    $$PWD/Backend/framequeue.h \
     $$PWD/Backend/filedaq.h \
-    $$PWD/Backend/theglobals.h \
-    $$PWD/Backend/signalmanager.h
+    $$PWD/Backend/signalmanager.h \
+    $$PWD/Backend/signalmodel.h
 
 # Source files
 SOURCES += \
+    $$PWD/Backend/bandc.cpp \
+    $$PWD/Backend/daq.cpp \
+    $$PWD/Backend/imagedescriptor.cpp \
+    $$PWD/Backend/kernelfunctionbase.cpp \
+    $$PWD/Backend/postfft.cpp \
+    $$PWD/Backend/producer.cpp \
+    $$PWD/Backend/scanconversion.cpp \
+    $$PWD/Backend/signalprocessingfactory.cpp \
+    $$PWD/Backend/warp.cpp \
+    $$PWD/Backend/warpbc.cpp \
+    $$PWD/Frontend/Widgets/forml300.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
@@ -109,7 +130,6 @@ SOURCES += \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/liveview.cpp \
     Frontend/Widgets/sectoritem.cpp \
-    Frontend/Widgets/waterfall.cpp \
     main.cpp \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Widgets/capturewidget.cpp \
@@ -148,7 +168,6 @@ SOURCES += \
     Backend/evoa.cpp \ 
     Backend/powerdistributionboard.cpp \
     Backend/dsp.cpp \
-    Backend/softwaredsp.cpp \
     Backend/depthsetting.cpp \
     Backend/sledsupport.cpp \
     Frontend/Widgets/curveswidget.cpp \
@@ -164,21 +183,20 @@ SOURCES += \
     ../../Common/GUI/backgroundmask.cpp \
     ../../Common/GUI/windowmanager.cpp \
     $$PWD/Backend/daqfactory.cpp \
-    $$PWD/Backend/idaqproxy.cpp \
     $$PWD/Frontend/Widgets/engineeringdialog.cpp \
     $$PWD/Frontend/Widgets/engineeringcontroller.cpp \
     $$PWD/Frontend/Widgets/enginneringmodel.cpp \
     $$PWD/Backend/playbackmanager.cpp \
-    $$PWD/Backend/framequeue.cpp \
     $$PWD/Backend/filedaq.cpp \
-    $$PWD/Backend/theglobals.cpp \
-    $$PWD/Backend/signalmanager.cpp
+    $$PWD/Backend/signalmanager.cpp \
+    $$PWD/Backend/signalmodel.cpp
 
 win32:SOURCES += Utility/qtsingleapplication_win.cpp
 unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 
 # Forms
 FORMS += Frontend/Screens/docscreen.ui \
+    $$PWD/Frontend/Widgets/forml300.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/advancedview.ui \
     Frontend/Widgets/capturewidget.ui \
@@ -202,8 +220,3 @@ RESOURCES += ./octConsole.qrc \
 
 # Windows-specific resources
 win32:RC_FILE += octConsole.rc
-
-OTHER_FILES += \
-    Backend/OpenCL/rescale.cl \
-    Backend/OpenCL/postProc.cl \
-    Backend/OpenCL/warp.cl

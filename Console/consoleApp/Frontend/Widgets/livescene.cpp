@@ -2,7 +2,7 @@
  * livescene.cpp
  *
  * Implements the QGraphicsScene derived object that handles all live data presentation 
- * including the sector and the waterfall and any indicators that go along with them.
+ * including the sector and any indicators that go along with them.
  * 
  * This object also consumes the line data directly and adds it to the relevant
  * display objects.
@@ -32,7 +32,7 @@ QString timestampToString( unsigned long ts );
 // SceneWidth = sector drawing area. At a minimum, this needs to accommodate ( the 512 pixel radius +
 // the catheter radius ) * 2.
 const int SceneWidth( SectorWidth_px );
-const int SceneHeight( SectorHeight_px + WaterfallHeight_px );
+const int SceneHeight( SectorHeight_px );
 const int ScreenRefreshRate_ms( 33 );
 
 const int TextHeight( 50 ); // Height of text rendered for video info
@@ -60,19 +60,10 @@ liveScene::liveScene( QObject *parent )
     sector->setData( SectorItemKey, "sector" );
     addItem( sector );
 
-    wf = new waterfall();
-    addItem( wf );
-
     // Background image rendering for movies
     videoSector = new sectorItem();
     videoSector->setVideoOnly();
 
-    // the waterfall position is defined by the upper right-hand corner of the waterfall
-    // relative to the upper-left hand corner of the screen. Use the height in the x-offset
-    // since the waterfall is rotated before being displayed
-    wf->setPos( SectorWidth_px - ( SceneWidth - wf->getHeight() ) / 2 , SectorHeight_px );
-    wf->setZValue( 2.0 );
-//    wf->rotate( 90.0 );
     doPaint = false;
 
     sector->setZValue( 1.0 );
@@ -97,17 +88,15 @@ liveScene::liveScene( QObject *parent )
 
     reviewing              = false;
     zoomFactor             = 1.0;
-    isWaterfallVisible     = true;
     mouseRotationEnabled   = true;
     isAnnotateMode         = false;
     isMeasureMode          = false;
     cachedCalibrationScale = -1; // default value
 
     reviewSector    = nullptr;
-    reviewWaterfall = nullptr;
 
-    connect( this, SIGNAL(capture(QImage,QImage,QImage,QString,unsigned int,int,float)), &capturer, SLOT(imageCapture(QImage,QImage,QImage,QString,uint,int,float)) );
-    connect( this, SIGNAL(clipCapture(QImage,QImage,QString,unsigned int)), &capturer, SLOT(clipCapture(QImage,QImage,QString,unsigned int)) );
+    connect( this, SIGNAL(captureAll(QImage,QImage,QString,unsigned int,int,float)), &capturer, SLOT(imageCapture(QImage,QImage,QString,uint,int,float)) );
+    connect( this, SIGNAL(clipCapture(QImage,QString,unsigned int)), &capturer, SLOT(clipCapture(QImage,QString,unsigned int)) );
 
     connect( &capturer, SIGNAL(warning( QString ) ),     this, SIGNAL(sendWarning( QString ) ) );
     connect( &capturer, SIGNAL(sendFileToKey(QString)),  this, SIGNAL(sendFileToKey(QString)));
@@ -130,7 +119,6 @@ liveScene::liveScene( QObject *parent )
      * set up the color map for the component images
      */
     sector->updateColorMap( currColorMap );
-    wf->updateColorMap( currColorMap );
 
     infoRenderBuffer = nullptr;
     infoImage = nullptr;
@@ -195,11 +183,6 @@ liveScene::~liveScene()
         delete sector;
     }
 
-    if( wf )
-    {
-        delete wf;
-    }
-
     if( refreshTimer )
     {
         delete refreshTimer;
@@ -248,39 +231,40 @@ void liveScene::setAnnotateMode( bool state, QColor color )
 /*
  * refresh
  *
- * Allow the waterfall and sector to complete their rendering, if anything
+ * Allow the sector to complete their rendering, if anything
  * has actually changed in the last interval
  */
 void liveScene::refresh( void )
 {
     TIME_THIS_SCOPE( liveScene_render );
+
     if( doPaint )
     {
         doPaint = false;
-        sector->paintSector( force );
-        videoSector->paintSector( force );
-        wf->render();
+        if(deviceSettings::Instance().getIsSimulation()){
+            sector->paintSector( force );
+            videoSector->paintSector( force );
+        }
         overlays->render();
     }
-    update();
+    if(deviceSettings::Instance().getIsSimulation()){
+        update();
+    }
 }
 
 /*
  * showReview()
  *
- * Given a sector and waterfall image, present the images on the scene
+ * Given a sector image, present the image on the scene
  * over the live view.
  */
-void liveScene::showReview( const QImage & sec, const QImage & waterFall )
+void liveScene::showReview( const QImage & sec )
 {
     if( reviewing )
     {
         removeItem( reviewSector );
-        removeItem( reviewWaterfall );
         delete reviewSector;
-        delete reviewWaterfall;
         reviewSector    = nullptr;
-        reviewWaterfall = nullptr;
     }
 
     // turn off overlays during review
@@ -289,15 +273,9 @@ void liveScene::showReview( const QImage & sec, const QImage & waterFall )
     reviewing = true;
 
     reviewSector    = new QGraphicsPixmapItem( QPixmap::fromImage( sec ) );
-    reviewWaterfall = new QGraphicsPixmapItem( QPixmap::fromImage( waterFall ) );
 
-    // place the waterfall relative to the sector image.  We use the width
-    // here since the waterfall is saved in the correct rotation
-    reviewWaterfall->setPos( ( SceneWidth - waterFall.width() ) / 2, SectorHeight_px );
-    reviewWaterfall->setZValue( 5.0 );
     reviewSector->setZValue( 5.0 );
     reviewSector->setPos( 0, 0 );
-    addItem( reviewWaterfall );
     addItem( reviewSector );
 }
 
@@ -311,6 +289,11 @@ void liveScene::resetRotationCounter( )
     sector->clearRotationFlag();
 }
 
+void liveScene::handleReticleBrightnessChanged(int value)
+{
+    sector->setReticleBrightness( value );
+}
+
 /*
  * addScanFrame
  * Given a shared pointer to an OCT frame,
@@ -319,7 +302,7 @@ void liveScene::resetRotationCounter( )
  */
 void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
 {
-    // Pass off to the sector and waterfall
+    // Pass off to the sector
     sector->addFrame( data );
     videoSector->addFrame( data );
 
@@ -332,14 +315,6 @@ void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
         sector->clearRotationFlag();
     }
 
-    deviceSettings &devSettings = deviceSettings::Instance();
-
-    // The waterfall is only enabled for low speed devices
-    if( !devSettings.current()->isHighSpeed() )
-    {
-        wf->addLine( data );
-    }
-
     doPaint = true;
 }
 
@@ -348,24 +323,19 @@ void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
 /*
  * capture
  *
- * Do an image capture of the sector and the waterfall,
+ * Do an image capture of the sector,
  * updating the capture database as necessary and notifying
  * interested parties that a new capture is loaded.
  */
-void liveScene::capture( QImage decoratedImage, QString tagText )
+void liveScene::captureDi( QImage decoratedImage, QString tagText )
 {
     TIME_THIS_SCOPE( captureTotal );
 
     /*
-     * Render the waterfall and sector images,
+     * Render the sector image,
      * then pass of to the capturer to write to
      * disk.
      */
-    QImage wfImage;
-    {
-        TIME_THIS_SCOPE( freezeWaterfall );
-        wfImage  = wf->freeze();
-    }
     QImage secImage;
     {
         TIME_THIS_SCOPE( freezeSector );
@@ -386,7 +356,7 @@ void liveScene::capture( QImage decoratedImage, QString tagText )
      */
     {
         TIME_THIS_SCOPE( captureSave );
-        emit capture( decoratedImage, wfImage, secImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
+        emit captureAll( decoratedImage, secImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
     }
 }
 
@@ -620,20 +590,19 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 /*
  * captureClip
  *
- * Save the sector and waterfall from the start of the clip
+ * Save the sector from the start of the clip
  */
 void liveScene::captureClip( QString strIter )
 {
     /*
-     * Render the waterfall and sector images,
+     * Render the sector images,
      * then pass of to the capturer to write to
      * disk.
      */
-    QImage wfImage  = wf->freeze();
     QImage secImage = sector->freeze();
 
     // Perform the capture. Allow the capture text to be translated.
-    emit clipCapture( wfImage, secImage, strIter, sector->getFrozenTimestamp() );
+    emit clipCapture( secImage, strIter, sector->getFrozenTimestamp() );
 }
 
 /*
@@ -650,12 +619,6 @@ void liveScene::dismissReviewImages( void )
         removeItem( reviewSector );
         delete reviewSector;
         reviewSector = nullptr;
-    }
-    if( reviewWaterfall )
-    {
-        removeItem( reviewWaterfall );
-        delete reviewWaterfall;
-        reviewWaterfall = nullptr;
     }
 
     reviewing = false;
@@ -795,14 +758,14 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
     // Direction indicator for highspeed bidirectional devices (Ocelaris)
     if(devSettings.current()->isOcelaris() )
     {
-        if(devSettings.current()->getRotation())
-        {
-            pDirRingImage = &passiveIndicatorRingImage;
-        }
-        else
-        {
-            pDirRingImage = &activeIndicatorRingImage;
-        }
+//lcv        if(devSettings.current()->getRotation())
+//        {
+//            pDirRingImage = &passiveIndicatorRingImage;
+//        }
+//        else
+//        {
+//            pDirRingImage = &activeIndicatorRingImage;
+//        }
 
         /*
          * Copy the image into the video frame if it is a Low Speed device. The image is square, so
@@ -837,17 +800,6 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
 }
 
 /*
- * displayWaterfall
- *
- * Set whether the waterfall is visible on the displays
- */
-void liveScene::displayWaterfall( bool enabled )
-{
-    wf->setVisible( enabled );
-    isWaterfallVisible = enabled;
-}
-
-/*
  * updateGrayScaleMap
  *
  * update the color map in grayscale only
@@ -861,7 +813,6 @@ void liveScene::updateGrayScaleMap( QVector<unsigned char> map )
     }
 
     sector->updateColorMap( currColorMap );
-    wf->updateColorMap( currColorMap );
 }
 
 /*
@@ -873,7 +824,7 @@ void liveScene::updateGrayScaleMap( QVector<unsigned char> map )
 void liveScene::loadColormap( QString colormapFile )
 {
     QFile *input = new QFile( colormapFile );
-
+    LOG1(colormapFile)
     if( !input )
     {
         // warn and do not update the colormap
@@ -911,8 +862,6 @@ void liveScene::loadColormap( QString colormapFile )
 #endif
 
     sector->updateColorMap( currColorMap );
-    wf->updateColorMap( currColorMap );
-
 
     // free the pointer.  nullptr check done above.
     delete input;
@@ -923,6 +872,7 @@ void liveScene::loadColormap( QString colormapFile )
  */
 void liveScene::loadColorModeGray()
 {
+    LOG1(SystemDir)
     loadColormap( SystemDir + "/colormaps/" + "gray.csv" );
 }
 
@@ -931,6 +881,7 @@ void liveScene::loadColorModeGray()
  */
 void liveScene::loadColorModeSepia()
 {
+    LOG1(SystemDir)
     loadColormap( SystemDir + "/colormaps/" + "sepia.csv" );
 }
 

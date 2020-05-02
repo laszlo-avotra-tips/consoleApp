@@ -33,8 +33,8 @@ signals:
     void error( QString );
 
 public slots:
-    void imageCapture( QImage decoratedImage, QImage wf, QImage sector, QString tagText, unsigned int timestamp, int pixelsPerMm, float zoom );
-    void clipCapture( QImage wf, QImage sector, QString strClipNumber, unsigned int timestamp );
+    void imageCapture( QImage decoratedImage, QImage sector, QString tagText, unsigned int timestamp, int pixelsPerMm, float zoom );
+    void clipCapture( QImage sector, QString strClipNumber, unsigned int timestamp );
 
 protected:
     void run();
@@ -44,7 +44,6 @@ private:
     struct CaptureItem_t
     {
         QImage decoratedImage;
-        QImage waterfallImage;
         QImage sectorImage;
         QString tagText;
         unsigned int timestamp;
@@ -55,7 +54,6 @@ private:
     // container for clips to put into a queue
     struct ClipItem_t
     {
-        QImage waterfallImage;
         QImage sectorImage;
         QString strClipNumber;
         unsigned int timestamp;
@@ -69,7 +67,7 @@ private:
 
     int currCaptureNumber;
 
-    void processImageCapture( CaptureItem_t imageCapture );
+    void processImageCapture(CaptureItem_t captureItem );
     void processLoopRecording( ClipItem_t loop );
 
     QMutex mutex;

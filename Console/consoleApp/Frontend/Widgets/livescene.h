@@ -2,7 +2,7 @@
  * livescene.h
  *
  * QGraphicsScene derived object that handles all live data presentation including
- * the sector and the waterfall and any indicators that go along with them.
+ * the sector and any indicators that go along with them.
  * 
  * This object also consumes the line data directly and adds it to the relevant
  * display objects.
@@ -22,7 +22,6 @@
 #include <QThread>
 #include <QTimer>
 #include <QMutex>
-#include "waterfall.h"
 #include "sectoritem.h"
 //lcv #include "../../Common/GUI/videodecoderitem.h"
 #include "Utility/capturemachine.h"
@@ -43,26 +42,25 @@ public:
     void setZoomFactor( float factor ) { zoomFactor = factor; }
     void setMeasureModeArea( bool state, QColor color );
     void setAnnotateMode( bool state, QColor color );
-    double getSectorDisplayAngle( void ) { return( sector->getDisplayAngle() ); }
     void applyClipInfoToBuffer( char *buffer );
 
     // grab the sector data for the OCT Loop vdideo encoding
     char *frameSample() { return( videoSector->frameData() ); }
 
-    void  wfSample( char *buffer ) { wf->sample( buffer ); }
     void lockFrame() {
         frameLock.lock();
     }
     void unlockFrame() {
         frameLock.unlock();
     }
-    QGraphicsItem *sectorHandle( void ) { return sector; }
+    QGraphicsPixmapItem *sectorHandle( void ) { return sector; }
+    QImage* sectorImage() const {return sector->getSectorImage();}
     void hideAnnotations();
     void showAnnotations();
 
 public slots:
     void addScanFrame( QSharedPointer<scanframe> &data );
-    void capture( QImage decoratedImage, QString tagText );
+    void captureDi( QImage decoratedImage, QString tagText );
     void captureClip( QString strIter );
     void generateClipInfo();
     void resetRotationCounter();
@@ -88,12 +86,9 @@ public slots:
 //		qDebug() << "**** livescene::handleDeviceChange()";
         sector->deviceChanged();
         videoSector->deviceChanged();
-        wf->deviceChanged();
     }
 
-    void handleReticleBrightnessChanged( int value ) {
-        sector->setReticleBrightness( value );
-    }
+    void handleReticleBrightnessChanged( int value );
 
     void handleLaserIndicatorBrightnessChanged( int value ) {
         sector->setLaserIndicatorBrightness( value );
@@ -103,25 +98,22 @@ public slots:
     {
         sector->disableOverlays();
         overlays->setVisible( false );
-        wf->hide();
     }
 
     void handleLagWizardStop( void )
     {
         sector->enableOverlays();
         overlays->setVisible( true );
-        wf->show();
     }
 
     void showMessage( QString );
     
-    void showReview( const QImage &, const QImage & );
+    void showReview(const QImage &);
 
     void clearImages( void )
     {
         sector->clearImage();
         videoSector->clearImage();
-        wf->clearImage();
         doPaint = true;
         refresh();
     }
@@ -135,8 +127,6 @@ public slots:
     void dismissReviewImages( void );
     void handleDisableMouseRotateSector() { mouseRotationEnabled = false; }
     void handleEnableMouseRotateSector() { mouseRotationEnabled = true; }
-
-    bool getWaterfallVisible( void ) { return isWaterfallVisible; }
 
     // Low Speed Device only
     void updateDirectionOfRotation( directionTracker::Direction_T currDirection )
@@ -177,13 +167,6 @@ public slots:
 		force = true;
 	}
 
-#if ENABLE_ON_SCREEN_RULER
-    void setSlidingPoint( int val )
-    {
-        sector->setSlidingPoint( val );
-    }
-#endif
-
     void setClipForPlayback( QString name );
     void startPlayback( void );
     void pausePlayback(  );
@@ -191,7 +174,6 @@ public slots:
     void rewindPlayback( );
     void seekWithinClip( qint64 );
 
-    void displayWaterfall( bool );
     void updateGrayScaleMap( QVector<unsigned char> map );
     void loadColormap( QString colormapFile );
     void loadColorModeGray();
@@ -204,8 +186,8 @@ signals:
     void sendFileToKey( QString );
     void sendCaptureTag( QString );
     void sendStatusText( QString );
-    void capture( QImage, QImage, QImage, QString, unsigned int, int, float );
-    void clipCapture( QImage, QImage , QString, unsigned int );
+    void captureAll( QImage, QImage, QString, unsigned int, int, float );
+    void clipCapture( QImage , QString, unsigned int );
     void updateCaptureCount();
     void updateClipCount();
     void sendWarning( QString );
@@ -233,12 +215,10 @@ private:
     QTimer *infoRenderTimer;
     bool doPaint;
 	bool force;
-    waterfall  *wf;
     sectorItem *sector;
     sectorItem *videoSector;
     overlayItem *overlays;
     float zoomFactor;
-    bool isWaterfallVisible;
     bool reviewing;
     bool mouseRotationEnabled;
     bool isAnnotateMode;
@@ -246,7 +226,6 @@ private:
     int   cachedCalibrationScale;
 
     QGraphicsPixmapItem *reviewSector;
-    QGraphicsPixmapItem *reviewWaterfall;
 
 //    videoDecoderItem *clipPlayer;
     QString           clipPath;

@@ -1,4 +1,4 @@
-__kernel void postproc_kernel(__global const float *input_re,
+__kernel void postfft_kernel(__global const float *input_re,
                               __global const float *input_imag,
                               __global float *prev_frame,
                               __write_only image2d_t output,
@@ -18,7 +18,7 @@ __kernel void postproc_kernel(__global const float *input_re,
 
     re = input_re[i + offset];
     im = input_imag[i + offset];
-    magnitude = sqrt( re * re + im * im );
+    magnitude = re * re + im * im;
     magnitude = log10(magnitude) * scaleFactor - dcNoiseLevel;  // Scale to 8-bit, adjustable by caller
     tmp = magnitude;
 

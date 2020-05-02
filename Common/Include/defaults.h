@@ -1,23 +1,46 @@
-/*
- * defaults.h
- *
- * Various global default parameters that don't belong in .ini files
- * or other mutable places.
- *
- * Author: Chris White, Dennis W. Jackson
- *
- * Copyright (c) 2009-2018 Avinger, Inc.
- */
-
-#pragma once
+#ifndef DEFAULTS_H
+#define DEFAULTS_H
 #include <QString>
+#include <QDir>
 #include <QStringList>
 #include <QSettings>
 #include <QPainter>
 
-// Enables support for catheters with the grin lens -- uses all 1024 points in the 
-// FFT but draws image at half scale.  Full processing uses 4x data so FPS is
-// reduced significantly
+#define SECTOR_HEIGHT_PX 1440
+#define FFT_DATA_SIZE    1024
+//#define MAX_LINES_PER_FRAME 6120 // divisible by 360 seems necessary for Ocelot Synthetic mode
+#define MAX_LINES_PER_FRAME 7200 // must be larger than 6144 for Pantheris at 100 kHz
+//#define MAX_LINES_PER_FRAME 14400 // test for 500 rpm
+#define SECTOR_SIZE_B (SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX)
+
+const int SectorWidth_px  = SECTOR_HEIGHT_PX;
+const int SectorHeight_px = SECTOR_HEIGHT_PX;
+
+#define MAX_ACQ_IMAGE_SIZE ( FFT_DATA_SIZE * MAX_LINES_PER_FRAME ) // max acquired frame size
+
+#define SURFACE_BOOK 0
+#define SIMULATION_MODE 0
+#define LINE_AVERAGING 0
+#define RECORDING_ON 1
+#define USE_SLED_SUPPORT_BOARD 1
+#define USE_NEW_SLED_SUPPORT_BOARD 1
+#define LASER_SCAN_DIVIDER 0    // Set scan rate to 100/(divider+1 ) kHz
+
+const int AuxScreenWidth = 1920;
+const int AuxScreenHeight = 1080;
+#if SURFACE_BOOK
+const int ControlScreenWidth = 3240;
+const int ControlScreenHeight = 2160;
+#else
+//const int ControlScreenWidth = 3240; lcv
+//const int ControlScreenHeight = 2160;
+const int ControlScreenWidth = 1920;
+const int ControlScreenHeight = 1080;
+#endif
+
+// file defines
+const int B_per_KB = 1024;
+const int KB_per_MB = 1024;
 
 // The size, in sizeof(OCTFile_t) units, of the shared memory buffer for the data producer
 // and consumer.
@@ -39,8 +62,8 @@ const int MinNumberMonitors = 2;
 
 const int TechScreenWidth  = 1920;
 const int TechScreenHeight = 1080;
-const int PhysicianScreenWidth  = 2560; // height of the monitor in portrait mode
-const int PhysicianScreenHeight = 1440;
+const int PhysicianScreenWidth  = 1920; // height of the monitor in portrait mode
+const int PhysicianScreenHeight = 1080;
 const int AuxScreenWidthMin  = 1024;
 const int AuxScreenHeightMin = 720;
 
@@ -94,13 +117,14 @@ const QString ExportLoopVideoExtension = ".mp4";
 
 const QString DeviceDescriptionExtension = ".xml";
 const QString DeviceIconExtension        = ".png";
-const QString DeviceXmlSchemaVersion     = "2.0";
+const QString DeviceXmlSchemaVersion     = "3.0";
 
 // Image capture
 const QString ImagePrefix          = "img-";
 const QString SectorImageSuffix    = "-sector";
-const QString WaterfallImageSuffix = "-waterfall";
 const QString DecoratedImageSuffix = "-decorated";
+const int ThumbnailHeight_px = 150;
+const int ThumbnailWidth_px  = 150;
 
 // Customer service
 const QString ServiceNumber = "650-241-7900";
@@ -123,26 +147,17 @@ const DisplayLevel_T ContrastLevels_LowSpeed  = { 0, 65535, 55000 };
 
 const int  DefaultReticleBrightness        = 127;
 const int  DefaultLaserIndicatorBrightness = 255;
-const int  DefaultWaterfallRate            = 22;
 const int  DefaultCurrFrameWeight_Percent  = 75;
-const bool DefaultShowWaterfall            = true;
 const bool DefaultUseNoiseReduction        = false;
 const bool DefaultUseInvertOctColor        = false;
-
-const int ThumbnailHeight_px = 150;
-const int ThumbnailWidth_px  = 150;
 
 // DAQ and DSP constants that are needed outside of the DAQ and DSP
 const unsigned int FFTDataSize = 1024;
 const unsigned int FFTDataSize_bytes = FFTDataSize * sizeof( short );
 
 // Size of the sector on the 27" (2560x1440) monitor
-const int SectorHeight_px = 1408;  // must be factor of 16 (GPU requirement)
-const int SectorWidth_px  = 1408;
-
-// Size of the waterfall for rendering purposes
-const int WaterfallHeight_px = 512;
-const int WaterfallWidth_px  = SectorHeight_px;
+//const int SectorHeight_px = 1408;  // must be factor of 16 (GPU requirement)
+//const int SectorWidth_px  = 1408;
 
 /*
  * Video settings
@@ -234,3 +249,4 @@ const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yel
 const QColor PassiveSpinColor    = QColor( 70, 234, 242 ).darker( 200 );  // light blue-ish
 #define ActiveColor  8E8E4E        // yellowish
 #define PassiveColor 2A8C91        // bluish
+#endif // DEFAULTS_H

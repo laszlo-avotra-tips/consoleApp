@@ -87,17 +87,17 @@ void lagWizard::setScene( QGraphicsScene *scene )
         return; //lcv
     }
 
-    /*
-     * Find the sector in the list of scene items
-     */
-    QGraphicsItem *hSector = scene->items().first();
-    foreach( QGraphicsItem* item, scene->items() )
-    {
-        if( item->data( liveScene::SectorItemKey ) == "sector" )
-        {
-            hSector = item;
-        }
-    }
+//    /*
+//     * Find the sector in the list of scene items
+//     */
+//    QGraphicsItem *hSector = scene->items().first();
+//    foreach( QGraphicsItem* item, scene->items() )
+//    {
+//        if( item->data( liveScene::SectorItemKey ) == "sector" )
+//        {
+//            hSector = item;
+//        }
+//    }
 
     ui->rotationView->setScene( scene );
     ui->rotationView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );

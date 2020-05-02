@@ -18,11 +18,10 @@ class sessionDatabase
 {
 public:
 
-    // singleton
-    static sessionDatabase & Instance(void);
+    sessionDatabase();
+    ~sessionDatabase();
 
     QSqlError initDb(void);
-    void close( void );
 
     void createSession(void);
     void updateSession(void);
@@ -52,21 +51,15 @@ public:
         int totLength;
     };
     LoopStat getLoopsStats();
+    void populateVersionTable( void );
 
 private:
-    // hide ctor
-    sessionDatabase();
-
-    void populateVersionTable( void );
 
     // Hide copy and assign operator
     sessionDatabase(sessionDatabase const &);
     sessionDatabase& operator = (sessionDatabase const &);
 
-    // Searchable database
-    QSqlDatabase db;
-
-    static sessionDatabase* theDB;
+    QString m_dbName;
 };
 
 #endif // SESSIONDATABASE_H

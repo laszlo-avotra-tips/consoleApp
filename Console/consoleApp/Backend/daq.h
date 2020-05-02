@@ -1,116 +1,69 @@
-///*
-// * daq.h
-// *
-// * Interface to the AlazarTech DAQ hardware.  Creates a thread for collecting
-// * and processing data from the DAQ hardware.
-// *
-// * This is a pure virtual class.
-// *
-// * Author: Dennis W. Jackson
-// *
-// * Copyright (c) 2009-2018 Avinger, Inc.
-// *
-// */
-//#ifndef DAQ_H_
-//#define DAQ_H_
+#ifndef DAQ_H
+#define DAQ_H
 
-////#include <QThread>
-//#include <QTime>
-//#include "AlazarApiType.h"
-//#include "buildflags.h"
-//#include "idaq.h"
-//#include <QMutex>
+#include <QtCore>
+#include <QThread>
+#include <QTime>
+#include "scanconversion.h"
+#include "octFile.h"
+#include "AxsunOCTCapture.h"
+#include "idaq.h"
+#include <cstdint>
 
-//// Macro for the configure() function
-//#define CHECK_ERROR  if( status != ApiSuccess ){ shutdown(); return false; }
 
-//class DSP;
+class DAQ: public IDAQ
+{
+    Q_OBJECT
 
-//class DAQ : public IDAQ
-//{
+public:
+    DAQ();
+    ~DAQ();
+    void init( void ) override;
+    void run( void ) override;
 
-//public:
-//    DAQ();
-//    ~DAQ();
+    void stop( void ) override;
+    void pause( void ) override;
+    void resume( void) override;
 
-//    // Static access allows checks without instantiating
-//    static bool checkSDKVersion( void );
-//    static bool checkDriverVersion( void );
-//    static bool isDaqPresent( void );
-//    static int  queryBoards( int numOfBoards );
+    QString getDaqLevel() override;
+    long getRecordLength() const override;
 
-////    RETURN_CODE AlazarGetChannelInfo( HANDLE h, U32 *MemSize, U8 *SampleSize);
-//    bool isApiSuccessChannelInfo(QString& msg, U32* msize, U8* sampleSize);
+    bool configure( void ) override;
 
-//    enum Channels
-//    {
-//        ChannelA = 0,  // index into array, must be zero-based
-//        ChannelB = 1
-//    };
+    void enableAuxTriggerAsTriggerEnable( bool ) override;
+    IDAQ* getSignalSource() override;
 
-//    virtual void init( void ) override;
-//    void run( void ) override;
+    bool getData();
+    bool isRunning;
+    int generateSyntheticData( unsigned char *pSyntheticData );
+    QTime frameTimer;
+    QTime fileTimer;
 
-//    QString getDaqLevel( void ) override;
-//    void stop( void ) override;
-//    void pause( void ) override;
-//    void resume( void ) override;
+signals:
+    void fpsCount( int );
+    void linesPerFrameCount( int );
+    void missedImagesCount( int );
+    void setDisplayAngle( float, int );
 
-//    void enableAuxTriggerAsTriggerEnable( bool state ) override; //  * R&D only
-//    long getRecordLength() const override;
-
+public slots:
+    void setLaserDivider( int divider );
+    void setDisplay( float, int );
 
 //protected:
-//    // Alazar Channel Status (not defined in the Alazar headers)
-//    enum
-//    {
-//        Triggered     = 0x00000001,
-//        Saturated_ChA = 0x00000002,
-//        Saturated_ChB = 0x00000004,
-//        Error         = -1
-//    };
+//    void run( void );
 
-//    enum ExpectedVersions  // Revision level is not checked; any revision will do
-//    {
-//        SDK_Major       = 5,
-//        SDK_Minor       = 9,
-//        Driver_Major    = 5,
-//        Driver_Minor    = 9,
-//        FPGA_Major      = 35,
-//        FPGA_Minor      = 8
-//    };
+private:
+    AOChandle session = NULL;
+    AxErr axRetVal = NO_AxERROR;
+    ScanConversion *scanWorker;
+    char axMessage[256];
+    uint32_t lastImageIdx;
+    int missedImgs;
+    bool startDaq();
+    bool shutdownDaq();
+    int lapCounter;
+    uint16_t lastPolarLineIndexEntered;
 
-//    bool isConfigured;
-//    bool isRunning;
+};
 
-//    BoardDef bd;
-//    HANDLE   hBoard;
-//    U32      recordToRead; // Which record to read from the buffer (if there are more than one)
-
-//    DSP  *dsp;
-
-//    unsigned short linesPerRevolution;
-
-//    // Async DMA variables
-//    U32 recordsPerBuffer;
-//    U32 bytesPerRecord;
-//    U32 bytesPerBuffer;
-//    int channelCount;
-//    int frameCount;
-
-//    QTime triggerTimer;
-//    QMutex gFrameWriteMutex;
-
-
-////    virtual bool configure( void ) = 0;
-////    virtual bool getData( void ) = 0;
-
-//    void shutdown( void );
-
-//    // prevent access to copy and assign
-//    DAQ( DAQ const & );
-//    DAQ & operator=( DAQ const & );
-//};
-
-
-//#endif // DAQ_H_
+#endif // DAQ_H

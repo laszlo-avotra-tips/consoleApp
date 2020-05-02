@@ -11,14 +11,21 @@
  */
 #pragma once
 
+#include <memory>
+
 #include <QWidget>
-#include <QSharedPointer>
 #include <QTime>
+
 #include "ui_advancedview.h"
 #include "octFile.h"
 #include "scanLine.h"
 #include "buildflags.h"
 #include "evoa.h"
+
+namespace QtCharts{
+class QChart;
+class QLineSeries;
+}
 
 class advancedView : public QWidget
 {
@@ -27,19 +34,6 @@ class advancedView : public QWidget
 public:
     advancedView(QWidget *parent = nullptr);
     ~advancedView();
-
-public slots:
-    void addScanline( const OCTFile::FrameData_t *pData );
-    void handleDaqLevel( QString );
-    void handleLaserDiodeStatus( bool );
-    void handleRawDataLengthChange( int size );
-    void updateDaqUpdatesPerSecond( int value );
-    void handleDeviceChange();
-    void setReviewState();
-    void setLiveState();
-    void displayClockingMode( int );
-    void displayFirmwareVersions( QByteArray, QByteArray );
-    void attenuateLaser( bool );
 
 signals:
     void brightnessChanged( int );
@@ -52,27 +46,43 @@ signals:
     void setEvoaPowerLevel();
     void setEvoaToDefault( void );
     void tdcToggled( bool );
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
     void checkSledStatus();
-#endif
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-    void saveSignals();
-#endif
-#if CONSOLE_MANUFACTURING_RELEASE
-    void enableOcelotSwEncoder( bool );
-#endif
+
+public slots:
+    void addScanline();
+    void handleDaqLevel( QString );
+    void handleLaserDiodeStatus( bool );
+    void handleRawDataLengthChange( int size );
+    void updateDaqUpdatesPerSecond( int value );
+    void handleDeviceChange();
+    void setReviewState();
+    void setLiveState();
+    void displayClockingMode( int );
+    void displayFirmwareVersions( QByteArray, QByteArray );
+    void attenuateLaser( bool );
+
+private slots:
+    void on_laserDiodeButton_clicked();
+    void handleContrastChanged( int value );
+    void handleBrightnessChanged( int value );
+    void showRecordingFullCase( bool state );
+    void getEvoaVoltage_v( double val );
+    void on_tdcCheckBox_toggled( bool checked );
+    void on_evoaSetDefaultButton_clicked();
+
+    void on_getSledStatusButton_clicked();
+
+private:
+    void initLinePlot();
+    void updatePlot();
 
 private:
     Ui::advancedViewClass ui;
     QTime timer;
-    bool  diodeIsOn;
-    int   lineCount;
-    int   lastLagValue;
-    EVOA  *evoa;
-#if CONSOLE_MANUFACTURING_RELEASE
-    QLabel *rawDataMaxLabel;
-    int    rawDataLength;
-#endif
+    bool  diodeIsOn{false};
+    int   lineCount{0};
+    int   lastLagValue{0};
+    EVOA  *evoa{nullptr};
 
     const int MaxSampleVal {4992};               // Defined by the length of the pre-resampled laser data
     const int MinADCVal {32768};                 // ATS card is +/- full range, start at 0V
@@ -85,30 +95,5 @@ private:
     const QColor TitleColor { 0, 0, 0};
     const QFont AxisFont {"DinPRO-medium", 15};
 
-
-private slots:
-    void on_laserDiodeButton_clicked();
-    void handleContrastChanged( int value );
-    void handleBrightnessChanged( int value );
-    void showRecordingFullCase( bool state )
-    {
-        if( state )
-        {
-            ui.fullCaseRecordingValueLabel->setText( "ENABLED" );
-        }
-        else
-        {
-            ui.fullCaseRecordingValueLabel->setText( "DISABLED" );
-        }
-    }
-    void getEvoaVoltage_v( double val );
-    void on_tdcCheckBox_toggled( bool checked );
-    void on_evoaSetDefaultButton_clicked();
-
-#if ENABLE_LOW_SPEED_DATA_SNAPSHOT
-    void on_saveSignalsPushButton_clicked();
-#endif
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
-    void on_getSledStatusButton_clicked();
-#endif
-};
+    std::unique_ptr<QtCharts::QChart> m_linePlot;
+    std::unique_ptr<QtCharts::QLineSeries> m_lineSeries;};

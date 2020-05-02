@@ -8,12 +8,10 @@ class daqfactory
 public:
     static daqfactory* instance();
     IDAQ* getdaq();
-    IDAQ *getProxy();
 
 private:
     daqfactory();
     IDAQ* idaq;
-    IDAQ* proxy;
     static daqfactory* factory;
 };
 

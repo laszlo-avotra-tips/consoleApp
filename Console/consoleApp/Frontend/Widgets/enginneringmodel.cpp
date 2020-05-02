@@ -20,7 +20,7 @@ const QString &EngineeringModel::getFileName() const
 void EngineeringModel::setPlaybackSpeed(int speed)
 {
     m_playbackSpeed = speed;
-    LOG1(m_playbackSpeed)
+//    LOG1(m_playbackSpeed)
     emit playbackSpeedChanged(m_playbackSpeed);
 }
 
@@ -40,13 +40,12 @@ void EngineeringModel::setMotorSpeed(int speed)
     const QString qSpeed(QString::number(m_motorSpeed));
     const QByteArray baSpeed(qSpeed.toStdString().c_str());
 
-    SledSupport::Instance().setSledSpeed(baSpeed);
+//    SledSupport::Instance().setSledSpeed(baSpeed);
 }
 
 void EngineeringModel::setFileName(const QString &fn)
 {
     m_fileName = fn;
-    LOG1(m_fileName)
 }
 
 void EngineeringModel::setLaserOn(bool isOn)
@@ -72,9 +71,9 @@ void EngineeringModel::setMotorPowerOn(bool isOn)
         emit motorOnChanged(m_isMotorPowerOn);
 
         if(!m_isMotorPowerOn){
-            SledSupport::Instance().stopSled();
+//            SledSupport::Instance().stopSled();
         } else {
-            SledSupport::Instance().startSled();
+//            SledSupport::Instance().startSled();
         }
     }
 }

@@ -44,10 +44,6 @@
 //    displayControlsEnabled = false;
 //    contrastDragging       = false;
 //    brightnessDragging     = false;
-
-//#if CONSOLE_MANUFACTURING_RELEASE
-//    maskMarker = nullptr;
-//#endif
 //}
 
 ///*
@@ -140,9 +136,6 @@
 //{
 //    delete [] d_x;
 //    delete [] d_y;
-//#if CONSOLE_MANUFACTURING_RELEASE
-//    delete grid;
-//#endif
 //}
 
 ///*
@@ -373,55 +366,3 @@
 //    minContrast = lower;
 //    maxContrast = upper;
 //}
-
-//#if CONSOLE_MANUFACTURING_RELEASE
-///*
-// * drawMmDepthLines
-// */
-//void dataPlotWidget::drawMmDepthLines( void )
-//{
-//    //  Initialize data
-//    for( int i = 0; i < plotSize; i++ )
-//    {
-//        /*
-//         * Magic numbers explained:
-//         *
-//         * 3.23f = 3.23 mm
-//         * 512 = number of sample points in the plot.
-//         *
-//         * Scale i by 3.23/512
-//         */
-//        // fill in initial plot data
-//        d_x[ i ] = (float)i * ( 3.23f / 512.0f );
-//        d_y[ i ] = 0;
-//    }
-//    setAxisMaxMinor( QwtPlot::xBottom, 4 ); // quarter mm divisions
-//    grid->enableX( true );
-//    grid->enableXMin( true );
-//}
-
-///*
-// * drawInternalMaskLine
-// *
-// * Magic numbers explained:
-// * 3.23f = 3.23 mm
-// * 512 = number of sample points in the plot.
-// */
-//void dataPlotWidget::drawInternalMaskLine(int iMask_px )
-//{
-//    if( maskMarker )
-//    {
-//        delete maskMarker;
-//    }
-//    maskMarker = new QwtPlotMarker();
-
-//    maskMarker->setLabel( QString( "MASK" ) );
-//    maskMarker->setLabelAlignment( Qt::AlignLeft | Qt::AlignTop );
-//    maskMarker->setLabelOrientation( Qt::Vertical );
-//    maskMarker->setLinePen( QPen( Qt::white, 0, Qt::DashLine ) );
-//    maskMarker->setLineStyle( QwtPlotMarker::VLine );
-//    maskMarker->setXValue( iMask_px / 512.0f * 3.23f );
-//    maskMarker->attach( this );
-//}
-//#endif
-

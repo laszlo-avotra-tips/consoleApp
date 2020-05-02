@@ -1,7 +1,7 @@
 /*
  * liveview.cpp
  *
- * Implements the view for the live OCT images (sector and waterfall).
+ * Implements the view for the live OCT image (sector).
  *
  * Author: Chris White
  *

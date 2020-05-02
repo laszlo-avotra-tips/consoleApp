@@ -62,7 +62,6 @@ AuxMonitor::~AuxMonitor()
  *
  * Associate a scene of the sector with the view on
  * the Aux screen. This should only be the sector portion of the scene,
- * intentionally excluding the waterfall.
  */
 void AuxMonitor::setScene( QGraphicsScene *scene )
 {
@@ -255,7 +254,7 @@ void AuxMonitor::forceResize()
     {
         optimizeSceneSize();
         testAndMoveInfo();
-        showFullScreen();
+        showFullScreen();//show(); //lcv showFullScreen();
     }
 }
 

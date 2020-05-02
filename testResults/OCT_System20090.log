@@ -1,0 +1,395 @@
+[2020-02-08 15:27:19.781] (consoleApp.20090) INFO: ------------------- - ..\consoleApp\main.cpp (94)
+[2020-02-08 15:27:19.782] (consoleApp.20090) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (95)
+[2020-02-08 15:27:19.782] (consoleApp.20090) INFO: OCT Console Process ID (PID) : 23704 - ..\consoleApp\main.cpp (96)
+[2020-02-08 15:27:19.782] (consoleApp.20090) INFO: OCT Console Version: 4.6.20090 - ..\consoleApp\main.cpp (97)
+[2020-02-08 15:27:19.782] (consoleApp.20090) INFO: DEBUG Build - ..\consoleApp\main.cpp (100)
+[2020-02-08 15:27:19.782] (consoleApp.20090) INFO: Local time is 2020-02-08 07:27:19 - ..\consoleApp\main.cpp (105)
+[2020-02-08 15:27:20.116] (consoleApp.20090) THR(0x2da8)  - ioController::configureModule (141) -> module=0x250821e3b90
+[2020-02-08 15:27:20.116] (consoleApp.20090) THR(0x2da8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:27:20.116] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:27:20.135] (consoleApp.20090) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-08 15:27:20.699] (consoleApp.20090) THR(0x2da8)  - liveScene::liveScene (57) -> ClipStep_percent=10 ClipUpdateRate_ms=100
+[2020-02-08 15:27:21.027] (consoleApp.20090) INFO: Case ID: 69f83bb7-d20f-4053-bcd2-7644cb64ded2 - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-08 15:27:21.034] (consoleApp.20090) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-08 15:27:21.034] (consoleApp.20090) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1091)
+[2020-02-08 15:27:23.595] (consoleApp.20090) THR(0x2da8)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 15:27:23.595] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 15:27:23.595] (consoleApp.20090) THR(0x2da8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:27:23.595] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:27:23.596] (consoleApp.20090) THR(0x2da8)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 15:27:23.596] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 15:27:23.596] (consoleApp.20090) THR(0x2da8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:27:23.596] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:27:24.104] (consoleApp.20090) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1152)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (61)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (62)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO:    preDepth:           416 - ..\consoleApp\Backend\daqSettings.cpp (63)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO:    recordLength:       4096 - ..\consoleApp\Backend\daqSettings.cpp (64)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO:    chAInputRange:      12 - ..\consoleApp\Backend\daqSettings.cpp (65)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (66)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (68)
+[2020-02-08 15:27:24.989] (consoleApp.20090) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (69)
+[2020-02-08 15:27:24.989] (consoleApp.20090) THR(0x2da8)  - DSP::loadRescalingData (122) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-08 15:27:24.990] (consoleApp.20090) INFO: Last service date: Wed Dec 3 2008 - ..\consoleApp\Backend\dsp.cpp (152)
+[2020-02-08 15:27:25.775] (consoleApp.20090) INFO: OpenCL device: Intel(R) Corporation Intel(R) UHD Graphics 630 - ..\consoleApp\Backend\dspgpu.cpp (314)
+[2020-02-08 15:27:25.775] (consoleApp.20090) THR(0x2da8)  - DSPGPU::buildOpenCLKernel (521) -> kernelName=bandc_kernel
+[2020-02-08 15:27:26.086] (consoleApp.20090) THR(0x2da8)  - DSPGPU::buildOpenCLKernel (521) -> kernelName=postproc_kernel
+[2020-02-08 15:27:26.404] (consoleApp.20090) THR(0x2da8)  - DSPGPU::buildOpenCLKernel (521) -> kernelName=warp_kernel
+[2020-02-08 15:27:26.745] (consoleApp.20090) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-08 15:27:26.745] (consoleApp.20090) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1081)
+[2020-02-08 15:27:26.903] (consoleApp.20090) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-08 15:27:26.903] (consoleApp.20090) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (205)
+[2020-02-08 15:27:26.903] (consoleApp.20090) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (226)
+[2020-02-08 15:27:26.903] (consoleApp.20090) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1245)
+[2020-02-08 15:27:26.903] (consoleApp.20090) INFO: Case ID: 69f83bb7-d20f-4053-bcd2-7644cb64ded2 - ..\consoleApp\Frontend\Screens\frontend.cpp (1246)
+[2020-02-08 15:27:29.583] (consoleApp.20090) THR(0x2da8)  - PlaybackManager::startPlayback (214) -> m_isPlayback=1
+[2020-02-08 15:27:37.302] (consoleApp.20090) THR(0x2da8)  - PlaybackManager::stopPlayback (220) -> m_isPlayback=0
+[2020-02-08 15:27:40.463] (consoleApp.20090) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (616)
+[2020-02-08 15:27:41.795] (consoleApp.20090) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (619)
+[2020-02-08 15:27:41.795] (consoleApp.20090) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (351)
+[2020-02-08 15:27:41.796] (consoleApp.20090) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (681)
+[2020-02-08 15:27:41.796] (consoleApp.20090) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (682)
+[2020-02-08 15:27:41.796] (consoleApp.20090) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (683)
+[2020-02-08 15:27:42.800] (consoleApp.20090) THR(0x1544)  - FileDaq::run (152) -> m_count1=4892 m_count2=59 m_count1-m_count2=4833
+[2020-02-08 15:27:42.811] (consoleApp.20090) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (271)
+[2020-02-08 15:27:42.811] (consoleApp.20090) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (52)
+[2020-02-08 15:27:42.817] (consoleApp.20090) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (71)
+[2020-02-08 15:47:24.002] (consoleApp.20091) INFO: ------------------- - ..\consoleApp\main.cpp (94)
+[2020-02-08 15:47:24.003] (consoleApp.20091) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (95)
+[2020-02-08 15:47:24.003] (consoleApp.20091) INFO: OCT Console Process ID (PID) : 24348 - ..\consoleApp\main.cpp (96)
+[2020-02-08 15:47:24.003] (consoleApp.20091) INFO: OCT Console Version: 4.6.20091 - ..\consoleApp\main.cpp (97)
+[2020-02-08 15:47:24.003] (consoleApp.20091) INFO: DEBUG Build - ..\consoleApp\main.cpp (100)
+[2020-02-08 15:47:24.003] (consoleApp.20091) INFO: Local time is 2020-02-08 07:47:24 - ..\consoleApp\main.cpp (105)
+[2020-02-08 15:47:24.395] (consoleApp.20091) THR(0x4fb8)  - ioController::configureModule (141) -> module=0x1d785ccd3f0
+[2020-02-08 15:47:24.395] (consoleApp.20091) THR(0x4fb8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:47:24.395] (consoleApp.20091) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:47:24.416] (consoleApp.20091) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-08 15:47:24.966] (consoleApp.20091) THR(0x4fb8)  - liveScene::liveScene (57) -> ClipStep_percent=10 ClipUpdateRate_ms=100
+[2020-02-08 15:47:25.265] (consoleApp.20091) INFO: Case ID: 670df4fe-c3f4-4f73-9c0d-79f9b38d23da - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-08 15:47:25.270] (consoleApp.20091) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-08 15:47:25.270] (consoleApp.20091) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1091)
+[2020-02-08 15:47:27.637] (consoleApp.20091) THR(0x4fb8)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 15:47:27.637] (consoleApp.20091) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 15:47:27.638] (consoleApp.20091) THR(0x4fb8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:47:27.638] (consoleApp.20091) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:47:27.639] (consoleApp.20091) THR(0x4fb8)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 15:47:27.639] (consoleApp.20091) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 15:47:27.639] (consoleApp.20091) THR(0x4fb8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:47:27.639] (consoleApp.20091) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:47:28.149] (consoleApp.20091) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1152)
+[2020-02-08 15:47:29.026] (consoleApp.20091) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (61)
+[2020-02-08 15:47:29.026] (consoleApp.20091) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (62)
+[2020-02-08 15:47:29.026] (consoleApp.20091) INFO:    preDepth:           416 - ..\consoleApp\Backend\daqSettings.cpp (63)
+[2020-02-08 15:47:29.026] (consoleApp.20091) INFO:    recordLength:       4096 - ..\consoleApp\Backend\daqSettings.cpp (64)
+[2020-02-08 15:47:29.026] (consoleApp.20091) INFO:    chAInputRange:      12 - ..\consoleApp\Backend\daqSettings.cpp (65)
+[2020-02-08 15:47:29.027] (consoleApp.20091) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (66)
+[2020-02-08 15:47:29.027] (consoleApp.20091) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (68)
+[2020-02-08 15:47:29.027] (consoleApp.20091) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (69)
+[2020-02-08 15:47:29.027] (consoleApp.20091) THR(0x4fb8)  - DSP::loadRescalingData (122) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-08 15:47:29.028] (consoleApp.20091) INFO: Last service date: Wed Dec 3 2008 - ..\consoleApp\Backend\dsp.cpp (152)
+[2020-02-08 15:47:29.831] (consoleApp.20091) INFO: OpenCL device: Intel(R) Corporation Intel(R) UHD Graphics 630 - ..\consoleApp\Backend\dspgpu.cpp (314)
+[2020-02-08 15:47:29.831] (consoleApp.20091) THR(0x4fb8)  - DSPGPU::buildOpenCLKernel (524) -> kernelName=bandc_kernel
+[2020-02-08 15:47:30.157] (consoleApp.20091) THR(0x4fb8)  - DSPGPU::buildOpenCLKernel (524) -> kernelName=postproc_kernel
+[2020-02-08 15:47:30.475] (consoleApp.20091) THR(0x4fb8)  - DSPGPU::buildOpenCLKernel (524) -> kernelName=warp_kernel
+[2020-02-08 15:47:30.801] (consoleApp.20091) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-08 15:47:30.801] (consoleApp.20091) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1081)
+[2020-02-08 15:47:30.962] (consoleApp.20091) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-08 15:47:30.962] (consoleApp.20091) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (205)
+[2020-02-08 15:47:30.962] (consoleApp.20091) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (226)
+[2020-02-08 15:47:30.963] (consoleApp.20091) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1245)
+[2020-02-08 15:47:30.963] (consoleApp.20091) INFO: Case ID: 670df4fe-c3f4-4f73-9c0d-79f9b38d23da - ..\consoleApp\Frontend\Screens\frontend.cpp (1246)
+[2020-02-08 15:47:33.415] (consoleApp.20091) THR(0x4fb8)  - PlaybackManager::startPlayback (214) -> m_isPlayback=1
+[2020-02-08 15:47:35.304] (consoleApp.20091) THR(0x4fb8)  - PlaybackManager::stopPlayback (220) -> m_isPlayback=0
+[2020-02-08 15:47:38.255] (consoleApp.20091) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (616)
+[2020-02-08 15:47:39.645] (consoleApp.20091) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (619)
+[2020-02-08 15:47:39.645] (consoleApp.20091) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (351)
+[2020-02-08 15:47:39.647] (consoleApp.20091) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (681)
+[2020-02-08 15:47:39.647] (consoleApp.20091) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (682)
+[2020-02-08 15:47:39.647] (consoleApp.20091) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (683)
+[2020-02-08 15:47:40.651] (consoleApp.20091) THR(0x31fc)  - FileDaq::run (152) -> m_count1=4171 m_count2=40 m_count1-m_count2=4131
+[2020-02-08 15:47:40.663] (consoleApp.20091) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (271)
+[2020-02-08 15:47:40.663] (consoleApp.20091) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (52)
+[2020-02-08 15:47:40.669] (consoleApp.20091) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (71)
+[2020-02-08 15:53:19.234] (consoleApp.20091) INFO: ------------------- - ..\consoleApp\main.cpp (94)
+[2020-02-08 15:53:19.235] (consoleApp.20091) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (95)
+[2020-02-08 15:53:19.235] (consoleApp.20091) INFO: OCT Console Process ID (PID) : 9916 - ..\consoleApp\main.cpp (96)
+[2020-02-08 15:53:19.235] (consoleApp.20091) INFO: OCT Console Version: 4.6.20091 - ..\consoleApp\main.cpp (97)
+[2020-02-08 15:53:19.235] (consoleApp.20091) INFO: DEBUG Build - ..\consoleApp\main.cpp (100)
+[2020-02-08 15:53:19.235] (consoleApp.20091) INFO: Local time is 2020-02-08 07:53:19 - ..\consoleApp\main.cpp (105)
+[2020-02-08 15:53:19.560] (consoleApp.20091) THR(0x232c)  - ioController::configureModule (141) -> module=0x28560a4e620
+[2020-02-08 15:53:19.560] (consoleApp.20091) THR(0x232c)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:53:19.560] (consoleApp.20091) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:53:19.579] (consoleApp.20091) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-08 15:53:20.154] (consoleApp.20091) THR(0x232c)  - liveScene::liveScene (57) -> ClipStep_percent=10 ClipUpdateRate_ms=100
+[2020-02-08 15:53:20.490] (consoleApp.20091) INFO: Case ID: 416ab2d2-fc25-47f2-8f34-20b3e74ac0f7 - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-08 15:53:20.495] (consoleApp.20091) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-08 15:53:20.496] (consoleApp.20091) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1091)
+[2020-02-08 15:53:22.522] (consoleApp.20091) THR(0x232c)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 15:53:22.522] (consoleApp.20091) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 15:53:22.523] (consoleApp.20091) THR(0x232c)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:53:22.523] (consoleApp.20091) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:53:22.524] (consoleApp.20091) THR(0x232c)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 15:53:22.524] (consoleApp.20091) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 15:53:22.525] (consoleApp.20091) THR(0x232c)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 15:53:22.525] (consoleApp.20091) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 15:53:23.036] (consoleApp.20091) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1152)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (61)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (62)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO:    preDepth:           416 - ..\consoleApp\Backend\daqSettings.cpp (63)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO:    recordLength:       4096 - ..\consoleApp\Backend\daqSettings.cpp (64)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO:    chAInputRange:      12 - ..\consoleApp\Backend\daqSettings.cpp (65)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (66)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (68)
+[2020-02-08 15:53:23.948] (consoleApp.20091) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (69)
+[2020-02-08 15:53:23.949] (consoleApp.20091) THR(0x232c)  - DSP::loadRescalingData (122) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-08 15:53:23.950] (consoleApp.20091) INFO: Last service date: Wed Dec 3 2008 - ..\consoleApp\Backend\dsp.cpp (152)
+[2020-02-08 15:53:24.731] (consoleApp.20091) INFO: OpenCL device: Intel(R) Corporation Intel(R) UHD Graphics 630 - ..\consoleApp\Backend\dspgpu.cpp (314)
+[2020-02-08 15:53:24.732] (consoleApp.20091) THR(0x232c)  - DSPGPU::buildOpenCLKernel (529) -> kernelName=bandc_kernel
+[2020-02-08 15:53:25.042] (consoleApp.20091) THR(0x232c)  - DSPGPU::buildOpenCLKernel (529) -> kernelName=postproc_kernel
+[2020-02-08 15:53:25.360] (consoleApp.20091) THR(0x232c)  - DSPGPU::buildOpenCLKernel (529) -> kernelName=warp_kernel
+[2020-02-08 15:53:25.696] (consoleApp.20091) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-08 15:53:25.696] (consoleApp.20091) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1081)
+[2020-02-08 15:53:25.851] (consoleApp.20091) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-08 15:53:25.851] (consoleApp.20091) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (205)
+[2020-02-08 15:53:25.852] (consoleApp.20091) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (226)
+[2020-02-08 15:53:25.852] (consoleApp.20091) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1245)
+[2020-02-08 15:53:25.852] (consoleApp.20091) INFO: Case ID: 416ab2d2-fc25-47f2-8f34-20b3e74ac0f7 - ..\consoleApp\Frontend\Screens\frontend.cpp (1246)
+[2020-02-08 15:53:27.998] (consoleApp.20091) THR(0x232c)  - PlaybackManager::startPlayback (214) -> m_isPlayback=1
+[2020-02-08 15:53:30.222] (consoleApp.20091) THR(0x232c)  - PlaybackManager::stopPlayback (220) -> m_isPlayback=0
+[2020-02-08 15:53:31.814] (consoleApp.20091) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (616)
+[2020-02-08 15:53:58.451] (consoleApp.20091) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (619)
+[2020-02-08 15:53:58.451] (consoleApp.20091) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (351)
+[2020-02-08 15:53:58.453] (consoleApp.20091) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (681)
+[2020-02-08 15:53:58.453] (consoleApp.20091) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (682)
+[2020-02-08 15:53:58.453] (consoleApp.20091) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (683)
+[2020-02-08 15:53:59.458] (consoleApp.20091) THR(0x4e54)  - FileDaq::run (152) -> m_count1=15952 m_count2=4 m_count1-m_count2=15948
+[2020-02-08 15:53:59.470] (consoleApp.20091) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (271)
+[2020-02-08 15:53:59.471] (consoleApp.20091) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (52)
+[2020-02-08 15:53:59.477] (consoleApp.20091) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (71)
+[2020-02-08 16:00:19.027] (consoleApp.20090) INFO: ------------------- - ..\consoleApp\main.cpp (94)
+[2020-02-08 16:00:19.027] (consoleApp.20090) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (95)
+[2020-02-08 16:00:19.028] (consoleApp.20090) INFO: OCT Console Process ID (PID) : 14420 - ..\consoleApp\main.cpp (96)
+[2020-02-08 16:00:19.028] (consoleApp.20090) INFO: OCT Console Version: 4.6.20090 - ..\consoleApp\main.cpp (97)
+[2020-02-08 16:00:19.028] (consoleApp.20090) INFO: DEBUG Build - ..\consoleApp\main.cpp (100)
+[2020-02-08 16:00:19.028] (consoleApp.20090) INFO: Local time is 2020-02-08 08:00:19 - ..\consoleApp\main.cpp (105)
+[2020-02-08 16:00:19.359] (consoleApp.20090) THR(0x5314)  - ioController::configureModule (141) -> module=0x240ffb29a20
+[2020-02-08 16:00:19.359] (consoleApp.20090) THR(0x5314)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:00:19.359] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:00:19.378] (consoleApp.20090) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-08 16:00:19.944] (consoleApp.20090) THR(0x5314)  - liveScene::liveScene (57) -> ClipStep_percent=10 ClipUpdateRate_ms=100
+[2020-02-08 16:00:20.306] (consoleApp.20090) INFO: Case ID: 2c06fcf7-9449-48f3-abb7-ed037b2634f0 - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-08 16:00:20.311] (consoleApp.20090) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-08 16:00:20.311] (consoleApp.20090) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1091)
+[2020-02-08 16:00:22.971] (consoleApp.20090) THR(0x5314)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:00:22.971] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:00:22.971] (consoleApp.20090) THR(0x5314)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:00:22.971] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:00:22.972] (consoleApp.20090) THR(0x5314)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:00:22.972] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:00:22.972] (consoleApp.20090) THR(0x5314)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:00:22.972] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:00:23.483] (consoleApp.20090) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1152)
+[2020-02-08 16:00:24.367] (consoleApp.20090) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (61)
+[2020-02-08 16:00:24.368] (consoleApp.20090) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (62)
+[2020-02-08 16:00:24.368] (consoleApp.20090) INFO:    preDepth:           416 - ..\consoleApp\Backend\daqSettings.cpp (63)
+[2020-02-08 16:00:24.368] (consoleApp.20090) INFO:    recordLength:       4096 - ..\consoleApp\Backend\daqSettings.cpp (64)
+[2020-02-08 16:00:24.368] (consoleApp.20090) INFO:    chAInputRange:      12 - ..\consoleApp\Backend\daqSettings.cpp (65)
+[2020-02-08 16:00:24.368] (consoleApp.20090) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (66)
+[2020-02-08 16:00:24.368] (consoleApp.20090) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (68)
+[2020-02-08 16:00:24.368] (consoleApp.20090) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (69)
+[2020-02-08 16:00:24.368] (consoleApp.20090) THR(0x5314)  - DSP::loadRescalingData (122) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-08 16:00:24.369] (consoleApp.20090) INFO: Last service date: Wed Dec 3 2008 - ..\consoleApp\Backend\dsp.cpp (152)
+[2020-02-08 16:00:25.165] (consoleApp.20090) INFO: OpenCL device: Intel(R) Corporation Intel(R) UHD Graphics 630 - ..\consoleApp\Backend\dspgpu.cpp (314)
+[2020-02-08 16:00:25.166] (consoleApp.20090) THR(0x5314)  - DSPGPU::buildOpenCLKernel (533) -> kernelName=bandc_kernel
+[2020-02-08 16:00:25.476] (consoleApp.20090) THR(0x5314)  - DSPGPU::buildOpenCLKernel (533) -> kernelName=postproc_kernel
+[2020-02-08 16:00:25.790] (consoleApp.20090) THR(0x5314)  - DSPGPU::buildOpenCLKernel (533) -> kernelName=warp_kernel
+[2020-02-08 16:00:26.113] (consoleApp.20090) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-08 16:00:26.113] (consoleApp.20090) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1081)
+[2020-02-08 16:00:26.273] (consoleApp.20090) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-08 16:00:26.273] (consoleApp.20090) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (205)
+[2020-02-08 16:00:26.273] (consoleApp.20090) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (226)
+[2020-02-08 16:00:26.273] (consoleApp.20090) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1245)
+[2020-02-08 16:00:26.273] (consoleApp.20090) INFO: Case ID: 2c06fcf7-9449-48f3-abb7-ed037b2634f0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1246)
+[2020-02-08 16:00:32.946] (consoleApp.20090) THR(0x5314)  - PlaybackManager::startPlayback (214) -> m_isPlayback=1
+[2020-02-08 16:00:35.218] (consoleApp.20090) THR(0x5314)  - PlaybackManager::stopPlayback (220) -> m_isPlayback=0
+[2020-02-08 16:00:37.978] (consoleApp.20090) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (616)
+[2020-02-08 16:00:39.463] (consoleApp.20090) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (619)
+[2020-02-08 16:00:39.464] (consoleApp.20090) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (351)
+[2020-02-08 16:00:39.465] (consoleApp.20090) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (681)
+[2020-02-08 16:00:39.465] (consoleApp.20090) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (682)
+[2020-02-08 16:00:39.465] (consoleApp.20090) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (683)
+[2020-02-08 16:00:40.469] (consoleApp.20090) THR(0x13a0)  - FileDaq::run (152) -> m_count1=6272 m_count2=15 m_count1-m_count2=6257
+[2020-02-08 16:00:40.477] (consoleApp.20090) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (271)
+[2020-02-08 16:00:40.477] (consoleApp.20090) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (52)
+[2020-02-08 16:00:40.480] (consoleApp.20090) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (71)
+[2020-02-08 16:04:20.110] (consoleApp.20090) INFO: ------------------- - ..\consoleApp\main.cpp (94)
+[2020-02-08 16:04:20.111] (consoleApp.20090) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (95)
+[2020-02-08 16:04:20.111] (consoleApp.20090) INFO: OCT Console Process ID (PID) : 4168 - ..\consoleApp\main.cpp (96)
+[2020-02-08 16:04:20.111] (consoleApp.20090) INFO: OCT Console Version: 4.6.20090 - ..\consoleApp\main.cpp (97)
+[2020-02-08 16:04:20.111] (consoleApp.20090) INFO: DEBUG Build - ..\consoleApp\main.cpp (100)
+[2020-02-08 16:04:20.111] (consoleApp.20090) INFO: Local time is 2020-02-08 08:04:20 - ..\consoleApp\main.cpp (105)
+[2020-02-08 16:04:20.441] (consoleApp.20090) THR(0x218c)  - ioController::configureModule (141) -> module=0x14c3cbaae80
+[2020-02-08 16:04:20.441] (consoleApp.20090) THR(0x218c)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:04:20.441] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:04:20.460] (consoleApp.20090) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-08 16:04:21.005] (consoleApp.20090) THR(0x218c)  - liveScene::liveScene (57) -> ClipStep_percent=10 ClipUpdateRate_ms=100
+[2020-02-08 16:04:22.139] (consoleApp.20090) INFO: Case ID: e2901dc2-0f03-4bcf-8c06-a24bafa12946 - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-08 16:04:22.144] (consoleApp.20090) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-08 16:04:22.144] (consoleApp.20090) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1091)
+[2020-02-08 16:04:24.864] (consoleApp.20090) THR(0x218c)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:04:24.864] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:04:24.864] (consoleApp.20090) THR(0x218c)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:04:24.864] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:04:24.866] (consoleApp.20090) THR(0x218c)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:04:24.866] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:04:24.866] (consoleApp.20090) THR(0x218c)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:04:24.866] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:04:25.377] (consoleApp.20090) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1152)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (61)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (62)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO:    preDepth:           416 - ..\consoleApp\Backend\daqSettings.cpp (63)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO:    recordLength:       4096 - ..\consoleApp\Backend\daqSettings.cpp (64)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO:    chAInputRange:      12 - ..\consoleApp\Backend\daqSettings.cpp (65)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (66)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (68)
+[2020-02-08 16:04:26.248] (consoleApp.20090) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (69)
+[2020-02-08 16:04:26.249] (consoleApp.20090) THR(0x218c)  - DSP::loadRescalingData (122) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-08 16:04:26.249] (consoleApp.20090) INFO: Last service date: Wed Dec 3 2008 - ..\consoleApp\Backend\dsp.cpp (152)
+[2020-02-08 16:04:27.322] (consoleApp.20090) INFO: OpenCL device: Intel(R) Corporation Intel(R) UHD Graphics 630 - ..\consoleApp\Backend\dspgpu.cpp (314)
+[2020-02-08 16:04:27.323] (consoleApp.20090) THR(0x218c)  - DSPGPU::buildOpenCLKernel (533) -> kernelName=bandc_kernel
+[2020-02-08 16:04:27.632] (consoleApp.20090) THR(0x218c)  - DSPGPU::buildOpenCLKernel (533) -> kernelName=postproc_kernel
+[2020-02-08 16:04:27.941] (consoleApp.20090) THR(0x218c)  - DSPGPU::buildOpenCLKernel (533) -> kernelName=warp_kernel
+[2020-02-08 16:04:28.264] (consoleApp.20090) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-08 16:04:28.264] (consoleApp.20090) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1081)
+[2020-02-08 16:04:28.425] (consoleApp.20090) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-08 16:04:28.425] (consoleApp.20090) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (205)
+[2020-02-08 16:04:28.425] (consoleApp.20090) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (226)
+[2020-02-08 16:04:28.425] (consoleApp.20090) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1245)
+[2020-02-08 16:04:28.425] (consoleApp.20090) INFO: Case ID: e2901dc2-0f03-4bcf-8c06-a24bafa12946 - ..\consoleApp\Frontend\Screens\frontend.cpp (1246)
+[2020-02-08 16:04:34.428] (consoleApp.20090) THR(0x218c)  - PlaybackManager::startPlayback (214) -> m_isPlayback=1
+[2020-02-08 16:04:35.695] (consoleApp.20090) THR(0x218c)  - PlaybackManager::stopPlayback (220) -> m_isPlayback=0
+[2020-02-08 16:04:38.789] (consoleApp.20090) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (616)
+[2020-02-08 16:04:40.041] (consoleApp.20090) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (619)
+[2020-02-08 16:04:40.041] (consoleApp.20090) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (351)
+[2020-02-08 16:04:40.042] (consoleApp.20090) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (681)
+[2020-02-08 16:04:40.042] (consoleApp.20090) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (682)
+[2020-02-08 16:04:40.042] (consoleApp.20090) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (683)
+[2020-02-08 16:04:41.047] (consoleApp.20090) THR(0x3854)  - FileDaq::run (152) -> m_count1=5888 m_count2=48 m_count1-m_count2=5840
+[2020-02-08 16:04:41.058] (consoleApp.20090) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (271)
+[2020-02-08 16:04:41.059] (consoleApp.20090) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (52)
+[2020-02-08 16:04:41.065] (consoleApp.20090) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (71)
+[2020-02-08 16:18:49.599] (consoleApp.20090) INFO: ------------------- - ..\consoleApp\main.cpp (94)
+[2020-02-08 16:18:49.599] (consoleApp.20090) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (95)
+[2020-02-08 16:18:49.599] (consoleApp.20090) INFO: OCT Console Process ID (PID) : 9016 - ..\consoleApp\main.cpp (96)
+[2020-02-08 16:18:49.599] (consoleApp.20090) INFO: OCT Console Version: 4.6.20090 - ..\consoleApp\main.cpp (97)
+[2020-02-08 16:18:49.600] (consoleApp.20090) INFO: DEBUG Build - ..\consoleApp\main.cpp (100)
+[2020-02-08 16:18:49.600] (consoleApp.20090) INFO: Local time is 2020-02-08 08:18:49 - ..\consoleApp\main.cpp (105)
+[2020-02-08 16:18:49.924] (consoleApp.20090) THR(0x4fd8)  - ioController::configureModule (141) -> module=0x21d4c5bee60
+[2020-02-08 16:18:49.924] (consoleApp.20090) THR(0x4fd8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:18:49.924] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:18:49.942] (consoleApp.20090) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-08 16:18:50.507] (consoleApp.20090) THR(0x4fd8)  - liveScene::liveScene (57) -> ClipStep_percent=10 ClipUpdateRate_ms=100
+[2020-02-08 16:18:51.498] (consoleApp.20090) INFO: Case ID: 80cab49a-d9e4-4406-a6b4-61754c67dd44 - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-08 16:18:51.503] (consoleApp.20090) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-08 16:18:51.503] (consoleApp.20090) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1091)
+[2020-02-08 16:18:53.065] (consoleApp.20090) THR(0x4fd8)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:18:53.065] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:18:53.065] (consoleApp.20090) THR(0x4fd8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:18:53.065] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:18:53.066] (consoleApp.20090) THR(0x4fd8)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:18:53.066] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:18:53.066] (consoleApp.20090) THR(0x4fd8)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:18:53.066] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:18:53.575] (consoleApp.20090) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1152)
+[2020-02-08 16:18:54.461] (consoleApp.20090) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (61)
+[2020-02-08 16:18:54.461] (consoleApp.20090) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (62)
+[2020-02-08 16:18:54.462] (consoleApp.20090) INFO:    preDepth:           416 - ..\consoleApp\Backend\daqSettings.cpp (63)
+[2020-02-08 16:18:54.462] (consoleApp.20090) INFO:    recordLength:       4096 - ..\consoleApp\Backend\daqSettings.cpp (64)
+[2020-02-08 16:18:54.462] (consoleApp.20090) INFO:    chAInputRange:      12 - ..\consoleApp\Backend\daqSettings.cpp (65)
+[2020-02-08 16:18:54.462] (consoleApp.20090) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (66)
+[2020-02-08 16:18:54.462] (consoleApp.20090) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (68)
+[2020-02-08 16:18:54.462] (consoleApp.20090) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (69)
+[2020-02-08 16:18:54.462] (consoleApp.20090) THR(0x4fd8)  - DSP::loadRescalingData (122) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-08 16:18:54.463] (consoleApp.20090) INFO: Last service date: Wed Dec 3 2008 - ..\consoleApp\Backend\dsp.cpp (152)
+[2020-02-08 16:18:55.234] (consoleApp.20090) INFO: OpenCL device: Intel(R) Corporation Intel(R) UHD Graphics 630 - ..\consoleApp\Backend\dspgpu.cpp (310)
+[2020-02-08 16:18:55.234] (consoleApp.20090) THR(0x4fd8)  - DSPGPU::buildOpenCLKernel (515) -> kernelName=bandc_kernel
+[2020-02-08 16:18:55.545] (consoleApp.20090) THR(0x4fd8)  - DSPGPU::buildOpenCLKernel (515) -> kernelName=postproc_kernel
+[2020-02-08 16:18:55.857] (consoleApp.20090) THR(0x4fd8)  - DSPGPU::buildOpenCLKernel (515) -> kernelName=warp_kernel
+[2020-02-08 16:18:56.179] (consoleApp.20090) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-08 16:18:56.179] (consoleApp.20090) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1081)
+[2020-02-08 16:18:56.338] (consoleApp.20090) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-08 16:18:56.338] (consoleApp.20090) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (205)
+[2020-02-08 16:18:56.338] (consoleApp.20090) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (226)
+[2020-02-08 16:18:56.338] (consoleApp.20090) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1245)
+[2020-02-08 16:18:56.338] (consoleApp.20090) INFO: Case ID: 80cab49a-d9e4-4406-a6b4-61754c67dd44 - ..\consoleApp\Frontend\Screens\frontend.cpp (1246)
+[2020-02-08 16:18:58.791] (consoleApp.20090) THR(0x4fd8)  - PlaybackManager::startPlayback (214) -> m_isPlayback=1
+[2020-02-08 16:19:00.691] (consoleApp.20090) THR(0x4fd8)  - PlaybackManager::stopPlayback (220) -> m_isPlayback=0
+[2020-02-08 16:19:03.200] (consoleApp.20090) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (616)
+[2020-02-08 16:19:04.379] (consoleApp.20090) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (619)
+[2020-02-08 16:19:04.379] (consoleApp.20090) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (351)
+[2020-02-08 16:19:04.380] (consoleApp.20090) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (681)
+[2020-02-08 16:19:04.380] (consoleApp.20090) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (682)
+[2020-02-08 16:19:04.380] (consoleApp.20090) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (683)
+[2020-02-08 16:19:05.386] (consoleApp.20090) THR(0x5da4)  - FileDaq::run (152) -> m_count1=3838 m_count2=40 m_count1-m_count2=3798
+[2020-02-08 16:19:05.398] (consoleApp.20090) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (271)
+[2020-02-08 16:19:05.398] (consoleApp.20090) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (48)
+[2020-02-08 16:19:05.404] (consoleApp.20090) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (71)
+[2020-02-08 16:34:09.114] (consoleApp.20090) INFO: ------------------- - ..\consoleApp\main.cpp (94)
+[2020-02-08 16:34:09.114] (consoleApp.20090) INFO: Application started: OCT HS Console - ..\consoleApp\main.cpp (95)
+[2020-02-08 16:34:09.114] (consoleApp.20090) INFO: OCT Console Process ID (PID) : 4392 - ..\consoleApp\main.cpp (96)
+[2020-02-08 16:34:09.114] (consoleApp.20090) INFO: OCT Console Version: 4.6.20090 - ..\consoleApp\main.cpp (97)
+[2020-02-08 16:34:09.114] (consoleApp.20090) INFO: DEBUG Build - ..\consoleApp\main.cpp (100)
+[2020-02-08 16:34:09.114] (consoleApp.20090) INFO: Local time is 2020-02-08 08:34:09 - ..\consoleApp\main.cpp (105)
+[2020-02-08 16:34:09.486] (consoleApp.20090) THR(0x4620)  - ioController::configureModule (141) -> module=0x18b825c3130
+[2020-02-08 16:34:09.486] (consoleApp.20090) THR(0x4620)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:34:09.486] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:34:09.506] (consoleApp.20090) INFO: Catheter view: Down - distal to proximal - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (121)
+[2020-02-08 16:34:10.074] (consoleApp.20090) THR(0x4620)  - liveScene::liveScene (57) -> ClipStep_percent=10 ClipUpdateRate_ms=100
+[2020-02-08 16:34:10.468] (consoleApp.20090) INFO: Case ID: 94c6181c-4aad-4f92-a1fe-3937fb266271 - ..\consoleApp\Frontend\Widgets\caseinfowizardpage.cpp (196)
+[2020-02-08 16:34:10.473] (consoleApp.20090) INFO: Session Start UTC Offset:-8 - ..\..\Common\Utility\session.cpp (94)
+[2020-02-08 16:34:10.473] (consoleApp.20090) INFO: Device Selection: Start - ..\consoleApp\Frontend\Screens\frontend.cpp (1091)
+[2020-02-08 16:34:12.181] (consoleApp.20090) THR(0x4620)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:34:12.181] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:34:12.182] (consoleApp.20090) THR(0x4620)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:34:12.182] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:34:12.183] (consoleApp.20090) THR(0x4620)  - docscreen::setDeviceName (173) -> dev=Pantheris 6F A140-SV
+[2020-02-08 16:34:12.183] (consoleApp.20090) INFO: Zoom reset - ..\consoleApp\Frontend\Screens\frontend.cpp (2249)
+[2020-02-08 16:34:12.183] (consoleApp.20090) THR(0x4620)  - ioController::setAnalogVoltageOut (312) -> val=2
+[2020-02-08 16:34:12.183] (consoleApp.20090) INFO: EVOA voltage(V)      = 2, status = Default - ..\consoleApp\Backend\evoa.cpp (64)
+[2020-02-08 16:34:12.691] (consoleApp.20090) INFO: Current Device: Pantheris 6F A140-SV - ..\consoleApp\Frontend\Screens\frontend.cpp (1152)
+[2020-02-08 16:34:13.582] (consoleApp.20090) INFO: DAQ initialization settings: - ..\consoleApp\Backend\daqSettings.cpp (61)
+[2020-02-08 16:34:13.582] (consoleApp.20090) INFO:    recordCount:        1 - ..\consoleApp\Backend\daqSettings.cpp (62)
+[2020-02-08 16:34:13.582] (consoleApp.20090) INFO:    preDepth:           416 - ..\consoleApp\Backend\daqSettings.cpp (63)
+[2020-02-08 16:34:13.583] (consoleApp.20090) INFO:    recordLength:       4096 - ..\consoleApp\Backend\daqSettings.cpp (64)
+[2020-02-08 16:34:13.583] (consoleApp.20090) INFO:    chAInputRange:      12 - ..\consoleApp\Backend\daqSettings.cpp (65)
+[2020-02-08 16:34:13.583] (consoleApp.20090) INFO:    chBInputRange:      14 - ..\consoleApp\Backend\daqSettings.cpp (66)
+[2020-02-08 16:34:13.583] (consoleApp.20090) INFO:    encoderCalMin:      9500 - ..\consoleApp\Backend\daqSettings.cpp (68)
+[2020-02-08 16:34:13.583] (consoleApp.20090) INFO:    encoderCalMax:      12000 - ..\consoleApp\Backend\daqSettings.cpp (69)
+[2020-02-08 16:34:13.583] (consoleApp.20090) THR(0x4620)  - DSP::loadRescalingData (122) -> StrRescalingData=C:/Avinger_System/RescalingData.csv
+[2020-02-08 16:34:13.584] (consoleApp.20090) INFO: Last service date: Wed Dec 3 2008 - ..\consoleApp\Backend\dsp.cpp (152)
+[2020-02-08 16:34:14.375] (consoleApp.20090) INFO: OpenCL device: Intel(R) Corporation Intel(R) UHD Graphics 630 - ..\consoleApp\Backend\dspgpu.cpp (310)
+[2020-02-08 16:34:14.375] (consoleApp.20090) THR(0x4620)  - DSPGPU::buildOpenCLKernel (515) -> kernelName=bandc_kernel
+[2020-02-08 16:34:14.685] (consoleApp.20090) THR(0x4620)  - DSPGPU::buildOpenCLKernel (515) -> kernelName=postproc_kernel
+[2020-02-08 16:34:14.993] (consoleApp.20090) THR(0x4620)  - DSPGPU::buildOpenCLKernel (515) -> kernelName=warp_kernel
+[2020-02-08 16:34:15.319] (consoleApp.20090) INFO: Manual Scan Sync = 0 - ..\consoleApp\Frontend\Widgets\viewoptions.cpp (143)
+[2020-02-08 16:34:15.319] (consoleApp.20090) INFO: Scan Sync = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (1081)
+[2020-02-08 16:34:15.477] (consoleApp.20090) INFO: Device Selection: End - ..\consoleApp\Frontend\Screens\frontend.cpp (1193)
+[2020-02-08 16:34:15.478] (consoleApp.20090) INFO: LASER: serial port control is DISABLED - ..\consoleApp\main.cpp (205)
+[2020-02-08 16:34:15.478] (consoleApp.20090) INFO: SLED support board: serial port control is DISABLED - ..\consoleApp\main.cpp (226)
+[2020-02-08 16:34:15.478] (consoleApp.20090) INFO: Patient ID added or updated - ..\consoleApp\Frontend\Screens\frontend.cpp (1245)
+[2020-02-08 16:34:15.478] (consoleApp.20090) INFO: Case ID: 94c6181c-4aad-4f92-a1fe-3937fb266271 - ..\consoleApp\Frontend\Screens\frontend.cpp (1246)
+[2020-02-08 16:34:18.170] (consoleApp.20090) THR(0x4620)  - PlaybackManager::startPlayback (214) -> m_isPlayback=1
+[2020-02-08 16:38:43.942] (consoleApp.20090) THR(0x4620)  - PlaybackManager::stopPlayback (220) -> m_isPlayback=0
+[2020-02-08 16:38:45.333] (consoleApp.20090) THR(0x4620)  - PlaybackManager::singleStep (156) -> m_isSingleStep=1
+[2020-02-08 16:38:46.327] (consoleApp.20090) THR(0x4620)  - PlaybackManager::singleStep (156) -> m_isSingleStep=1
+[2020-02-08 16:38:47.264] (consoleApp.20090) THR(0x4620)  - PlaybackManager::singleStep (156) -> m_isSingleStep=1
+[2020-02-08 16:38:49.011] (consoleApp.20090) INFO: End case button clicked - ..\consoleApp\Frontend\Screens\frontend.cpp (616)
+[2020-02-08 16:38:50.279] (consoleApp.20090) INFO: End case confirmation accepted - ..\consoleApp\Frontend\Screens\frontend.cpp (619)
+[2020-02-08 16:38:50.279] (consoleApp.20090) INFO: DaqDataConsumer Thread stopped - ..\consoleApp\Frontend\Utility\daqDataConsumer.cpp (351)
+[2020-02-08 16:38:50.280] (consoleApp.20090) INFO: Number of Captures = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (681)
+[2020-02-08 16:38:50.280] (consoleApp.20090) INFO: Number of Loops = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (682)
+[2020-02-08 16:38:50.280] (consoleApp.20090) INFO: Total Length of Loops (ms) = 0 - ..\consoleApp\Frontend\Screens\frontend.cpp (683)
+[2020-02-08 16:38:51.285] (consoleApp.20090) THR(0x1438)  - FileDaq::run (152) -> m_count1=29157 m_count2=50 m_count1-m_count2=29107
+[2020-02-08 16:38:51.300] (consoleApp.20090) INFO: Application stopped: OCT Console - ..\consoleApp\main.cpp (271)
+[2020-02-08 16:38:51.300] (consoleApp.20090) INFO: DSP GPU shutdown - ..\consoleApp\Backend\dspgpu.cpp (48)
+[2020-02-08 16:38:51.306] (consoleApp.20090) INFO: DSP shutdown - ..\consoleApp\Backend\dsp.cpp (71)

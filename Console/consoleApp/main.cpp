@@ -28,6 +28,7 @@
 #include "sledsupport.h"
 #include "daqfactory.h"
 #include "signalmanager.h"
+#include "deviceSettings.h"
 
 void parseOptions( QCommandLineOption &options, QStringList args );
 
@@ -95,18 +96,11 @@ int main(int argc, char *argv[])
     LOG( INFO, "Application started: OCT HS Console" )
     LOG( INFO, QString( "OCT Console Process ID (PID) : %1" ).arg( app.applicationPid() ) )
     LOG( INFO, QString( "OCT Console Version: %1" ).arg( getSoftwareVersionNumber() ) )
+
 #if _DEBUG
     LOG( INFO, "DEBUG Build" )
 #else
     LOG( INFO, "RELEASE Build" );
-#endif
-#if CONSOLE_MANUFACTURING_RELEASE
-    LOG( INFO, "CONSOLE MANUFACTURING RELEASE" );
-#endif
-#if ENABLE_SQUISH
-    LOG( INFO, "SQUISH Enabled" );
-#else
-    LOG( INFO, "SQUISH Disabled" )
 #endif
 
     LOG( INFO, QString( "Local time is %1" ).arg( QDateTime::currentDateTime().toString( "yyyy-MM-dd HH:mm:ss" ) ) )
@@ -128,33 +122,30 @@ int main(int argc, char *argv[])
     // Run start-up checks
     Initialization init;
 
-#ifdef WIN32
-    init.setExeCheck( runExeCheck );
-#else
-    init.setExeCheck( false );
-#endif
+//    init.setExeCheck( runExeCheck );
+    init.init(argc,argv);
 
-#if USE_INIT
-    if( !init.init( argc, argv ) )
-    {
-        // clean up if init checks fail
-        if( ic )
-        {
-            delete ic;
-        }
-        displayFailureMessage( init.getStatusMessage(), true );
-    }
+//#if USE_INIT
+//    if( !init.init( argc, argv ) )
+//    {
+//        // clean up if init checks fail
+//        if( ic )
+//        {
+//            delete ic;
+//        }
+//        displayFailureMessage( init.getStatusMessage(), true );
+//    }
 
-    if( init.warningPosted() )
-    {
-        displayWarningMessage( init.getStatusMessage() );
-    }
-#endif
+//    if( init.warningPosted() )
+//    {
+//        displayWarningMessage( init.getStatusMessage() );
+//    }
+//#endif
 
-#ifdef  QT_NO_DEBUG
-    // Kick off a background thread to run additional start-up functions
-    init.start();
-#endif
+//#ifdef  QT_NO_DEBUG
+//    // Kick off a background thread to run additional start-up functions
+//    init.start();
+//#endif
     // create the main window
     frontend frontEndWindow;
 
@@ -186,10 +177,19 @@ int main(int argc, char *argv[])
     if( result == QDialog::Accepted )
     {
         auto idaq = daqfactory::instance()->getdaq();
-//        auto idaq = daqfactory::instance()->getProxy();
-        frontEndWindow.setIDAQ(idaq);
 
         QObject::connect( &app, SIGNAL( aboutToQuit() ), &frontEndWindow, SLOT( shutdownCleanup() ) );
+
+        if(!idaq){
+            frontEndWindow.abortStartUp();
+
+            LOG( INFO, "Device not supported. OCT Console cancelled" )
+
+            // user cancelled setup; return normal exit code
+            status = 0;
+            return status;
+        }
+        frontEndWindow.setIDAQ(idaq);
 
 //#if QT_NO_DEBUG
 //        Laser &laser = Laser::Instance();
@@ -229,11 +229,9 @@ int main(int argc, char *argv[])
 //                          &frontEndWindow,           SLOT(   changeDeviceSpeed( int, int ) ) );
 //        QObject::connect( &sledSupport, SIGNAL( handleError(QString ) ),
 //                          &frontEndWindow,           SLOT(   handleError(QString) ) );
-//        QObject::connect( &sledSupport, SIGNAL( setDirButton( int ) ),
-//                          &frontEndWindow,           SLOT(   dirButton( int ) ) );
-//#if ENABLE_SLED_SUPPORT_BOARD_TESTING
+//
 //        QObject::connect( &frontEndWindow, SIGNAL( checkSledStatus() ), &sledSupport, SLOT( getAllStatus() ) );
-//#endif
+//
 //#else // !QT_NO_DEBUG
         LOG( INFO, "SLED support board: serial port control is DISABLED" )
 //#endif
@@ -258,8 +256,11 @@ int main(int argc, char *argv[])
 
         // Start the daq and data consumer threads  // XXX needed here?  device select will start the HW
         frontEndWindow.startDaq();
-        frontEndWindow.startDataCapture();
-
+        auto& setting = deviceSettings::Instance();
+        if(setting.getIsSimulation()){
+            frontEndWindow.startDataCapture();
+        }
+        frontEndWindow.on_zoomSlider_valueChanged(100);
 //#if QT_NO_DEBUG
 //        frontEndWindow.setupDeviceForSledSupport();
 //#endif
@@ -267,7 +268,9 @@ int main(int argc, char *argv[])
         status = app.exec();
 
         // Shutdown the data consumer thread and the hardware
-        frontEndWindow.stopDataCapture();
+        if(setting.getIsSimulation()){
+            frontEndWindow.stopDataCapture();
+        }
         frontEndWindow.stopDaq(); // merge into stopDataCapture()?
 
 //#if QT_NO_DEBUG
@@ -277,7 +280,7 @@ int main(int argc, char *argv[])
 //#endif
 
         // Set the flag indicating all has been closed properly for this session
-        sessionDatabase &db = sessionDatabase::Instance();
+        sessionDatabase db ; //lcv = sessionDatabase::Instance();
         db.markExitAsClean();
 
         LOG( INFO, "Application stopped: OCT Console" )

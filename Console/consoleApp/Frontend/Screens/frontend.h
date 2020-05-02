@@ -36,6 +36,8 @@
 #include "buildflags.h"
 #include "capturewidget.h"
 #include "windowmanager.h"
+#include <memory>
+#include <forml300.h>
 
 #if ENABLE_COLORMAP_OPTIONS
 #include "Widgets/curvesdialog.h"
@@ -46,13 +48,14 @@ const int mouseSamplingInterval(50); // msec
 //class DAQ;
 class IDAQ;
 class EngineeringController;
+class FormL300;
 
-class frontend : public QMainWindow
+class frontend : public QWidget
 {
     Q_OBJECT
 
 public:
-    frontend(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
+    frontend(QWidget *parent = nullptr);
     ~frontend();
     void init( void );
     void abortStartUp( void ) { appAborted = true; }
@@ -72,7 +75,6 @@ public slots:
     void handleDaqReset();
     void setupDeviceForSledSupport();
     void changeDeviceSpeed(int, int);
-    void dirButton( int );
 
 
     // These are sent from external objects to the frontend:
@@ -102,6 +104,8 @@ public slots:
     void handleScreenChanges();
     void handleBadMonitorConfig();
     void enableDisableMeasurementForCapture( int pixelsPerMm );
+    void updateSector(const OCTFile::OctData_t*);
+    void on_zoomSlider_valueChanged(int value);
 
 #if ENABLE_COLORMAP_OPTIONS
     void curvesDialogFinished();
@@ -123,9 +127,7 @@ signals:
     void checkLaserDiodeStatus();
     void forwardTurnDiodeOn();
     void forwardTurnDiodeOff();
-#if ENABLE_SLED_SUPPORT_BOARD_TESTING
     void checkSledStatus();
-#endif
     void announceClockingMode( int );
     void announceFirmwareVersions( QByteArray, QByteArray );
     void updateDeviceForSledSupport();
@@ -143,18 +145,6 @@ signals:
     void directionOfRotation( directionTracker::Direction_T );
     void sendLagAngle( double );
 
-#if ENABLE_ON_SCREEN_RULER
-    void setSlidingPoint( int );
-#endif
-
-#if ENABLE_RAW_DATA_SNAPSHOT
-    void rawDataSnapshot( int );
-#endif
-
-#if ENABLE_IPP_FFT_TUNING
-    void magScaleValueChanged( int );
-    void fftScaleValueChanged( int );
-#endif
 //    void setSledRotation( bool );
 	void setDoPaint();
 
@@ -163,7 +153,7 @@ private:
     bool confirmExit( void );
     void playbackControlsVisible( bool state );
     void configureClock( void );
-    void captureMouse( bool state );
+    void captureMouse(bool);
     void enableCaptureButtons( void );
     void disableCaptureButtons( void );
     void closePlayback();
@@ -178,13 +168,13 @@ private:
     bool appAborted;
     bool disableCapturing;
     bool isAnnotateOn;
-    bool prevIsWaterfallVisible;
 
     QString origDeviceLabelStyleSheet;
     QString origLiveGroupBoxStyleSheet;
+    QString origLiveQLabelStyleSheet;
 
     bool isMeasureModeActive;
-    bool measureModeAllowed;
+    bool measureModeAllowed{true};
 
     Ui::frontendClass ui;
     docscreen *docWindow;
@@ -205,7 +195,7 @@ private:
     liveScene *scene;
 
     lagWizard *lagHandler;
-    caseInfoWizard *caseWizard;
+    std::unique_ptr<caseInfoWizard> caseWizard{nullptr};
 
     QTimer mouseCaptureTimer;
     QTimer clockTimer;
@@ -213,9 +203,6 @@ private:
     QTimer preventFastRecordingsTimer;
     QTimer hideMouseTimer;
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    int snapshotLength;
-#endif
     bool preventFastRecordings;
     bool isPhysicianPreviewDisplayed;
 
@@ -268,16 +255,6 @@ private slots:
     void storageSpaceTimerExpiry();
     void reenableRecordLoopButtonExpiry();
 
-#if ENABLE_RAW_DATA_SNAPSHOT
-    void on_rawSnapshotSpinBox_valueChanged( int arg1 );
-    void on_rawDataPushButton_clicked();
-#endif
-
-#if ENABLE_IPP_FFT_TUNING
-    void on_magSpinBox_valueChanged( int arg1 );
-    void on_fftSpinBox_valueChanged( int arg1 );
-#endif
-
 #if ENABLE_COLORMAP_OPTIONS
     void on_contrastCurveButton_clicked();
     void populateColormapList( void );
@@ -292,7 +269,6 @@ private slots:
     void on_measureModePushButton_clicked();
     void on_saveMeasurementButton_clicked();
 
-    void on_zoomSlider_valueChanged(int value);
     void handleTechViewHorizontalPan(int value);
     void handleTechViewVerticalPan(int value);
     void on_zoomResetPushButton_clicked();
@@ -306,22 +282,23 @@ private slots:
     void on_autoAdjustBrightnessContrastButton_clicked();
     void on_captureImageButton_clicked();
     void on_annotateImagePushButton_clicked();
-    void on_directionPushButton_clicked();
-
-#if ENABLE_ON_SCREEN_RULER
-    void on_rulerSlidingPointSpinbox_valueChanged( int val );
-#endif
 
     void createDisplays();
     void hideDisplays();
     void testDisplays();
 
     void on_EgineeringButton_toggled(bool checked);
+    void hideDecoration();
+
+    void on_pushButtonLogo_clicked();
 
 protected:
      void closeEvent( QCloseEvent *event );
      bool eventFilter( QObject *watched, QEvent *event );
      void keyPressEvent( QKeyEvent *event );
+
+private:
+     FormL300* m_formL300{nullptr};
 };
 
 #endif // FRONTEND_H

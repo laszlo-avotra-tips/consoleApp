@@ -8,6 +8,7 @@
 #include "depthsetting.h"
 #include "deviceSettings.h"
 #include "defaults.h"
+#include "signalmodel.h"
 
 depthSetting* depthSetting::theDepthManager{nullptr};
 
@@ -20,10 +21,35 @@ depthSetting & depthSetting::Instance()
     return *theDepthManager;
 }
 
+float depthSetting::getImagingDepth_S() const
+{
+    return imagingDepth_S;
+}
+
+int depthSetting::getNumReticles() const
+{
+    return numReticles;
+}
+
+int depthSetting::getPixelsPerMm() const
+{
+    return pixelsPerMm;
+}
+
+int depthSetting::getCatheterEdgePosition() const
+{
+    return catheterEdgePosition;
+}
+
+float depthSetting::getFractionOfCanvas() const
+{
+    return fractionOfCanvas;
+}
+
 /*
  * Constructor
  */
-depthSetting::depthSetting()
+depthSetting::depthSetting() :  minDepth_px(300),maxDepth_px(600), fractionOfCanvas(0.475f)
 {
     /*
      * Number of pixels to display beyond the imaging mask.
@@ -35,13 +61,16 @@ depthSetting::depthSetting()
      *
      * Note minDepth_px and maxDepth_px are unused for Low Speed devices.
      */
-    minDepth_px = 300; // 300 is a little less than 2 mm
-    maxDepth_px = 600; // 600 is ~3.75mm
+    // minDepth_px 300 is a little less than 2 mm
+    // maxDepth_px 600 is ~3.75mm
 
     // 0.475 out of 0.50 is used in Warp.CL, that extra 0.025 is reserved for cardinal tick marks.
-    fractionOfCanvas = 0.475f;
+//    fractionOfCanvas = 0.475f;
+    SignalModel::instance()->setFractionOfCanvas(fractionOfCanvas);
 
     imagingDepth_S = minDepth_px; // set the current depth
+    SignalModel::instance()->setImagingDepth_S(int(getImagingDepth_S()));
+
     calculateReticles();
 }
 
@@ -62,6 +91,7 @@ void depthSetting::updateImagingDepth( double newDepth )
 {
     imagingDepth_S = float(newDepth);
     calculateReticles();
+    SignalModel::instance()->setImagingDepth_S(int(getImagingDepth_S()));
 }
 
 /*
@@ -70,6 +100,7 @@ void depthSetting::updateImagingDepth( double newDepth )
 void depthSetting::handleDeviceChange()
 {
     imagingDepth_S = 450;  // Set the initial value half-way between the min and max range.
+    SignalModel::instance()->setImagingDepth_S(int(getImagingDepth_S()));
     calculateReticles();
 }
 
@@ -116,4 +147,14 @@ void depthSetting::calculateReticles( void )
             catheterEdgePosition = dev.current()->getCatheterRadius_px();
         }
     }
+}
+
+float depthSetting::getMinDepth_px() const
+{
+    return minDepth_px;
+}
+
+float depthSetting::getMaxDepth_px() const
+{
+    return maxDepth_px;
 }

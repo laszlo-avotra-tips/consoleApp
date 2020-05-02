@@ -102,11 +102,7 @@ public:
     {
         fullRotationFlag = false;
     }
-    void setReticleBrightness( int value )
-    {
-        reticleBrightness = value;
-        sectorShouldPaint = true;
-    }
+    void setReticleBrightness( int value );
     int getReticleBrightness( void )
     {
         return reticleBrightness;
@@ -176,12 +172,8 @@ public:
     }
     void updateColorMap( QVector<QRgb> map );
     void setVideoOnly() { isVideoOnly = true; }
-#if ENABLE_ON_SCREEN_RULER
-    void setSlidingPoint( int val )
-    {
-        slidingPoint = val;
-    }
-#endif
+    QImage *getSectorImage() const;
+    void setSectorImage(QImage *value);
 
 private:
     int status;
@@ -200,10 +192,6 @@ private:
     int centerX;
     int centerY;
     int secWidth;
-
-#if ENABLE_ON_SCREEN_RULER
-    int slidingPoint;
-#endif
 
     unwindMachine unwinder;
     Integrator angleInt;
