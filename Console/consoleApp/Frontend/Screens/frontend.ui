@@ -103,11 +103,6 @@ QLabel#titlebarTextLabel {
     color: white;
 }
 
-QLabel#instructionsLabel
-{
-    background: rgb( 191, 191, 191 );
-}
-
 QLabel#instructionsTextLabel
 {
     font: 12pt &quot;DINPro-Medium&quot;;
@@ -342,302 +337,6 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
         <string>Recording</string>
        </property>
       </widget>
-      <widget class="QSlider" name="zoomSlider">
-       <property name="geometry">
-        <rect>
-         <x>303</x>
-         <y>35</y>
-         <width>561</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">/* ---------- Normal Sliders ------------*/
-
-QSlider::groove:horizontal {
-border: 1px solid rgb( 199, 200, 201);
-background: white;
-height: 10px;
-border-radius: 5px;
-}
-
-QSlider::sub-page:horizontal {
-background: rgb( 88, 89, 91);
-border: 1px solid rgb( 88, 89, 91);
-height: 10px;
-border-radius: 6px;
-}
-
-QSlider::add-page:horizontal   /* to the right of the handle */
-{
-background: rgb( 199, 200, 201 );
-border: 1px solid  rgb( 199, 200, 201 );
-height: 10px;
-border-radius: 6px;
-}
-
-QSlider::handle:horizontal {
-  image: url(:images/handle_normal.png);
-  margin: -15px 0;
-}
-
-QSlider::handle:horizontal:hover {
-	image: url(:images/handle_rollover.png);
-    margin: -15px 0;
-}
-
-QSlider::sub-page:horizontal:disabled {
-background: #bbb;
-border-color: #999;
-}
-
-QSlider::add-page:horizontal:disabled {
-background: #eee;
-border-color: #999;
-}
-
-QSlider::handle:horizontal:disabled {
-background: #eee;
-border: 1px solid #aaa;
-border-radius: 4px;
-}</string>
-       </property>
-       <property name="minimum">
-        <number>90</number>
-       </property>
-       <property name="maximum">
-        <number>400</number>
-       </property>
-       <property name="pageStep">
-        <number>10</number>
-       </property>
-       <property name="value">
-        <number>90</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="zoomLevelLabel">
-       <property name="geometry">
-        <rect>
-         <x>133</x>
-         <y>40</y>
-         <width>98</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="WindowText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Text">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="ButtonText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="PlaceholderText">
-           <brush brushstyle="NoBrush">
-            <color alpha="128">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="WindowText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Text">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="ButtonText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="PlaceholderText">
-           <brush brushstyle="NoBrush">
-            <color alpha="128">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="WindowText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Text">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="ButtonText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="PlaceholderText">
-           <brush brushstyle="NoBrush">
-            <color alpha="128">
-             <red>0</red>
-             <green>0</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>DINPro-Medium</family>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string>QLabel 
-{ 
-    color: black; 
-	font:  12pt &quot;DINPro-Medium&quot;;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>ZOOM LEVEL:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="zoomFactorLabel">
-       <property name="geometry">
-        <rect>
-         <x>237</x>
-         <y>39</y>
-         <width>56</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>DINPro-Medium</family>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QLabel 
-{ 
-    color: black; 
-	font:  12pt &quot;DINPro-Medium&quot;;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>[1.00x]</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="zoomResetPushButton">
-       <property name="geometry">
-        <rect>
-         <x>1070</x>
-         <y>40</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>Reset the Zoom level to 1.00.</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"> border-radius: 5px;
-</string>
-       </property>
-       <property name="text">
-        <string>RESET</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="liveViewPushButton">
-       <property name="geometry">
-        <rect>
-         <x>1250</x>
-         <y>40</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>Close the Review display and return to the live image updates. Shortcut: ESC</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">    border-radius: 5px;</string>
-       </property>
-       <property name="text">
-        <string>LIVE VIEW</string>
-       </property>
-       <property name="shortcut">
-        <string>Esc</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="timeFieldLabel_mini">
        <property name="geometry">
         <rect>
@@ -700,19 +399,6 @@ border-radius: 4px;
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="instructionsLabel">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>33</y>
-         <width>1491</width>
-         <height>33</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="Line" name="line">
        <property name="geometry">
         <rect>
@@ -745,14 +431,549 @@ border-radius: 4px;
         <string>Catheter Down</string>
        </property>
       </widget>
-      <zorder>instructionsLabel</zorder>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>30</y>
+         <width>1491</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_zoom">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="instructionsLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: rgb( 191, 191, 191 );</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="zoomLevelLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="WindowText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="NoBrush">
+               <color alpha="128">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="WindowText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="NoBrush">
+               <color alpha="128">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="WindowText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>191</red>
+                <green>191</green>
+                <blue>191</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="NoBrush">
+               <color alpha="128">
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
+          <property name="font">
+           <font>
+            <family>DINPro-Medium</family>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <italic>false</italic>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel 
+{
+    background: rgb( 191, 191, 191 ); 
+    color: black; 
+	font:  12pt &quot;DINPro-Medium&quot;;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>ZOOM LEVEL:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="zoomFactorLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>71</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>71</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DINPro-Medium</family>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <italic>false</italic>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel 
+{ 
+    background: rgb( 191, 191, 191 );
+    color: black; 
+	font:  12pt &quot;DINPro-Medium&quot;;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>[1.00x]</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="zoomSlider">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">/* ---------- Normal Sliders ------------*/
+
+QSlider{
+    background: rgb( 191, 191, 191 );
+}
+
+QSlider::groove:horizontal {
+border: 1px solid rgb( 199, 200, 201);
+background: white;
+height: 10px;
+border-radius: 5px;
+}
+
+QSlider::sub-page:horizontal {
+background: rgb( 88, 89, 91);
+border: 1px solid rgb( 88, 89, 91);
+height: 10px;
+border-radius: 6px;
+}
+
+QSlider::add-page:horizontal   /* to the right of the handle */
+{
+background: rgb( 199, 200, 201 );
+border: 1px solid  rgb( 199, 200, 201 );
+height: 10px;
+border-radius: 6px;
+}
+
+QSlider::handle:horizontal {
+  image: url(:images/handle_normal.png);
+  margin: -15px 0;
+}
+
+QSlider::handle:horizontal:hover {
+	image: url(:images/handle_rollover.png);
+    margin: -15px 0;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
+          </property>
+          <property name="minimum">
+           <number>90</number>
+          </property>
+          <property name="maximum">
+           <number>400</number>
+          </property>
+          <property name="pageStep">
+           <number>10</number>
+          </property>
+          <property name="value">
+           <number>90</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="instructionsLabel_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>800</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: rgb( 191, 191, 191 );</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame_liveView">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>500</width>
+            <height>33</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame{
+    background: rgb( 191, 191, 191 );
+}</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="spacing">
+            <number>120</number>
+           </property>
+           <property name="leftMargin">
+            <number>80</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>80</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="zoomResetPushButton">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Reset the Zoom level to 1.00.</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"> border-radius: 5px;
+</string>
+             </property>
+             <property name="text">
+              <string>RESET</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="liveViewPushButton">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>28</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Close the Review display and return to the live image updates. Shortcut: ESC</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">    border-radius: 5px;</string>
+             </property>
+             <property name="text">
+              <string>LIVE VIEW</string>
+             </property>
+             <property name="shortcut">
+              <string>Esc</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <zorder>layoutWidget</zorder>
       <zorder>liveGraphicsView</zorder>
       <zorder>recordingLabel</zorder>
-      <zorder>zoomSlider</zorder>
-      <zorder>zoomLevelLabel</zorder>
-      <zorder>zoomFactorLabel</zorder>
-      <zorder>zoomResetPushButton</zorder>
-      <zorder>liveViewPushButton</zorder>
       <zorder>timeFieldLabel_mini</zorder>
       <zorder>deviceFieldLabel</zorder>
       <zorder>line</zorder>
