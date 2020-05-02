@@ -94,7 +94,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QPainter painter( &sectorImage );
 
     //    Upper Right -- Logo
-    painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width(), 100, LogoImage );
 
     painter.end();
 
@@ -141,7 +141,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    QImage decoratedImage = captureItem.decoratedImage.transformed( m );
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
-    painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 100, LogoImage );
     painter.end();
 
     QImage dim = decoratedImage.copy(imageRect);
