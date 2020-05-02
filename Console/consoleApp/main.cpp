@@ -260,7 +260,7 @@ int main(int argc, char *argv[])
         if(setting.getIsSimulation()){
             frontEndWindow.startDataCapture();
         }
-
+        frontEndWindow.on_zoomSlider_valueChanged(100);
 //#if QT_NO_DEBUG
 //        frontEndWindow.setupDeviceForSledSupport();
 //#endif

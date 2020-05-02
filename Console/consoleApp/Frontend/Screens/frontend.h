@@ -105,6 +105,7 @@ public slots:
     void handleBadMonitorConfig();
     void enableDisableMeasurementForCapture( int pixelsPerMm );
     void updateSector(const OCTFile::OctData_t*);
+    void on_zoomSlider_valueChanged(int value);
 
 #if ENABLE_COLORMAP_OPTIONS
     void curvesDialogFinished();
@@ -268,7 +269,6 @@ private slots:
     void on_measureModePushButton_clicked();
     void on_saveMeasurementButton_clicked();
 
-    void on_zoomSlider_valueChanged(int value);
     void handleTechViewHorizontalPan(int value);
     void handleTechViewVerticalPan(int value);
     void on_zoomResetPushButton_clicked();
