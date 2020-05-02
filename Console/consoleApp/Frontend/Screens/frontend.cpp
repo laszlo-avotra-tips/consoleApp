@@ -131,7 +131,7 @@ frontend::frontend(QWidget *parent)
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( ui.liveGroupBox->x() + ui.liveGroupBox->width() + 10, // 10 px to the right of liveGroupBox
+    advView->setGeometry( ui.liveGraphicsView->x() + ui.liveGraphicsView->width() + 150, // 10 px to the right of liveGroupBox
                           0,
                           advView->width(),
                           advView->height() );
@@ -2331,9 +2331,9 @@ void frontend::configureDisplayForReview()
     scene->hideAnnotations();
     docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
-    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 16pt DinPRO-Medium; color: yellow; }" );
+    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 14.75pt DinPRO-Medium; color: yellow; }" );
     ui.liveGroupBox->setStyleSheet( "QGroupBox { color: yellow; }" );
-    ui.label_live->setStyleSheet( "QLabel { color: yellow; }" );
+    ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 14.75pt DINPro-medium;}" );
 }
 
 /*
