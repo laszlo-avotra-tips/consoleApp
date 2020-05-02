@@ -170,6 +170,7 @@ private:
 
     QString origDeviceLabelStyleSheet;
     QString origLiveGroupBoxStyleSheet;
+    QString origLiveQLabelStyleSheet;
 
     bool isMeasureModeActive;
     bool measureModeAllowed{true};

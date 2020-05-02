@@ -231,6 +231,7 @@ frontend::frontend(QWidget *parent)
     // Save the style sheet for restoring after using review mode
     origDeviceLabelStyleSheet = ui.deviceFieldLabel->styleSheet();
     origLiveGroupBoxStyleSheet = ui.liveGroupBox->styleSheet();
+    origLiveQLabelStyleSheet = ui.label_live->styleSheet();
 
 #if ENABLE_MEASUREMENT_PRECISION
     QLabel *measurementPrecisionLabel = new QLabel( "Measurement Precision Enabled\nNOT FOR HUMAN USE", this );
@@ -1536,6 +1537,7 @@ void frontend::playbackControlsVisible( bool state )
 void frontend::handleStatusText( QString status )
 {
     ui.liveGroupBox->setTitle( status );
+    ui.label_live->setText( status );
 //lcv    docWindow->ui.statusLabel->setText( status );
     auxMon->setText( AuxMonitor::Status, true, status );
 }
@@ -2331,6 +2333,7 @@ void frontend::configureDisplayForReview()
     auxMon->configureDisplayForReview();
     ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 16pt DinPRO-Medium; color: yellow; }" );
     ui.liveGroupBox->setStyleSheet( "QGroupBox { color: yellow; }" );
+    ui.label_live->setStyleSheet( "QLabel { color: yellow; }" );
 }
 
 /*
@@ -2421,6 +2424,7 @@ void frontend::on_liveViewPushButton_clicked()
     ui.deviceFieldLabel->setText( dev.current()->getDeviceName() );
     ui.deviceFieldLabel->setStyleSheet( origDeviceLabelStyleSheet );
     ui.liveGroupBox->setStyleSheet( origLiveGroupBoxStyleSheet );
+    ui.label_live->setStyleSheet( origLiveQLabelStyleSheet );
 }
 
 /*
