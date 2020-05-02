@@ -126,21 +126,21 @@ frontend::frontend(QWidget *parent)
      * pre-create the View Options pane
      */
     viewOption = new viewOptions( this );
+    viewOption->setGeometry( 2560 - viewOption->width() - 100,
+                             0,
+                             viewOption->width(),
+                             viewOption->height() );
+
     viewOption->hide();
 
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( ui.liveGraphicsView->x() + ui.liveGraphicsView->width() + 50, // 10 px to the right of liveGraphicsView
+    advView->setGeometry( 2560 - advView->width(),
                           0,
                           advView->width(),
                           advView->height() );
 
-    // Position the View Options Screen
-    viewOption->setGeometry( ui.capturesGroupBox->x(),
-                             0,
-                             viewOption->width(),
-                             viewOption->height() );
     advView->hide();
 
     m_ec = new EngineeringController(this);
