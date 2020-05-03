@@ -1974,8 +1974,8 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
     QImage* image{nullptr};
     QGraphicsPixmapItem* pixmap{nullptr};
-//    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    const int SectorSize = ui.liveGraphicsView->width() * ui.liveGraphicsView->height();
+    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
+
     if(!m_formL300->isVisible()){
         image = scene->sectorImage();
         pixmap = scene->sectorHandle();
