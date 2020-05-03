@@ -1976,25 +1976,25 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-    if(!m_formL300->isVisible()){
-        image = scene->sectorImage();
-        pixmap = scene->sectorHandle();
-    }else {
+    bool isFormL300 {m_formL300->isVisible()};
+
+    if(isFormL300){
         image = m_formL300->sectorImage();
         pixmap = m_formL300->sectorHandle();
+    }else {
+        image = scene->sectorImage();
+        pixmap = scene->sectorHandle();
+        scene->setDoPaint();
     }
 
     if(image){
         memcpy( image->bits(), frameData->dispData, SectorSize );
     }
+
     if(pixmap){
         QPixmap tmpPixmap = QPixmap::fromImage( *image );
         pixmap->setPixmap(tmpPixmap);
     }
-    if(!m_formL300->isVisible()){
-        scene->setDoPaint();
-    }
-//    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
 }
 
 /*
