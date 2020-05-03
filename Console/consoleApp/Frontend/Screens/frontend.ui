@@ -24,8 +24,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>2800</width>
-    <height>1440</height>
+    <width>2560</width>
+    <height>1498</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -1254,20 +1254,20 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
         <item>
          <widget class="liveView" name="liveGraphicsView">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>1376</width>
+            <width>1370</width>
             <height>1370</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>1600</width>
+            <width>1370</width>
             <height>1370</height>
            </size>
           </property>

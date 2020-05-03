@@ -1974,7 +1974,8 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
     QImage* image{nullptr};
     QGraphicsPixmapItem* pixmap{nullptr};
-    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
+//    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
+    const int SectorSize = ui.liveGraphicsView->width() * ui.liveGraphicsView->height();
     if(!m_formL300->isVisible()){
         image = scene->sectorImage();
         pixmap = scene->sectorHandle();
@@ -2465,8 +2466,8 @@ void frontend::on_captureImageButton_clicked()
     QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
     LOG1(tag);
     QRect rectangle = ui.liveGraphicsView->rect();
-    rectangle.setWidth(1440);
-    rectangle.setHeight(1440);
+//    rectangle.setWidth(1440);
+//    rectangle.setHeight(1440);
     qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
     QImage p = ui.liveGraphicsView->grab(rectangle).toImage();
     scene->captureDi( p, tag );
