@@ -344,6 +344,7 @@ void liveScene::captureDi( QImage decoratedImage, QString tagText )
 
     depthSetting &ds = depthSetting::Instance();
     int pixelsPerMm = ds.getPixelsPerMm();
+    qDebug() << __FUNCTION__ << "." <<  __LINE__ << ": pixelsPerMm=" << pixelsPerMm;
 
     deviceSettings &dev = deviceSettings::Instance();
     if( dev.current()->getMeaurementVersion() != SupportedMeasurementVersion )
