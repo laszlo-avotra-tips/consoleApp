@@ -1254,21 +1254,21 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
         <item>
          <widget class="liveView" name="liveGraphicsView">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>1370</width>
-            <height>1370</height>
+            <width>1376</width>
+            <height>1376</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>1370</width>
-            <height>1370</height>
+            <width>1376</width>
+            <height>2560</height>
            </size>
           </property>
           <property name="cursor" stdset="0">

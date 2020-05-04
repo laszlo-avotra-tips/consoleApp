@@ -142,11 +142,13 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    QImage decoratedImage = captureItem.decoratedImage.transformed( m );
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 135, 15, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width() - 132, 18, LogoImage );
     painter.end();
 
-    imageRect.setX(-35);
-    imageRect.setY(-35);
+//    imageRect.setX(-35);
+    imageRect.setX(-32);
+//    imageRect.setY(-35);
+    imageRect.setY(-32);
     QImage dim = decoratedImage.copy(imageRect);
 
 
