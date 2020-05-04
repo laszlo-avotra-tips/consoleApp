@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>2560</width>
-    <height>1440</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -53,7 +53,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -61,13 +61,13 @@
      <property name="minimumSize">
       <size>
        <width>2560</width>
-       <height>1440</height>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>2560</width>
-       <height>1440</height>
+       <height>2560</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -648,7 +648,7 @@ border-radius: -15px;
       <item>
        <widget class="QGraphicsView" name="graphicsView">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -656,13 +656,13 @@ border-radius: -15px;
         <property name="minimumSize">
          <size>
           <width>1440</width>
-          <height>1440</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>1440</width>
-          <height>1440</height>
+          <height>2560</height>
          </size>
         </property>
        </widget>
