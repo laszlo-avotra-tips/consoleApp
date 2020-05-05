@@ -126,21 +126,21 @@ frontend::frontend(QWidget *parent)
      * pre-create the View Options pane
      */
     viewOption = new viewOptions( this );
+    viewOption->setGeometry( 2560 - viewOption->width() - 100,
+                             0,
+                             viewOption->width(),
+                             viewOption->height() );
+
     viewOption->hide();
 
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( ui.liveGraphicsView->x() + ui.liveGraphicsView->width() + 50, // 10 px to the right of liveGraphicsView
+    advView->setGeometry( 2560 - advView->width() - 100,
                           0,
                           advView->width(),
                           advView->height() );
 
-    // Position the View Options Screen
-    viewOption->setGeometry( ui.capturesGroupBox->x(),
-                             0,
-                             viewOption->width(),
-                             viewOption->height() );
     advView->hide();
 
     m_ec = new EngineeringController(this);
@@ -326,7 +326,6 @@ void frontend::init( void )
     connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
 
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
-    connect( viewOption, SIGNAL( updateCatheterView() ), consumer,  SLOT( updateCatheterView() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), scene,     SLOT( clearSector() ) );
 
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
@@ -484,8 +483,7 @@ void frontend::setupScene( void )
 
     scene = new liveScene( this );
     m_formL300 = new FormL300( this );
-
-    liveScene* sceneL300 = m_formL300->scene();
+    m_formL300->setScene(scene);
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -517,8 +515,6 @@ void frontend::setupScene( void )
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              scene,      SLOT(handleReticleBrightnessChanged(int)) );
-    connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
-             sceneL300,      SLOT(handleReticleBrightnessChanged(int)) );
 
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
              scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
@@ -1975,25 +1971,19 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QImage* image{nullptr};
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    if(!m_formL300->isVisible()){
-        image = scene->sectorImage();
-        pixmap = scene->sectorHandle();
-    }else {
-        image = m_formL300->sectorImage();
-        pixmap = m_formL300->sectorHandle();
-    }
+
+    image = scene->sectorImage();
+    pixmap = scene->sectorHandle();
+    scene->setDoPaint();
 
     if(image){
         memcpy( image->bits(), frameData->dispData, SectorSize );
     }
+
     if(pixmap){
         QPixmap tmpPixmap = QPixmap::fromImage( *image );
         pixmap->setPixmap(tmpPixmap);
     }
-    if(!m_formL300->isVisible()){
-        scene->setDoPaint();
-    }
-//    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
 }
 
 /*
@@ -2711,9 +2701,7 @@ void frontend::hideDecoration(void)
 void frontend::on_pushButtonLogo_clicked()
 {
     qDebug() << __FUNCTION__;
-//    hide();
-    if(!m_formL300){
-        m_formL300 = new FormL300(this);
+    if(m_formL300){
+        m_formL300->showFullScreen();
     }
-    m_formL300->showFullScreen();
 }

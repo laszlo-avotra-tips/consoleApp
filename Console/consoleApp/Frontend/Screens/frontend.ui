@@ -24,8 +24,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>2800</width>
-    <height>1440</height>
+    <width>2560</width>
+    <height>1498</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -1254,7 +1254,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
         <item>
          <widget class="liveView" name="liveGraphicsView">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -1262,13 +1262,13 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
           <property name="minimumSize">
            <size>
             <width>1376</width>
-            <height>1370</height>
+            <height>1376</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>1600</width>
-            <height>1370</height>
+            <width>1376</width>
+            <height>2560</height>
            </size>
           </property>
           <property name="cursor" stdset="0">
@@ -1302,11 +1302,11 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
+         <enum>QSizePolicy::Expanding</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>76</width>
+          <width>293</width>
           <height>20</height>
          </size>
         </property>
@@ -1393,38 +1393,29 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
                <property name="toolTipDuration">
                 <number>5</number>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_4">
-                <property name="spacing">
-                 <number>0</number>
+               <widget class="QGroupBox" name="playbackGroupBox">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>255</y>
+                  <width>681</width>
+                  <height>571</height>
+                 </rect>
                 </property>
-                <property name="leftMargin">
-                 <number>0</number>
+                <property name="minimumSize">
+                 <size>
+                  <width>681</width>
+                  <height>571</height>
+                 </size>
                 </property>
-                <property name="topMargin">
-                 <number>0</number>
+                <property name="maximumSize">
+                 <size>
+                  <width>681</width>
+                  <height>571</height>
+                 </size>
                 </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QGroupBox" name="playbackGroupBox">
-                  <property name="minimumSize">
-                   <size>
-                    <width>681</width>
-                    <height>571</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>681</width>
-                    <height>571</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">
+                <property name="styleSheet">
+                 <string notr="true">
 QGroupBox {    
 	background: url(:/octConsole/Frontend/Resources/blank_texture.png);
     border-radius: 5px;
@@ -1439,33 +1430,31 @@ QGroupBox::title {
       padding-top: 7px;
 }
 </string>
-                  </property>
-                  <property name="title">
-                   <string/>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_3">
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="transport" name="transportWidget" native="true"/>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
+                </property>
+                <property name="title">
+                 <string/>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="transport" name="transportWidget" native="true"/>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </item>
             </layout>

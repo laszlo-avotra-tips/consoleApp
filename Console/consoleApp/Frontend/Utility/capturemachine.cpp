@@ -76,7 +76,6 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     // TBD: cannot be global to the class?
     const QImage LogoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
 
-    caseInfo &info = caseInfo::Instance();
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     deviceSettings &devSettings = deviceSettings::Instance();
@@ -94,11 +93,12 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QPainter painter( &sectorImage );
 
     //    Upper Right -- Logo
-    painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
 
     painter.end();
 
     // Build the location directory
+    caseInfo &info = caseInfo::Instance();
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
@@ -109,7 +109,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     QMatrix m;
 //    m.rotate( 90 );
-    qDebug() << __FUNCTION__ << ": sector width=" << sectorImage.width() << ", height=" << sectorImage.height();
+    qDebug() << __FUNCTION__ << ":" << __LINE__ <<" sector sectorImage.width()=" << sectorImage.width() << ", sectorImage.height()=" << sectorImage.height();
 
     auto imageRect = sectorImage.rect();
     if( !sectorImage.save( SecName, "PNG", 100 ) )
@@ -120,6 +120,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     {
         emit sendFileToKey( SecName );
     }
+    qDebug() << __FUNCTION__ << ":" << __LINE__ << " imageRect.x()=" << imageRect.x() << " imageRect.y()=" <<imageRect.y();
 
     // save a thumbnail image for the UI to use
     if( !sectorImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
@@ -141,13 +142,18 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    QImage decoratedImage = captureItem.decoratedImage.transformed( m );
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
-    painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width() - 132, 18, LogoImage );
     painter.end();
 
+//    imageRect.setX(-35);
+    imageRect.setX(-32);
+//    imageRect.setY(-35);
+    imageRect.setY(-32);
     QImage dim = decoratedImage.copy(imageRect);
 
-    if( !dim.save( DecoratedImageName, "PNG", 100 ) )
+
 //    if( !decoratedImage.save( DecoratedImageName, "PNG", 100 ) )
+    if( !dim.save( DecoratedImageName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: decorated image capture failed" )
     }
@@ -155,7 +161,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     {
         emit sendFileToKey( DecoratedImageName );
     }
-    qDebug() << __FUNCTION__ << ": decorated width=" << dim.width() << ", height=" << dim.height();
+    qDebug() << __FUNCTION__ << ": decoratedImage.width()=" << dim.width() << ", decoratedImage.height()" << dim.height();
 
     // update the model
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
@@ -227,7 +233,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     QPainter painter( &secRGB );
 
     //    Upper Right -- Logo
-    painter.drawImage( SectorWidth_px - LogoImage.width(), 0, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
 
     painter.end();
 

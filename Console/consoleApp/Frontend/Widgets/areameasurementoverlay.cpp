@@ -591,7 +591,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 //        cppm = currPxPerMm;
 //    }
 #ifndef MEASUREMENT_APP
-    const int FontSize = 24;
+    const int FontSize = 22;
 #else
     const int FontSize = 14;
 #endif
