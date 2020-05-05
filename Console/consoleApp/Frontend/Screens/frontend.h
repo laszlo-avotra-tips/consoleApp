@@ -193,7 +193,6 @@ private:
 #endif
 
     liveScene *scene{nullptr};
-    liveScene *sceneL300{nullptr};
 
     lagWizard *lagHandler;
     std::unique_ptr<caseInfoWizard> caseWizard{nullptr};

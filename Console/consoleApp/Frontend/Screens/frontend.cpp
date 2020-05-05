@@ -484,8 +484,6 @@ void frontend::setupScene( void )
     scene = new liveScene( this );
     m_formL300 = new FormL300( this );
 
-    liveScene* sceneL300 = m_formL300->scene();
-
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );
@@ -516,8 +514,6 @@ void frontend::setupScene( void )
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              scene,      SLOT(handleReticleBrightnessChanged(int)) );
-    connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
-             sceneL300,      SLOT(handleReticleBrightnessChanged(int)) );
 
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
              scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
@@ -1975,12 +1971,18 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-    bool isFormL300 {m_formL300->isVisible()};
+    bool isFormL300 {false};
+    if(m_formL300){
+        isFormL300 = m_formL300->isVisible();
+    }
 
-    if(isFormL300){
+    if(isFormL300)
+    {
         image = m_formL300->sectorImage();
         pixmap = m_formL300->sectorHandle();
-    }else {
+    }
+    else
+    {
         image = scene->sectorImage();
         pixmap = scene->sectorHandle();
         scene->setDoPaint();
@@ -2712,8 +2714,7 @@ void frontend::on_pushButtonLogo_clicked()
 {
     qDebug() << __FUNCTION__;
 //    hide();
-    if(!m_formL300){
-        m_formL300 = new FormL300(this);
+    if(m_formL300){
+        m_formL300->showFullScreen();
     }
-    m_formL300->showFullScreen();
 }
