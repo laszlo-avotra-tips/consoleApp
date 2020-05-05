@@ -22,6 +22,8 @@
 #include <QPainter>
 #include "logger.h"
 #include <QApplication>
+#include "Utility/userSettings.h"
+
 
 #if ENABLE_COLORMAP_OPTIONS
 QImage sampleMap( 10, 256, QImage::Format_Indexed8 );
@@ -289,8 +291,9 @@ void liveScene::resetRotationCounter( )
     sector->clearRotationFlag();
 }
 
-void liveScene::handleReticleBrightnessChanged(int value)
+void liveScene::handleReticleBrightnessChanged(int /*value*/)
 {
+    auto value = userSettings::Instance().reticleBrightness();
     sector->setReticleBrightness( value );
 }
 
