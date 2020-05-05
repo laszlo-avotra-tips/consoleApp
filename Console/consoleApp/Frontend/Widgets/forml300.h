@@ -19,11 +19,8 @@ class FormL300 : public QWidget
 public:
     explicit FormL300(QWidget *parent = nullptr);
     ~FormL300();
-//    QGraphicsPixmapItem *sectorHandle( void );
-//    QImage* sectorImage() const;
+
     bool isVisible() const;
-//    sectorItem* sector();
-//    liveScene* scene();
     void setScene(liveScene* scene);
 
 private slots:
@@ -43,7 +40,6 @@ private:
 
 private:
     Ui::FormL300 *ui;
-//    sectorItem* m_sector{nullptr};
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
     const std::vector<int> m_imagingDepth{600,525,450,375,300};
