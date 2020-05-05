@@ -136,7 +136,7 @@ frontend::frontend(QWidget *parent)
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( 2560 - advView->width(),
+    advView->setGeometry( 2560 - advView->width() - 100,
                           0,
                           advView->width(),
                           advView->height() );
