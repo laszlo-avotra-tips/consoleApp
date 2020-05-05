@@ -483,6 +483,7 @@ void frontend::setupScene( void )
 
     scene = new liveScene( this );
     m_formL300 = new FormL300( this );
+    m_formL300->setScene(scene);
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -1971,22 +1972,9 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-//    bool isFormL300 {false};
-//    if(m_formL300){
-//        isFormL300 = m_formL300->isVisible();
-//    }
-
-//    if(isFormL300)
-//    {
-//        image = m_formL300->sectorImage();
-//        pixmap = m_formL300->sectorHandle();
-//    }
-//    else
-    {
-        image = scene->sectorImage();
-        pixmap = scene->sectorHandle();
-        scene->setDoPaint();
-    }
+    image = scene->sectorImage();
+    pixmap = scene->sectorHandle();
+    scene->setDoPaint();
 
     if(image){
         memcpy( image->bits(), frameData->dispData, SectorSize );
@@ -2713,9 +2701,7 @@ void frontend::hideDecoration(void)
 void frontend::on_pushButtonLogo_clicked()
 {
     qDebug() << __FUNCTION__;
-//    hide();
     if(m_formL300){
-        m_formL300->setScene(scene);
         m_formL300->showFullScreen();
     }
 }
