@@ -472,3 +472,9 @@ void advancedView::attenuateLaser( bool attenuate )
         ui.evoaControlWidget->setValue( evoa->getCurrVoltage() );
     }
 }
+
+void advancedView::handleAcqData()
+{
+    static int count{0};
+    qDebug() << __FUNCTION__ << ". " << ++count;
+}

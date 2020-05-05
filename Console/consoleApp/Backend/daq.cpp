@@ -142,6 +142,7 @@ void DAQ::run( void )
                 if( scanWorker->isReady )
                 {
                     OCTFile::OctData_t& axsunData = gFrameData[ gFrameNumber ];
+                    sendToAdvacedView(axsunData);
                     scanWorker->warpData( &axsunData, gBufferLength );
                     emit updateSector(&axsunData);
                 }
@@ -309,4 +310,9 @@ void DAQ::setDisplay(float angle, int direction)
 {
     qDebug() << "got to setDisplay" << angle << direction;
     emit setDisplayAngle( angle, direction );
+}
+
+void DAQ::sendToAdvacedView(const OCTFile::OctData_t &od)
+{
+    emit notifyAcqData();
 }

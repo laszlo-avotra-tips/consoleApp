@@ -1796,6 +1796,7 @@ void frontend::setIDAQ(IDAQ *object)
     if(idaq){
         if(idaq->getSignalSource()){
             connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
+            connect( idaq->getSignalSource(), &IDAQ::notifyAcqData, advView, &advancedView::handleAcqData);
         }
         idaq->init();
 //        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here

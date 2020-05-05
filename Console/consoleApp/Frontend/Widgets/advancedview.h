@@ -60,6 +60,7 @@ public slots:
     void displayClockingMode( int );
     void displayFirmwareVersions( QByteArray, QByteArray );
     void attenuateLaser( bool );
+    void handleAcqData();
 
 private slots:
     void on_laserDiodeButton_clicked();
