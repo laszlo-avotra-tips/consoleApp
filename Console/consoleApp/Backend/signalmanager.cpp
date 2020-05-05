@@ -96,6 +96,11 @@ void SignalManager::pushSignalContainer(const FftSignalType &signal)
     m_fftSignalQueue.push(signal);
 }
 
+bool SignalManager::isPlotListEmpty() const
+{
+    return m_advancedViewFftPlotList.isEmpty();
+}
+
 bool SignalManager::loadFftSignalBuffers()
 {
     bool success(true);

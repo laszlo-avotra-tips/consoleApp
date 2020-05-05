@@ -25,7 +25,7 @@ void SignalModel::allocateOctData()
 
         OCTFile::OctData_t oct;
 
-        oct.advancedViewIfftData   = new quint16 [rawDataSize];
+        oct.advancedViewIfftData  = new quint16 [rawDataSize];
         oct.advancedViewFftData   = new quint16 [fftDataSize];
         oct.dispData  = new uchar [dispDataSize];
         oct.videoData = new uchar [dispDataSize];
@@ -255,7 +255,7 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
     m_isAveragingNoiseReduction = isAveragingNoiseReduction;
 }
 
-void SignalModel::pushImageRenderingQueue(OctData od)
+void SignalModel::pushImageRenderingQueue(const OctData& od)
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     m_imageRenderingQueue.push(od);

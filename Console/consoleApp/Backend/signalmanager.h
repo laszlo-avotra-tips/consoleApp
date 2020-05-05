@@ -44,6 +44,8 @@ public:
     void  popSignalContainer();
     void  pushSignalContainer(const FftSignalType& signal);
 
+    bool isPlotListEmpty() const;
+
     QMutex* getMutex();
 
 signals:

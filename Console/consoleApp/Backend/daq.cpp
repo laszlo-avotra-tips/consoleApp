@@ -141,10 +141,7 @@ void DAQ::run( void )
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
                 if( scanWorker->isReady )
                 {
-                    static int count{0};
                     OCTFile::OctData_t& axsunData = gFrameData[ gFrameNumber ];
-//                    scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
-//                    emit updateSector(&gFrameData[ gFrameNumber ]);
                     scanWorker->warpData( &axsunData, gBufferLength );
                     emit updateSector(&axsunData);
                 }

@@ -19,7 +19,7 @@ public:
     OCTFile::OctData_t * getOctData(int index);
     void freeOctData();
 
-    void pushImageRenderingQueue(OctData od);
+    void pushImageRenderingQueue(const OctData& od);
     void popImageRenderingQueue();
     bool isImageRenderingQueueGTE(size_t length) const;
     std::pair<bool, OctData>  frontImageRenderingQueue();
@@ -27,6 +27,8 @@ public:
     const cl_uint* getInputLength() const;
 
     const cl_float* scaleFactor() const;
+
+    void storeAdvancedViewFftData(char* data);
 
      cl_uint linesPerRevolution() const;
     void setLinesPerRevolution(const cl_uint &linesPerRevolution);
