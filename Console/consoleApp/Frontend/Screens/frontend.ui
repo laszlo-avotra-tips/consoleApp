@@ -1302,11 +1302,11 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
+         <enum>QSizePolicy::Expanding</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>76</width>
+          <width>293</width>
           <height>20</height>
          </size>
         </property>
