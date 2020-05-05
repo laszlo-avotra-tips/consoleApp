@@ -52,7 +52,7 @@ signals:
 
 private:
     SignalManager();
-    void updateAdvancedViewFftPlotList();
+    void updateAdvancedViewFftPlotList(const FftSignalType& fft);
 
 private:
     static SignalManager* m_instance;

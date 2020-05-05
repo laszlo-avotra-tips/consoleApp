@@ -142,12 +142,11 @@ void DAQ::run( void )
                 if( scanWorker->isReady )
                 {
                     static int count{0};
-//                    if(++count%17 == 0){
-//                        LOG3(gFrameNumber, gBufferLength, &gFrameData[ gFrameNumber ])
-//                    }
-                    //scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength, currentDevice.glueLineOffset_px );
-                    scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
-                    emit updateSector(&gFrameData[ gFrameNumber ]);
+                    OCTFile::OctData_t& axsunData = gFrameData[ gFrameNumber ];
+//                    scanWorker->warpData( &gFrameData[ gFrameNumber ], gBufferLength );
+//                    emit updateSector(&gFrameData[ gFrameNumber ]);
+                    scanWorker->warpData( &axsunData, gBufferLength );
+                    emit updateSector(&axsunData);
                 }
             }
             else

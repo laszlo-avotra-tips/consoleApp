@@ -27,14 +27,16 @@ SignalManager::SignalManager()
 
 }
 
-void SignalManager::updateAdvancedViewFftPlotList()
+void SignalManager::updateAdvancedViewFftPlotList(const FftSignalType &fft)
 {
     QMutexLocker guard(&m_mutex);
-    if(m_fftImagData && m_fftRealData){
+    if(fft.second.first && fft.second.second){
+        const auto& imagArray = fft.second.first;
+        const auto& realArray = fft.second.second;
         m_advancedViewFftPlotList.clear();
         for(size_t i = 0; i < 1024; ++i){
-            const auto& imag = m_fftImagData[i];
-            const auto& real = m_fftRealData[i];
+            const auto& imag = imagArray[i];
+            const auto& real = realArray[i];
             const float amplitude = log10f(imag*imag + real*real);
             m_advancedViewFftPlotList.push_back(QPointF(i,amplitude));
         }
@@ -128,16 +130,14 @@ bool SignalManager::loadFftSignalBuffers()
         m_imagFile.seek(0);
         m_realFile.seek(0);
         m_signalTag = 0;
-//        LOG1(m_signalTag)
     }
 
     FftSignalType thisFft{m_signalTag,{m_fftImagData.get(), m_fftRealData.get()}};
     pushSignalContainer(thisFft);
-//    if(m_signalTag % 8 == 0)
-    {
-        updateAdvancedViewFftPlotList();
-    }
+    updateAdvancedViewFftPlotList(thisFft);
+
     emit signalLoaded();
+
     ++m_signalTag;
 
     return success;
