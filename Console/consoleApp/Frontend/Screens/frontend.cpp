@@ -326,7 +326,6 @@ void frontend::init( void )
     connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
 
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
-    connect( viewOption, SIGNAL( updateCatheterView() ), consumer,  SLOT( updateCatheterView() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), scene,     SLOT( clearSector() ) );
 
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
