@@ -1393,38 +1393,29 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
                <property name="toolTipDuration">
                 <number>5</number>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_4">
-                <property name="spacing">
-                 <number>0</number>
+               <widget class="QGroupBox" name="playbackGroupBox">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>255</y>
+                  <width>681</width>
+                  <height>571</height>
+                 </rect>
                 </property>
-                <property name="leftMargin">
-                 <number>0</number>
+                <property name="minimumSize">
+                 <size>
+                  <width>681</width>
+                  <height>571</height>
+                 </size>
                 </property>
-                <property name="topMargin">
-                 <number>0</number>
+                <property name="maximumSize">
+                 <size>
+                  <width>681</width>
+                  <height>571</height>
+                 </size>
                 </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QGroupBox" name="playbackGroupBox">
-                  <property name="minimumSize">
-                   <size>
-                    <width>681</width>
-                    <height>571</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>681</width>
-                    <height>571</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">
+                <property name="styleSheet">
+                 <string notr="true">
 QGroupBox {    
 	background: url(:/octConsole/Frontend/Resources/blank_texture.png);
     border-radius: 5px;
@@ -1439,33 +1430,31 @@ QGroupBox::title {
       padding-top: 7px;
 }
 </string>
-                  </property>
-                  <property name="title">
-                   <string/>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_3">
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="transport" name="transportWidget" native="true"/>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
+                </property>
+                <property name="title">
+                 <string/>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="transport" name="transportWidget" native="true"/>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </item>
             </layout>
