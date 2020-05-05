@@ -10,30 +10,36 @@ FormL300::FormL300(QWidget *parent) :
     ui(new Ui::FormL300)
 {
     ui->setupUi(this);
-    m_sector = new sectorItem();
-    m_scene = new liveScene(this);
+//    m_sector = new sectorItem();
+//    m_scene = new liveScene(this);
     m_graphicsView = ui->graphicsView;
-    m_scene->addItem(m_sector);
-    m_graphicsView->setScene(m_scene);
+//    m_scene->addItem(m_sector);
+//    m_graphicsView->setScene(m_scene);
 //    ui->pushButtonAvinger->setWindowOpacity(0.5f);
     hideButtons();
+}
+
+void FormL300::setScene(liveScene *scene)
+{
+    m_scene = scene;
+    m_graphicsView->setScene(m_scene);
 }
 
 FormL300::~FormL300()
 {
     delete ui;
-    delete m_sector;
+//    delete m_sector;
 }
 
-QGraphicsPixmapItem *FormL300::sectorHandle()
-{
-    return m_sector;
-}
+//QGraphicsPixmapItem *FormL300::sectorHandle()
+//{
+//    return m_sector;
+//}
 
-QImage *FormL300::sectorImage() const
-{
-    return m_sector->getSectorImage();
-}
+//QImage *FormL300::sectorImage() const
+//{
+//    return m_sector->getSectorImage();
+//}
 
 bool FormL300::isVisible() const
 {
@@ -41,15 +47,16 @@ bool FormL300::isVisible() const
     return !region.isEmpty();
 }
 
-sectorItem *FormL300::sector()
-{
-    return m_sector;
-}
 
-liveScene *FormL300::scene()
-{
-    return m_scene;
-}
+//sectorItem *FormL300::sector()
+//{
+//    return m_sector;
+//}
+
+//liveScene *FormL300::scene()
+//{
+//    return m_scene;
+//}
 
 void FormL300::on_pushButton_clicked()
 {
