@@ -402,6 +402,7 @@ void frontend::init( void )
 
     // connect the level gauge UI element with the depthSettings singleton object
     connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
+    connect( m_formL300, SIGNAL( depthChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
     ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
     ui.imagingDepthWidget->setEnabled( true );
 

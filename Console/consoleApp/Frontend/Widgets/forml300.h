@@ -23,6 +23,9 @@ public:
     bool isVisible() const;
     void setScene(liveScene* scene);
 
+signals:
+    void depthChanged(double);
+
 private slots:
     void on_pushButton_clicked();
     void on_pushButtonAvinger_toggled(bool checked);

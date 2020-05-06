@@ -384,28 +384,28 @@ void advancedView::initLinePlot()
         series->append(values);
         series->setPen(pen);
     }
-    {
-        QPen white;
-        white.setWidth(1);
-        white.setColor(QColor(255,255,255));
-        QList<QPointF> values;
-        for(size_t i = 0; i < 1024; ++i){
-                values.push_back(QPointF(i, whiteValue));
-        }
-        whiteSeries->append(values);
-        whiteSeries->setPen(white);
-    }
-    {
-        QPen black;
-        black.setColor(QColor(0,0,0));
-        black.setWidth(1);
-        QList<QPointF> values;
-        for(size_t i = 0; i < 1024; ++i){
-                values.push_back(QPointF(i, blackValue));
-        }
-        blackSeries->append(values);
-        blackSeries->setPen(black);
-    }
+//    {
+//        QPen white;
+//        white.setWidth(1);
+//        white.setColor(QColor(255,255,255));
+//        QList<QPointF> values;
+//        for(size_t i = 0; i < 1024; ++i){
+//                values.push_back(QPointF(i, whiteValue));
+//        }
+//        whiteSeries->append(values);
+//        whiteSeries->setPen(white);
+//    }
+//    {
+//        QPen black;
+//        black.setColor(QColor(0,0,0));
+//        black.setWidth(1);
+//        QList<QPointF> values;
+//        for(size_t i = 0; i < 1024; ++i){
+//                values.push_back(QPointF(i, blackValue));
+//        }
+//        blackSeries->append(values);
+//        blackSeries->setPen(black);
+//    }
 
 
 //![2]
@@ -415,8 +415,8 @@ void advancedView::initLinePlot()
 
     chart->legend()->hide();
     chart->addSeries(series);
-    chart->addSeries(whiteSeries);
-    chart->addSeries(blackSeries);
+//    chart->addSeries(whiteSeries);
+//    chart->addSeries(blackSeries);
     chart->createDefaultAxes();
     chart->setTheme(QChart::ChartThemeDark);
 //    chart->setTheme(QChart::ChartThemeBlueIcy);
