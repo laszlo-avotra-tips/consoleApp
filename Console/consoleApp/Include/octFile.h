@@ -46,11 +46,11 @@ public:
         unsigned long  timeStamp{0};
         unsigned short milliseconds{0};
         unsigned short encoderPosition{0};  // XXX: hijack for fast OCT direction bit
-        uint8_t  *acqData;
-        unsigned short *advancedViewIfftData{nullptr};         // used for Advanced View only
-        unsigned short *advancedViewFftData{nullptr};         // used for Advanced View, data storage
-        unsigned char  *dispData{nullptr};        // used for display
-        unsigned char  *videoData{nullptr};       // High Speed only: video frame with appropriate rotation built in
+        uint8_t *acqData;
+        uint8_t *advancedViewIfftData{nullptr};         // used for Advanced View only
+        uint8_t *advancedViewFftData{nullptr};         // used for Advanced View, data storage
+        uint8_t *dispData{nullptr};        // used for display
+        uint8_t *videoData{nullptr};       // High Speed only: video frame with appropriate rotation built in
     };
 
     OCTFile( unsigned short numLinesPerRev ); // constructor for the Console
