@@ -2558,7 +2558,7 @@ void frontend::createDisplays()
 
     this->hide();
     this->setGeometry( wmgr->getTechnicianDisplayGeometry() );
-    show(); //lcv this->showFullScreen();
+    showFullScreen(); //lcv this->showFullScreen(); show();
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
@@ -2704,6 +2704,6 @@ void frontend::on_pushButtonLogo_clicked()
 {
     qDebug() << __FUNCTION__;
     if(m_formL300){
-        m_formL300->show(); //lcv m_formL300->showFullScreen();
+        m_formL300->showFullScreen(); //lcv m_formL300->showFullScreen(); show();
     }
 }

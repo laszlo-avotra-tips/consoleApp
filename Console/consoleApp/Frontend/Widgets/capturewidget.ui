@@ -44,7 +44,7 @@ QListView {
 /* ---------- Group Boxes ---------- */
 
  QGroupBox {
-    font: 20px DINPro-medium;
+    font: 30px DINPro-medium;
     color: rgba(210, 210, 210, 255);
     background-color: #909090;
     border: 0px solid #909090;
@@ -63,14 +63,14 @@ QGroupBox::title {
 
 QLineEdit, QPlainTextEdit {
     color: #808080;
-	font: 15px DinPro-medium;
+	font: 22px DinPro-medium;
     selection-color: white;   
     border: 2px groove white;
     border-radius: 4px;
 }
 
 QLabel {
-	font: 20px &quot;DinPRO-medium&quot;;
+	font: 30px &quot;DinPRO-medium&quot;;
 	color: rgba( 128,128,128, 255 );
 }
 
@@ -85,7 +85,7 @@ QLabel {
 /* --------- General font and layout defaults ----------*/
 
 QDialog {
- font: 18px &quot;DinPRO-regular&quot;;
+ font: 24px &quot;DinPRO-regular&quot;;
  color: white;
  background-color: rgb( 147, 147, 147 );
  border: 1px solid rgb( 147, 147, 147 );
@@ -93,18 +93,18 @@ QDialog {
 }
 
 QWidget {
- font: 13px &quot;DinPRO-regular&quot;;
+ font: 20px &quot;DinPRO-regular&quot;;
 }
 
 QLabel {
- font: 18px &quot;DinPRO-regular&quot;;
+ font: 24px &quot;DinPRO-regular&quot;;
 }
 
 QLabel#titlebarLabel {
 	background: rgb( 51, 51, 51 );
 }
 QLabel#titlebarTextLabel {
-    font: 24pt &quot;DINPro-Medium&quot;;
+    font: 36pt &quot;DINPro-Medium&quot;;
     color: white;
 }
 
@@ -115,7 +115,7 @@ QLabel#instructionsLabel
 
 QLabel#instructionsTextLabel
 {
-    font: 12pt &quot;DINPro-Medium&quot;;
+    font: 18pt &quot;DINPro-Medium&quot;;
 }
 
 QLabel#wideDivideLabel
@@ -125,7 +125,7 @@ QLabel#wideDivideLabel
 
 QLabel#wideDivideTextLabel
 {
-    font: 12pt &quot;DINPro-Medium&quot;;
+    font: 18pt &quot;DINPro-Medium&quot;;
 }
 
 /* ---------------- Pushbuttons ----------------*/
@@ -135,7 +135,7 @@ QPushButton
     background: rgb( 52, 73, 94 );
     border: 1px solid rgb( 52, 73, 94 );
     color: white;
-    font: 12pt &quot;DinPRO-Medium&quot;;
+    font: 18pt &quot;DinPRO-Medium&quot;;
     text-align: center;
     border-radius: 10px;
     border-width: 2px;
@@ -173,7 +173,7 @@ QPushButton:checked
 /* --------- Spin Boxes -----------*/
 
 QAbstractSpinBox {
-	font: 18px DinPRO-medium;
+	font: 24px DinPRO-medium;
 	border: 0;
     border-radius: 5px;
 }
@@ -221,7 +221,7 @@ QAbstractSpinBox::down-arrow {
 
 QLineEdit, QListView {
     color: #808080;
-	font: 18px DinPro-medium;
+	font: 24px DinPro-medium;
     selection-color: white;   
     border: 2px groove white;
     border-radius: 4px;
@@ -259,7 +259,7 @@ QDialogButtonBox
 /* ---------- Group Boxes ---------- */
 
  QGroupBox {
-    font: 14.75pt DINPro-medium;
+    font: 22pt DINPro-medium;
     color: white;
     background-color: rgb( 51, 51, 51 );
     border-radius: 5px;
@@ -300,6 +300,12 @@ QGroupBox::title {
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QPushButton" name="showDecoratedPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>50</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Switch between the Raw and Decorated image captures.</string>
           </property>

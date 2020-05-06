@@ -1333,16 +1333,22 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
           </property>
           <item>
            <widget class="QGroupBox" name="capturesGroupBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
-              <width>681</width>
-              <height>1111</height>
+              <width>686</width>
+              <height>1600</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>681</width>
-              <height>1666</height>
+              <width>686</width>
+              <height>2060</height>
              </size>
             </property>
             <property name="font">
@@ -1360,71 +1366,74 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
             <property name="title">
              <string>REVIEW</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <property name="spacing">
-              <number>0</number>
+            <widget class="captureWidget" name="reviewWidget" native="true">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>385</y>
+               <width>686</width>
+               <height>1062</height>
+              </rect>
              </property>
-             <property name="leftMargin">
-              <number>0</number>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="topMargin">
-              <number>20</number>
+             <property name="minimumSize">
+              <size>
+               <width>686</width>
+               <height>1062</height>
+              </size>
              </property>
-             <property name="rightMargin">
-              <number>0</number>
+             <property name="maximumSize">
+              <size>
+               <width>686</width>
+               <height>1062</height>
+              </size>
              </property>
-             <property name="bottomMargin">
-              <number>0</number>
+             <property name="font">
+              <font>
+               <family>DinPRO-Medium</family>
+               <pointsize>36</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
              </property>
-             <item>
-              <widget class="captureWidget" name="reviewWidget" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>861</width>
-                 <height>1621</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>861</width>
-                 <height>1621</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <family>DinPRO-Medium</family>
-                 <pointsize>36</pointsize>
-                 <weight>50</weight>
-                 <italic>false</italic>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="toolTipDuration">
-                <number>5</number>
-               </property>
-               <widget class="QGroupBox" name="playbackGroupBox">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>255</y>
-                  <width>861</width>
-                  <height>1284</height>
-                 </rect>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>861</width>
-                  <height>1284</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>861</width>
-                  <height>1284</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">
+             <property name="toolTipDuration">
+              <number>5</number>
+             </property>
+             <widget class="QGroupBox" name="playbackGroupBox">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>255</y>
+                <width>686</width>
+                <height>1062</height>
+               </rect>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>686</width>
+                <height>1062</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>686</width>
+                <height>1062</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">
 QGroupBox {    
 	background: url(:/octConsole/Frontend/Resources/blank_texture.png);
     border-radius: 5px;
@@ -1439,34 +1448,32 @@ QGroupBox::title {
       padding-top: 7px;
 }
 </string>
-                </property>
-                <property name="title">
-                 <string/>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_3">
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="transport" name="transportWidget" native="true"/>
-                 </item>
-                </layout>
-               </widget>
-              </widget>
-             </item>
-            </layout>
+              </property>
+              <property name="title">
+               <string/>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="transport" name="transportWidget" native="true"/>
+               </item>
+              </layout>
+             </widget>
+            </widget>
            </widget>
           </item>
           <item>
