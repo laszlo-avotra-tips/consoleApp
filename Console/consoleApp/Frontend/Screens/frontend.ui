@@ -293,7 +293,13 @@ QGroupBox::title {
          <widget class="QPushButton" name="deviceSelectButton">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>125</width>
+            <height>84</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>125</width>
             <height>84</height>
            </size>
           </property>
@@ -395,8 +401,8 @@ SYNC</string>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="focusPolicy">
@@ -440,8 +446,8 @@ IMAGE</string>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="font">
@@ -478,8 +484,8 @@ IMAGE</string>
          <widget class="QPushButton" name="saveMeasurementButton">
           <property name="minimumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -514,14 +520,14 @@ OVERLAY</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>99</width>
-            <height>120</height>
+            <width>125</width>
+            <height>180</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>120</height>
+            <width>125</width>
+            <height>180</height>
            </size>
           </property>
          </widget>
