@@ -122,18 +122,7 @@ void advancedView::handleBrightnessChanged(int value)
     SignalModel::instance()->setBlackLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( value );
-}
-
-void advancedView::showRecordingFullCase(bool state)
-{
-    if( state )
-    {
-        ui.fullCaseRecordingValueLabel->setText( "ENABLED" );
-    }
-    else
-    {
-        ui.fullCaseRecordingValueLabel->setText( "DISABLED" );
-    }
+    qDebug() << __FUNCTION__ << "handleBrightnessChanged(int value)" << value;
 }
 
 /*
@@ -150,6 +139,19 @@ void advancedView::handleContrastChanged(int value)
     SignalModel::instance()->setWhiteLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setContrast( value );
+    qDebug() << __FUNCTION__ << "handleContrastChanged(int value)" << value;
+}
+
+void advancedView::showRecordingFullCase(bool state)
+{
+    if( state )
+    {
+        ui.fullCaseRecordingValueLabel->setText( "ENABLED" );
+    }
+    else
+    {
+        ui.fullCaseRecordingValueLabel->setText( "DISABLED" );
+    }
 }
 
 /*
@@ -354,24 +356,58 @@ void advancedView::initLinePlot()
 
     m_linePlot = std::make_unique<QChart>();
     m_lineSeries = std::make_unique<QLineSeries>();
+    m_whiteSeries = std::make_unique<QLineSeries>();
+    m_blackSeries = std::make_unique<QLineSeries>();
+
+    float whiteValue = 200.0f;
+    float blackValue = 50.0f;
 
 //![1]
     auto series = m_lineSeries.get();
+    auto whiteSeries = m_whiteSeries.get();
+    auto blackSeries = m_blackSeries.get();
+
 //![1]
 
 //![2]
-    QList<QPointF> values;
-    for(size_t i = 0; i < 1024; ++i){
-        if(i%3 == 0){
-            values.push_back(QPointF(i, -10));
-        }else{
-            values.push_back(QPointF(i, 256));
+    {
+        QPen pen;
+        pen.setWidth(1);
+        QList<QPointF> values;
+        for(size_t i = 0; i < 1024; ++i){
+            if(i%3 == 0){
+                values.push_back(QPointF(i, -10));
+            }else{
+                values.push_back(QPointF(i, 256));
+            }
         }
+        series->append(values);
+        series->setPen(pen);
     }
-    series->append(values);
-    QPen pen;
-    pen.setWidth(1);
-    series->setPen(pen);
+    {
+        QPen white;
+        white.setWidth(1);
+        white.setColor(QColor(255,255,255));
+        QList<QPointF> values;
+        for(size_t i = 0; i < 1024; ++i){
+                values.push_back(QPointF(i, whiteValue));
+        }
+        whiteSeries->append(values);
+        whiteSeries->setPen(white);
+    }
+    {
+        QPen black;
+        black.setColor(QColor(0,0,0));
+        black.setWidth(1);
+        QList<QPointF> values;
+        for(size_t i = 0; i < 1024; ++i){
+                values.push_back(QPointF(i, blackValue));
+        }
+        blackSeries->append(values);
+        blackSeries->setPen(black);
+    }
+
+
 //![2]
 
 //![3]
@@ -379,6 +415,8 @@ void advancedView::initLinePlot()
 
     chart->legend()->hide();
     chart->addSeries(series);
+    chart->addSeries(whiteSeries);
+    chart->addSeries(blackSeries);
     chart->createDefaultAxes();
     chart->setTheme(QChart::ChartThemeDark);
 //    chart->setTheme(QChart::ChartThemeBlueIcy);

@@ -97,4 +97,7 @@ private:
     const QFont AxisFont {"DinPRO-medium", 15};
 
     std::unique_ptr<QtCharts::QChart> m_linePlot;
-    std::unique_ptr<QtCharts::QLineSeries> m_lineSeries;};
+    std::unique_ptr<QtCharts::QLineSeries> m_lineSeries;
+    std::unique_ptr<QtCharts::QLineSeries> m_whiteSeries;
+    std::unique_ptr<QtCharts::QLineSeries> m_blackSeries;
+};
