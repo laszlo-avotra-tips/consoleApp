@@ -4,6 +4,7 @@
 //#include "controller.h"
 #include "logger.h"
 #include <algorithm>
+#include "signalmodel.h"
 
 #ifdef WIN32
 //#include "stdafx.h"     // Axsun includes
@@ -16,14 +17,13 @@ extern "C" {
 #define USE_LVDS_TRIGGER 1  // Use LVDS trigger (or LVCMOS)
 
 #define UINT16_MAX_VAL 65535
-#define NUM_OF_FRAME_BUFFERS 4
+#define NUM_OF_FRAME_BUFFERS FRAME_BUFFER_SIZE
 #define ALLOCATED_OVERRUN_BUFFER_SIZE ( 256 * FFT_DATA_SIZE )  // Overrun buffer for Ocelot Mode
 
 namespace{
 int gFrameNumber = 0;
 int gDaqCounter = 0;
 size_t gBufferLength;
-OCTFile::OctData_t gFrameData[ NUM_OF_FRAME_BUFFERS ];
 }
 
 //static uint8_t gDaqBuffer[ 256 * FFT_DATA_SIZE ];
@@ -41,13 +41,6 @@ DAQ::DAQ()
     gFrameNumber = NUM_OF_FRAME_BUFFERS - 1;
 
     connect(this, SIGNAL(setDisplayAngle(float, int)), scanWorker, SLOT(handleDisplayAngle(float, int)) );
-
-    // allocate frame memory without overrun buffer
-    for( int i = 0; i < NUM_OF_FRAME_BUFFERS; i++ )
-    {
-        gFrameData[ i ].acqData = (uint8_t *)malloc( MAX_ACQ_IMAGE_SIZE );
-        gFrameData[ i ].dispData = (unsigned char *)malloc( SECTOR_SIZE_B );
-    }
 
     if( !startDaq() )
     {
@@ -141,10 +134,10 @@ void DAQ::run( void )
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
                 if( scanWorker->isReady )
                 {
-                    OCTFile::OctData_t& axsunData = gFrameData[ gFrameNumber ];
-                    sendToAdvacedView(axsunData);
-                    scanWorker->warpData( &axsunData, gBufferLength );
-                    emit updateSector(&axsunData);
+                    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+                    sendToAdvacedView(*axsunData);
+                    scanWorker->warpData( axsunData, gBufferLength );
+                    emit updateSector(axsunData);
                 }
             }
             else
@@ -209,6 +202,8 @@ bool DAQ::getData( )
     }
     lastImageIdx = returned_image_number;
 
+    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+
     if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) )
     {
         axRetVal = axRequestImage( session,
@@ -217,14 +212,15 @@ bool DAQ::getData( )
                                    &height,
                                    &width,
                                    &data_type,
-                                   gFrameData[ gFrameNumber ].acqData,
+                                   axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
         gBufferLength = width;
 
         // write in frame information for recording/playback
-        gFrameData[ gFrameNumber ].frameCount = gDaqCounter;
-        gFrameData[ gFrameNumber ].timeStamp = fileTimer.elapsed();
-        gFrameData[ gFrameNumber ].milliseconds = 30;
+        axsunData->frameCount = gDaqCounter;
+        axsunData->timeStamp = fileTimer.elapsed();;
+        axsunData->milliseconds = 30;
+
         gDaqCounter++;
 
         if( axRetVal == 0 )
@@ -314,5 +310,14 @@ void DAQ::setDisplay(float angle, int direction)
 
 void DAQ::sendToAdvacedView(const OCTFile::OctData_t &od)
 {
-    emit notifyAcqData();
+    uint8_t const * const src{od.acqData};
+    uint8_t * const dst{od.advancedViewFftData};
+
+    if(src && dst){
+        const size_t bufferLength{FFTDataSize};
+        memcpy(dst,src,bufferLength);
+        emit notifyAcqData();
+    } else {
+        qDebug() << " src =" << src << ", dst=" << dst;
+    }
 }

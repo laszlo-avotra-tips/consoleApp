@@ -46,7 +46,7 @@ public:
         unsigned long  timeStamp{0};
         unsigned short milliseconds{0};
         unsigned short encoderPosition{0};  // XXX: hijack for fast OCT direction bit
-        uint8_t *acqData;
+        uint8_t *acqData{nullptr};
         uint8_t *advancedViewIfftData{nullptr};         // used for Advanced View only
         uint8_t *advancedViewFftData{nullptr};         // used for Advanced View, data storage
         uint8_t *dispData{nullptr};        // used for display

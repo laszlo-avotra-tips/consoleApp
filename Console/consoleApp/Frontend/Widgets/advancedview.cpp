@@ -475,6 +475,6 @@ void advancedView::attenuateLaser( bool attenuate )
 
 void advancedView::handleAcqData()
 {
-//    static int count{0};
-//    qDebug() << __FUNCTION__ << ". " << ++count;
+    static int count{0};
+    qDebug() << __FUNCTION__ << ". " << ++count;
 }

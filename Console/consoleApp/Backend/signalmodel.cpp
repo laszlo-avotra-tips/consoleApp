@@ -20,12 +20,12 @@ void SignalModel::allocateOctData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-    for(int i = 0; i < 3; ++i){
-//    for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
+//    for(int i = 0; i < 3; ++i){
+    for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
 
         OCTFile::OctData_t oct;
 
-        oct.advancedViewIfftData  = new uint8_t [rawDataSize];
+        oct.advancedViewIfftData  = new uint8_t [fftDataSize];
         oct.advancedViewFftData   = new uint8_t [fftDataSize];
         oct.dispData  = new uint8_t [dispDataSize];
         oct.videoData = new uint8_t [dispDataSize];
