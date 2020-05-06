@@ -363,9 +363,9 @@ void advancedView::initLinePlot()
     QList<QPointF> values;
     for(size_t i = 0; i < 1024; ++i){
         if(i%3 == 0){
-            values.push_back(QPointF(i, 3));
+            values.push_back(QPointF(i, -10));
         }else{
-            values.push_back(QPointF(i, 17));
+            values.push_back(QPointF(i, 256));
         }
     }
     series->append(values);
