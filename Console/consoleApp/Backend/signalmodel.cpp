@@ -20,15 +20,14 @@ void SignalModel::allocateOctData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-    for(int i = 0; i < 3; ++i){
-//  for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
+    for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
 
         OCTFile::OctData_t oct;
 
-        oct.advancedViewIfftData   = new quint16 [rawDataSize];
-        oct.advancedViewFftData   = new quint16 [fftDataSize];
-        oct.dispData  = new uchar [dispDataSize];
-        oct.videoData = new uchar [dispDataSize];
+        oct.advancedViewIfftData  = new uint8_t [fftDataSize];
+        oct.advancedViewFftData   = new uint8_t [fftDataSize];
+        oct.dispData  = new uint8_t [dispDataSize];
+        oct.videoData = new uint8_t [dispDataSize];
         oct.acqData   = new uint8_t [MAX_ACQ_IMAGE_SIZE];
 
         m_octData.push_back(oct);
@@ -39,6 +38,16 @@ void SignalModel::allocateOctData()
 const cl_int* SignalModel::getSectorHeight_px() const
 {
     return &m_sectorHeight_px;
+}
+
+void SignalModel::setAdvacedViewSourceFrameNumber(int frameNumber)
+{
+    m_dvacedViewSourceFrameNumber = frameNumber;
+}
+
+const uint8_t *SignalModel::getAdvancedViewFrame() const
+{
+    return m_octData[m_dvacedViewSourceFrameNumber].advancedViewFftData;
 }
 
 const cl_int* SignalModel::getSectorWidth_px() const
@@ -255,7 +264,7 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
     m_isAveragingNoiseReduction = isAveragingNoiseReduction;
 }
 
-void SignalModel::pushImageRenderingQueue(OctData od)
+void SignalModel::pushImageRenderingQueue(const OctData& od)
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     m_imageRenderingQueue.push(od);

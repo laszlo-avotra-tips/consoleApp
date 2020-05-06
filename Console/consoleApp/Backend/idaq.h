@@ -36,6 +36,7 @@ signals:
     void signalDaqResetToFrontend( void );
     void attenuateLaser( bool );
     void updateSector(const OCTFile::OctData_t*);
+    void notifyAcqData();
 
 public slots:
     virtual void enableAuxTriggerAsTriggerEnable( bool ) = 0; //  * R&D only

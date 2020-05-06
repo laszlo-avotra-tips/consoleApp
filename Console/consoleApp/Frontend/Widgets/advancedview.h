@@ -60,6 +60,7 @@ public slots:
     void displayClockingMode( int );
     void displayFirmwareVersions( QByteArray, QByteArray );
     void attenuateLaser( bool );
+    void handleAcqData();
 
 private slots:
     void on_laserDiodeButton_clicked();
@@ -96,4 +97,7 @@ private:
     const QFont AxisFont {"DinPRO-medium", 15};
 
     std::unique_ptr<QtCharts::QChart> m_linePlot;
-    std::unique_ptr<QtCharts::QLineSeries> m_lineSeries;};
+    std::unique_ptr<QtCharts::QLineSeries> m_lineSeries;
+    std::unique_ptr<QtCharts::QLineSeries> m_whiteSeries;
+    std::unique_ptr<QtCharts::QLineSeries> m_blackSeries;
+};

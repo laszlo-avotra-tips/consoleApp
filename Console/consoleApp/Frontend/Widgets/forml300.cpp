@@ -129,4 +129,5 @@ void FormL300::on_horizontalSliderZoom_valueChanged(int value)
 {
     int depth = m_imagingDepth[value];
     SignalModel::instance()->setImagingDepth_S(depth);
+    emit depthChanged(double(depth));
 }
