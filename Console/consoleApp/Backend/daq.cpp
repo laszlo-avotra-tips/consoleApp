@@ -135,7 +135,7 @@ void DAQ::run( void )
                 if( scanWorker->isReady )
                 {
                     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-                    sendToAdvacedView(*axsunData);
+                    sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
                     emit updateSector(axsunData);
                 }
@@ -308,10 +308,11 @@ void DAQ::setDisplay(float angle, int direction)
     emit setDisplayAngle( angle, direction );
 }
 
-void DAQ::sendToAdvacedView(const OCTFile::OctData_t &od)
+void DAQ::sendToAdvacedView(const OCTFile::OctData_t &od, int frameNumber)
 {
     uint8_t const * const src{od.acqData};
     uint8_t * const dst{od.advancedViewFftData};
+    SignalModel::instance()->setAdvacedViewSourceFrameNumber(frameNumber);
 
     if(src && dst){
         const size_t bufferLength{FFTDataSize};

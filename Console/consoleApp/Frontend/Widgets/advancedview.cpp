@@ -412,7 +412,7 @@ void advancedView::initLinePlot()
 
 void advancedView::updatePlot()
 {
-    QMutexLocker quard(SignalManager::instance()->getMutex());
+    QMutexLocker guard(SignalManager::instance()->getMutex());
 
     const auto& values = SignalManager::instance()->getAdvancedViewFftPlotList();
     if(m_lineSeries->pointsVector().isEmpty()){
@@ -475,6 +475,12 @@ void advancedView::attenuateLaser( bool attenuate )
 
 void advancedView::handleAcqData()
 {
-    static int count{0};
-    qDebug() << __FUNCTION__ << ". " << ++count;
+//    static int count{0};
+    auto* sModel = SignalModel::instance();
+    auto* data = sModel->getAdvancedViewFrame();
+    auto* sManager = SignalManager::instance();
+    if(sManager->setAdvancedViewFftPlotList(data)){
+//        qDebug() << __FUNCTION__ << ". " << data[0] << " " << data[1] << data[2] << data[3];
+        updatePlot();
+    }
 }

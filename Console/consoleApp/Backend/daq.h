@@ -50,7 +50,7 @@ public slots:
     void setDisplay( float, int );
 
 private:
-    void sendToAdvacedView(const OCTFile::OctData_t& od);
+    void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
 
 private:
     AOChandle session = NULL;

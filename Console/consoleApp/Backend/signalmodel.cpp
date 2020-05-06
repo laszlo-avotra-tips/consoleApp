@@ -20,7 +20,6 @@ void SignalModel::allocateOctData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-//    for(int i = 0; i < 3; ++i){
     for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
 
         OCTFile::OctData_t oct;
@@ -39,6 +38,16 @@ void SignalModel::allocateOctData()
 const cl_int* SignalModel::getSectorHeight_px() const
 {
     return &m_sectorHeight_px;
+}
+
+void SignalModel::setAdvacedViewSourceFrameNumber(int frameNumber)
+{
+    m_dvacedViewSourceFrameNumber = frameNumber;
+}
+
+const uint8_t *SignalModel::getAdvancedViewFrame() const
+{
+    return m_octData[m_dvacedViewSourceFrameNumber].advancedViewFftData;
 }
 
 const cl_int* SignalModel::getSectorWidth_px() const

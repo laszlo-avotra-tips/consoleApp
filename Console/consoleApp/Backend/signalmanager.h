@@ -45,6 +45,7 @@ public:
     void  pushSignalContainer(const FftSignalType& signal);
 
     bool isPlotListEmpty() const;
+    bool setAdvancedViewFftPlotList(const uint8_t* data);
 
     QMutex* getMutex();
 

@@ -101,6 +101,10 @@ public: //functions
     const cl_int* getSectorWidth_px() const;
     const cl_int* getSectorHeight_px() const;
 
+    void setAdvacedViewSourceFrameNumber(int frameNumber);
+
+    const uint8_t* getAdvancedViewFrame() const;
+
 private: //functions
     SignalModel();
     void allocateOctData();
@@ -146,6 +150,8 @@ private: //data
     //post warp
     cl_mem m_warpImageBuffer{nullptr};
     cl_mem m_warpVideoBuffer{nullptr};
+
+    int m_dvacedViewSourceFrameNumber{0};
 };
 
 #endif // SIGNALMODEL_H

@@ -101,6 +101,21 @@ bool SignalManager::isPlotListEmpty() const
     return m_advancedViewFftPlotList.isEmpty();
 }
 
+bool SignalManager::setAdvancedViewFftPlotList(const uint8_t *data)
+{
+    bool success{false};
+    QMutexLocker guard(&m_mutex);
+    if(data){
+    m_advancedViewFftPlotList.clear();
+        for(size_t i = 0; i < 1024; ++i){
+            const float amplitude = data[i] * 0.05f;
+            m_advancedViewFftPlotList.push_back(QPointF(i,amplitude));
+        }
+        success = true;
+    }
+    return success;
+}
+
 bool SignalManager::loadFftSignalBuffers()
 {
     bool success(true);
