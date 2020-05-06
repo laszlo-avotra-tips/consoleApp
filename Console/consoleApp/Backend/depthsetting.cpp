@@ -9,6 +9,7 @@
 #include "deviceSettings.h"
 #include "defaults.h"
 #include "signalmodel.h"
+#include "logger.h"
 
 depthSetting* depthSetting::theDepthManager{nullptr};
 
@@ -89,9 +90,10 @@ depthSetting::~depthSetting()
  */
 void depthSetting::updateImagingDepth( double newDepth )
 {
+    LOG1(newDepth);
     imagingDepth_S = float(newDepth);
     calculateReticles();
-    SignalModel::instance()->setImagingDepth_S(int(getImagingDepth_S()));
+    SignalModel::instance()->setImagingDepth_S(int(newDepth));
 }
 
 /*

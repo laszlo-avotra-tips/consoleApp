@@ -167,13 +167,6 @@ public slots:
 		force = true;
 	}
 
-#if ENABLE_ON_SCREEN_RULER
-    void setSlidingPoint( int val )
-    {
-        sector->setSlidingPoint( val );
-    }
-#endif
-
     void setClipForPlayback( QString name );
     void startPlayback( void );
     void pausePlayback(  );

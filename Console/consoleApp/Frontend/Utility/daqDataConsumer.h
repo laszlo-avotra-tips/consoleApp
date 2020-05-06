@@ -44,6 +44,7 @@ signals:
     void sendVideoDuration( int );
     void updateBrightness( int );
     void updateContrast( int );
+    void updateSector(const OCTFile::OctData_t*);
 
 public slots:
     void handleTagEvent( QString );
@@ -51,7 +52,6 @@ public slots:
     void setClipFile( QString clipFilename ) { clipFile = clipFilename; }
     void startClipRecording(void);
     void stopClipRecording(void);
-    void updateCatheterView();
     void handleAutoAdjustBrightnessAndContrast( void );
 
 protected:
@@ -86,8 +86,6 @@ private:
     directionTracker dirTracker;
     directionTracker::Direction_T prevDirection;
     directionTracker::Direction_T currDirection;
-
-//    bool useDistalToProximalView;
 
     QTime processingTimer;
     QTime frameTimer;

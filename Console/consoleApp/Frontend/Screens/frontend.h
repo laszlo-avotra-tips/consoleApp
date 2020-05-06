@@ -75,7 +75,6 @@ public slots:
     void handleDaqReset();
     void setupDeviceForSledSupport();
     void changeDeviceSpeed(int, int);
-    void dirButton( int );
 
 
     // These are sent from external objects to the frontend:
@@ -106,6 +105,7 @@ public slots:
     void handleBadMonitorConfig();
     void enableDisableMeasurementForCapture( int pixelsPerMm );
     void updateSector(const OCTFile::OctData_t*);
+    void on_zoomSlider_valueChanged(int value);
 
 #if ENABLE_COLORMAP_OPTIONS
     void curvesDialogFinished();
@@ -145,10 +145,6 @@ signals:
     void directionOfRotation( directionTracker::Direction_T );
     void sendLagAngle( double );
 
-#if ENABLE_ON_SCREEN_RULER
-    void setSlidingPoint( int );
-#endif
-
 //    void setSledRotation( bool );
 	void setDoPaint();
 
@@ -175,6 +171,7 @@ private:
 
     QString origDeviceLabelStyleSheet;
     QString origLiveGroupBoxStyleSheet;
+    QString origLiveQLabelStyleSheet;
 
     bool isMeasureModeActive;
     bool measureModeAllowed{true};
@@ -195,7 +192,7 @@ private:
    	curvesDialog *curveDlg;
 #endif
 
-    liveScene *scene;
+    liveScene *scene{nullptr};
 
     lagWizard *lagHandler;
     std::unique_ptr<caseInfoWizard> caseWizard{nullptr};
@@ -272,7 +269,6 @@ private slots:
     void on_measureModePushButton_clicked();
     void on_saveMeasurementButton_clicked();
 
-    void on_zoomSlider_valueChanged(int value);
     void handleTechViewHorizontalPan(int value);
     void handleTechViewVerticalPan(int value);
     void on_zoomResetPushButton_clicked();
@@ -286,11 +282,6 @@ private slots:
     void on_autoAdjustBrightnessContrastButton_clicked();
     void on_captureImageButton_clicked();
     void on_annotateImagePushButton_clicked();
-    void on_directionPushButton_clicked();
-
-#if ENABLE_ON_SCREEN_RULER
-    void on_rulerSlidingPointSpinbox_valueChanged( int val );
-#endif
 
     void createDisplays();
     void hideDisplays();

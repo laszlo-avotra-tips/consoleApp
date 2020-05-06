@@ -60,7 +60,6 @@ DaqDataConsumer::DaqDataConsumer( liveScene *s,
     currDirection = directionTracker::Stopped;
     videoEncoder::initVideoLibrary();
 
-//    useDistalToProximalView = true;
     processingTimer.start();
 
     safeFrameBuffer = static_cast<char*>(malloc( SectorHeight_px * SectorWidth_px ) );
@@ -163,6 +162,10 @@ void DaqDataConsumer::run( void )
             frame->dispData   = new QByteArray( reinterpret_cast<const char *>(m_octData.dispData), int(frame->depth * frame->width) );
             frame->videoData  = new QByteArray( reinterpret_cast<const char *>(m_octData.videoData), int(frame->depth * frame->width ) );
             frame->timestamp  = m_octData.timeStamp;
+
+//lcv            qDebug() << __FILE__ << ":" << __LINE__ << " frame->depth * frame->width = " << frame->depth * frame->width;
+            memcpy(m_octData.acqData,m_octData.dispData,int(frame->depth * frame->width));
+            emit  updateSector(&m_octData);
 
             // Add this line to the scene
             sceneInThread->addScanFrame( frame );
@@ -479,17 +482,5 @@ void DaqDataConsumer::handleAutoAdjustBrightnessAndContrast( void )
         emit updateBrightness( newBrightness );
         emit updateContrast( newContrast );
     }
-}
-
-/*
- * updateCatheterView
- *
- * Update the member variable. Use a cached member variable for improved performance instead of making the
- * context change to userSettings::catheterView() within run().
- */
-void DaqDataConsumer::updateCatheterView()
-{
-    userSettings &user = userSettings::Instance();
-//    useDistalToProximalView = user.isDistalToProximalView();
 }
 

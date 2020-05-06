@@ -40,7 +40,6 @@ public:
     QTime fileTimer;
 
 signals:
-//    void updateSector(const OCTFile::OctData_t*);
     void fpsCount( int );
     void linesPerFrameCount( int );
     void missedImagesCount( int );
@@ -50,8 +49,8 @@ public slots:
     void setLaserDivider( int divider );
     void setDisplay( float, int );
 
-//protected:
-//    void run( void );
+private:
+    void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
 
 private:
     AOChandle session = NULL;

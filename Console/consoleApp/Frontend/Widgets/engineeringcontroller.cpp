@@ -100,7 +100,7 @@ void EngineeringController::playbackStartStopCommand(bool isStart)
 
 void EngineeringController::setPlaybackSpeed(int speed)
 {
-    PlaybackManager::instance()->setPlaybackSpeed(speed);
+    PlaybackManager::instance()->setPlaybackLoopDelay(speed);
     m_frameRateTimer.restart();
     m_count[1] = m_count[0];
 }

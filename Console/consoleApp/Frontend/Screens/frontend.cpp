@@ -98,47 +98,17 @@ frontend::frontend(QWidget *parent)
     // save the tip as defined in Designer so it can be restored as necessary
     defaultSceneToolTip = ui.liveGraphicsView->toolTip();
 
-    ui.loopMaskLabel->hide();
-
-    ui.evoaOffLabel->hide();
-
-    ui.rawDataPushButton->hide();
-    ui.rawSnapshotSpinBox->hide();
-
-#if ENABLE_VIDEO_CRF_QUALITY_TESTING
-    ui.crfTestLabel->show();
-    ui.crfTestSpinBox->show();
-#else
-    ui.crfTestLabel->hide();
-    ui.crfTestSpinBox->hide();
-#endif
+//    ui.loopMaskLabel->hide();
 
     // these are always hidden at start-up
 //    ui.measureModePushButton->hide();
     ui.saveMeasurementButton->hide();
-    ui.directionPushButton->hide();
 
-#if ENABLE_ON_SCREEN_RULER
-    ui.rulerSlidingPointSpinbox->show();
-#else
-    ui.rulerSlidingPointSpinbox->hide();
-#endif
-
-#if ENABLE_COLORMAP_OPTIONS
-    populateColormapList();
-    ui.contrastCurveButton->show();
-    ui.colormapGroupBox->show();
-    // Set default linear value map
-    curveDlg = nullptr;
-#else
-    ui.contrastCurveButton->hide();
-#endif
 
     ui.zoomLevelLabel->setBuddy( ui.zoomSlider );
     ui.zoomResetPushButton->hide();
 
     ui.liveViewPushButton->hide();
-
 
     // Hide things that only appear on demand.
     playbackControlsVisible( false );
@@ -156,21 +126,21 @@ frontend::frontend(QWidget *parent)
      * pre-create the View Options pane
      */
     viewOption = new viewOptions( this );
+    viewOption->setGeometry( 2560 - viewOption->width() - 100,
+                             0,
+                             viewOption->width(),
+                             viewOption->height() );
+
     viewOption->hide();
 
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( ui.liveGroupBox->x() + ui.liveGroupBox->width() + 10, // 10 px to the right of liveGroupBox
+    advView->setGeometry( 2560 - advView->width() - 100,
                           0,
                           advView->width(),
                           advView->height() );
 
-    // Position the View Options Screen
-    viewOption->setGeometry( ui.capturesGroupBox->x(),
-                             0,
-                             viewOption->width(),
-                             viewOption->height() );
     advView->hide();
 
     m_ec = new EngineeringController(this);
@@ -260,7 +230,7 @@ frontend::frontend(QWidget *parent)
 
     // Save the style sheet for restoring after using review mode
     origDeviceLabelStyleSheet = ui.deviceFieldLabel->styleSheet();
-    origLiveGroupBoxStyleSheet = ui.liveGroupBox->styleSheet();
+    origLiveQLabelStyleSheet = ui.label_live->styleSheet();
 
 #if ENABLE_MEASUREMENT_PRECISION
     QLabel *measurementPrecisionLabel = new QLabel( "Measurement Precision Enabled\nNOT FOR HUMAN USE", this );
@@ -353,8 +323,9 @@ void frontend::init( void )
                                     advView,
                                     session.getCurrentEventLog() );
 
+    connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
+
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
-    connect( viewOption, SIGNAL( updateCatheterView() ), consumer,  SLOT( updateCatheterView() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), scene,     SLOT( clearSector() ) );
 
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
@@ -374,10 +345,6 @@ void frontend::init( void )
 
     connect( this, SIGNAL(disableMouseRotateSector()), scene, SLOT(handleDisableMouseRotateSector()) );
     connect( this, SIGNAL(enableMouseRotateSector()),  scene, SLOT(handleEnableMouseRotateSector()) );
-
-#if ENABLE_ON_SCREEN_RULER
-    connect( this, SIGNAL( setSlidingPoint( int ) ),     scene, SLOT( setSlidingPoint( int ) ) );
-#endif
 
     connect( &session, SIGNAL(sendSessionEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
@@ -435,6 +402,7 @@ void frontend::init( void )
 
     // connect the level gauge UI element with the depthSettings singleton object
     connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
+    connect( m_formL300, SIGNAL( depthChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
     ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
     ui.imagingDepthWidget->setEnabled( true );
 
@@ -462,7 +430,6 @@ int frontend::setupCase( bool isInitialSetup )
     }
     else // Launched from the case details button.
     {
-        ui.directionPushButton->hide();
         // Require case information before anything else happens
         caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
 
@@ -517,8 +484,7 @@ void frontend::setupScene( void )
 
     scene = new liveScene( this );
     m_formL300 = new FormL300( this );
-
-    liveScene* sceneL300 = m_formL300->scene();
+    m_formL300->setScene(scene);
 
     connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -550,8 +516,6 @@ void frontend::setupScene( void )
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              scene,      SLOT(handleReticleBrightnessChanged(int)) );
-    connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
-             sceneL300,      SLOT(handleReticleBrightnessChanged(int)) );
 
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
              scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
@@ -1293,7 +1257,7 @@ void frontend::on_recordLoopButton_clicked()
         ui.recordingLabel->show();
         docWindow->ui.recordingLabel->show();
         auxMon->setText( AuxMonitor::Recording, true );
-        ui.loopMaskLabel->show();
+//        ui.loopMaskLabel->show();
 
         // record the start time
         clipTimestamp = QDateTime::currentDateTime().toUTC();
@@ -1363,7 +1327,7 @@ void frontend::handleClipRecordingStopped( void )
     ui.recordingLabel->hide();
     docWindow->ui.recordingLabel->hide();
     auxMon->setText( AuxMonitor::Recording, false );
-    ui.loopMaskLabel->hide();
+//    ui.loopMaskLabel->hide();
 
     viewOption->enableButtons();
     ui.reviewWidget->enableClipSelection();
@@ -1568,7 +1532,7 @@ void frontend::playbackControlsVisible( bool state )
  */
 void frontend::handleStatusText( QString status )
 {
-    ui.liveGroupBox->setTitle( status );
+    ui.label_live->setText( status );
 //lcv    docWindow->ui.statusLabel->setText( status );
     auxMon->setText( AuxMonitor::Status, true, status );
 }
@@ -1832,12 +1796,11 @@ void frontend::setIDAQ(IDAQ *object)
 
     if(idaq){
         if(idaq->getSignalSource()){
-            connect( idaq->getSignalSource(), SIGNAL(updateSector(const OCTFile::OctData_t*)), this, SLOT(updateSector(const OCTFile::OctData_t*)) );
-//this does not work            connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
+            connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
+            connect( idaq->getSignalSource(), &IDAQ::notifyAcqData, advView, &advancedView::handleAcqData);
         }
         idaq->init();
-        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
-
+//        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
     }
     // Sync the view options from the System.ini
     viewOption->updateValues();
@@ -2010,25 +1973,19 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QImage* image{nullptr};
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    if(!m_formL300->isVisible()){
-        image = scene->sectorImage();
-        pixmap = scene->sectorHandle();
-    }else {
-        image = m_formL300->sectorImage();
-        pixmap = m_formL300->sectorHandle();
-    }
+
+    image = scene->sectorImage();
+    pixmap = scene->sectorHandle();
+    scene->setDoPaint();
 
     if(image){
         memcpy( image->bits(), frameData->dispData, SectorSize );
     }
+
     if(pixmap){
         QPixmap tmpPixmap = QPixmap::fromImage( *image );
         pixmap->setPixmap(tmpPixmap);
     }
-    if(!m_formL300->isVisible()){
-        scene->setDoPaint();
-    }
-//    qDebug() << __FUNCTION__ << " -> m_formL300 is visible = " << m_formL300->isVisible();
 }
 
 /*
@@ -2316,7 +2273,7 @@ void frontend::handleDisplayingCapture()
 
     ui.liveViewPushButton->show();
     ui.reviewWidget->disableClipSelection();
-    ui.loopMaskLabel->show();
+//    ui.loopMaskLabel->show();
     ui.measureModePushButton->show(); // Allow access to Measurement during capture review
     ui.measureModePushButton->setEnabled( true );
     configureDisplayForReview();
@@ -2341,7 +2298,7 @@ void frontend::configureDisplayForReview()
     ui.scanSyncButton->setEnabled( false );
     ui.displayOptionsButton->setDisabled( true );
     ui.deviceSelectButton->setDisabled( true );
-    ui.imageSettingsGroupBox->setDisabled( true );
+    ui.GroupBoxBandC->setDisabled( true );
     advView->setReviewState();
     ui.advancedViewButton->setDisabled( true );
     ui.recordLoopButton->setDisabled( true );
@@ -2364,8 +2321,8 @@ void frontend::configureDisplayForReview()
     scene->hideAnnotations();
     docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
-    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 16pt DinPRO-Medium; color: yellow; }" );
-    ui.liveGroupBox->setStyleSheet( "QGroupBox { color: yellow; }" );
+    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 14.75pt DinPRO-Medium; color: yellow; }" );
+    ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 14.75pt DINPro-medium;}" );
 }
 
 /*
@@ -2406,7 +2363,7 @@ void frontend::on_liveViewPushButton_clicked()
     else
     {
         ui.reviewWidget->enableClipSelection();
-        ui.loopMaskLabel->hide();
+//        ui.loopMaskLabel->hide();
     }
 
     enableCaptureButtons();
@@ -2416,7 +2373,7 @@ void frontend::on_liveViewPushButton_clicked()
 
     ui.displayOptionsButton->setEnabled( true );
     ui.deviceSelectButton->setEnabled( true );
-    ui.imageSettingsGroupBox->setEnabled( true );
+    ui.GroupBoxBandC->setEnabled( true );
     advView->setLiveState();
     ui.advancedViewButton->setEnabled( true );
     viewOption->enableButtons();
@@ -2455,7 +2412,7 @@ void frontend::on_liveViewPushButton_clicked()
     deviceSettings &dev = deviceSettings::Instance();
     ui.deviceFieldLabel->setText( dev.current()->getDeviceName() );
     ui.deviceFieldLabel->setStyleSheet( origDeviceLabelStyleSheet );
-    ui.liveGroupBox->setStyleSheet( origLiveGroupBoxStyleSheet );
+    ui.label_live->setStyleSheet( origLiveQLabelStyleSheet );
 }
 
 /*
@@ -2542,15 +2499,6 @@ void frontend::on_annotateImagePushButton_clicked()
     }
 }
 
-#if ENABLE_ON_SCREEN_RULER
-/*
- * on_rulerSlidingPointSpinbox_valueChanged
- */
-void frontend::on_rulerSlidingPointSpinbox_valueChanged( int val )
-{
-    emit setSlidingPoint( val );
-}
-#endif
 
 /*
  * handleScreenChanges
@@ -2610,7 +2558,7 @@ void frontend::createDisplays()
 
     this->hide();
     this->setGeometry( wmgr->getTechnicianDisplayGeometry() );
-    this->showFullScreen();//show(); //lcv this->showFullScreen();
+    show(); //lcv this->showFullScreen();
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
@@ -2712,20 +2660,6 @@ void frontend::setupDeviceForSledSupport()
 {
     qDebug() << "**** setupDevice";
     emit updateDeviceForSledSupport();
-/*
-    deviceSettings &ds = deviceSettings::Instance();
-    if(ds.current()->isBidirectional())
-    {
-        ui.directionPushButton->show();
-//		ui.directionPushButton->setChecked( lastDirCCW );
-//      on_directionPushButton_clicked();	// change to Passive direction (CCW)
-    }
-    else
-    {
-        ui.directionPushButton->hide();
-    }
-*/
-//    qDebug() << "***** new device: " << ds.current()->getDeviceName();
 }
 
 /*
@@ -2750,47 +2684,6 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     setupDeviceForSledSupport();
 }
 
-/*
- * on_directionPushButton_clicked()
- *
- * Change catheter direction upon request.
- */
-void frontend::on_directionPushButton_clicked()
-{
-    qDebug() << "direction button clicked";
-    ui.directionPushButton->setChecked( false );
-    SledSupport &sledSupport = SledSupport::Instance();
-    deviceSettings &dev = deviceSettings::Instance();
-//lcv    if(dev.current()->getRotation() == 0 )
-//    {
-//        sledSupport.setSledRotation( 1 );   // CCW
-//    }
-//    else if(dev.current()->getRotation() == 1 )
-//    {
-//        sledSupport.setSledRotation( 0 );   // CW
-//    }
-}
-
-void frontend::dirButton(int mode)
-{
-//    qDebug() << "dirButton" << mode;
-    if(mode == 0)
-    {
-        ui.directionPushButton->setText("DIRECTION\nSet Passive");
-        ui.directionPushButton->setStyleSheet("color: black; background-color: #2A8C91;");     // bluish (3/5)
-        ui.directionPushButton->show();
-    }
-    else if(mode == 1)
-    {
-        ui.directionPushButton->setText("DIRECTION\nSet Active");
-        ui.directionPushButton->setStyleSheet("color: black; background-color: #8E8E4E;");     // yellowish (3/5)
-        ui.directionPushButton->show();
-    }
-	else
-	{
-        ui.directionPushButton->hide();
-	}
-}
 
 void frontend::on_EgineeringButton_toggled(bool checked)
 {
@@ -2807,13 +2700,10 @@ void frontend::hideDecoration(void)
 }
 
 
-
 void frontend::on_pushButtonLogo_clicked()
 {
     qDebug() << __FUNCTION__;
-//    hide();
-    if(!m_formL300){
-        m_formL300 = new FormL300(this);
+    if(m_formL300){
+        m_formL300->show(); //lcv m_formL300->showFullScreen();
     }
-    m_formL300->showFullScreen();
 }

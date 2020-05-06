@@ -7,26 +7,8 @@
     <x>0</x>
     <y>0</y>
     <width>686</width>
-    <height>1700</height>
+    <height>1062</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>686</width>
-    <height>1700</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>686</width>
-    <height>1700</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -311,20 +293,11 @@ QGroupBox::title {
       <string>Images</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
       <property name="topMargin">
        <number>30</number>
       </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QPushButton" name="showDecoratedPushButton">
           <property name="toolTip">
@@ -590,20 +563,11 @@ QGroupBox::title {
       <string>Loops</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
       <property name="topMargin">
        <number>30</number>
       </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">

@@ -229,8 +229,6 @@ int main(int argc, char *argv[])
 //                          &frontEndWindow,           SLOT(   changeDeviceSpeed( int, int ) ) );
 //        QObject::connect( &sledSupport, SIGNAL( handleError(QString ) ),
 //                          &frontEndWindow,           SLOT(   handleError(QString) ) );
-//        QObject::connect( &sledSupport, SIGNAL( setDirButton( int ) ),
-//                          &frontEndWindow,           SLOT(   dirButton( int ) ) );
 //
 //        QObject::connect( &frontEndWindow, SIGNAL( checkSledStatus() ), &sledSupport, SLOT( getAllStatus() ) );
 //
@@ -262,7 +260,7 @@ int main(int argc, char *argv[])
         if(setting.getIsSimulation()){
             frontEndWindow.startDataCapture();
         }
-
+        frontEndWindow.on_zoomSlider_valueChanged(100);
 //#if QT_NO_DEBUG
 //        frontEndWindow.setupDeviceForSledSupport();
 //#endif

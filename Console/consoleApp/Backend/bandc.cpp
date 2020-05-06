@@ -64,11 +64,11 @@ bool BeAndCe::setKernelArguments(cl_kernel kernel)
         return false;
     }
 
-    //lcv debug Brightness and contrast
-    float br = 227.0f;
-    float cntr = 27.0f;
-
     const auto* smi = SignalModel::instance();
+    //lcv debug Brightness and contrast
+    float br = 227.0f + *(smi->whiteLevel());
+    float cntr = 27.0f+ *(smi->blackLevel());
+
 
     cl_int clStatus  = clSetKernelArg( kernel, 0, sizeof(cl_mem), smi->fftImageBuffer() );
     if( clStatus != CL_SUCCESS )

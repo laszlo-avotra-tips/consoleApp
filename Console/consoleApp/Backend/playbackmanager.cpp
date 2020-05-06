@@ -21,7 +21,7 @@ bool PlaybackManager::isPlayback() const
 }
 
 PlaybackManager::PlaybackManager()
-    : QObject(nullptr), m_isPlayback(true),m_playbackLoopSleep(1),m_isSingleStep(false)
+    : QObject(nullptr), m_isPlayback(true),m_isSingleStep(false)
 {
 }
 
@@ -60,8 +60,9 @@ void PlaybackManager::stopPlayback()
     LOG1(m_isPlayback)
 }
 
-void PlaybackManager::setPlaybackSpeed(int speed)
+void PlaybackManager::setPlaybackLoopDelay(int speed)
 {
-    unsigned long maxSleep(1001);
-    m_playbackLoopSleep = 4 * log(maxSleep - quint32(speed));
+    const int maxSleep(1001);
+//    m_playbackLoopSleep = 4 * log(maxSleep - quint32(speed));
+    m_playbackLoopSleep = std::abs(maxSleep - speed);
 }
