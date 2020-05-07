@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>815</width>
-    <height>811</height>
+    <height>940</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -235,7 +235,7 @@ QGroupBox::title {
      <x>0</x>
      <y>0</y>
      <width>815</width>
-     <height>811</height>
+     <height>940</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -637,7 +637,7 @@ QGroupBox::title {
      <string>RAW OCT SIGNAL</string>
     </property>
    </widget>
-   <widget class="QFrame" name="rawDataPlot" native="true">
+   <widget class="QFrame" name="rawDataPlot">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -675,7 +675,7 @@ color: rgb(0, 0, 0 );
      <string>PROCESSED SIGNAL</string>
     </property>
    </widget>
-   <widget class="QFrame" name="fftDataPlot" native="true">
+   <widget class="QFrame" name="fftDataPlot">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -868,16 +868,6 @@ QProgressBar::chunk {
    <extends>QWidget</extends>
    <header>levelgauge.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QFrame</class>
-   <extends>QWidget</extends>
-   <header>QFrame.h</header>
-   <container>1</container>
-   <slots>
-    <signal>updateBrightness(int)</signal>
-    <signal>updateContrast(int)</signal>
-   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
