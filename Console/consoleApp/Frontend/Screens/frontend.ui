@@ -1340,7 +1340,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
           <item>
            <widget class="QGroupBox" name="capturesGroupBox">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1348,7 +1348,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
             <property name="minimumSize">
              <size>
               <width>681</width>
-              <height>1800</height>
+              <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -1425,8 +1425,8 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
                  <rect>
                   <x>0</x>
                   <y>255</y>
-                  <width>686</width>
-                  <height>1062</height>
+                  <width>681</width>
+                  <height>940</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -1437,14 +1437,14 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>686</width>
-                  <height>1062</height>
+                  <width>681</width>
+                  <height>940</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>686</width>
-                  <height>1062</height>
+                  <width>681</width>
+                  <height>940</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -1496,7 +1496,7 @@ QGroupBox::title {
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_ButtonsLeft">
             <property name="topMargin">
-             <number>100</number>
+             <number>140</number>
             </property>
             <item>
              <widget class="QPushButton" name="captureImageButton">
@@ -1542,7 +1542,7 @@ IMAGE</string>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>20</width>
-                <height>750</height>
+                <height>710</height>
                </size>
               </property>
              </spacer>
