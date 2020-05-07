@@ -1347,13 +1347,13 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
             </property>
             <property name="minimumSize">
              <size>
-              <width>740</width>
+              <width>681</width>
               <height>1800</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>740</width>
+              <width>681</width>
               <height>1800</height>
              </size>
             </property>
@@ -1398,13 +1398,13 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>740</width>
+                 <width>681</width>
                  <height>1740</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>740</width>
+                 <width>681</width>
                  <height>1740</height>
                 </size>
                </property>
