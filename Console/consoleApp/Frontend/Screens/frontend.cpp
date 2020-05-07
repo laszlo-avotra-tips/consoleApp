@@ -2712,9 +2712,12 @@ void frontend::hideDecoration(void)
 
 void frontend::on_pushButtonLogo_clicked()
 {
-    qDebug() << __FUNCTION__;
     if(m_formL300){
         //TODO synch depth
+        const auto& sm = SignalModel::instance();
+        const int* depth = sm->getImagingDepth_S();
+        qDebug() << __FUNCTION__ << ": depth=" << *depth;
+        m_formL300->setDepth(*depth);
         m_formL300->showFullScreen(); //lcv m_formL300->showFullScreen(); show();
     }
 }

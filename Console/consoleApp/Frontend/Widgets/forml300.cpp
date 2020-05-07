@@ -22,6 +22,23 @@ void FormL300::setScene(liveScene *scene)
     }
 }
 
+void FormL300::setDepth(int depth)
+{
+    const std::map<int,int> indexLut
+    {
+        { 300,0},
+        { 375,1},
+        { 450,2},
+        { 525,3},
+        { 600,4}
+    };
+    const auto it = indexLut.find(depth);
+    if(it != indexLut.end()) {
+        qDebug() << __FUNCTION__ << ": index=" << it->second;
+        ui->horizontalSliderZoom->setValue(it->second);
+    }
+}
+
 FormL300::~FormL300()
 {
     delete ui;
