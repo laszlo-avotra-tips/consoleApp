@@ -2557,8 +2557,12 @@ void frontend::createDisplays()
     }
 
     this->hide();
-    this->setGeometry( wmgr->getTechnicianDisplayGeometry() );
+    const auto& rect = wmgr->getTechnicianDisplayGeometry();
+    qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
+    qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
+    this->setGeometry( rect );
     showFullScreen(); //lcv this->showFullScreen(); show();
+
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )

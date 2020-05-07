@@ -54,8 +54,8 @@ const int MaxALineLength = 1024;
 const int MinDriveSpace_GB = 10;
 const int MinNumberMonitors = 2;
 
-const int TechScreenWidth  = 1920;
-const int TechScreenHeight = 1080;
+const int TechScreenWidth  = 3240;
+const int TechScreenHeight = 2160;
 const int PhysicianScreenWidth  = 1920; // height of the monitor in portrait mode
 const int PhysicianScreenHeight = 1080;
 const int AuxScreenWidthMin  = 1024;
