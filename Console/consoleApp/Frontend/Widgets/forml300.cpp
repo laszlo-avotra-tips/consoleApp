@@ -26,11 +26,11 @@ void FormL300::setDepth(int depth)
 {
     const std::map<int,int> indexLut
     {
-        { 300,0},
-        { 375,1},
+        { 300,4},
+        { 375,3},
         { 450,2},
-        { 525,3},
-        { 600,4}
+        { 525,1},
+        { 600,0}
     };
     const auto it = indexLut.find(depth);
     if(it != indexLut.end()) {
