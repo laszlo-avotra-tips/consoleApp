@@ -543,7 +543,7 @@ OVERLAY</string>
          <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>18</number>
+         <number>27</number>
         </property>
         <item>
          <widget class="QFrame" name="frame_status">
