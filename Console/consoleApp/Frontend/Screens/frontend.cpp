@@ -126,7 +126,7 @@ frontend::frontend(QWidget *parent)
      * pre-create the View Options pane
      */
     viewOption = new viewOptions( this );
-    viewOption->setGeometry( 2560 - viewOption->width() - 100,
+    viewOption->setGeometry( 3240 - viewOption->width() - 125,
                              0,
                              viewOption->width(),
                              viewOption->height() );
@@ -136,7 +136,7 @@ frontend::frontend(QWidget *parent)
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( 2560 - advView->width() - 100,
+    advView->setGeometry( 3240 - advView->width() - 125,
                           0,
                           advView->width(),
                           advView->height() );
