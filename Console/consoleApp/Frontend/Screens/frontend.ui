@@ -1102,7 +1102,7 @@ border-radius: 4px;
 }</string>
             </property>
             <property name="minimum">
-             <number>90</number>
+             <number>100</number>
             </property>
             <property name="maximum">
              <number>400</number>
