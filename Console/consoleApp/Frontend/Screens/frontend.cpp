@@ -2321,8 +2321,8 @@ void frontend::configureDisplayForReview()
     scene->hideAnnotations();
     docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
-    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 14.75pt DinPRO-Medium; color: yellow; }" );
-    ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 14.75pt DINPro-medium;}" );
+    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 24pt DinPRO-Medium; color: yellow; }" );
+    ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 24pt DINPro-medium;}" );
 }
 
 /*
