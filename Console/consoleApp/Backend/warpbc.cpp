@@ -72,7 +72,7 @@ bool WarpBc::setKernelArguments(cl_kernel kernel)
 
     cl_int clStatus{0};
 
-    clStatus |= clSetKernelArg( kernel,  0, sizeof(cl_mem), smi->getBeAndCeImageBuffer() ); //lcv TODO
+    clStatus |= clSetKernelArg( kernel,  0, sizeof(cl_mem), smi->getBeAndCeImageBuffer() );
     clStatus |= clSetKernelArg( kernel,  1, sizeof(cl_mem), &m_warpImageBuffer );
     clStatus |= clSetKernelArg( kernel,  2, sizeof(cl_mem), &m_warpVideoBuffer );
 
