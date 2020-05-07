@@ -139,20 +139,13 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    m.rotate( 90 );
 
     // Paint the logo on the decorated image in the upper right corner
-//    QImage decoratedImage = captureItem.decoratedImage.transformed( m );
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 132, 18, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
     painter.end();
 
-//    imageRect.setX(-35);
-    imageRect.setX(-32);
-//    imageRect.setY(-35);
-    imageRect.setY(-32);
     QImage dim = decoratedImage.copy(imageRect);
 
-
-//    if( !decoratedImage.save( DecoratedImageName, "PNG", 100 ) )
     if( !dim.save( DecoratedImageName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: decorated image capture failed" )

@@ -2517,7 +2517,12 @@ void frontend::handleBadMonitorConfig()
 {
     captureMouse( false );
     hideDisplays();
-    this->setGeometry( wmgr->getDefaultDisplayGeometry() );
+
+    const auto& rect = wmgr->getDefaultDisplayGeometry();
+    qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
+    qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
+
+    this->setGeometry( rect );
     this->showFullScreen();//show(); //lcv this->showFullScreen();
     wmgr->showInfoMessage( this->parentWidget() );
     captureMouse( true );
