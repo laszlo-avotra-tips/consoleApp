@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>868</width>
-    <height>1593</height>
+    <width>740</width>
+    <height>1780</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -299,10 +299,51 @@ QGroupBox::title {
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
+         <widget class="QLabel" name="label">
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>SELECTED:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="selectedCaptureLineEdit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Hit &lt;b&gt;Enter&lt;/b&gt; to save the selected item's new name.</string>
+          </property>
+          <property name="text">
+           <string>&lt;no item selected&gt;</string>
+          </property>
+          <property name="maxLength">
+           <number>20</number>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="showDecoratedPushButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
-            <width>300</width>
+            <width>240</width>
             <height>50</height>
            </size>
           </property>
@@ -317,29 +358,6 @@ QGroupBox::title {
           </property>
           <property name="checked">
            <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>SELECTED:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="selectedCaptureLineEdit">
-          <property name="toolTip">
-           <string>Hit &lt;b&gt;Enter&lt;/b&gt; to save the selected item's new name.</string>
-          </property>
-          <property name="text">
-           <string>&lt;no item selected&gt;</string>
-          </property>
-          <property name="maxLength">
-           <number>20</number>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
           </property>
          </widget>
         </item>
