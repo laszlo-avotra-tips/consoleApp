@@ -105,7 +105,7 @@ frontend::frontend(QWidget *parent)
     ui.saveMeasurementButton->hide();
 
 
-    ui.zoomLevelLabel->setBuddy( ui.zoomSlider );
+//    ui.zoomLevelLabel->setBuddy( ui.zoomSlider );
     ui.zoomResetPushButton->hide();
 
     ui.liveViewPushButton->hide();
@@ -2072,7 +2072,10 @@ void frontend::on_zoomSlider_valueChanged( int value )
 
         ui.liveGraphicsView->setDragMode( QGraphicsView::NoDrag );
 
-        ui.zoomFactorLabel->setText( "[1.00x]" );
+//        QString strZoom{QString::number( ui.zoomSlider->minimum())};
+        QString strZoom{QString("[%1x]").arg( ui.zoomSlider->minimum(),0, 'g',2,'0')};
+        ui.zoomFactorLabel->setText(strZoom);
+//        ui.zoomFactorLabel->setText( "[1.00x]" );
         ui.zoomResetPushButton->hide();
 
         docWindow->ui.zoomFactorLabel->hide();
