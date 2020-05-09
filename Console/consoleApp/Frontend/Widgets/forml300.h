@@ -22,6 +22,7 @@ public:
 
     bool isVisible() const;
     void setScene(liveScene* scene);
+    void setDepth(int);
 
 signals:
     void depthChanged(double);

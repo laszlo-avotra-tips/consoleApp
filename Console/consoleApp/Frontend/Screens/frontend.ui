@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>2560</width>
-    <height>1498</height>
+    <height>1504</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -63,7 +63,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>2569</width>
+       <width>2560</width>
        <height>16777215</height>
       </size>
      </property>
