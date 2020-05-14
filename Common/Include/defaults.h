@@ -6,7 +6,8 @@
 #include <QSettings>
 #include <QPainter>
 
-#define SECTOR_HEIGHT_PX 1440
+
+#define SECTOR_HEIGHT_PX 2160
 #define FFT_DATA_SIZE    1024
 //#define MAX_LINES_PER_FRAME 6120 // divisible by 360 seems necessary for Ocelot Synthetic mode
 #define MAX_LINES_PER_FRAME 7200 // must be larger than 6144 for Pantheris at 100 kHz
@@ -28,15 +29,8 @@ const int SectorHeight_px = SECTOR_HEIGHT_PX;
 
 const int AuxScreenWidth = 1920;
 const int AuxScreenHeight = 1080;
-#if SURFACE_BOOK
 const int ControlScreenWidth = 3240;
 const int ControlScreenHeight = 2160;
-#else
-//const int ControlScreenWidth = 3240; lcv
-//const int ControlScreenHeight = 2160;
-const int ControlScreenWidth = 1920;
-const int ControlScreenHeight = 1080;
-#endif
 
 // file defines
 const int B_per_KB = 1024;
@@ -60,8 +54,8 @@ const int MaxALineLength = 1024;
 const int MinDriveSpace_GB = 10;
 const int MinNumberMonitors = 2;
 
-const int TechScreenWidth  = 1920;
-const int TechScreenHeight = 1080;
+const int TechScreenWidth  = 3240;
+const int TechScreenHeight = 2160;
 const int PhysicianScreenWidth  = 1920; // height of the monitor in portrait mode
 const int PhysicianScreenHeight = 1080;
 const int AuxScreenWidthMin  = 1024;

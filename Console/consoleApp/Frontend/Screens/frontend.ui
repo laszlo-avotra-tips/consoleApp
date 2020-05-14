@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2560</width>
-    <height>1440</height>
+    <width>3240</width>
+    <height>2160</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>2560</width>
-    <height>1440</height>
+    <width>3240</width>
+    <height>2160</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>2560</width>
-    <height>1504</height>
+    <width>3240</width>
+    <height>2160</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -57,14 +57,14 @@
     <widget class="QWidget" name="centralWidget" native="true">
      <property name="minimumSize">
       <size>
-       <width>2560</width>
-       <height>0</height>
+       <width>3240</width>
+       <height>2160</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>2560</width>
-       <height>16777215</height>
+       <width>3240</width>
+       <height>2160</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -104,20 +104,20 @@ QWidget {
 }
 
 QLabel {
- font: 18px &quot;DinPRO-Medium&quot;;
+ font: 27px &quot;DinPRO-Medium&quot;;
 }
 
 QLabel#titlebarLabel {
 	background: rgb( 51, 51, 51 );
 }
 QLabel#titlebarTextLabel {
-    font: 24pt &quot;DINPro-Medium&quot;;
+    font: 36pt &quot;DINPro-Medium&quot;;
     color: white;
 }
 
 QLabel#instructionsTextLabel
 {
-    font: 12pt &quot;DINPro-Medium&quot;;
+    font: 18pt &quot;DINPro-Medium&quot;;
 }
 
 /* ---------------- Pushbuttons ----------------*/
@@ -127,7 +127,7 @@ QPushButton
     background: rgb( 51, 74, 94 );
     border: 1px solid rgb( 51, 74, 94 );
     color: white;
-    font: 12pt &quot;DinPRO-Medium&quot;;
+    font: 16pt &quot;DinPRO-Medium&quot;;
     text-align: center;
     border-radius: 10px;
     border-width: 2px;
@@ -164,7 +164,7 @@ QPushButton:disabled
 /* --------- Spin Boxes -----------*/
 
 QAbstractSpinBox {
-	font: 18px DinPRO-medium;
+	font: 27px DinPRO-medium;
 	border: 0;
     border-radius: 5px;
 }
@@ -212,7 +212,7 @@ QAbstractSpinBox::down-arrow {
 
 QLineEdit, QListView {
     color: #808080;
-	font: 18px DinPro-medium;
+	font: 27px DinPro-medium;
     selection-color: white;   
     border: 2px groove white;
     border-radius: 4px;
@@ -250,7 +250,7 @@ QDialogButtonBox
 /* ---------- Group Boxes ---------- */
 
  QGroupBox {
-    font: 14.75pt DINPro-medium;
+    font: 22pt DINPro-medium;
     color: white;
     background-color: rgb( 51, 51, 51 );
     border-radius: 5px;
@@ -284,18 +284,33 @@ QGroupBox::title {
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_buttonsOnTheLeft">
         <property name="spacing">
-         <number>80</number>
+         <number>101</number>
         </property>
         <property name="topMargin">
-         <number>70</number>
+         <number>89</number>
         </property>
         <item>
          <widget class="QPushButton" name="deviceSelectButton">
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>125</width>
+            <height>84</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>DinPRO-Medium</family>
+            <pointsize>16</pointsize>
+            <weight>50</weight>
+            <italic>false</italic>
+            <bold>false</bold>
+           </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
@@ -332,14 +347,14 @@ SELECT</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="focusPolicy">
@@ -380,14 +395,14 @@ SYNC</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="focusPolicy">
@@ -425,20 +440,20 @@ IMAGE</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>DinPRO-Medium</family>
-            <pointsize>12</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -469,14 +484,14 @@ IMAGE</string>
          <widget class="QPushButton" name="saveMeasurementButton">
           <property name="minimumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>66</height>
+            <width>125</width>
+            <height>84</height>
            </size>
           </property>
           <property name="toolTip">
@@ -505,14 +520,14 @@ OVERLAY</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>99</width>
-            <height>120</height>
+            <width>125</width>
+            <height>180</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>99</width>
-            <height>120</height>
+            <width>125</width>
+            <height>180</height>
            </size>
           </property>
          </widget>
@@ -528,20 +543,20 @@ OVERLAY</string>
          <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>18</number>
+         <number>27</number>
         </property>
         <item>
          <widget class="QFrame" name="frame_status">
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>33</height>
+            <width>2160</width>
+            <height>50</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>14400</width>
-            <height>33</height>
+            <width>2160</width>
+            <height>50</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -581,7 +596,7 @@ OVERLAY</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 16pt DinPRO-medium;
+	font: 24pt DinPRO-medium;
     color: white;
 }</string>
              </property>
@@ -594,14 +609,14 @@ OVERLAY</string>
             <widget class="QLabel" name="timeFieldLabel_mini">
              <property name="minimumSize">
               <size>
-               <width>160</width>
-               <height>28</height>
+               <width>240</width>
+               <height>42</height>
               </size>
              </property>
              <property name="font">
               <font>
                <family>DinPRO-medium</family>
-               <pointsize>16</pointsize>
+               <pointsize>24</pointsize>
                <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
@@ -609,7 +624,7 @@ OVERLAY</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 16pt DinPRO-medium;
+	font: 24pt DinPRO-medium;
     color: white;
 }</string>
              </property>
@@ -625,8 +640,8 @@ OVERLAY</string>
             <widget class="QLabel" name="deviceFieldLabel">
              <property name="minimumSize">
               <size>
-               <width>300</width>
-               <height>28</height>
+               <width>450</width>
+               <height>42</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -638,7 +653,7 @@ OVERLAY</string>
              <property name="font">
               <font>
                <family>DinPRO-Medium</family>
-               <pointsize>16</pointsize>
+               <pointsize>24</pointsize>
                <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
@@ -646,7 +661,7 @@ OVERLAY</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 16pt DinPRO-Medium;
+	font: 24pt DinPRO-Medium;
     color: white;
 }</string>
              </property>
@@ -681,13 +696,13 @@ OVERLAY</string>
             <widget class="QLabel" name="catheterViewLabel">
              <property name="minimumSize">
               <size>
-               <width>300</width>
-               <height>28</height>
+               <width>450</width>
+               <height>42</height>
               </size>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 16pt DinPRO-Medium;
+	font: 24pt DinPRO-Medium;
     color: white;
 }</string>
              </property>
@@ -715,13 +730,13 @@ OVERLAY</string>
             <property name="minimumSize">
              <size>
               <width>80</width>
-              <height>33</height>
+              <height>50</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>80</width>
-              <height>33</height>
+              <height>50</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -742,14 +757,14 @@ OVERLAY</string>
             </property>
             <property name="minimumSize">
              <size>
-              <width>120</width>
-              <height>33</height>
+              <width>180</width>
+              <height>50</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
-              <height>33</height>
+              <width>152</width>
+              <height>50</height>
              </size>
             </property>
             <property name="palette">
@@ -954,7 +969,7 @@ OVERLAY</string>
             <property name="font">
              <font>
               <family>DINPro-Medium</family>
-              <pointsize>12</pointsize>
+              <pointsize>18</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -965,7 +980,7 @@ OVERLAY</string>
 {
     background: rgb( 191, 191, 191 ); 
     color: black; 
-	font:  12pt &quot;DINPro-Medium&quot;;
+	font:  18pt &quot;DINPro-Medium&quot;;
 }
 </string>
             </property>
@@ -984,20 +999,20 @@ OVERLAY</string>
             </property>
             <property name="minimumSize">
              <size>
-              <width>71</width>
-              <height>33</height>
+              <width>90</width>
+              <height>50</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>71</width>
-              <height>33</height>
+              <width>90</width>
+              <height>50</height>
              </size>
             </property>
             <property name="font">
              <font>
               <family>DINPro-Medium</family>
-              <pointsize>12</pointsize>
+              <pointsize>18</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -1008,7 +1023,7 @@ OVERLAY</string>
 { 
     background: rgb( 191, 191, 191 );
     color: black; 
-	font:  12pt &quot;DINPro-Medium&quot;;
+	font:  18pt &quot;DINPro-Medium&quot;;
 }
 </string>
             </property>
@@ -1021,14 +1036,14 @@ OVERLAY</string>
            <widget class="QSlider" name="zoomSlider">
             <property name="minimumSize">
              <size>
-              <width>500</width>
-              <height>33</height>
+              <width>610</width>
+              <height>50</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>33</height>
+              <height>50</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -1120,7 +1135,7 @@ border-radius: 4px;
             <property name="maximumSize">
              <size>
               <width>800</width>
-              <height>33</height>
+              <height>50</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -1136,13 +1151,13 @@ border-radius: 4px;
             <property name="minimumSize">
              <size>
               <width>500</width>
-              <height>33</height>
+              <height>50</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>500</width>
-              <height>33</height>
+              <height>50</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -1177,13 +1192,13 @@ border-radius: 4px;
                <property name="minimumSize">
                 <size>
                  <width>120</width>
-                 <height>28</height>
+                 <height>42</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>120</width>
-                 <height>28</height>
+                 <height>42</height>
                 </size>
                </property>
                <property name="toolTip">
@@ -1203,13 +1218,13 @@ border-radius: 4px;
                <property name="minimumSize">
                 <size>
                  <width>120</width>
-                 <height>28</height>
+                 <height>42</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>120</width>
-                 <height>28</height>
+                 <height>42</height>
                 </size>
                </property>
                <property name="toolTip">
@@ -1261,14 +1276,14 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>1376</width>
-            <height>1376</height>
+            <width>2160</width>
+            <height>2160</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>1376</width>
-            <height>2560</height>
+            <width>2160</width>
+            <height>2160</height>
            </size>
           </property>
           <property name="cursor" stdset="0">
@@ -1324,22 +1339,28 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
           </property>
           <item>
            <widget class="QGroupBox" name="capturesGroupBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
               <width>681</width>
-              <height>1111</height>
+              <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>681</width>
-              <height>1111</height>
+              <height>1800</height>
              </size>
             </property>
             <property name="font">
              <font>
               <family>DINPro-medium</family>
-              <pointsize>15</pointsize>
+              <pointsize>22</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -1351,7 +1372,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
             <property name="title">
              <string>REVIEW</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
+            <layout class="QVBoxLayout" name="verticalLayout_4">
              <property name="spacing">
               <number>0</number>
              </property>
@@ -1369,16 +1390,22 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
              </property>
              <item>
               <widget class="captureWidget" name="reviewWidget" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>681</width>
-                 <height>1081</height>
+                 <height>1740</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>681</width>
-                 <height>1081</height>
+                 <height>1740</height>
                 </size>
                </property>
                <property name="font">
@@ -1399,19 +1426,25 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
                   <x>0</x>
                   <y>255</y>
                   <width>681</width>
-                  <height>571</height>
+                  <height>940</height>
                  </rect>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
                 <property name="minimumSize">
                  <size>
                   <width>681</width>
-                  <height>571</height>
+                  <height>940</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>681</width>
-                  <height>571</height>
+                  <height>940</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -1463,14 +1496,14 @@ QGroupBox::title {
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_ButtonsLeft">
             <property name="topMargin">
-             <number>66</number>
+             <number>140</number>
             </property>
             <item>
              <widget class="QPushButton" name="captureImageButton">
               <property name="minimumSize">
                <size>
-                <width>100</width>
-                <height>66</height>
+                <width>125</width>
+                <height>100</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1509,7 +1542,7 @@ IMAGE</string>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>20</width>
-                <height>480</height>
+                <height>710</height>
                </size>
               </property>
              </spacer>
@@ -1518,13 +1551,13 @@ IMAGE</string>
              <widget class="QPushButton" name="recordLoopButton">
               <property name="minimumSize">
                <size>
-                <width>100</width>
-                <height>66</height>
+                <width>125</width>
+                <height>100</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>127</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -1591,7 +1624,7 @@ LOOP</string>
               <property name="minimumSize">
                <size>
                 <width>120</width>
-                <height>51</height>
+                <height>75</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -1617,7 +1650,7 @@ OPTIONS</string>
               <property name="minimumSize">
                <size>
                 <width>120</width>
-                <height>51</height>
+                <height>75</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -1643,7 +1676,7 @@ VIEW</string>
               <property name="minimumSize">
                <size>
                 <width>120</width>
-                <height>51</height>
+                <height>75</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -1682,7 +1715,7 @@ PREVIEW</string>
               <property name="minimumSize">
                <size>
                 <width>120</width>
-                <height>51</height>
+                <height>75</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -1991,10 +2024,28 @@ QPushButton:hover {
                 <height>71</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">font: 14pt DINPro-medium;</string>
+              </property>
               <property name="title">
                <string>PATIENT</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_2">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>20</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_patient">
                  <property name="spacing">
@@ -2075,6 +2126,9 @@ QPushButton:hover {
                      <bold>false</bold>
                     </font>
                    </property>
+                   <property name="toolTipDuration">
+                    <number>0</number>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">    color: white;
     font: 13pt &quot;DinPRO-Medium&quot;;
@@ -2102,13 +2156,13 @@ QPushButton:hover {
               <property name="minimumSize">
                <size>
                 <width>201</width>
-                <height>51</height>
+                <height>75</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>201</width>
-                <height>51</height>
+                <height>75</height>
                </size>
               </property>
               <property name="text">
@@ -2121,24 +2175,30 @@ QPushButton:hover {
               </property>
               <property name="iconSize">
                <size>
-                <width>160</width>
-                <height>50</height>
+                <width>202</width>
+                <height>75</height>
                </size>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="EgineeringButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
-                <width>201</width>
+                <width>240</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>201</width>
-                <height>51</height>
+                <width>240</width>
+                <height>75</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -2148,7 +2208,8 @@ QPushButton:hover {
                <string>Save case data and quit. (Shortcut: Alt-F12)</string>
               </property>
               <property name="text">
-               <string>Engineering Dialog</string>
+               <string>ENGINEERING
+DIALOG</string>
               </property>
               <property name="shortcut">
                <string>Alt+F12</string>
@@ -2168,8 +2229,8 @@ QPushButton:hover {
               </property>
               <property name="maximumSize">
                <size>
-                <width>200</width>
-                <height>51</height>
+                <width>252</width>
+                <height>75</height>
                </size>
               </property>
               <property name="font">
@@ -2237,7 +2298,6 @@ QPushButton:hover {
   <tabstop>scanSyncButton</tabstop>
   <tabstop>measureModePushButton</tabstop>
   <tabstop>zoomSlider</tabstop>
-  <tabstop>zoomResetPushButton</tabstop>
   <tabstop>liveViewPushButton</tabstop>
   <tabstop>liveGraphicsView</tabstop>
  </tabstops>

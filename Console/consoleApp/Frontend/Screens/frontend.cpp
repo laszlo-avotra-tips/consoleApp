@@ -126,7 +126,7 @@ frontend::frontend(QWidget *parent)
      * pre-create the View Options pane
      */
     viewOption = new viewOptions( this );
-    viewOption->setGeometry( 2560 - viewOption->width() - 100,
+    viewOption->setGeometry( 3240 - viewOption->width() - 125,
                              0,
                              viewOption->width(),
                              viewOption->height() );
@@ -136,7 +136,7 @@ frontend::frontend(QWidget *parent)
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( 2560 - advView->width() - 100,
+    advView->setGeometry( 3240 - advView->width() - 125,
                           0,
                           advView->width(),
                           advView->height() );
@@ -2072,6 +2072,7 @@ void frontend::on_zoomSlider_valueChanged( int value )
 
         ui.liveGraphicsView->setDragMode( QGraphicsView::NoDrag );
 
+        QString strZoom{QString::number( ui.zoomSlider->minimum())};
         ui.zoomFactorLabel->setText( "[1.00x]" );
         ui.zoomResetPushButton->hide();
 
@@ -2321,8 +2322,8 @@ void frontend::configureDisplayForReview()
     scene->hideAnnotations();
     docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
-    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 14.75pt DinPRO-Medium; color: yellow; }" );
-    ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 14.75pt DINPro-medium;}" );
+    ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 24pt DinPRO-Medium; color: yellow; }" );
+    ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 24pt DINPro-medium;}" );
 }
 
 /*
@@ -2517,7 +2518,12 @@ void frontend::handleBadMonitorConfig()
 {
     captureMouse( false );
     hideDisplays();
-    this->setGeometry( wmgr->getDefaultDisplayGeometry() );
+
+    const auto& rect = wmgr->getDefaultDisplayGeometry();
+    qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
+    qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
+
+    this->setGeometry( rect );
     this->showFullScreen();//show(); //lcv this->showFullScreen();
     wmgr->showInfoMessage( this->parentWidget() );
     captureMouse( true );
@@ -2557,8 +2563,12 @@ void frontend::createDisplays()
     }
 
     this->hide();
-    this->setGeometry( wmgr->getTechnicianDisplayGeometry() );
-    this->showFullScreen();//show(); //lcv this->showFullScreen();
+    const auto& rect = wmgr->getTechnicianDisplayGeometry();
+    qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
+    qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
+    this->setGeometry( rect );
+    showFullScreen(); //lcv this->showFullScreen(); show();
+
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
@@ -2702,7 +2712,6 @@ void frontend::hideDecoration(void)
 
 void frontend::on_pushButtonLogo_clicked()
 {
-    qDebug() << __FUNCTION__;
     if(m_formL300){
         //TODO synch depth
         const auto& sm = SignalModel::instance();
