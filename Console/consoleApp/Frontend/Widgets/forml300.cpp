@@ -148,3 +148,17 @@ void FormL300::on_horizontalSliderZoom_valueChanged(int value)
     SignalModel::instance()->setImagingDepth_S(depth);
     emit depthChanged(double(depth));
 }
+
+void FormL300::on_pushButtonFlip_clicked()
+{
+    QLayout* tl = ui->widget->layout();
+    std::vector<QLayoutItem*> current{tl->itemAt(0),tl->itemAt(1),tl->itemAt(2)};
+
+    tl->removeItem(current[2]);
+    tl->removeItem(current[1]);
+    tl->removeItem(current[0]);
+    tl->addItem(current[2]);
+    tl->addItem(current[1]);
+    tl->addItem(current[0]);
+    tl->update();
+}
