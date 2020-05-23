@@ -10,7 +10,7 @@ FormStart::FormStart(QWidget *parent) :
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());
 
-    const int middleFrameWidth = WidgetContainer::instance()->centerFrameSize();
+    const int middleFrameWidth = WidgetContainer::instance()->middleFrameWidth();
     const int sideFrameWidth = int(middleFrameWidth * 0.25 );
     const int frameHeight = middleFrameWidth;
     const bool isFullScreen = WidgetContainer::instance()->isFullScreen();

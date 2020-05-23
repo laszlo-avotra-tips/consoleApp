@@ -57,14 +57,29 @@ WidgetContainer::WidgetContainer()
 
 }
 
-int WidgetContainer::centerFrameSize() const
+int WidgetContainer::ratio() const
 {
-    return m_middleFrameWidth;
+    return m_ratio;
 }
 
-void WidgetContainer::setCenterFrameSize(int centerFrameSize)
+void WidgetContainer::setRatio(int ratio)
 {
-    m_middleFrameWidth = centerFrameSize;
+    m_ratio = ratio;
+}
+
+int WidgetContainer::middleFrameWidth() const
+{
+    return m_middleFrameSize.width();
+}
+
+const QSize &WidgetContainer::middleFrameSize() const
+{
+    return m_middleFrameSize;
+}
+
+void WidgetContainer::setMiddleFrameSize(int middleFrameSize)
+{
+    m_middleFrameSize = QSize(middleFrameSize, middleFrameSize);
 }
 
 bool WidgetContainer::isFullScreen() const

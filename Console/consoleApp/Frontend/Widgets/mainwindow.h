@@ -22,21 +22,26 @@ private slots:
 
     void on_pushButtonMenu_clicked();
 
-    void on_pushButtonPage1_clicked();
-
-    void on_pushButtonPage2_clicked();
-
-    void on_pushButtonExitL_clicked();
-
     int getSceneWidth();
+
+    QSize getSceneSize();
+
+    void on_pushButtonEndCase_clicked();
+
+
+    void on_pushButtonDownArrow_clicked();
 
 private:
     void flipColumns();
+    void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
 
 private:
     Ui::MainWindow *ui;
     const std::pair<int,int> m_widthHeight{3,2};
-    const int m_sceneWidth{2160};
+    const int m_sceneWidth{2110};
+    const QSize m_sceneSize{2110,2110};
+
+    std::vector<QWidget*> m_navigationButtons;
 
 };
 #endif // MAINWINDOW_H

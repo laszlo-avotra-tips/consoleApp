@@ -15,31 +15,51 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->pushButtonFlip->hide();
-
-    ui->frameButtons->hide();
     const int h{getSceneWidth()};
-    double dw = h * 1.5;
-    const int w{ int(dw) };
+//    double dw = h * 1.5;
+//    const int w{ int(dw) };
 
-    const QSize sizeMiddle{h,h};
-    const QSize sizeSide{(w-h)/2,h};
+//    const QSize sizeMiddle{h,h};
+//    const QSize sizeSide{(w-h)/2,h};
 
-    qDebug() << "w = " << w << ", h = " << h << ", sizeSide = " << sizeSide;
+//    qDebug() << "w = " << w << ", h = " << h << ", sizeSide = " << sizeSide;
 
-    ui->frameM->setMaximumSize(sizeMiddle);
-    ui->frameM->setMinimumSize(sizeMiddle);
+//    ui->frameM->setMaximumSize(sizeMiddle);
+//    ui->frameM->setMinimumSize(sizeMiddle);
 
-    ui->frameL->setMaximumSize(sizeSide);
-    ui->frameL->setMinimumSize(sizeSide);
-    ui->frameR->setMaximumSize(sizeSide);
-    ui->frameR->setMinimumSize(sizeSide);
+//    ui->frameL->setMaximumSize(sizeSide);
+//    ui->frameL->setMinimumSize(sizeSide);
+//    ui->frameR->setMaximumSize(sizeSide);
+//    ui->frameR->setMinimumSize(sizeSide);
+    const int ratio = WidgetContainer::instance()->ratio();
+    if(!ratio){
+        return;
+    }
+    const int height = m_sceneWidth / ratio;
+    const int wL = 550 / ratio;
+    const int wM = height;
+    const int wR = 3240 / ratio - wM - wL;
+    const QSize sL(wL,height);
+    const QSize sM(wM,height);
+    const QSize sR(wR,height);
 
-//    auto* buttonLayout = ui->frameButtons->layout();
-//    const int bc = buttonLayout->count();
-//    if(bc){
-//        buttonLayout->setSpacing(h/bc);
-//    }
+    ui->frameM->setMaximumSize(sM);
+    ui->frameM->setMinimumSize(sM);
+
+    ui->frameL->setMaximumSize(sL);
+    ui->frameL->setMinimumSize(sL);
+
+    ui->frameR->setMaximumSize(sR);
+    ui->frameR->setMinimumSize(sR);
+
+    m_navigationButtons.push_back(ui->pushButtonEndCase);
+    m_navigationButtons.push_back(ui->pushButtonSettings);
+    m_navigationButtons.push_back(ui->pushButtonMeasure);
+    m_navigationButtons.push_back(ui->pushButtonRecord);
+    m_navigationButtons.push_back(ui->pushButtonCapture);
+    m_navigationButtons.push_back(ui->pushButtonFlip);
+
+    toggleNavigationButtons(m_navigationButtons);
 }
 
 MainWindow::~MainWindow()
@@ -56,15 +76,7 @@ void MainWindow::on_pushButtonFlip_clicked()
 
 void MainWindow::on_pushButtonMenu_clicked()
 {
-    if(!ui->frameButtons->isVisible()){
-        ui->frameButtons->show();
-        ui->pushButtonFlip->show();
-//        ui->pushButtonMenu->setText("Hide Menu");
-    } else {
-        ui->frameButtons->hide();
-        ui->pushButtonFlip->hide();
-//        ui->pushButtonMenu->setText("Show Menu");
-    }
+    toggleNavigationButtons(m_navigationButtons);
 }
 
 void MainWindow::flipColumns()
@@ -81,19 +93,19 @@ void MainWindow::flipColumns()
     tl->update();
 }
 
-void MainWindow::on_pushButtonPage1_clicked()
+void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
 {
-
+    if(buttons[0]->isVisible()){
+        for(auto* button : buttons){
+            button->hide();
+        }
+    }else {
+        for(auto* button : buttons){
+            button->show();
+        }
+    }
 }
 
-void MainWindow::on_pushButtonPage2_clicked()
-{
-}
-
-void MainWindow::on_pushButtonExitL_clicked()
-{
-    WidgetContainer::instance()->gotoPage("startPage");
-}
 
 int MainWindow::getSceneWidth()
 {
@@ -102,15 +114,34 @@ int MainWindow::getSceneWidth()
     QFile sf(fn);
     if(sf.open(QIODevice::ReadOnly)){
         QTextStream ts(&sf);
-        int width;
+        int ratio{1};
         int isFullScreen;
-        ts >> width >> isFullScreen;
-        qDebug() << fn << " open ok. width = " << width << ", isFullScreen " << isFullScreen;
-        WidgetContainer::instance()->setIsFullScreen(isFullScreen);
-        WidgetContainer::instance()->setCenterFrameSize(width);
-        retVal = width;
+        ts >> ratio >> isFullScreen;
+        if(ratio){
+            int width = m_sceneWidth / ratio;
+            qDebug() << fn << " open ok. width = " << width << ", isFullScreen " << isFullScreen;
+            WidgetContainer::instance()->setIsFullScreen(isFullScreen);
+            WidgetContainer::instance()->setMiddleFrameSize(width);
+            WidgetContainer::instance()->setRatio(ratio);
+            retVal = width;
+        }
         sf.close();
     }
 
     return retVal;
+}
+
+QSize MainWindow::getSceneSize()
+{
+    return m_sceneSize;
+}
+
+void MainWindow::on_pushButtonEndCase_clicked()
+{
+    WidgetContainer::instance()->gotoPage("startPage");
+}
+
+void MainWindow::on_pushButtonDownArrow_clicked()
+{
+    on_pushButtonMenu_clicked();
 }
