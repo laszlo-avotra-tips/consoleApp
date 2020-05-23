@@ -16,21 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     const int h{getSceneWidth()};
-//    double dw = h * 1.5;
-//    const int w{ int(dw) };
-
-//    const QSize sizeMiddle{h,h};
-//    const QSize sizeSide{(w-h)/2,h};
-
-//    qDebug() << "w = " << w << ", h = " << h << ", sizeSide = " << sizeSide;
-
-//    ui->frameM->setMaximumSize(sizeMiddle);
-//    ui->frameM->setMinimumSize(sizeMiddle);
-
-//    ui->frameL->setMaximumSize(sizeSide);
-//    ui->frameL->setMinimumSize(sizeSide);
-//    ui->frameR->setMaximumSize(sizeSide);
-//    ui->frameR->setMinimumSize(sizeSide);
     const int ratio = WidgetContainer::instance()->ratio();
     if(!ratio){
         return;
@@ -59,7 +44,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_navigationButtons.push_back(ui->pushButtonCapture);
     m_navigationButtons.push_back(ui->pushButtonFlip);
 
-    toggleNavigationButtons(m_navigationButtons);
+    for(auto* button : m_navigationButtons){
+        button->hide();
+    }
 }
 
 MainWindow::~MainWindow()

@@ -12,7 +12,7 @@
         <file>Frontend/Resources/pencil_rollover.png</file>
         <file>Frontend/Resources/pencil_normal.png</file>
         <file>Frontend/Resources/blank_texture.png</file>
-        <file>Frontend/Resources/avinger_logo_markonly.png</file>
+        <file alias="L300menuButton">Frontend/Resources/avinger_logo_markonly.png</file>
         <file>Frontend/Resources/contrast_normal.png</file>
         <file>Frontend/Resources/contrast_rollover.png</file>
         <file>Frontend/Resources/Avinger_Logo.png</file>
