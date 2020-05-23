@@ -18,13 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButtonFlip->hide();
 
     ui->frameButtons->hide();
-    const int h{getSceneSize()};
+    const int h{getSceneWidth()};
     double dw = h * 1.5;
     const int w{ int(dw) };
 
-    qDebug() << "w = " << w << ", h = " << h << ", w/h = " << float(w)/float(h);
     const QSize sizeMiddle{h,h};
     const QSize sizeSide{(w-h)/2,h};
+
+    qDebug() << "w = " << w << ", h = " << h << ", sizeSide = " << sizeSide;
 
     ui->frameM->setMaximumSize(sizeMiddle);
     ui->frameM->setMinimumSize(sizeMiddle);
@@ -34,11 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->frameR->setMaximumSize(sizeSide);
     ui->frameR->setMinimumSize(sizeSide);
 
-    auto* buttonLayout = ui->frameButtons->layout();
-    const int bc = buttonLayout->count();
-    if(bc){
-        buttonLayout->setSpacing(h/bc);
-    }
+//    auto* buttonLayout = ui->frameButtons->layout();
+//    const int bc = buttonLayout->count();
+//    if(bc){
+//        buttonLayout->setSpacing(h/bc);
+//    }
 }
 
 MainWindow::~MainWindow()
@@ -58,11 +59,11 @@ void MainWindow::on_pushButtonMenu_clicked()
     if(!ui->frameButtons->isVisible()){
         ui->frameButtons->show();
         ui->pushButtonFlip->show();
-        ui->pushButtonMenu->setText("Hide Menu");
+//        ui->pushButtonMenu->setText("Hide Menu");
     } else {
         ui->frameButtons->hide();
         ui->pushButtonFlip->hide();
-        ui->pushButtonMenu->setText("Show Menu");
+//        ui->pushButtonMenu->setText("Show Menu");
     }
 }
 
@@ -94,20 +95,20 @@ void MainWindow::on_pushButtonExitL_clicked()
     WidgetContainer::instance()->gotoPage("startPage");
 }
 
-int MainWindow::getSceneSize()
+int MainWindow::getSceneWidth()
 {
-    int retVal = m_sceneSize;
+    int retVal = m_sceneWidth;
     QString fn("/Avinger_System/screen.dat");
     QFile sf(fn);
     if(sf.open(QIODevice::ReadOnly)){
-        qDebug() << fn << " open ok";
         QTextStream ts(&sf);
-        int size;
+        int width;
         int isFullScreen;
-        ts >> size >> isFullScreen;
-        qDebug() << fn << " open ok. size = " << size << ", isFullScreen " << isFullScreen;
+        ts >> width >> isFullScreen;
+        qDebug() << fn << " open ok. width = " << width << ", isFullScreen " << isFullScreen;
         WidgetContainer::instance()->setIsFullScreen(isFullScreen);
-        retVal = size;
+        WidgetContainer::instance()->setCenterFrameSize(width);
+        retVal = width;
         sf.close();
     }
 

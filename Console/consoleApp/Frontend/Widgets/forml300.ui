@@ -418,7 +418,7 @@ QGroupBox::title {
             </property>
             <property name="icon">
              <iconset>
-              <normalon>:/octConsole/measure</normalon>
+              <normalon>:/octConsole/measureWhite</normalon>
              </iconset>
             </property>
             <property name="iconSize">
@@ -454,7 +454,7 @@ QGroupBox::title {
             </property>
             <property name="icon">
              <iconset>
-              <normalon>:/octConsole/record</normalon>
+              <normalon>:/octConsole/recordWhite</normalon>
              </iconset>
             </property>
             <property name="iconSize">

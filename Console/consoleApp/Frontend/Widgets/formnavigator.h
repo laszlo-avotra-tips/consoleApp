@@ -17,6 +17,9 @@ public:
     void display();
 
 private:
+    void setStylesheet();
+
+private:
     Ui::FormNavigator *ui;
 };
 

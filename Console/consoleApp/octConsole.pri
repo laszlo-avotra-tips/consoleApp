@@ -124,6 +124,8 @@ SOURCES += \
     $$PWD/Frontend/Widgets/formnavigator.cpp \
     $$PWD/Frontend/Widgets/formstart.cpp \
     $$PWD/Frontend/Widgets/mainwindow.cpp \
+    $$PWD/init.cpp \
+    $$PWD/main.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
@@ -140,7 +142,6 @@ SOURCES += \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/liveview.cpp \
     Frontend/Widgets/sectoritem.cpp \
-    main.cpp \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Widgets/capturewidget.cpp \
     Frontend/Widgets/gridOverlay.cpp \

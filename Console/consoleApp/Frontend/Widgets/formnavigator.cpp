@@ -3,6 +3,8 @@
 #include "Utility/widgetcontainer.h"
 #include "Utility/pagefactory.h"
 #include <QDebug>
+#include <QFile>
+
 
 FormNavigator::FormNavigator(QWidget *parent) :
     QWidget(parent),
@@ -38,5 +40,21 @@ void FormNavigator::display()
         showFullScreen();
     } else {
         show();
+    }
+}
+
+void FormNavigator::setStylesheet()
+{
+    QString fn("/Avinger_System/styleSheet.dat");
+    QFile sf(fn);
+    if(sf.open(QIODevice::ReadOnly)){
+        qDebug() << fn << " open ok";
+        QTextStream ts(&sf);
+        int size;
+        int isFullScreen;
+        ts >> size >> isFullScreen;
+        qDebug() << fn << " open ok. size = " << size << ", isFullScreen " << isFullScreen;
+        WidgetContainer::instance()->setIsFullScreen(isFullScreen);
+        sf.close();
     }
 }

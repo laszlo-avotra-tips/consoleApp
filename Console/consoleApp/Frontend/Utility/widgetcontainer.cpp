@@ -17,7 +17,7 @@ bool WidgetContainer::registerWidget(const QString &name, QWidget *wid)
 {
     m_container[name] = wid;
     int index = m_stackedWidget->addWidget(wid);
-    wid->setStyleSheet(m_stackedWidget->styleSheet());
+//    wid->setStyleSheet(m_stackedWidget->styleSheet());
 
     return index >= 0;
 }
@@ -55,6 +55,16 @@ void WidgetContainer::setNavigator(FormNavigator *n)
 WidgetContainer::WidgetContainer()
 {
 
+}
+
+int WidgetContainer::centerFrameSize() const
+{
+    return m_middleFrameWidth;
+}
+
+void WidgetContainer::setCenterFrameSize(int centerFrameSize)
+{
+    m_middleFrameWidth = centerFrameSize;
 }
 
 bool WidgetContainer::isFullScreen() const

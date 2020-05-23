@@ -6,32 +6,37 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>633</width>
-    <height>476</height>
+    <width>1529</width>
+    <height>1178</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QWidget{
+background-color: dark-gray;
+color: white;
+}
+QLabel{
+font: 60pt &quot;Helvetica Neue&quot;;
+}
+QWidget{
+background-color: dark-gray;
+color: white;
+}
+QLabel{
+font: 60pt &quot;Helvetica Neue&quot;;
+}
+QFrame{
+border: 0px;
+}
+QPushButton{
+font: bold 24px;
+qproperty-flat: true;
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
     <widget class="QFrame" name="frameL">
      <property name="sizePolicy">
@@ -42,13 +47,13 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>80</width>
+       <width>0</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>80</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -58,46 +63,70 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>40</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>40</number>
-      </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
-       <widget class="QPushButton" name="pushButtonMenu">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>0</number>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>80</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Show Menu</string>
-        </property>
-       </widget>
+        <item>
+         <widget class="QPushButton" name="pushButtonMenu">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/octConsole/avingerStartKara</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+S</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonPullDown">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/octConsole/dropdown</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <spacer name="verticalSpacer">
@@ -116,7 +145,7 @@
        <widget class="QFrame" name="frameButtons">
         <property name="minimumSize">
          <size>
-          <width>81</width>
+          <width>0</width>
           <height>0</height>
          </size>
         </property>
@@ -133,23 +162,8 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="spacing">
-          <number>100</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
          <item>
-          <widget class="QPushButton" name="pushButtonPage1">
+          <widget class="QPushButton" name="pushButtonCapture">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -158,8 +172,8 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
-             <height>25</height>
+             <width>0</width>
+             <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -169,7 +183,36 @@
             </size>
            </property>
            <property name="text">
-            <string>Page 1</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/octConsole/capture</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>100</width>
+             <height>100</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/octConsole/recordWhite</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>100</width>
+             <height>100</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -184,11 +227,22 @@
            <property name="minimumSize">
             <size>
              <width>80</width>
-             <height>25</height>
+             <height>50</height>
             </size>
            </property>
            <property name="text">
-            <string>Exit</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/octConsole/measureWhite</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>100</width>
+             <height>100</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -202,12 +256,23 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
-             <height>25</height>
+             <width>0</width>
+             <height>0</height>
             </size>
            </property>
            <property name="text">
-            <string>Page 2</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/octConsole/flip</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>100</width>
+             <height>100</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -282,13 +347,13 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>81</width>
+       <width>160</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>80</width>
+       <width>160</width>
        <height>16777215</height>
       </size>
      </property>
@@ -330,7 +395,7 @@
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel{
-font: bold 8pt &quot;Helvetica Neue&quot;;
+font: bold 16pt &quot;Helvetica Neue&quot;;
 }</string>
         </property>
         <property name="frameShape">
@@ -426,8 +491,8 @@ font: bold 8pt &quot;Helvetica Neue&quot;;
         </property>
         <property name="minimumSize">
          <size>
-          <width>80</width>
-          <height>25</height>
+          <width>160</width>
+          <height>50</height>
          </size>
         </property>
         <property name="maximumSize">

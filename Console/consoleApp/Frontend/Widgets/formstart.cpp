@@ -1,6 +1,7 @@
 #include "formstart.h"
 #include "ui_formstart.h"
 #include "Utility/widgetcontainer.h"
+#include <QDebug>
 
 FormStart::FormStart(QWidget *parent) :
     QWidget(parent),
@@ -8,6 +9,32 @@ FormStart::FormStart(QWidget *parent) :
 {
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());
+
+    const int middleFrameWidth = WidgetContainer::instance()->centerFrameSize();
+    const int sideFrameWidth = int(middleFrameWidth * 0.25 );
+    const int frameHeight = middleFrameWidth;
+    const bool isFullScreen = WidgetContainer::instance()->isFullScreen();
+
+    qDebug() << "sideFrameWidth = " << sideFrameWidth << ", frameHeight = " << frameHeight;
+
+    int windowWidth{3240};
+    int windowHeight{2160};
+    if(!isFullScreen){
+        windowWidth = middleFrameWidth * 1.5;
+        windowHeight = middleFrameWidth;
+        setMinimumSize(windowWidth, windowHeight);
+        setMaximumSize(windowWidth, windowHeight);
+        qDebug() << "windowWidth = " << windowWidth << ", windowHeight = " << windowHeight;
+    }
+
+    ui->frameL->setMinimumSize(sideFrameWidth, frameHeight);
+    ui->frameL->setMaximumSize(sideFrameWidth, frameHeight);
+
+    ui->frameR->setMinimumSize(sideFrameWidth, frameHeight);
+    ui->frameR->setMaximumSize(sideFrameWidth, frameHeight);
+
+    ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,middleFrameWidth));
+    ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
 }
 
 FormStart::~FormStart()
@@ -32,10 +59,14 @@ void FormStart::on_pushButtonMenu_clicked(bool checked)
 
 void FormStart::on_pushButtonPreferences_clicked()
 {
-    WidgetContainer::instance()->gotoPage("mainPage");
 }
 
 void FormStart::on_pushButtonShutdown_clicked()
 {
     WidgetContainer::instance()->close();
+}
+
+void FormStart::on_pushButtonStart_clicked()
+{
+    WidgetContainer::instance()->gotoPage("mainPage");
 }

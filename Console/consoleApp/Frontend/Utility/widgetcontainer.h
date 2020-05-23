@@ -21,6 +21,10 @@ public:
     bool isFullScreen() const;
     void setIsFullScreen(bool isFullScreen);
 
+
+    int centerFrameSize() const;
+    void setCenterFrameSize(int centerFrameSize);
+
 private:
     WidgetContainer();
 
@@ -32,6 +36,7 @@ private:
 
     std::map<QString, QWidget*> m_container;
     bool m_isFullScreen{true};
+    int  m_middleFrameWidth{2160};
 };
 
 #endif // WIDGETCONTAINER_H

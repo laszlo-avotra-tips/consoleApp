@@ -22,6 +22,8 @@ private slots:
 
     void on_pushButtonShutdown_clicked();
 
+    void on_pushButtonStart_clicked();
+
 private:
     Ui::FormStart *ui;
 };
