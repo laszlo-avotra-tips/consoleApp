@@ -2,6 +2,10 @@
 #include "ui_mainwindow.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/pagefactory.h"
+#include "Frontend/Screens/frontend.h"
+#include "devicewizard.h"
+#include "deviceselectwizardpage.h"
+
 
 #include <QDebug>
 #include <QLayoutItem>
@@ -43,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_navigationButtons.push_back(ui->pushButtonRecord);
     m_navigationButtons.push_back(ui->pushButtonCapture);
     m_navigationButtons.push_back(ui->pushButtonFlip);
+    m_navigationButtons.push_back(ui->pushButtonDeviceSelect);
 
     for(auto* button : m_navigationButtons){
         button->hide();
@@ -131,4 +136,20 @@ void MainWindow::on_pushButtonEndCase_clicked()
 void MainWindow::on_pushButtonDownArrow_clicked()
 {
     on_pushButtonMenu_clicked();
+}
+
+void MainWindow::on_pushButtonCapture_clicked()
+{
+//    m_frontEndWindow = new frontend();
+//    if(m_frontEndWindow){
+//        m_frontEndWindow->init();
+//        m_frontEndWindow->on_deviceSelectButton_clicked();
+//    }
+}
+
+void MainWindow::on_pushButtonDeviceSelect_clicked()
+{
+    deviceWizard deviceSelection(this);
+    deviceSelection.init();
+    deviceSelection.exec();
 }

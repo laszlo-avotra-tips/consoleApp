@@ -5,6 +5,8 @@
 #include <vector>
 #include <map>
 
+class frontend;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -31,6 +33,10 @@ private slots:
 
     void on_pushButtonDownArrow_clicked();
 
+    void on_pushButtonCapture_clicked();
+
+    void on_pushButtonDeviceSelect_clicked();
+
 private:
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
@@ -42,6 +48,8 @@ private:
     const QSize m_sceneSize{2110,2110};
 
     std::vector<QWidget*> m_navigationButtons;
+
+    frontend* m_frontEndWindow;
 
 };
 #endif // MAINWINDOW_H

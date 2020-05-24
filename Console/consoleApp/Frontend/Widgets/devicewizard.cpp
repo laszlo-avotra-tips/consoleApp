@@ -23,8 +23,8 @@ deviceWizard::deviceWizard(QWidget *parent) :
     ui(new Ui::deviceWizard)
 {
     ui->setupUi( this );
-    ui->deviceConfirmPage->setFinalPage( true );
-    setWindowFlags( Qt::CustomizeWindowHint );
+//    ui->deviceConfirmPage->setFinalPage( true );
+//    setWindowFlags( Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() | Qt::FramelessWindowHint );
 
     setButtonText( QWizard::CancelButton, tr( "&CANCEL" ) );
