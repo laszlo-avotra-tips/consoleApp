@@ -97,9 +97,3 @@ DEPENDPATH += $$PWD/../../lib/amd64/FTDI
 
 RESOURCES += \
     OpenClResources.qrc
-
-FORMS +=
-
-HEADERS +=
-
-SOURCES +=

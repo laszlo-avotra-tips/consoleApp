@@ -2567,7 +2567,7 @@ void frontend::createDisplays()
     qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
     qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
     this->setGeometry( rect );
-//    showFullScreen(); //lcv this->showFullScreen(); show();
+    showFullScreen(); //lcv this->showFullScreen(); show();
 
 
     docWindow->hide();

@@ -19,7 +19,12 @@ HEADERS += \
     $$PWD/Backend/signalprocessingfactory.h \
     $$PWD/Backend/warp.h \
     $$PWD/Backend/warpbc.h \
+    $$PWD/Frontend/Utility/pagefactory.h \
+    $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/forml300.h \
+    $$PWD/Frontend/Widgets/formnavigator.h \
+    $$PWD/Frontend/Widgets/formstart.h \
+    $$PWD/Frontend/Widgets/mainwindow.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -115,7 +120,13 @@ SOURCES += \
     $$PWD/Backend/signalprocessingfactory.cpp \
     $$PWD/Backend/warp.cpp \
     $$PWD/Backend/warpbc.cpp \
+    $$PWD/Frontend/Utility/pagefactory.cpp \
+    $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
+    $$PWD/Frontend/Widgets/formnavigator.cpp \
+    $$PWD/Frontend/Widgets/formstart.cpp \
+    $$PWD/Frontend/Widgets/mainwindow.cpp \
+    $$PWD/main.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
@@ -199,6 +210,9 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 # Forms
 FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
+    $$PWD/Frontend/Widgets/formnavigator.ui \
+    $$PWD/Frontend/Widgets/formstart.ui \
+    $$PWD/Frontend/Widgets/mainwindow.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/advancedview.ui \
     Frontend/Widgets/capturewidget.ui \

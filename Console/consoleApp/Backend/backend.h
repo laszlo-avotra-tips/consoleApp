@@ -2,6 +2,7 @@
 #define BACKEND_H
 
 #include <QObject>
+#include <QCommandLineOption>
 #include "initialization.h"
 
 class Backend : public QObject
@@ -11,6 +12,9 @@ public:
     explicit Backend(int appId, int argc, char **argv, QObject *parent = nullptr);
 
     bool isPhysicianScreenAvailable();
+
+    int setupCase(bool);
+    void parseOptions( QCommandLineOption &options, QStringList args );
 
 signals:
 

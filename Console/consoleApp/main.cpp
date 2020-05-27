@@ -30,39 +30,7 @@
 #include "signalmanager.h"
 #include "deviceSettings.h"
 #include "backend.h"
-
-void parseOptions( QCommandLineOption &options, QStringList args );
-
-/*
- * parseOptions
- *
- * Set up and handle command line options
- */
-void parseOptions( QCommandLineOption &options, QStringList args )
-{
-    LOG2(&options,args.size())
-    // make options unix-like
-//    options.setFlagStyle( QxtCommandOptions::DoubleDash );
-//    options.setParamStyle( QxtCommandOptions::SpaceAndEquals );
-
-//    options.add( "noexe", "Disable key checks for the executable" );
-//    options.add( "port", "Assign the COM port to use for controlling the laser (e.g., -p COM3)", QxtCommandOptions::Required );
-//    options.alias( "port", "p" );
-//    options.add( "low-space", "Run in low drive space mode (no captures or recording)");
-
-//    options.parse( QCoreApplication::arguments() );
-
-//    // Log any command line options. Qt pulls out any Qt-only arguments before this point
-//    // The program name is always passed inF
-//    if( args.size() > 1 )
-//    {
-//        // Log any arguments
-//        for (int i = 0; i < args.size(); ++i)
-//        {
-//            LOG( INFO, QString( "Command line arguments: %1" ).arg( args.at( i ) ) );
-//        }
-//    }
-}
+#include "formnavigator.h"
 
 
 /*
@@ -72,8 +40,9 @@ int main(int argc, char *argv[])
 {
     QApplication app( argc, argv );
 
-    // Run start-up checks
-    Initialization init;
+//    FormNavigator navigator;
+//    navigator.display();
+//    app.exec();
 
     Backend backEndLogic(app.applicationPid(), argc, argv);
 

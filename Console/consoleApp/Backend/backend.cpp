@@ -1,6 +1,8 @@
 #include "backend.h"
 #include "logger.h"
 #include "util.h"
+#include "Widgets/caseinfowizardpage.h"
+#include "Widgets/caseinfowizard.h"
 #include <QDate>
 
 
@@ -91,4 +93,59 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
 bool Backend::isPhysicianScreenAvailable()
 {
     return m_init.isPhysicianScreenAvailable();
+}
+
+int Backend::setupCase(bool isInitialSetup)
+{
+    if( isInitialSetup )
+    {
+        // Launch the device selection wizard
+        return -1;
+    }
+    else // Launched from the case details button.
+    {
+        // Require case information before anything else happens
+        caseInfoWizard *caseWizardLocal = new caseInfoWizard(  );
+
+        // reload data for updating
+        caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
+
+        // Force the wizard to the center of the primary monitor
+//        int x = ( wmgr->getTechnicianDisplayGeometry().width() - caseWizardLocal->width() ) / 2;
+//        int y = ( wmgr->getTechnicianDisplayGeometry().height() - caseWizardLocal->width() ) / 2;
+        int x = ( 2160 ) / 2;
+        int y = ( 1440) / 2;
+        caseWizardLocal->setGeometry( x, y, caseWizardLocal->width(), caseWizardLocal->height() );
+
+        // Get the case information.
+        int result = caseWizardLocal->exec();
+        delete caseWizardLocal;
+        return result;
+    }
+}
+
+void Backend::parseOptions(QCommandLineOption &options, QStringList args)
+{
+    LOG2(&options,args.size())
+    // make options unix-like
+//    options.setFlagStyle( QxtCommandOptions::DoubleDash );
+//    options.setParamStyle( QxtCommandOptions::SpaceAndEquals );
+
+//    options.add( "noexe", "Disable key checks for the executable" );
+//    options.add( "port", "Assign the COM port to use for controlling the laser (e.g., -p COM3)", QxtCommandOptions::Required );
+//    options.alias( "port", "p" );
+//    options.add( "low-space", "Run in low drive space mode (no captures or recording)");
+
+//    options.parse( QCoreApplication::arguments() );
+
+//    // Log any command line options. Qt pulls out any Qt-only arguments before this point
+//    // The program name is always passed inF
+//    if( args.size() > 1 )
+//    {
+//        // Log any arguments
+//        for (int i = 0; i < args.size(); ++i)
+//        {
+//            LOG( INFO, QString( "Command line arguments: %1" ).arg( args.at( i ) ) );
+//        }
+//    }
 }

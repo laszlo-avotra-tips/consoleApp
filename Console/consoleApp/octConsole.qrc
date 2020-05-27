@@ -12,7 +12,7 @@
         <file>Frontend/Resources/pencil_rollover.png</file>
         <file>Frontend/Resources/pencil_normal.png</file>
         <file>Frontend/Resources/blank_texture.png</file>
-        <file>Frontend/Resources/avinger_logo_markonly.png</file>
+        <file alias="L300menuButton">Frontend/Resources/avinger_logo_markonly.png</file>
         <file>Frontend/Resources/contrast_normal.png</file>
         <file>Frontend/Resources/contrast_rollover.png</file>
         <file>Frontend/Resources/Avinger_Logo.png</file>
@@ -30,5 +30,16 @@
         <file alias="flip">Frontend/Resources/L300flip.png</file>
         <file alias="zoomIn">Frontend/Resources/L300zoom_in.png</file>
         <file alias="zoomOut">Frontend/Resources/L300zoom_out.png</file>
+        <file alias="capture">Frontend/Resources/L300screenshot.png</file>
+        <file alias="measureGrey">Frontend/Resources/L300measureGrey.png</file>
+        <file alias="measureWhite">Frontend/Resources/L300measureWhite.png</file>
+        <file alias="measureYellow">Frontend/Resources/L300measureYellow.png</file>
+        <file alias="menuHamburger">Frontend/Resources/L300menu.png</file>
+        <file alias="recordRed">Frontend/Resources/L300recordRed.png</file>
+        <file alias="recordWhite">Frontend/Resources/L300recordWhite.png</file>
+        <file alias="settings">Frontend/Resources/L300settings.png</file>
+        <file alias="dropdown">Frontend/Resources/L300dropdown.png</file>
+        <file alias="avingerStart">Frontend/Resources/L300AvingerStart.png</file>
+        <file alias="avingerStartKara">Frontend/Resources/Aviniger logo with Start (1).png</file>
     </qresource>
 </RCC>
