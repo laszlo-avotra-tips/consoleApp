@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class Backend;
+class frontend;
 
 namespace Ui {
 class FormStart;
@@ -29,6 +30,7 @@ private slots:
 private:
     int showCaseInfoDialog();
     int showDeviceWizard();
+     void startDaq(frontend* fe);
 
     Ui::FormStart *ui;
     Backend* m_backend{nullptr};
