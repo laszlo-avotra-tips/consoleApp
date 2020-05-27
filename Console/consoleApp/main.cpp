@@ -40,9 +40,11 @@ int main(int argc, char *argv[])
 {
     QApplication app( argc, argv );
 
-//    FormNavigator navigator;
-//    navigator.display();
-//    app.exec();
+    FormNavigator navigator;
+    navigator.display();
+    app.exec();
+
+    return 0;
 
     Backend backEndLogic(app.applicationPid(), argc, argv);
 

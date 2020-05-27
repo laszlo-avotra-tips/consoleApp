@@ -58,14 +58,14 @@ bool Initialization::init( int argc, char *argv[] )
     // instance to exist even though they do not access it directly.  Getting
     // rid of it immediately prevents the compiler from complaining about an
     // unused local variable.
-    if ( !qApp )
-    {
-        QApplication *tmp = new QApplication( argc, argv );
-        if( tmp )
-        {
-            delete tmp;
-        }
-    }
+//    if ( !qApp )
+//    {
+//        QApplication *tmp = new QApplication( argc, argv );
+//        if( tmp )
+//        {
+//            delete tmp;
+//        }
+//    }
 
     // Verify the EXE is the one that was installed and has not been modified or
     // tampered with. This check only occurs in the release version but can be

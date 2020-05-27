@@ -30,7 +30,7 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
     // Start the session in the system log
     LOG( INFO, "-------------------" )
     LOG( INFO, "Application started: OCT HS Console" )
-    LOG( INFO, QString( "OCT Console Process ID (PID) : %1" ).arg( appId ) )
+//    LOG( INFO, QString( "OCT Console Process ID (PID) : %1" ).arg( appId ) )
     LOG( INFO, QString( "OCT Console Version: %1" ).arg( getSoftwareVersionNumber() ) )
 
 #if _DEBUG
@@ -87,6 +87,11 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
     //    // Kick off a background thread to run additional start-up functions
     //    init.start();
     //#endif
+
+}
+
+Backend::Backend(QObject *parent)
+{
 
 }
 

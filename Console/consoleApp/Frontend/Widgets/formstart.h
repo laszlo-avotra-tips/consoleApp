@@ -2,6 +2,7 @@
 #define FORMSTART_H
 
 #include <QWidget>
+#include <backend.h>
 
 namespace Ui {
 class FormStart;
@@ -26,6 +27,7 @@ private slots:
 
 private:
     Ui::FormStart *ui;
+    Backend m_backend;
 };
 
 #endif // FORMSTART_H
