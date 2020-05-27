@@ -1150,6 +1150,11 @@ void frontend::startDAQprepareView()
     setupDeviceForSledSupport();
 }
 
+liveScene *frontend::scene() const
+{
+    return m_scene;
+}
+
 /*
  * handleShowCurrentDeviceLabel
  *

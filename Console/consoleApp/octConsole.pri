@@ -143,7 +143,6 @@ SOURCES += \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/liveview.cpp \
     Frontend/Widgets/sectoritem.cpp \
-    main.cpp \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Widgets/capturewidget.cpp \
     Frontend/Widgets/gridOverlay.cpp \

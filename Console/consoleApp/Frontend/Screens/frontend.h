@@ -240,6 +240,8 @@ private:
 public:
     DaqDataConsumer *consumer;
 
+    liveScene *scene() const;
+
 private slots:
     void handlePlayButton_clicked();
     void handlePauseButton_clicked();

@@ -8,6 +8,7 @@
 #include <map>
 
 class frontend;
+class liveScene;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,7 +21,9 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
     void setDeviceLabel();
+    void setScene(liveScene* scene);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -46,12 +49,14 @@ private:
 private:
     Ui::MainWindow *ui;
     const std::pair<int,int> m_widthHeight{3,2};
+
     const int m_sceneWidth{2110};
     const QSize m_sceneSize{2110,2110};
 
     std::vector<QWidget*> m_navigationButtons;
 
-    frontend* m_frontEndWindow;
-
+    frontend* m_frontEndWindow{nullptr};
+    QGraphicsView* m_graphicsView{nullptr};
+    liveScene* m_scene{nullptr};
 };
 #endif // MAINWINDOW_H
