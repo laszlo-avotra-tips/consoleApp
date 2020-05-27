@@ -36,9 +36,6 @@ private slots:
 
     void on_pushButtonCapture_clicked();
 
-    void on_pushButtonDeviceSelect_clicked();
-
-
 private:
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);

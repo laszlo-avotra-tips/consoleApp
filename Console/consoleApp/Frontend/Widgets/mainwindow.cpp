@@ -48,8 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_navigationButtons.push_back(ui->pushButtonRecord);
     m_navigationButtons.push_back(ui->pushButtonCapture);
     m_navigationButtons.push_back(ui->pushButtonFlip);
-    m_navigationButtons.push_back(ui->pushButtonDeviceSelect);
-
     for(auto* button : m_navigationButtons){
         button->hide();
     }
@@ -141,12 +139,6 @@ void MainWindow::on_pushButtonDownArrow_clicked()
 
 void MainWindow::on_pushButtonCapture_clicked()
 {
-}
-
-void MainWindow::on_pushButtonDeviceSelect_clicked()
-{
-    deviceWizard deviceSelection(this);
-    deviceSelection.exec();
 }
 
 void MainWindow::setDeviceLabel()
