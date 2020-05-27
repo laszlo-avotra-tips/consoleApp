@@ -150,6 +150,5 @@ void MainWindow::on_pushButtonCapture_clicked()
 void MainWindow::on_pushButtonDeviceSelect_clicked()
 {
     deviceWizard deviceSelection(this);
-    deviceSelection.init();
     deviceSelection.exec();
 }

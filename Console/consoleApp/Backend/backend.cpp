@@ -90,7 +90,7 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
 
 }
 
-Backend::Backend(QObject *parent)
+Backend::Backend()
 {
 
 }
@@ -98,35 +98,6 @@ Backend::Backend(QObject *parent)
 bool Backend::isPhysicianScreenAvailable()
 {
     return m_init.isPhysicianScreenAvailable();
-}
-
-int Backend::setupCase(bool isInitialSetup)
-{
-    if( isInitialSetup )
-    {
-        // Launch the device selection wizard
-        return -1;
-    }
-    else // Launched from the case details button.
-    {
-        // Require case information before anything else happens
-        caseInfoWizard *caseWizardLocal = new caseInfoWizard(  );
-
-        // reload data for updating
-        caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
-
-        // Force the wizard to the center of the primary monitor
-//        int x = ( wmgr->getTechnicianDisplayGeometry().width() - caseWizardLocal->width() ) / 2;
-//        int y = ( wmgr->getTechnicianDisplayGeometry().height() - caseWizardLocal->width() ) / 2;
-        int x = ( 2160 ) / 2;
-        int y = ( 1440) / 2;
-        caseWizardLocal->setGeometry( x, y, caseWizardLocal->width(), caseWizardLocal->height() );
-
-        // Get the case information.
-        int result = caseWizardLocal->exec();
-        delete caseWizardLocal;
-        return result;
-    }
 }
 
 void Backend::parseOptions(QCommandLineOption &options, QStringList args)

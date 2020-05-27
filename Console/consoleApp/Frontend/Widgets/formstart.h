@@ -2,7 +2,8 @@
 #define FORMSTART_H
 
 #include <QWidget>
-#include <backend.h>
+
+class Backend;
 
 namespace Ui {
 class FormStart;
@@ -26,8 +27,11 @@ private slots:
     void on_pushButtonStart_clicked();
 
 private:
+    int showCaseInfoDialog();
+    int showDeviceWizard();
+
     Ui::FormStart *ui;
-    Backend m_backend;
+    Backend* m_backend{nullptr};
 };
 
 #endif // FORMSTART_H

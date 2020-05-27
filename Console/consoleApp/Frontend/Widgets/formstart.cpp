@@ -3,6 +3,8 @@
 #include "Utility/widgetcontainer.h"
 #include "Widgets/caseinfowizardpage.h"
 #include "Widgets/caseinfowizard.h"
+#include <backend.h>
+#include "devicewizard.h"
 #include "logger.h"
 
 #include <QDebug>
@@ -39,6 +41,8 @@ FormStart::FormStart(QWidget *parent) :
 
     ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,middleFrameWidth));
     ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
+
+    m_backend = new Backend();
 }
 
 FormStart::~FormStart()
@@ -72,16 +76,32 @@ void FormStart::on_pushButtonShutdown_clicked()
 
 void FormStart::on_pushButtonStart_clicked()
 {
-//    m_backend.setupCase(true);
 //    WidgetContainer::instance()->gotoPage("mainPage");
+    int result = showCaseInfoDialog();
+    if(result == QDialog::Accepted){
+       result = showDeviceWizard();
+       if(result == QDialog::Accepted){
+           WidgetContainer::instance()->gotoPage("mainPage");
+       }
+    }
+}
+
+int FormStart::showCaseInfoDialog()
+{
     caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
 
     // reload data for updating
     caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
-    // Force the wizard to the center of the primary monitor
-    int x = ( 3240 / WidgetContainer::instance()->ratio() - caseWizardLocal->width() ) / 2;
-    int y = ( 2160 / WidgetContainer::instance()->ratio() - caseWizardLocal->width() ) / 2;
-    caseWizardLocal->setGeometry( x, y, caseWizardLocal->width(), caseWizardLocal->height() );
     int result = caseWizardLocal->exec();
     LOG1(result);
+    return result;
+}
+
+int FormStart::showDeviceWizard()
+{
+    deviceWizard* device = new deviceWizard(this);
+
+    int result = device->exec();
+    LOG1(result);
+    return result;
 }

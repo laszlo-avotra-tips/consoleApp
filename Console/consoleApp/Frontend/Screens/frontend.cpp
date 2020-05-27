@@ -1061,8 +1061,6 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
 
     deviceWizard dWiz;
 
-    dWiz.init();
-
     // determine how to center the wizard on the primary screen
     int x = ( wmgr->getTechnicianDisplayGeometry().width() - dWiz.width() )   / 2;
     int y = ( wmgr->getTechnicianDisplayGeometry().height() - dWiz.height() ) / 2;
