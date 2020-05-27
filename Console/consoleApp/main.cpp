@@ -31,6 +31,7 @@
 #include "deviceSettings.h"
 #include "backend.h"
 #include "formnavigator.h"
+//#include "keyboardInputContext.h"
 
 
 /*
@@ -40,15 +41,20 @@ int main(int argc, char *argv[])
 {
     QApplication app( argc, argv );
 
+//    keyboardInputContext *ic = new keyboardInputContext();
+//    app.setInputContext( ic );
+
+
     FormNavigator navigator;
     navigator.display();
+
     app.exec();
 
     return 0;
 
-    Backend backEndLogic(app.applicationPid(), argc, argv);
+    Backend backEndLogic(&navigator);
 
-    frontend frontEndWindow;
+    frontend frontEndWindow(&navigator);
 
 //#if QT_NO_DEBUG
 //    // Provide power to all other non-PC components in the Lightbox

@@ -6,6 +6,8 @@
 #include "devicewizard.h"
 #include "deviceselectwizardpage.h"
 #include "deviceSettings.h"
+#include "daqfactory.h"
+#include <logger.h>
 
 
 #include <QDebug>
@@ -51,6 +53,14 @@ MainWindow::MainWindow(QWidget *parent)
     for(auto* button : m_navigationButtons){
         button->hide();
     }
+
+    auto wid = WidgetContainer::instance()->getPage("pageFrontend");//new frontend(this);
+
+    frontend* fw = dynamic_cast<frontend*>(wid);
+    if(fw)
+    {
+        m_frontEndWindow = fw;
+    }
 }
 
 MainWindow::~MainWindow()
@@ -95,6 +105,27 @@ void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
             button->show();
         }
     }
+}
+
+void MainWindow::startDaq()
+{
+    auto idaq = daqfactory::instance()->getdaq();
+
+    if(!idaq){
+        m_frontEndWindow->abortStartUp();
+
+        LOG( INFO, "Device not supported. OCT Console cancelled" )
+    }
+    m_frontEndWindow->setIDAQ(idaq);
+    LOG( INFO, "LASER: serial port control is DISABLED" )
+    LOG( INFO, "SLED support board: serial port control is DISABLED" )
+
+    m_frontEndWindow->startDaq();
+    auto& setting = deviceSettings::Instance();
+    if(setting.getIsSimulation()){
+        m_frontEndWindow->startDataCapture();
+    }
+    m_frontEndWindow->on_zoomSlider_valueChanged(100);
 }
 
 
@@ -146,4 +177,9 @@ void MainWindow::setDeviceLabel()
     deviceSettings &dev = deviceSettings::Instance();
     const QString name{dev.getCurrentDeviceName()};
     ui->labelDevice->setText(name);
+
+    m_frontEndWindow->init();
+    SignalManager::instance();
+
+    startDaq();
 }

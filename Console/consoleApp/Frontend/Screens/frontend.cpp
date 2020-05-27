@@ -297,7 +297,7 @@ void frontend::init( void )
     lastDirCCW = true;			// make sure bidirectional devices start CCW (passive)
 
     // Require case information before anything else happens
-    caseWizard = std::make_unique<caseInfoWizard>(this); //new caseInfoWizard( this );
+    caseWizard = std::make_unique<caseInfoWizard>(this);
 
     /*
      * Create the case info with default values (default doctor, default location, and
@@ -426,7 +426,8 @@ int frontend::setupCase( bool isInitialSetup )
     if( isInitialSetup )
     {
         // Launch the device selection wizard
-        return on_deviceSelectButton_clicked();
+//        return on_deviceSelectButton_clicked();
+        return -1;
     }
     else // Launched from the case details button.
     {
@@ -1209,18 +1210,18 @@ void frontend::on_caseDetailsButton_clicked()
 {
     LOG( INFO, "Case details button clicked" )
 
-    // Update session case information
-    if( setupCase( false ) )
-    {
-        // Update information on the screen
-        updateCaseInfo();
+//    // Update session case information
+//    if( setupCase( false ) )
+//    {
+//        // Update information on the screen
+//        updateCaseInfo();
 
-        LOG( INFO, "Case details modified" )
-    }
-    else
-    {
-        LOG( INFO, "Case details were not changed")
-    }
+//        LOG( INFO, "Case details modified" )
+//    }
+//    else
+//    {
+//        LOG( INFO, "Case details were not changed")
+//    }
 }
 
 /*
@@ -2565,7 +2566,7 @@ void frontend::createDisplays()
     qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
     qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
     this->setGeometry( rect );
-    showFullScreen(); //lcv this->showFullScreen(); show();
+//    showFullScreen(); //lcv this->showFullScreen(); show();
 
 
     docWindow->hide();

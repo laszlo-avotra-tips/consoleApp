@@ -2,7 +2,11 @@
 #include "formstart.h"
 #include "widgetcontainer.h"
 #include "mainwindow.h"
+#include "forml300.h"
+#include "Frontend/Screens/frontend.h"
+
 #include <logger.h>
+
 
 PageFactory::PageFactory()
 {
@@ -14,4 +18,10 @@ PageFactory::PageFactory()
 
     FormStart* formStart = new FormStart();
     WidgetContainer::instance()->registerWidget("startPage", formStart);
+
+    FormL300* formL300 = new FormL300();
+    WidgetContainer::instance()->registerWidget("formL300Page", formL300);
+
+    frontend* frontendPage = new frontend();
+    WidgetContainer::instance()->registerWidget("frontendPage", frontendPage);
 }

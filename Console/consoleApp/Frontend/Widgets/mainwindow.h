@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "signalmanager.h"
+
 #include <QWidget>
 #include <vector>
 #include <map>
@@ -39,6 +41,7 @@ private slots:
 private:
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
+    void startDaq();
 
 private:
     Ui::MainWindow *ui;

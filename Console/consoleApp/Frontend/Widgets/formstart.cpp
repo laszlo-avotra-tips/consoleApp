@@ -7,6 +7,7 @@
 #include "devicewizard.h"
 #include "logger.h"
 #include "mainwindow.h"
+#include "Frontend/Screens/frontend.h"
 
 #include <QDebug>
 
@@ -81,10 +82,16 @@ void FormStart::on_pushButtonStart_clicked()
     if(result == QDialog::Accepted){
        result = showDeviceWizard();
        if(result == QDialog::Accepted){
-           auto widget = WidgetContainer::instance()->gotoPage("mainPage");
+//           auto widget = WidgetContainer::instance()->gotoPage("mainPage");
+//           auto widget = WidgetContainer::instance()->gotoPage("formL300Page");
+           auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
            MainWindow* mw = dynamic_cast<MainWindow*>(widget);
            if(mw){
                mw->setDeviceLabel();
+           }
+           frontend* fw = dynamic_cast<frontend*>(widget);
+           if(fw){
+              fw->showFullScreen();
            }
        }
     }

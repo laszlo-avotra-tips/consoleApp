@@ -6,7 +6,7 @@
 #include <QDate>
 
 
-Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(parent)
+Backend::Backend(QWidget *parent) : QWidget(parent)
 {
     // use the touch keyboard
 //    keyboardInputContext *ic = new keyboardInputContext();
@@ -30,7 +30,6 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
     // Start the session in the system log
     LOG( INFO, "-------------------" )
     LOG( INFO, "Application started: OCT HS Console" )
-//    LOG( INFO, QString( "OCT Console Process ID (PID) : %1" ).arg( appId ) )
     LOG( INFO, QString( "OCT Console Version: %1" ).arg( getSoftwareVersionNumber() ) )
 
 #if _DEBUG
@@ -64,7 +63,7 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
     //    app.setActivationWindow( &frontEndWindow );
 
     //    init.setExeCheck( runExeCheck );
-    m_init.init(argc,argv);
+    m_init.init();
 
     //#if USE_INIT
     //    if( !init.init( argc, argv ) )
@@ -87,11 +86,6 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
     //    // Kick off a background thread to run additional start-up functions
     //    init.start();
     //#endif
-
-}
-
-Backend::Backend()
-{
 
 }
 

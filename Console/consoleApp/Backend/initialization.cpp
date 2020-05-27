@@ -40,7 +40,7 @@ Initialization::Initialization()
  * Performs all necessary tests to make sure the system is ready to run; if
  * any tests fail, the application will report the failure and shutdown.
  */
-bool Initialization::init( int argc, char *argv[] )
+bool Initialization::init( )
 {
     bool isReady = true;
 

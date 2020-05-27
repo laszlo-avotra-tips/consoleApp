@@ -1,16 +1,15 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
-#include <QObject>
+#include <QWidget>
 #include <QCommandLineOption>
 #include "initialization.h"
 
-class Backend : public QObject
+class Backend : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Backend(int appId, int argc, char **argv, QObject *parent = nullptr);
-    Backend();
+    explicit Backend(QWidget *parent = nullptr);
 
     bool isPhysicianScreenAvailable();
 
