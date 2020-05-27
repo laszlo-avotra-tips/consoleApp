@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
         button->hide();
     }
 
-    auto wid = WidgetContainer::instance()->getPage("pageFrontend");//new frontend(this);
+    auto wid = WidgetContainer::instance()->getPage("frontendPage");//new frontend(this);
 
     frontend* fw = dynamic_cast<frontend*>(wid);
     if(fw)

@@ -84,16 +84,19 @@ void FormStart::on_pushButtonStart_clicked()
     if(result == QDialog::Accepted){
        result = showDeviceWizard();
        if(result == QDialog::Accepted){
-           auto widget = WidgetContainer::instance()->gotoPage("mainPage");
+//           auto widget = WidgetContainer::instance()->gotoPage("mainPage");
 //           auto widget = WidgetContainer::instance()->gotoPage("formL300Page");
-//           auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
+           auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
            MainWindow* mw = dynamic_cast<MainWindow*>(widget);
            if(mw){
                mw->setDeviceLabel();
                auto wid = WidgetContainer::instance()->getPage("frontendPage");
                frontend* fw = dynamic_cast<frontend*>(wid);
-               mw->setScene(fw->scene());
-               startDaq(fw);
+               if(fw){
+                   mw->setScene(fw->scene());
+                   fw->showFullScreen();
+                   startDaq(fw);
+               }
            }
            frontend* fw = dynamic_cast<frontend*>(widget);
            if(fw){

@@ -13,6 +13,9 @@ PageFactory::PageFactory()
     auto& log = Logger::Instance();
     log.init("frame");
 
+    frontend* frontendPage = new frontend();
+    WidgetContainer::instance()->registerWidget("frontendPage", frontendPage);
+
     MainWindow* mainWindow = new MainWindow();
     WidgetContainer::instance()->registerWidget("mainPage", mainWindow);
 
@@ -21,7 +24,4 @@ PageFactory::PageFactory()
 
     FormL300* formL300 = new FormL300();
     WidgetContainer::instance()->registerWidget("formL300Page", formL300);
-
-    frontend* frontendPage = new frontend();
-    WidgetContainer::instance()->registerWidget("frontendPage", frontendPage);
 }
