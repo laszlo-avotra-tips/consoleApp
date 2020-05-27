@@ -44,7 +44,7 @@ FormStart::FormStart(QWidget *parent) :
     ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,middleFrameWidth));
     ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
 
-    m_backend = new Backend();
+    m_backend = new Backend(parent);
 }
 
 FormStart::~FormStart()
