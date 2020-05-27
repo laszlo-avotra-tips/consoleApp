@@ -22,8 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    m_graphicsView = ui->graphicsView;
-
     const int h{getSceneWidth()};
     const int ratio = WidgetContainer::instance()->ratio();
     if(!ratio){
@@ -183,13 +181,5 @@ void MainWindow::setDeviceLabel()
     m_frontEndWindow->init();
     SignalManager::instance();
 
-//    startDaq();
-}
-
-void MainWindow::setScene(liveScene *scene)
-{
-    if(!m_scene){
-        m_scene = scene;
-        m_graphicsView->setScene(m_scene);
-    }
+    startDaq();
 }

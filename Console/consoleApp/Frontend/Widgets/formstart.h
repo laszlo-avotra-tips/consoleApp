@@ -30,7 +30,7 @@ private slots:
 private:
     int showCaseInfoDialog();
     int showDeviceWizard();
-     void startDaq(frontend* fe);
+    void startDaq(frontend *fe);
 
     Ui::FormStart *ui;
     Backend* m_backend{nullptr};

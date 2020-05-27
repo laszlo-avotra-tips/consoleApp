@@ -90,13 +90,6 @@ void FormStart::on_pushButtonStart_clicked()
            MainWindow* mw = dynamic_cast<MainWindow*>(widget);
            if(mw){
                mw->setDeviceLabel();
-               auto wid = WidgetContainer::instance()->getPage("frontendPage");
-               frontend* fw = dynamic_cast<frontend*>(wid);
-               if(fw){
-                   mw->setScene(fw->scene());
-                   fw->showFullScreen();
-                   startDaq(fw);
-               }
            }
            frontend* fw = dynamic_cast<frontend*>(widget);
            if(fw){

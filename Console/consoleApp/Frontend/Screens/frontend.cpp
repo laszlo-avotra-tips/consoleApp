@@ -485,12 +485,10 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     m_scene = new liveScene( this );
+    m_formL300 = new FormL300( this );
+    m_formL300->setScene(m_scene);
 
-    auto wid = WidgetContainer::instance()->getPage("formL300Page");
-    m_formL300 = dynamic_cast<FormL300*>(wid);//new FormL300( this );
-    if(m_formL300){
-        m_formL300->setScene(m_scene);
-    }
+    WidgetContainer::instance()->registerWidget("formL300Page", m_formL300);
 
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -1153,11 +1151,6 @@ void frontend::startDAQprepareView()
     LOG( INFO, "Device Selection: End" )
 
     setupDeviceForSledSupport();
-}
-
-liveScene *frontend::scene() const
-{
-    return m_scene;
 }
 
 /*
