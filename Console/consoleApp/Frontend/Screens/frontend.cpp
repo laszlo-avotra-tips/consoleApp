@@ -2524,7 +2524,7 @@ void frontend::handleBadMonitorConfig()
     qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
 
     this->setGeometry( rect );
-    this->showFullScreen();//show(); //lcv this->showFullScreen();
+//    this->showFullScreen();//show(); //lcv this->showFullScreen();
     wmgr->showInfoMessage( this->parentWidget() );
     captureMouse( true );
 }
@@ -2567,14 +2567,14 @@ void frontend::createDisplays()
     qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
     qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
     this->setGeometry( rect );
-    showFullScreen(); //lcv this->showFullScreen(); show();
+//    showFullScreen(); //lcv this->showFullScreen(); show();
 
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
     {
         docWindow->setGeometry( wmgr->getPhysicianDisplayGeometry() );
-        docWindow->showFullScreen();//docWindow->show(); //lcv docWindow->showFullScreen();
+//        docWindow->showFullScreen();//docWindow->show(); //lcv docWindow->showFullScreen();
     }
 
     if( wmgr->isAuxMonPresent() )
