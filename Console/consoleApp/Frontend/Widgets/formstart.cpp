@@ -8,6 +8,8 @@
 #include "logger.h"
 #include "mainwindow.h"
 #include "Frontend/Screens/frontend.h"
+#include <daqfactory.h>
+#include "deviceSettings.h"
 
 #include <QDebug>
 
@@ -92,6 +94,7 @@ void FormStart::on_pushButtonStart_clicked()
            frontend* fw = dynamic_cast<frontend*>(widget);
            if(fw){
               fw->showFullScreen();
+              startDaq(fw);
            }
        }
     }
@@ -104,7 +107,7 @@ int FormStart::showCaseInfoDialog()
     // reload data for updating
     caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
     int result = caseWizardLocal->exec();
-    LOG1(result);
+    LOG1(result)
     return result;
 }
 
@@ -113,6 +116,27 @@ int FormStart::showDeviceWizard()
     deviceWizard* device = new deviceWizard(this);
 
     int result = device->exec();
-    LOG1(result);
+    LOG1(result)
     return result;
+}
+
+void FormStart::startDaq(frontend *fe)
+{
+    auto idaq = daqfactory::instance()->getdaq();
+
+    if(!idaq){
+        fe->abortStartUp();
+
+        LOG( INFO, "Device not supported. OCT Console cancelled" )
+    }
+    fe->setIDAQ(idaq);
+    LOG( INFO, "LASER: serial port control is DISABLED" )
+    LOG( INFO, "SLED support board: serial port control is DISABLED" )
+
+    fe->startDaq();
+    auto& setting = deviceSettings::Instance();
+    if(setting.getIsSimulation()){
+        fe->startDataCapture();
+    }
+    fe->on_zoomSlider_valueChanged(100);
 }
