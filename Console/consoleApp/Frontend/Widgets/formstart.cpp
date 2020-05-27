@@ -6,6 +6,7 @@
 #include <backend.h>
 #include "devicewizard.h"
 #include "logger.h"
+#include "mainwindow.h"
 
 #include <QDebug>
 
@@ -76,12 +77,15 @@ void FormStart::on_pushButtonShutdown_clicked()
 
 void FormStart::on_pushButtonStart_clicked()
 {
-//    WidgetContainer::instance()->gotoPage("mainPage");
     int result = showCaseInfoDialog();
     if(result == QDialog::Accepted){
        result = showDeviceWizard();
        if(result == QDialog::Accepted){
-           WidgetContainer::instance()->gotoPage("mainPage");
+           auto widget = WidgetContainer::instance()->gotoPage("mainPage");
+           MainWindow* mw = dynamic_cast<MainWindow*>(widget);
+           if(mw){
+               mw->setDeviceLabel();
+           }
        }
     }
 }

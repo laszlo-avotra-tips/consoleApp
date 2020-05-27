@@ -18,6 +18,7 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setDeviceLabel();
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -36,6 +37,7 @@ private slots:
     void on_pushButtonCapture_clicked();
 
     void on_pushButtonDeviceSelect_clicked();
+
 
 private:
     void flipColumns();

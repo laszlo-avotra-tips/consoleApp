@@ -5,6 +5,7 @@
 #include "Frontend/Screens/frontend.h"
 #include "devicewizard.h"
 #include "deviceselectwizardpage.h"
+#include "deviceSettings.h"
 
 
 #include <QDebug>
@@ -140,15 +141,17 @@ void MainWindow::on_pushButtonDownArrow_clicked()
 
 void MainWindow::on_pushButtonCapture_clicked()
 {
-//    m_frontEndWindow = new frontend();
-//    if(m_frontEndWindow){
-//        m_frontEndWindow->init();
-//        m_frontEndWindow->on_deviceSelectButton_clicked();
-//    }
 }
 
 void MainWindow::on_pushButtonDeviceSelect_clicked()
 {
     deviceWizard deviceSelection(this);
     deviceSelection.exec();
+}
+
+void MainWindow::setDeviceLabel()
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    const QString name{dev.getCurrentDeviceName()};
+    ui->labelDevice->setText(name);
 }
