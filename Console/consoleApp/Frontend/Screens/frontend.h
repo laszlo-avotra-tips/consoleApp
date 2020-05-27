@@ -192,7 +192,7 @@ private:
    	curvesDialog *curveDlg;
 #endif
 
-    liveScene *scene{nullptr};
+    liveScene *m_scene{nullptr};
 
     lagWizard *lagHandler;
     std::unique_ptr<caseInfoWizard> caseWizard{nullptr};

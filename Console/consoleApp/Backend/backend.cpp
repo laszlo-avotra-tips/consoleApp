@@ -59,12 +59,6 @@ Backend::Backend(int appId, int argc,char** argv, QObject *parent) : QObject(par
     //    pdb.powerOn();
     //#endif
 
-    //    // if both monitors are not present, only show the technician's
-    //    if( !init.isPhysicianScreenAvailable() )
-    //    {
-    //        frontEndWindow.turnOffPhysicianScreen();
-    //    }
-
     //    app.setActivationWindow( &frontEndWindow );
 
     //    init.setExeCheck( runExeCheck );
