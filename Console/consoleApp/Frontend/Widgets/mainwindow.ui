@@ -30,9 +30,6 @@
 background-color: dark-gray;
 color: white;
 }
-QLabel{
-font: 60pt &quot;Helvetica Neue&quot;;
-}
 QWidget{
 background-color: dark-gray;
 color: white;
@@ -74,13 +71,13 @@ qproperty-flat: true;
      </property>
      <property name="minimumSize">
       <size>
-       <width>540</width>
+       <width>530</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>540</width>
+       <width>530</width>
        <height>16777215</height>
       </size>
      </property>
@@ -98,13 +95,13 @@ qproperty-flat: true;
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>50</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>50</number>
       </property>
       <item>
        <widget class="QPushButton" name="pushButtonMenu">
@@ -485,13 +482,13 @@ CASE</string>
      </property>
      <property name="minimumSize">
       <size>
-       <width>540</width>
+       <width>550</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>540</width>
+       <width>550</width>
        <height>16777215</height>
       </size>
      </property>
@@ -509,13 +506,13 @@ CASE</string>
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>50</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>50</number>
       </property>
       <item>
        <widget class="QFrame" name="frameStatus">
@@ -560,7 +557,7 @@ CASE</string>
           <widget class="QLabel" name="labelTime">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>270</width>
              <height>25</height>
             </size>
            </property>
@@ -579,7 +576,7 @@ CASE</string>
           <widget class="QLabel" name="labelRunTime">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>270</width>
              <height>25</height>
             </size>
            </property>
@@ -592,7 +589,7 @@ CASE</string>
           <widget class="QLabel" name="labelDevice">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>270</width>
              <height>25</height>
             </size>
            </property>
