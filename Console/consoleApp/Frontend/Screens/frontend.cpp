@@ -40,7 +40,6 @@
 #include "engineeringcontroller.h"
 #include "signalmodel.h"
 #include "forml300.h"
-#include "Frontend/Utility/widgetcontainer.h"
 
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0
@@ -257,7 +256,7 @@ frontend::~frontend()
             delete consumer;
         }
 
-        // shut down the daq; wait for it to stop 
+        // shut down the daq; wait for it to stop
         if(idaq)
         {
             idaq->stop();
@@ -488,8 +487,6 @@ void frontend::setupScene( void )
     m_formL300 = new FormL300( this );
     m_formL300->setScene(m_scene);
 
-    WidgetContainer::instance()->registerWidget("formL300Page", m_formL300);
-
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );
@@ -595,7 +592,7 @@ void frontend::on_endCaseButton_clicked()
  */
 void frontend::closeEvent( QCloseEvent * /*event*/ )
 {
-    /* 
+    /*
      * go through a common exit point
      */
     on_endCaseButton_clicked();
@@ -853,7 +850,7 @@ void frontend::stopDaq( void )
  */
 void frontend::handleWarning( QString notice )
 {
-    // Call the system-wide warning handler. 
+    // Call the system-wide warning handler.
     displayWarningMessage( notice );
 }
 
@@ -972,7 +969,7 @@ void frontend::on_scanSyncButton_clicked()
 
     // create a new window (no parent) so the UI is modal
     lagHandler = new lagWizard;
-    connect( consumer,   SIGNAL(directionOfRotation(directionTracker::Direction_T)), 
+    connect( consumer,   SIGNAL(directionOfRotation(directionTracker::Direction_T)),
              lagHandler, SLOT(handleDirectionChange()) );
     connect( m_scene,      SIGNAL(fullRotation()),
              lagHandler, SLOT(handleFullRotation()) );
@@ -1179,10 +1176,10 @@ void frontend::handleDeviceChange()
     auxMon->setDeviceName( dev.current()->getDeviceName() );
 /*
     SledSupport &sledSupport = SledSupport::Instance();
-	if( devSettings.current()->isBidirectional())
-	{
+    if( devSettings.current()->isBidirectional())
+    {
         sledSupport.setSledRotation(-1);	// No direction indicator
-	}
+    }
 */
     // Make sure the next device is started with Zoom off.
     on_zoomResetPushButton_clicked();
@@ -1339,7 +1336,7 @@ void frontend::handleClipRecordingStopped( void )
     // Update timing information
     clipListModel &clipList = clipListModel::Instance();
 
-	// clipLength_ms is updated when the video recording is closed
+    // clipLength_ms is updated when the video recording is closed
     clipList.updateClipInfo( clipLength_ms );
 
     LOG( INFO, QString( "Clip Recording: Length: %1 ms (clip-%2)" ).arg( clipLength_ms ).arg( strClipNumber ) )
@@ -1434,7 +1431,7 @@ void frontend::handleLoopLoaded( QString loopFilename )
 }
 /*
  * handlePlayButton_clicked
- * 
+ *
  * Configure the hardware and UI for replaying an OCT Loop.  The hardware is
  * put into a state that stops sending data to the frontend; the UI is switches
  * to displaying data from the storage device.  Full case recording continues in
@@ -1679,7 +1676,7 @@ void frontend::showCatheterView( void )
 
 /*
  * setSceneCursor
- * 
+ *
  * Simplify switching the state of the mouse shown over Live Scene
  */
 void frontend::setSceneCursor( QCursor cursor )
@@ -1924,7 +1921,7 @@ void frontend::on_measureModePushButton_clicked()
 
 /*
  * setMeasurementMode
- * 
+ *
  * Show or hide the measurement groupbox, overlay, and label.
  */
 void frontend::setMeasurementMode( bool enable )
@@ -2391,7 +2388,7 @@ void frontend::on_liveViewPushButton_clicked()
     }
 
     showCatheterView();
-    
+
     /*
      * Make sure capture buttons stay disabled if space is low
      */
@@ -2469,7 +2466,7 @@ void frontend::on_captureImageButton_clicked()
 
 /*
  * on_annotateImagePushButton_clicked
- * 
+ *
  * Allow drawing on the image by the Technician. This will be displayed on
  * both screens.
  */

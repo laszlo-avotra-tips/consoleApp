@@ -85,7 +85,6 @@ void FormStart::on_pushButtonStart_clicked()
        result = showDeviceWizard();
        if(result == QDialog::Accepted){
 //           auto widget = WidgetContainer::instance()->gotoPage("mainPage");
-//           auto widget = WidgetContainer::instance()->gotoPage("formL300Page");
            auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
            MainWindow* mw = dynamic_cast<MainWindow*>(widget);
            if(mw){
