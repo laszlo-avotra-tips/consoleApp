@@ -3,6 +3,7 @@
 
 #include <QString>
 
+
 class QWidget;
 
 class PageFactory

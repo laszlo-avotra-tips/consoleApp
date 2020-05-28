@@ -22,4 +22,5 @@ PageFactory::PageFactory()
     frontend* frontendPage = new frontend();
     WidgetContainer::instance()->registerWidget("frontendPage", frontendPage);
 
+
 }
