@@ -96,6 +96,8 @@ frontend::frontend(QWidget *parent)
 
     ui.setupUi( this );
 
+    ui.endCaseButton->setEnabled(false);
+
     // save the tip as defined in Designer so it can be restored as necessary
     defaultSceneToolTip = ui.liveGraphicsView->toolTip();
 
@@ -2729,5 +2731,8 @@ void frontend::on_pushButtonLogo_clicked()
         qDebug() << __FUNCTION__ << ": depth=" << *depth;
         m_formL300->setDepth(*depth);
         m_formL300->showFullScreen(); //lcv m_formL300->showFullScreen(); show();
+    }
+    if(m_mainWindow){
+        m_mainWindow->showFullScreen();
     }
 }

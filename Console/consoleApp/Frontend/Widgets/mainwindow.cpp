@@ -203,3 +203,8 @@ void MainWindow::setDeviceLabel()
 
 //    startDaq();
 }
+
+void MainWindow::on_pushButtonSettings_clicked()
+{
+    hide();
+}
