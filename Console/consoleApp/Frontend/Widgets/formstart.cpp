@@ -93,6 +93,7 @@ void FormStart::on_pushButtonStart_clicked()
            frontend* fw = dynamic_cast<frontend*>(widget);
            if(fw){
               fw->showFullScreen();
+              fw->updateDeviceLabel();
               startDaq(fw);
            }
        }

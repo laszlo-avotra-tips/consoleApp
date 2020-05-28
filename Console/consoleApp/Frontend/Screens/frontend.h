@@ -62,6 +62,7 @@ public:
     void abortStartUp( void ) { appAborted = true; }
     void turnOffPhysicianScreen( void ) { docWindow->hide(); }
     int setupCase( bool isInitialSetup );
+    void updateDeviceLabel();
 
     void setIDAQ(IDAQ* object);
 

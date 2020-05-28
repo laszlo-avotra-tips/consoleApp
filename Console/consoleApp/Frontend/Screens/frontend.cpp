@@ -450,6 +450,13 @@ int frontend::setupCase( bool isInitialSetup )
     }
 }
 
+void frontend::updateDeviceLabel()
+{
+    if(m_mainWindow){
+        m_mainWindow->setDeviceLabel();
+    }
+}
+
 /*
  * disableStorage
  *

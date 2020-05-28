@@ -196,9 +196,9 @@ void MainWindow::setDeviceLabel()
     const QString name{dev.getCurrentDeviceName()};
     ui->labelDevice->setText(name);
 
-    m_frontEndWindow->init();
-    SignalManager::instance();
-    showFullScreen();
+//    m_frontEndWindow->init();
+//    SignalManager::instance();
+//    showFullScreen();
 
 
 //    startDaq();
