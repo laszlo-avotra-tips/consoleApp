@@ -323,8 +323,12 @@ qproperty-flat: true;
          </size>
         </property>
         <property name="text">
-         <string>Settings
-Missing Icon</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/octConsole/settingsW</normalon>
+         </iconset>
         </property>
         <property name="iconSize">
          <size>

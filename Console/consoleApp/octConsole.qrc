@@ -37,9 +37,10 @@
         <file alias="menuHamburger">Frontend/Resources/L300menu.png</file>
         <file alias="recordRed">Frontend/Resources/L300recordRed.png</file>
         <file alias="recordWhite">Frontend/Resources/L300recordWhite.png</file>
-        <file alias="settings">Frontend/Resources/L300settings.png</file>
+        <file alias="settingsB">Frontend/Resources/L300settings.png</file>
         <file alias="dropdown">Frontend/Resources/L300dropdown.png</file>
         <file alias="avingerStart">Frontend/Resources/L300AvingerStart.png</file>
         <file alias="avingerStartKara">Frontend/Resources/Aviniger logo with Start (1).png</file>
+        <file alias="settingsW">Frontend/Resources/L300settingsWhite.png</file>
     </qresource>
 </RCC>
