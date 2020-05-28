@@ -26,7 +26,7 @@ class Initialization : public QThread
 
 public:
     Initialization();
-    bool init( int argc, char *argv[] );
+    bool init();
     bool warningPosted( void ) { return hasWarning; }
     QString getStatusMessage( void ) { return statusMessage; }
     void setExeCheck( bool arg ) { runExeCheck = arg; }

@@ -40,6 +40,7 @@
 #include "engineeringcontroller.h"
 #include "signalmodel.h"
 #include "forml300.h"
+#include "mainwindow.h"
 
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0
@@ -61,7 +62,7 @@ const int VariableDepthNumChunks = 5;
 frontend::frontend(QWidget *parent)
     : QWidget(parent), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
 {
-    scene    = nullptr;
+    m_scene    = nullptr;
     consumer = nullptr;
 
     appAborted        = false;
@@ -94,6 +95,8 @@ frontend::frontend(QWidget *parent)
     isPhysicianPreviewDisplayed = false;
 
     ui.setupUi( this );
+
+    ui.endCaseButton->setEnabled(false);
 
     // save the tip as defined in Designer so it can be restored as necessary
     defaultSceneToolTip = ui.liveGraphicsView->toolTip();
@@ -256,7 +259,7 @@ frontend::~frontend()
             delete consumer;
         }
 
-        // shut down the daq; wait for it to stop 
+        // shut down the daq; wait for it to stop
         if(idaq)
         {
             idaq->stop();
@@ -271,7 +274,7 @@ frontend::~frontend()
         delete docWindow;
         docWindow = nullptr;  // docWindow is checked in the zoom pan handler
 
-        delete scene;
+        delete m_scene;
         delete lagHandler;
     }
     else
@@ -297,7 +300,7 @@ void frontend::init( void )
     lastDirCCW = true;			// make sure bidirectional devices start CCW (passive)
 
     // Require case information before anything else happens
-    caseWizard = std::make_unique<caseInfoWizard>(this); //new caseInfoWizard( this );
+    caseWizard = std::make_unique<caseInfoWizard>(this);
 
     /*
      * Create the case info with default values (default doctor, default location, and
@@ -319,14 +322,14 @@ void frontend::init( void )
     ui.reviewWidget->init();
 
     // How we get the data from the DAQ to the Doc
-    consumer = new DaqDataConsumer( scene,
+    consumer = new DaqDataConsumer( m_scene,
                                     advView,
                                     session.getCurrentEventLog() );
 
     connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
 
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
-    connect( viewOption, SIGNAL( updateCatheterView() ), scene,     SLOT( clearSector() ) );
+    connect( viewOption, SIGNAL( updateCatheterView() ), m_scene,     SLOT( clearSector() ) );
 
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
     connect( viewOption, SIGNAL(sendManualLagAngle(double)), this, SLOT(handleManualLagAngle(double)) );
@@ -339,12 +342,12 @@ void frontend::init( void )
     connect( consumer, SIGNAL( updateBrightness( int ) ),                 advView,  SLOT( handleBrightnessChanged( int ) ) );
     connect( consumer, SIGNAL( updateContrast( int ) ),                   advView,  SLOT( handleContrastChanged( int ) ) );
 
-    connect( scene, SIGNAL(sendCaptureTag(QString)), consumer, SLOT(handleTagEvent(QString)) );
+    connect( m_scene, SIGNAL(sendCaptureTag(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
-    connect( scene, SIGNAL(sendStatusText(QString)), this, SLOT(handleStatusText(QString)) );
+    connect( m_scene, SIGNAL(sendStatusText(QString)), this, SLOT(handleStatusText(QString)) );
 
-    connect( this, SIGNAL(disableMouseRotateSector()), scene, SLOT(handleDisableMouseRotateSector()) );
-    connect( this, SIGNAL(enableMouseRotateSector()),  scene, SLOT(handleEnableMouseRotateSector()) );
+    connect( this, SIGNAL(disableMouseRotateSector()), m_scene, SLOT(handleDisableMouseRotateSector()) );
+    connect( this, SIGNAL(enableMouseRotateSector()),  m_scene, SLOT(handleEnableMouseRotateSector()) );
 
     connect( &session, SIGNAL(sendSessionEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
@@ -355,20 +358,20 @@ void frontend::init( void )
 
     connect( this,     SIGNAL(setClipFilename(QString)),     consumer, SLOT(setClipFile(QString)) );
     connect( consumer, SIGNAL(clipRecordingStopped()),       this,     SLOT(handleClipRecordingStopped()) );
-    connect( this,     SIGNAL(captureClipImages(QString)),   scene,    SLOT(captureClip(QString)) );
+    connect( this,     SIGNAL(captureClipImages(QString)),   m_scene,    SLOT(captureClip(QString)) );
 
     connect( consumer, SIGNAL(directionOfRotation(directionTracker::Direction_T)),
-             scene,    SLOT(updateDirectionOfRotation(directionTracker::Direction_T)) );
+             m_scene,    SLOT(updateDirectionOfRotation(directionTracker::Direction_T)) );
 
     connect( consumer, SIGNAL(alwaysRecordingFullCase(bool)),     advView,  SLOT(showRecordingFullCase(bool)) );
 
     // setup the clip player and its signals
     connect( ui.transportWidget, SIGNAL( play() ),                 this, SLOT( handlePlayButton_clicked()) );
     connect( ui.transportWidget, SIGNAL( pause() ),                this, SLOT( handlePauseButton_clicked()) );
-    connect( ui.transportWidget, SIGNAL( advance() ),             scene, SLOT( advancePlayback() ) );
-    connect( ui.transportWidget, SIGNAL( rewind() ),              scene, SLOT( rewindPlayback()) );
-    connect( ui.transportWidget, SIGNAL( seekRequest( qint64 ) ), scene, SLOT( seekWithinClip( qint64 ) ) );
-    connect( scene, SIGNAL( clipLengthChanged( qint64 ) ),        ui.transportWidget, SLOT( handleClipLengthChanged( qint64 ) ) );
+    connect( ui.transportWidget, SIGNAL( advance() ),             m_scene, SLOT( advancePlayback() ) );
+    connect( ui.transportWidget, SIGNAL( rewind() ),              m_scene, SLOT( rewindPlayback()) );
+    connect( ui.transportWidget, SIGNAL( seekRequest( qint64 ) ), m_scene, SLOT( seekWithinClip( qint64 ) ) );
+    connect( m_scene, SIGNAL( clipLengthChanged( qint64 ) ),        ui.transportWidget, SLOT( handleClipLengthChanged( qint64 ) ) );
 
     connect( ui.reviewWidget, SIGNAL(sendLoopFilename(QString)), this,      SLOT(handleLoopLoaded(QString)) );
     connect( ui.reviewWidget, SIGNAL(sendStatusText(QString)),   this,      SLOT(handleStatusText(QString)) );
@@ -379,14 +382,14 @@ void frontend::init( void )
     connect( this, SIGNAL(setClipName(QString)),  ui.transportWidget, SLOT(handleClipName(QString)) );
     connect( this, SIGNAL(forcePauseButtonOff()), ui.transportWidget, SLOT(handleForcePauseButtonOff()) );
 
-    connect( scene, SIGNAL(updateCaptureCount()),     ui.reviewWidget, SLOT(updateCaptureCount()) );
-    connect( scene, SIGNAL(updateClipCount()),        ui.reviewWidget, SLOT(updateClipCount()) );
-    connect( scene, SIGNAL( sendWarning( QString ) ),            this, SLOT( handleWarning( QString ) ) );
-    connect( scene, SIGNAL( sendError( QString ) ),              this, SLOT( handleError( QString ) ) );
+    connect( m_scene, SIGNAL(updateCaptureCount()),     ui.reviewWidget, SLOT(updateCaptureCount()) );
+    connect( m_scene, SIGNAL(updateClipCount()),        ui.reviewWidget, SLOT(updateClipCount()) );
+    connect( m_scene, SIGNAL( sendWarning( QString ) ),            this, SLOT( handleWarning( QString ) ) );
+    connect( m_scene, SIGNAL( sendError( QString ) ),              this, SLOT( handleError( QString ) ) );
 
-    connect( scene, SIGNAL( videoTick(qint64) ),       ui.transportWidget, SLOT( updateClipPosition( qint64 ) ) );
-    connect( scene, SIGNAL( endOfFile() ),                           this, SLOT( handleEndOfFile() ) );
-    connect( scene, SIGNAL( reviewImageDismissed( ) ),               this, SLOT( hideLiveViewButton() ) );
+    connect( m_scene, SIGNAL( videoTick(qint64) ),       ui.transportWidget, SLOT( updateClipPosition( qint64 ) ) );
+    connect( m_scene, SIGNAL( endOfFile() ),                           this, SLOT( handleEndOfFile() ) );
+    connect( m_scene, SIGNAL( reviewImageDismissed( ) ),               this, SLOT( hideLiveViewButton() ) );
 
     clipListModel &clipList = clipListModel::Instance();
     connect( &clipList, SIGNAL( warning( QString ) ), this, SLOT( handleWarning( QString ) ) );
@@ -426,7 +429,8 @@ int frontend::setupCase( bool isInitialSetup )
     if( isInitialSetup )
     {
         // Launch the device selection wizard
-        return on_deviceSelectButton_clicked();
+//        return on_deviceSelectButton_clicked();
+        return -1;
     }
     else // Launched from the case details button.
     {
@@ -445,6 +449,13 @@ int frontend::setupCase( bool isInitialSetup )
         int result = caseWizardLocal->exec();
         delete caseWizardLocal;
         return result;
+    }
+}
+
+void frontend::updateDeviceLabel()
+{
+    if(m_mainWindow){
+        m_mainWindow->setDeviceLabel();
     }
 }
 
@@ -482,32 +493,35 @@ void frontend::setupScene( void )
 {
     deviceSettings &dev = deviceSettings::Instance();
 
-    scene = new liveScene( this );
-    m_formL300 = new FormL300( this );
-    m_formL300->setScene(scene);
+    m_scene = new liveScene( this );
+//    m_formL300 = new FormL300( this );
+//    m_formL300->setScene(m_scene);
+    m_mainWindow = new MainWindow(this);
+    m_mainWindow->setScene(m_scene);
+//    m_mainWindow->showFullScreen();
 
-    connect( &dev, SIGNAL(deviceChanged()), scene,      SLOT(handleDeviceChange()) );
+    connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), viewOption, SLOT(handleDeviceChange()) );
 //    connect( &dev, SIGNAL(deviceChanged()), ui.displayControlsSlider, SLOT(updateBrightnessContrastLimits()) );
 
-    connect( scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
+    connect( m_scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
 
     connect( ui.reviewWidget, SIGNAL(showCapture(const QImage &)),
-             scene,           SLOT(showReview( const QImage & )) );
+             m_scene,           SLOT(showReview( const QImage & )) );
 
     connect( ui.reviewWidget, SIGNAL(initCaptureWidget()),
              this,           SLOT(hideDecoration()) );
 
-	connect( this,	SIGNAL(setDoPaint()),		scene, SLOT(setDoPaint()) );
+    connect( this,	SIGNAL(setDoPaint()),		m_scene, SLOT(setDoPaint()) );
 
     /*
      * Set pixelsPerMm conversion and zoom factor at the time of image capture for measurement calibration.
      * Use the pixelsPerMm value to disable the measurement feature.
      */
     connect( ui.reviewWidget, SIGNAL(sendReviewImageCalibrationFactors(int,float)),
-             scene,           SLOT(setCalibrationScale(int,float)) );
+             m_scene,           SLOT(setCalibrationScale(int,float)) );
     connect( ui.reviewWidget, SIGNAL(sendReviewImageCalibrationFactors(int,float)),
              this,            SLOT(enableDisableMeasurementForCapture(int)) );
 
@@ -515,21 +529,21 @@ void frontend::setupScene( void )
              docWindow,       SLOT(updatePreview(QModelIndex)) );
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
-             scene,      SLOT(handleReticleBrightnessChanged(int)) );
+             m_scene,      SLOT(handleReticleBrightnessChanged(int)) );
 
     connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
-             scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
+             m_scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
 
-    connect( scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
+    connect( m_scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
 
     // Auto fill the background with black
-    scene->setBackgroundBrush( QColor( 0,0,0 ) );
+    m_scene->setBackgroundBrush( QColor( 0,0,0 ) );
 
-    // Associate the views with the scene
+    // Associate the views with the m_scene
     ui.liveGraphicsView->setMatrix( QMatrix() );
 
-    docWindow->setScene( scene );
-    auxMon->setScene( scene );
+    docWindow->setScene( m_scene );
+    auxMon->setScene( m_scene );
 
     // save the original transform matrix for this view to use with the zoom feature
     techViewMatrix = ui.liveGraphicsView->matrix();
@@ -591,7 +605,7 @@ void frontend::on_endCaseButton_clicked()
  */
 void frontend::closeEvent( QCloseEvent * /*event*/ )
 {
-    /* 
+    /*
      * go through a common exit point
      */
     on_endCaseButton_clicked();
@@ -849,7 +863,7 @@ void frontend::stopDaq( void )
  */
 void frontend::handleWarning( QString notice )
 {
-    // Call the system-wide warning handler. 
+    // Call the system-wide warning handler.
     displayWarningMessage( notice );
 }
 
@@ -941,7 +955,7 @@ void frontend::on_scanSyncButton_clicked()
     }
 
     // make sure the image is live
-    scene->dismissReviewImages();
+    m_scene->dismissReviewImages();
 
     // Turn off mouse rotation of sector
     emit disableMouseRotateSector();
@@ -960,23 +974,23 @@ void frontend::on_scanSyncButton_clicked()
     }
 
     // Remove current lag correction value
-    double prevWindAngle = scene->getWindAngle();
-    scene->setWindAngle( 0 );
+    double prevWindAngle = m_scene->getWindAngle();
+    m_scene->setWindAngle( 0 );
 
     // Start from a fresh uncluttered screen, focus on the sector
-    scene->clearImages();
+    m_scene->clearImages();
 
     // create a new window (no parent) so the UI is modal
     lagHandler = new lagWizard;
-    connect( consumer,   SIGNAL(directionOfRotation(directionTracker::Direction_T)), 
+    connect( consumer,   SIGNAL(directionOfRotation(directionTracker::Direction_T)),
              lagHandler, SLOT(handleDirectionChange()) );
-    connect( scene,      SIGNAL(fullRotation()), 
+    connect( m_scene,      SIGNAL(fullRotation()),
              lagHandler, SLOT(handleFullRotation()) );
     connect( lagHandler, SIGNAL(resetIntegrationAngle()),
-             scene,      SLOT(resetIntegrationAngle()) );
-    lagHandler->setScene( scene );
+             m_scene,      SLOT(resetIntegrationAngle()) );
+    lagHandler->setScene( m_scene );
 
-    scene->handleLagWizardStart();
+    m_scene->handleLagWizardStart();
 
     // determine how to center the wizard on the primary screen
     int x = ( wmgr->getTechnicianDisplayGeometry().width()  - lagHandler->width()  ) / 2;
@@ -991,7 +1005,7 @@ void frontend::on_scanSyncButton_clicked()
     {
         const double NewLagAngle = lagHandler->getAngle();
 
-        scene->setWindAngle( NewLagAngle );
+        m_scene->setWindAngle( NewLagAngle );
         settings.setLag( int(NewLagAngle) );
         emit sendLagAngle( NewLagAngle );
         emit tagEvent( "Scan Sync = " + QString( "%1" ).arg( NewLagAngle ) );
@@ -1000,14 +1014,14 @@ void frontend::on_scanSyncButton_clicked()
     else
     {
         // cancelled: reset the previous lag correction
-        scene->setWindAngle( prevWindAngle );
+        m_scene->setWindAngle( prevWindAngle );
 
         emit tagEvent( "Scan Sync Adjustment Cancelled" );
         LOG( INFO, "Scan Sync Adjustment Cancelled" )
     }
 
-    scene->resetRotationCounter();
-    scene->handleLagWizardStop();
+    m_scene->resetRotationCounter();
+    m_scene->handleLagWizardStop();
 
     delete lagHandler;
     lagHandler = nullptr;
@@ -1028,11 +1042,11 @@ void frontend::on_scanSyncButton_clicked()
 /*
  * handleManualLagAngle
  *
- * Update the scene settings if the manual scan sync was used
+ * Update the m_scene settings if the manual scan sync was used
  */
 void frontend::handleManualLagAngle( double newAngle )
 {
-    scene->setWindAngle( newAngle );
+    m_scene->setWindAngle( newAngle );
     emit tagEvent( "Scan Sync = " + QString( "%1" ).arg( newAngle ) );
     LOG( INFO, QString( "Scan Sync = %1" ).arg( newAngle ))
 }
@@ -1060,8 +1074,6 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
     }
 
     deviceWizard dWiz;
-
-    dWiz.init();
 
     // determine how to center the wizard on the primary screen
     int x = ( wmgr->getTechnicianDisplayGeometry().width() - dWiz.width() )   / 2;
@@ -1108,7 +1120,7 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
         LOG( INFO, QString( "Current Device: %1" ).arg( dev.getCurrentDeviceName() ) )
 
         // Restore updates
-        scene->clearImages();
+        m_scene->clearImages();
         ui.liveGraphicsView->setViewportUpdateMode( oldTechMode );
         docWindow->ui.liveGraphicsView->setViewportUpdateMode( oldDocMode );
 
@@ -1177,10 +1189,10 @@ void frontend::handleDeviceChange()
     auxMon->setDeviceName( dev.current()->getDeviceName() );
 /*
     SledSupport &sledSupport = SledSupport::Instance();
-	if( devSettings.current()->isBidirectional())
-	{
+    if( devSettings.current()->isBidirectional())
+    {
         sledSupport.setSledRotation(-1);	// No direction indicator
-	}
+    }
 */
     // Make sure the next device is started with Zoom off.
     on_zoomResetPushButton_clicked();
@@ -1211,18 +1223,18 @@ void frontend::on_caseDetailsButton_clicked()
 {
     LOG( INFO, "Case details button clicked" )
 
-    // Update session case information
-    if( setupCase( false ) )
-    {
-        // Update information on the screen
-        updateCaseInfo();
+//    // Update session case information
+//    if( setupCase( false ) )
+//    {
+//        // Update information on the screen
+//        updateCaseInfo();
 
-        LOG( INFO, "Case details modified" )
-    }
-    else
-    {
-        LOG( INFO, "Case details were not changed")
-    }
+//        LOG( INFO, "Case details modified" )
+//    }
+//    else
+//    {
+//        LOG( INFO, "Case details were not changed")
+//    }
 }
 
 /*
@@ -1337,7 +1349,7 @@ void frontend::handleClipRecordingStopped( void )
     // Update timing information
     clipListModel &clipList = clipListModel::Instance();
 
-	// clipLength_ms is updated when the video recording is closed
+    // clipLength_ms is updated when the video recording is closed
     clipList.updateClipInfo( clipLength_ms );
 
     LOG( INFO, QString( "Clip Recording: Length: %1 ms (clip-%2)" ).arg( clipLength_ms ).arg( strClipNumber ) )
@@ -1373,7 +1385,7 @@ void frontend::handleEndOfFile()
     }
     else
     {
-        scene->restartLoop();
+        m_scene->restartLoop();
     }
 }
 
@@ -1422,7 +1434,7 @@ void frontend::handleLoopLoaded( QString loopFilename )
     // set up for clip playback
     playbackClipName = loopFilename;
     emit setClipName( loopFilename );
-    scene->setClipForPlayback( loopFilename );
+    m_scene->setClipForPlayback( loopFilename );
 
     emit forcePauseButtonOff();
 
@@ -1432,7 +1444,7 @@ void frontend::handleLoopLoaded( QString loopFilename )
 }
 /*
  * handlePlayButton_clicked
- * 
+ *
  * Configure the hardware and UI for replaying an OCT Loop.  The hardware is
  * put into a state that stops sending data to the frontend; the UI is switches
  * to displaying data from the storage device.  Full case recording continues in
@@ -1445,12 +1457,12 @@ void frontend::handlePlayButton_clicked()
     {
         if( isImageCaptureLoaded )
         {
-            scene->dismissReviewImages();
+            m_scene->dismissReviewImages();
         }
 
-        scene->resetSector();
+        m_scene->resetSector();
 
-        scene->startPlayback();
+        m_scene->startPlayback();
         isClipPlaying = true;
 
         LOG( INFO, QString( "Clip playback: started (%1)" ).arg( playbackClipName ) )
@@ -1463,7 +1475,7 @@ void frontend::handlePlayButton_clicked()
 void frontend::handlePauseButton_clicked()
 {
     isClipPlaying = false;
-    scene->pausePlayback();
+    m_scene->pausePlayback();
     LOG( INFO, "Clip playback: paused" )
 }
 
@@ -1487,9 +1499,9 @@ void frontend::closePlayback()
 
     enableCaptureButtons();
 
-    scene->resetSector();
-    scene->clearImages();
-    scene->stopPlayback();
+    m_scene->resetSector();
+    m_scene->clearImages();
+    m_scene->stopPlayback();
 
     resumeDaq();
 
@@ -1677,7 +1689,7 @@ void frontend::showCatheterView( void )
 
 /*
  * setSceneCursor
- * 
+ *
  * Simplify switching the state of the mouse shown over Live Scene
  */
 void frontend::setSceneCursor( QCursor cursor )
@@ -1711,7 +1723,7 @@ void frontend::configureHardware( void )
 //        {
 //            daq = new HighSpeedDAQ();
 
-//            connect( scene, SIGNAL(sendDisplayAngle(float)), daq, SIGNAL(handleDisplayAngle(float)) );
+//            connect( m_scene, SIGNAL(sendDisplayAngle(float)), daq, SIGNAL(handleDisplayAngle(float)) );
 //        }
 
 //        // connect error/warning handlers before initializing the hardware
@@ -1728,8 +1740,8 @@ void frontend::configureHardware( void )
 //        connect( this,       SIGNAL( contrastChange( int ) ),      daq,   SIGNAL( setWhiteLevel( int ) ) );
 
 //        // view options to set color mode
-//        connect( viewOption, SIGNAL( setColorModeGray() ),         scene, SLOT( loadColorModeGray() ) );
-//        connect( viewOption, SIGNAL( setColorModeSepia() ),        scene, SLOT( loadColorModeSepia() ) );
+//        connect( viewOption, SIGNAL( setColorModeGray() ),         m_scene, SLOT( loadColorModeGray() ) );
+//        connect( viewOption, SIGNAL( setColorModeSepia() ),        m_scene, SLOT( loadColorModeSepia() ) );
 
 //        connect( advView, SIGNAL( tdcToggled(bool) ), daq, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
 
@@ -1756,15 +1768,15 @@ void frontend::setIDAQ(IDAQ *object)
         signalSource = object;
     }
 
-    ui.liveGraphicsView->setScene( scene );
-    ui.liveGraphicsView->fitInView( scene->sceneRect(), Qt::KeepAspectRatio );
+    ui.liveGraphicsView->setScene( m_scene );
+    ui.liveGraphicsView->fitInView( m_scene->sceneRect(), Qt::KeepAspectRatio );
     centerLiveGraphicsView(); // center the panning position of the view over the sector
 
     if(signalSource)
     {
         connect( viewOption, SIGNAL(currFrameWeight_percentChanged(int)), SignalModel::instance(), SLOT(setCurrFrameWeight_percent(int)) );
 
-        connect( scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
+        connect( m_scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
 
         // connect error/warning handlers before initializing the hardware
         connect( signalSource, SIGNAL( sendWarning( QString ) ),       this,    SLOT( handleWarning( QString ) ) );
@@ -1786,8 +1798,8 @@ void frontend::setIDAQ(IDAQ *object)
         connect( viewOption, SIGNAL( enableInvertColors( bool ) ), SignalModel::instance(),   SLOT( setIsInvertColors( bool ) ) );
 
         // view options to set color mode
-        connect( viewOption, SIGNAL( setColorModeGray() ),         scene, SLOT( loadColorModeGray() ) );
-        connect( viewOption, SIGNAL( setColorModeSepia() ),        scene, SLOT( loadColorModeSepia() ) );
+        connect( viewOption, SIGNAL( setColorModeGray() ),         m_scene, SLOT( loadColorModeGray() ) );
+        connect( viewOption, SIGNAL( setColorModeSepia() ),        m_scene, SLOT( loadColorModeSepia() ) );
 
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
 
@@ -1854,14 +1866,14 @@ void frontend::on_contrastCurveButton_clicked()
 // R&D only
 void frontend::curvesDialogFinished()
 {
-    scene->updateGrayScaleMap( curveDlg->getMap() );
+    m_scene->updateGrayScaleMap( curveDlg->getMap() );
     curveDlg->hide();
 }
 
 // R&D only
 void frontend::curveMapChanged(void)
 {
-    scene->updateGrayScaleMap( curveDlg->getMap() );
+    m_scene->updateGrayScaleMap( curveDlg->getMap() );
 }
 
 /*
@@ -1886,7 +1898,7 @@ void frontend::populateColormapList( void )
 // R&D
 void frontend::on_colormapListWidget_doubleClicked( const QModelIndex &index )
 {
-    scene->loadColormap( SystemDir + "/colormaps/" + index.data().toString() + ".csv" );
+    m_scene->loadColormap( SystemDir + "/colormaps/" + index.data().toString() + ".csv" );
     ui.colormapLabel->setPixmap( QPixmap::fromImage( sampleMap ) );
 }
 #endif
@@ -1922,14 +1934,14 @@ void frontend::on_measureModePushButton_clicked()
 
 /*
  * setMeasurementMode
- * 
+ *
  * Show or hide the measurement groupbox, overlay, and label.
  */
 void frontend::setMeasurementMode( bool enable )
 {
     if( enable )
     {
-        scene->setMeasureModeArea( true, Qt::magenta );
+        m_scene->setMeasureModeArea( true, Qt::magenta );
         setSceneCursor( QCursor( Qt::CrossCursor ) );
         ui.liveGraphicsView->setToolTip( "" );
 //        ui.saveMeasurementButton->show();
@@ -1938,7 +1950,7 @@ void frontend::setMeasurementMode( bool enable )
     }
     else
     {
-        scene->setMeasureModeArea( false, Qt::magenta );
+        m_scene->setMeasureModeArea( false, Qt::magenta );
         setSceneCursor( QCursor( Qt::OpenHandCursor ) );
 //        ui.saveMeasurementButton->hide();
         ui.measureModePushButton->setChecked( false );
@@ -1974,9 +1986,9 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-    image = scene->sectorImage();
-    pixmap = scene->sectorHandle();
-    scene->setDoPaint();
+    image = m_scene->sectorImage();
+    pixmap = m_scene->sectorHandle();
+    m_scene->setDoPaint();
 
     if(image){
         memcpy( image->bits(), frameData->dispData, SectorSize );
@@ -2059,7 +2071,7 @@ void frontend::on_zoomSlider_valueChanged( int value )
     auxMon->setTransformForZoom( QTransform::fromScale( sx * auxViewMatrix.m11(), sy * auxViewMatrix.m22() ),
                                  ( value > 100.0 ) ); // zoomed is true if value is greater than 100.0
 
-    scene->setZoomFactor( float(sx) ); // pass the zoom factor to liveScene
+    m_scene->setZoomFactor( float(sx) ); // pass the zoom factor to liveScene
 
     if( value == ui.zoomSlider->minimum() )
     {
@@ -2145,7 +2157,7 @@ void frontend::centerLiveGraphicsView( void )
 /*
  * handleTechViewHorizontalPan
  *
- * The two views have different scaling of the same scene. Since control
+ * The two views have different scaling of the same m_scene. Since control
  * of the pan is on the Technician screen, the values for panning must be
  * scaled to the Physician screen.  Because of the 90 deg rotation of the
  * Physician screen, horizontal and vertical scrolling are cross-connected.
@@ -2181,7 +2193,7 @@ void frontend::handleTechViewHorizontalPan( int value )
 /*
  * handleTechViewVerticalPan
  *
- * The two views have different scaling of the same scene. Since control
+ * The two views have different scaling of the same m_scene. Since control
  * of the pan is on the Technician screen, the values for panning must be
  * scaled to the Physician screen.  Because of the 90 deg rotation of the
  * Physician screen, horizontal and vertical scrolling are cross-connected.
@@ -2319,7 +2331,7 @@ void frontend::configureDisplayForReview()
     // disable the button for now, make sure to re-enable in on_liveViewPushButton_clicked() and closePlayback()
     ui.physicianPreviewButton->setDisabled( true );
 
-    scene->hideAnnotations();
+    m_scene->hideAnnotations();
     docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
     ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 24pt DinPRO-Medium; color: yellow; }" );
@@ -2345,14 +2357,14 @@ void frontend::on_liveViewPushButton_clicked()
 
     if( isImageCaptureLoaded )
     {
-        scene->dismissReviewImages();
+        m_scene->dismissReviewImages();
     }
 
     if( isLoopLoaded )
     {
         isLoopLoaded = false;
         closePlayback();
-        scene->dismissReviewImages();
+        m_scene->dismissReviewImages();
     }
 
     if( isRecordingClip )
@@ -2389,7 +2401,7 @@ void frontend::on_liveViewPushButton_clicked()
     }
 
     showCatheterView();
-    
+
     /*
      * Make sure capture buttons stay disabled if space is low
      */
@@ -2405,7 +2417,7 @@ void frontend::on_liveViewPushButton_clicked()
     ui.reviewWidget->reviewStateEnded();
     on_zoomResetPushButton_clicked();
 
-    scene->showAnnotations();
+    m_scene->showAnnotations();
     docWindow->configureDisplayForLiveView();
     auxMon->configureDisplayForLiveView();
     ui.physicianPreviewButton->setEnabled( true ); // re-enable this button
@@ -2462,12 +2474,12 @@ void frontend::on_captureImageButton_clicked()
 //    rectangle.setHeight(1440);
     qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
     QImage p = ui.liveGraphicsView->grab(rectangle).toImage();
-    scene->captureDi( p, tag );
+    m_scene->captureDi( p, tag );
 }
 
 /*
  * on_annotateImagePushButton_clicked
- * 
+ *
  * Allow drawing on the image by the Technician. This will be displayed on
  * both screens.
  */
@@ -2477,7 +2489,7 @@ void frontend::on_annotateImagePushButton_clicked()
 
     QColor currColor = QColor( Qt::yellow ).lighter( 150 );
 
-    scene->setAnnotateMode( isAnnotateOn, currColor );
+    m_scene->setAnnotateMode( isAnnotateOn, currColor );
 
     if( isAnnotateOn )
     {
@@ -2524,7 +2536,7 @@ void frontend::handleBadMonitorConfig()
     qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
 
     this->setGeometry( rect );
-    this->showFullScreen();//show(); //lcv this->showFullScreen();
+//    this->showFullScreen();//show(); //lcv this->showFullScreen();
     wmgr->showInfoMessage( this->parentWidget() );
     captureMouse( true );
 }
@@ -2567,14 +2579,14 @@ void frontend::createDisplays()
     qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
     qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
     this->setGeometry( rect );
-    showFullScreen(); //lcv this->showFullScreen(); show();
+//    showFullScreen(); //lcv this->showFullScreen(); show();
 
 
     docWindow->hide();
     if( !wmgr->getPhysicianDisplayGeometry().isNull() )
     {
         docWindow->setGeometry( wmgr->getPhysicianDisplayGeometry() );
-        docWindow->showFullScreen();//docWindow->show(); //lcv docWindow->showFullScreen();
+//        docWindow->showFullScreen();//docWindow->show(); //lcv docWindow->showFullScreen();
     }
 
     if( wmgr->isAuxMonPresent() )
@@ -2651,7 +2663,7 @@ void frontend::handleDaqReset()
     shutdownHardware();
 
     // Restore updates
-    scene->clearImages();
+    m_scene->clearImages();
 
     // Bring up the hardware with the new device, reset any lag angle
     configureHardware();
@@ -2719,5 +2731,8 @@ void frontend::on_pushButtonLogo_clicked()
         qDebug() << __FUNCTION__ << ": depth=" << *depth;
         m_formL300->setDepth(*depth);
         m_formL300->showFullScreen(); //lcv m_formL300->showFullScreen(); show();
+    }
+    if(m_mainWindow){
+        m_mainWindow->showFullScreen();
     }
 }

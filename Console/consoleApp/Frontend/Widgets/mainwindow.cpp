@@ -5,6 +5,9 @@
 #include "Frontend/Screens/frontend.h"
 #include "devicewizard.h"
 #include "deviceselectwizardpage.h"
+#include "deviceSettings.h"
+#include "daqfactory.h"
+#include <logger.h>
 
 
 #include <QDebug>
@@ -19,27 +22,31 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    const int h{getSceneWidth()};
-    const int ratio = WidgetContainer::instance()->ratio();
-    if(!ratio){
-        return;
-    }
-    const int height = m_sceneWidth / ratio;
-    const int wL = 550 / ratio;
-    const int wM = height;
-    const int wR = 3240 / ratio - wM - wL;
-    const QSize sL(wL,height);
-    const QSize sM(wM,height);
-    const QSize sR(wR,height);
+    m_graphicsView = ui->graphicsView;
+//    m_graphicsView->setMaximumSize(m_sceneSize);
+//    m_graphicsView->setMinimumSize(m_sceneSize);
 
-    ui->frameM->setMaximumSize(sM);
-    ui->frameM->setMinimumSize(sM);
+//    const int h{getSceneWidth()};
+//    const int ratio = WidgetContainer::instance()->ratio();
+//    if(!ratio){
+//        return;
+//    }
+//    const int height = m_sceneWidth / ratio;
+//    const int wL = (3240 - 2160) / ratio;
+//    const int wM = height;
+//    const int wR = 3240 / ratio - wM - wL;
+//    const QSize sL(wL,height);
+//    const QSize sM(wM,height);
+//    const QSize sR(wR,height);
 
-    ui->frameL->setMaximumSize(sL);
-    ui->frameL->setMinimumSize(sL);
+//    ui->frameM->setMaximumSize(sM);
+//    ui->frameM->setMinimumSize(sM);
 
-    ui->frameR->setMaximumSize(sR);
-    ui->frameR->setMinimumSize(sR);
+//    ui->frameL->setMaximumSize(sL);
+//    ui->frameL->setMinimumSize(sL);
+
+//    ui->frameR->setMaximumSize(sR);
+//    ui->frameR->setMinimumSize(sR);
 
     m_navigationButtons.push_back(ui->pushButtonEndCase);
     m_navigationButtons.push_back(ui->pushButtonSettings);
@@ -47,16 +54,36 @@ MainWindow::MainWindow(QWidget *parent)
     m_navigationButtons.push_back(ui->pushButtonRecord);
     m_navigationButtons.push_back(ui->pushButtonCapture);
     m_navigationButtons.push_back(ui->pushButtonFlip);
-    m_navigationButtons.push_back(ui->pushButtonDeviceSelect);
-
     for(auto* button : m_navigationButtons){
         button->hide();
+    }
+
+    auto wid = WidgetContainer::instance()->getPage("frontendPage");//new frontend(this);
+
+    frontend* fw = dynamic_cast<frontend*>(wid);
+    if(fw)
+    {
+        m_frontEndWindow = fw;
+    }
+}
+
+void MainWindow::setScene(liveScene *scene)
+{
+    if(!m_scene){
+        m_scene = scene;
+        m_graphicsView->setScene(m_scene);
     }
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+bool MainWindow::isVisible() const
+{
+    const auto& region = m_graphicsView->visibleRegion();
+    return !region.isEmpty();
 }
 
 
@@ -97,6 +124,27 @@ void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
         }
     }
 }
+
+//void MainWindow::startDaq()
+//{
+//    auto idaq = daqfactory::instance()->getdaq();
+
+//    if(!idaq){
+//        m_frontEndWindow->abortStartUp();
+
+//        LOG( INFO, "Device not supported. OCT Console cancelled" )
+//    }
+//    m_frontEndWindow->setIDAQ(idaq);
+//    LOG( INFO, "LASER: serial port control is DISABLED" )
+//    LOG( INFO, "SLED support board: serial port control is DISABLED" )
+
+//    m_frontEndWindow->startDaq();
+//    auto& setting = deviceSettings::Instance();
+//    if(setting.getIsSimulation()){
+//        m_frontEndWindow->startDataCapture();
+//    }
+//    m_frontEndWindow->on_zoomSlider_valueChanged(100);
+//}
 
 
 int MainWindow::getSceneWidth()
@@ -140,16 +188,23 @@ void MainWindow::on_pushButtonDownArrow_clicked()
 
 void MainWindow::on_pushButtonCapture_clicked()
 {
-//    m_frontEndWindow = new frontend();
-//    if(m_frontEndWindow){
-//        m_frontEndWindow->init();
-//        m_frontEndWindow->on_deviceSelectButton_clicked();
-//    }
 }
 
-void MainWindow::on_pushButtonDeviceSelect_clicked()
+void MainWindow::setDeviceLabel()
 {
-    deviceWizard deviceSelection(this);
-    deviceSelection.init();
-    deviceSelection.exec();
+    deviceSettings &dev = deviceSettings::Instance();
+    const QString name{dev.getCurrentDeviceName()};
+    ui->labelDevice->setText(name);
+
+//    m_frontEndWindow->init();
+//    SignalManager::instance();
+//    showFullScreen();
+
+
+//    startDaq();
+}
+
+void MainWindow::on_pushButtonSettings_clicked()
+{
+    hide();
 }

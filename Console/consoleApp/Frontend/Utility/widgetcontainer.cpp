@@ -31,15 +31,29 @@ void WidgetContainer::setStackedWidget(QStackedWidget *sw)
     m_stackedWidget = sw;
 }
 
-bool WidgetContainer::gotoPage(const QString &name)
+QWidget* WidgetContainer::gotoPage(const QString &name)
 {
-    bool success{false};
-    auto it = m_container.find(name);
-    if(it != m_container.end()){
-        m_stackedWidget->setCurrentWidget(it->second);
+    QWidget* widget{getPage(name)};
+//    auto it = m_container.find(name);
+//    if(it != m_container.end()){
+//        widget = it->second;
+//        m_stackedWidget->setCurrentWidget(widget);
+//    }
+    if(widget){
+        m_stackedWidget->setCurrentWidget(widget);
     }
 
-    return success;
+    return widget;
+}
+
+QWidget *WidgetContainer::getPage(const QString &name)
+{
+    QWidget* widget{nullptr};
+    auto it = m_container.find(name);
+    if(it != m_container.end()){
+        widget = it->second;
+    }
+    return widget;
 }
 
 void WidgetContainer::close()

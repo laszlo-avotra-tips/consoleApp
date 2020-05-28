@@ -14,7 +14,10 @@ public:
     static WidgetContainer* instance();
     bool registerWidget(const QString& name, QWidget* wid);
     void setStackedWidget(QStackedWidget* sw);
-    bool gotoPage(const QString& name);
+
+    QWidget* gotoPage(const QString& name);
+    QWidget* getPage(const QString& name);
+
     void close();
     void setNavigator(FormNavigator* n);
 

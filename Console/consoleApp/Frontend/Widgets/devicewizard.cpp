@@ -31,6 +31,8 @@ deviceWizard::deviceWizard(QWidget *parent) :
     setButtonText( QWizard::BackButton,   tr( "< &BACK" ) );
     setButtonText( QWizard::NextButton,   tr( "&NEXT >" ) );
     setButtonText( QWizard::FinishButton, tr( "&FINISH" ) );
+
+    init();
 }
 
 /*

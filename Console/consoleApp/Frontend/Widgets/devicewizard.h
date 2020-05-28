@@ -25,7 +25,6 @@ class deviceWizard : public QWizard {
 public:
     deviceWizard(QWidget *parent = nullptr);
     ~deviceWizard();
-    void init( void );
 
 public slots:
 
@@ -40,6 +39,9 @@ private slots:
 
 private:
     Ui::deviceWizard *ui;
+
+private:
+    void init( void );
 };
 
 #endif // DEVICEWIZARD_H

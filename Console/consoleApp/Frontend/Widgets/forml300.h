@@ -37,8 +37,6 @@ private slots:
 
     void on_horizontalSliderZoom_valueChanged(int value);
 
-    void on_pushButtonFlip_clicked();
-
 private:
     void animateHide(QWidget* wid, QParallelAnimationGroup* group);
     void animateShow(QWidget* wid, QParallelAnimationGroup* group, float opacity=0.5f);

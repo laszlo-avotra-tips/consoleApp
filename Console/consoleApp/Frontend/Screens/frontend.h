@@ -49,6 +49,7 @@ const int mouseSamplingInterval(50); // msec
 class IDAQ;
 class EngineeringController;
 class FormL300;
+class MainWindow;
 
 class frontend : public QWidget
 {
@@ -61,6 +62,7 @@ public:
     void abortStartUp( void ) { appAborted = true; }
     void turnOffPhysicianScreen( void ) { docWindow->hide(); }
     int setupCase( bool isInitialSetup );
+    void updateDeviceLabel();
 
     void setIDAQ(IDAQ* object);
 
@@ -192,7 +194,7 @@ private:
    	curvesDialog *curveDlg;
 #endif
 
-    liveScene *scene{nullptr};
+    liveScene *m_scene{nullptr};
 
     lagWizard *lagHandler;
     std::unique_ptr<caseInfoWizard> caseWizard{nullptr};
@@ -299,6 +301,7 @@ protected:
 
 private:
      FormL300* m_formL300{nullptr};
+     MainWindow* m_mainWindow{nullptr};
 };
 
 #endif // FRONTEND_H
