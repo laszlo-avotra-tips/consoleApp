@@ -22,7 +22,7 @@ FormStart::FormStart(QWidget *parent) :
 
     const int middleFrameWidth = WidgetContainer::instance()->middleFrameWidth();
     const int sideFrameWidth = int(middleFrameWidth * 0.25 );
-    const int frameHeight = middleFrameWidth;
+    const int frameHeight = middleFrameWidth - 100;
     const bool isFullScreen = WidgetContainer::instance()->isFullScreen();
 
     qDebug() << "sideFrameWidth = " << sideFrameWidth << ", frameHeight = " << frameHeight;
@@ -43,7 +43,7 @@ FormStart::FormStart(QWidget *parent) :
     ui->frameR->setMinimumSize(sideFrameWidth, frameHeight);
     ui->frameR->setMaximumSize(sideFrameWidth, frameHeight);
 
-    ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,middleFrameWidth));
+    ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,frameHeight));
     ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
 
     m_backend = new Backend(parent);

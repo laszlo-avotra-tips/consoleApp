@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1787</width>
-    <height>1088</height>
+    <width>2808</width>
+    <height>989</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@ font: 60px;
 qproperty-flat: true;
 }</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -53,36 +53,14 @@ qproperty-flat: true;
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="frameL">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>0</height>
-      </size>
-     </property>
+    <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QFrame" name="frameM">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -99,130 +77,36 @@ qproperty-flat: true;
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButtonStart">
+       <widget class="QFrame" name="frameL">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frameM">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: black;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/octConsole/avingerStartKara</normalon>
-         </iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>570</width>
-          <height>570</height>
-         </size>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QFrame" name="frameR">
-     <property name="maximumSize">
-      <size>
-       <width>400</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>38</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButtonMenu">
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normalon>:/octConsole/menuHamburger</normalon>
-           </iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>200</width>
-            <height>135</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QFrame" name="frameButton">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
+         <enum>QFrame::Raised</enum>
         </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -239,30 +123,32 @@ qproperty-flat: true;
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="pushButtonReviewCase">
-           <property name="text">
-            <string> REVIEW CASE        </string>
+          <widget class="QPushButton" name="pushButtonStart">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonExport">
-           <property name="text">
-            <string>EXPORT                </string>
+           <property name="styleSheet">
+            <string notr="true">background-color: black;</string>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonPreferences">
            <property name="text">
-            <string>PREFERENCES       </string>
+            <string/>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonShutdown">
-           <property name="text">
-            <string>SHUTDOWN          </string>
+           <property name="icon">
+            <iconset>
+             <normalon>:/octConsole/avingerStartKara</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>570</width>
+             <height>570</height>
+            </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -270,17 +156,226 @@ qproperty-flat: true;
        </widget>
       </item>
       <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
+       <widget class="QFrame" name="frameR">
+        <property name="maximumSize">
          <size>
-          <width>20</width>
-          <height>178</height>
+          <width>550</width>
+          <height>16777215</height>
          </size>
         </property>
-       </spacer>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>38</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonMenu">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normalon>:/octConsole/menuHamburger</normalon>
+              </iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>200</width>
+               <height>135</height>
+              </size>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QFrame" name="frameButton">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="lineWidth">
+            <number>1</number>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButtonReviewCase">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>160</height>
+               </size>
+              </property>
+              <property name="text">
+               <string> REVIEW CASE        </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonExport">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>160</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>EXPORT                </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonPreferences">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>160</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>PREFERENCES       </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonShutdown">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>160</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>SHUTDOWN          </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>178</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="labelBrand">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:48pt; font-weight:600;color:#A9A9A9;&quot;&gt;LIGHT&lt;/span&gt;&lt;span style=&quot; font-size:48pt;color:#A9A9A9;&quot;&gt;BOX L300 | Software Version 4.6.21265&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelService">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:28pt; color:#A9A9A9;&quot;&gt;FOR SUPPORT, CALL CUSTOMER SERVICE AT 650-241-7900 &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:28pt; color:#A9A9A9;&quot;&gt;2011-2016 AVINGER, INC.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
