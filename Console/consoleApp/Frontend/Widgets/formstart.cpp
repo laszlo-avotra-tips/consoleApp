@@ -80,11 +80,11 @@ void FormStart::on_pushButtonShutdown_clicked()
 
 void FormStart::on_pushButtonStart_clicked()
 {
-    int result = showCaseInfoDialog();
-    if(result == QDialog::Accepted){
+    int result{-1};
+//    result = showCaseInfoDialog();
+//    if(result == QDialog::Accepted){
        result = showDeviceWizard();
        if(result == QDialog::Accepted){
-//           auto widget = WidgetContainer::instance()->gotoPage("mainPage");
            auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
            MainWindow* mw = dynamic_cast<MainWindow*>(widget);
            if(mw){
@@ -96,7 +96,7 @@ void FormStart::on_pushButtonStart_clicked()
               startDaq(fw);
            }
        }
-    }
+//    }
 }
 
 int FormStart::showCaseInfoDialog()
