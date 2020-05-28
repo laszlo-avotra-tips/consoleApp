@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2366</width>
-    <height>1615</height>
+    <width>3240</width>
+    <height>2160</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>3240</width>
+    <height>2160</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>3240</width>
+    <height>2160</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -37,6 +49,21 @@ qproperty-flat: true;
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="frameL">
      <property name="sizePolicy">
@@ -47,13 +74,13 @@ qproperty-flat: true;
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>540</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>550</width>
+       <width>540</width>
        <height>16777215</height>
       </size>
      </property>
@@ -71,13 +98,13 @@ qproperty-flat: true;
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QPushButton" name="pushButtonMenu">
@@ -383,6 +410,18 @@ CASE</string>
    </item>
    <item>
     <widget class="QFrame" name="frameM">
+     <property name="minimumSize">
+      <size>
+       <width>2160</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>2160</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
@@ -418,8 +457,8 @@ CASE</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>0</height>
+          <width>2160</width>
+          <height>2160</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -446,13 +485,13 @@ CASE</string>
      </property>
      <property name="minimumSize">
       <size>
-       <width>270</width>
+       <width>540</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>160</width>
+       <width>540</width>
        <height>16777215</height>
       </size>
      </property>
@@ -470,13 +509,13 @@ CASE</string>
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QFrame" name="frameStatus">

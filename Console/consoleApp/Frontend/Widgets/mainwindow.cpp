@@ -23,28 +23,30 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     m_graphicsView = ui->graphicsView;
+//    m_graphicsView->setMaximumSize(m_sceneSize);
+//    m_graphicsView->setMinimumSize(m_sceneSize);
 
-    const int h{getSceneWidth()};
-    const int ratio = WidgetContainer::instance()->ratio();
-    if(!ratio){
-        return;
-    }
-    const int height = m_sceneWidth / ratio;
-    const int wL = 550 / ratio;
-    const int wM = height;
-    const int wR = 3240 / ratio - wM - wL;
-    const QSize sL(wL,height);
-    const QSize sM(wM,height);
-    const QSize sR(wR,height);
+//    const int h{getSceneWidth()};
+//    const int ratio = WidgetContainer::instance()->ratio();
+//    if(!ratio){
+//        return;
+//    }
+//    const int height = m_sceneWidth / ratio;
+//    const int wL = (3240 - 2160) / ratio;
+//    const int wM = height;
+//    const int wR = 3240 / ratio - wM - wL;
+//    const QSize sL(wL,height);
+//    const QSize sM(wM,height);
+//    const QSize sR(wR,height);
 
-    ui->frameM->setMaximumSize(sM);
-    ui->frameM->setMinimumSize(sM);
+//    ui->frameM->setMaximumSize(sM);
+//    ui->frameM->setMinimumSize(sM);
 
-    ui->frameL->setMaximumSize(sL);
-    ui->frameL->setMinimumSize(sL);
+//    ui->frameL->setMaximumSize(sL);
+//    ui->frameL->setMinimumSize(sL);
 
-    ui->frameR->setMaximumSize(sR);
-    ui->frameR->setMinimumSize(sR);
+//    ui->frameR->setMaximumSize(sR);
+//    ui->frameR->setMinimumSize(sR);
 
     m_navigationButtons.push_back(ui->pushButtonEndCase);
     m_navigationButtons.push_back(ui->pushButtonSettings);
@@ -196,6 +198,8 @@ void MainWindow::setDeviceLabel()
 
     m_frontEndWindow->init();
     SignalManager::instance();
+    showFullScreen();
+
 
 //    startDaq();
 }

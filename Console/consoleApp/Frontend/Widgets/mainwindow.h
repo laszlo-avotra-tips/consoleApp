@@ -55,8 +55,8 @@ private:
     liveScene* m_scene{nullptr};
 
     const std::pair<int,int> m_widthHeight{3,2};
-    const int m_sceneWidth{2110};
-    const QSize m_sceneSize{2110,2110};
+    const int m_sceneWidth{2160};
+    const QSize m_sceneSize{2160,2160};
 
     std::vector<QWidget*> m_navigationButtons;
 
