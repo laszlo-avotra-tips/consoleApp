@@ -40,6 +40,7 @@
 #include "engineeringcontroller.h"
 #include "signalmodel.h"
 #include "forml300.h"
+#include "mainwindow.h"
 
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0
@@ -484,8 +485,10 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     m_scene = new liveScene( this );
-    m_formL300 = new FormL300( this );
-    m_formL300->setScene(m_scene);
+//    m_formL300 = new FormL300( this );
+//    m_formL300->setScene(m_scene);
+    m_mainWindow = new MainWindow(this);
+    m_mainWindow->setScene(m_scene);
 
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );

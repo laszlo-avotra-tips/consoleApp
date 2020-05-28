@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    m_graphicsView = ui->graphicsView;
+
     const int h{getSceneWidth()};
     const int ratio = WidgetContainer::instance()->ratio();
     if(!ratio){
@@ -63,9 +65,23 @@ MainWindow::MainWindow(QWidget *parent)
     }
 }
 
+void MainWindow::setScene(liveScene *scene)
+{
+    if(!m_scene){
+        m_scene = scene;
+        m_graphicsView->setScene(m_scene);
+    }
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+bool MainWindow::isVisible() const
+{
+    const auto& region = m_graphicsView->visibleRegion();
+    return !region.isEmpty();
 }
 
 
@@ -107,26 +123,26 @@ void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
     }
 }
 
-void MainWindow::startDaq()
-{
-    auto idaq = daqfactory::instance()->getdaq();
+//void MainWindow::startDaq()
+//{
+//    auto idaq = daqfactory::instance()->getdaq();
 
-    if(!idaq){
-        m_frontEndWindow->abortStartUp();
+//    if(!idaq){
+//        m_frontEndWindow->abortStartUp();
 
-        LOG( INFO, "Device not supported. OCT Console cancelled" )
-    }
-    m_frontEndWindow->setIDAQ(idaq);
-    LOG( INFO, "LASER: serial port control is DISABLED" )
-    LOG( INFO, "SLED support board: serial port control is DISABLED" )
+//        LOG( INFO, "Device not supported. OCT Console cancelled" )
+//    }
+//    m_frontEndWindow->setIDAQ(idaq);
+//    LOG( INFO, "LASER: serial port control is DISABLED" )
+//    LOG( INFO, "SLED support board: serial port control is DISABLED" )
 
-    m_frontEndWindow->startDaq();
-    auto& setting = deviceSettings::Instance();
-    if(setting.getIsSimulation()){
-        m_frontEndWindow->startDataCapture();
-    }
-    m_frontEndWindow->on_zoomSlider_valueChanged(100);
-}
+//    m_frontEndWindow->startDaq();
+//    auto& setting = deviceSettings::Instance();
+//    if(setting.getIsSimulation()){
+//        m_frontEndWindow->startDataCapture();
+//    }
+//    m_frontEndWindow->on_zoomSlider_valueChanged(100);
+//}
 
 
 int MainWindow::getSceneWidth()
@@ -181,5 +197,5 @@ void MainWindow::setDeviceLabel()
     m_frontEndWindow->init();
     SignalManager::instance();
 
-    startDaq();
+//    startDaq();
 }

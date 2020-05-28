@@ -8,6 +8,7 @@
 #include <map>
 
 class frontend;
+class liveScene;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,6 +21,11 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    bool isVisible() const;
+    void setScene(liveScene* scene);
+
+
     void setDeviceLabel();
 
 private slots:
@@ -41,10 +47,13 @@ private slots:
 private:
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
-    void startDaq();
+//    void startDaq();
 
 private:
     Ui::MainWindow *ui;
+    QGraphicsView* m_graphicsView{nullptr};
+    liveScene* m_scene{nullptr};
+
     const std::pair<int,int> m_widthHeight{3,2};
     const int m_sceneWidth{2110};
     const QSize m_sceneSize{2110,2110};
