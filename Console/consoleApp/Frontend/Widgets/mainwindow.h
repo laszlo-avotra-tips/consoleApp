@@ -39,8 +39,8 @@ private slots:
 
     void on_pushButtonEndCase_clicked();
 
-
     void on_pushButtonDownArrow_clicked();
+    void on_pushButtonCondensUp_clicked();
 
     void on_pushButtonCapture_clicked();
 

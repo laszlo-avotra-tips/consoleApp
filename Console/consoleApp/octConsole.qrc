@@ -42,5 +42,6 @@
         <file alias="avingerStart">Frontend/Resources/L300AvingerStart.png</file>
         <file alias="avingerStartKara">Frontend/Resources/Aviniger logo with Start (1).png</file>
         <file alias="settingsW">Frontend/Resources/L300settingsWhite.png</file>
+        <file alias="condensUp">Frontend/Resources/L300condenseUp.png</file>
     </qresource>
 </RCC>

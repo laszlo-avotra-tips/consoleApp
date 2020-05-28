@@ -57,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
     for(auto* button : m_navigationButtons){
         button->hide();
     }
+    ui->pushButtonDownArrow->show();
+    ui->pushButtonCondensUp->hide();
 
     auto wid = WidgetContainer::instance()->getPage("frontendPage");//new frontend(this);
 
@@ -118,10 +120,14 @@ void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
         for(auto* button : buttons){
             button->hide();
         }
+        ui->pushButtonDownArrow->show();
+        ui->pushButtonCondensUp->hide();
     }else {
         for(auto* button : buttons){
             button->show();
         }
+        ui->pushButtonDownArrow->hide();
+        ui->pushButtonCondensUp->show();
     }
 }
 
@@ -182,6 +188,11 @@ void MainWindow::on_pushButtonEndCase_clicked()
 }
 
 void MainWindow::on_pushButtonDownArrow_clicked()
+{
+    on_pushButtonMenu_clicked();
+}
+
+void MainWindow::on_pushButtonCondensUp_clicked()
 {
     on_pushButtonMenu_clicked();
 }
