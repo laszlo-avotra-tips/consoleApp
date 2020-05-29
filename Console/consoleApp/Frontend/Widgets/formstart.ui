@@ -34,6 +34,10 @@ border: 0px;
 QPushButton{
 font: 60px;
 qproperty-flat: true;
+}
+QDialog{
+border: 2px solid rgb( 169, 169, 169 );
+border-radius: 50px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -83,7 +87,7 @@ qproperty-flat: true;
        <widget class="QFrame" name="frameL">
         <property name="minimumSize">
          <size>
-          <width>200</width>
+          <width>550</width>
           <height>0</height>
          </size>
         </property>
