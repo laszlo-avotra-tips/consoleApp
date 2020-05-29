@@ -226,7 +226,7 @@ qproperty-flat: true;
          <item>
           <widget class="QFrame" name="frameButton">
            <property name="styleSheet">
-            <string notr="true">border-top: 2px solid gray;</string>
+            <string notr="true"/>
            </property>
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
@@ -274,6 +274,9 @@ qproperty-flat: true;
                 <height>160</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">border-top: 2px solid gray;</string>
+              </property>
               <property name="text">
                <string>EXPORT                </string>
               </property>
@@ -287,6 +290,9 @@ qproperty-flat: true;
                 <height>160</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">border-top: 2px solid gray;</string>
+              </property>
               <property name="text">
                <string>PREFERENCES       </string>
               </property>
@@ -299,6 +305,9 @@ qproperty-flat: true;
                 <width>0</width>
                 <height>160</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border-top: 2px solid gray;</string>
               </property>
               <property name="text">
                <string>SHUTDOWN          </string>
