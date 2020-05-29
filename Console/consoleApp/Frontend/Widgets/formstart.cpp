@@ -11,6 +11,7 @@
 #include <daqfactory.h>
 #include "deviceSettings.h"
 #include "util.h"
+#include "dialogcaseinformation.h"
 
 #include <QDebug>
 
@@ -90,8 +91,8 @@ void FormStart::on_pushButtonShutdown_clicked()
 void FormStart::on_pushButtonStart_clicked()
 {
     int result{-1};
-//    result = showCaseInfoDialog();
-//    if(result == QDialog::Accepted){
+    result = showCaseInfoDialog();
+    if(result == QDialog::Accepted){
        result = showDeviceWizard();
        if(result == QDialog::Accepted){
            auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
@@ -106,16 +107,21 @@ void FormStart::on_pushButtonStart_clicked()
               startDaq(fw);
            }
        }
-//    }
+    }
 }
 
 int FormStart::showCaseInfoDialog()
 {
-    caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
+//    caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
 
-    // reload data for updating
-    caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
-    int result = caseWizardLocal->exec();
+//    // reload data for updating
+//    caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
+//    int result = caseWizardLocal->exec();
+    DialogCaseInformation* caseInfo = new DialogCaseInformation(this);
+
+
+    int result = caseInfo->exec();
+
     LOG1(result)
     return result;
 }

@@ -25,6 +25,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/formnavigator.h \
     $$PWD/Frontend/Widgets/formstart.h \
     $$PWD/Frontend/Widgets/mainwindow.h \
+    $$PWD/Frontend/Widgets/dialogcaseinformation.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -127,6 +128,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/formstart.cpp \
     $$PWD/Frontend/Widgets/mainwindow.cpp \
     $$PWD/main.cpp \
+    $$PWD/Frontend/Widgets/dialogcaseinformation.cpp \
     Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
@@ -227,7 +229,8 @@ FORMS += Frontend/Screens/docscreen.ui \
     Frontend/Widgets/levelgauge.ui \
     $$PWD/../../Common/GUI/transport.ui \
     Frontend/Screens/auxmonitor.ui \
-    $$PWD/Frontend/Widgets/engineeringdialog.ui
+    $$PWD/Frontend/Widgets/engineeringdialog.ui \
+    $$PWD/Frontend/Widgets/dialogcaseinformation.ui
 
 # Resource file(s)
 RESOURCES += ./octConsole.qrc \
