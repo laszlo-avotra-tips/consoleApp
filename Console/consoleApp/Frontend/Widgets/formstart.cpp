@@ -10,6 +10,7 @@
 #include "Frontend/Screens/frontend.h"
 #include <daqfactory.h>
 #include "deviceSettings.h"
+#include "util.h"
 
 #include <QDebug>
 
@@ -19,6 +20,10 @@ FormStart::FormStart(QWidget *parent) :
 {
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());
+
+    QString brandVersion("<html><head/><body><p><span style=\" font-size:48pt; font-weight:600;color:#A9A9A9;\">LIGHT</span><span \
+style=\" font-size:48pt;color:#A9A9A9;\">BOX L300 | Software Version ");
+    ui->labelBrand->setText(brandVersion + getSoftwareVersionNumber() + QString("</span></p></body></html>"));
 
     const int middleFrameWidth = WidgetContainer::instance()->middleFrameWidth();
     const int sideFrameWidth = int(middleFrameWidth * 0.25 );
