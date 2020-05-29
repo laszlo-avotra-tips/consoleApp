@@ -21,6 +21,7 @@ HEADERS += \
     $$PWD/Backend/warpbc.h \
     $$PWD/Frontend/Utility/pagefactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
+    $$PWD/Frontend/Widgets/dialogdeviceselect.h \
     $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/formnavigator.h \
     $$PWD/Frontend/Widgets/formstart.h \
@@ -123,6 +124,7 @@ SOURCES += \
     $$PWD/Backend/warpbc.cpp \
     $$PWD/Frontend/Utility/pagefactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
+    $$PWD/Frontend/Widgets/dialogdeviceselect.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/formnavigator.cpp \
     $$PWD/Frontend/Widgets/formstart.cpp \
@@ -210,6 +212,7 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 
 # Forms
 FORMS += Frontend/Screens/docscreen.ui \
+    $$PWD/Frontend/Widgets/dialogdeviceselect.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/formnavigator.ui \
     $$PWD/Frontend/Widgets/formstart.ui \

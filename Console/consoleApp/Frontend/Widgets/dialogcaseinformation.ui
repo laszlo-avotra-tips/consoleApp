@@ -25,12 +25,21 @@ font-color: grey;
 QLabel#labelInfo{
 font: 24pt &quot;Helvetica Neue&quot;;
 }
+QLabel#labelTitle{
+border-bottom: 2px solid grey;
+font: 60pt &quot;Helvetica Neue&quot;;
+font-weight: 600
+}
 QLineEdit{
 font: 40pt &quot;Helvetica Neue&quot;;
 color: #A9A9A9;
 }
 QFrame{
 border: 0px;
+}
+QFrame#frame{
+background-color:#262626;
+border-radius: 10px;
 }
 QPushButton{
 font: 40px;
@@ -43,7 +52,8 @@ border-radius: 200px;
 QLineEdit{
 border-top: 0px;
 border-bottom: 2px solid grey;
-}</string>
+}
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -81,7 +91,7 @@ border-bottom: 2px solid grey;
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>61</width>
+       <width>54</width>
        <height>20</height>
       </size>
      </property>
@@ -91,13 +101,13 @@ border-bottom: 2px solid grey;
     <widget class="QFrame" name="frameInternal">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>1300</width>
        <height>900</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>1304</width>
+       <width>1300</width>
        <height>900</height>
       </size>
      </property>
@@ -162,9 +172,7 @@ border-bottom: 2px solid grey;
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-bottom: 2px solid grey;
-font: 60pt &quot;Helvetica Neue&quot;;
-font-weight: 600</string>
+            <string notr="true"/>
            </property>
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
@@ -305,6 +313,21 @@ font-weight: 600</string>
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QLabel" name="labelInfo">
            <property name="minimumSize">
@@ -325,7 +348,7 @@ font-weight: 600</string>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>314</width>
+             <width>358</width>
              <height>20</height>
             </size>
            </property>
@@ -340,8 +363,7 @@ font-weight: 600</string>
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color:#262626;
-border-radius: 10px;</string>
+            <string notr="true"/>
            </property>
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
@@ -406,7 +428,7 @@ border-radius: 10px;</string>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>60</width>
+       <width>53</width>
        <height>20</height>
       </size>
      </property>

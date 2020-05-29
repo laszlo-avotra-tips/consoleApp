@@ -87,7 +87,7 @@ border-radius: 50px;
        <widget class="QFrame" name="frameL">
         <property name="minimumSize">
          <size>
-          <width>550</width>
+          <width>500</width>
           <height>0</height>
          </size>
         </property>
