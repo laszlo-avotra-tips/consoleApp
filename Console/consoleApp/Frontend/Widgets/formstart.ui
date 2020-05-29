@@ -332,13 +332,13 @@ qproperty-flat: true;
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>100</height>
+       <height>160</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>100</height>
+       <height>160</height>
       </size>
      </property>
      <property name="frameShape">
@@ -373,7 +373,7 @@ qproperty-flat: true;
       <item>
        <widget class="QLabel" name="labelService">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:28pt; color:#A9A9A9;&quot;&gt;FOR SUPPORT, CALL CUSTOMER SERVICE AT 650-241-7900 &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:28pt; color:#A9A9A9;&quot;&gt;2011-2016 AVINGER, INC.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:36pt; font-weight:600; color:#a9a9a9;&quot;&gt;FOR SUPPORT, CALL CUSTOMER SERVICE AT 650-241-7900 &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:36pt; font-weight:600; color:#a9a9a9;&quot;&gt;2011-2016 AVINGER, INC.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>

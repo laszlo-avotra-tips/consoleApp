@@ -21,13 +21,17 @@ FormStart::FormStart(QWidget *parent) :
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());
 
-    QString brandVersion("<html><head/><body><p><span style=\" font-size:48pt; font-weight:600;color:#A9A9A9;\">LIGHT</span><span \
-style=\" font-size:48pt;color:#A9A9A9;\">BOX L300 | Software Version ");
+    QString brandVersion("<html><head/><body><p><span style=\" font-size:54pt; font-weight:600; color:#A9A9A9;\">LIGHT</span><span \
+style=\" font-size:54pt;color:#A9A9A9;\">BOX L300 | Software Version ");
     ui->labelBrand->setText(brandVersion + getSoftwareVersionNumber() + QString("</span></p></body></html>"));
+
+    QString service("<html><head/><body><p align=\"right\"><span style=\" font-size:36pt; font-weight:600;color:#A9A9A9;\">FOR SUPPORT, CALL CUSTOMER SERVICE AT 650-241-7900 \
+</span></p><p align=\"right\"><span style=\" font-size:36pt; font-weight:600; color:#A9A9A9;\">2011-2016 AVINGER, INC.</span></p></body></html>");
+    ui->labelService->setText(service);
 
     const int middleFrameWidth = WidgetContainer::instance()->middleFrameWidth();
     const int sideFrameWidth = int(middleFrameWidth * 0.25 );
-    const int frameHeight = middleFrameWidth - 100;
+    const int frameHeight = middleFrameWidth - 160;
     const bool isFullScreen = WidgetContainer::instance()->isFullScreen();
 
     qDebug() << "sideFrameWidth = " << sideFrameWidth << ", frameHeight = " << frameHeight;
