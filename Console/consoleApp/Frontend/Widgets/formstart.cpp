@@ -12,6 +12,7 @@
 #include "deviceSettings.h"
 #include "util.h"
 #include "dialogcaseinformation.h"
+#include "dialogdeviceselect.h"
 
 #include <QDebug>
 
@@ -128,9 +129,13 @@ int FormStart::showCaseInfoDialog()
 
 int FormStart::showDeviceWizard()
 {
-    deviceWizard* device = new deviceWizard(this);
+//    deviceWizard* device = new deviceWizard(this);
 
-    int result = device->exec();
+//    int result = device->exec();
+    DialogDeviceSelect* deviceSelect = new DialogDeviceSelect(this);
+
+    int result = deviceSelect->exec();
+
     LOG1(result)
     return result;
 }

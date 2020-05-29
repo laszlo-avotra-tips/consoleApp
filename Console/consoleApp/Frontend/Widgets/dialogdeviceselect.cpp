@@ -6,6 +6,7 @@ DialogDeviceSelect::DialogDeviceSelect(QWidget *parent) :
     ui(new Ui::DialogDeviceSelect)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::SplashScreen);
 }
 
 DialogDeviceSelect::~DialogDeviceSelect()
