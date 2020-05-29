@@ -41,19 +41,22 @@ qproperty-flat: true;
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>40</number>
    </property>
    <property name="topMargin">
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>40</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -222,6 +225,9 @@ qproperty-flat: true;
          </item>
          <item>
           <widget class="QFrame" name="frameButton">
+           <property name="styleSheet">
+            <string notr="true">border-top: 2px solid gray;</string>
+           </property>
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
            </property>
@@ -341,11 +347,23 @@ qproperty-flat: true;
        <height>160</height>
       </size>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-top: 2px solid gray;</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="spacing">
