@@ -142,7 +142,7 @@ public:
 
     device *current(void);
 
-    QString getCurrentDeviceName( void );
+    const QString& getCurrentDeviceName( void ) const;
     const QString& getCurrentSplitDeviceName( void ) const;
 
     QString getFileSystemSafeDeviceName( void );
@@ -178,6 +178,7 @@ private:
     int brightness = 0;
     int contrast = 0;
     bool m_isSimulation{false};
+    const QString m_unknownDeviceName{"Unknown"};
 
     deviceSettings();
     ~deviceSettings();
