@@ -204,7 +204,7 @@ void MainWindow::on_pushButtonCapture_clicked()
 void MainWindow::setDeviceLabel()
 {
     deviceSettings &dev = deviceSettings::Instance();
-    const QString name{dev.getCurrentDeviceName()};
+    const QString name{dev.getCurrentSplitDeviceName()};
     ui->labelDevice->setText(name);
 
 //    m_frontEndWindow->init();

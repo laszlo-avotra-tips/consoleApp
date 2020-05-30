@@ -24,7 +24,6 @@ protected:
 
 private:
     void populateList(void);
-    QString formatDeviceName(const QString& name);
 
 private slots:
     void on_pushButtonDone_clicked();

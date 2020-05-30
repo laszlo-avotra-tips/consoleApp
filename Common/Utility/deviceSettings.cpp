@@ -55,6 +55,12 @@ deviceSettings::~deviceSettings()
  *
  * Load all of the devices found in the System area. Return the number of loaded devices.
  */
+deviceSettings &deviceSettings::Instance()
+{
+    static deviceSettings theSettings;
+    return theSettings;
+}
+
 int deviceSettings::init( void )
 {
     int  numDevicesLoaded = 0;
@@ -80,6 +86,42 @@ void deviceSettings::setCurrentDevice( int devIndex )
     deviceSettings::adjustMaskSize( 0 );
 //lcv    emit deviceChanged( devIndex );
     emit deviceChanged( );
+}
+
+device *deviceSettings::current()
+{
+    if ( currentDevice >= 0 )
+    {
+        return deviceList.at( currentDevice );
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+const QString& deviceSettings::getCurrentDeviceName() const
+{
+    if ( currentDevice >= 0 )
+    {
+        return deviceList.at( currentDevice )->getDeviceName();
+    }
+    else
+    {
+        return m_unknownDeviceName;
+    }
+}
+
+const QString &deviceSettings::getCurrentSplitDeviceName() const
+{
+    if ( currentDevice >= 0 )
+    {
+        return deviceList.at( currentDevice )->getSplitDeviceName();
+    }
+    else
+    {
+        return m_unknownDeviceName;
+    }
 }
 
 /*
@@ -333,6 +375,16 @@ void deviceSettings::adjustMaskSize( int step )
     qDebug() << "New Mask: " << deviceAt(index)->getInternalImagingMask_px();
 }
 
+QString device::formatDeviceName(const QString &name)
+{
+    QString retVal;
+    QStringList words = name.split(" ");
+    if(words.size() == 3){
+        retVal = QString("%1 %2\n%3").arg(words[0]).arg(words[1]).arg(words[2]);
+    }
+    return retVal;
+}
+
 bool deviceSettings::getIsSimulation() const
 {
     return m_isSimulation;
@@ -343,7 +395,48 @@ void deviceSettings::setIsSimulation(bool isSimulation)
     m_isSimulation = isSimulation;
 }
 
-QString device::getDeviceName()
+device::device(QString inDeviceName, int inInternalImagingMask_px, int inCatheterRadius_um, int inLinesPerRevolution_cnt, int inRevolutionsPerMin, int inALineLengthNormal_px, int inALineLengthDeep_px, float inImagingDepthNormal_mm, float inImagingDepthDeep_mm, int inClockingEnabled, QByteArray inClockingGain, QByteArray inClockingOffset, QByteArray inTorqueLimit, QByteArray inTimeLimit, int inLimitBlinkEnabled, int inMeasurementVersion, QByteArray inSpeed1, QByteArray inSpeed2, QByteArray inSpeed3, QString inDisclaimerText, device::DeviceType inDeviceType, QImage *inIcon)
+{
+    deviceName               = inDeviceName;
+    splitDeviceName          = formatDeviceName(deviceName);
+    internalImagingMask_px   = inInternalImagingMask_px;
+    catheterRadius_um        = inCatheterRadius_um;
+    linesPerRevolution_cnt   = inLinesPerRevolution_cnt;
+    revolutionsPerMin        = inRevolutionsPerMin;
+    aLineLengthNormal_px     = inALineLengthNormal_px;
+    aLineLengthDeep_px       = inALineLengthDeep_px;
+    imagingDepthNormal_mm    = inImagingDepthNormal_mm;
+    imagingDepthDeep_mm      = inImagingDepthDeep_mm;
+    clockingEnabled          = inClockingEnabled;
+    clockingGain             = inClockingGain;
+    clockingOffset           = inClockingOffset;
+    torqueLimit              = inTorqueLimit;
+    timeLimit                = inTimeLimit;
+    limitBlinkEnabled        = inLimitBlinkEnabled;
+    //        reverseAngle             = inReverseAngle;
+
+    disclaimerText           = inDisclaimerText;
+    measurementVersion       = inMeasurementVersion;
+    deviceType               = inDeviceType;
+    icon                     = inIcon;
+    pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
+    pixelsPerUm              = pixelsPerMm / (float)1000;
+}
+
+device::~device()
+{
+    if( icon != NULL )
+    {
+        delete icon;
+    }
+}
+
+const QString &device::getDeviceName() const
 {
     return deviceName;
+}
+
+const QString &device::getSplitDeviceName() const
+{
+    return splitDeviceName;
 }

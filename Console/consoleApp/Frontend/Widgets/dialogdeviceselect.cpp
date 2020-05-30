@@ -83,22 +83,12 @@ void DialogDeviceSelect::populateList()
          * Qt adds items to the list widget.
          */
         QListWidgetItem *li = new QListWidgetItem( QIcon( QPixmap::fromImage( d->getIcon() ) ),
-                                                   formatDeviceName(d->getDeviceName()),
+                                                   d->getSplitDeviceName(),
                                                    ui->listWidgetAtherectomy,
                                                    0 );
         li->setTextAlignment( Qt::AlignRight );
         LOG2(d->getIcon().width(), d->getIcon().height());
     }
-}
-
-QString DialogDeviceSelect::formatDeviceName(const QString &name)
-{
-    QString retVal;
-    QStringList words = name.split(" ");
-    if(words.size() == 3){
-        retVal = QString("%1 %2\n%3").arg(words[0]).arg(words[1]).arg(words[2]);
-    }
-    return retVal;
 }
 
 void DialogDeviceSelect::on_pushButtonDone_clicked()
