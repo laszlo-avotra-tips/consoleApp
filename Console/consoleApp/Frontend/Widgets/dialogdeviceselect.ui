@@ -60,6 +60,9 @@ border-radius: 10px;
 QFrame#frameBack{
 background-color:#636363;
 border-radius: 10px;
+}
+QListWidget{
+font: 60pt &quot;Helvetica Neue&quot;;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
