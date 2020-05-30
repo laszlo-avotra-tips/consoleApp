@@ -15,6 +15,9 @@ public:
     explicit DialogDeviceSelect(QWidget *parent = nullptr);
     ~DialogDeviceSelect();
 
+private slots:
+    void on_pushButtonDone_clicked();
+
 private:
     Ui::DialogDeviceSelect *ui;
 };

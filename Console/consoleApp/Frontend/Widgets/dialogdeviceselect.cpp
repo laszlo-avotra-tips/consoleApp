@@ -1,5 +1,6 @@
 #include "dialogdeviceselect.h"
 #include "ui_dialogdeviceselect.h"
+#include "Frontend/Utility/widgetcontainer.h"
 
 DialogDeviceSelect::DialogDeviceSelect(QWidget *parent) :
     QDialog(parent),
@@ -12,4 +13,9 @@ DialogDeviceSelect::DialogDeviceSelect(QWidget *parent) :
 DialogDeviceSelect::~DialogDeviceSelect()
 {
     delete ui;
+}
+
+void DialogDeviceSelect::on_pushButtonDone_clicked()
+{
+//    WidgetContainer::instance()->gotoPage("mainPage");
 }
