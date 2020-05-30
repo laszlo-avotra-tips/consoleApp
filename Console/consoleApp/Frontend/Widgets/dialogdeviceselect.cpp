@@ -69,21 +69,13 @@ void DialogDeviceSelect::populateList()
 
     QList<device *>devList = devices.list();
 
-    // size 16 font
-//    QFont deviceNameFont = QFont( "DinPRO-Medium", 16 );
-//    int fontHeight = QFontMetrics( deviceNameFont ).height();
-
-//    // 16 px spacing between items
-//    ui->listWidgetAtherectomy->setSpacing( 16 );
-
     // 4 items per row and 2 rows can be displayed without scroll bar
-    if( devList.size() <= 8 )
+    if( devList.size() <= 4 )
     {
         ui->listWidgetAtherectomy->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     }
 
-    device *d;
-    foreach ( d, devList )
+    for ( device* d : devList )
     {
         /*
          * This is not a leak.  QListWidget takes ownership of
@@ -91,25 +83,30 @@ void DialogDeviceSelect::populateList()
          * Qt adds items to the list widget.
          */
         QListWidgetItem *li = new QListWidgetItem( QIcon( QPixmap::fromImage( d->getIcon() ) ),
-                                                   d->getDeviceName(),
+                                                   formatDeviceName(d->getDeviceName()),
                                                    ui->listWidgetAtherectomy,
                                                    0 );
-//        li->setFont( deviceNameFont );
-
-        // allign text to top and center
-        li->setTextAlignment( Qt::AlignTop );
-        li->setTextAlignment( Qt::AlignHCenter );
-
-        // add 20 px spacing on sides, add 2.2xfontHeight in vertical
-//        li->setSizeHint( QSize( d->getIcon().size() + QSize( 20, int(2.2 * fontHeight )) ) );
+        li->setTextAlignment( Qt::AlignRight );
+        LOG2(d->getIcon().width(), d->getIcon().height());
     }
+}
+
+QString DialogDeviceSelect::formatDeviceName(const QString &name)
+{
+    QString retVal;
+    QStringList words = name.split(" ");
+    if(words.size() == 3){
+        retVal = QString("%1 %2\n%3").arg(words[0]).arg(words[1]).arg(words[2]);
+    }
+    return retVal;
 }
 
 void DialogDeviceSelect::on_pushButtonDone_clicked()
 {
     //    WidgetContainer::instance()->gotoPage("mainPage");
     deviceSettings &dev = deviceSettings::Instance();
-    dev.setCurrentDevice(0);
+    int selection = ui->listWidgetAtherectomy->currentRow();
+    dev.setCurrentDevice(selection);
 
 
 }

@@ -62,7 +62,7 @@ background-color:#636363;
 border-radius: 10px;
 }
 QListWidget{
-font: 60pt &quot;Helvetica Neue&quot;;
+font: 48pt &quot;Helvetica Neue&quot;;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">

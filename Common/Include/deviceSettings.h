@@ -118,10 +118,10 @@ public:
     QByteArray getSpeed3(void)            { return Speed3; }
     QString getDisclaimerText(void)       { return disclaimerText; }
     void setInternalImagingMask_px(int mask)  { internalImagingMask_px = mask; }
+    QImage    *icon;
 
 private:
     QString    deviceName;
-    QImage    *icon;
 
     int        internalImagingMask_px;
     int        catheterRadius_um;
