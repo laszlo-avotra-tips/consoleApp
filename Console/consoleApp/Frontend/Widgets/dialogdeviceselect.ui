@@ -408,5 +408,21 @@ border-radius: 10px;
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonBack</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogDeviceSelect</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>989</x>
+     <y>905</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>708</x>
+     <y>514</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

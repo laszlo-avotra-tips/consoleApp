@@ -107,6 +107,8 @@ void FormStart::on_pushButtonStart_clicked()
               fw->updateDeviceLabel();
               startDaq(fw);
            }
+       }else {
+           WidgetContainer::instance()->gotoPage("startPage");
        }
     }
 }
