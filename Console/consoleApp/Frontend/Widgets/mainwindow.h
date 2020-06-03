@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <vector>
 #include <map>
+#include <QGraphicsView>
 
 class frontend;
 class liveScene;
@@ -45,8 +46,12 @@ private slots:
     void on_pushButtonCapture_clicked();
 
     void on_pushButtonSettings_clicked();
+    void openCaseInformationDialog();
+    void openDeviceSelectDialog();
 
 private:
+    void showEvent(QShowEvent* se) override;
+    void hideEvent(QHideEvent* he) override;
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
 //    void startDaq();

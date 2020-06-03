@@ -4,6 +4,9 @@
 #include "deviceSettings.h"
 #include "util.h"
 #include "logger.h"
+#include "mainwindow.h"
+#include "Frontend/Screens/frontend.h"
+#include <daqfactory.h>
 
 DialogDeviceSelect::DialogDeviceSelect(QWidget *parent) :
     QDialog(parent),
@@ -97,12 +100,42 @@ void DialogDeviceSelect::on_pushButtonDone_clicked()
     deviceSettings &dev = deviceSettings::Instance();
     int selection = ui->listWidgetAtherectomy->currentRow();
     dev.setCurrentDevice(selection);
-
-
+    QWidget* widget = WidgetContainer::instance()->getPage("frontendPage");
+    MainWindow* mw = dynamic_cast<MainWindow*>(widget);
+    if(mw){
+       mw->setDeviceLabel();
+    }
+   frontend* fw = dynamic_cast<frontend*>(widget);
+   if(fw){
+      fw->showFullScreen();
+      fw->updateDeviceLabel();
+      startDaq(fw);
+   }
 }
 
 void DialogDeviceSelect::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)
 {
     ui->listWidgetAtherectomy->setCurrentItem( item );
     LOG1(item->text());
+}
+
+void DialogDeviceSelect::startDaq(frontend *fe)
+{
+    auto idaq = daqfactory::instance()->getdaq();
+
+    if(!idaq){
+        fe->abortStartUp();
+
+        LOG( INFO, "Device not supported. OCT Console cancelled" )
+    }
+    fe->setIDAQ(idaq);
+    LOG( INFO, "LASER: serial port control is DISABLED" )
+    LOG( INFO, "SLED support board: serial port control is DISABLED" )
+
+    fe->startDaq();
+    auto& setting = deviceSettings::Instance();
+    if(setting.getIsSimulation()){
+        fe->startDataCapture();
+    }
+    fe->on_zoomSlider_valueChanged(100);
 }

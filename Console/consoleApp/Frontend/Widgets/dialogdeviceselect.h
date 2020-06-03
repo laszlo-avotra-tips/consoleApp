@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QListWidgetItem>
 
+class frontend;
+
 namespace Ui {
 class DialogDeviceSelect;
 }
@@ -28,6 +30,7 @@ private:
 private slots:
     void on_pushButtonDone_clicked();
     void on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item);
+    void startDaq(frontend *fe);
 
 private:
     Ui::DialogDeviceSelect *ui;

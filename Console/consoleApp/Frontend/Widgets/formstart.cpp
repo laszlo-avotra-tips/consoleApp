@@ -91,26 +91,26 @@ void FormStart::on_pushButtonShutdown_clicked()
 
 void FormStart::on_pushButtonStart_clicked()
 {
-    int result{-1};
-    result = showCaseInfoDialog();
-    if(result == QDialog::Accepted){
-       result = showDeviceWizard();
-       if(result == QDialog::Accepted){
+//    int result{-1};
+//    result = showCaseInfoDialog();
+//    if(result == QDialog::Accepted){
+//       result = showDeviceWizard();
+//       if(result == QDialog::Accepted){
            auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
-           MainWindow* mw = dynamic_cast<MainWindow*>(widget);
-           if(mw){
-               mw->setDeviceLabel();
-           }
-           frontend* fw = dynamic_cast<frontend*>(widget);
-           if(fw){
-              fw->showFullScreen();
-              fw->updateDeviceLabel();
-              startDaq(fw);
-           }
-       }else {
-           WidgetContainer::instance()->gotoPage("startPage");
-       }
-    }
+//           MainWindow* mw = dynamic_cast<MainWindow*>(widget);
+//           if(mw){
+//               mw->setDeviceLabel();
+//           }
+//           frontend* fw = dynamic_cast<frontend*>(widget);
+//           if(fw){
+//              fw->showFullScreen();
+//              fw->updateDeviceLabel();
+//              startDaq(fw);
+//           }
+//       }else {
+//           WidgetContainer::instance()->gotoPage("startPage");
+//       }
+//    }
 }
 
 int FormStart::showCaseInfoDialog()

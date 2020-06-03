@@ -219,3 +219,44 @@ void MainWindow::on_pushButtonSettings_clicked()
 {
     hide();
 }
+
+void MainWindow::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    qDebug() << __FUNCTION__;
+    QTimer::singleShot(100,this, &MainWindow::openCaseInformationDialog);
+}
+
+void MainWindow::hideEvent(QHideEvent *he)
+{
+    QWidget::hideEvent( he );    qDebug() << __FUNCTION__;
+
+}
+
+void MainWindow::openCaseInformationDialog()
+{
+    auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
+
+    if( result.second == QDialog::Accepted){
+        qDebug() << "Accepted";
+//        QTimer::singleShot(100,this, &MainWindow::openGreenDialog);
+        openDeviceSelectDialog();
+    }
+    else {
+        qDebug() << "Cancelled";
+        WidgetContainer::instance()->gotoPage("startPage");
+    }
+}
+
+void MainWindow::openDeviceSelectDialog()
+{
+    auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
+
+    if( result.second == QDialog::Accepted){
+        qDebug() << "Accepted";
+    } else {
+        qDebug() << "Cancelled";
+//        QTimer::singleShot(100,this, &MainWindow::openMainWindowDialog);
+        openCaseInformationDialog();
+    }
+}

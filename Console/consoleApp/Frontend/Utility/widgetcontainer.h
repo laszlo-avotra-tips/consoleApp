@@ -3,11 +3,12 @@
 
 #include <map>
 #include <QString>
-#include <QWidget>
+#include <QSize>
+
+#include "dialogfactory.h"
 
 class QStackedWidget;
 class FormNavigator;
-
 class WidgetContainer
 {
 public:
@@ -17,6 +18,8 @@ public:
 
     QWidget* gotoPage(const QString& name);
     QWidget* getPage(const QString& name);
+    QDialog* getDialog(const QString& name, QWidget* parent, int y);
+    std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name, int y = 0);
 
     void close();
     void setNavigator(FormNavigator* n);
@@ -38,6 +41,7 @@ private:
 private:
     static WidgetContainer* m_instance;
 
+    DialogFactory m_dialogFactory;
     QStackedWidget* m_stackedWidget{nullptr};
     FormNavigator* m_navigator{nullptr};
 

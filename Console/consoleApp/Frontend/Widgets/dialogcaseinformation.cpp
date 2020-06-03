@@ -1,5 +1,6 @@
 #include "dialogcaseinformation.h"
 #include "ui_dialogcaseinformation.h"
+
 #include <QDateTime>
 
 DialogCaseInformation::DialogCaseInformation(QWidget *parent) :
