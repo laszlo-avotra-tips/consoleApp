@@ -3,10 +3,12 @@
 
 #include "signalmanager.h"
 
-#include <QWidget>
 #include <vector>
 #include <map>
+#include <QWidget>
 #include <QGraphicsView>
+#include <QTime>
+#include <QTimer>
 
 class frontend;
 class liveScene;
@@ -48,12 +50,14 @@ private slots:
     void on_pushButtonSettings_clicked();
     void openCaseInformationDialog();
     void openDeviceSelectDialog();
+    void updateRuntime();
 
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
+    void setTime();
 //    void startDaq();
 
 private:
@@ -67,7 +71,10 @@ private:
 
     std::vector<QWidget*> m_navigationButtons;
 
-    frontend* m_frontEndWindow;
-
+    frontend* m_frontEndWindow{nullptr};
+    bool m_washidden{false};
+    QTime m_startTime;
+    QTime m_elapsedTime;
+    QTimer m_updateRuntimeTimer;
 };
 #endif // MAINWINDOW_H

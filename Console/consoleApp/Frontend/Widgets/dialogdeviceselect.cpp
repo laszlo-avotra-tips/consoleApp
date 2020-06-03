@@ -96,21 +96,16 @@ void DialogDeviceSelect::populateList()
 
 void DialogDeviceSelect::on_pushButtonDone_clicked()
 {
-    //    WidgetContainer::instance()->gotoPage("mainPage");
     deviceSettings &dev = deviceSettings::Instance();
     int selection = ui->listWidgetAtherectomy->currentRow();
     dev.setCurrentDevice(selection);
     QWidget* widget = WidgetContainer::instance()->getPage("frontendPage");
-    MainWindow* mw = dynamic_cast<MainWindow*>(widget);
-    if(mw){
-       mw->setDeviceLabel();
-    }
-   frontend* fw = dynamic_cast<frontend*>(widget);
-   if(fw){
+    frontend* fw = dynamic_cast<frontend*>(widget);
+    if(fw){
       fw->showFullScreen();
       fw->updateDeviceLabel();
       startDaq(fw);
-   }
+    }
 }
 
 void DialogDeviceSelect::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)

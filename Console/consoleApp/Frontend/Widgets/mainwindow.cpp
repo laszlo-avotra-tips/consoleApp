@@ -60,13 +60,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButtonDownArrow->show();
     ui->pushButtonCondensUp->hide();
 
-    auto wid = WidgetContainer::instance()->getPage("frontendPage");//new frontend(this);
+    auto wid = WidgetContainer::instance()->getPage("frontendPage");
 
     frontend* fw = dynamic_cast<frontend*>(wid);
     if(fw)
     {
         m_frontEndWindow = fw;
     }
+
+    m_updateRuntimeTimer.start(1000);
+    connect(&m_updateRuntimeTimer, &QTimer::timeout, this, &MainWindow::updateRuntime);
 }
 
 void MainWindow::setScene(liveScene *scene)
@@ -129,6 +132,14 @@ void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
         ui->pushButtonDownArrow->hide();
         ui->pushButtonCondensUp->show();
     }
+}
+
+void MainWindow::setTime()
+{
+    m_startTime = QTime::currentTime();
+    QString time = m_startTime.toString("hh:mm:ss");
+    ui->labelTime->setText(time);
+    m_elapsedTime.start();
 }
 
 //void MainWindow::startDaq()
@@ -206,13 +217,8 @@ void MainWindow::setDeviceLabel()
     deviceSettings &dev = deviceSettings::Instance();
     const QString name{dev.getCurrentSplitDeviceName()};
     ui->labelDevice->setText(name);
-
-//    m_frontEndWindow->init();
-//    SignalManager::instance();
-//    showFullScreen();
-
-
-//    startDaq();
+    setTime();
+    updateRuntime();
 }
 
 void MainWindow::on_pushButtonSettings_clicked()
@@ -224,19 +230,24 @@ void MainWindow::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
     qDebug() << __FUNCTION__;
-    QTimer::singleShot(100,this, &MainWindow::openCaseInformationDialog);
+    if(!m_washidden){
+        QTimer::singleShot(100,this, &MainWindow::openCaseInformationDialog);
+    }
 }
 
 void MainWindow::hideEvent(QHideEvent *he)
 {
     QWidget::hideEvent( he );    qDebug() << __FUNCTION__;
-
+    m_washidden = true;
 }
 
 void MainWindow::openCaseInformationDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
 
+    if(result.first){
+    result.first->hide();
+    }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
 //        QTimer::singleShot(100,this, &MainWindow::openGreenDialog);
@@ -259,4 +270,16 @@ void MainWindow::openDeviceSelectDialog()
 //        QTimer::singleShot(100,this, &MainWindow::openMainWindowDialog);
         openCaseInformationDialog();
     }
+}
+
+void MainWindow::updateRuntime()
+{
+    int ms = m_elapsedTime.elapsed();
+    int durationInSec = ms / 1000;
+    int sec = durationInSec % 60;
+    int min = durationInSec / 60;
+    QTime dt(0,min,sec,0);
+
+   QString elapsed = dt.toString("mm:ss");
+   ui->labelRunTime->setText(elapsed);
 }

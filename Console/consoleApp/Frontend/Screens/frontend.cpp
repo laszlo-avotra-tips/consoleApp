@@ -41,6 +41,7 @@
 #include "signalmodel.h"
 #include "forml300.h"
 #include "mainwindow.h"
+#include "Frontend/Utility/widgetcontainer.h"
 
 // Configuration defines
 #define HIGH_QUALITY_RENDERING 0
