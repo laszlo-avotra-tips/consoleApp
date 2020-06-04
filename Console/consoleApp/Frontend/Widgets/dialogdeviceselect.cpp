@@ -85,12 +85,12 @@ void DialogDeviceSelect::populateList()
          * the pointers.  It's a weird construct but it's the way
          * Qt adds items to the list widget.
          */
-        QListWidgetItem *li = new QListWidgetItem( QIcon( QPixmap::fromImage( d->getIcon() ) ),
-                                                   d->getSplitDeviceName(),
-                                                   ui->listWidgetAtherectomy,
-                                                   0 );
+       QListWidgetItem *li = new QListWidgetItem(
+//                   QIcon( QPixmap::fromImage( d->getIcon() ) ),
+                   d->getSplitDeviceName(),
+                   ui->listWidgetAtherectomy,
+                   0 );
         li->setTextAlignment( Qt::AlignRight );
-        LOG2(d->getIcon().width(), d->getIcon().height());
     }
 }
 
@@ -138,4 +138,5 @@ void DialogDeviceSelect::startDaq(frontend *fe)
 void DialogDeviceSelect::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
 {
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
 }
