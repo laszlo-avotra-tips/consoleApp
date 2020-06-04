@@ -28,7 +28,7 @@ style=\" font-size:42pt;color:#A9A9A9;\">BOX L300 | Software Version ");
     ui->labelBrand->setText(brandVersion + getSoftwareVersionNumber() + QString("</span></p></body></html>"));
 
     QString service("<html><head/><body><p align=\"right\"><span style=\" font-size:28pt; font-weight:600;color:#A9A9A9;\">FOR SUPPORT, CALL CUSTOMER SERVICE AT 650-241-7900 \
-</span></p><p align=\"right\"><span style=\" font-size:28pt; font-weight:600; color:#A9A9A9;\">2011-2016 AVINGER, INC.</span></p></body></html>");
+</span></p><p align=\"right\"><span style=\" font-size:28pt; font-weight:600; color:#A9A9A9;\">2011-2020 AVINGER, INC.</span></p></body></html>");
     ui->labelService->setText(service);
 
     const int middleFrameWidth = WidgetContainer::instance()->middleFrameWidth();
@@ -110,7 +110,19 @@ void FormStart::on_pushButtonStart_clicked()
 //       }else {
 //           WidgetContainer::instance()->gotoPage("startPage");
 //       }
-//    }
+           //    }
+}
+
+void FormStart::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    qDebug() << __FUNCTION__;
+    WidgetContainer::instance()->setIsNewCase(true);
+}
+
+void FormStart::hideEvent(QHideEvent *he)
+{
+    QWidget::hideEvent( he );
 }
 
 int FormStart::showCaseInfoDialog()

@@ -35,6 +35,9 @@ public:
     int ratio() const;
     void setRatio(int ratio);
 
+    bool getIsNewCase() const;
+    void setIsNewCase(bool isNewCase);
+
 private:
     WidgetContainer();
 
@@ -49,6 +52,7 @@ private:
     bool m_isFullScreen{true};
     QSize  m_middleFrameSize{2110,2110};
     int m_ratio{1};
+    bool m_isNewCase{true};
 };
 
 #endif // WIDGETCONTAINER_H

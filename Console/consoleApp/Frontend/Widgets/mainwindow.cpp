@@ -54,11 +54,11 @@ MainWindow::MainWindow(QWidget *parent)
     m_navigationButtons.push_back(ui->pushButtonRecord);
     m_navigationButtons.push_back(ui->pushButtonCapture);
     m_navigationButtons.push_back(ui->pushButtonFlip);
-    for(auto* button : m_navigationButtons){
-        button->hide();
-    }
-    ui->pushButtonDownArrow->show();
-    ui->pushButtonCondensUp->hide();
+//    for(auto* button : m_navigationButtons){
+//        button->hide();
+//    }
+    ui->pushButtonDownArrow->hide();
+    ui->pushButtonCondensUp->show();
 
     auto wid = WidgetContainer::instance()->getPage("frontendPage");
 
@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
         m_frontEndWindow = fw;
     }
 
-    m_updateRuntimeTimer.start(1000);
+    m_updateRuntimeTimer.start(500);
     connect(&m_updateRuntimeTimer, &QTimer::timeout, this, &MainWindow::updateRuntime);
 }
 
@@ -139,7 +139,6 @@ void MainWindow::setTime()
     m_startTime = QTime::currentTime();
     QString time = m_startTime.toString("hh:mm:ss");
     ui->labelTime->setText(time);
-    m_elapsedTime.start();
 }
 
 //void MainWindow::startDaq()
@@ -218,6 +217,7 @@ void MainWindow::setDeviceLabel()
     const QString name{dev.getCurrentSplitDeviceName()};
     ui->labelDevice->setText(name);
     setTime();
+    m_elapsedTime.start();
     updateRuntime();
 }
 
@@ -230,15 +230,16 @@ void MainWindow::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
     qDebug() << __FUNCTION__;
-    if(!m_washidden){
+    if(WidgetContainer::instance()->getIsNewCase()){
         QTimer::singleShot(100,this, &MainWindow::openCaseInformationDialog);
     }
 }
 
 void MainWindow::hideEvent(QHideEvent *he)
 {
-    QWidget::hideEvent( he );    qDebug() << __FUNCTION__;
-    m_washidden = true;
+    QWidget::hideEvent( he );
+    qDebug() << __FUNCTION__;
+    WidgetContainer::instance()->setIsNewCase(false);
 }
 
 void MainWindow::openCaseInformationDialog()
@@ -282,4 +283,5 @@ void MainWindow::updateRuntime()
 
    QString elapsed = dt.toString("mm:ss");
    ui->labelRunTime->setText(elapsed);
+   setTime();
 }

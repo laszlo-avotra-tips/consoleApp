@@ -74,6 +74,16 @@ WidgetContainer::WidgetContainer()
 
 }
 
+bool WidgetContainer::getIsNewCase() const
+{
+    return m_isNewCase;
+}
+
+void WidgetContainer::setIsNewCase(bool isNewCase)
+{
+    m_isNewCase = isNewCase;
+}
+
 int WidgetContainer::ratio() const
 {
     return m_ratio;

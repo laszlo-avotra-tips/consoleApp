@@ -9,10 +9,17 @@ DialogCaseInformation::DialogCaseInformation(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    ui->lineEditDateAndTime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd  hh:mm:ss"));
+    setDateAndTime();
+    connect(&m_displayTimer, &QTimer::timeout, this, &DialogCaseInformation::setDateAndTime);
+    m_displayTimer.start(500);
 }
 
 DialogCaseInformation::~DialogCaseInformation()
 {
     delete ui;
+}
+
+void DialogCaseInformation::setDateAndTime()
+{
+    ui->lineEditDateAndTime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd  hh:mm:ss"));
 }

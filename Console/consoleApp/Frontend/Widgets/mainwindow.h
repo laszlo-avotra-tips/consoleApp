@@ -9,6 +9,7 @@
 #include <QGraphicsView>
 #include <QTime>
 #include <QTimer>
+#include <QElapsedTimer>
 
 class frontend;
 class liveScene;
@@ -72,9 +73,8 @@ private:
     std::vector<QWidget*> m_navigationButtons;
 
     frontend* m_frontEndWindow{nullptr};
-    bool m_washidden{false};
     QTime m_startTime;
-    QTime m_elapsedTime;
+    QElapsedTimer m_elapsedTime;
     QTimer m_updateRuntimeTimer;
 };
 #endif // MAINWINDOW_H
