@@ -55,6 +55,9 @@ border-bottom: 2px solid grey;
 }
 </string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>0</number>

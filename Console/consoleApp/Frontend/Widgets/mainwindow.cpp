@@ -288,6 +288,6 @@ void MainWindow::updateRuntime()
     QTime dt(0,min,sec,0);
 
    QString elapsed = dt.toString("mm:ss");
-   ui->labelRunTime->setText(elapsed);
+   ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
    setTime();
 }

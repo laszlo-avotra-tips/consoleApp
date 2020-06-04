@@ -134,3 +134,8 @@ void DialogDeviceSelect::startDaq(frontend *fe)
     }
     fe->on_zoomSlider_valueChanged(100);
 }
+
+void DialogDeviceSelect::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
+{
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+}
