@@ -185,6 +185,9 @@ font: 48pt &quot;Helvetica Neue&quot;;
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
              <widget class="QLabel" name="labelAtherectomy">
+              <property name="styleSheet">
+               <string notr="true">text-decoration: underline;</string>
+              </property>
               <property name="text">
                <string>ATHERECTOMY</string>
               </property>
@@ -194,7 +197,13 @@ font: 48pt &quot;Helvetica Neue&quot;;
              </widget>
             </item>
             <item>
-             <widget class="QListWidget" name="listWidgetAtherectomy"/>
+             <widget class="QListWidget" name="listWidgetAtherectomy">
+              <property name="styleSheet">
+               <string notr="true">QListView::item:selected{
+background: rgb(99,99,99);
+}</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -210,6 +219,9 @@ font: 48pt &quot;Helvetica Neue&quot;;
            <layout class="QVBoxLayout" name="verticalLayout_6">
             <item>
              <widget class="QLabel" name="labelCto">
+              <property name="styleSheet">
+               <string notr="true">text-decoration: underline;</string>
+              </property>
               <property name="text">
                <string>CTO CROSSING</string>
               </property>
