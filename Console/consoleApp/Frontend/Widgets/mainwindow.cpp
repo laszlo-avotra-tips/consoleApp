@@ -60,6 +60,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
 
+    ui->labelDevice->hide();
+    ui->labelRunTime->hide();
+
     auto wid = WidgetContainer::instance()->getPage("frontendPage");
 
     frontend* fw = dynamic_cast<frontend*>(wid);
@@ -213,6 +216,9 @@ void MainWindow::on_pushButtonCapture_clicked()
 
 void MainWindow::setDeviceLabel()
 {
+    ui->labelDevice->show();
+    ui->labelRunTime->show();
+
     deviceSettings &dev = deviceSettings::Instance();
     const QString name{dev.getCurrentSplitDeviceName()};
     ui->labelDevice->setText(name);
