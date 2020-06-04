@@ -185,6 +185,9 @@ font: 48pt &quot;Helvetica Neue&quot;;
               <property name="text">
                <string>ATHERECTOMY</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
             <item>
@@ -207,10 +210,17 @@ font: 48pt &quot;Helvetica Neue&quot;;
               <property name="text">
                <string>CTO CROSSING</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
             <item>
-             <widget class="QListWidget" name="listWidgetCto"/>
+             <widget class="QListWidget" name="listWidgetCto">
+              <property name="styleSheet">
+               <string notr="true">border-left: 2px solid grey;</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
