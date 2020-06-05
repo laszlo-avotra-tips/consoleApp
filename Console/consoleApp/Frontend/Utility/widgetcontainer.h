@@ -3,11 +3,12 @@
 
 #include <map>
 #include <QString>
-#include <QWidget>
+#include <QSize>
+
+#include "dialogfactory.h"
 
 class QStackedWidget;
 class FormNavigator;
-
 class WidgetContainer
 {
 public:
@@ -17,6 +18,8 @@ public:
 
     QWidget* gotoPage(const QString& name);
     QWidget* getPage(const QString& name);
+    QDialog* getDialog(const QString& name, QWidget* parent, int y);
+    std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name, int y = 0);
 
     void close();
     void setNavigator(FormNavigator* n);
@@ -32,12 +35,16 @@ public:
     int ratio() const;
     void setRatio(int ratio);
 
+    bool getIsNewCase() const;
+    void setIsNewCase(bool isNewCase);
+
 private:
     WidgetContainer();
 
 private:
     static WidgetContainer* m_instance;
 
+    DialogFactory m_dialogFactory;
     QStackedWidget* m_stackedWidget{nullptr};
     FormNavigator* m_navigator{nullptr};
 
@@ -45,6 +52,7 @@ private:
     bool m_isFullScreen{true};
     QSize  m_middleFrameSize{2110,2110};
     int m_ratio{1};
+    bool m_isNewCase{true};
 };
 
 #endif // WIDGETCONTAINER_H

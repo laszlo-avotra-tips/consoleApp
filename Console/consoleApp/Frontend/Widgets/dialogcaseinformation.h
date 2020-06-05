@@ -2,6 +2,8 @@
 #define DIALOGCASEINFORMATION_H
 
 #include <QDialog>
+#include <QDateTime>
+#include <QTimer>
 
 namespace Ui {
 class DialogCaseInformation;
@@ -15,8 +17,13 @@ public:
     explicit DialogCaseInformation(QWidget *parent = nullptr);
     ~DialogCaseInformation();
 
+private slots:
+    void setDateAndTime();
+
 private:
     Ui::DialogCaseInformation *ui;
+    QDateTime m_now;
+    QTimer m_displayTimer;
 };
 
 #endif // DIALOGCASEINFORMATION_H

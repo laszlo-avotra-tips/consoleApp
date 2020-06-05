@@ -7,9 +7,10 @@ TARGET = octConsole
 
 TEMPLATE = app
 
+QT += sql xml widgets
 QT += charts
-QT += sql xml
 QT += serialport
+QT += virtualkeyboard
 
 
 CONFIG += c++14
@@ -97,4 +98,3 @@ DEPENDPATH += $$PWD/../../lib/amd64/FTDI
 
 RESOURCES += \
     OpenClResources.qrc
-

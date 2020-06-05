@@ -20,6 +20,7 @@ HEADERS += \
     $$PWD/Backend/warp.h \
     $$PWD/Backend/warpbc.h \
     $$PWD/Frontend/Utility/pagefactory.h \
+    $$PWD/Frontend/Utility/dialogfactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/dialogdeviceselect.h \
     $$PWD/Frontend/Widgets/forml300.h \
@@ -102,6 +103,7 @@ HEADERS += \
     $$PWD/Backend/daqfactory.h \
     $$PWD/Backend/idaq.h \
     $$PWD/Frontend/Widgets/engineeringdialog.h \
+    $$PWD/Frontend/Widgets/mykeyboard.h \
     $$PWD/Frontend/Widgets/engineeringcontroller.h \
     $$PWD/Frontend/Widgets/enginneringmodel.h \
     $$PWD/Backend/playbackmanager.h \
@@ -123,6 +125,7 @@ SOURCES += \
     $$PWD/Backend/warp.cpp \
     $$PWD/Backend/warpbc.cpp \
     $$PWD/Frontend/Utility/pagefactory.cpp \
+    $$PWD/Frontend/Utility/dialogfactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/dialogdeviceselect.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
@@ -200,6 +203,7 @@ SOURCES += \
     ../../Common/GUI/windowmanager.cpp \
     $$PWD/Backend/daqfactory.cpp \
     $$PWD/Frontend/Widgets/engineeringdialog.cpp \
+    $$PWD/Frontend/Widgets/mykeyboard.cpp \
     $$PWD/Frontend/Widgets/engineeringcontroller.cpp \
     $$PWD/Frontend/Widgets/enginneringmodel.cpp \
     $$PWD/Backend/playbackmanager.cpp \
@@ -233,6 +237,7 @@ FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/../../Common/GUI/transport.ui \
     Frontend/Screens/auxmonitor.ui \
     $$PWD/Frontend/Widgets/engineeringdialog.ui \
+    $$PWD/Frontend/Widgets/mykeyboard.ui \
     $$PWD/Frontend/Widgets/dialogcaseinformation.ui
 
 # Resource file(s)

@@ -55,6 +55,9 @@ border-bottom: 2px solid grey;
 }
 </string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>0</number>
@@ -449,6 +452,13 @@ border-bottom: 2px solid grey;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEditPhysicianName</tabstop>
+  <tabstop>lineEditPatientId</tabstop>
+  <tabstop>lineEditLocation</tabstop>
+  <tabstop>lineEditDateAndTime</tabstop>
+  <tabstop>pushButtonNext</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -458,8 +468,8 @@ border-bottom: 2px solid grey;
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1383</x>
-     <y>875</y>
+     <x>1347</x>
+     <y>949</y>
     </hint>
     <hint type="destinationlabel">
      <x>742</x>

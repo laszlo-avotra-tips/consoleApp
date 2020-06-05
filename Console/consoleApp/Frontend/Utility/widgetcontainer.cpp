@@ -1,7 +1,10 @@
 #include "widgetcontainer.h"
 #include "formnavigator.h"
+#include "dialogfactory.h"
 
 #include <QStackedWidget>
+#include <QDebug>
+#include <QDialog>
 
 WidgetContainer* WidgetContainer::m_instance{nullptr};
 
@@ -71,6 +74,16 @@ WidgetContainer::WidgetContainer()
 
 }
 
+bool WidgetContainer::getIsNewCase() const
+{
+    return m_isNewCase;
+}
+
+void WidgetContainer::setIsNewCase(bool isNewCase)
+{
+    m_isNewCase = isNewCase;
+}
+
 int WidgetContainer::ratio() const
 {
     return m_ratio;
@@ -104,4 +117,23 @@ bool WidgetContainer::isFullScreen() const
 void WidgetContainer::setIsFullScreen(bool isFullScreen)
 {
     m_isFullScreen = isFullScreen;
+}
+
+std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QString &name, int y)
+{
+    int result{-1};
+    QDialog* dialog = getDialog(name,parent,y);
+    if(dialog){
+        qDebug() << "X = " << dialog->x() << "Y = " << dialog->y();
+        qDebug() << "parent.X = " << parent->x() << "parent.Y = " << parent->y();
+
+        dialog->show();
+        result = dialog->exec();
+    }
+    return std::pair<QDialog*,int>{dialog, result};
+}
+
+QDialog *WidgetContainer::getDialog(const QString &name, QWidget* parent, int y)
+{
+    return m_dialogFactory.createDialog(name,parent,y);
 }

@@ -28,6 +28,9 @@ private slots:
     void on_pushButtonStart_clicked();
 
 private:
+    void showEvent(QShowEvent* se) override;
+    void hideEvent(QHideEvent* he) override;
+
     int showCaseInfoDialog();
     int showDeviceWizard();
     void startDaq(frontend *fe);

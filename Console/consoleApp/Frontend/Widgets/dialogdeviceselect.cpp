@@ -4,6 +4,9 @@
 #include "deviceSettings.h"
 #include "util.h"
 #include "logger.h"
+#include "mainwindow.h"
+#include "Frontend/Screens/frontend.h"
+#include <daqfactory.h>
 
 DialogDeviceSelect::DialogDeviceSelect(QWidget *parent) :
     QDialog(parent),
@@ -82,27 +85,58 @@ void DialogDeviceSelect::populateList()
          * the pointers.  It's a weird construct but it's the way
          * Qt adds items to the list widget.
          */
-        QListWidgetItem *li = new QListWidgetItem( QIcon( QPixmap::fromImage( d->getIcon() ) ),
-                                                   d->getSplitDeviceName(),
-                                                   ui->listWidgetAtherectomy,
-                                                   0 );
+       QListWidgetItem *li = new QListWidgetItem(
+//                   QIcon( QPixmap::fromImage( d->getIcon() ) ),
+                   d->getSplitDeviceName(),
+                   ui->listWidgetAtherectomy,
+                   0 );
         li->setTextAlignment( Qt::AlignRight );
-        LOG2(d->getIcon().width(), d->getIcon().height());
     }
 }
 
 void DialogDeviceSelect::on_pushButtonDone_clicked()
 {
-    //    WidgetContainer::instance()->gotoPage("mainPage");
     deviceSettings &dev = deviceSettings::Instance();
     int selection = ui->listWidgetAtherectomy->currentRow();
     dev.setCurrentDevice(selection);
-
-
+    QWidget* widget = WidgetContainer::instance()->getPage("frontendPage");
+    frontend* fw = dynamic_cast<frontend*>(widget);
+    if(fw){
+      fw->showFullScreen();
+      fw->updateDeviceLabel();
+      startDaq(fw);
+    }
 }
 
 void DialogDeviceSelect::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)
 {
     ui->listWidgetAtherectomy->setCurrentItem( item );
     LOG1(item->text());
+}
+
+void DialogDeviceSelect::startDaq(frontend *fe)
+{
+    auto idaq = daqfactory::instance()->getdaq();
+
+    if(!idaq){
+        fe->abortStartUp();
+
+        LOG( INFO, "Device not supported. OCT Console cancelled" )
+    }
+    fe->setIDAQ(idaq);
+    LOG( INFO, "LASER: serial port control is DISABLED" )
+    LOG( INFO, "SLED support board: serial port control is DISABLED" )
+
+    fe->startDaq();
+    auto& setting = deviceSettings::Instance();
+    if(setting.getIsSimulation()){
+        fe->startDataCapture();
+    }
+    fe->on_zoomSlider_valueChanged(100);
+}
+
+void DialogDeviceSelect::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
+{
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
 }
