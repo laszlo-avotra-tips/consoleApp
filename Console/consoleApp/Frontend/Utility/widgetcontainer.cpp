@@ -1,6 +1,7 @@
 #include "widgetcontainer.h"
 #include "formnavigator.h"
 #include "dialogfactory.h"
+#include "octkeyboard.h"
 
 #include <QStackedWidget>
 #include <QDebug>
@@ -18,9 +19,8 @@ WidgetContainer *WidgetContainer::instance()
 
 bool WidgetContainer::registerWidget(const QString &name, QWidget *wid)
 {
-    m_container[name] = wid;
+    m_widgetContainer[name] = wid;
     int index = m_stackedWidget->addWidget(wid);
-//    wid->setStyleSheet(m_stackedWidget->styleSheet());
 
     return index >= 0;
 }
@@ -34,29 +34,66 @@ void WidgetContainer::setStackedWidget(QStackedWidget *sw)
     m_stackedWidget = sw;
 }
 
-QWidget* WidgetContainer::gotoPage(const QString &name)
+bool WidgetContainer::gotoPage(const QString &name)
 {
-    QWidget* widget{getPage(name)};
-//    auto it = m_container.find(name);
-//    if(it != m_container.end()){
-//        widget = it->second;
-//        m_stackedWidget->setCurrentWidget(widget);
-//    }
-    if(widget){
-        m_stackedWidget->setCurrentWidget(widget);
+    bool success{false};
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        if(m_currentWidget){
+            m_currentWidget->hide();
+        }
+        m_currentWidget = it->second;
+        m_stackedWidget->setCurrentWidget(m_currentWidget);
+        m_currentWidget->show();
     }
 
-    return widget;
+    return success;
 }
 
 QWidget *WidgetContainer::getPage(const QString &name)
 {
-    QWidget* widget{nullptr};
-    auto it = m_container.find(name);
-    if(it != m_container.end()){
-        widget = it->second;
+    QWidget* retVal{nullptr};
+
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        retVal = it->second;
     }
-    return widget;
+    return retVal;
+}
+
+QDialog *WidgetContainer::getDialog(const QString &name, QWidget* parent)
+{
+    return m_dialogFactory.createDialog(name,parent);
+}
+
+std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QString &name)
+{
+    int result{-1};
+    QDialog* dialog = getDialog(name,parent);
+
+    if(dialog){
+        dialog->show();
+        result = dialog->exec();
+    }
+    return std::pair<QDialog*,int>{dialog, result};
+}
+
+QString WidgetContainer::openKeyboard(QWidget *parent, const std::vector<QString>& param, int yOffset)
+{
+    QString retVal;
+    OctKeyboard* okb = new OctKeyboard(param, parent);
+    auto pw = parent->width();
+    auto dw = okb->width();
+    int x = parent->x() + pw/2 - dw/2;
+
+    okb->move(x, parent->y() + yOffset);
+    okb->show();
+
+    if(okb->exec() == QDialog::Accepted){
+        retVal = okb->value();
+    }
+
+    return retVal;
 }
 
 void WidgetContainer::close()
@@ -67,11 +104,6 @@ void WidgetContainer::close()
 void WidgetContainer::setNavigator(FormNavigator *n)
 {
     m_navigator = n;
-}
-
-WidgetContainer::WidgetContainer()
-{
-
 }
 
 bool WidgetContainer::getIsNewCase() const
@@ -117,23 +149,4 @@ bool WidgetContainer::isFullScreen() const
 void WidgetContainer::setIsFullScreen(bool isFullScreen)
 {
     m_isFullScreen = isFullScreen;
-}
-
-std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QString &name, int y)
-{
-    int result{-1};
-    QDialog* dialog = getDialog(name,parent,y);
-    if(dialog){
-        qDebug() << "X = " << dialog->x() << "Y = " << dialog->y();
-        qDebug() << "parent.X = " << parent->x() << "parent.Y = " << parent->y();
-
-        dialog->show();
-        result = dialog->exec();
-    }
-    return std::pair<QDialog*,int>{dialog, result};
-}
-
-QDialog *WidgetContainer::getDialog(const QString &name, QWidget* parent, int y)
-{
-    return m_dialogFactory.createDialog(name,parent,y);
 }

@@ -9,7 +9,7 @@ DialogFactory::DialogFactory()
 
 }
 
-QDialog *DialogFactory::createDialog(const QString &name, QWidget *parent, int y)
+QDialog *DialogFactory::createDialog(const QString &name, QWidget *parent)
 {
     QDialog* dialog{nullptr};
 
@@ -18,10 +18,6 @@ QDialog *DialogFactory::createDialog(const QString &name, QWidget *parent, int y
     }
     if(name == "deviceSelectDialog"){
         dialog = new DialogDeviceSelect(parent);
-    }
-    if(name == "keyboard"){
-        dialog = new MyKeyboard(parent);
-        dialog->move(parent->x()-100, parent->y() + y);
     }
     return dialog;
 }

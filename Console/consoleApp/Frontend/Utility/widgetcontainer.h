@@ -1,6 +1,7 @@
 #ifndef WIDGETCONTAINER_H
 #define WIDGETCONTAINER_H
 
+#include <vector>
 #include <map>
 #include <QString>
 #include <QSize>
@@ -9,18 +10,19 @@
 
 class QStackedWidget;
 class FormNavigator;
+class QDialog;
+
 class WidgetContainer
 {
 public:
     static WidgetContainer* instance();
     bool registerWidget(const QString& name, QWidget* wid);
     void setStackedWidget(QStackedWidget* sw);
-
-    QWidget* gotoPage(const QString& name);
+    bool gotoPage(const QString& name);
     QWidget* getPage(const QString& name);
-    QDialog* getDialog(const QString& name, QWidget* parent, int y);
-    std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name, int y = 0);
-
+    QDialog* getDialog(const QString& name, QWidget* parent);
+    std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name);
+    QString openKeyboard(QWidget* parent, const std::vector<QString>& param, int yOffset = 0);
     void close();
     void setNavigator(FormNavigator* n);
 
@@ -39,17 +41,18 @@ public:
     void setIsNewCase(bool isNewCase);
 
 private:
-    WidgetContainer();
-
-private:
     static WidgetContainer* m_instance;
+    WidgetContainer() = default;
 
     DialogFactory m_dialogFactory;
     QStackedWidget* m_stackedWidget{nullptr};
     FormNavigator* m_navigator{nullptr};
 
-    std::map<QString, QWidget*> m_container;
+    std::map<QString, QWidget*> m_widgetContainer;
+    std::map<QString, QDialog*> m_dialogContainer;
+
     bool m_isFullScreen{true};
+    QWidget* m_currentWidget{nullptr};
     QSize  m_middleFrameSize{2110,2110};
     int m_ratio{1};
     bool m_isNewCase{true};

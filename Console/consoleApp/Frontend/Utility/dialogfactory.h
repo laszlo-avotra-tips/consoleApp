@@ -9,7 +9,7 @@ class DialogFactory
 {
 public:
     DialogFactory();
-    QDialog* createDialog(const QString& name, QWidget* parent, int y);
+    QDialog* createDialog(const QString& name, QWidget* parent);
 };
 
 #endif // DIALOGFACTORY_H
