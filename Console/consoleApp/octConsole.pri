@@ -29,6 +29,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/mainwindow.h \
     $$PWD/Frontend/Widgets/dialogcaseinformation.h \
     $$PWD/Frontend/Widgets/octkeyboard.h \
+    $$PWD/Frontend/Widgets/octlineedit.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -134,6 +135,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/formstart.cpp \
     $$PWD/Frontend/Widgets/mainwindow.cpp \
     $$PWD/Frontend/Widgets/octkeyboard.cpp \
+    $$PWD/Frontend/Widgets/octlineedit.cpp \
     $$PWD/main.cpp \
     $$PWD/Frontend/Widgets/dialogcaseinformation.cpp \
     Backend/dspgpu.cpp \

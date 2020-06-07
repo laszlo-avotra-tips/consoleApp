@@ -295,7 +295,7 @@ border-bottom: 2px solid grey;
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QLineEdit" name="lineEditPhysicianName">
+          <widget class="OctLineEdit" name="lineEditPhysicianName">
            <property name="minimumSize">
             <size>
              <width>611</width>
@@ -455,6 +455,13 @@ border-bottom: 2px solid grey;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OctLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>octlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>lineEditPhysicianName</tabstop>
   <tabstop>lineEditPatientId</tabstop>

@@ -8,6 +8,8 @@ OctKeyboard::OctKeyboard(const vector<QString> &param, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::SplashScreen);
+
     auto paramLabel = ui->labelParam;
     auto paramLineEdit = ui->lineEditParam;
 

@@ -19,6 +19,7 @@ public:
 
 private slots:
     void setDateAndTime();
+    void openKeyboard();
 
 private:
     Ui::DialogCaseInformation *ui;
