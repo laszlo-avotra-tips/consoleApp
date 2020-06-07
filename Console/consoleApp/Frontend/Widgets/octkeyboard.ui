@@ -16,6 +16,7 @@
   <property name="styleSheet">
    <string notr="true">QDialog{
 background-color: #131313;
+border-radius: 0px;
 }
 QFrame{
 background-color: #131313;
