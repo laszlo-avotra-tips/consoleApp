@@ -469,22 +469,5 @@ border-bottom: 2px solid grey;
   <tabstop>pushButtonNext</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButtonNext</sender>
-   <signal>clicked()</signal>
-   <receiver>DialogCaseInformation</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1347</x>
-     <y>949</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>742</x>
-     <y>512</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

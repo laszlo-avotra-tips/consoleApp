@@ -17,6 +17,10 @@ DialogCaseInformation::DialogCaseInformation(QWidget *parent) :
     connect(ui->lineEditPhysicianName, &OctLineEdit::mousePressed, this, &DialogCaseInformation::openKeyboardPhysicianName);
     connect(ui->lineEditPatientId, &OctLineEdit::mousePressed, this, &DialogCaseInformation::openKeyboardPatientId);
     connect(ui->lineEditLocation, &OctLineEdit::mousePressed, this, &DialogCaseInformation::openKeyboardLocation);
+
+    if(ui->lineEditPhysicianName->text().isEmpty()){
+        ui->pushButtonNext->setEnabled(false);
+    }
 }
 
 DialogCaseInformation::~DialogCaseInformation()
@@ -37,6 +41,9 @@ void DialogCaseInformation::openKeyboardPhysicianName()
     const std::vector<QString> param{paramName, paramValue};
     auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
     ui->lineEditPhysicianName->setText(text);
+
+    const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
+    ui->pushButtonNext->setEnabled(isNext);
 }
 
 void DialogCaseInformation::openKeyboardPatientId()
@@ -57,4 +64,10 @@ void DialogCaseInformation::openKeyboardLocation()
     const std::vector<QString> param{paramName, paramValue};
     auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
     ui->lineEditLocation->setText(text);
+}
+
+void DialogCaseInformation::on_pushButtonNext_clicked()
+{
+    m_displayTimer.stop();
+    accept();
 }

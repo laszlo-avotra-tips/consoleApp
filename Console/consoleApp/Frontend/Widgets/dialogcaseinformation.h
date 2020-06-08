@@ -23,6 +23,8 @@ private slots:
     void openKeyboardPatientId();
     void openKeyboardLocation();
 
+    void on_pushButtonNext_clicked();
+
 private:
     Ui::DialogCaseInformation *ui;
     QDateTime m_now;
