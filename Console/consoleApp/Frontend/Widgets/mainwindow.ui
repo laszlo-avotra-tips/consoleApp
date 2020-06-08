@@ -528,13 +528,13 @@ CASE</string>
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>50</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>50</number>
+       <number>80</number>
       </property>
       <item>
        <widget class="QFrame" name="frameStatus">
@@ -561,7 +561,7 @@ CASE</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <property name="spacing">
-          <number>10</number>
+          <number>0</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -573,10 +573,10 @@ CASE</string>
           <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>80</number>
          </property>
          <item>
-          <widget class="QLabel" name="labelTime">
+          <widget class="QLabel" name="labelCurrentTime">
            <property name="minimumSize">
             <size>
              <width>270</width>
@@ -587,6 +587,19 @@ CASE</string>
             <size>
              <width>16777215</width>
              <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelDevice">
+           <property name="minimumSize">
+            <size>
+             <width>270</width>
+             <height>25</height>
             </size>
            </property>
            <property name="text">
@@ -607,16 +620,140 @@ CASE</string>
            </property>
           </widget>
          </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frameSpeed">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>600</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>600</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+border: 4px solid grey; 
+border-radius: 60px;
+font: 40pt &quot;Helvetica Neue&quot;;
+}</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>40</number>
+         </property>
+         <property name="leftMargin">
+          <number>120</number>
+         </property>
+         <property name="rightMargin">
+          <number>120</number>
+         </property>
          <item>
-          <widget class="QLabel" name="labelDevice">
+          <widget class="QLabel" name="labelSpeed">
            <property name="minimumSize">
             <size>
-             <width>270</width>
-             <height>25</height>
+             <width>0</width>
+             <height>80</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>80</height>
             </size>
            </property>
            <property name="text">
-            <string/>
+            <string>SPEED</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonLow">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>LOW</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonMedium">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>MEDIUM</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonHigh">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>HIGH</string>
            </property>
           </widget>
          </item>

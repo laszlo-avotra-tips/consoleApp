@@ -23,7 +23,6 @@ color: white;
 }
 QLabel{
 font: 40pt &quot;Helvetica Neue&quot;;
-font-color: grey;
 }
 QLabel#labelInfo{
 font: 24pt &quot;Helvetica Neue&quot;;

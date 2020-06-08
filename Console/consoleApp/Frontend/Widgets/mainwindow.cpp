@@ -60,8 +60,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
 
-    ui->labelDevice->hide();
-    ui->labelRunTime->hide();
+//    ui->labelDevice->hide();
+//    ui->labelRunTime->hide();
 
     auto wid = WidgetContainer::instance()->getPage("frontendPage");
 
@@ -71,8 +71,8 @@ MainWindow::MainWindow(QWidget *parent)
         m_frontEndWindow = fw;
     }
 
-    m_updateRuntimeTimer.start(500);
-    connect(&m_updateRuntimeTimer, &QTimer::timeout, this, &MainWindow::updateRuntime);
+    m_updatetimeTimer.start(500);
+    connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainWindow::updateTime);
 }
 
 void MainWindow::setScene(liveScene *scene)
@@ -137,34 +137,12 @@ void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
     }
 }
 
-void MainWindow::setTime()
+void MainWindow::setCurrentTime()
 {
-    m_startTime = QTime::currentTime();
-    QString time = m_startTime.toString("hh:mm:ss");
-    ui->labelTime->setText(time);
+    m_currentTime = QTime::currentTime();
+    QString timeString = m_currentTime.toString("hh:mm:ss");
+    ui->labelCurrentTime->setText(timeString);
 }
-
-//void MainWindow::startDaq()
-//{
-//    auto idaq = daqfactory::instance()->getdaq();
-
-//    if(!idaq){
-//        m_frontEndWindow->abortStartUp();
-
-//        LOG( INFO, "Device not supported. OCT Console cancelled" )
-//    }
-//    m_frontEndWindow->setIDAQ(idaq);
-//    LOG( INFO, "LASER: serial port control is DISABLED" )
-//    LOG( INFO, "SLED support board: serial port control is DISABLED" )
-
-//    m_frontEndWindow->startDaq();
-//    auto& setting = deviceSettings::Instance();
-//    if(setting.getIsSimulation()){
-//        m_frontEndWindow->startDataCapture();
-//    }
-//    m_frontEndWindow->on_zoomSlider_valueChanged(100);
-//}
-
 
 int MainWindow::getSceneWidth()
 {
@@ -222,9 +200,9 @@ void MainWindow::setDeviceLabel()
     deviceSettings &dev = deviceSettings::Instance();
     const QString name{dev.getCurrentSplitDeviceName()};
     ui->labelDevice->setText(name);
-    setTime();
-    m_elapsedTime.start();
-    updateRuntime();
+//    setCurrentTime();
+    m_runTime.start();
+    updateTime();
 }
 
 void MainWindow::on_pushButtonSettings_clicked()
@@ -279,15 +257,23 @@ void MainWindow::openDeviceSelectDialog()
     }
 }
 
-void MainWindow::updateRuntime()
+void MainWindow::updateTime()
 {
-    int ms = m_elapsedTime.elapsed();
-    int durationInSec = ms / 1000;
-    int sec = durationInSec % 60;
-    int min = durationInSec / 60;
-    QTime dt(0,min,sec,0);
+    int ms = m_runTime.elapsed();
 
-   QString elapsed = dt.toString("mm:ss");
-   ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
-   setTime();
+    if(ms){
+        int durationInSec = ms / 1000;
+        int sec = durationInSec % 60;
+        int min = durationInSec / 60;
+        QTime dt(0,min,sec,0);
+
+        QString elapsed = dt.toString("mm:ss");
+        if(elapsed.isEmpty()){
+             ui->labelRunTime->setText(QString("Runtime: 00:00"));
+        }else {
+            ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
+        }
+    }
+
+   setCurrentTime();
 }

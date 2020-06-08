@@ -51,15 +51,14 @@ private slots:
     void on_pushButtonSettings_clicked();
     void openCaseInformationDialog();
     void openDeviceSelectDialog();
-    void updateRuntime();
+    void updateTime();
 
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
-    void setTime();
-//    void startDaq();
+    void setCurrentTime();
 
 private:
     Ui::MainWindow *ui;
@@ -73,8 +72,8 @@ private:
     std::vector<QWidget*> m_navigationButtons;
 
     frontend* m_frontEndWindow{nullptr};
-    QTime m_startTime;
-    QElapsedTimer m_elapsedTime;
-    QTimer m_updateRuntimeTimer;
+    QTime m_currentTime;
+    QElapsedTimer m_runTime;
+    QTimer m_updatetimeTimer;
 };
 #endif // MAINWINDOW_H
