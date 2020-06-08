@@ -43,7 +43,7 @@ void DialogCaseInformation::openKeyboardPhysicianName()
     ui->lineEditPhysicianName->setText(text);
 
     const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-    ui->pushButtonNext->setEnabled(isNext);
+    enableNext(isNext);
 }
 
 void DialogCaseInformation::openKeyboardPatientId()
@@ -70,4 +70,12 @@ void DialogCaseInformation::on_pushButtonNext_clicked()
 {
     m_displayTimer.stop();
     accept();
+}
+
+void DialogCaseInformation::enableNext(bool isNext)
+{
+    ui->pushButtonNext->setEnabled(isNext);
+//    if(isNext){
+//        ui->pushButtonNext->setStyleSheet("QPushButton{background-color:#F5C400;}");
+//    }
 }

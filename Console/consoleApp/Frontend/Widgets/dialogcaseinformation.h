@@ -26,6 +26,8 @@ private slots:
     void on_pushButtonNext_clicked();
 
 private:
+    void enableNext(bool isNext);
+
     Ui::DialogCaseInformation *ui;
     QDateTime m_now;
     QTimer m_displayTimer;
