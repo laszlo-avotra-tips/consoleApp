@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2808</width>
-    <height>989</height>
+    <width>2900</width>
+    <height>1286</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -180,6 +180,9 @@ border-radius: 50px;
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="bottomMargin">
+          <number>60</number>
+         </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
@@ -333,6 +336,37 @@ border-radius: 50px;
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>500</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>400</width>
+             <height>80</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+border: 4px solid grey; 
+border-radius: 50px;
+}</string>
+           </property>
+           <property name="text">
+            <string>DEMO MODE</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
