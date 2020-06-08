@@ -157,7 +157,7 @@ background-color: #343434;
          <string>DR.</string>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -1165,7 +1165,7 @@ background-color: #343434;
          </size>
         </property>
         <property name="text">
-         <string>cancel</string>
+         <string>hide</string>
         </property>
        </widget>
       </item>

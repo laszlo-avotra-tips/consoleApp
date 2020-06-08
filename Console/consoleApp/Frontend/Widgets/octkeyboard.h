@@ -4,8 +4,8 @@
 #include <QDialog>
 #include <QString>
 #include <vector>
+#include "Frontend/Utility/widgetcontainer.h"
 
-using std::vector;
 class QPushButton;
 
 using ButtonContainer = std::vector<QPushButton*>;
@@ -19,7 +19,7 @@ class OctKeyboard : public QDialog
     Q_OBJECT
 
 public:
-    explicit OctKeyboard(const vector<QString>& param, QWidget *parent = nullptr);
+    explicit OctKeyboard(const ParameterType& param, QWidget *parent = nullptr);
     ~OctKeyboard();
     QString value();
 

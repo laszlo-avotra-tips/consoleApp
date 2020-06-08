@@ -2,7 +2,6 @@
 
 #include "dialogcaseinformation.h"
 #include "dialogdeviceselect.h"
-#include "mykeyboard.h"
 
 DialogFactory::DialogFactory()
 {

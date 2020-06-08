@@ -19,7 +19,9 @@ public:
 
 private slots:
     void setDateAndTime();
-    void openKeyboard();
+    void openKeyboardPhysicianName();
+    void openKeyboardPatientId();
+    void openKeyboardLocation();
 
 private:
     Ui::DialogCaseInformation *ui;

@@ -2,7 +2,7 @@
 #include "ui_octkeyboard.h"
 
 
-OctKeyboard::OctKeyboard(const vector<QString> &param, QWidget *parent) :
+OctKeyboard::OctKeyboard(const ParameterType &param, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::OctKeyboard)
 {
@@ -55,12 +55,14 @@ void OctKeyboard::handleDelete()
        int lastPosition = param.size() - 1;
        target->setText(param.remove(lastPosition,1));
     }
+    ui->lineEditParam->setFocus();
 }
 
 void OctKeyboard::handleSpace()
 {
     const QString val = ui->lineEditParam->text() + QString(" ");
     ui->lineEditParam->setText(val);
+    ui->lineEditParam->setFocus();
 }
 
 void OctKeyboard::handleNumbers(const QString& addText)
@@ -73,12 +75,14 @@ void OctKeyboard::handleNumbers(const QString& addText)
         const QString val = ui->lineEditParam->text() + stringList[0];
         ui->lineEditParam->setText(val);
     }
+    ui->lineEditParam->setFocus();
 }
 
 void OctKeyboard::handleLetters(const QString &text)
 {
     const QString val = ui->lineEditParam->text() + text;
     ui->lineEditParam->setText(val);
+    ui->lineEditParam->setFocus();
 }
 
 void OctKeyboard::initButtonContainers()
