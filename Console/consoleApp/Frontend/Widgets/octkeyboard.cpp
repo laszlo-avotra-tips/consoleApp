@@ -83,6 +83,10 @@ void OctKeyboard::handleLetters(const QString &text)
     const QString val = ui->lineEditParam->text() + text;
     ui->lineEditParam->setText(val);
     ui->lineEditParam->setFocus();
+    if(m_isShift){
+        toggleCap();
+        m_isShift = false;
+    }
 }
 
 void OctKeyboard::initButtonContainers()
@@ -179,19 +183,66 @@ void OctKeyboard::initLetters()
     }
 }
 
+void OctKeyboard::toLowCap()
+{
+    for( auto* letterButton : m_letterButtons){
+        auto letter = letterButton->text();
+        auto lowerCase = letter.toLower();
+        letterButton->setText(lowerCase);
+        m_isLowCap = true;
+    }
+}
+
+void OctKeyboard::toHighCap()
+{
+    for( auto* letterButton : m_letterButtons){
+        auto letter = letterButton->text();
+        auto upperCase = letter.toUpper();
+        letterButton->setText(upperCase);
+        m_isLowCap= false;
+    }
+}
+
+void OctKeyboard::toggleCap()
+{
+    if(m_isLowCap){
+        toHighCap();
+    }else{
+        toLowCap();
+    }
+}
+
+void OctKeyboard::pushButtonEnabled(QPushButton *button)
+{
+    auto txt = button->text();
+    button->setText(txt.toUpper());
+}
+
+void OctKeyboard::pushButtonDisabled(QPushButton *button)
+{
+    auto txt = button->text();
+    button->setText(txt.toLower());
+}
+
 void OctKeyboard::handleCapsLock(bool checked)
 {
     if(checked){
-        for( auto* letterButton : m_letterButtons){
-            auto letter = letterButton->text();
-            auto upperCase = letter.toUpper();
-            letterButton->setText(upperCase);
-        }
+        pushButtonEnabled(ui->pushButton_capsLock);
+        toHighCap();
     } else {
-        for( auto* letterButton : m_letterButtons){
-            auto letter = letterButton->text();
-            auto lowerCase = letter.toLower();
-            letterButton->setText(lowerCase);
-        }
+        pushButtonDisabled(ui->pushButton_capsLock);
+        toLowCap();
     }
+}
+
+void OctKeyboard::on_pushButton_shiftLeft_clicked()
+{
+    toggleCap();
+    m_isShift = true;
+}
+
+void OctKeyboard::on_pushButton_shiftRight_clicked()
+{
+    toggleCap();
+    m_isShift = true;
 }

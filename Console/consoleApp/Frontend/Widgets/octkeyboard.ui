@@ -45,21 +45,12 @@ color: white;
 font-weight: 600;
 }
 
-QPushButton:pressed{
-background-color: green;
-}
 QPushButton#pushButton_delete{
 background-color: #343434;
-}
-QPushButton#pushButton_delete:pressed{
-background-color: green;
 }
 
 QPushButton#pushButton_enter{
 background-color: #343434;
-}
-QPushButton#pushButton_enter:pressed{
-background-color: green;
 }
 
 QPushButton#pushButton_shiftLeft{
@@ -77,9 +68,6 @@ background-color: #343434;
 
 QPushButton#pushButton_capsLock{
 background-color: #343434;
-}
-QPushButton#pushButton_capsLock:pressed{
-background-color: green;
 }
 
 QPushButton#pushButton_123Left{

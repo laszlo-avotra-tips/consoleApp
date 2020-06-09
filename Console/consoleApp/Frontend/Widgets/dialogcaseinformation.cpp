@@ -75,7 +75,13 @@ void DialogCaseInformation::on_pushButtonNext_clicked()
 void DialogCaseInformation::enableNext(bool isNext)
 {
     ui->pushButtonNext->setEnabled(isNext);
-//    if(isNext){
+    if(isNext){
 //        ui->pushButtonNext->setStyleSheet("QPushButton{background-color:#F5C400;}");
-//    }
+        auto& button = ui->pushButtonNext;
+        QPalette pal = button->palette();
+        pal.setColor(QPalette::Button, QColor(245,196,0));
+        button->setAutoFillBackground(true);
+        button->setPalette(pal);
+        button->update();
+    }
 }

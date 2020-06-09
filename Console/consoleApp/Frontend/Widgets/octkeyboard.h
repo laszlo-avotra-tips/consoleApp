@@ -34,16 +34,28 @@ private slots:
     void handleLetters(const QString& text);
     void handleCapsLock(bool checked);
 
+    void on_pushButton_shiftLeft_clicked();
+
+    void on_pushButton_shiftRight_clicked();
+
 private:
     void initButtonContainers();
     void initNumbers();
     void initLetters();
+    void toLowCap();
+    void toHighCap();
+    void toggleCap();
+    void pushButtonEnabled(QPushButton* button);
+    void pushButtonDisabled(QPushButton* button);
 
 private:
     Ui::OctKeyboard *ui;
 
     ButtonContainer m_letterButtons;
     ButtonContainer m_numberButtons;
+
+    bool m_isLowCap{true};
+    bool m_isShift{false};
 };
 
 #endif // KEYBOARD_H
