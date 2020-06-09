@@ -1,5 +1,5 @@
-#include "formstart.h"
-#include "ui_formstart.h"
+#include "startScreen.h"
+#include "ui_startScreen.h"
 #include "Utility/widgetcontainer.h"
 #include "Widgets/caseinfowizardpage.h"
 #include "Widgets/caseinfowizard.h"
@@ -18,7 +18,7 @@
 
 FormStart::FormStart(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FormStart)
+    ui(new Ui::StartScreen)
 {
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());

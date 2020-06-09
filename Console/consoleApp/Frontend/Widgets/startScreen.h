@@ -7,7 +7,7 @@ class Backend;
 class frontend;
 
 namespace Ui {
-class FormStart;
+class StartScreen;
 }
 
 class FormStart : public QWidget
@@ -35,7 +35,7 @@ private:
     int showDeviceWizard();
     void startDaq(frontend *fe);
 
-    Ui::FormStart *ui;
+    Ui::StartScreen *ui;
     Backend* m_backend{nullptr};
 };
 

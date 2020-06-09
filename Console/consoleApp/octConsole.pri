@@ -25,11 +25,11 @@ HEADERS += \
     $$PWD/Frontend/Widgets/dialogdeviceselect.h \
     $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/formnavigator.h \
-    $$PWD/Frontend/Widgets/formstart.h \
     $$PWD/Frontend/Widgets/mainwindow.h \
     $$PWD/Frontend/Widgets/dialogcaseinformation.h \
     $$PWD/Frontend/Widgets/octkeyboard.h \
     $$PWD/Frontend/Widgets/octlineedit.h \
+    $$PWD/Frontend/Widgets/startScreen.h \
     ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
@@ -132,10 +132,10 @@ SOURCES += \
     $$PWD/Frontend/Widgets/dialogdeviceselect.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/formnavigator.cpp \
-    $$PWD/Frontend/Widgets/formstart.cpp \
     $$PWD/Frontend/Widgets/mainwindow.cpp \
     $$PWD/Frontend/Widgets/octkeyboard.cpp \
     $$PWD/Frontend/Widgets/octlineedit.cpp \
+    $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
     $$PWD/Frontend/Widgets/dialogcaseinformation.cpp \
     Backend/dspgpu.cpp \
@@ -223,9 +223,9 @@ FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/dialogdeviceselect.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/formnavigator.ui \
-    $$PWD/Frontend/Widgets/formstart.ui \
     $$PWD/Frontend/Widgets/mainwindow.ui \
     $$PWD/Frontend/Widgets/octkeyboard.ui \
+    $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/advancedview.ui \
     Frontend/Widgets/capturewidget.ui \
