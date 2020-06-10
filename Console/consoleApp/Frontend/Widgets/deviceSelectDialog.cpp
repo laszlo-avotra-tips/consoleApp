@@ -4,7 +4,7 @@
 #include "deviceSettings.h"
 #include "util.h"
 #include "logger.h"
-#include "mainwindow.h"
+#include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include <daqfactory.h>
 

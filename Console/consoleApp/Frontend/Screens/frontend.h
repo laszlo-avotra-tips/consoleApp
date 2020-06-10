@@ -49,7 +49,7 @@ const int mouseSamplingInterval(50); // msec
 class IDAQ;
 class EngineeringController;
 class FormL300;
-class MainWindow;
+class MainScreen;
 
 class frontend : public QWidget
 {
@@ -301,7 +301,7 @@ protected:
 
 private:
      FormL300* m_formL300{nullptr};
-     MainWindow* m_mainWindow{nullptr};
+     MainScreen* m_mainWindow{nullptr};
 };
 
 #endif // FRONTEND_H

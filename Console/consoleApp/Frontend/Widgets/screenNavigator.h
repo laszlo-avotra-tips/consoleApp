@@ -23,4 +23,4 @@ private:
     Ui::ScreenNavigator *ui;
 };
 
-#endif // FORMNAVIGATOR_H
+#endif // SCREENNAVIGATOR_H

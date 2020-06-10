@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "mainScreen.h"
+#include "ui_mainScreen.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
 #include "Frontend/Screens/frontend.h"
@@ -16,9 +16,9 @@
 #include <QFile>
 #include <QTextStream>
 
-MainWindow::MainWindow(QWidget *parent)
+MainScreen::MainScreen(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainScreen)
 {
     ui->setupUi(this);
 
@@ -72,10 +72,10 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     m_updatetimeTimer.start(500);
-    connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainWindow::updateTime);
+    connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 }
 
-void MainWindow::setScene(liveScene *scene)
+void MainScreen::setScene(liveScene *scene)
 {
     if(!m_scene){
         m_scene = scene;
@@ -83,30 +83,30 @@ void MainWindow::setScene(liveScene *scene)
     }
 }
 
-MainWindow::~MainWindow()
+MainScreen::~MainScreen()
 {
     delete ui;
 }
 
-bool MainWindow::isVisible() const
+bool MainScreen::isVisible() const
 {
     const auto& region = m_graphicsView->visibleRegion();
     return !region.isEmpty();
 }
 
 
-void MainWindow::on_pushButtonFlip_clicked()
+void MainScreen::on_pushButtonFlip_clicked()
 {
     flipColumns();
 }
 
 
-void MainWindow::on_pushButtonMenu_clicked()
+void MainScreen::on_pushButtonMenu_clicked()
 {
     toggleNavigationButtons(m_navigationButtons);
 }
 
-void MainWindow::flipColumns()
+void MainScreen::flipColumns()
 {
     QLayout* tl = layout();
     std::vector<QLayoutItem*> current{tl->itemAt(0),tl->itemAt(1),tl->itemAt(2)};
@@ -120,7 +120,7 @@ void MainWindow::flipColumns()
     tl->update();
 }
 
-void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
+void MainScreen::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
 {
     if(buttons[0]->isVisible()){
         for(auto* button : buttons){
@@ -137,14 +137,14 @@ void MainWindow::toggleNavigationButtons(const std::vector<QWidget *> &buttons)
     }
 }
 
-void MainWindow::setCurrentTime()
+void MainScreen::setCurrentTime()
 {
     m_currentTime = QTime::currentTime();
     QString timeString = m_currentTime.toString("hh:mm:ss");
     ui->labelCurrentTime->setText(timeString);
 }
 
-int MainWindow::getSceneWidth()
+int MainScreen::getSceneWidth()
 {
     int retVal = m_sceneWidth;
     QString fn("/Avinger_System/screen.dat");
@@ -168,31 +168,31 @@ int MainWindow::getSceneWidth()
     return retVal;
 }
 
-QSize MainWindow::getSceneSize()
+QSize MainScreen::getSceneSize()
 {
     return m_sceneSize;
 }
 
-void MainWindow::on_pushButtonEndCase_clicked()
+void MainScreen::on_pushButtonEndCase_clicked()
 {
     WidgetContainer::instance()->gotoPage("startScreen");
 }
 
-void MainWindow::on_pushButtonDownArrow_clicked()
+void MainScreen::on_pushButtonDownArrow_clicked()
 {
     on_pushButtonMenu_clicked();
 }
 
-void MainWindow::on_pushButtonCondensUp_clicked()
+void MainScreen::on_pushButtonCondensUp_clicked()
 {
     on_pushButtonMenu_clicked();
 }
 
-void MainWindow::on_pushButtonCapture_clicked()
+void MainScreen::on_pushButtonCapture_clicked()
 {
 }
 
-void MainWindow::setDeviceLabel()
+void MainScreen::setDeviceLabel()
 {
     ui->labelDevice->show();
     ui->labelRunTime->show();
@@ -205,28 +205,28 @@ void MainWindow::setDeviceLabel()
     updateTime();
 }
 
-void MainWindow::on_pushButtonSettings_clicked()
+void MainScreen::on_pushButtonSettings_clicked()
 {
     hide();
 }
 
-void MainWindow::showEvent(QShowEvent *se)
+void MainScreen::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
     qDebug() << __FUNCTION__;
     if(WidgetContainer::instance()->getIsNewCase()){
-        QTimer::singleShot(100,this, &MainWindow::openCaseInformationDialog);
+        QTimer::singleShot(100,this, &MainScreen::openCaseInformationDialog);
     }
 }
 
-void MainWindow::hideEvent(QHideEvent *he)
+void MainScreen::hideEvent(QHideEvent *he)
 {
     QWidget::hideEvent( he );
     qDebug() << __FUNCTION__;
     WidgetContainer::instance()->setIsNewCase(false);
 }
 
-void MainWindow::openCaseInformationDialog()
+void MainScreen::openCaseInformationDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
 
@@ -235,7 +235,7 @@ void MainWindow::openCaseInformationDialog()
     }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
-//        QTimer::singleShot(100,this, &MainWindow::openGreenDialog);
+//        QTimer::singleShot(100,this, &MainScreen::openGreenDialog);
         openDeviceSelectDialog();
     }
     else {
@@ -244,7 +244,7 @@ void MainWindow::openCaseInformationDialog()
     }
 }
 
-void MainWindow::openDeviceSelectDialog()
+void MainScreen::openDeviceSelectDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
 
@@ -252,12 +252,12 @@ void MainWindow::openDeviceSelectDialog()
         qDebug() << "Accepted";
     } else {
         qDebug() << "Cancelled";
-//        QTimer::singleShot(100,this, &MainWindow::openMainWindowDialog);
+//        QTimer::singleShot(100,this, &MainScreen::openMainWindowDialog);
         openCaseInformationDialog();
     }
 }
 
-void MainWindow::updateTime()
+void MainScreen::updateTime()
 {
     int ms = m_runTime.elapsed();
 

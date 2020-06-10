@@ -6,7 +6,7 @@
 #include <backend.h>
 #include "devicewizard.h"
 #include "logger.h"
-#include "mainwindow.h"
+#include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include <daqfactory.h>
 #include "deviceSettings.h"
