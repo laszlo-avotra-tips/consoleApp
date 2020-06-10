@@ -1,7 +1,7 @@
 #include "dialogFactory.h"
 
 #include "caseInformationDialog.h"
-#include "dialogdeviceselect.h"
+#include "deviceSelectDialog.h"
 
 DialogFactory::DialogFactory()
 {
@@ -16,7 +16,7 @@ QDialog *DialogFactory::createDialog(const QString &name, QWidget *parent)
         dialog = new CaseInformationDialog(parent);
     }
     if(name == "deviceSelectDialog"){
-        dialog = new DialogDeviceSelect(parent);
+        dialog = new DeviceSelectDialog(parent);
     }
     return dialog;
 }

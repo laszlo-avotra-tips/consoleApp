@@ -1,5 +1,5 @@
-#ifndef DIALOGDEVICESELECT_H
-#define DIALOGDEVICESELECT_H
+#ifndef DEVICESELECTDIALOG_H
+#define DEVICESELECTDIALOG_H
 
 #include <QDialog>
 #include <QListWidgetItem>
@@ -7,16 +7,16 @@
 class frontend;
 
 namespace Ui {
-class DialogDeviceSelect;
+class DeviceSelectDialog;
 }
 
-class DialogDeviceSelect : public QDialog
+class DeviceSelectDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogDeviceSelect(QWidget *parent = nullptr);
-    ~DialogDeviceSelect();
+    explicit DeviceSelectDialog(QWidget *parent = nullptr);
+    ~DeviceSelectDialog();
 
     void init( void );
     bool isComplete() const;
@@ -35,7 +35,7 @@ private slots:
     void on_listWidgetAtherectomy_clicked(const QModelIndex &index);
 
 private:
-    Ui::DialogDeviceSelect *ui;
+    Ui::DeviceSelectDialog *ui;
 };
 
-#endif // DIALOGDEVICESELECT_H
+#endif // DEVICESELECTDIALOG_H

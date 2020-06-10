@@ -24,7 +24,7 @@ HEADERS += \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
-    $$PWD/Frontend/Widgets/dialogdeviceselect.h \
+    $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/formnavigator.h \
     $$PWD/Frontend/Widgets/mainwindow.h \
@@ -130,7 +130,7 @@ SOURCES += \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
-    $$PWD/Frontend/Widgets/dialogdeviceselect.cpp \
+    $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/formnavigator.cpp \
     $$PWD/Frontend/Widgets/mainwindow.cpp \
@@ -220,7 +220,7 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/caseInformationDialog.ui \
     $$PWD/Frontend/Widgets/consoleKeyboard.ui \
-    $$PWD/Frontend/Widgets/dialogdeviceselect.ui \
+    $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/formnavigator.ui \
     $$PWD/Frontend/Widgets/mainwindow.ui \
