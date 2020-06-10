@@ -6,7 +6,7 @@
 #include <QString>
 #include <QSize>
 
-#include "dialogfactory.h"
+#include "dialogFactory.h"
 
 class QStackedWidget;
 class FormNavigator;

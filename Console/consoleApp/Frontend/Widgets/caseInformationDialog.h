@@ -1,21 +1,21 @@
-#ifndef DIALOGCASEINFORMATION_H
-#define DIALOGCASEINFORMATION_H
+#ifndef CASEINFORMATIONDIALOG_H
+#define CASEINFORMATIONDIALOG_H
 
 #include <QDialog>
 #include <QDateTime>
 #include <QTimer>
 
 namespace Ui {
-class DialogCaseInformation;
+class CaseInformationDialog;
 }
 
-class DialogCaseInformation : public QDialog
+class CaseInformationDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogCaseInformation(QWidget *parent = nullptr);
-    ~DialogCaseInformation();
+    explicit CaseInformationDialog(QWidget *parent = nullptr);
+    ~CaseInformationDialog();
 
 private slots:
     void setDateAndTime();
@@ -28,9 +28,9 @@ private slots:
 private:
     void enableNext(bool isNext);
 
-    Ui::DialogCaseInformation *ui;
+    Ui::CaseInformationDialog *ui;
     QDateTime m_now;
     QTimer m_displayTimer;
 };
 
-#endif // DIALOGCASEINFORMATION_H
+#endif // CASEINFORMATIONDIALOG_H

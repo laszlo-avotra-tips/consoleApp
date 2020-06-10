@@ -11,12 +11,12 @@
 #include <daqfactory.h>
 #include "deviceSettings.h"
 #include "util.h"
-#include "dialogcaseinformation.h"
+#include "caseInformationDialog.h"
 #include "dialogdeviceselect.h"
 
 #include <QDebug>
 
-FormStart::FormStart(QWidget *parent) :
+StartScreen::StartScreen(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StartScreen)
 {
@@ -60,12 +60,12 @@ style=\" font-size:42pt;color:#A9A9A9;\"> L300 | Software Version ");
     m_backend = new Backend(parent);
 }
 
-FormStart::~FormStart()
+StartScreen::~StartScreen()
 {
     delete ui;
 }
 
-void FormStart::on_pushButtonMenu_clicked(bool checked)
+void StartScreen::on_pushButtonMenu_clicked(bool checked)
 {
     if(checked){
          ui->pushButtonExport->show();
@@ -80,81 +80,33 @@ void FormStart::on_pushButtonMenu_clicked(bool checked)
     }
 }
 
-void FormStart::on_pushButtonPreferences_clicked()
+void StartScreen::on_pushButtonPreferences_clicked()
 {
 }
 
-void FormStart::on_pushButtonShutdown_clicked()
+void StartScreen::on_pushButtonShutdown_clicked()
 {
     WidgetContainer::instance()->close();
 }
 
-void FormStart::on_pushButtonStart_clicked()
+void StartScreen::on_pushButtonStart_clicked()
 {
-//    int result{-1};
-//    result = showCaseInfoDialog();
-//    if(result == QDialog::Accepted){
-//       result = showDeviceWizard();
-//       if(result == QDialog::Accepted){
-           auto widget = WidgetContainer::instance()->gotoPage("frontendPage");
-//           MainWindow* mw = dynamic_cast<MainWindow*>(widget);
-//           if(mw){
-//               mw->setDeviceLabel();
-//           }
-//           frontend* fw = dynamic_cast<frontend*>(widget);
-//           if(fw){
-//              fw->showFullScreen();
-//              fw->updateDeviceLabel();
-//              startDaq(fw);
-//           }
-//       }else {
-//           WidgetContainer::instance()->gotoPage("startPage");
-//       }
-           //    }
+    WidgetContainer::instance()->gotoPage("l250Frontend");
 }
 
-void FormStart::showEvent(QShowEvent *se)
+void StartScreen::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
     qDebug() << __FUNCTION__;
     WidgetContainer::instance()->setIsNewCase(true);
 }
 
-void FormStart::hideEvent(QHideEvent *he)
+void StartScreen::hideEvent(QHideEvent *he)
 {
     QWidget::hideEvent( he );
 }
 
-int FormStart::showCaseInfoDialog()
-{
-//    caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
-
-//    // reload data for updating
-//    caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
-//    int result = caseWizardLocal->exec();
-    DialogCaseInformation* caseInfo = new DialogCaseInformation(this);
-
-
-    int result = caseInfo->exec();
-
-    LOG1(result)
-    return result;
-}
-
-int FormStart::showDeviceWizard()
-{
-//    deviceWizard* device = new deviceWizard(this);
-
-//    int result = device->exec();
-    DialogDeviceSelect* deviceSelect = new DialogDeviceSelect(this);
-
-    int result = deviceSelect->exec();
-
-    LOG1(result)
-    return result;
-}
-
-void FormStart::startDaq(frontend *fe)
+void StartScreen::startDaq(frontend *fe)
 {
     auto idaq = daqfactory::instance()->getdaq();
 

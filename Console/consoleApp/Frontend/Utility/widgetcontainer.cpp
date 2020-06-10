@@ -1,6 +1,6 @@
 #include "widgetcontainer.h"
 #include "formnavigator.h"
-#include "dialogfactory.h"
+#include "dialogFactory.h"
 #include "octkeyboard.h"
 
 #include <QStackedWidget>

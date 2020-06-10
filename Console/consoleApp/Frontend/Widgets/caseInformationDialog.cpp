@@ -1,39 +1,39 @@
-#include "dialogcaseinformation.h"
-#include "ui_dialogcaseinformation.h"
+#include "caseInformationDialog.h"
+#include "ui_caseInformationDialog.h"
 #include "Frontend/Utility/widgetcontainer.h"
 #include "octlineedit.h"
 
 #include <QDateTime>
 
-DialogCaseInformation::DialogCaseInformation(QWidget *parent) :
+CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogCaseInformation)
+    ui(new Ui::CaseInformationDialog)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
     setDateAndTime();
-    connect(&m_displayTimer, &QTimer::timeout, this, &DialogCaseInformation::setDateAndTime);
+    connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
     m_displayTimer.start(500);
-    connect(ui->lineEditPhysicianName, &OctLineEdit::mousePressed, this, &DialogCaseInformation::openKeyboardPhysicianName);
-    connect(ui->lineEditPatientId, &OctLineEdit::mousePressed, this, &DialogCaseInformation::openKeyboardPatientId);
-    connect(ui->lineEditLocation, &OctLineEdit::mousePressed, this, &DialogCaseInformation::openKeyboardLocation);
+    connect(ui->lineEditPhysicianName, &OctLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPhysicianName);
+    connect(ui->lineEditPatientId, &OctLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
+    connect(ui->lineEditLocation, &OctLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardLocation);
 
     if(ui->lineEditPhysicianName->text().isEmpty()){
         ui->pushButtonNext->setEnabled(false);
     }
 }
 
-DialogCaseInformation::~DialogCaseInformation()
+CaseInformationDialog::~CaseInformationDialog()
 {
     delete ui;
 }
 
-void DialogCaseInformation::setDateAndTime()
+void CaseInformationDialog::setDateAndTime()
 {
     ui->lineEditDateAndTime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd  hh:mm:ss"));
 }
 
-void DialogCaseInformation::openKeyboardPhysicianName()
+void CaseInformationDialog::openKeyboardPhysicianName()
 {
     QString paramName = ui->labelPhysicianName->text();
     QString paramValue = ui->lineEditPhysicianName->text();
@@ -46,7 +46,7 @@ void DialogCaseInformation::openKeyboardPhysicianName()
     enableNext(isNext);
 }
 
-void DialogCaseInformation::openKeyboardPatientId()
+void CaseInformationDialog::openKeyboardPatientId()
 {
     QString paramName = ui->labelPatientId->text();
     QString paramValue = ui->lineEditPatientId->text();
@@ -56,7 +56,7 @@ void DialogCaseInformation::openKeyboardPatientId()
     ui->lineEditPatientId->setText(text);
 }
 
-void DialogCaseInformation::openKeyboardLocation()
+void CaseInformationDialog::openKeyboardLocation()
 {
     QString paramName = ui->labelLocation->text();
     QString paramValue = ui->lineEditLocation->text();
@@ -66,13 +66,13 @@ void DialogCaseInformation::openKeyboardLocation()
     ui->lineEditLocation->setText(text);
 }
 
-void DialogCaseInformation::on_pushButtonNext_clicked()
+void CaseInformationDialog::on_pushButtonNext_clicked()
 {
     m_displayTimer.stop();
     accept();
 }
 
-void DialogCaseInformation::enableNext(bool isNext)
+void CaseInformationDialog::enableNext(bool isNext)
 {
     ui->pushButtonNext->setEnabled(isNext);
     if(isNext){

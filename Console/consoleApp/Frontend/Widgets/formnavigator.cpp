@@ -1,7 +1,7 @@
 #include "formnavigator.h"
 #include "ui_formnavigator.h"
 #include "Utility/widgetcontainer.h"
-#include "Utility/pagefactory.h"
+#include "Utility/screenFactory.h"
 #include <QDebug>
 #include <QFile>
 
@@ -18,13 +18,13 @@ FormNavigator::FormNavigator(QWidget *parent) :
 
     widgets->setStackedWidget(stack);
     widgets->setNavigator(this);
-    PageFactory pf;
+    ScreenFactory pf;
 
     int count = stack->count();
 
     qDebug() << "page count = " << count;
 
-    widgets->gotoPage("startPage");
+    widgets->gotoPage("startScreen");
 }
 
 FormNavigator::~FormNavigator()

@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Utility/widgetcontainer.h"
-#include "Utility/pagefactory.h"
+#include "Utility/screenFactory.h"
 #include "Frontend/Screens/frontend.h"
 #include "devicewizard.h"
 #include "deviceselectwizardpage.h"
@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->labelDevice->hide();
 //    ui->labelRunTime->hide();
 
-    auto wid = WidgetContainer::instance()->getPage("frontendPage");
+    auto wid = WidgetContainer::instance()->getPage("l250Frontend");
 
     frontend* fw = dynamic_cast<frontend*>(wid);
     if(fw)
@@ -175,7 +175,7 @@ QSize MainWindow::getSceneSize()
 
 void MainWindow::on_pushButtonEndCase_clicked()
 {
-    WidgetContainer::instance()->gotoPage("startPage");
+    WidgetContainer::instance()->gotoPage("startScreen");
 }
 
 void MainWindow::on_pushButtonDownArrow_clicked()
@@ -240,7 +240,7 @@ void MainWindow::openCaseInformationDialog()
     }
     else {
         qDebug() << "Cancelled";
-        WidgetContainer::instance()->gotoPage("startPage");
+        WidgetContainer::instance()->gotoPage("startScreen");
     }
 }
 
