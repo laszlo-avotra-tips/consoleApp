@@ -26,9 +26,9 @@ HEADERS += \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/forml300.h \
-    $$PWD/Frontend/Widgets/formnavigator.h \
     $$PWD/Frontend/Widgets/mainwindow.h \
     $$PWD/Frontend/Widgets/octlineedit.h \
+    $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/startScreen.h \
     ../buildflags.h \
     ../version.h \
@@ -132,9 +132,9 @@ SOURCES += \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
-    $$PWD/Frontend/Widgets/formnavigator.cpp \
     $$PWD/Frontend/Widgets/mainwindow.cpp \
     $$PWD/Frontend/Widgets/octlineedit.cpp \
+    $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
     Backend/dspgpu.cpp \
@@ -222,8 +222,8 @@ FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/consoleKeyboard.ui \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
-    $$PWD/Frontend/Widgets/formnavigator.ui \
     $$PWD/Frontend/Widgets/mainwindow.ui \
+    $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/advancedview.ui \

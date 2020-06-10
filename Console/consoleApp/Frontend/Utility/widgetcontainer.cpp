@@ -1,5 +1,5 @@
 #include "widgetcontainer.h"
-#include "formnavigator.h"
+#include "screenNavigator.h"
 #include "dialogFactory.h"
 #include "consoleKeyboard.h"
 
@@ -103,7 +103,7 @@ void WidgetContainer::close()
     m_navigator->close();
 }
 
-void WidgetContainer::setNavigator(FormNavigator *n)
+void WidgetContainer::setNavigator(ScreenNavigator *n)
 {
     m_navigator = n;
 }

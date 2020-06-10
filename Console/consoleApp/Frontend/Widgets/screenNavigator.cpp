@@ -1,14 +1,14 @@
-#include "formnavigator.h"
-#include "ui_formnavigator.h"
+#include "screenNavigator.h"
+#include "ui_screenNavigator.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
 #include <QDebug>
 #include <QFile>
 
 
-FormNavigator::FormNavigator(QWidget *parent) :
+ScreenNavigator::ScreenNavigator(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FormNavigator)
+    ui(new Ui::ScreenNavigator)
 {
     ui->setupUi(this);
 
@@ -27,12 +27,12 @@ FormNavigator::FormNavigator(QWidget *parent) :
     widgets->gotoPage("startScreen");
 }
 
-FormNavigator::~FormNavigator()
+ScreenNavigator::~ScreenNavigator()
 {
     delete ui;
 }
 
-void FormNavigator::display()
+void ScreenNavigator::display()
 {
     const bool isFullScreen = WidgetContainer::instance()->isFullScreen();
 
@@ -43,7 +43,7 @@ void FormNavigator::display()
     }
 }
 
-void FormNavigator::setStylesheet()
+void ScreenNavigator::setStylesheet()
 {
     QString fn("/Avinger_System/styleSheet.dat");
     QFile sf(fn);

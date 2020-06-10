@@ -30,7 +30,7 @@
 #include "signalmanager.h"
 #include "deviceSettings.h"
 #include "backend.h"
-#include "formnavigator.h"
+#include "screenNavigator.h"
 #include "keyboardinputcontext.h"
 
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 //    app.setInputContext( ic );
 
 
-    FormNavigator navigator;
+    ScreenNavigator navigator;
     navigator.display();
 
     app.exec();

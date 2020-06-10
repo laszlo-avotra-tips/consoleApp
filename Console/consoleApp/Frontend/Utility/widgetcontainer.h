@@ -9,7 +9,7 @@
 #include "dialogFactory.h"
 
 class QStackedWidget;
-class FormNavigator;
+class ScreenNavigator;
 class QDialog;
 class QLineEdit;
 
@@ -28,7 +28,7 @@ public:
     std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name);
     QString openKeyboard(QWidget* parent, const ParameterType& param, int yOffset = 0);
     void close();
-    void setNavigator(FormNavigator* n);
+    void setNavigator(ScreenNavigator* n);
 
     bool isFullScreen() const;
     void setIsFullScreen(bool isFullScreen);
@@ -50,7 +50,7 @@ private:
 
     DialogFactory m_dialogFactory;
     QStackedWidget* m_stackedWidget{nullptr};
-    FormNavigator* m_navigator{nullptr};
+    ScreenNavigator* m_navigator{nullptr};
 
     std::map<QString, QWidget*> m_widgetContainer;
     std::map<QString, QDialog*> m_dialogContainer;
