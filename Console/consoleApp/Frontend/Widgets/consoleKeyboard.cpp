@@ -233,16 +233,19 @@ void ConsoleKeyboard::handleCapsLock(bool checked)
         pushButtonDisabled(ui->pushButton_capsLock);
         toLowCap();
     }
+    ui->lineEditParam->setFocus();
 }
 
 void ConsoleKeyboard::on_pushButton_shiftLeft_clicked()
 {
-    toggleCap();
-    m_isShift = true;
+    on_pushButton_shiftRight_clicked();
 }
 
 void ConsoleKeyboard::on_pushButton_shiftRight_clicked()
 {
-    toggleCap();
-    m_isShift = true;
+    if(m_isLowCap){
+        toggleCap();
+        m_isShift = true;
+    }
+    ui->lineEditParam->setFocus();
 }
