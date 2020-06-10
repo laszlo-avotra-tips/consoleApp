@@ -1,7 +1,7 @@
 #include "caseInformationDialog.h"
 #include "ui_caseInformationDialog.h"
 #include "Frontend/Utility/widgetcontainer.h"
-#include "octlineedit.h"
+#include "consoleLineEdit.h"
 
 #include <QDateTime>
 
@@ -14,9 +14,9 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     setDateAndTime();
     connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
     m_displayTimer.start(500);
-    connect(ui->lineEditPhysicianName, &OctLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPhysicianName);
-    connect(ui->lineEditPatientId, &OctLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
-    connect(ui->lineEditLocation, &OctLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardLocation);
+    connect(ui->lineEditPhysicianName, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPhysicianName);
+    connect(ui->lineEditPatientId, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
+    connect(ui->lineEditLocation, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardLocation);
 
     if(ui->lineEditPhysicianName->text().isEmpty()){
         ui->pushButtonNext->setEnabled(false);

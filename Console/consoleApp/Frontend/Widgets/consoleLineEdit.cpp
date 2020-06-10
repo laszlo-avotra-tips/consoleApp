@@ -1,14 +1,14 @@
 #include <QDebug>
 #include <QMouseEvent>
 
-#include "octlineedit.h"
+#include "consoleLineEdit.h"
 
-OctLineEdit::OctLineEdit(QWidget *parent):QLineEdit(parent)
+ConsoleLineEdit::ConsoleLineEdit(QWidget *parent):QLineEdit(parent)
 {
 
 }
 
-void OctLineEdit::mousePressEvent(QMouseEvent *e)
+void ConsoleLineEdit::mousePressEvent(QMouseEvent *e)
 {
     auto bt = e->buttons();
     if(bt == Qt::LeftButton){

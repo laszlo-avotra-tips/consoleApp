@@ -218,7 +218,7 @@ border-bottom: 2px solid grey;
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="OctLineEdit" name="lineEditPatientId">
+          <widget class="ConsoleLineEdit" name="lineEditPatientId">
            <property name="minimumSize">
             <size>
              <width>611</width>
@@ -241,7 +241,7 @@ border-bottom: 2px solid grey;
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="OctLineEdit" name="lineEditLocation">
+          <widget class="ConsoleLineEdit" name="lineEditLocation">
            <property name="minimumSize">
             <size>
              <width>611</width>
@@ -296,7 +296,7 @@ border-bottom: 2px solid grey;
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="OctLineEdit" name="lineEditPhysicianName">
+          <widget class="ConsoleLineEdit" name="lineEditPhysicianName">
            <property name="minimumSize">
             <size>
              <width>611</width>
@@ -461,9 +461,9 @@ border-bottom: 2px solid grey;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OctLineEdit</class>
+   <class>ConsoleLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>octlineedit.h</header>
+   <header>consoleLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
