@@ -23,11 +23,11 @@ HEADERS += \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
+    $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/dialogdeviceselect.h \
     $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/formnavigator.h \
     $$PWD/Frontend/Widgets/mainwindow.h \
-    $$PWD/Frontend/Widgets/octkeyboard.h \
     $$PWD/Frontend/Widgets/octlineedit.h \
     $$PWD/Frontend/Widgets/startScreen.h \
     ../buildflags.h \
@@ -129,11 +129,11 @@ SOURCES += \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
+    $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/dialogdeviceselect.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/formnavigator.cpp \
     $$PWD/Frontend/Widgets/mainwindow.cpp \
-    $$PWD/Frontend/Widgets/octkeyboard.cpp \
     $$PWD/Frontend/Widgets/octlineedit.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
@@ -219,11 +219,11 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 # Forms
 FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/caseInformationDialog.ui \
+    $$PWD/Frontend/Widgets/consoleKeyboard.ui \
     $$PWD/Frontend/Widgets/dialogdeviceselect.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/formnavigator.ui \
     $$PWD/Frontend/Widgets/mainwindow.ui \
-    $$PWD/Frontend/Widgets/octkeyboard.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/advancedview.ui \
