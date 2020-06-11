@@ -94,9 +94,9 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     m_selectDialog = new SelectDialog(parent);
     auto pw = parent->width();
     auto dw = m_selectDialog->width();
-    int xVal = x() + pw/2 - dw/2 + 200;
+    int xVal = x() + pw/2 - dw/2 + 300;
 
-    m_selectDialog->move(xVal, y() + 200);
+    m_selectDialog->move(xVal, y() + 400);
     m_selectDialog->show();
 
     m_selectDialog->update(PhysicianNameModel::instance()->physicianNames());
