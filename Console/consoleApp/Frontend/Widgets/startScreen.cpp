@@ -68,14 +68,12 @@ StartScreen::~StartScreen()
 void StartScreen::on_pushButtonMenu_clicked(bool checked)
 {
     if(checked){
-         ui->pushButtonExport->show();
          ui->pushButtonShutdown->show();
-         ui->pushButtonReviewCase->show();
+         ui->pushButtonCaseReviewAndExport->show();
          ui->pushButtonPreferences->show();
     } else {
-         ui->pushButtonExport->hide();
          ui->pushButtonShutdown->hide();
-         ui->pushButtonReviewCase->hide();
+         ui->pushButtonCaseReviewAndExport->hide();
          ui->pushButtonPreferences->hide();
     }
 }

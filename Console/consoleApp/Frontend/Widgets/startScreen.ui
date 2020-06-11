@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2900</width>
+    <width>3240</width>
     <height>1286</height>
    </rect>
   </property>
@@ -45,13 +45,13 @@ border-radius: 50px;
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>40</number>
+    <number>20</number>
    </property>
    <property name="topMargin">
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>40</number>
+    <number>20</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
@@ -87,8 +87,14 @@ border-radius: 50px;
        <widget class="QFrame" name="frameL">
         <property name="minimumSize">
          <size>
-          <width>500</width>
+          <width>700</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>700</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="frameShape">
@@ -102,7 +108,7 @@ border-radius: 50px;
       <item>
        <widget class="QFrame" name="frameM">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -132,7 +138,7 @@ border-radius: 50px;
          <item>
           <widget class="QPushButton" name="pushButtonStart">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -164,9 +170,15 @@ border-radius: 50px;
       </item>
       <item>
        <widget class="QFrame" name="frameR">
+        <property name="minimumSize">
+         <size>
+          <width>700</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>550</width>
+          <width>700</width>
           <height>16777215</height>
          </size>
         </property>
@@ -232,6 +244,12 @@ border-radius: 50px;
          </item>
          <item>
           <widget class="QFrame" name="frameButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="styleSheet">
             <string notr="true"/>
            </property>
@@ -261,39 +279,35 @@ border-radius: 50px;
              <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="pushButtonReviewCase">
+             <widget class="QPushButton" name="pushButtonCaseReviewAndExport">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>700</width>
                 <height>160</height>
                </size>
               </property>
               <property name="text">
-               <string> REVIEW CASE        </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButtonExport">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>160</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">border-top: 2px solid gray;</string>
-              </property>
-              <property name="text">
-               <string>EXPORT                </string>
+               <string>CASE REVIEW &amp;&amp; EXPORT</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="pushButtonPreferences">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>700</width>
                 <height>160</height>
                </size>
               </property>
@@ -301,7 +315,7 @@ border-radius: 50px;
                <string notr="true">border-top: 2px solid gray;</string>
               </property>
               <property name="text">
-               <string>PREFERENCES       </string>
+               <string>PREFERENCES               </string>
               </property>
              </widget>
             </item>
@@ -309,7 +323,7 @@ border-radius: 50px;
              <widget class="QPushButton" name="pushButtonShutdown">
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>700</width>
                 <height>160</height>
                </size>
               </property>
@@ -317,7 +331,7 @@ border-radius: 50px;
                <string notr="true">border-top: 2px solid gray;</string>
               </property>
               <property name="text">
-               <string>SHUTDOWN          </string>
+               <string>SHUTDOWN                  </string>
               </property>
              </widget>
             </item>
