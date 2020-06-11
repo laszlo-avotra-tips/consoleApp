@@ -1,6 +1,8 @@
 #include "consoleKeyboard.h"
 #include "ui_consoleKeyboard.h"
 
+#include <QDebug>
+
 
 ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
     QDialog(parent),
@@ -15,6 +17,14 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
 
     paramLabel->setText(param[0]);
     paramLineEdit->setText(param[1]);
+    if(param.size() > 2){
+        auto* enterButton = ui->pushButton_enter;
+        auto actionOnEnter = param[2];
+        if(!actionOnEnter.isEmpty()){
+            qDebug() << __FUNCTION__ << " " << actionOnEnter;
+            enterButton->setText(actionOnEnter);
+        }
+    }
 
     auto* enterButton = ui->pushButton_enter;
     connect(enterButton, &QPushButton::clicked, this, &QDialog::accept);

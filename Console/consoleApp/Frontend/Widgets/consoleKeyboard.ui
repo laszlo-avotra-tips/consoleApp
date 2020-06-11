@@ -828,7 +828,7 @@ background-color: #343434;
          </size>
         </property>
         <property name="text">
-         <string>update</string>
+         <string>UPDATE</string>
         </property>
        </widget>
       </item>

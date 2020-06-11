@@ -55,7 +55,7 @@ void CaseInformationDialog::openKeyboardPatientId()
     QString paramName = ui->labelPatientId->text();
     QString paramValue = ui->lineEditPatientId->text();
 
-    const std::vector<QString> param{paramName, paramValue};
+    const std::vector<QString> param{paramName, paramValue, "ENTER"};
     auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
     ui->lineEditPatientId->setText(text);
 }
