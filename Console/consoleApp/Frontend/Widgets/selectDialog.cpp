@@ -17,8 +17,7 @@ SelectDialog::SelectDialog(QWidget *parent) :
         ui->lineEditItem3,
     };
 
-    connect(ui->pushButtonOk, &QPushButton::clicked, this, &QDialog::accept);
-    connect(ui->pushButtonAddNew, &QPushButton::clicked, this, &QDialog::reject);
+    connect(ui->pushButtonAddNew, &QPushButton::clicked, this, &SelectDialog::reject);
 
     connect(m_selectableWidgets[0], &ConsoleLineEdit::mousePressed, this, &SelectDialog::selectItem0);
     connect(m_selectableWidgets[1], &ConsoleLineEdit::mousePressed, this, &SelectDialog::selectItem1);
@@ -32,11 +31,11 @@ SelectDialog::~SelectDialog()
 
 void SelectDialog::update(const QStringList &sl)
 {
-    if(sl.size() > 3){
-        ui->pushButtonScrollDown->show();
-    } else {
-        ui->pushButtonScrollDown->hide();
-    }
+//    if(sl.size() > 3){
+//        ui->pushButtonScrollDown->show();
+//    } else {
+//        ui->pushButtonScrollDown->hide();
+//    }
 
     int index{0};
     for(auto* lineEdit : m_selectableWidgets){
