@@ -37,15 +37,17 @@ void CaseInformationDialog::setDateAndTime()
 
 void CaseInformationDialog::openKeyboardPhysicianName()
 {
-    QString paramName = ui->labelPhysicianName->text();
-    QString paramValue = ui->lineEditPhysicianName->text();
+    if(!isFieldEmpty()){
+        QString paramName = ui->labelPhysicianName->text();
+        QString paramValue = ui->lineEditPhysicianName->text();
 
-    const std::vector<QString> param{paramName, paramValue};
-    auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
-    ui->lineEditPhysicianName->setText(text);
+        const std::vector<QString> param{paramName, paramValue};
+        auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
+        ui->lineEditPhysicianName->setText(text);
 
-    const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-    enableNext(isNext);
+        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
+        enableNext(isNext);
+    }
 }
 
 void CaseInformationDialog::openKeyboardPatientId()
@@ -88,6 +90,11 @@ void CaseInformationDialog::enableNext(bool isNext)
     }
 }
 
+bool CaseInformationDialog::isFieldEmpty() const
+{
+    return ui->lineEditPhysicianName->text() == QString("Required field");
+}
+
 void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
 {
     auto* parent = this;
@@ -96,7 +103,7 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     auto dw = m_selectDialog->width();
     int xVal = x() + pw/2 - dw/2 + 300;
 
-    m_selectDialog->move(xVal, y() + 400);
+    m_selectDialog->move(xVal, y() + 440);
     m_selectDialog->show();
 
     m_selectDialog->update(PhysicianNameModel::instance()->physicianNames());
@@ -104,11 +111,15 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     if(m_selectDialog->exec() == QDialog::Accepted){
         ui->lineEditPhysicianName->setText(PhysicianNameModel::instance()->selectedPysicianName());
         ui->lineEditPhysicianName->setStyleSheet("");
+        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
+        enableNext(isNext);
     } else {
         QString paramName = ui->labelPhysicianName->text();
         const ParameterType param{paramName, "", "ADD NEW"};
         auto text = WidgetContainer::instance()->openKeyboard(this, param, 200);
         ui->lineEditPhysicianName->setText(text);
+        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
+        enableNext(isNext);
     }
 
 }

@@ -33,6 +33,7 @@ private slots:
 
 private:
     void enableNext(bool isNext);
+    bool isFieldEmpty() const;
 
     Ui::CaseInformationDialog *ui;
     QDateTime m_now;

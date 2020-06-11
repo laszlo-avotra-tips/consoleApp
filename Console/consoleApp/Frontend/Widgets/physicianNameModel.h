@@ -24,7 +24,7 @@ private:
     PhysicianNameModel() = default;
     static PhysicianNameModel* m_instance;
 
-    QStringList m_physicianNames{{"DR. Patel"}, {"DR. Smith"}, {"DR. Johnes"}};
+    QStringList m_physicianNames{{"DR. Himanshu Patel"}, {"DR. Jaafer Golzar"}, {"DR. Kara Parker-Smith"}};
     QString m_selectedPysicianName{"DR. Patel"};
     QString m_defaultPysicianName;
 
