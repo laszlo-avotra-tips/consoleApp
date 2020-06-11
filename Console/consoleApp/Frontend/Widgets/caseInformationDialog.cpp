@@ -2,6 +2,8 @@
 #include "ui_caseInformationDialog.h"
 #include "Frontend/Utility/widgetcontainer.h"
 #include "consoleLineEdit.h"
+#include "selectDialog.h"
+#include "physicianNameModel.h"
 
 #include <QDateTime>
 
@@ -84,4 +86,34 @@ void CaseInformationDialog::enableNext(bool isNext)
         button->setPalette(pal);
         button->update();
     }
+}
+
+void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
+{
+    auto* parent = this;
+    m_selectDialog = new SelectDialog(parent);
+    auto pw = parent->width();
+    auto dw = m_selectDialog->width();
+    int xVal = x() + pw/2 - dw/2 + 200;
+
+    m_selectDialog->move(xVal, y() + 200);
+    m_selectDialog->show();
+
+    m_selectDialog->update(PhysicianNameModel::instance()->physicianNames());
+
+    if(m_selectDialog->exec() == QDialog::Accepted){
+        ui->lineEditPhysicianName->setText(PhysicianNameModel::instance()->selectedPysicianName());
+        ui->lineEditPhysicianName->setStyleSheet("");
+    } else {
+        QString paramName = ui->labelPhysicianName->text();
+        const ParameterType param{paramName, "", "ADD NEW"};
+        auto text = WidgetContainer::instance()->openKeyboard(this, param, 200);
+        ui->lineEditPhysicianName->setText(text);
+    }
+
+}
+
+void CaseInformationDialog::on_pushButtonLocationDown_clicked()
+{
+
 }

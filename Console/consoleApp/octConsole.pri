@@ -28,7 +28,9 @@ HEADERS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
+    $$PWD/Frontend/Widgets/physicianNameModel.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
+    $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
     ../buildflags.h \
     ../version.h \
@@ -134,7 +136,9 @@ SOURCES += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
+    $$PWD/Frontend/Widgets/physicianNameModel.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
+    $$PWD/Frontend/Widgets/selectDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
     Backend/dspgpu.cpp \
@@ -224,6 +228,7 @@ FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
+    $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/advancedview.ui \
