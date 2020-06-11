@@ -31,22 +31,16 @@ style=\" font-size:42pt;color:#A9A9A9;\"> L300 | Software Version ");
 </span></p><p align=\"right\"><span style=\" font-size:32pt; font-weight:600; color:#A9A9A9;\">2011-2020 AVINGER, INC.</span></p></body></html>");
     ui->labelService->setText(service);
 
-    const int middleFrameWidth = WidgetContainer::instance()->middleFrameWidth();
-    const int sideFrameWidth = int(middleFrameWidth * 0.25 );
-    const int frameHeight = middleFrameWidth - 160;
-    const bool isFullScreen = WidgetContainer::instance()->isFullScreen();
+    const int sideFrameWidth = 720;
+    const int middleFrameWidth = 3240 - 2 * sideFrameWidth;
+    const int middleFrameHight = 2160;
+    const int frameHeight = middleFrameHight - 160;
 
-    qDebug() << "sideFrameWidth = " << sideFrameWidth << ", frameHeight = " << frameHeight;
+    const int windowWidth{3240};
+    const int windowHeight{2160};
 
-    int windowWidth{3240};
-    int windowHeight{2160};
-    if(!isFullScreen){
-        windowWidth = middleFrameWidth * 1.5;
-        windowHeight = middleFrameWidth;
-        setMinimumSize(windowWidth, windowHeight);
-        setMaximumSize(windowWidth, windowHeight);
-        qDebug() << "windowWidth = " << windowWidth << ", windowHeight = " << windowHeight;
-    }
+    setMinimumSize(windowWidth, windowHeight);
+    setMaximumSize(windowWidth, windowHeight);
 
     ui->frameL->setMinimumSize(sideFrameWidth, frameHeight);
     ui->frameL->setMaximumSize(sideFrameWidth, frameHeight);
@@ -54,7 +48,7 @@ style=\" font-size:42pt;color:#A9A9A9;\"> L300 | Software Version ");
     ui->frameR->setMinimumSize(sideFrameWidth, frameHeight);
     ui->frameR->setMaximumSize(sideFrameWidth, frameHeight);
 
-    ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,frameHeight));
+    ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,middleFrameWidth));
     ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
 
     m_backend = new Backend(parent);

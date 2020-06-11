@@ -57,7 +57,7 @@ private:
 
     bool m_isFullScreen{true};
     QWidget* m_currentWidget{nullptr};
-    QSize  m_middleFrameSize{2110,2110};
+    QSize  m_middleFrameSize{1800,1800};
     int m_ratio{1};
     bool m_isNewCase{true};
 };

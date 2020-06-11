@@ -85,6 +85,12 @@ border-radius: 50px;
       </property>
       <item>
        <widget class="QFrame" name="frameL">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>700</width>
@@ -170,6 +176,12 @@ border-radius: 50px;
       </item>
       <item>
        <widget class="QFrame" name="frameR">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>700</width>
