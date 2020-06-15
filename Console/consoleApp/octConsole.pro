@@ -10,7 +10,6 @@ TEMPLATE = app
 QT += sql xml widgets
 QT += charts
 QT += serialport
-QT += virtualkeyboard
 
 
 CONFIG += c++14

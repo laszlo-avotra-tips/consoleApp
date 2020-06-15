@@ -40,7 +40,7 @@
 #include "engineeringcontroller.h"
 #include "signalmodel.h"
 #include "forml300.h"
-#include "mainwindow.h"
+#include "mainScreen.h"
 #include "Frontend/Utility/widgetcontainer.h"
 
 // Configuration defines
@@ -497,7 +497,7 @@ void frontend::setupScene( void )
     m_scene = new liveScene( this );
 //    m_formL300 = new FormL300( this );
 //    m_formL300->setScene(m_scene);
-    m_mainWindow = new MainWindow(this);
+    m_mainWindow = new MainScreen(this);
     m_mainWindow->setScene(m_scene);
 //    m_mainWindow->showFullScreen();
 

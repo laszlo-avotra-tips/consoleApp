@@ -11,16 +11,16 @@ class QPushButton;
 using ButtonContainer = std::vector<QPushButton*>;
 
 namespace Ui {
-class OctKeyboard;
+class ConsoleKeyboard;
 }
 
-class OctKeyboard : public QDialog
+class ConsoleKeyboard : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit OctKeyboard(const ParameterType& param, QWidget *parent = nullptr);
-    ~OctKeyboard();
+    explicit ConsoleKeyboard(const ParameterType& param, QWidget *parent = nullptr);
+    ~ConsoleKeyboard();
     QString value();
 
 signals:
@@ -49,7 +49,7 @@ private:
     void pushButtonDisabled(QPushButton* button);
 
 private:
-    Ui::OctKeyboard *ui;
+    Ui::ConsoleKeyboard *ui;
 
     ButtonContainer m_letterButtons;
     ButtonContainer m_numberButtons;

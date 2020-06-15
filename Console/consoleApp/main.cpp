@@ -30,7 +30,7 @@
 #include "signalmanager.h"
 #include "deviceSettings.h"
 #include "backend.h"
-#include "formnavigator.h"
+#include "screenNavigator.h"
 #include "keyboardinputcontext.h"
 
 
@@ -39,14 +39,9 @@
  */
 int main(int argc, char *argv[])
 {
-    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
     QApplication app( argc, argv );
 
-//    keyboardInputContext *ic = new keyboardInputContext();
-//    app.setInputContext( ic );
-
-
-    FormNavigator navigator;
+    ScreenNavigator navigator;
     navigator.display();
 
     app.exec();

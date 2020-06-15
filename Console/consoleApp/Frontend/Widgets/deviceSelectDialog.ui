@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogDeviceSelect</class>
- <widget class="QDialog" name="DialogDeviceSelect">
+ <class>DeviceSelectDialog</class>
+ <widget class="QDialog" name="DeviceSelectDialog">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -442,7 +442,7 @@ color: white;
   <connection>
    <sender>pushButtonDone</sender>
    <signal>clicked()</signal>
-   <receiver>DialogDeviceSelect</receiver>
+   <receiver>DeviceSelectDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -458,7 +458,7 @@ color: white;
   <connection>
    <sender>pushButtonBack</sender>
    <signal>clicked()</signal>
-   <receiver>DialogDeviceSelect</receiver>
+   <receiver>DeviceSelectDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

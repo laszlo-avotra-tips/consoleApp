@@ -643,7 +643,7 @@ QWidgetList WindowManager::sortWidgetList( QWidgetList list )
         {
             if( list.at( i )->isWindow() ) // is Window
             {
-                if( !qobject_cast<QMainWindow*>( list.at( i ) ) ) // is not MainWindow
+                if( !qobject_cast<QMainWindow*>( list.at( i ) ) ) // is not MainScreen
                 {
                     // proceded
                     isQualified = true;

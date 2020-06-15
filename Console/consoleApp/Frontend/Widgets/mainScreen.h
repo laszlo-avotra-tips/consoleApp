@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINSCREEN_H
+#define MAINSCREEN_H
 
 #include "signalmanager.h"
 
@@ -15,16 +15,16 @@ class frontend;
 class liveScene;
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class MainScreen; }
 QT_END_NAMESPACE
 
-class MainWindow : public QWidget
+class MainScreen : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    MainScreen(QWidget *parent = nullptr);
+    ~MainScreen();
 
     bool isVisible() const;
     void setScene(liveScene* scene);
@@ -61,7 +61,7 @@ private:
     void setCurrentTime();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainScreen *ui;
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
 
@@ -76,4 +76,4 @@ private:
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
 };
-#endif // MAINWINDOW_H
+#endif // MAINSCREEN_H

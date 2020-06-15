@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FormNavigator</class>
- <widget class="QWidget" name="FormNavigator">
+ <class>ScreenNavigator</class>
+ <widget class="QWidget" name="ScreenNavigator">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -6,15 +6,14 @@
 #include <QString>
 #include <QSize>
 
-#include "dialogfactory.h"
+#include "dialogFactory.h"
 
 class QStackedWidget;
-class FormNavigator;
+class ScreenNavigator;
 class QDialog;
 class QLineEdit;
 
 using ParameterType = std::vector<QString>;
-//using ParameterType = std::pair<QString,QLineEdit*>;
 
 class WidgetContainer
 {
@@ -28,7 +27,7 @@ public:
     std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name);
     QString openKeyboard(QWidget* parent, const ParameterType& param, int yOffset = 0);
     void close();
-    void setNavigator(FormNavigator* n);
+    void setNavigator(ScreenNavigator* n);
 
     bool isFullScreen() const;
     void setIsFullScreen(bool isFullScreen);
@@ -50,14 +49,14 @@ private:
 
     DialogFactory m_dialogFactory;
     QStackedWidget* m_stackedWidget{nullptr};
-    FormNavigator* m_navigator{nullptr};
+    ScreenNavigator* m_navigator{nullptr};
 
     std::map<QString, QWidget*> m_widgetContainer;
     std::map<QString, QDialog*> m_dialogContainer;
 
     bool m_isFullScreen{true};
     QWidget* m_currentWidget{nullptr};
-    QSize  m_middleFrameSize{2110,2110};
+    QSize  m_middleFrameSize{1800,1800};
     int m_ratio{1};
     bool m_isNewCase{true};
 };

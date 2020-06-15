@@ -1,7 +1,7 @@
 #include "widgetcontainer.h"
-#include "formnavigator.h"
-#include "dialogfactory.h"
-#include "octkeyboard.h"
+#include "screenNavigator.h"
+#include "dialogFactory.h"
+#include "consoleKeyboard.h"
 
 #include <QStackedWidget>
 #include <QDebug>
@@ -81,7 +81,7 @@ std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QStr
 QString WidgetContainer::openKeyboard(QWidget *parent, const ParameterType& param, int yOffset)
 {
     QString retVal;
-    OctKeyboard* okb = new OctKeyboard(param, parent);
+    ConsoleKeyboard* okb = new ConsoleKeyboard(param, parent);
     auto pw = parent->width();
     auto dw = okb->width();
     int x = parent->x() + pw/2 - dw/2;
@@ -103,7 +103,7 @@ void WidgetContainer::close()
     m_navigator->close();
 }
 
-void WidgetContainer::setNavigator(FormNavigator *n)
+void WidgetContainer::setNavigator(ScreenNavigator *n)
 {
     m_navigator = n;
 }

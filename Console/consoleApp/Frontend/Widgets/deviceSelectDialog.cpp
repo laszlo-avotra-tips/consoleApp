@@ -1,16 +1,16 @@
-#include "dialogdeviceselect.h"
-#include "ui_dialogdeviceselect.h"
+#include "deviceSelectDialog.h"
+#include "ui_deviceSelectDialog.h"
 #include "Frontend/Utility/widgetcontainer.h"
 #include "deviceSettings.h"
 #include "util.h"
 #include "logger.h"
-#include "mainwindow.h"
+#include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include <daqfactory.h>
 
-DialogDeviceSelect::DialogDeviceSelect(QWidget *parent) :
+DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogDeviceSelect)
+    ui(new Ui::DeviceSelectDialog)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
@@ -19,22 +19,22 @@ DialogDeviceSelect::DialogDeviceSelect(QWidget *parent) :
     init();
 }
 
-DialogDeviceSelect::~DialogDeviceSelect()
+DeviceSelectDialog::~DeviceSelectDialog()
 {
     delete ui;
 }
 
-void DialogDeviceSelect::init()
+void DeviceSelectDialog::init()
 {
     populateList();
-    connect(ui->listWidgetAtherectomy, SIGNAL(itemClicked(QListWidgetItem *)),   this, SIGNAL(completeChanged()));
-    connect(ui->listWidgetAtherectomy, SIGNAL(itemActivated(QListWidgetItem *)), this, SIGNAL(completeChanged()));
+//    connect(ui->listWidgetAtherectomy, SIGNAL(itemClicked(QListWidgetItem *)),   this, SIGNAL(completeChanged()));
+//    connect(ui->listWidgetAtherectomy, SIGNAL(itemActivated(QListWidgetItem *)), this, SIGNAL(completeChanged()));
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
 }
 
-bool DialogDeviceSelect::isComplete() const
+bool DeviceSelectDialog::isComplete() const
 {
     if( ui->listWidgetAtherectomy->currentItem() )
     {
@@ -44,7 +44,7 @@ bool DialogDeviceSelect::isComplete() const
 
 }
 
-void DialogDeviceSelect::changeEvent(QEvent *e)
+void DeviceSelectDialog::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
 //    switch (e->type())
@@ -60,7 +60,7 @@ void DialogDeviceSelect::changeEvent(QEvent *e)
     }
 }
 
-void DialogDeviceSelect::populateList()
+void DeviceSelectDialog::populateList()
 {
     deviceSettings &devices = deviceSettings::Instance();
 
@@ -94,12 +94,12 @@ void DialogDeviceSelect::populateList()
     }
 }
 
-void DialogDeviceSelect::on_pushButtonDone_clicked()
+void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
     deviceSettings &dev = deviceSettings::Instance();
     int selection = ui->listWidgetAtherectomy->currentRow();
     dev.setCurrentDevice(selection);
-    QWidget* widget = WidgetContainer::instance()->getPage("frontendPage");
+    QWidget* widget = WidgetContainer::instance()->getPage("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
       fw->showFullScreen();
@@ -108,13 +108,13 @@ void DialogDeviceSelect::on_pushButtonDone_clicked()
     }
 }
 
-void DialogDeviceSelect::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)
+void DeviceSelectDialog::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)
 {
     ui->listWidgetAtherectomy->setCurrentItem( item );
     LOG1(item->text());
 }
 
-void DialogDeviceSelect::startDaq(frontend *fe)
+void DeviceSelectDialog::startDaq(frontend *fe)
 {
     auto idaq = daqfactory::instance()->getdaq();
 
@@ -135,7 +135,7 @@ void DialogDeviceSelect::startDaq(frontend *fe)
     fe->on_zoomSlider_valueChanged(100);
 }
 
-void DialogDeviceSelect::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
+void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
 {
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);

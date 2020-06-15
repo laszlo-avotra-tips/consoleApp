@@ -1,5 +1,5 @@
-#ifndef FORMSTART_H
-#define FORMSTART_H
+#ifndef STARTSCREEN_H
+#define STARTSCREEN_H
 
 #include <QWidget>
 
@@ -7,16 +7,16 @@ class Backend;
 class frontend;
 
 namespace Ui {
-class FormStart;
+class StartScreen;
 }
 
-class FormStart : public QWidget
+class StartScreen : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FormStart(QWidget *parent = nullptr);
-    ~FormStart();
+    explicit StartScreen(QWidget *parent = nullptr);
+    ~StartScreen();
 
 private slots:
     void on_pushButtonMenu_clicked(bool checked);
@@ -31,12 +31,10 @@ private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
 
-    int showCaseInfoDialog();
-    int showDeviceWizard();
     void startDaq(frontend *fe);
 
-    Ui::FormStart *ui;
+    Ui::StartScreen *ui;
     Backend* m_backend{nullptr};
 };
 
-#endif // FORMSTART_H
+#endif // STARTSCREEN_H
