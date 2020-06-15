@@ -10,7 +10,6 @@ public:
     static PhysicianNameModel* instance();
     void addPhysicianName(const QString& pn);
 
-
     QStringList physicianNames() const;
     void setPhysicianNames(const QStringList &physicianNames);
 

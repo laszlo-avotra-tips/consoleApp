@@ -1,6 +1,7 @@
 #include "selectDialog.h"
 #include "ui_selectDialog.h"
 #include "physicianNameModel.h"
+#include "locationModel.h"
 
 
 SelectDialog::SelectDialog(QWidget *parent) :
@@ -65,10 +66,11 @@ void SelectDialog::selectItem(int index)
 {
     auto name = m_selectableWidgets[index]->text();
     PhysicianNameModel::instance()->setSelectedPysicianName(name);
+    LocationModel::instance()->setSelectedLocation(name);
 
     for(int i = 0; i < 3; ++i ){
         if(i == index){
-            m_selectableWidgets[i]->setStyleSheet("color:orange");
+            m_selectableWidgets[i]->setStyleSheet("color:#F5C400;");
         } else {
             m_selectableWidgets[i]->setStyleSheet("color:white");
         }

@@ -4,6 +4,7 @@
 #include "consoleLineEdit.h"
 #include "selectDialog.h"
 #include "physicianNameModel.h"
+#include "locationModel.h"
 
 #include <QDateTime>
 
@@ -121,10 +122,28 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
         const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
         enableNext(isNext);
     }
-
 }
 
 void CaseInformationDialog::on_pushButtonLocationDown_clicked()
 {
+    auto* parent = this;
+    m_selectDialog = new SelectDialog(parent);
+    auto pw = parent->width();
+    auto dw = m_selectDialog->width();
+    int xVal = x() + pw/2 - dw/2 + 300;
 
+    m_selectDialog->move(xVal, y() + 440);
+    m_selectDialog->show();
+
+    m_selectDialog->update(LocationModel::instance()->locations());
+
+    if(m_selectDialog->exec() == QDialog::Accepted){
+        ui->lineEditLocation->setText(LocationModel::instance()->selectedLocation());
+        ui->lineEditLocation->setStyleSheet("");
+    } else {
+        QString paramName = ui->labelLocation->text();
+        const ParameterType param{paramName, "", "ADD NEW"};
+        auto text = WidgetContainer::instance()->openKeyboard(this, param, 200);
+        ui->lineEditLocation->setText(text);
+    }
 }

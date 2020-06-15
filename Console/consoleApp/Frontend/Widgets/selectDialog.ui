@@ -91,7 +91,7 @@ border-bottom: 2px solid rgb( 169, 169, 169 );
         <item>
          <widget class="QPushButton" name="pushButtonAddNew">
           <property name="styleSheet">
-           <string notr="true">border-radius: 10px; background-color:orange;</string>
+           <string notr="true">border-radius: 10px; background-color:#F5C400;</string>
           </property>
           <property name="text">
            <string>+ ADD NEW</string>
