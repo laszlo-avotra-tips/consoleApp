@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel:enabled{
- font: 27px &quot;DinPRO-Medium&quot;;
+ font: 13px &quot;DinPRO-Medium&quot;;
 color: blue;
 }
 QLabel:disabled{
@@ -173,7 +173,7 @@ QProgressBar::disabled {
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-    font: 32pt &quot;DinPRO-Medium&quot;;
+    font: 16pt &quot;DinPRO-Medium&quot;;
 }</string>
      </property>
      <property name="text">
@@ -203,7 +203,7 @@ QProgressBar::disabled {
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-    font: 32pt &quot;DinPRO-Medium&quot;;
+    font: 16pt &quot;DinPRO-Medium&quot;;
 }</string>
      </property>
      <property name="text">

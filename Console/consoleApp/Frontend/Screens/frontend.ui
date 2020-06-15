@@ -91,7 +91,7 @@ QGraphicsView {
 /* --------- General font and layout defaults ----------*/
 
 QDialog {
- font: 18px &quot;DinPRO-Medium&quot;;
+ font: 9px &quot;DinPRO-Medium&quot;;
  color: white;
  background-color: rgb( 147, 147, 147 );
  border: 1px solid rgb( 147, 147, 147 );
@@ -100,24 +100,24 @@ QDialog {
 
 /* this QWidget affects the labels on the Physician screen. Why? Good question.*/
 QWidget {
- font: 36pt &quot;DinPRO-Medium&quot;;
+ font: 18pt &quot;DinPRO-Medium&quot;;
 }
 
 QLabel {
- font: 27px &quot;DinPRO-Medium&quot;;
+ font: 13px &quot;DinPRO-Medium&quot;;
 }
 
 QLabel#titlebarLabel {
 	background: rgb( 51, 51, 51 );
 }
 QLabel#titlebarTextLabel {
-    font: 36pt &quot;DINPro-Medium&quot;;
+    font: 18pt &quot;DINPro-Medium&quot;;
     color: white;
 }
 
 QLabel#instructionsTextLabel
 {
-    font: 18pt &quot;DINPro-Medium&quot;;
+    font: 9pt &quot;DINPro-Medium&quot;;
 }
 
 /* ---------------- Pushbuttons ----------------*/
@@ -127,7 +127,7 @@ QPushButton
     background: rgb( 51, 74, 94 );
     border: 1px solid rgb( 51, 74, 94 );
     color: white;
-    font: 16pt &quot;DinPRO-Medium&quot;;
+    font: 8pt &quot;DinPRO-Medium&quot;;
     text-align: center;
     border-radius: 10px;
     border-width: 2px;
@@ -164,7 +164,7 @@ QPushButton:disabled
 /* --------- Spin Boxes -----------*/
 
 QAbstractSpinBox {
-	font: 27px DinPRO-medium;
+	font: 13px DinPRO-medium;
 	border: 0;
     border-radius: 5px;
 }
@@ -212,7 +212,7 @@ QAbstractSpinBox::down-arrow {
 
 QLineEdit, QListView {
     color: #808080;
-	font: 27px DinPro-medium;
+	font: 13px DinPro-medium;
     selection-color: white;   
     border: 2px groove white;
     border-radius: 4px;
@@ -250,7 +250,7 @@ QDialogButtonBox
 /* ---------- Group Boxes ---------- */
 
  QGroupBox {
-    font: 22pt DINPro-medium;
+    font: 11pt DINPro-medium;
     color: white;
     background-color: rgb( 51, 51, 51 );
     border-radius: 5px;
@@ -306,7 +306,7 @@ QGroupBox::title {
           <property name="font">
            <font>
             <family>DinPRO-Medium</family>
-            <pointsize>16</pointsize>
+            <pointsize>8</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -453,7 +453,7 @@ IMAGE</string>
           <property name="font">
            <font>
             <family>DinPRO-Medium</family>
-            <pointsize>16</pointsize>
+            <pointsize>8</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -596,7 +596,7 @@ OVERLAY</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 24pt DinPRO-medium;
+	font: 12pt DinPRO-medium;
     color: white;
 }</string>
              </property>
@@ -616,7 +616,7 @@ OVERLAY</string>
              <property name="font">
               <font>
                <family>DinPRO-medium</family>
-               <pointsize>24</pointsize>
+               <pointsize>12</pointsize>
                <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
@@ -624,7 +624,7 @@ OVERLAY</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 24pt DinPRO-medium;
+	font: 12pt DinPRO-medium;
     color: white;
 }</string>
              </property>
@@ -653,7 +653,7 @@ OVERLAY</string>
              <property name="font">
               <font>
                <family>DinPRO-Medium</family>
-               <pointsize>24</pointsize>
+               <pointsize>12</pointsize>
                <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
@@ -661,7 +661,7 @@ OVERLAY</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 24pt DinPRO-Medium;
+	font: 12pt DinPRO-Medium;
     color: white;
 }</string>
              </property>
@@ -702,7 +702,7 @@ OVERLAY</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: 24pt DinPRO-Medium;
+	font: 12pt DinPRO-Medium;
     color: white;
 }</string>
              </property>
@@ -969,7 +969,7 @@ OVERLAY</string>
             <property name="font">
              <font>
               <family>DINPro-Medium</family>
-              <pointsize>18</pointsize>
+              <pointsize>9</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -980,7 +980,7 @@ OVERLAY</string>
 {
     background: rgb( 191, 191, 191 ); 
     color: black; 
-	font:  18pt &quot;DINPro-Medium&quot;;
+	font:  9pt &quot;DINPro-Medium&quot;;
 }
 </string>
             </property>
@@ -1012,7 +1012,7 @@ OVERLAY</string>
             <property name="font">
              <font>
               <family>DINPro-Medium</family>
-              <pointsize>18</pointsize>
+              <pointsize>9</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -1023,7 +1023,7 @@ OVERLAY</string>
 { 
     background: rgb( 191, 191, 191 );
     color: black; 
-	font:  18pt &quot;DINPro-Medium&quot;;
+	font:  9pt &quot;DINPro-Medium&quot;;
 }
 </string>
             </property>
@@ -1360,7 +1360,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
             <property name="font">
              <font>
               <family>DINPro-medium</family>
-              <pointsize>22</pointsize>
+              <pointsize>11</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -1411,7 +1411,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
                <property name="font">
                 <font>
                  <family>DinPRO-Medium</family>
-                 <pointsize>36</pointsize>
+                 <pointsize>18</pointsize>
                  <weight>50</weight>
                  <italic>false</italic>
                  <bold>false</bold>
