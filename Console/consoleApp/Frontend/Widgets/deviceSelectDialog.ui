@@ -22,20 +22,20 @@ background-color: black;
 color: white;
 }
 QLabel{
-font: 40pt &quot;Helvetica Neue&quot;;
+font: 20pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelInfo{
-font: 24pt &quot;Helvetica Neue&quot;;
+font: 12pt &quot;Helvetica Neue&quot;;
 }
 QLineEdit{
-font: 40pt &quot;Helvetica Neue&quot;;
+font: 20pt &quot;Helvetica Neue&quot;;
 color: #A9A9A9;
 }
 QFrame{
 border: 0px;
 }
 QPushButton{
-font: 40px;
+font: 12pt;
 color: white;
 }
 QDialog{
@@ -48,7 +48,7 @@ border-bottom: 2px solid grey;
 }
 QLabel#labelTitle{
 border-bottom: 2px solid grey;
-font: 60pt &quot;Helvetica Neue&quot;;
+font: 30pt &quot;Helvetica Neue&quot;;
 font-weight: 600
 }
 QFrame#frame{
@@ -64,7 +64,7 @@ background-color:#636363;
 border-radius: 10px;
 }
 QListWidget{
-font: 48pt &quot;Helvetica Neue&quot;;
+font: 24pt &quot;Helvetica Neue&quot;;
 }</string>
   </property>
   <property name="modal">
@@ -332,11 +332,23 @@ color: white;
             <property name="leftMargin">
              <number>20</number>
             </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
             <property name="rightMargin">
              <number>20</number>
             </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QPushButton" name="pushButtonBack">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -378,13 +390,25 @@ color: white;
             <property name="leftMargin">
              <number>20</number>
             </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
             <property name="rightMargin">
              <number>20</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
             <item>
              <widget class="QPushButton" name="pushButtonDone">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="minimumSize">
                <size>

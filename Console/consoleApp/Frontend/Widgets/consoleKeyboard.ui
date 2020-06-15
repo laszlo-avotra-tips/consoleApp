@@ -26,19 +26,19 @@ background-color: black;
 }
 QLabel{
 color: white;
-font: 48pt &quot;Helvetica Neue&quot;;
+font: 24pt &quot;Helvetica Neue&quot;;
 font-weight: 600;
 background-color: black;
 }
 QLineEdit{
 background-color: black;
 color: white;
-font: 48pt &quot;Helvetica Neue&quot;;
+font: 24pt &quot;Helvetica Neue&quot;;
 border: 2px solid grey; 
 }
 
 QPushButton{
-font: 24pt &quot;Helvetica Neue&quot;;
+font: 12pt &quot;Helvetica Neue&quot;;
 border-radius: 15px;
 background-color: #636363;
 color: white;
@@ -69,15 +69,6 @@ background-color: #343434;
 QPushButton#pushButton_capsLock{
 background-color: #343434;
 }
-
-QPushButton#pushButton_123Left{
-background-color: #343434;
-}
-QPushButton#pushButton_123Right{
-background-color: #343434;
-}
-
-
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">

@@ -35,13 +35,13 @@ background-color: dark-gray;
 color: white;
 }
 QLabel{
-font: 60pt &quot;Helvetica Neue&quot;;
+font: 30pt &quot;Helvetica Neue&quot;;
 }
 QFrame{
 border: 0px;
 }
 QPushButton{
-font: bold 24px;
+font: bold 12pt;
 qproperty-flat: true;
 }</string>
   </property>
@@ -401,7 +401,7 @@ qproperty-flat: true;
           <property name="styleSheet">
            <string notr="true">font: bold 36px &quot;Helvetica Neue&quot;;
 border-radius: 75px;
-background-color: rgb(170, 85, 0);</string>
+background-color: rgb(72,13,2);</string>
           </property>
           <property name="text">
            <string>END
@@ -641,7 +641,7 @@ CASE</string>
          <string notr="true">QPushButton{
 border: 4px solid grey; 
 border-radius: 60px;
-font: 40pt &quot;Helvetica Neue&quot;;
+font: 20pt &quot;Helvetica Neue&quot;;
 }</string>
         </property>
         <property name="frameShape">

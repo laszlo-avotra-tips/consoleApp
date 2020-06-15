@@ -25,18 +25,18 @@ background-color:black;
 color:white;
 }
 QLabel{
-font:40pt &quot;Helvetica Neue&quot;;
+font:20pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelInfo{
-font:24pt &quot;Helvetica Neue&quot;;
+font:12pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelTitle{
 border-bottom:2px solid grey;
-font:60pt &quot;Helvetica Neue&quot;;
+font:30pt &quot;Helvetica Neue&quot;;
 font-weight:600
 }
 QLineEdit{
-font:40pt &quot;Helvetica Neue&quot;;
+font:20pt &quot;Helvetica Neue&quot;;
 color:#A9A9A9;
 }
 QFrame{
@@ -47,7 +47,7 @@ background-color:#262626;
 border-radius:10px;
 }
 QPushButton{
-font:40px;
+font:16pt;
 color:black;
 }
 QDialog{
@@ -179,7 +179,7 @@ color:white;
           </size>
          </property>
          <property name="text">
-          <string>PHYSICIAN NAME*</string>
+          <string>PHYSICIAN NAME</string>
          </property>
          <property name="buddy">
           <cstring>lineEditPhysicianName</cstring>
@@ -207,7 +207,7 @@ color:white;
            </property>
            <property name="styleSheet">
             <string notr="true">color:grey;
-font:24pt &quot;Helvetica Neue&quot;;
+font:12pt &quot;Helvetica Neue&quot;;
 </string>
            </property>
            <property name="text">
@@ -404,19 +404,6 @@ border-bottom: 2px solid rgb( 169, 169, 169 );
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item>
-        <widget class="QLabel" name="labelInfo">
-         <property name="minimumSize">
-          <size>
-           <width>721</width>
-           <height>101</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>*REQUIRED FIELD</string>
-         </property>
-        </widget>
-       </item>
        <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">

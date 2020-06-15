@@ -23,12 +23,12 @@ StartScreen::StartScreen(QWidget *parent) :
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());
 
-    QString brandVersion("<html><head/><body><p><span style=\" font-size:42pt; font-weight:600; color:#A9A9A9;\">LIGHTBOX</span><span \
-style=\" font-size:42pt;color:#A9A9A9;\"> L300 | Software Version ");
+    QString brandVersion("<html><head/><body><p><span style=\" font-size:21pt; font-weight:600; color:#A9A9A9;\">LIGHTBOX</span><span \
+style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     ui->labelBrand->setText(brandVersion + getSoftwareVersionNumber() + QString("</span></p></body></html>"));
 
-    QString service("<html><head/><body><p align=\"right\"><span style=\" font-size:28pt; font-weight:600;color:#A9A9A9;\">FOR SUPPORT, CALL CUSTOMER SERVICE AT 650-241-7900 \
-</span></p><p align=\"right\"><span style=\" font-size:32pt; font-weight:600; color:#A9A9A9;\">2011-2020 AVINGER, INC.</span></p></body></html>");
+    QString service("<html><head/><body><p align=\"right\"><span style=\" font-size:14pt; font-weight:600;color:#A9A9A9;\">FOR SUPPORT, CALL CUSTOMER SERVICE AT 650-241-7900 \
+</span></p><p align=\"right\"><span style=\" font-size:16pt; font-weight:600; color:#A9A9A9;\">2011-2020 AVINGER, INC.</span></p></body></html>");
     ui->labelService->setText(service);
 
     const int sideFrameWidth = 720;
