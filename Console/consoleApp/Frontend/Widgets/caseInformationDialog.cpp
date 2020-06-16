@@ -15,10 +15,6 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-//    setDateAndTime();
-
-//    connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
-//    m_displayTimer.start(500);
 
     connect(ui->lineEditPhysicianName, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPhysicianName);
     connect(ui->lineEditPatientId, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
@@ -89,13 +85,15 @@ void CaseInformationDialog::openKeyboardPatientId()
 
 void CaseInformationDialog::openKeyboardLocation()
 {
-    QString paramName = ui->labelLocation->text();
-    QString paramValue = ui->lineEditLocation->text();
+    if(!m_model.selectedLocation().isEmpty()){
+        QString paramName = ui->labelLocation->text();
+        QString paramValue = ui->lineEditLocation->text();
 
-    const std::vector<QString> param{paramName, paramValue};
-    auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
-    ui->lineEditLocation->setText(text);
-    m_model.setSelectedLocation(text);
+        const std::vector<QString> param{paramName, paramValue};
+        auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
+        ui->lineEditLocation->setText(text);
+        m_model.setSelectedLocation(text);
+    }
 }
 
 void CaseInformationDialog::on_pushButtonNext_clicked()
@@ -121,7 +119,6 @@ void CaseInformationDialog::enableNext(bool isNext)
 
 bool CaseInformationDialog::isFieldEmpty() const
 {
-//    return ui->lineEditPhysicianName->text() == QString("Required field");
     return !m_model.isSelectedPhysicianName();
 }
 
@@ -136,7 +133,6 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     m_selectDialog->move(xVal, y() + 440);
     m_selectDialog->show();
 
-//    m_selectDialog->update(PhysicianNameModel::instance()->physicianNames());
     m_selectDialog->populate(m_model.physicianNames());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
@@ -167,17 +163,18 @@ void CaseInformationDialog::on_pushButtonLocationDown_clicked()
     m_selectDialog->move(xVal, y() + 440);
     m_selectDialog->show();
 
-//    m_selectDialog->update(LocationModel::instance()->locations());
     m_selectDialog->populate(m_model.locations());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
-        ui->lineEditLocation->setText(m_selectDialog->selectedItem());
-        ui->lineEditLocation->setStyleSheet("");
+        const auto& location =  m_selectDialog->selectedItem();
+        ui->lineEditLocation->setText(location);
+        m_model.setSelectedLocation(location);
+//        ui->lineEditLocation->setStyleSheet("");
     } else {
         QString paramName = ui->labelLocation->text();
         const ParameterType param{paramName, "", "ADD NEW"};
-        auto text = WidgetContainer::instance()->openKeyboard(this, param, 200);
-        ui->lineEditLocation->setText(text);
+        auto location = WidgetContainer::instance()->openKeyboard(this, param, 200);
+        ui->lineEditLocation->setText(location);
+        m_model.setSelectedLocation(location);
     }
 }
-\
