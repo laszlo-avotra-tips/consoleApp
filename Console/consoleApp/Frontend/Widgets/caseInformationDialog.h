@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include <QTimer>
 
+#include "caseInformationModel.h"
+
 class SelectDialog;
 
 namespace Ui {
@@ -26,10 +28,9 @@ private slots:
     void openKeyboardLocation();
 
     void on_pushButtonNext_clicked();
-
     void on_pushButtonPhysicianNameDown_clicked();
-
     void on_pushButtonLocationDown_clicked();
+    void initDialog();
 
 private:
     void enableNext(bool isNext);
@@ -39,6 +40,8 @@ private:
     QDateTime m_now;
     QTimer m_displayTimer;
     SelectDialog* m_selectDialog{nullptr};
+
+    static CaseInformationModel m_model;
 };
 
 #endif // CASEINFORMATIONDIALOG_H

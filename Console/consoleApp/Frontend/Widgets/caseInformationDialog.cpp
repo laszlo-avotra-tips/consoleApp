@@ -3,10 +3,11 @@
 #include "Frontend/Utility/widgetcontainer.h"
 #include "consoleLineEdit.h"
 #include "selectDialog.h"
-#include "physicianNameModel.h"
-#include "locationModel.h"
 
 #include <QDateTime>
+#include <QTimer>
+
+CaseInformationModel CaseInformationDialog::m_model;
 
 CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     QDialog(parent),
@@ -14,21 +15,45 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    setDateAndTime();
-    connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
-    m_displayTimer.start(500);
+//    setDateAndTime();
+
+//    connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
+//    m_displayTimer.start(500);
+
     connect(ui->lineEditPhysicianName, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPhysicianName);
     connect(ui->lineEditPatientId, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
     connect(ui->lineEditLocation, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardLocation);
 
-    if(ui->lineEditPhysicianName->text().isEmpty()){
-        ui->pushButtonNext->setEnabled(false);
-    }
+    QTimer::singleShot(100, this,&CaseInformationDialog::initDialog );
 }
 
 CaseInformationDialog::~CaseInformationDialog()
 {
     delete ui;
+}
+
+void CaseInformationDialog::initDialog()
+{
+    if(m_model.isSelectedPhysicianName()){
+        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
+        ui->lineEditPhysicianName->setStyleSheet("");
+        ui->lineEditDateAndTime->setText(m_model.dateAndTime());
+        enableNext(true);
+        if(!m_model.patientId().isEmpty()){
+            ui->lineEditPatientId->setText(m_model.patientId());
+        }
+        if(!m_model.dateAndTime().isEmpty()){
+            ui->lineEditDateAndTime->setText(m_model.dateAndTime());
+        }
+        if(!m_model.selectedLocation().isEmpty()){
+            ui->lineEditLocation->setText(m_model.selectedLocation());
+        }
+    } else {
+        setDateAndTime();
+        connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
+        m_displayTimer.start(500);
+        enableNext(false);
+    }
 }
 
 void CaseInformationDialog::setDateAndTime()
@@ -59,6 +84,7 @@ void CaseInformationDialog::openKeyboardPatientId()
     const std::vector<QString> param{paramName, paramValue, "ENTER"};
     auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
     ui->lineEditPatientId->setText(text);
+    m_model.setPatientId(text);
 }
 
 void CaseInformationDialog::openKeyboardLocation()
@@ -69,11 +95,13 @@ void CaseInformationDialog::openKeyboardLocation()
     const std::vector<QString> param{paramName, paramValue};
     auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
     ui->lineEditLocation->setText(text);
+    m_model.setSelectedLocation(text);
 }
 
 void CaseInformationDialog::on_pushButtonNext_clicked()
 {
     m_displayTimer.stop();
+    m_model.setDateAndTime(ui->lineEditDateAndTime->text());
     accept();
 }
 
@@ -93,7 +121,8 @@ void CaseInformationDialog::enableNext(bool isNext)
 
 bool CaseInformationDialog::isFieldEmpty() const
 {
-    return ui->lineEditPhysicianName->text() == QString("Required field");
+//    return ui->lineEditPhysicianName->text() == QString("Required field");
+    return !m_model.isSelectedPhysicianName();
 }
 
 void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
@@ -107,21 +136,24 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     m_selectDialog->move(xVal, y() + 440);
     m_selectDialog->show();
 
-    m_selectDialog->update(PhysicianNameModel::instance()->physicianNames());
+//    m_selectDialog->update(PhysicianNameModel::instance()->physicianNames());
+    m_selectDialog->update(m_model.physicianNames());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
-        ui->lineEditPhysicianName->setText(PhysicianNameModel::instance()->selectedPysicianName());
+        m_model.setSelectedPhysicianName(m_selectDialog->selectedItem());
+        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
         ui->lineEditPhysicianName->setStyleSheet("");
-        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-        enableNext(isNext);
     } else {
         QString paramName = ui->labelPhysicianName->text();
         const ParameterType param{paramName, "", "ADD NEW"};
-        auto text = WidgetContainer::instance()->openKeyboard(this, param, 200);
-        ui->lineEditPhysicianName->setText(text);
-        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-        enableNext(isNext);
+        auto newName = WidgetContainer::instance()->openKeyboard(this, param, 200);
+        m_model.addPhysicianName(newName);
+        m_model.setSelectedPhysicianName(newName);
+        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
+        ui->lineEditPhysicianName->setStyleSheet("");
     }
+    const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
+    enableNext(isNext);
 }
 
 void CaseInformationDialog::on_pushButtonLocationDown_clicked()
@@ -135,10 +167,11 @@ void CaseInformationDialog::on_pushButtonLocationDown_clicked()
     m_selectDialog->move(xVal, y() + 440);
     m_selectDialog->show();
 
-    m_selectDialog->update(LocationModel::instance()->locations());
+//    m_selectDialog->update(LocationModel::instance()->locations());
+    m_selectDialog->update(m_model.locations());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
-        ui->lineEditLocation->setText(LocationModel::instance()->selectedLocation());
+        ui->lineEditLocation->setText(m_selectDialog->selectedItem());
         ui->lineEditLocation->setStyleSheet("");
     } else {
         QString paramName = ui->labelLocation->text();
@@ -147,3 +180,4 @@ void CaseInformationDialog::on_pushButtonLocationDown_clicked()
         ui->lineEditLocation->setText(text);
     }
 }
+\

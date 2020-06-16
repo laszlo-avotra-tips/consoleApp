@@ -1,6 +1,5 @@
 #include "selectDialog.h"
 #include "ui_selectDialog.h"
-#include "physicianNameModel.h"
 #include "locationModel.h"
 
 
@@ -64,9 +63,7 @@ void SelectDialog::selectItem2()
 
 void SelectDialog::selectItem(int index)
 {
-    auto name = m_selectableWidgets[index]->text();
-    PhysicianNameModel::instance()->setSelectedPysicianName(name);
-    LocationModel::instance()->setSelectedLocation(name);
+    m_selectedItem = m_selectableWidgets[index]->text();
 
     for(int i = 0; i < 3; ++i ){
         if(i == index){
@@ -77,5 +74,10 @@ void SelectDialog::selectItem(int index)
     }
 //    accept();
     QTimer::singleShot(500,this,&SelectDialog::accept);
+}
+
+QString SelectDialog::selectedItem() const
+{
+    return m_selectedItem;
 }
 

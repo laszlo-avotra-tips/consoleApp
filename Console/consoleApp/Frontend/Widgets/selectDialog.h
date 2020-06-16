@@ -5,6 +5,7 @@
 
 #include <QDialog>
 #include <QTimer>
+#include <QString>
 
 #include <vector>
 
@@ -26,6 +27,8 @@ public:
 
     void update(const QStringList& sl);
 
+    QString selectedItem() const;
+
 private slots:
     void selectItem0();
     void selectItem1();
@@ -36,7 +39,7 @@ private:
 
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
-
+    QString m_selectedItem;
 };
 
 #endif // SELECTDIALOG_H
