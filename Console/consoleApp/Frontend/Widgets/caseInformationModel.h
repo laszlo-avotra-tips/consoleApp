@@ -15,11 +15,14 @@ public:
     void setSelectedPhysicianName(const QString &selectedPhysicianName);
     bool isSelectedPhysicianName() const;
     void addPhysicianName(const QString& name);
+    void setPhysicianName(int index, const QString &name);
 
     QStringList locations() const;
 
     QString selectedLocation() const;
     void setSelectedLocation(const QString &selectedLocation);
+    void setLocation(int index, const QString &location);
+
 
     QString patientId() const;
     void setPatientId(const QString &patientId);

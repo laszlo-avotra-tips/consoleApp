@@ -30,6 +30,11 @@ void CaseInformationModel::addPhysicianName(const QString &name)
     m_physicianNames.push_back(name);
 }
 
+void CaseInformationModel::setPhysicianName(int index, const QString &name)
+{
+    m_physicianNames[index] = name;
+}
+
 QStringList CaseInformationModel::locations() const
 {
     return m_locations;
@@ -43,6 +48,11 @@ QString CaseInformationModel::selectedLocation() const
 void CaseInformationModel::setSelectedLocation(const QString &selectedLocation)
 {
     m_selectedLocation = selectedLocation;
+}
+
+void CaseInformationModel::setLocation(int index, const QString &location)
+{
+    m_locations[index] = location;
 }
 
 QString CaseInformationModel::patientId() const

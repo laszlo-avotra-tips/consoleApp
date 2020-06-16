@@ -60,12 +60,16 @@ void CaseInformationDialog::setDateAndTime()
 void CaseInformationDialog::openKeyboardPhysicianName()
 {
     if(!isFieldEmpty()){
+        const auto& list = m_model.physicianNames();
+        const auto& value = m_model.selectedPhysicianName();
+        int index = list.indexOf(value);
         QString paramName = ui->labelPhysicianName->text();
         QString paramValue = ui->lineEditPhysicianName->text();
 
         const std::vector<QString> param{paramName, paramValue};
-        auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
-        ui->lineEditPhysicianName->setText(text);
+        auto newName = WidgetContainer::instance()->openKeyboard(this, param, 400);
+        ui->lineEditPhysicianName->setText(newName);
+        m_model.setPhysicianName(index,newName);
 
         const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
         enableNext(isNext);
@@ -86,13 +90,17 @@ void CaseInformationDialog::openKeyboardPatientId()
 void CaseInformationDialog::openKeyboardLocation()
 {
     if(!m_model.selectedLocation().isEmpty()){
+        const auto& list = m_model.locations();
+        const auto& value = m_model.selectedLocation();
+        int index = list.indexOf(value);
         QString paramName = ui->labelLocation->text();
         QString paramValue = ui->lineEditLocation->text();
 
         const std::vector<QString> param{paramName, paramValue};
-        auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
-        ui->lineEditLocation->setText(text);
-        m_model.setSelectedLocation(text);
+        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, 400);
+        ui->lineEditLocation->setText(newLocation);
+        m_model.setSelectedLocation(newLocation);
+        m_model.setLocation(index, newLocation);
     }
 }
 
