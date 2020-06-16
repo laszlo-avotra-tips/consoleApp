@@ -1,6 +1,5 @@
 #include "selectDialog.h"
 #include "ui_selectDialog.h"
-#include "locationModel.h"
 
 
 SelectDialog::SelectDialog(QWidget *parent) :
@@ -29,7 +28,7 @@ SelectDialog::~SelectDialog()
     delete ui;
 }
 
-void SelectDialog::update(const QStringList &sl)
+void SelectDialog::populate(const QStringList &sl)
 {
 //    if(sl.size() > 3){
 //        ui->pushButtonScrollDown->show();

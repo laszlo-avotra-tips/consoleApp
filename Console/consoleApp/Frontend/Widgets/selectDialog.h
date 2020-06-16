@@ -25,7 +25,7 @@ public:
     explicit SelectDialog(QWidget *parent = nullptr);
     ~SelectDialog();
 
-    void update(const QStringList& sl);
+    void populate(const QStringList& sl);
 
     QString selectedItem() const;
 

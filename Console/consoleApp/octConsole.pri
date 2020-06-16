@@ -28,9 +28,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/forml300.h \
-    $$PWD/Frontend/Widgets/locationModel.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
-    $$PWD/Frontend/Widgets/physicianNameModel.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
@@ -138,9 +136,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
-    $$PWD/Frontend/Widgets/locationModel.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
-    $$PWD/Frontend/Widgets/physicianNameModel.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
