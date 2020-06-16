@@ -182,6 +182,7 @@ void CaseInformationDialog::on_pushButtonLocationDown_clicked()
         QString paramName = ui->labelLocation->text();
         const ParameterType param{paramName, "", "ADD NEW"};
         auto location = WidgetContainer::instance()->openKeyboard(this, param, 200);
+        m_model.addLocation(location);
         ui->lineEditLocation->setText(location);
         m_model.setSelectedLocation(location);
     }

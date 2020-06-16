@@ -30,11 +30,11 @@ SelectDialog::~SelectDialog()
 
 void SelectDialog::populate(const QStringList &sl)
 {
-//    if(sl.size() > 3){
-//        ui->pushButtonScrollDown->show();
-//    } else {
-//        ui->pushButtonScrollDown->hide();
-//    }
+    if(sl.size() > 3){
+        ui->pushButtonScrollDown->show();
+    } else {
+        ui->pushButtonScrollDown->hide();
+    }
 
     int index{0};
     for(auto* lineEdit : m_selectableWidgets){
