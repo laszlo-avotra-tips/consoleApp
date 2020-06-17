@@ -317,7 +317,7 @@ border-radius: 50px;
                </size>
               </property>
               <property name="text">
-               <string>CASE REVIEW &amp;&amp; EXPORT</string>
+               <string>CASE REVIEW &amp;&amp; EXPORT    </string>
               </property>
              </widget>
             </item>
@@ -339,7 +339,7 @@ border-radius: 50px;
                <string notr="true">border-top: 2px solid gray;</string>
               </property>
               <property name="text">
-               <string>PREFERENCES               </string>
+               <string>PREFERENCES                   </string>
               </property>
              </widget>
             </item>
@@ -355,7 +355,7 @@ border-radius: 50px;
                <string notr="true">border-top: 2px solid gray;</string>
               </property>
               <property name="text">
-               <string>SHUTDOWN                  </string>
+               <string>SHUTDOWN                      </string>
               </property>
              </widget>
             </item>

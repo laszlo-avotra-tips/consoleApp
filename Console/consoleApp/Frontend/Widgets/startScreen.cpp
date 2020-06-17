@@ -35,7 +35,7 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     ui->labelCopyright->setText(copyright);
 
 
-    const int sideFrameWidth = 720;
+    const int sideFrameWidth = 640;
     const int middleFrameWidth = 3240 - 2 * sideFrameWidth;
     const int middleFrameHight = 2160;
     const int frameHeight = middleFrameHight - 160;
