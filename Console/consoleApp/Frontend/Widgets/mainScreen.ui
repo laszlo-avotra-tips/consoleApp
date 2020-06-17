@@ -101,7 +101,7 @@ qproperty-flat: true;
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>50</number>
+       <number>80</number>
       </property>
       <item>
        <widget class="QPushButton" name="pushButtonMenu">
@@ -592,6 +592,9 @@ CASE</string>
            <property name="text">
             <string/>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -605,6 +608,9 @@ CASE</string>
            <property name="text">
             <string/>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -617,6 +623,9 @@ CASE</string>
            </property>
            <property name="text">
             <string>Runtime: 00:00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -640,7 +649,7 @@ CASE</string>
         <property name="styleSheet">
          <string notr="true">QPushButton{
 border: 4px solid grey; 
-border-radius: 60px;
+border-radius: 50px;
 font: 20pt &quot;Helvetica Neue&quot;;
 }</string>
         </property>
@@ -693,13 +702,13 @@ font: 20pt &quot;Helvetica Neue&quot;;
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>120</height>
+             <height>100</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>120</height>
+             <height>100</height>
             </size>
            </property>
            <property name="text">
@@ -718,13 +727,13 @@ font: 20pt &quot;Helvetica Neue&quot;;
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>120</height>
+             <height>100</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>120</height>
+             <height>100</height>
             </size>
            </property>
            <property name="text">
@@ -743,13 +752,13 @@ font: 20pt &quot;Helvetica Neue&quot;;
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>120</height>
+             <height>100</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>120</height>
+             <height>100</height>
             </size>
            </property>
            <property name="text">
