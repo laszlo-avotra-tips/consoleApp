@@ -527,7 +527,7 @@ CASE</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <property name="spacing">
-       <number>0</number>
+       <number>20</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -853,6 +853,16 @@ font: 20pt &quot;Helvetica Neue&quot;;
           <width>150</width>
           <height>150</height>
          </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>MENU</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
