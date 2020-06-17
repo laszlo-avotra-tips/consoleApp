@@ -19,14 +19,14 @@ OpacScreen::~OpacScreen()
 
 void OpacScreen::init()
 {
-    int duration_ms=1500;
+    int duration_ms=500;
     QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
     QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
     QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
 
     setGraphicsEffect(showing_effect);
-    animation->setStartValue(1.0);
-    animation->setEndValue(0.3);
+    animation->setStartValue(1);
+    animation->setEndValue(0.5);
     animation->setDuration(duration_ms);
     group->addAnimation(animation);
 }
