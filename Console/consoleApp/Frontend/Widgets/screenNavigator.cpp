@@ -24,7 +24,7 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
 
     qDebug() << "page count = " << count;
 
-    widgets->gotoPage("startScreen");
+    widgets->gotoScreen("startScreen");
 }
 
 ScreenNavigator::~ScreenNavigator()

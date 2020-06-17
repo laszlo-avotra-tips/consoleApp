@@ -21,8 +21,8 @@ public:
     static WidgetContainer* instance();
     bool registerWidget(const QString& name, QWidget* wid);
     void setStackedWidget(QStackedWidget* sw);
-    bool gotoPage(const QString& name);
-    QWidget* getPage(const QString& name);
+    bool gotoScreen(const QString& name);
+    QWidget* getScreen(const QString& name);
     QDialog* getDialog(const QString& name, QWidget* parent);
     std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name);
     QString openKeyboard(QWidget* parent, const ParameterType& param, int yOffset = 0);

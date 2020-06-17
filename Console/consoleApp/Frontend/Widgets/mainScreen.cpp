@@ -63,7 +63,7 @@ MainScreen::MainScreen(QWidget *parent)
 //    ui->labelDevice->hide();
 //    ui->labelRunTime->hide();
 
-    auto wid = WidgetContainer::instance()->getPage("l250Frontend");
+    auto wid = WidgetContainer::instance()->getScreen("l250Frontend");
 
     frontend* fw = dynamic_cast<frontend*>(wid);
     if(fw)
@@ -175,7 +175,7 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
-    WidgetContainer::instance()->gotoPage("startScreen");
+    WidgetContainer::instance()->gotoScreen("startScreen");
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -246,7 +246,7 @@ void MainScreen::openCaseInformationDialog()
     }
     else {
         qDebug() << "Cancelled";
-        WidgetContainer::instance()->gotoPage("startScreen");
+        WidgetContainer::instance()->gotoScreen("startScreen");
     }
 }
 

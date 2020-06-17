@@ -87,7 +87,7 @@ void StartScreen::on_pushButtonShutdown_clicked()
 
 void StartScreen::on_pushButtonStart_clicked()
 {
-    WidgetContainer::instance()->gotoPage("l250Frontend");
+    WidgetContainer::instance()->gotoScreen("l250Frontend");
 }
 
 void StartScreen::showEvent(QShowEvent *se)

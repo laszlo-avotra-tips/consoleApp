@@ -34,7 +34,7 @@ void WidgetContainer::setStackedWidget(QStackedWidget *sw)
     m_stackedWidget = sw;
 }
 
-bool WidgetContainer::gotoPage(const QString &name)
+bool WidgetContainer::gotoScreen(const QString &name)
 {
     bool success{false};
     auto it = m_widgetContainer.find(name);
@@ -50,7 +50,7 @@ bool WidgetContainer::gotoPage(const QString &name)
     return success;
 }
 
-QWidget *WidgetContainer::getPage(const QString &name)
+QWidget *WidgetContainer::getScreen(const QString &name)
 {
     QWidget* retVal{nullptr};
 

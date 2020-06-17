@@ -4,6 +4,7 @@
 #include "mainScreen.h"
 #include "forml300.h"
 #include "Frontend/Screens/frontend.h"
+#include "opacScreen.h"
 
 #include <logger.h>
 

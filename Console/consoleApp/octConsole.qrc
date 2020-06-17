@@ -45,5 +45,6 @@
         <file alias="condensUp">Frontend/Resources/L300condenseUp.png</file>
         <file alias="copyrightWhite">Frontend/Resources/Copyright logo White.001.png</file>
         <file alias="copyright">Frontend/Resources/copyright-grey.png</file>
+        <file alias="octOutline">Frontend/Resources/Grey OCT Outline.001.png</file>
     </qresource>
 </RCC>

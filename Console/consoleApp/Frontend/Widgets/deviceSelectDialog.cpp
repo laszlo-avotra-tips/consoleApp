@@ -99,7 +99,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
     deviceSettings &dev = deviceSettings::Instance();
     int selection = ui->listWidgetAtherectomy->currentRow();
     dev.setCurrentDevice(selection);
-    QWidget* widget = WidgetContainer::instance()->getPage("l250Frontend");
+    QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
       fw->showFullScreen();
