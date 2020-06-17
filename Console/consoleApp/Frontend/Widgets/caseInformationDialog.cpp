@@ -59,7 +59,7 @@ void CaseInformationDialog::setDateAndTime()
 
 void CaseInformationDialog::openKeyboardPhysicianName()
 {
-    if(!isFieldEmpty()){
+    if(m_model.isSelectedPhysicianName()){
         const auto& list = m_model.physicianNames();
         const auto& value = m_model.selectedPhysicianName();
         int index = list.indexOf(value);
@@ -73,6 +73,8 @@ void CaseInformationDialog::openKeyboardPhysicianName()
 
         const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
         enableNext(isNext);
+    } else {
+        emit ui->pushButtonPhysicianNameDown->clicked();
     }
 }
 
@@ -89,7 +91,7 @@ void CaseInformationDialog::openKeyboardPatientId()
 
 void CaseInformationDialog::openKeyboardLocation()
 {
-    if(!m_model.selectedLocation().isEmpty()){
+    if(m_model.isSelectedLocation()){
         const auto& list = m_model.locations();
         const auto& value = m_model.selectedLocation();
         int index = list.indexOf(value);
@@ -101,6 +103,8 @@ void CaseInformationDialog::openKeyboardLocation()
         ui->lineEditLocation->setText(newLocation);
         m_model.setSelectedLocation(newLocation);
         m_model.setLocation(index, newLocation);
+    } else {
+        emit ui->pushButtonLocationDown->clicked();
     }
 }
 

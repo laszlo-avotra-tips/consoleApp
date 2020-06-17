@@ -21,6 +21,7 @@ public:
 
     QString selectedLocation() const;
     void setSelectedLocation(const QString &selectedLocation);
+    bool isSelectedLocation() const;
     void addLocation(const QString& location);
     void setLocation(int index, const QString &location);
 

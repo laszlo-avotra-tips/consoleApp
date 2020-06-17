@@ -50,6 +50,11 @@ void CaseInformationModel::setSelectedLocation(const QString &selectedLocation)
     m_selectedLocation = selectedLocation;
 }
 
+bool CaseInformationModel::isSelectedLocation() const
+{
+    return !m_selectedLocation.isEmpty();
+}
+
 void CaseInformationModel::addLocation(const QString &location)
 {
     m_locations.push_back(location);
