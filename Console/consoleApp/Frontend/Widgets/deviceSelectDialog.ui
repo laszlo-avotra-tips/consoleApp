@@ -51,10 +51,6 @@ border-bottom: 2px solid grey;
 font: 30pt &quot;Helvetica Neue&quot;;
 font-weight: 600
 }
-QFrame#frame{
-background-color:#262626;
-border-radius: 10px;
-}
 QFrame#frameDone{
 background-color:#262626;
 border-radius: 10px;

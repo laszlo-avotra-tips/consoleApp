@@ -86,7 +86,7 @@ void DeviceSelectDialog::populateList()
          * Qt adds items to the list widget.
          */
        QListWidgetItem *li = new QListWidgetItem(
-//                   QIcon( QPixmap::fromImage( d->getIcon() ) ),
+                   QIcon( QPixmap::fromImage( d->getIcon() ) ),
                    d->getSplitDeviceName(),
                    ui->listWidgetAtherectomy,
                    0 );

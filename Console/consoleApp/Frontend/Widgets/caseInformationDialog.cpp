@@ -119,13 +119,9 @@ void CaseInformationDialog::enableNext(bool isNext)
 {
     ui->pushButtonNext->setEnabled(isNext);
     if(isNext){
-//        ui->pushButtonNext->setStyleSheet("QPushButton{background-color:#F5C400;}");
-        auto& button = ui->pushButtonNext;
-        QPalette pal = button->palette();
-        pal.setColor(QPalette::Button, QColor(245,196,0));
-        button->setAutoFillBackground(true);
-        button->setPalette(pal);
-        button->update();
+        ui->frame->setStyleSheet("background-color:#F5C400;");
+    } else {
+        ui->frame->setStyleSheet("background-color:#262626;");
     }
 }
 

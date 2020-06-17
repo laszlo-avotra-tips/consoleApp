@@ -47,7 +47,7 @@ background-color:#262626;
 border-radius:10px;
 }
 QPushButton{
-font:16pt;
+font:12pt;
 color:black;
 }
 QDialog{
