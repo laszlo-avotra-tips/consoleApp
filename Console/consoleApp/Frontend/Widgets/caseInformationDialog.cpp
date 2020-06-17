@@ -69,6 +69,7 @@ void CaseInformationDialog::openKeyboardPhysicianName()
         const std::vector<QString> param{paramName, paramValue};
         auto newName = WidgetContainer::instance()->openKeyboard(this, param, 400);
         ui->lineEditPhysicianName->setText(newName);
+        m_model.setSelectedPhysicianName(newName);
         m_model.setPhysicianName(index,newName);
 
         const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
