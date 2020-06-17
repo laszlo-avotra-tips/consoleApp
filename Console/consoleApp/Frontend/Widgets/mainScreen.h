@@ -13,6 +13,7 @@
 
 class frontend;
 class liveScene;
+class OpacScreen;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainScreen; }
@@ -75,5 +76,6 @@ private:
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
+    OpacScreen* m_opacScreen{nullptr};
 };
 #endif // MAINSCREEN_H

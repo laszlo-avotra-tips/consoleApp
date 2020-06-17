@@ -8,6 +8,7 @@
 #include "deviceSettings.h"
 #include "daqfactory.h"
 #include <logger.h>
+#include "opacScreen.h"
 
 
 #include <QDebug>
@@ -73,6 +74,9 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_updatetimeTimer.start(500);
     connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
+
+    m_opacScreen = new OpacScreen(this);
+    m_opacScreen->show();
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -200,7 +204,7 @@ void MainScreen::setDeviceLabel()
     deviceSettings &dev = deviceSettings::Instance();
     const QString name{dev.getCurrentDeviceTitle()};
     ui->labelDevice->setText(name);
-//    setCurrentTime();
+    m_opacScreen->hide();
     m_runTime.start();
     updateTime();
 }
