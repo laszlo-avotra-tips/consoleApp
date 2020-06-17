@@ -124,6 +124,21 @@ const QString &deviceSettings::getCurrentSplitDeviceName() const
     }
 }
 
+QString deviceSettings::getCurrentDeviceTitle() const
+{
+    QString title;
+    if ( currentDevice >= 0 )
+    {
+        auto device = deviceList.at( currentDevice );
+        auto deviceName = device->getDeviceName();
+        QStringList words = deviceName.split(" ");
+        if(words.size() == 3){
+            title = QString("%1 %2").arg(words[0]).arg(words[1]);
+        }
+    }
+    return title;
+}
+
 /*
  * loadDevice
  *

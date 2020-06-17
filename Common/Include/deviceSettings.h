@@ -144,6 +144,7 @@ public:
 
     const QString& getCurrentDeviceName( void ) const;
     const QString& getCurrentSplitDeviceName( void ) const;
+    QString getCurrentDeviceTitle( void ) const;
 
     QString getFileSystemSafeDeviceName( void );
 

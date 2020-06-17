@@ -198,7 +198,7 @@ void MainScreen::setDeviceLabel()
     ui->labelRunTime->show();
 
     deviceSettings &dev = deviceSettings::Instance();
-    const QString name{dev.getCurrentSplitDeviceName()};
+    const QString name{dev.getCurrentDeviceTitle()};
     ui->labelDevice->setText(name);
 //    setCurrentTime();
     m_runTime.start();
