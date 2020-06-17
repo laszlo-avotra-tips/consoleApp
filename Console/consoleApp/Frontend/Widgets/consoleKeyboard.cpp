@@ -66,6 +66,7 @@ void ConsoleKeyboard::handleDelete()
        target->setText(param.remove(lastPosition,1));
     }
     ui->lineEditParam->setFocus();
+    highlightEnter();
 }
 
 void ConsoleKeyboard::handleSpace()
@@ -86,6 +87,7 @@ void ConsoleKeyboard::handleNumbers(const QString& addText)
         ui->lineEditParam->setText(val);
     }
     ui->lineEditParam->setFocus();
+    highlightEnter();
 }
 
 void ConsoleKeyboard::handleLetters(const QString &text)
@@ -97,6 +99,7 @@ void ConsoleKeyboard::handleLetters(const QString &text)
         toggleCap();
         m_isShift = false;
     }
+    highlightEnter();
 }
 
 void ConsoleKeyboard::initButtonContainers()
@@ -232,6 +235,11 @@ void ConsoleKeyboard::pushButtonDisabled(QPushButton *button)
 {
     auto txt = button->text();
     button->setText(txt.toLower());
+}
+
+void ConsoleKeyboard::highlightEnter()
+{
+    ui->pushButton_enter->setStyleSheet("background-color: rgb(245,196,0); color: black");
 }
 
 void ConsoleKeyboard::handleCapsLock(bool checked)
