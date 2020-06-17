@@ -1822,6 +1822,11 @@ void frontend::setIDAQ(IDAQ *object)
     startDAQprepareView();
 }
 
+void frontend::showSpeed(bool isShown)
+{
+    m_mainWindow->showSpeed(isShown);
+}
+
 /*
  * shutdownHardware
  */

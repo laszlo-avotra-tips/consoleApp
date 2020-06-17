@@ -65,6 +65,7 @@ public:
     void updateDeviceLabel();
 
     void setIDAQ(IDAQ* object);
+    void showSpeed(bool isShown);
 
 public slots:
     // methods to start/stop the data consumer thread

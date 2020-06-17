@@ -29,8 +29,8 @@ public:
     bool isVisible() const;
     void setScene(liveScene* scene);
 
-
     void setDeviceLabel();
+    void showSpeed(bool isShown);
 
 private slots:
     void on_pushButtonFlip_clicked();

@@ -205,6 +205,12 @@ void MainScreen::setDeviceLabel()
     updateTime();
 }
 
+void MainScreen::showSpeed(bool isShown)
+{
+    ui->frameSpeed->setVisible(isShown);
+    ui->labelLive->setStyleSheet("color: green;");
+}
+
 void MainScreen::on_pushButtonSettings_clicked()
 {
     hide();

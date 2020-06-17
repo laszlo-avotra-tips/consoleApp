@@ -104,6 +104,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
     if(fw){
       fw->showFullScreen();
       fw->updateDeviceLabel();
+      fw->showSpeed(false);
       startDaq(fw);
     }
 }
