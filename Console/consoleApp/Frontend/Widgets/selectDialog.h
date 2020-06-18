@@ -25,7 +25,7 @@ public:
     explicit SelectDialog(QWidget *parent = nullptr);
     ~SelectDialog();
 
-    void populate(const QStringList& sl);
+    void populate(const QStringList& sl, const QString& selected);
 
     QString selectedItem() const;
 
@@ -33,12 +33,15 @@ private slots:
     void selectItem0();
     void selectItem1();
     void selectItem2();
+    void scrollDown();
 
 private:
     void selectItem(int index);
 
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
+    QStringList m_items;
+    QStringList m_itemsInView;
     QString m_selectedItem;
 };
 

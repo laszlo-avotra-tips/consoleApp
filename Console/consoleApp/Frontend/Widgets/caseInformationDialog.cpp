@@ -142,7 +142,7 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     m_selectDialog->move(xVal, y() + 440);
     m_selectDialog->show();
 
-    m_selectDialog->populate(m_model.physicianNames());
+    m_selectDialog->populate(m_model.physicianNames(), m_model.selectedPhysicianName());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
         m_model.setSelectedPhysicianName(m_selectDialog->selectedItem());
@@ -172,7 +172,7 @@ void CaseInformationDialog::on_pushButtonLocationDown_clicked()
     m_selectDialog->move(xVal, y() + 440);
     m_selectDialog->show();
 
-    m_selectDialog->populate(m_model.locations());
+    m_selectDialog->populate(m_model.locations(), m_model.selectedLocation());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
         const auto& location =  m_selectDialog->selectedItem();
