@@ -6,6 +6,9 @@
 
 #include <QDateTime>
 #include <QTimer>
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
 
 CaseInformationModel CaseInformationDialog::m_model;
 
@@ -30,6 +33,17 @@ CaseInformationDialog::~CaseInformationDialog()
 
 void CaseInformationDialog::initDialog()
 {
+    int duration_ms=500;
+    QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
+    QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+
+    setGraphicsEffect(showing_effect);
+    animation->setStartValue(0);
+    animation->setEndValue(0.9);
+    animation->setDuration(duration_ms);
+    group->addAnimation(animation);
+    group->start();
     if(m_model.isSelectedPhysicianName()){
         ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
         ui->lineEditPhysicianName->setStyleSheet("");
@@ -67,7 +81,7 @@ void CaseInformationDialog::openKeyboardPhysicianName()
         QString paramValue = ui->lineEditPhysicianName->text();
 
         const std::vector<QString> param{paramName, paramValue};
-        auto newName = WidgetContainer::instance()->openKeyboard(this, param, 400);
+        auto newName = WidgetContainer::instance()->openKeyboard(this, param, 410);
         ui->lineEditPhysicianName->setText(newName);
         m_model.setSelectedPhysicianName(newName);
         m_model.setPhysicianName(index,newName);
@@ -85,7 +99,7 @@ void CaseInformationDialog::openKeyboardPatientId()
     QString paramValue = ui->lineEditPatientId->text();
 
     const std::vector<QString> param{paramName, paramValue, "ENTER"};
-    auto text = WidgetContainer::instance()->openKeyboard(this, param, 400);
+    auto text = WidgetContainer::instance()->openKeyboard(this, param, 510);
     ui->lineEditPatientId->setText(text);
     m_model.setPatientId(text);
 }
@@ -100,7 +114,7 @@ void CaseInformationDialog::openKeyboardLocation()
         QString paramValue = ui->lineEditLocation->text();
 
         const std::vector<QString> param{paramName, paramValue};
-        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, 400);
+        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, 610);
         ui->lineEditLocation->setText(newLocation);
         m_model.setSelectedLocation(newLocation);
         m_model.setLocation(index, newLocation);
@@ -139,7 +153,7 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     auto dw = m_selectDialog->width();
     int xVal = x() + pw/2 - dw/2 + 300;
 
-    m_selectDialog->move(xVal, y() + 440);
+    m_selectDialog->move(xVal, y() + 430);
     m_selectDialog->show();
 
     m_selectDialog->populate(m_model.physicianNames(), m_model.selectedPhysicianName());
@@ -169,7 +183,7 @@ void CaseInformationDialog::on_pushButtonLocationDown_clicked()
     auto dw = m_selectDialog->width();
     int xVal = x() + pw/2 - dw/2 + 300;
 
-    m_selectDialog->move(xVal, y() + 440);
+    m_selectDialog->move(xVal, y() + 630);
     m_selectDialog->show();
 
     m_selectDialog->populate(m_model.locations(), m_model.selectedLocation());

@@ -26,7 +26,8 @@ void OpacScreen::init()
 
     setGraphicsEffect(showing_effect);
     animation->setStartValue(1);
-    animation->setEndValue(0.5);
+    animation->setEndValue(0.65);
     animation->setDuration(duration_ms);
     group->addAnimation(animation);
+    group->start();
 }

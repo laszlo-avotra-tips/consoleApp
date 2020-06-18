@@ -8,6 +8,10 @@
 #include "Frontend/Screens/frontend.h"
 #include <daqfactory.h>
 
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
+
 DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DeviceSelectDialog)
@@ -26,6 +30,17 @@ DeviceSelectDialog::~DeviceSelectDialog()
 
 void DeviceSelectDialog::initDialog()
 {
+    int duration_ms=500;
+    QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
+    QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+
+    setGraphicsEffect(showing_effect);
+    animation->setStartValue(0);
+    animation->setEndValue(0.9);
+    animation->setDuration(duration_ms);
+    group->addAnimation(animation);
+    group->start();
     populateList();
 //    connect(ui->listWidgetAtherectomy, SIGNAL(itemClicked(QListWidgetItem *)),   this, SIGNAL(completeChanged()));
 //    connect(ui->listWidgetAtherectomy, SIGNAL(itemActivated(QListWidgetItem *)), this, SIGNAL(completeChanged()));
@@ -90,7 +105,7 @@ void DeviceSelectDialog::populateList()
                    d->getSplitDeviceName(),
                    ui->listWidgetAtherectomy,
                    0 );
-        li->setTextAlignment( Qt::AlignHCenter );
+        li->setTextAlignment( Qt::AlignLeft );
     }
 }
 
