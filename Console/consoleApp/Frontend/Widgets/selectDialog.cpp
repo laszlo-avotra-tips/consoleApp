@@ -96,27 +96,29 @@ void SelectDialog::scrollDown()
     auto indexOfLastInView = m_items.indexOf(lastInView);
     auto maxIndexInView = m_items.size() - 1;
     if(indexOfLastInView == maxIndexInView){
-        m_itemsInView[0] = m_items[0];
-        m_itemsInView[1] = m_items[maxIndexInView - 1];
-        m_itemsInView[2] = m_items[maxIndexInView - 2];
+        m_itemsInView[0] = m_items[maxIndexInView - 1];
+        m_itemsInView[1] = m_items[maxIndexInView];
+        m_itemsInView[2] = m_items[0];
     }else if (indexOfLastInView > 0){
         m_itemsInView[0] = m_items[indexOfLastInView - 1];
         m_itemsInView[1] = m_items[indexOfLastInView];
         m_itemsInView[2] = m_items[indexOfLastInView + 1];
     } else if(indexOfLastInView == 0){
-        m_itemsInView[0] = m_items[0];
-        m_itemsInView[1] = m_items[1];
-        m_itemsInView[2] = m_items[2];
+        m_itemsInView[0] = m_items[maxIndexInView];
+        m_itemsInView[1] = m_items[0];
+        m_itemsInView[2] = m_items[1];
     }
 
     int index{0};
     for(auto* lineEdit : m_selectableWidgets){
         if(m_items.size()>index){
             lineEdit->setText(m_itemsInView[index]);
+            lineEdit->setStyleSheet("color:white");
         }
         ++index;
     }
     auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
+    LOG2(m_selectedItem, highlighted)
     if(highlighted >= 0 && highlighted < 3){
         m_selectableWidgets[highlighted]->setStyleSheet("color:#F5C400;");
     }
