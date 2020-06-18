@@ -271,7 +271,8 @@ void advancedView::handleDeviceChange()
     ui.evoaControlWidget->init( NumEvoaChunks, float(evoa->getCurrVoltage()), "Imaging Strength", evoa->getMinVal(), evoa->getMaxVal() );
 
     // Set the state of the UI depending on the device selected
-    if( devSettings.current()->isHighSpeed() )
+//    if( devSettings.current()->isHighSpeed() )
+    if(true)
     {
 //lcv
 //        ui.fftDataPlot->clearData();

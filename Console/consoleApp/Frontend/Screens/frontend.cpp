@@ -1311,7 +1311,8 @@ void frontend::on_recordLoopButton_clicked()
                                  clipTimestamp.toTime_t(),
                                  viewStr,
                                  dev.current()->getDeviceName(),
-                                 dev.current()->isHighSpeed() );
+//                                 dev.current()->isHighSpeed() );
+                                 true );
 
         preventFastRecordingsTimer.start( MinRecordingLength_ms );
         preventFastRecordings = true;
@@ -1518,7 +1519,8 @@ void frontend::closePlayback()
 void frontend::configureControlsForCurrentDevice()
 {
     deviceSettings &dev = deviceSettings::Instance();
-    if( dev.current()->isHighSpeed() )
+//    if( dev.current()->isHighSpeed() )
+    if(true)
     {
         ui.scanSyncButton->setDisabled( true );
         ui.imagingDepthWidget->enableControls( true );
@@ -2508,7 +2510,8 @@ void frontend::on_annotateImagePushButton_clicked()
     {
         // only (re-)enable scan sync for Low Speed devices
         deviceSettings &dev = deviceSettings::Instance();
-        ui.scanSyncButton->setEnabled( !dev.current()->isHighSpeed() );
+//        ui.scanSyncButton->setEnabled( !dev.current()->isHighSpeed() );
+         ui.scanSyncButton->setEnabled(false);
         if( !isZoomModeOn )
         {
             ui.liveGraphicsView->setToolTip( defaultSceneToolTip );

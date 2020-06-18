@@ -298,7 +298,7 @@ void DaqDataConsumer::setupEncoder( videoEncoder **cdc, const QString VidFilenam
     double fps = 0.0;
 
     deviceSettings &devSettings = deviceSettings::Instance();
-    bool isHighSpeedDevice = ( devSettings.current()->isHighSpeed() );
+    bool isHighSpeedDevice = true;//( devSettings.current()->isHighSpeed() );
 
     if( isHighSpeedDevice )
     {

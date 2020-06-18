@@ -1,4 +1,4 @@
-/*
+﻿/*
  * deviceSettings.h
  *
  * Device specific settings object. Contains physical and 
@@ -31,42 +31,69 @@ public:
         Ocelaris
     };
 
-    /*
-     * Default values for a new device
-     */
-    device( QString     inDeviceName,
-            int         inInternalImagingMask_px   = 0,
-            int         inCatheterRadius_um        = 0,
-            int         inLinesPerRevolution_cnt   = 1024,  // magic
-            int         inRevolutionsPerMin        = 500,   // magic
-            int         inALineLengthNormal_px     = 512,   // magic
-            int         inALineLengthDeep_px       = 1024,  // magic
-            float       inImagingDepthNormal_mm    = 3.3,   // magic
-            float       inImagingDepthDeep_mm      = 6.0,   // magic
-            int         inClockingEnabled          = 1,
-            QByteArray  inClockingGain             = "25",  // magic
-            QByteArray  inClockingOffset           = "400", // magic
-            QByteArray  inTorqueLimit              = "45",
-            QByteArray  inTimeLimit                = "1",
-            int         inLimitBlinkEnabled        = -1,
-//            QByteArray  inReverseAngle             = "0",
-            int         inMeasurementVersion       = 0,
-            QByteArray  inSpeed1                   = "1000",
-            QByteArray  inSpeed2                   = "1500",
-            QByteArray  inSpeed3                   = "2000",
-            QString     inDisclaimerText           = InvestigationalDeviceWarning,
-            DeviceType  inDeviceType               = LowSpeed,
-            QImage     *inIcon                     = NULL );
+/*
+ * Default values for a new device
+ */
+  device( QString     inDeviceName,
+          QByteArray  inCatheterType             = "ATH",
+          int         inCatheterLength           = 100,
+          int         inCatheterRadius_um        = 0,
+          int         inInternalImagingMask_px   = 0,
+          int         inBidirectional            = 1,
+          int         inNumberOfSpeeds           = 1,
+          int         inRevolutionsPerMin1       = 600,
+          int         inRevolutionsPerMin2       = 800,
+          int         inRevolutionsPerMin3       = 1000,
+          int         inClockingEnabled          = 1,
+          QByteArray  inClockingGain             = "25",
+          QByteArray  inClockingOffset           = "400",
+          QByteArray  inTorqueLimit              = "45",
+          QByteArray  inTimeLimit                = "1",
+          int         inMeasurementVersion       = 0,
+          QString     inDisclaimerText           = InvestigationalDeviceWarning,
+          QImage     *inIcon                     = NULL )
+    {
+        deviceName               = inDeviceName;
+        catheterType             = inCatheterType;
+        catheterLength           = inCatheterLength;
+        catheterRadius_um        = inCatheterRadius_um;
+        internalImagingMask_px   = inInternalImagingMask_px;
+        biDirectional            = inBidirectional;
+        numberOfSpeeds           = inNumberOfSpeeds;
+        revolutionsPerMin1       = inRevolutionsPerMin1;
+        revolutionsPerMin2       = inRevolutionsPerMin2;
+        revolutionsPerMin3       = inRevolutionsPerMin3;
+        aLineLengthNormal_px     = 512;
+        aLineLengthDeep_px       = 1024;
+        imagingDepthNormal_mm    = (float) 3.18;
+        imagingDepthDeep_mm      = (float) 6.36;
+        clockingEnabled          = inClockingEnabled;
+        clockingGain             = inClockingGain;
+        clockingOffset           = inClockingOffset;
+        torqueLimit              = inTorqueLimit;
+        timeLimit                = inTimeLimit;
+        disclaimerText           = inDisclaimerText;
+        measurementVersion       = inMeasurementVersion;
+        icon                     = inIcon;
+        pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
+        pixelsPerUm              = pixelsPerMm / (float)1000;
+    }
 
-    ~device();
+    ~device()
+    {
+        if( icon != NULL )
+        {
+            delete icon;
+        }
+    }
 
-    const QString& getDeviceName(void) const;
-    const QString& getSplitDeviceName(void) const;
+    QString getDeviceName(void)           { return deviceName; }
+    const QString &getSplitDeviceName() const;
+    QString getCatheterType(void)         { return catheterType; }
     int getInternalImagingMask_px(void)   { return internalImagingMask_px; }
     int getCatheterRadius_px(void)        { return ( catheterRadius_um * pixelsPerUm ); }
     int getCatheterRadius_um(void)        { return catheterRadius_um; }
-    int getLinesPerRevolution(void)       { return linesPerRevolution_cnt; }
-    int getRevolutionsPerMin(void)        { return revolutionsPerMin; }
+    int getRevolutionsPerMin(void)        { return revolutionsPerMin1; }
     int getALineLengthNormal_px(void)     { return aLineLengthNormal_px; }
     int getALineLengthDeep_px(void)       { return aLineLengthDeep_px; }
     int getMeaurementVersion(void)        { return measurementVersion; }
@@ -75,17 +102,10 @@ public:
     QByteArray getClockingOffset(void)    { return clockingOffset; }
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
     QByteArray getTimeLimit(void)         { return timeLimit; }
-    int getLimitBlinkEnabled(void)        { return limitBlinkEnabled; }
-//    QByteArray getReverseAngle(void)      { return reverseAngle; }
     float getImagingDepthNormal_mm(void)  { return imagingDepthNormal_mm; }
     float getImagingDepthDeep_mm(void)    { return imagingDepthDeep_mm; }
     QImage getIcon(void)                  { return icon->copy(); }
-    DeviceType getDeviceType(void)        { return deviceType; }
-    bool isHighSpeed(void)                { return ((deviceType == HighSpeed) || (deviceType == Ocelaris)); }
-    bool isOcelaris(void)                 { return (deviceType == Ocelaris); }
-    QByteArray getSpeed1(void)            { return Speed1; }
-    QByteArray getSpeed2(void)            { return Speed2; }
-    QByteArray getSpeed3(void)            { return Speed3; }
+    bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }
     void setInternalImagingMask_px(int mask)  { internalImagingMask_px = mask; }
     QImage    *icon;
@@ -97,10 +117,15 @@ private:
     QString    deviceName;
     QString    splitDeviceName;
 
-    int        internalImagingMask_px;
+    QByteArray catheterType;
+    int        catheterLength;
     int        catheterRadius_um;
-    int        revolutionsPerMin;
-    int        linesPerRevolution_cnt;
+    int        internalImagingMask_px;
+    int        biDirectional;
+    int        numberOfSpeeds;
+    int        revolutionsPerMin1;
+    int        revolutionsPerMin2;
+    int        revolutionsPerMin3;
     int        aLineLengthNormal_px;
     int        aLineLengthDeep_px;
     int        measurementVersion;
@@ -109,17 +134,11 @@ private:
     QByteArray clockingOffset;
     QByteArray torqueLimit;
     QByteArray timeLimit;
-    int        limitBlinkEnabled;
-//    QByteArray reverseAngle;
     float      imagingDepthNormal_mm;
     float      imagingDepthDeep_mm;
     float      pixelsPerMm;
     float      pixelsPerUm;
-    QByteArray Speed1;
-    QByteArray Speed2;
-    QByteArray Speed3;
     QString    disclaimerText;
-    DeviceType deviceType;
 };
 
 /*

@@ -121,7 +121,8 @@ void depthSetting::calculateReticles( void )
     // Make sure a device exists before calling member functions.
     if( dev.current() )
     {
-        if( dev.current()->isHighSpeed() )
+//        if( dev.current()->isHighSpeed() )
+        if( true )
         {
             /* XXX MAGIC:
              *  - 0.5 is 1/2
