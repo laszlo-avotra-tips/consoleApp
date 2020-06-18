@@ -30,7 +30,7 @@ DeviceSelectDialog::~DeviceSelectDialog()
 
 void DeviceSelectDialog::initDialog()
 {
-    int duration_ms=500;
+    int duration_ms=1000;
     QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
     QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
     QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
