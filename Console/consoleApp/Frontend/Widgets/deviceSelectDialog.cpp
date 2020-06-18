@@ -16,7 +16,7 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     setWindowFlags(Qt::SplashScreen);
     ui->listWidgetAtherectomy->setDragEnabled(false);
     ui->listWidgetCto->setDragEnabled(false);
-    init();
+    initDialog();
 }
 
 DeviceSelectDialog::~DeviceSelectDialog()
@@ -24,7 +24,7 @@ DeviceSelectDialog::~DeviceSelectDialog()
     delete ui;
 }
 
-void DeviceSelectDialog::init()
+void DeviceSelectDialog::initDialog()
 {
     populateList();
 //    connect(ui->listWidgetAtherectomy, SIGNAL(itemClicked(QListWidgetItem *)),   this, SIGNAL(completeChanged()));

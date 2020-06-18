@@ -20,7 +20,7 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     connect(ui->lineEditPatientId, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
     connect(ui->lineEditLocation, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardLocation);
 
-    QTimer::singleShot(100, this,&CaseInformationDialog::initDialog );
+    initDialog();
 }
 
 CaseInformationDialog::~CaseInformationDialog()

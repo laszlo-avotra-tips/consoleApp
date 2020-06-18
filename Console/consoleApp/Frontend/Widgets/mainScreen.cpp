@@ -245,7 +245,6 @@ void MainScreen::openCaseInformationDialog()
     }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
-//        QTimer::singleShot(100,this, &MainScreen::openGreenDialog);
         openDeviceSelectDialog();
     }
     else {
@@ -262,7 +261,6 @@ void MainScreen::openDeviceSelectDialog()
         qDebug() << "Accepted";
     } else {
         qDebug() << "Cancelled";
-//        QTimer::singleShot(100,this, &MainScreen::openMainWindowDialog);
         openCaseInformationDialog();
     }
 }

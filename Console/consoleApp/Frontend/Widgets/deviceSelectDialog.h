@@ -18,7 +18,7 @@ public:
     explicit DeviceSelectDialog(QWidget *parent = nullptr);
     ~DeviceSelectDialog();
 
-    void init( void );
+    void initDialog( void );
     bool isComplete() const;
 
 protected:
