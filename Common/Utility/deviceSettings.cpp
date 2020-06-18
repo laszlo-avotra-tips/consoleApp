@@ -218,12 +218,12 @@ bool deviceSettings::loadDevice( QString deviceFile )
              * unknown device. This ensures that the device will be on the
              * selection list.
              */
-//            QImage *d1Img = new QImage;
-//            if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
-//            {
-//                qDebug() << "Failed loading icon";
-//                //d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
-//            }
+            QImage *d1Img = new QImage;
+            if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
+            {
+                qDebug() << "Failed loading icon";
+                //d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
+            }
 
             device *d1 = new device( e.attribute( "deviceName", "" ),
                                      e.attribute( "catheterType", "ATH" ).toLatin1(),
@@ -242,7 +242,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                      e.attribute( "timeLimit", "1" ).toLatin1(),
                                      e.attribute( "measurementVersion", "0" ).toInt(),
                                      e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
-                                     NULL );    // d1Img
+                                     d1Img );    // d1Img
             deviceList.append( d1 );
         }
         // close the XML file

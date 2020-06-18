@@ -7,6 +7,8 @@
 #include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include <daqfactory.h>
+#include <QImage>
+#include <QIcon>
 
 DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -76,6 +78,7 @@ void DeviceSelectDialog::populateList()
     if( devList.size() <= 4 )
     {
         ui->listWidgetAtherectomy->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+        ui->listWidgetCto->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     }
 
     for ( device* d : devList )
@@ -85,12 +88,22 @@ void DeviceSelectDialog::populateList()
          * the pointers.  It's a weird construct but it's the way
          * Qt adds items to the list widget.
          */
-       QListWidgetItem *li = new QListWidgetItem(
-                   QIcon( QPixmap::fromImage( d->getIcon() ) ),
-                   d->getSplitDeviceName(),
-                   ui->listWidgetAtherectomy,
-                   0 );
-        li->setTextAlignment( Qt::AlignHCenter );
+        QImage image = d->getIcon();
+        if(d->isAth()){
+            QListWidgetItem *li = new QListWidgetItem(
+                       QIcon( QPixmap::fromImage( image ) ),
+                       d->getDeviceName(),
+                       ui->listWidgetAtherectomy,
+                       0 );
+            li->setTextAlignment( Qt::AlignHCenter );
+        } else {
+            QListWidgetItem *li = new QListWidgetItem(
+                       QIcon( QPixmap::fromImage( image ) ),
+                       d->getDeviceName(),
+                       ui->listWidgetCto,
+                       0 );
+            li->setTextAlignment( Qt::AlignHCenter );
+        }
     }
 }
 

@@ -54,6 +54,7 @@ public:
           QImage     *inIcon                     = NULL )
     {
         deviceName               = inDeviceName;
+        splitDeviceName          = formatDeviceName(inDeviceName);
         catheterType             = inCatheterType;
         catheterLength           = inCatheterLength;
         catheterRadius_um        = inCatheterRadius_um;
@@ -77,6 +78,7 @@ public:
         icon                     = inIcon;
         pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
         pixelsPerUm              = pixelsPerMm / (float)1000;
+        m_isAth = inCatheterType == "ATH";
     }
 
     ~device()
@@ -112,6 +114,7 @@ public:
 
 public:
 static QString formatDeviceName(const QString& name);
+bool isAth() const {return m_isAth;}
 
 private:
     QString    deviceName;
@@ -139,6 +142,7 @@ private:
     float      pixelsPerMm;
     float      pixelsPerUm;
     QString    disclaimerText;
+    bool       m_isAth;
 };
 
 /*
