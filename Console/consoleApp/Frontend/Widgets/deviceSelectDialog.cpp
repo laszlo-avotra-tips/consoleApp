@@ -90,7 +90,7 @@ void DeviceSelectDialog::populateList()
                    d->getSplitDeviceName(),
                    ui->listWidgetAtherectomy,
                    0 );
-        li->setTextAlignment( Qt::AlignRight );
+        li->setTextAlignment( Qt::AlignHCenter );
     }
 }
 
