@@ -7,10 +7,12 @@
 #include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include <daqfactory.h>
+#include "consoleLabel.h"
 
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+
 
 DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -19,7 +21,6 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
     ui->listWidgetAtherectomy->setDragEnabled(false);
-    ui->listWidgetCto->setDragEnabled(false);
     initDialog();
 }
 
@@ -42,10 +43,15 @@ void DeviceSelectDialog::initDialog()
     group->addAnimation(animation);
     group->start();
     populateList();
-//    connect(ui->listWidgetAtherectomy, SIGNAL(itemClicked(QListWidgetItem *)),   this, SIGNAL(completeChanged()));
-//    connect(ui->listWidgetAtherectomy, SIGNAL(itemActivated(QListWidgetItem *)), this, SIGNAL(completeChanged()));
+    populateList1();
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
+
+    connect(ui->labelText1, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice0);
+    connect(ui->labelText2, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice1);
+    connect(ui->labelText3, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice2);
+
+    connect(this, &DeviceSelectDialog::deviceSelected, this, &DeviceSelectDialog::handleDeviceSelected);
 
 }
 
@@ -62,16 +68,52 @@ bool DeviceSelectDialog::isComplete() const
 void DeviceSelectDialog::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
-//    switch (e->type())
-//    {
-//    case QEvent::LanguageChange:
-//        ui->retranslateUi(this);
-//        break;
-//    default:
-//        break;
-//    }
     if( e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+    }
+}
+
+void DeviceSelectDialog::populateList1()
+{
+    deviceSettings &devices = deviceSettings::Instance();
+
+    // Only create the list if devices don't exist.
+    if( devices.list().isEmpty() )
+    {
+        devices.init();
+    }
+
+    std::vector<QLabel*> deviceIconLabels{
+        ui->labelIcon1, ui->labelIcon2, ui->labelIcon3
+    };
+
+    std::vector<QLabel*> deviceNames{
+        ui->labelText1, ui->labelText2, ui->labelText3
+    };
+
+    QList<device *>deviceList = devices.list();
+
+    int i = 0;
+    for(auto* name : deviceNames){
+        if(deviceList.size() > i){
+            auto* device = deviceList[i++];
+            if(device){
+                name->setText(device->getSplitDeviceName());
+            }
+        }
+    }
+    i = 0;
+    for(auto* deviceIconLabel : deviceIconLabels){
+        if(deviceList.size() > i){
+            auto* device = deviceList[i++];
+            if(device){
+                const QImage& image = device->getIcon();
+                deviceIconLabel->setText("");
+                deviceIconLabel->setPixmap(QPixmap::fromImage( image ));
+                deviceIconLabel->setMinimumSize(140,140);
+                deviceIconLabel->setMaximumSize(140,140);
+            }
+        }
     }
 }
 
@@ -111,9 +153,6 @@ void DeviceSelectDialog::populateList()
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
-    deviceSettings &dev = deviceSettings::Instance();
-    int selection = ui->listWidgetAtherectomy->currentRow();
-    dev.setCurrentDevice(selection);
     QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
@@ -151,8 +190,54 @@ void DeviceSelectDialog::startDaq(frontend *fe)
     fe->on_zoomSlider_valueChanged(100);
 }
 
-void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
+void DeviceSelectDialog::handleDevice0()
 {
+    highlight(ui->labelText1);
+    emit deviceSelected(0);
+}
+
+void DeviceSelectDialog::handleDevice1()
+{
+    highlight(ui->labelText2);
+    emit deviceSelected(1);
+}
+
+void DeviceSelectDialog::handleDevice2()
+{
+    highlight(ui->labelText3);
+    emit deviceSelected(2);
+}
+
+void DeviceSelectDialog::handleDeviceSelected(int did)
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    dev.setCurrentDevice(did);
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
+}
+
+void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &)
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    int selection = ui->listWidgetAtherectomy->currentRow();
+    dev.setCurrentDevice(selection);
+
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
+}
+
+void DeviceSelectDialog::removeHighlight()
+{
+    std::vector<QLabel*> deviceNames{
+        ui->labelText1, ui->labelText2, ui->labelText3
+    };
+    for(auto* label : deviceNames) {
+        label->setStyleSheet("");
+    }
+}
+
+void DeviceSelectDialog::highlight(QLabel *label)
+{
+    removeHighlight();
+    label->setStyleSheet("background-color:#646464");
 }
