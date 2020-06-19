@@ -46,9 +46,10 @@ void DeviceSelectDialog::initDialog()
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
-    connect(ui->labelText1, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice0);
-    connect(ui->labelText2, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice1);
-    connect(ui->labelText3, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice2);
+    connect(ui->labelAthText0, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice0);
+    connect(ui->labelAthText1, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice1);
+    connect(ui->labelAthText2, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice2);
+    connect(ui->labelText1, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice3);
 
     connect(this, &DeviceSelectDialog::deviceSelected, this, &DeviceSelectDialog::handleDeviceSelected);
 
@@ -82,16 +83,16 @@ void DeviceSelectDialog::populateList1()
 
     QList<device *>deviceList = devices.list();
 
-    int i = 0;
+    int i = 3;
     for(auto* name : deviceNames){
         if(deviceList.size() > i){
             auto* device = deviceList[i++];
             if(device){
-                name->setText(device->getSplitDeviceName());
+                name->setText(device->getDeviceName());
             }
         }
     }
-    i = 0;
+    i = 3;
     for(auto* deviceIconLabel : deviceIconLabels){
         if(deviceList.size() > i){
             auto* device = deviceList[i++];
@@ -144,8 +145,6 @@ void DeviceSelectDialog::populateList()
                 const QImage& image = device->getIcon();
                 deviceIconLabel->setText("");
                 deviceIconLabel->setPixmap(QPixmap::fromImage( image ));
-//                deviceIconLabel->setMinimumSize(140,140);
-//                deviceIconLabel->setMaximumSize(140,140);
             }
         }
     }
@@ -187,20 +186,26 @@ void DeviceSelectDialog::startDaq(frontend *fe)
 
 void DeviceSelectDialog::handleDevice0()
 {
-    highlight(ui->labelText1);
+    highlight(ui->labelAthText0);
     emit deviceSelected(0);
 }
 
 void DeviceSelectDialog::handleDevice1()
 {
-    highlight(ui->labelText2);
+    highlight(ui->labelAthText1);
     emit deviceSelected(1);
 }
 
 void DeviceSelectDialog::handleDevice2()
 {
-    highlight(ui->labelText3);
+    highlight(ui->labelAthText2);
     emit deviceSelected(2);
+}
+
+void DeviceSelectDialog::handleDevice3()
+{
+    highlight(ui->labelText1);
+    emit deviceSelected(3);
 }
 
 void DeviceSelectDialog::handleDeviceSelected(int did)
@@ -214,7 +219,7 @@ void DeviceSelectDialog::handleDeviceSelected(int did)
 void DeviceSelectDialog::removeHighlight()
 {
     std::vector<QLabel*> deviceNames{
-        ui->labelText1, ui->labelText2, ui->labelText3
+        ui->labelAthText0, ui->labelAthText1, ui->labelAthText2, ui->labelText1
     };
     for(auto* label : deviceNames) {
         label->setStyleSheet("");

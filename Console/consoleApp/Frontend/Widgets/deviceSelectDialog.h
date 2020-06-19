@@ -37,6 +37,7 @@ private slots:
     void handleDevice0();
     void handleDevice1();
     void handleDevice2();
+    void handleDevice3();
     void handleDeviceSelected(int did);
 
 private:

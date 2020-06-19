@@ -292,7 +292,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="labelAthText0">
+                   <widget class="ConsoleLabel" name="labelAthText0">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -345,7 +345,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="labelAthText1">
+                   <widget class="ConsoleLabel" name="labelAthText1">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -398,7 +398,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="labelAthText2">
+                   <widget class="ConsoleLabel" name="labelAthText2">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                       <horstretch>0</horstretch>
