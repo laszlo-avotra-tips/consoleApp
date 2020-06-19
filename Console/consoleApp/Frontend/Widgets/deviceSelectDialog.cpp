@@ -20,7 +20,6 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    ui->listWidgetAtherectomy->setDragEnabled(false);
     initDialog();
 }
 
@@ -52,16 +51,6 @@ void DeviceSelectDialog::initDialog()
     connect(ui->labelText3, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice2);
 
     connect(this, &DeviceSelectDialog::deviceSelected, this, &DeviceSelectDialog::handleDeviceSelected);
-
-}
-
-bool DeviceSelectDialog::isComplete() const
-{
-    if( ui->listWidgetAtherectomy->currentItem() )
-    {
-        return true;
-    }
-    return false;
 
 }
 
@@ -129,25 +118,36 @@ void DeviceSelectDialog::populateList()
 
     QList<device *>devList = devices.list();
 
-    // 4 items per row and 2 rows can be displayed without scroll bar
-    if( devList.size() <= 4 )
-    {
-        ui->listWidgetAtherectomy->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    }
+    std::vector<QLabel*> deviceIconLabels{
+        ui->labelAthIcon0, ui->labelAthIcon1, ui->labelAthIcon2
+    };
 
-    for ( device* d : devList )
-    {
-        /*
-         * This is not a leak.  QListWidget takes ownership of
-         * the pointers.  It's a weird construct but it's the way
-         * Qt adds items to the list widget.
-         */
-       QListWidgetItem *li = new QListWidgetItem(
-                   QIcon( QPixmap::fromImage( d->getIcon() ) ),
-                   d->getSplitDeviceName(),
-                   ui->listWidgetAtherectomy,
-                   0 );
-        li->setTextAlignment( Qt::AlignLeft );
+    std::vector<QLabel*> deviceNames{
+        ui->labelAthText0, ui->labelAthText1, ui->labelAthText2
+    };
+
+    QList<device *>deviceList = devices.list();
+    int i = 0;
+    for(auto* name : deviceNames){
+        if(deviceList.size() > i){
+            auto* device = deviceList[i++];
+            if(device){
+                name->setText(device->getSplitDeviceName());
+            }
+        }
+    }
+    i = 0;
+    for(auto* deviceIconLabel : deviceIconLabels){
+        if(deviceList.size() > i){
+            auto* device = deviceList[i++];
+            if(device){
+                const QImage& image = device->getIcon();
+                deviceIconLabel->setText("");
+                deviceIconLabel->setPixmap(QPixmap::fromImage( image ));
+//                deviceIconLabel->setMinimumSize(140,140);
+//                deviceIconLabel->setMaximumSize(140,140);
+            }
+        }
     }
 }
 
@@ -163,11 +163,6 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
     }
 }
 
-void DeviceSelectDialog::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)
-{
-    ui->listWidgetAtherectomy->setCurrentItem( item );
-    LOG1(item->text());
-}
 
 void DeviceSelectDialog::startDaq(frontend *fe)
 {
@@ -212,16 +207,6 @@ void DeviceSelectDialog::handleDeviceSelected(int did)
 {
     deviceSettings &dev = deviceSettings::Instance();
     dev.setCurrentDevice(did);
-    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
-    ui->pushButtonDone->setEnabled(true);
-}
-
-void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &)
-{
-    deviceSettings &dev = deviceSettings::Instance();
-    int selection = ui->listWidgetAtherectomy->currentRow();
-    dev.setCurrentDevice(selection);
-
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
 }

@@ -20,7 +20,6 @@ public:
     ~DeviceSelectDialog();
 
     void initDialog( void );
-    bool isComplete() const;
 
 signals:
     void deviceSelected(int did);
@@ -34,14 +33,11 @@ private:
 
 private slots:
     void on_pushButtonDone_clicked();
-    void on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item);
     void startDaq(frontend *fe);
     void handleDevice0();
     void handleDevice1();
     void handleDevice2();
     void handleDeviceSelected(int did);
-
-    void on_listWidgetAtherectomy_clicked(const QModelIndex &index);
 
 private:
     void removeHighlight();
