@@ -210,6 +210,7 @@ void MainScreen::hideEvent(QHideEvent *he)
 void MainScreen::openCaseInformationDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
+//    auto result = WidgetContainer::instance()->openDialog(this,"emptyDialog");
 
     if(result.first){
     result.first->hide();

@@ -38,6 +38,9 @@ void CaseInformationDialog::initDialog()
     QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
     QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
 
+    setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
+    setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
+
     setGraphicsEffect(showing_effect);
     animation->setStartValue(0);
     animation->setEndValue(0.9);
