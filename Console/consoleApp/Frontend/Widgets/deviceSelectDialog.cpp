@@ -88,7 +88,7 @@ void DeviceSelectDialog::populateList1()
         if(deviceList.size() > i){
             auto* device = deviceList[i++];
             if(device){
-                name->setText(device->getDeviceName());
+                name->setText(device->getSplitDeviceName());
             }
         }
     }
@@ -152,12 +152,15 @@ void DeviceSelectDialog::populateList()
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
+    auto* device = deviceSettings::Instance().current();
+    const bool isSpeed{!device->isAth()};
+
     QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
       fw->showFullScreen();
       fw->updateDeviceLabel();
-      fw->showSpeed(false);
+      fw->showSpeed(isSpeed);
       startDaq(fw);
     }
 }
