@@ -30,7 +30,8 @@ IDAQ *daqfactory::getdaq()
 
         LOG1(deviceName)
 
-        if( setting.current()->isHighSpeed() )
+//        if( setting.current()->isHighSpeed() )
+        if(true)
         {
             if(deviceName == "Simulation"){
                 idaq = new FileDaq();

@@ -48,7 +48,8 @@ void avDisplayControls::updateBrightnessContrastLimits( void )
 //    setLowerValue( 0 );
 //    setUpperValue( 0 );
 
-    if( devSettings.current()->isHighSpeed() )
+//    if( devSettings.current()->isHighSpeed() )
+    if(true)
     {
         setRange( BrightnessLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
 //        setUpperValue( ContrastLevels_HighSpeed.defaultValue );

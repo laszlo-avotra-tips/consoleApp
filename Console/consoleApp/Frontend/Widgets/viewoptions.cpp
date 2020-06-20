@@ -159,7 +159,8 @@ void viewOptions::handleDeviceChange()
 {
     deviceSettings &devSettings = deviceSettings::Instance();
 
-    if( devSettings.current()->isHighSpeed() )
+//    if( devSettings.current()->isHighSpeed() )
+    if(true)
     {
         ui->scanSyncSlider->setDisabled( true );
         ui->laserIndicatorSlider->setDisabled( true );

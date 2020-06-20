@@ -46,7 +46,8 @@ void directionTracker::getEncoderCountsForDevice( void )
     deviceSettings &devSettings = deviceSettings::Instance();
     if( devSettings.current() )
     {
-        encoderCounts = ushort(devSettings.current()->getLinesPerRevolution());
+//        encoderCounts = ushort(devSettings.current()->getLinesPerRevolution());
+        encoderCounts = DefaultEncoderCount;
     }
     else
     {

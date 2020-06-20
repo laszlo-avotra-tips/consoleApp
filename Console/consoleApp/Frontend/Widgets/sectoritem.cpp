@@ -160,7 +160,8 @@ void sectorItem::deviceChanged(void)
     deviceSettings &devSettings = deviceSettings::Instance();
     internalImagingMask_px     = devSettings.current()->getInternalImagingMask_px();
     catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
-    linesPerRevolution    = devSettings.current()->getLinesPerRevolution();
+//    linesPerRevolution    = devSettings.current()->getLinesPerRevolution();
+    linesPerRevolution = 1024;
 
     // Deep View disabled when selecting a new device
     currentDepth_mm       = devSettings.current()->getImagingDepthNormal_mm();
@@ -309,7 +310,8 @@ void sectorItem::addFrame( QSharedPointer<scanframe> &data )
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Switch how the data is drawn depending on the device speed
-    if( devSettings.current()->isHighSpeed() )
+//    if( devSettings.current()->isHighSpeed() )
+    if(true)
     {
         // Copy the image into the display buffer
         memcpy( sectorImage->bits(), data->dispData->data(), SectorWidth_px * SectorHeight_px );
@@ -568,7 +570,8 @@ void sectorItem::paintSector ( bool force )
 
     // Draw the laser reference line for low speed devices
     deviceSettings &devSettings = deviceSettings::Instance();
-    if( !devSettings.current()->isHighSpeed() )
+//    if( !devSettings.current()->isHighSpeed() )
+    if(false)
     {
         double tmpAngle_rad = degToRad * currentAngle_deg;
 
@@ -621,7 +624,8 @@ void sectorItem::paintSector ( bool force )
     }
 
     // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
-    if( !isPlayback && !devSettings.current()->isHighSpeed() )
+//    if( !isPlayback && !devSettings.current()->isHighSpeed() )
+    if(false)
     {
         painter->setPen( directionPen );
 

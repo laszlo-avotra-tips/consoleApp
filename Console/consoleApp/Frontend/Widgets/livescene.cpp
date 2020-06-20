@@ -728,7 +728,8 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
      * Point to the appropriate direction indicator ring if it is a Low Speed device.
      */
     deviceSettings &devSettings = deviceSettings::Instance();
-    if( !devSettings.current()->isHighSpeed() )
+    //if( !devSettings.current()->isHighSpeed() )
+    if(false)
     {
         if( rotationDirection == directionTracker::CounterClockwise )
         {
@@ -760,7 +761,8 @@ void liveScene::applyClipInfoToBuffer( char *buffer )
     }
 
     // Direction indicator for highspeed bidirectional devices (Ocelaris)
-    if(devSettings.current()->isOcelaris() )
+//    if(devSettings.current()->isOcelaris() )
+    if(false)
     {
 //lcv        if(devSettings.current()->getRotation())
 //        {

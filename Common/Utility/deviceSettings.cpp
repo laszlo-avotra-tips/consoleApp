@@ -151,7 +151,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
 
     qDebug() << "Loading device from:" << deviceFile;
 
-    device::DeviceType speedType = device::LowSpeed;    // to make compiler happy that it is initialized
+//    device::DeviceType speedType = device::LowSpeed;    // to make compiler happy that it is initialized
     bool retVal = false;
 
     // open the file
@@ -199,7 +199,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
         }
     }
     testno++;
-    if (retVal != true) qDebug() << "test: " << testno;
+    if (retVal != true) qDebug() << "test: " << 2;
 
     if( retVal )
     {
@@ -212,127 +212,39 @@ bool deviceSettings::loadDevice( QString deviceFile )
         // read attributes for device
         if( e.tagName() == "device" )
         {
-            device::DeviceType speedType{device::HighSpeed};
-            QString type = e.attribute( "deviceType", "" );
-
-            // match strings and assign to enumerated type
-            // match returns 0
-            if( !QString::compare( type, "LowSpeed" ) )
+            /*
+             * Load the device icon file; these are published along side the
+             * device XML files.  If it cannot be loaded use the built-in
+             * unknown device. This ensures that the device will be on the
+             * selection list.
+             */
+            QImage *d1Img = new QImage;
+            if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
             {
-                speedType = device::LowSpeed;
-            }
-            else if( !QString::compare( type, "HighSpeed") )
-            {
-                speedType = device::HighSpeed;
-            }
-            else if( !QString::compare( type, "Ocelaris") )
-            {
-                speedType = device::Ocelaris;
-            }
-            else
-            {
-                retVal = false;
-            }
-            testno++;
-            if (retVal != true) qDebug() << "test: " << testno;
-            // range check clocking gain
-            int tmpGain = e.attribute( "clockingGain", "0" ).toInt(); // store the value read in temporarily
-            if( tmpGain < 1 || tmpGain > 255 )
-            {
-                retVal = false;
-            }
-            testno++;
-            if (retVal != true) qDebug() << "test: " << testno;
-
-            // range check clocking offset
-            int tmpOffset = e.attribute( "clockingOffset", "0" ).toInt(); // store the value read in temporarily
-            if( tmpOffset < 1 || tmpOffset > 999 )
-            {
-                retVal = false;
-            }
-            testno++;
-            if (retVal != true) qDebug() << "test: " << testno;
-
-            if( !retVal )
-            {
-                QString msg = QString( tr( "%1\nThis High Speed device does not have proper clocking attributes and will not work." ) ).arg( fileInfo.fileName() );
-                //err.warn( msg );
-                LOG( WARNING, msg );
+                qDebug() << "Failed loading icon";
+                //d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
             }
 
-            // Only add the valid devices
-            if( retVal )
-            {
-                /*
-                 * Load the device icon file; these are published along side the
-                 * device XML files.  If it cannot be loaded use the built-in
-                 * unknown device. This ensures that the device will be on the
-                 * selection list.
-                 */
-                QImage *d1Img = new QImage;
-
-                auto fn = deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive);
-
-                LOG1(fn)
-
-                if( !d1Img->load(fn) )
-                {
-                    d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
-                }
-
-                /*
-                 * Compute number of A-lines from revolutionsPerMin
-                 * A-lines = (1000*1200) / revsPerMin (at 25kHz laser)
-                 * Reduce to closest mod16 less than number - 4
-                 */
-
-                int aLines;
-                int revsPerMin;
-                int temp;
-
-                revsPerMin = e.attribute( "revolutionsPerMin", "" ).toInt();
-                if( revsPerMin != 0)
-                {
-                    temp = ((1000*1200) / revsPerMin) - 4;
-                    aLines = temp - temp%16;
-                }
-                else        // OCELOT is set to 0 RPM
-                {
-                    aLines = e.attribute( "linesPerRevolution_cnt", "" ).toInt();
-                }
-
-                qDebug() << "RPM: " << revsPerMin << ", Number of A-Lines: " << aLines;
-
-                device *d1 = new device( e.attribute( "deviceName", "" ),
-                                         e.attribute( "internalImagingMask_px", "" ).toInt(),
-                                         e.attribute( "catheterRadius_um", "" ).toInt(),
-                                         aLines,
-                                         e.attribute( "revolutionsPerMin", "" ).toInt(),
-                                         e.attribute( "aLineLengthNormal_px", "" ).toInt(),
-                                         e.attribute( "aLineLengthDeep_px", "" ).toInt(),
-                                         e.attribute( "imagingDepthNormal_mm", "" ).toFloat(),
-                                         e.attribute( "imagingDepthDeep_mm", "" ).toFloat(),
-                                         e.attribute( "clockingEnabled", "1" ).toInt(),
-                                         e.attribute( "clockingGain", "" ).toLatin1(),
-                                         e.attribute( "clockingOffset", "" ).toLatin1(),
-                                         e.attribute( "torqueLimit", "2.5" ).toLatin1(),
-                                         e.attribute( "timeLimit", "1" ).toLatin1(),
-                                         e.attribute( "limitBlinkEnabled", "-1" ).toInt(),
-//                                         e.attribute( "reverseAngle", "0" ).toLatin1(),
-                                         e.attribute( "measurementVersion", "0" ).toInt(),
-                                         e.attribute( "Speed1", "0" ).toLatin1(),
-                                         e.attribute( "Speed2", "0" ).toLatin1(),
-                                         e.attribute( "Speed3", "0" ).toLatin1(),
-                                         e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
-                                         speedType,
-                                         d1Img );    // d1Img
-
-                deviceList.append( d1 );
-            }
+            device *d1 = new device( e.attribute( "deviceName", "" ),
+                                     e.attribute( "type", "" ).toLatin1(),
+                                     e.attribute( "catheterLength", "" ).toInt(),
+                                     e.attribute( "catheterRadius_um", "" ).toInt(),
+                                     e.attribute( "internalImagingMask_px", "" ).toInt(),
+                                     e.attribute( "biDirectional", "1" ).toInt(),
+                                     e.attribute( "numberOfSpeeds", "1" ).toInt(),
+                                     e.attribute( "revolutionsPerMin1", "0" ).toInt(),
+                                     e.attribute( "revolutionsPerMin2", "0" ).toInt(),
+                                     e.attribute( "revolutionsPerMin3", "0" ).toInt(),
+                                     e.attribute( "clockingEnabled", "1" ).toInt(),
+                                     e.attribute( "clockingGain", "" ).toLatin1(),
+                                     e.attribute( "clockingOffset", "" ).toLatin1(),
+                                     e.attribute( "torqueLimit", "2.5" ).toLatin1(),
+                                     e.attribute( "timeLimit", "1" ).toLatin1(),
+                                     e.attribute( "measurementVersion", "0" ).toInt(),
+                                     e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
+                                     d1Img );    // d1Img
+            deviceList.append( d1 );
         }
-        testno++;
-        if (retVal != true) qDebug() << "test: " << testno;
-
         // close the XML file
         file->close();
     }
@@ -408,47 +320,6 @@ bool deviceSettings::getIsSimulation() const
 void deviceSettings::setIsSimulation(bool isSimulation)
 {
     m_isSimulation = isSimulation;
-}
-
-device::device(QString inDeviceName, int inInternalImagingMask_px, int inCatheterRadius_um, int inLinesPerRevolution_cnt, int inRevolutionsPerMin, int inALineLengthNormal_px, int inALineLengthDeep_px, float inImagingDepthNormal_mm, float inImagingDepthDeep_mm, int inClockingEnabled, QByteArray inClockingGain, QByteArray inClockingOffset, QByteArray inTorqueLimit, QByteArray inTimeLimit, int inLimitBlinkEnabled, int inMeasurementVersion, QByteArray inSpeed1, QByteArray inSpeed2, QByteArray inSpeed3, QString inDisclaimerText, device::DeviceType inDeviceType, QImage *inIcon)
-{
-    deviceName               = inDeviceName;
-    splitDeviceName          = formatDeviceName(deviceName);
-    internalImagingMask_px   = inInternalImagingMask_px;
-    catheterRadius_um        = inCatheterRadius_um;
-    linesPerRevolution_cnt   = inLinesPerRevolution_cnt;
-    revolutionsPerMin        = inRevolutionsPerMin;
-    aLineLengthNormal_px     = inALineLengthNormal_px;
-    aLineLengthDeep_px       = inALineLengthDeep_px;
-    imagingDepthNormal_mm    = inImagingDepthNormal_mm;
-    imagingDepthDeep_mm      = inImagingDepthDeep_mm;
-    clockingEnabled          = inClockingEnabled;
-    clockingGain             = inClockingGain;
-    clockingOffset           = inClockingOffset;
-    torqueLimit              = inTorqueLimit;
-    timeLimit                = inTimeLimit;
-    limitBlinkEnabled        = inLimitBlinkEnabled;
-    //        reverseAngle             = inReverseAngle;
-
-    disclaimerText           = inDisclaimerText;
-    measurementVersion       = inMeasurementVersion;
-    deviceType               = inDeviceType;
-    icon                     = inIcon;
-    pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
-    pixelsPerUm              = pixelsPerMm / (float)1000;
-}
-
-device::~device()
-{
-    if( icon != NULL )
-    {
-        delete icon;
-    }
-}
-
-const QString &device::getDeviceName() const
-{
-    return deviceName;
 }
 
 const QString &device::getSplitDeviceName() const

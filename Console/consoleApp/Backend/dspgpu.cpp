@@ -83,7 +83,8 @@ void DSPGPU::init( )
     smi->setWhiteLevel(int(whiteLevel));
 
 
-    const size_t inSamplesPerBuffer = size_t(settings.current()->getLinesPerRevolution()) * DaqSettings::Instance().getRecordLength();
+//    const size_t inSamplesPerBuffer = size_t(settings.current()->getLinesPerRevolution()) * DaqSettings::Instance().getRecordLength();
+    const size_t inSamplesPerBuffer = 1024 * DaqSettings::Instance().getRecordLength();
     LOG1(inSamplesPerBuffer)
 
     // XXX Need to pass these into the DSP so we dont copy buffers there

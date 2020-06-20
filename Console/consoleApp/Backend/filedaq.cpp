@@ -72,7 +72,7 @@ void FileDaq::run()
     if( !m_isRunning )
     {
         deviceSettings &devSettings = deviceSettings::Instance();
-        bool isHighSpeedDevice = devSettings.current()->isHighSpeed();
+        bool isHighSpeedDevice = true; //devSettings.current()->isHighSpeed();
 
         qDebug() << "Thread: DAQ::run start";
 

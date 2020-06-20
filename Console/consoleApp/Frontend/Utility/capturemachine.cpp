@@ -162,7 +162,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
                             currTime.toTime_t(),
                             saveName,
                             devSettings.current()->getDeviceName(),
-                            devSettings.current()->isHighSpeed(),
+                            //devSettings.current()->isHighSpeed(),
+                            true,
                             captureItem.pixelsPerMm,
                             captureItem.zoomFactor ) < 0 )
     {
