@@ -89,6 +89,7 @@ void DeviceSelectDialog::populateList()
          * Qt adds items to the list widget.
          */
         QImage image = d->getIcon();
+        LOG2(d->getDeviceName(), d->getCatheterType()[0])
         if(d->isAth()){
             QListWidgetItem *li = new QListWidgetItem(
                        QIcon( QPixmap::fromImage( image ) ),

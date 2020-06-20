@@ -226,7 +226,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
             }
 
             device *d1 = new device( e.attribute( "deviceName", "" ),
-                                     e.attribute( "catheterType", "ATH" ).toLatin1(),
+                                     e.attribute( "type", "" ).toLatin1(),
                                      e.attribute( "catheterLength", "" ).toInt(),
                                      e.attribute( "catheterRadius_um", "" ).toInt(),
                                      e.attribute( "internalImagingMask_px", "" ).toInt(),
