@@ -5,6 +5,7 @@
 #include <QListWidgetItem>
 
 class frontend;
+class QLabel;
 
 namespace Ui {
 class DeviceSelectDialog;
@@ -19,22 +20,30 @@ public:
     ~DeviceSelectDialog();
 
     void initDialog( void );
-    bool isComplete() const;
+
+signals:
+    void deviceSelected(int did);
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
     void populateList(void);
+    void populateList1(void);
 
 private slots:
     void on_pushButtonDone_clicked();
-    void on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item);
     void startDaq(frontend *fe);
-
-    void on_listWidgetAtherectomy_clicked(const QModelIndex &index);
+    void handleDevice0();
+    void handleDevice1();
+    void handleDevice2();
+    void handleDevice3();
+    void handleDeviceSelected(int did);
 
 private:
+    void removeHighlight();
+    void highlight(QLabel* label);
+
     Ui::DeviceSelectDialog *ui;
 };
 

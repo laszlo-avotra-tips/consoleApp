@@ -11,8 +11,6 @@
 #include <daqfactory.h>
 #include "deviceSettings.h"
 #include "util.h"
-#include "caseInformationDialog.h"
-#include "deviceSelectDialog.h"
 
 #include <QDebug>
 
