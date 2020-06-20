@@ -78,7 +78,7 @@ public:
         icon                     = inIcon;
         pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
         pixelsPerUm              = pixelsPerMm / (float)1000;
-        m_isAth = inCatheterType == "ATH";
+        m_isAth = inCatheterType[0] == 'A';
     }
 
     ~device()
