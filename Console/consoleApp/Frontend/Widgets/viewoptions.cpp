@@ -157,25 +157,11 @@ void viewOptions::setLagAngleToZero( void )
  */
 void viewOptions::handleDeviceChange()
 {
-    deviceSettings &devSettings = deviceSettings::Instance();
-
-//    if( devSettings.current()->isHighSpeed() )
-    if(true)
-    {
-        ui->scanSyncSlider->setDisabled( true );
-        ui->laserIndicatorSlider->setDisabled( true );
-        ui->useNoiseReductionRadioButton->setEnabled( true );
-        ui->useNoiseReductionRadioButton_no->setEnabled( true );
-        ui->noiseReductionSlider->setEnabled( false ); // disable by default
-    }
-    else
-    {
-        ui->scanSyncSlider->setDisabled( false );
-        ui->laserIndicatorSlider->setDisabled( false );
-        ui->useNoiseReductionRadioButton->setEnabled( false );
-        ui->useNoiseReductionRadioButton_no->setEnabled( false );
-        ui->noiseReductionSlider->setEnabled( false );
-    }
+    ui->scanSyncSlider->setDisabled( true );
+    ui->laserIndicatorSlider->setDisabled( true );
+    ui->useNoiseReductionRadioButton->setEnabled( true );
+    ui->useNoiseReductionRadioButton_no->setEnabled( true );
+    ui->noiseReductionSlider->setEnabled( false ); // disable by default
 }
 
 /*

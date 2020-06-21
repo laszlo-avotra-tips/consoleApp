@@ -307,88 +307,9 @@ void sectorItem::addFrame( QSharedPointer<scanframe> &data )
 //	qDebug() << ">>>>>> 9";
     TIME_THIS_SCOPE(sectorItem_addFrame);
 
-    deviceSettings &devSettings = deviceSettings::Instance();
-
-    // Switch how the data is drawn depending on the device speed
-//    if( devSettings.current()->isHighSpeed() )
-    if(true)
-    {
-        // Copy the image into the display buffer
-        memcpy( sectorImage->bits(), data->dispData->data(), SectorWidth_px * SectorHeight_px );
-        sectorShouldPaint = true;
-    }
-    else
-    {
-        // Conversion from encoder counts to degs for angle calculations
-        const double EncoderCountsPerDeg( linesPerRevolution / 360.0 );  // xxx: move to deviceChanged()
-
-        // Smooth the current angle to emliminate jitter
-        short angle_cnt = short(floor( average.getNextValue( double(data->angle ) + 0.5 )));
-
-        // Only update if the angle is different than last time
-        if( angle_cnt != lastAngle_cnt )
-        {
-            // Keep track of the relative position (used for lag correction only right now)
-            double deltaAngle_deg = double( angle_cnt - lastAngle_cnt ) / EncoderCountsPerDeg;
-
-            // Special case: crossing over 360 (heuristically defined as
-            // instantaneous angle change > 270 degrees)
-            // If we crossed over then complement the difference with one
-            // revolution (360 degrees) and flip the sign.
-            if( fabs( deltaAngle_deg ) > 270.0 )
-            {
-                deltaAngle_deg = -sign( deltaAngle_deg ) * ( 360.0 - fabs( deltaAngle_deg ) );
-            }
-
-            angleInt.integrate( deltaAngle_deg );
-
-            // Notify interested parties that we've gone around a full rotation
-            if( fabs( angleInt.value() ) >= 360.0 )
-            {
-                angleInt.reset();
-                fullRotationFlag = true;
-            }
-
-            sectorShouldPaint = true;
-
-            /*
-             * Populate the line cache based on which one contains the "first"
-             * line used during interpolation. This will swap every time we
-             * get 2 lines.
-             */
-            newLine = data->dispData->mid( 0, 512 );
-
-            // Only process lines once we have two ready
-            twoLinesValid = oldLineIsValid;
-
-            if( !isUnwinding() )
-            {
-                /*
-                 * Apply the old stored offset if we're in hold mode to prevent bouncing once
-                 * in a while when new data comes in. That new data would not have the old
-                 * offset applied if we didn't do this.
-                 */
-                currentAngle_deg = double(angle_cnt / EncoderCountsPerDeg ) - getWindOffset();
-
-                // encode the movie rotation directly in for movies
-                if( isVideoOnly )
-                {
-                    currentAngle_deg += displayRotationAngle_deg;
-                }
-
-#if !ENABLE_DEMO_MODE
-                render();
-#endif
-
-                // Update cached states
-                oldLine = newLine;
-                oldLineIsValid = true;
-                lastAngle_deg = currentAngle_deg;
-            }
-            unwindUpdate( double(angle_cnt / EncoderCountsPerDeg ));
-            lastAngle_cnt = angle_cnt;
-        }
-    }
+    // Copy the image into the display buffer
+    memcpy( sectorImage->bits(), data->dispData->data(), SectorWidth_px * SectorHeight_px );
+    sectorShouldPaint = true;
 }
 
 /*
@@ -568,24 +489,6 @@ void sectorItem::paintSector ( bool force )
     int x1 = sectorImage->width() / 2;
     int y1 = sectorImage->height() / 2;
 
-    // Draw the laser reference line for low speed devices
-    deviceSettings &devSettings = deviceSettings::Instance();
-//    if( !devSettings.current()->isHighSpeed() )
-    if(false)
-    {
-        double tmpAngle_rad = degToRad * currentAngle_deg;
-
-        float cosTheta = quickTrig.lookupCos( double(tmpAngle_rad) );
-        float sinTheta = quickTrig.lookupSin( double(tmpAngle_rad) );
-
-        // calculate the endpoint of the marker line
-        int x = x1 + int( ( cosTheta * ( currentAlineLength_px + catheterRadius_px ) + 0.5f ) );
-        int y = y1 + int( ( sinTheta * ( currentAlineLength_px + catheterRadius_px ) + 0.5f ) );
-
-        // Draw the reference line
-        painter->drawLine( x1, y1, x, y );
-    }
-
     /*
      * Draw the catheter center mask circle.
      * - get the starting point for the catheter edge from depthSetting
@@ -622,51 +525,6 @@ void sectorItem::paintSector ( bool force )
         directionPen.setColor( AggressiveSpinColor );
         break;
     }
-
-    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
-//    if( !isPlayback && !devSettings.current()->isHighSpeed() )
-    if(false)
-    {
-        painter->setPen( directionPen );
-
-        // draw direction indicator
-        const int DirectionEdge = catheterEdgePosition / 2;
-
-        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
-                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
-    }
-
-    // Direction indicator for highspeed bidirectional devices (Ocelaris)
-//lcv    if(devSettings.current()->isBidirectional() )
-//    {
-//		QString spin;
-//		QFont font;
-//		font.setPixelSize(catheterEdgePosition / 2);
-//		font.setBold(true);
-//		painter->setFont(font);
-
-//        deviceSettings &dev = deviceSettings::Instance();
-//        if(dev.current()->getRotation())
-//        {
-//            painter->setBrush( PassiveSpinColor );
-//            spin = "PAS";
-//        }
-//        else
-//        {
-//            painter->setBrush( AggressiveSpinColor );
-//            spin = "ACT";
-//        }
-
-//        // draw direction indicator
-////        const int DirectionEdge = (catheterEdgePosition * 3) / 4;
-//        const int DirectionEdge = catheterEdgePosition;
-//        QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
-//                            QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
-		
-//		painter->drawEllipse( center );
-//		painter->setPen( Qt::black );
-//		painter->drawText( center, Qt::AlignCenter, spin );
-//    }
 
     setPixmap( tmpPixmap );
     painter->end();

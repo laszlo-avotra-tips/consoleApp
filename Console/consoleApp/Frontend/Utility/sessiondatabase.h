@@ -31,14 +31,12 @@ public:
                     uint timestamp,
                     QString name,
                     QString deviceName,
-                    bool isHighSpeed,
                     int pixelsPerMm );
 
     int addClipCapture(QString name,
                         uint timestamp,
                         QString catheterView,
-                        QString deviceName,
-                        bool isHighSpeed );
+                        QString deviceName);
 
     void updateClipCapture( int lastClipID, int clipLength_ms );
     void updateCaptureTag( int key, QString newTag );

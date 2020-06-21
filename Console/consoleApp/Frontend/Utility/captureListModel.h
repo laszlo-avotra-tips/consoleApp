@@ -151,7 +151,6 @@ public:
                     uint timestamp,
                     QString name,
                     QString deviceName,
-                    bool isHighSpeed,
                     int pixelsPerMm,
                     float zoomFactor );
 

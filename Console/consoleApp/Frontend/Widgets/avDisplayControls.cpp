@@ -41,25 +41,7 @@ avDisplayControls::avDisplayControls( QWidget *parent ):
  */
 void avDisplayControls::updateBrightnessContrastLimits( void )
 {
-    deviceSettings &devSettings = deviceSettings::Instance();
-
-    // Force the current values into the new range before resetting the range
-    // Otherwise, if the new range is narrower it may cause side effects when applied
-//    setLowerValue( 0 );
-//    setUpperValue( 0 );
-
-//    if( devSettings.current()->isHighSpeed() )
-    if(true)
-    {
-        setRange( BrightnessLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
-//        setUpperValue( ContrastLevels_HighSpeed.defaultValue );
-//        setLowerValue( BrightnessLevels_HighSpeed.defaultValue );
-    }
-    else
-    {
-        setRange( BrightnessLevels_LowSpeed.minValue, ContrastLevels_LowSpeed.maxValue );
-//        setUpperValue( ContrastLevels_LowSpeed.defaultValue );
-//        setLowerValue( BrightnessLevels_LowSpeed.defaultValue );
-    }
-
+    setRange( BrightnessLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
+//    setUpperValue( ContrastLevels_HighSpeed.defaultValue );
+//    setLowerValue( BrightnessLevels_HighSpeed.defaultValue );
 }

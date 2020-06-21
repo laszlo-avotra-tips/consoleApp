@@ -270,41 +270,6 @@ void advancedView::handleDeviceChange()
     ui.evoaVoltageVal_v->setText( settings->value( EvoaDefaultSetting, EvoaDefault_v ).toString() );
     ui.evoaControlWidget->init( NumEvoaChunks, float(evoa->getCurrVoltage()), "Imaging Strength", evoa->getMinVal(), evoa->getMaxVal() );
 
-    // Set the state of the UI depending on the device selected
-//    if( devSettings.current()->isHighSpeed() )
-    if(true)
-    {
-//lcv
-//        ui.fftDataPlot->clearData();
-
-//        ui.fftDataPlot->setBrightnessLimits( BrightnessLevels_HighSpeed.minValue, BrightnessLevels_HighSpeed.maxValue );
-//        ui.fftDataPlot->setContrastLimits( ContrastLevels_HighSpeed.minValue, ContrastLevels_HighSpeed.maxValue );
-
-//        ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_HighSpeed );
-
-//        ui.fftDataPlot->changeBrightness( BrightnessLevels_HighSpeed.defaultValue );
-//        ui.fftDataPlot->changeContrast( ContrastLevels_HighSpeed.defaultValue );
-
-    }
-    else
-    {
-        ui.tdcCheckBox->hide(); //lcv
-//lcv
-//        ui.fftDataPlot->setBrightnessLimits( BrightnessLevels_LowSpeed.minValue, BrightnessLevels_LowSpeed.maxValue );
-//        ui.fftDataPlot->setContrastLimits( ContrastLevels_LowSpeed.minValue, ContrastLevels_LowSpeed.maxValue );
-
-//        ui.fftDataPlot->setAxisScale( QwtPlot::yLeft, 0, MaxdBVal_LowSpeed );
-
-//        ui.fftDataPlot->changeBrightness( BrightnessLevels_LowSpeed.defaultValue );
-//        ui.fftDataPlot->changeContrast( ContrastLevels_LowSpeed.defaultValue );
-    }
-
-
-    // Set the tolerance for selecting a line to 10% of the full y-axis range
-//lcv    ui.fftDataPlot->setMousePressTolerance( ui.fftDataPlot->axisScaleDiv( QwtPlot::yLeft )->upperBound() * 0.10 );
-
-//lcv    ui.fftDataPlot->enableDisplayControls();
-
     ui.evoaStatusVal->setText( EvoaStatusDefault );
 }
 

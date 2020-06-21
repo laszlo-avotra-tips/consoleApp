@@ -87,17 +87,16 @@ clipListModel &clipListModel::Instance() {
  * Add a new capture to the database, including
  * all associated data and file reference location.
  */
-int clipListModel::addClipCapture( QString name,
+int clipListModel::addClipCapture(QString name,
                                    uint timestamp,
                                    QString catheterView,
-                                   QString deviceName,
-                                   bool isHighSpeed )
+                                   QString deviceName)
 {
     QDateTime timeVal = QDateTime::fromTime_t(timestamp);
 
     // Find next available ID
     sessionDatabase db; //lcv = sessionDatabase::Instance();
-    int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName, isHighSpeed );
+    int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName);
 
     if ( maxID < 0 ) {
         return -1;

@@ -1124,11 +1124,6 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
         m_scene->clearImages();
         ui.liveGraphicsView->setViewportUpdateMode( oldTechMode );
         docWindow->ui.liveGraphicsView->setViewportUpdateMode( oldDocMode );
-
-        /*
-         * bring up the hardware with the new device, reset any lag angle
-         */
-        configureHardware();
     }
     return retVal;
 }
@@ -1310,9 +1305,7 @@ void frontend::on_recordLoopButton_clicked()
         clipList.addClipCapture( ClipName,
                                  clipTimestamp.toTime_t(),
                                  viewStr,
-                                 dev.current()->getDeviceName(),
-//                                 dev.current()->isHighSpeed() );
-                                 true );
+                                 dev.current()->getDeviceName());
 
         preventFastRecordingsTimer.start( MinRecordingLength_ms );
         preventFastRecordings = true;
@@ -1519,17 +1512,8 @@ void frontend::closePlayback()
 void frontend::configureControlsForCurrentDevice()
 {
     deviceSettings &dev = deviceSettings::Instance();
-//    if( dev.current()->isHighSpeed() )
-    if(true)
-    {
-        ui.scanSyncButton->setDisabled( true );
-        ui.imagingDepthWidget->enableControls( true );
-    }
-    else
-    {
-        ui.scanSyncButton->setEnabled( true );
-        ui.imagingDepthWidget->enableControls( false );
-    }
+    ui.scanSyncButton->setDisabled( true );
+    ui.imagingDepthWidget->enableControls( true );
 }
 
 /*
@@ -1708,57 +1692,6 @@ void frontend::handleReviewDeviceName( QString str )
     ui.deviceFieldLabel->setText( str );
 }
 
-/*
- * configureHardware
- *
- * Create the DAQ object, make all the necessary connections to/from it,
- * and initialize it.
- */
-void frontend::configureHardware( void )
-{
-//lcv - kept the original
-////    qDebug() << "frontend::configureHardware start";
-
-//    if( !daq )
-//    {
-//        deviceSettings &dev = deviceSettings::Instance();
-//        if( dev.current()->isHighSpeed() )
-//        {
-//            daq = new HighSpeedDAQ();
-
-//            connect( m_scene, SIGNAL(sendDisplayAngle(float)), daq, SIGNAL(handleDisplayAngle(float)) );
-//        }
-
-//        // connect error/warning handlers before initializing the hardware
-//        connect( daq, SIGNAL( sendWarning( QString ) ),       this,    SLOT( handleWarning( QString ) ) );
-//        connect( daq, SIGNAL( sendError( QString ) ),         this,    SLOT( handleError( QString ) ) );
-//        connect( daq, SIGNAL( signalDaqResetToFrontend() ),   this,    SLOT( handleDaqReset() ) );
-
-//        // daq to advView
-//        connect( daq, SIGNAL( frameRate(int) ),               advView, SLOT( updateDaqUpdatesPerSecond(int) ) );
-//        connect( daq, SIGNAL( attenuateLaser(bool) ),         advView, SLOT( attenuateLaser(bool) ) );
-
-//        // frontend controls to daq
-//        connect( this,       SIGNAL( brightnessChange( int ) ),    daq,   SIGNAL( setBlackLevel( int ) ) );
-//        connect( this,       SIGNAL( contrastChange( int ) ),      daq,   SIGNAL( setWhiteLevel( int ) ) );
-
-//        // view options to set color mode
-//        connect( viewOption, SIGNAL( setColorModeGray() ),         m_scene, SLOT( loadColorModeGray() ) );
-//        connect( viewOption, SIGNAL( setColorModeSepia() ),        m_scene, SLOT( loadColorModeSepia() ) );
-
-//        connect( advView, SIGNAL( tdcToggled(bool) ), daq, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
-
-//        // initialize the hardware
-//        daq->init();
-//        sendDaqLevel( daq->getDaqLevel() );  // XXX: no need to signal from here
-
-//        // Sync the view options from the System.ini
-//        viewOption->updateValues();
-//    }
-
-////    qDebug() << "frontend::configureHardware end";
-}
-
 void frontend::setIDAQ(IDAQ *object)
 {
     idaq = object;
@@ -1815,12 +1748,10 @@ void frontend::setIDAQ(IDAQ *object)
             connect( idaq->getSignalSource(), &IDAQ::notifyAcqData, advView, &advancedView::handleAcqData);
         }
         idaq->init();
-//        sendDaqLevel( idaq->getDaqLevel() );  // XXX: no need to signal from here
     }
     // Sync the view options from the System.ini
     viewOption->updateValues();
 
-//    qDebug() << "frontend::configureHardware end";
     startDAQprepareView();
 }
 
@@ -2508,10 +2439,7 @@ void frontend::on_annotateImagePushButton_clicked()
     }
     else
     {
-        // only (re-)enable scan sync for Low Speed devices
-        deviceSettings &dev = deviceSettings::Instance();
-//        ui.scanSyncButton->setEnabled( !dev.current()->isHighSpeed() );
-         ui.scanSyncButton->setEnabled(false);
+        ui.scanSyncButton->setEnabled(false);
         if( !isZoomModeOn )
         {
             ui.liveGraphicsView->setToolTip( defaultSceneToolTip );
@@ -2674,8 +2602,6 @@ void frontend::handleDaqReset()
     // Restore updates
     m_scene->clearImages();
 
-    // Bring up the hardware with the new device, reset any lag angle
-    configureHardware();
     startDaq();
 
     // turn on background recording (if enabled) and event log processing
@@ -2708,7 +2634,6 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
 //    lastDirCCW = dev.current()->getRotation();
     stopDataCapture();
     shutdownHardware();
-    configureHardware();
     startDaq();
     emit forwardTurnDiodeOn();
     startDataCapture();

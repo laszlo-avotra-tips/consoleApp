@@ -100,7 +100,6 @@ public slots:
     void updateCatheterViewLabel();
     void handleManualLagAngle( double );
     void disableStorage( bool );
-    void configureHardware();
     void shutdownHardware( void );
     void handleSendVideoDuration( int duration ) { clipLength_ms = duration; }
     void handleShowCurrentDeviceLabel();
