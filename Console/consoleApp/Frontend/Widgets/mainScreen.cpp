@@ -9,6 +9,8 @@
 #include "daqfactory.h"
 #include <logger.h>
 #include "opacScreen.h"
+#include "Frontend/Screens/frontend.h"
+#include "Frontend/Widgets/caseInformationDialog.h"
 
 
 #include <QDebug>
@@ -49,6 +51,7 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_opacScreen = new OpacScreen(this);
     m_opacScreen->show();
+    m_graphicsView->hide();
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -151,7 +154,14 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
+    m_opacScreen->show();
+    m_graphicsView->hide();
+
+    CaseInformationDialog::reset();
+
     WidgetContainer::instance()->gotoScreen("startScreen");
+
+    WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -177,6 +187,7 @@ void MainScreen::setDeviceLabel()
     const QString name{dev.getCurrentDeviceTitle()};
     ui->labelDevice->setText(name);
     m_opacScreen->hide();
+    m_graphicsView->show();
     m_runTime.start();
     updateTime();
 }

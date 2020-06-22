@@ -31,6 +31,11 @@ CaseInformationDialog::~CaseInformationDialog()
     delete ui;
 }
 
+void CaseInformationDialog::reset()
+{
+    m_model.setSelectedPhysicianName("");
+}
+
 void CaseInformationDialog::initDialog()
 {
     int duration_ms=1000;

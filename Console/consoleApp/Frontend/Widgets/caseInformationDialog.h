@@ -21,6 +21,8 @@ public:
     explicit CaseInformationDialog(QWidget *parent = nullptr);
     ~CaseInformationDialog();
 
+    static void reset();
+
 private slots:
     void setDateAndTime();
     void openKeyboardPhysicianName();

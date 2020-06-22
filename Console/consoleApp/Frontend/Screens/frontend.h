@@ -302,7 +302,7 @@ protected:
 
 private:
      FormL300* m_formL300{nullptr};
-     MainScreen* m_mainWindow{nullptr};
+     MainScreen* m_mainScreen{nullptr};
 };
 
 #endif // FRONTEND_H

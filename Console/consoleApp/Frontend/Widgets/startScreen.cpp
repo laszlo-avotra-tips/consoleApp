@@ -11,6 +11,7 @@
 #include <daqfactory.h>
 #include "deviceSettings.h"
 #include "util.h"
+#include "idaq.h"
 
 #include <QDebug>
 

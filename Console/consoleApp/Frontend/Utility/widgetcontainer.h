@@ -20,6 +20,8 @@ class WidgetContainer
 public:
     static WidgetContainer* instance();
     bool registerWidget(const QString& name, QWidget* wid);
+    bool unRegisterWidget(const QString& name);
+
     void setStackedWidget(QStackedWidget* sw);
     bool gotoScreen(const QString& name);
     QWidget* getScreen(const QString& name);
