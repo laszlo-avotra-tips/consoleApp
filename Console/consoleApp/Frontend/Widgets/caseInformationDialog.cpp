@@ -23,11 +23,13 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     connect(ui->lineEditPatientId, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
     connect(ui->lineEditLocation, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardLocation);
 
+    connect(ui->pushButtonBack, &QPushButton::clicked, this, &CaseInformationDialog::handleBack);
     initDialog();
 }
 
 CaseInformationDialog::~CaseInformationDialog()
 {
+    m_displayTimer.stop();
     delete ui;
 }
 
@@ -72,6 +74,14 @@ void CaseInformationDialog::initDialog()
         m_displayTimer.start(500);
         enableNext(false);
     }
+}
+
+void CaseInformationDialog::handleBack()
+{
+    m_model.setSelectedPhysicianName("");
+    m_model.setSelectedLocation("");
+    m_model.setPatientId("");
+    reject();
 }
 
 void CaseInformationDialog::setDateAndTime()
@@ -133,7 +143,6 @@ void CaseInformationDialog::openKeyboardLocation()
 
 void CaseInformationDialog::on_pushButtonNext_clicked()
 {
-    m_displayTimer.stop();
     m_model.setDateAndTime(ui->lineEditDateAndTime->text());
     accept();
 }
@@ -142,9 +151,9 @@ void CaseInformationDialog::enableNext(bool isNext)
 {
     ui->pushButtonNext->setEnabled(isNext);
     if(isNext){
-        ui->frame->setStyleSheet("background-color:#F5C400;");
+        ui->frameNext->setStyleSheet("background-color:#F5C400;");
     } else {
-        ui->frame->setStyleSheet("background-color:#262626;");
+        ui->frameNext->setStyleSheet("background-color:#262626;");
     }
 }
 

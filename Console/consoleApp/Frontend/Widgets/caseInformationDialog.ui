@@ -42,8 +42,12 @@ color:#A9A9A9;
 QFrame{
 border:0px;
 }
-QFrame#frame{
+QFrame#frameNext{
 background-color:#262626;
+border-radius:10px;
+}
+QFrame#frameBack{
+background-color:#636363;
 border-radius:10px;
 }
 QPushButton{
@@ -396,7 +400,7 @@ border-bottom: 2px solid rgb( 169, 169, 169 );
      </widget>
     </item>
     <item>
-     <widget class="QFrame" name="frameNext">
+     <widget class="QFrame" name="frameNavigation">
       <property name="styleSheet">
        <string notr="true"/>
       </property>
@@ -408,7 +412,7 @@ border-bottom: 2px solid rgb( 169, 169, 169 );
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
-        <number>0</number>
+        <number>60</number>
        </property>
        <property name="leftMargin">
         <number>0</number>
@@ -436,7 +440,71 @@ border-bottom: 2px solid rgb( 169, 169, 169 );
         </spacer>
        </item>
        <item>
-        <widget class="QFrame" name="frame">
+        <widget class="QFrame" name="frameBack">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButtonBack">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>60</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>60</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: white;</string>
+            </property>
+            <property name="text">
+             <string>&lt; BACK</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frameNext">
          <property name="maximumSize">
           <size>
            <width>16777215</width>

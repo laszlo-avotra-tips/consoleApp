@@ -33,6 +33,7 @@ private slots:
     void on_pushButtonPhysicianNameDown_clicked();
     void on_pushButtonLocationDown_clicked();
     void initDialog();
+    void handleBack();
 
 private:
     void enableNext(bool isNext);
