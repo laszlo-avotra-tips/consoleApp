@@ -11,6 +11,7 @@
 #include "opacScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include "Frontend/Widgets/caseInformationDialog.h"
+#include "sledsupport.h"
 
 
 #include <QDebug>
@@ -51,6 +52,10 @@ MainScreen::MainScreen(QWidget *parent)
     m_opacScreen = new OpacScreen(this);
     m_opacScreen->show();
     m_graphicsView->hide();
+
+    connect(ui->pushButtonLow, &QPushButton::clicked, this, &MainScreen::udpateToSpeed1);
+    connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
+    connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -122,6 +127,24 @@ void MainScreen::setCurrentTime()
     ui->labelCurrentTime->setText(timeString);
 }
 
+void MainScreen::setSpeed(int speed)
+{
+    LOG1(speed);
+    const QString qSpeed(QString::number(speed));
+    const QByteArray baSpeed(qSpeed.toStdString().c_str());
+    SledSupport::Instance().setSledSpeed(baSpeed);
+
+}
+
+void MainScreen::highlightSpeedButton(QPushButton *wid)
+{
+    ui->pushButtonLow->setStyleSheet("");
+    ui->pushButtonMedium->setStyleSheet("");
+    ui->pushButtonHigh->setStyleSheet("");
+
+    wid->setStyleSheet("background-color: #F5C400; color: black;");
+}
+
 int MainScreen::getSceneWidth()
 {
     int retVal = m_sceneWidth;
@@ -189,6 +212,7 @@ void MainScreen::setDeviceLabel()
     m_graphicsView->show();
     m_runTime.start();
     updateTime();
+    udpateToSpeed3();
 }
 
 void MainScreen::showSpeed(bool isShown)
@@ -266,5 +290,23 @@ void MainScreen::updateTime()
         }
     }
 
-   setCurrentTime();
+    setCurrentTime();
+}
+
+void MainScreen::udpateToSpeed1()
+{
+    setSpeed(600);
+    highlightSpeedButton(ui->pushButtonLow);
+}
+
+void MainScreen::udpateToSpeed2()
+{
+    setSpeed(800);
+    highlightSpeedButton(ui->pushButtonMedium);
+}
+
+void MainScreen::udpateToSpeed3()
+{
+    setSpeed(1000);
+    highlightSpeedButton(ui->pushButtonHigh);
 }

@@ -96,6 +96,9 @@ public:
     int getCatheterRadius_px(void)        { return ( catheterRadius_um * pixelsPerUm ); }
     int getCatheterRadius_um(void)        { return catheterRadius_um; }
     int getRevolutionsPerMin(void)        { return revolutionsPerMin1; }
+    int getRevolutionsPerMin1(void)        { return revolutionsPerMin1; }
+    int getRevolutionsPerMin2(void)        { return revolutionsPerMin2; }
+    int getRevolutionsPerMin3(void)        { return revolutionsPerMin3; }
     int getALineLengthNormal_px(void)     { return aLineLengthNormal_px; }
     int getALineLengthDeep_px(void)       { return aLineLengthDeep_px; }
     int getMeaurementVersion(void)        { return measurementVersion; }
