@@ -35,7 +35,7 @@ public:
     void setDateAndTime(const QString &dateAndTime);
 
 private:
-    QStringList m_physicianNames{{"DR. Himanshu Patel"}, {"DR. Jaafer Golzar"}, {"DR. Kara Parker-Smith"}};
+    QStringList m_physicianNames{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
     QString m_selectedPhysicianName;
     QString m_defaultPhysicianName;
 

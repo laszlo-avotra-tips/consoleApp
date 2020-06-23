@@ -184,6 +184,9 @@ void MainScreen::on_pushButtonEndCase_clicked()
     WidgetContainer::instance()->gotoScreen("startScreen");
 
     WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
+
+    m_updatetimeTimer.stop();
+    ui->labelRunTime->setText(QString("Runtime: 00:00"));
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -211,6 +214,7 @@ void MainScreen::setDeviceLabel()
     m_opacScreen->hide();
     m_graphicsView->show();
     m_runTime.start();
+    m_updatetimeTimer.start(500);
     updateTime();
     udpateToSpeed3();
 }
@@ -274,7 +278,10 @@ void MainScreen::openDeviceSelectDialog()
 
 void MainScreen::updateTime()
 {
-    int ms = m_runTime.elapsed();
+    int ms{0};
+    if(m_runTime.isValid()){
+        ms = m_runTime.elapsed();
+    }
 
     if(ms){
         int durationInSec = ms / 1000;
@@ -283,7 +290,7 @@ void MainScreen::updateTime()
         QTime dt(0,min,sec,0);
 
         QString elapsed = dt.toString("mm:ss");
-        if(elapsed.isEmpty()){
+        if(elapsed.isEmpty() && !m_runTime.isValid()){
              ui->labelRunTime->setText(QString("Runtime: 00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
@@ -295,18 +302,30 @@ void MainScreen::updateTime()
 
 void MainScreen::udpateToSpeed1()
 {
-    setSpeed(600);
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin1();
+
+    setSpeed(speed);
     highlightSpeedButton(ui->pushButtonLow);
 }
 
 void MainScreen::udpateToSpeed2()
 {
-    setSpeed(800);
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin2();
+
+    setSpeed(speed);
     highlightSpeedButton(ui->pushButtonMedium);
 }
 
 void MainScreen::udpateToSpeed3()
 {
-    setSpeed(1000);
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin3();
+
+    setSpeed(speed);
     highlightSpeedButton(ui->pushButtonHigh);
 }
