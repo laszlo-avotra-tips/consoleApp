@@ -856,16 +856,6 @@ font: 20pt &quot;Helvetica Neue&quot;;
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>MENU</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

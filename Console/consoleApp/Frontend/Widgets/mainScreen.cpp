@@ -33,7 +33,6 @@ MainScreen::MainScreen(QWidget *parent)
     m_navigationButtons.push_back(ui->pushButtonRecord);
     m_navigationButtons.push_back(ui->pushButtonCapture);
     m_navigationButtons.push_back(ui->pushButtonFlip);
-    m_navigationButtons.push_back(ui->label);
 
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
