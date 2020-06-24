@@ -226,15 +226,18 @@ qproperty-flat: true;
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normalon>:/octConsole/capture</normalon>
-         </iconset>
+         <iconset resource="../../octConsole.qrc">
+          <normaloff>:/octConsole/capture</normaloff>
+          <normalon>:/octConsole/cameraYellow</normalon>:/octConsole/capture</iconset>
         </property>
         <property name="iconSize">
          <size>
           <width>150</width>
           <height>150</height>
          </size>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+S</string>
         </property>
        </widget>
       </item>
@@ -582,6 +585,12 @@ CASE</string>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="leftMargin">
+            <number>100</number>
+           </property>
+           <property name="rightMargin">
+            <number>100</number>
+           </property>
            <item>
             <widget class="QLabel" name="labelCurrentTime">
              <property name="minimumSize">
@@ -600,7 +609,7 @@ CASE</string>
               <string/>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -610,7 +619,7 @@ CASE</string>
               <string>LIVE</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -866,6 +875,8 @@ font: 20pt &quot;Helvetica Neue&quot;;
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../octConsole.qrc"/>
+ </resources>
  <connections/>
 </ui>

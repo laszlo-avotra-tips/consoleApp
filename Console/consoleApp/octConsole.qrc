@@ -48,5 +48,6 @@
         <file alias="octOutline">Frontend/Resources/Grey OCT Outline.001.png</file>
         <file alias="recordWhite">Frontend/Resources/REC_helvetica.png</file>
         <file alias="flip">Frontend/Resources/FLIP-MENU-helvetica.png</file>
+        <file alias="cameraYellow">Frontend/Resources/Screenshow_Yellow.png</file>
     </qresource>
 </RCC>

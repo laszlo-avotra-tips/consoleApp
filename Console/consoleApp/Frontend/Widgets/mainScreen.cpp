@@ -207,8 +207,9 @@ void MainScreen::on_pushButtonCapture_clicked()
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    QString yellowBorder("border:5px solid rgb(245,200,0);");
+    QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
+    ui->pushButtonCapture->setIcon(QIcon(":/octConsole/cameraYellow"));
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
     emit captureImage();
 }
@@ -217,6 +218,7 @@ void MainScreen::resetYellowBorder()
 {
 //    ui->pushButtonCapture->setStyleSheet("");
     ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
+    ui->pushButtonCapture->setIcon(QIcon(":/octConsole/capture"));
 }
 
 void MainScreen::setDeviceLabel()
