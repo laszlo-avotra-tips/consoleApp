@@ -177,7 +177,6 @@ void DeviceSelectDialog::startDaq(frontend *fe)
     }
     fe->setIDAQ(idaq);
     LOG( INFO, "LASER: serial port control is DISABLED" )
-    LOG( INFO, "SLED support board: serial port control is DISABLED" )
 
     fe->startDaq();
     auto& setting = deviceSettings::Instance();

@@ -5,9 +5,8 @@
 #include <QDateTime>
 #include <QTimer>
 
-#include "caseInformationModel.h"
-
 class SelectDialog;
+class CaseInformationModel;
 
 namespace Ui {
 class CaseInformationDialog;
@@ -43,7 +42,7 @@ private:
     QTimer m_displayTimer;
     SelectDialog* m_selectDialog{nullptr};
 
-    static CaseInformationModel m_model;
+    CaseInformationModel& m_model;
 };
 
 #endif // CASEINFORMATIONDIALOG_H

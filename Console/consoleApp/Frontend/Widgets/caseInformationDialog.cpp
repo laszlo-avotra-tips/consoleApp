@@ -9,12 +9,14 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+#include "caseInformationModel.h"
+#include "logger.h"
 
-CaseInformationModel CaseInformationDialog::m_model;
 
 CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::CaseInformationDialog)
+    ui(new Ui::CaseInformationDialog),
+    m_model(*CaseInformationModel::instance())
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
@@ -35,8 +37,10 @@ CaseInformationDialog::~CaseInformationDialog()
 
 void CaseInformationDialog::reset()
 {
-    m_model.setSelectedPhysicianName("");
-    m_model.setSelectedLocation("");
+//    m_model.setSelectedPhysicianName("");
+//    m_model.setSelectedLocation("");
+    CaseInformationModel::instance()->setSelectedPhysicianName("");
+    CaseInformationModel::instance()->setSelectedLocation("");
 }
 
 void CaseInformationDialog::initDialog()
@@ -147,6 +151,7 @@ void CaseInformationDialog::openKeyboardLocation()
 void CaseInformationDialog::on_pushButtonNext_clicked()
 {
     m_model.setDateAndTime(ui->lineEditDateAndTime->text());
+    m_model.validate();
     accept();
 }
 

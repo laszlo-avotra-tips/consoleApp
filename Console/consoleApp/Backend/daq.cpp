@@ -183,7 +183,7 @@ bool DAQ::getData( )
     {
         qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
         missedImgs = (returned_image_number - lastImageIdx - 1);
-        LOG1(missedImgs)
+//        LOG1(missedImgs)
     }
     else
     {

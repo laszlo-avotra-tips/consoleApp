@@ -7,7 +7,7 @@
 class CaseInformationModel
 {
 public:
-    CaseInformationModel();
+    static CaseInformationModel* instance();
 
     QStringList physicianNames() const;
 
@@ -33,8 +33,13 @@ public:
 
     QString dateAndTime() const;
     void setDateAndTime(const QString &dateAndTime);
+    void validate();
 
 private:
+    CaseInformationModel();
+
+    static CaseInformationModel* m_instance;
+
     QStringList m_physicianNames{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
     QString m_selectedPhysicianName;
     QString m_defaultPhysicianName;

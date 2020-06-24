@@ -110,7 +110,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QMatrix m;
 //    m.rotate( 90 );
     qDebug() << __FUNCTION__ << ":" << __LINE__ <<" sector sectorImage.width()=" << sectorImage.width() << ", sectorImage.height()=" << sectorImage.height();
-
+    LOG3(SecName,saveDirName,saveName)
     auto imageRect = sectorImage.rect();
     if( !sectorImage.save( SecName, "PNG", 100 ) )
     {
