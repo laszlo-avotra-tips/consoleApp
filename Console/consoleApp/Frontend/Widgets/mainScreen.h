@@ -14,6 +14,7 @@
 class frontend;
 class liveScene;
 class OpacScreen;
+class QPushButton;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainScreen; }
@@ -53,6 +54,9 @@ private slots:
     void openCaseInformationDialog();
     void openDeviceSelectDialog();
     void updateTime();
+    void udpateToSpeed1();
+    void udpateToSpeed2();
+    void udpateToSpeed3();
 
 private:
     void showEvent(QShowEvent* se) override;
@@ -60,6 +64,8 @@ private:
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
     void setCurrentTime();
+    void setSpeed(int speed);
+    void highlightSpeedButton(QPushButton* wid);
 
 private:
     Ui::MainScreen *ui;

@@ -11,6 +11,7 @@
 #include "opacScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include "Frontend/Widgets/caseInformationDialog.h"
+#include "sledsupport.h"
 
 
 #include <QDebug>
@@ -51,6 +52,11 @@ MainScreen::MainScreen(QWidget *parent)
     m_opacScreen = new OpacScreen(this);
     m_opacScreen->show();
     m_graphicsView->hide();
+    ui->frameSpeed->hide();
+
+    connect(ui->pushButtonLow, &QPushButton::clicked, this, &MainScreen::udpateToSpeed1);
+    connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
+    connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -122,6 +128,24 @@ void MainScreen::setCurrentTime()
     ui->labelCurrentTime->setText(timeString);
 }
 
+void MainScreen::setSpeed(int speed)
+{
+    LOG1(speed);
+    const QString qSpeed(QString::number(speed));
+    const QByteArray baSpeed(qSpeed.toStdString().c_str());
+    SledSupport::Instance().setSledSpeed(baSpeed);
+
+}
+
+void MainScreen::highlightSpeedButton(QPushButton *wid)
+{
+    ui->pushButtonLow->setStyleSheet("");
+    ui->pushButtonMedium->setStyleSheet("");
+    ui->pushButtonHigh->setStyleSheet("");
+
+    wid->setStyleSheet("background-color: #F5C400; color: black;");
+}
+
 int MainScreen::getSceneWidth()
 {
     int retVal = m_sceneWidth;
@@ -161,6 +185,10 @@ void MainScreen::on_pushButtonEndCase_clicked()
     WidgetContainer::instance()->gotoScreen("startScreen");
 
     WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
+
+    m_updatetimeTimer.stop();
+    ui->labelRunTime->setText(QString("Runtime: 00:00"));
+    ui->frameSpeed->hide();
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -188,7 +216,9 @@ void MainScreen::setDeviceLabel()
     m_opacScreen->hide();
     m_graphicsView->show();
     m_runTime.start();
+    m_updatetimeTimer.start(500);
     updateTime();
+    udpateToSpeed1();
 }
 
 void MainScreen::showSpeed(bool isShown)
@@ -250,7 +280,10 @@ void MainScreen::openDeviceSelectDialog()
 
 void MainScreen::updateTime()
 {
-    int ms = m_runTime.elapsed();
+    int ms{0};
+    if(m_runTime.isValid()){
+        ms = m_runTime.elapsed();
+    }
 
     if(ms){
         int durationInSec = ms / 1000;
@@ -259,12 +292,42 @@ void MainScreen::updateTime()
         QTime dt(0,min,sec,0);
 
         QString elapsed = dt.toString("mm:ss");
-        if(elapsed.isEmpty()){
+        if(elapsed.isEmpty() && !m_runTime.isValid()){
              ui->labelRunTime->setText(QString("Runtime: 00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
         }
     }
 
-   setCurrentTime();
+    setCurrentTime();
+}
+
+void MainScreen::udpateToSpeed1()
+{
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin1();
+
+    setSpeed(speed);
+    highlightSpeedButton(ui->pushButtonLow);
+}
+
+void MainScreen::udpateToSpeed2()
+{
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin2();
+
+    setSpeed(speed);
+    highlightSpeedButton(ui->pushButtonMedium);
+}
+
+void MainScreen::udpateToSpeed3()
+{
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin3();
+
+    setSpeed(speed);
+    highlightSpeedButton(ui->pushButtonHigh);
 }

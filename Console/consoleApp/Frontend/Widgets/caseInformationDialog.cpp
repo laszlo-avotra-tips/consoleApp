@@ -36,6 +36,7 @@ CaseInformationDialog::~CaseInformationDialog()
 void CaseInformationDialog::reset()
 {
     m_model.setSelectedPhysicianName("");
+    m_model.setSelectedLocation("");
 }
 
 void CaseInformationDialog::initDialog()
@@ -73,6 +74,8 @@ void CaseInformationDialog::initDialog()
         connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
         m_displayTimer.start(500);
         enableNext(false);
+        m_model.setSelectedLocation("");
+        m_model.setPatientId("");
     }
 }
 
@@ -155,11 +158,6 @@ void CaseInformationDialog::enableNext(bool isNext)
     } else {
         ui->frameNext->setStyleSheet("background-color:#262626;");
     }
-}
-
-bool CaseInformationDialog::isFieldEmpty() const
-{
-    return !m_model.isSelectedPhysicianName();
 }
 
 void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
