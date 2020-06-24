@@ -214,7 +214,7 @@ void MainScreen::on_pushButtonCapture_clicked()
 //    QString newMainSSS = QString("QWidget#MainScreen{border:2px solid rgb(245,200,0);}") + mainScreenStyleSheet;
 //    ui->frameM->setStyleSheet("border:2px solid rgb(245,200,0);");
 //    setStyleSheet(newMainSSS);
-    QTimer::singleShot(2000,this,&MainScreen::resetYellowBorder);
+    QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
     emit captureImage();
 }
 
