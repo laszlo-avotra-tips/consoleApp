@@ -34,6 +34,9 @@ public:
     void setDeviceLabel();
     void showSpeed(bool isShown);
 
+signals:
+    void captureImage();
+
 private slots:
     void on_pushButtonFlip_clicked();
 
@@ -57,6 +60,7 @@ private slots:
     void udpateToSpeed1();
     void udpateToSpeed2();
     void udpateToSpeed3();
+    void resetYellowBorder();
 
 private:
     void showEvent(QShowEvent* se) override;

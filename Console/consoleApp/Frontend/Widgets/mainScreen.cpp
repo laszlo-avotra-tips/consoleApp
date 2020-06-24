@@ -12,6 +12,7 @@
 #include "Frontend/Screens/frontend.h"
 #include "Frontend/Widgets/caseInformationDialog.h"
 #include "sledsupport.h"
+#include <QTimer>
 
 
 #include <QDebug>
@@ -203,6 +204,24 @@ void MainScreen::on_pushButtonCondensUp_clicked()
 
 void MainScreen::on_pushButtonCapture_clicked()
 {
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+//    QString mainScreenStyleSheet = styleSheet();
+    QString yellowBorder("border:5px solid rgb(245,200,0);");
+//    ui->pushButtonCapture->setStyleSheet(yellowBorder);
+    ui->graphicsView->setStyleSheet(yellowBorder);
+//    QString newMainSSS = QString("QWidget#MainScreen{border:2px solid rgb(245,200,0);}") + mainScreenStyleSheet;
+//    ui->frameM->setStyleSheet("border:2px solid rgb(245,200,0);");
+//    setStyleSheet(newMainSSS);
+    QTimer::singleShot(2000,this,&MainScreen::resetYellowBorder);
+    emit captureImage();
+}
+
+void MainScreen::resetYellowBorder()
+{
+//    ui->pushButtonCapture->setStyleSheet("");
+    ui->graphicsView->setStyleSheet("");
 }
 
 void MainScreen::setDeviceLabel()
