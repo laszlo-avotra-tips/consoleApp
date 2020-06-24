@@ -492,7 +492,7 @@ CASE</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true"/>
+         <string notr="true">&quot;border:5px solid rgb(0,0,0);&quot;</string>
         </property>
        </widget>
       </item>
