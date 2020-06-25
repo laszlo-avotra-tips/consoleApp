@@ -87,20 +87,39 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     currCaptureNumber++;
     QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber, 3, 10, QLatin1Char( '0' ) );
 
+    //
+    caseInfo &info = caseInfo::Instance();
+    QString saveDirName = info.getCapturesDir();
+    QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
+
     /*
      * Paint the procedure data to the sector image.
      */
     QPainter painter( &sectorImage );
+    QFont font = painter.font();
+
+    const int logoX{ SectorWidth_px - LogoImage.width() - 100};
+    const int logoY{50};
+
+    const int nowX{100};
+    const int nowDateY{100};
+    const int nowTimeY{160};
+
+    painter.setPen( QPen( Qt::white ) );
+
+    const auto& now = QDateTime::currentDateTime().toUTC();
+    QString timeStampDate = now.toString("yyyy-MM-dd" );
+    QString timeStampTime = now.toString("  hh:mm:ss");
+
+    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    painter.drawText( nowX, nowDateY, timeStampDate);
+    painter.drawText( nowX, nowTimeY, timeStampTime);
 
     //    Upper Right -- Logo
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
+    painter.drawImage( logoX, logoY, LogoImage );
 
     painter.end();
 
-    // Build the location directory
-    caseInfo &info = caseInfo::Instance();
-    QString saveDirName = info.getCapturesDir();
-    QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
     // Store the capture
     const QString SecName            = saveDirName + "/"        + saveName + SectorImageSuffix    + ".png";
@@ -109,7 +128,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     QMatrix m;
 //    m.rotate( 90 );
-    qDebug() << __FUNCTION__ << ":" << __LINE__ <<" sector sectorImage.width()=" << sectorImage.width() << ", sectorImage.height()=" << sectorImage.height();
+//    qDebug() << __FUNCTION__ << ":" << __LINE__ <<" sector sectorImage.width()=" << sectorImage.width() << ", sectorImage.height()=" << sectorImage.height();
     LOG3(SecName,saveDirName,saveName)
     auto imageRect = sectorImage.rect();
     if( !sectorImage.save( SecName, "PNG", 100 ) )
