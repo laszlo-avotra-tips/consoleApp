@@ -101,6 +101,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QPainter painter( &sectorImage );
 
     addTimeStamp(painter);
+    addFileName(painter,saveName);
 
     //    Upper Right -- Logo
     painter.drawImage( logoX, logoY, LogoImage );
@@ -147,7 +148,10 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     // Paint the logo on the decorated image in the upper right corner
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
+
     addTimeStamp(painter);
+    addFileName(painter,saveName);
+
     painter.drawImage( logoX, logoY, LogoImage );
     painter.end();
 
@@ -290,7 +294,17 @@ void captureMachine::addTimeStamp(QPainter& painter)
     painter.setFont( QFont( "DinPro-regular", 20 ) );
     painter.drawText( nowX, nowDateY, timeStampDate);
     painter.drawText( nowX, nowTimeY, timeStampTime);
+}
 
+void captureMachine::addFileName(QPainter &painter, const QString &fn)
+{
+    const int fnX{1900};
+    const int fnY{2100};
+
+    painter.setPen( QPen( Qt::white ) );
+
+    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    painter.drawText( fnX, fnY, fn);
 }
 
 
