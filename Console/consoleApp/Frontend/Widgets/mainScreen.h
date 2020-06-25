@@ -60,8 +60,6 @@ private slots:
     void udpateToSpeed3();
     void resetYellowBorder();
 
-    void on_pushButtonCapture_pressed();
-
     void on_pushButtonCapture_released();
 
 private:

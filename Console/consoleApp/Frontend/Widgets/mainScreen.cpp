@@ -336,7 +336,7 @@ void MainScreen::udpateToSpeed3()
     highlightSpeedButton(ui->pushButtonHigh);
 }
 
-void MainScreen::on_pushButtonCapture_pressed()
+void MainScreen::on_pushButtonCapture_released()
 {
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
@@ -345,9 +345,5 @@ void MainScreen::on_pushButtonCapture_pressed()
     ui->graphicsView->setStyleSheet(yellowBorder);
     ui->pushButtonCapture->setIcon(QIcon(":/octConsole/cameraYellow"));
     emit captureImage();
-}
-
-void MainScreen::on_pushButtonCapture_released()
-{
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
 }

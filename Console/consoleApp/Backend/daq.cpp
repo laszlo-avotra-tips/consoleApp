@@ -266,11 +266,9 @@ bool DAQ::startDaq()
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
-//    setLaserDivider(LASER_SCAN_DIVIDER);
         const int laserDevider{1};
         LOG1(laserDevider)
         setLaserDivider(laserDevider);
-//        axSetSubsamplingFactor(2,0);
     } catch (...) {
         qDebug() << "Axsun Error" ;
         LOG1("Axsun Error")
