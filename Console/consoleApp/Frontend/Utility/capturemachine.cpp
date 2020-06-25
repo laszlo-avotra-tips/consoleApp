@@ -92,28 +92,15 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
+    const int logoX{ SectorWidth_px - LogoImage.width() - 100};
+    const int logoY{50};
+
     /*
      * Paint the procedure data to the sector image.
      */
     QPainter painter( &sectorImage );
-    QFont font = painter.font();
 
-    const int logoX{ SectorWidth_px - LogoImage.width() - 100};
-    const int logoY{50};
-
-    const int nowX{100};
-    const int nowDateY{100};
-    const int nowTimeY{160};
-
-    painter.setPen( QPen( Qt::white ) );
-
-    const auto& now = QDateTime::currentDateTime().toUTC();
-    QString timeStampDate = now.toString("yyyy-MM-dd" );
-    QString timeStampTime = now.toString("  hh:mm:ss");
-
-    painter.setFont( QFont( "DinPro-regular", 20 ) );
-    painter.drawText( nowX, nowDateY, timeStampDate);
-    painter.drawText( nowX, nowTimeY, timeStampTime);
+    addTimeStamp(painter);
 
     //    Upper Right -- Logo
     painter.drawImage( logoX, logoY, LogoImage );
@@ -160,7 +147,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     // Paint the logo on the decorated image in the upper right corner
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
+    addTimeStamp(painter);
+    painter.drawImage( logoX, logoY, LogoImage );
     painter.end();
 
     QImage dim = decoratedImage.copy(imageRect);
@@ -285,6 +273,24 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     emit sendCaptureTag( ClipName );
     LOG( INFO, "Loop Capture: " + ClipName )
+}
+
+void captureMachine::addTimeStamp(QPainter& painter)
+{
+    const int nowX{100};
+    const int nowDateY{100};
+    const int nowTimeY{160};
+
+    painter.setPen( QPen( Qt::white ) );
+
+    const auto& now = QDateTime::currentDateTime().toUTC();
+    QString timeStampDate = now.toString("yyyy-MM-dd" );
+    QString timeStampTime = now.toString("  hh:mm:ss");
+
+    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    painter.drawText( nowX, nowDateY, timeStampDate);
+    painter.drawText( nowX, nowTimeY, timeStampTime);
+
 }
 
 

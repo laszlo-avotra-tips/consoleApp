@@ -69,6 +69,7 @@ private:
 
     void processImageCapture(CaptureItem_t captureItem );
     void processLoopRecording( ClipItem_t loop );
+    void addTimeStamp(QPainter& painter);
 
     QMutex mutex;
 
