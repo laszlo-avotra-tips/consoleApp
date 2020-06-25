@@ -49,12 +49,16 @@ void SelectDialog::populate(const QStringList &sl, const QString &selected)
                 m_itemsInView.push_back(m_items[0]);
                 m_itemsInView.push_back(m_items[1]);
                 m_itemsInView.push_back(m_items[2]);
-                m_selectableWidgets[si]->setStyleSheet("color:#F5C400;");
+                auto* wid = m_selectableWidgets[si];
+                auto style = wid->styleSheet();
+                wid->setStyleSheet(style + QString("color:#F5C400;"));
             } else {
                 m_itemsInView.push_back(m_items[si - 2]);
                 m_itemsInView.push_back(m_items[si - 1]);
                 m_itemsInView.push_back(m_items[si]);
-                m_selectableWidgets[2]->setStyleSheet("color:#F5C400;");
+                auto* wid = m_selectableWidgets[2];
+                auto style = wid->styleSheet();
+                wid->setStyleSheet(style + QString("color:#F5C400;"));
             }
             int index{0};
             for(auto* lineEdit : m_selectableWidgets){
@@ -112,30 +116,34 @@ void SelectDialog::scrollDown()
     int index{0};
     for(auto* lineEdit : m_selectableWidgets){
         if(m_items.size()>index){
+            auto style = lineEdit->styleSheet();
             lineEdit->setText(m_itemsInView[index]);
-            lineEdit->setStyleSheet("color:white");
+            lineEdit->setStyleSheet(style + QString("color:white"));
         }
         ++index;
     }
     auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
     LOG2(m_selectedItem, highlighted)
     if(highlighted >= 0 && highlighted < 3){
-        m_selectableWidgets[highlighted]->setStyleSheet("color:#F5C400;");
+        auto* wid = m_selectableWidgets[highlighted];
+        auto style = wid->styleSheet();
+        wid->setStyleSheet(style + QString("color:#F5C400;"));
     }
 }
-
+//border-top: 2px solid rgb( 169, 169, 169);
 void SelectDialog::selectItem(int index)
 {
     m_selectedItem = m_selectableWidgets[index]->text();
 
     for(int i = 0; i < 3; ++i ){
+        auto* wid = m_selectableWidgets[i];
+        auto style = wid->styleSheet();
         if(i == index){
-            m_selectableWidgets[i]->setStyleSheet("color:#F5C400;");
+            wid->setStyleSheet(style + QString("color:#F5C400;"));
         } else {
-            m_selectableWidgets[i]->setStyleSheet("color:white");
+           wid->setStyleSheet(style + QString("color:white;"));
         }
     }
-//    accept();
     QTimer::singleShot(500,this,&SelectDialog::accept);
 }
 

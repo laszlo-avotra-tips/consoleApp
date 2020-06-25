@@ -202,18 +202,6 @@ void MainScreen::on_pushButtonCondensUp_clicked()
     on_pushButtonMenu_clicked();
 }
 
-void MainScreen::on_pushButtonCapture_clicked()
-{
-    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-
-    QString yellowBorder("border:5px solid rgb(245,196,0);");
-    ui->graphicsView->setStyleSheet(yellowBorder);
-    ui->pushButtonCapture->setIcon(QIcon(":/octConsole/cameraYellow"));
-    QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
-    emit captureImage();
-}
-
 void MainScreen::resetYellowBorder()
 {
 //    ui->pushButtonCapture->setStyleSheet("");
@@ -346,4 +334,20 @@ void MainScreen::udpateToSpeed3()
 
     setSpeed(speed);
     highlightSpeedButton(ui->pushButtonHigh);
+}
+
+void MainScreen::on_pushButtonCapture_pressed()
+{
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+    QString yellowBorder("border:5px solid rgb(245,196,0);");
+    ui->graphicsView->setStyleSheet(yellowBorder);
+    ui->pushButtonCapture->setIcon(QIcon(":/octConsole/cameraYellow"));
+    emit captureImage();
+}
+
+void MainScreen::on_pushButtonCapture_released()
+{
+    QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
 }

@@ -51,8 +51,6 @@ private slots:
     void on_pushButtonDownArrow_clicked();
     void on_pushButtonCondensUp_clicked();
 
-    void on_pushButtonCapture_clicked();
-
     void on_pushButtonSettings_clicked();
     void openCaseInformationDialog();
     void openDeviceSelectDialog();
@@ -61,6 +59,10 @@ private slots:
     void udpateToSpeed2();
     void udpateToSpeed3();
     void resetYellowBorder();
+
+    void on_pushButtonCapture_pressed();
+
+    void on_pushButtonCapture_released();
 
 private:
     void showEvent(QShowEvent* se) override;
