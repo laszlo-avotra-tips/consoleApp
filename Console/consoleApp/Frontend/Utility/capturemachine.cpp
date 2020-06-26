@@ -298,7 +298,7 @@ void captureMachine::addTimeStamp(QPainter& painter)
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn)
 {
-    const int fnX{1900};
+    const int fnX{100};
     const int fnY{2100};
 
     painter.setPen( QPen( Qt::white ) );

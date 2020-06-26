@@ -37,7 +37,7 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    box = new QRect( overlayPixmap->width() - 280, overlayPixmap->height() - 180, 1, 1 );
+    box = new QRect( overlayPixmap->width() - 380, overlayPixmap->height() - 280, 1, 1 );
 #else
     overlayPixmap = new QPixmap( parent->geometry().width(), parent->geometry().height()  );
     box = new QRect( overlayPixmap->width() - 280, overlayPixmap->height() - 180, 1, 1 );
@@ -593,16 +593,16 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 //        qDebug() << __FUNCTION__ << ": currPxPerMm" << currPxPerMm; //lcv
 //        cppm = currPxPerMm;
 //    }
-#ifndef MEASUREMENT_APP
-    const int FontSize = 22;
-#else
+//#ifndef MEASUREMENT_APP
+//    const int FontSize = 22;
+//#else
     const int FontSize = 14;
-#endif
+//#endif
     QFont font = painter->font();
     font.setPointSize( FontSize );
     painter->setFont( font );
-    const int xMargin = FontSize / 2;
-    const int yMargin = FontSize / 2;
+    const int xMargin = FontSize;
+    const int yMargin = 2*FontSize;
 
     if( polygonPoints.size() == 2 )
     {
