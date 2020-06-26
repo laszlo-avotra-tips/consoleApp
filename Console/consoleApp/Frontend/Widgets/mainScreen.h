@@ -36,6 +36,7 @@ public:
 
 signals:
     void captureImage();
+    void measureImage(bool isMeasureMode);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -61,6 +62,8 @@ private slots:
     void resetYellowBorder();
 
     void on_pushButtonCapture_released();
+
+    void on_pushButtonMeasure_clicked(bool checked);
 
 private:
     void showEvent(QShowEvent* se) override;

@@ -503,6 +503,8 @@ void frontend::setupScene( void )
 //    m_mainWindow->showFullScreen();
 
     connect(m_mainScreen, &MainScreen::captureImage, this, &frontend::on_captureImageButton_clicked);
+    connect(m_mainScreen, &MainScreen::measureImage, this, &frontend::on_measureModePushButton_clicked);
+
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );

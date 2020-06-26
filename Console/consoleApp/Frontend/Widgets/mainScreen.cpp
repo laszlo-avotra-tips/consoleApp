@@ -79,7 +79,6 @@ bool MainScreen::isVisible() const
     return !region.isEmpty();
 }
 
-
 void MainScreen::on_pushButtonFlip_clicked()
 {
     flipColumns();
@@ -345,4 +344,18 @@ void MainScreen::on_pushButtonCapture_released()
     ui->pushButtonCapture->setIcon(QIcon(":/octConsole/cameraYellow"));
     emit captureImage();
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
+}
+
+void MainScreen::on_pushButtonMeasure_clicked(bool checked)
+{
+    emit measureImage(checked);
+
+    QIcon measureIcon;
+    if(checked){
+        measureIcon = QIcon(":/octConsole/measureYellow");
+    }  else {
+        measureIcon = QIcon(":/octConsole/measureWhite");
+    }
+
+    ui->pushButtonMeasure->setIcon(measureIcon);
 }
