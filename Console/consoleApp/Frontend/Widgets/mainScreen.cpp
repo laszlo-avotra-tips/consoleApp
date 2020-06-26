@@ -204,7 +204,6 @@ void MainScreen::on_pushButtonCondensUp_clicked()
 
 void MainScreen::resetYellowBorder()
 {
-//    ui->pushButtonCapture->setStyleSheet("");
     ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
     ui->pushButtonCapture->setIcon(QIcon(":/octConsole/capture"));
 }
@@ -222,7 +221,7 @@ void MainScreen::setDeviceLabel()
     m_runTime.start();
     m_updatetimeTimer.start(500);
     updateTime();
-    udpateToSpeed1();
+    udpateToSpeed2();
 }
 
 void MainScreen::showSpeed(bool isShown)
