@@ -24,9 +24,6 @@ public:
     void setCalibrationScale( const int CalValMm );
 
 signals:
-#ifdef MEASUREMENT_APP
-    void twoPointsDrawn();
-#endif
 
 private:
     QPixmap *overlayPixmap;
