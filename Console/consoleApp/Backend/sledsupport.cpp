@@ -810,7 +810,7 @@ bool SledSupport::isRunningState()
         }
         //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
         QString respAsString = QTextCodec::codecForMib(106)->toUnicode(resp);
-        LOG2(respAsString, running)
+//        LOG2(respAsString, running)
     }
     return running;
 }
