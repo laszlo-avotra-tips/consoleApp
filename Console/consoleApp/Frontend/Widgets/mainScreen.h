@@ -65,6 +65,8 @@ private slots:
 
     void on_pushButtonMeasure_clicked(bool checked);
 
+    void handleSledRunningState();
+
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
@@ -89,6 +91,7 @@ private:
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
+    QTimer m_sledStateQueryTimer;
     OpacScreen* m_opacScreen{nullptr};
 };
 #endif // MAINSCREEN_H

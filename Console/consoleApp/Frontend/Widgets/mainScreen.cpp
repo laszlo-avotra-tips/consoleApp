@@ -50,6 +50,9 @@ MainScreen::MainScreen(QWidget *parent)
     m_updatetimeTimer.start(500);
     connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
+    m_sledStateQueryTimer.start(500);
+    connect(&m_sledStateQueryTimer, &QTimer::timeout, this, &MainScreen::handleSledRunningState);
+
     m_opacScreen = new OpacScreen(this);
     m_opacScreen->show();
     m_graphicsView->hide();
@@ -204,7 +207,6 @@ void MainScreen::on_pushButtonCondensUp_clicked()
 void MainScreen::resetYellowBorder()
 {
     ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
-    ui->pushButtonCapture->setIcon(QIcon(":/octConsole/capture"));
 }
 
 void MainScreen::setDeviceLabel()
@@ -341,7 +343,6 @@ void MainScreen::on_pushButtonCapture_released()
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
-    ui->pushButtonCapture->setIcon(QIcon(":/octConsole/cameraYellow"));
     emit captureImage();
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
 }
@@ -349,13 +350,15 @@ void MainScreen::on_pushButtonCapture_released()
 void MainScreen::on_pushButtonMeasure_clicked(bool checked)
 {
     emit measureImage(checked);
+}
 
-    QIcon measureIcon;
-    if(checked){
-        measureIcon = QIcon(":/octConsole/measureYellow");
-    }  else {
-        measureIcon = QIcon(":/octConsole/measureWhite");
+void MainScreen::handleSledRunningState()
+{
+    const bool isSledRunning =  SledSupport::Instance().isRunningState();
+
+    //exit while in measure mode and the sled is started
+    if(isSledRunning && ui->pushButtonMeasure->isChecked()){
+        ui->pushButtonMeasure->clicked();
     }
-
-    ui->pushButtonMeasure->setIcon(measureIcon);
+    ui->pushButtonMeasure->setEnabled(!isSledRunning);
 }

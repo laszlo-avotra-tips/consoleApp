@@ -309,9 +309,11 @@ qproperty-flat: true;
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normalon>:/octConsole/measureWhite</normalon>
-         </iconset>
+         <iconset resource="../../octConsole.qrc">
+          <normaloff>:/octConsole/measureWhite</normaloff>
+          <normalon>:/octConsole/measureYellow</normalon>
+          <disabledoff>:/octConsole/measureGrey</disabledoff>
+          <disabledon>:/octConsole/measureGrey</disabledon>:/octConsole/measureWhite</iconset>
         </property>
         <property name="iconSize">
          <size>

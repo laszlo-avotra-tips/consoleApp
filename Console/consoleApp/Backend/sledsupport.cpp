@@ -12,6 +12,8 @@
 #include "deviceSettings.h"
 #include "logger.h"
 
+#include <QTextCodec>
+
 /* Output from help command on a hyperterminal
  * Firmware Revision 0.06
  * Commands:
@@ -786,10 +788,37 @@ void SledSupport::setPower( int milliWattTenth )
     }
 }
 
+bool SledSupport::isRunningState()
+{
+    bool running = false;
+    if( ftHandle != NULL )
+    {
+        // first get current run mode
+        mutex.lock();
+        ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );   // flush input buffer
+        if( ftStatus != FT_OK )
+        {
+            qDebug() << "Input flush failed";
+        }
+        writeSerial( GetRunningState );
+        msleep( SledCommDelay_ms );                 // sleep to wait for a response
+        QByteArray resp = getResponse();
+        mutex.unlock();
+        qDebug() << "get running state response:" << resp;
+        if( resp.toUpper().contains( "1" )) {
+            running = true;
+        }
+        //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
+        QString respAsString = QTextCodec::codecForMib(106)->toUnicode(resp);
+        LOG2(respAsString, running)
+    }
+    return running;
+}
+
+
 /*
  * setSledDirection
  */
-
 void SledSupport::setSledDirection( QByteArray dir )
 {
     if( ftHandle != NULL )
