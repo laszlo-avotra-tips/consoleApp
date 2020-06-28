@@ -12,6 +12,8 @@
 #include "deviceSettings.h"
 #include "logger.h"
 
+#include <QTextCodec>
+
 /* Output from help command on a hyperterminal
  * Firmware Revision 0.06
  * Commands:
@@ -185,32 +187,67 @@ bool SledSupport::init( void )
         {
             qDebug() << "Could not open FTDI device";
         }
+        if( (strcmp(ftdiDeviceInfo[0].SerialNumber, "MS2816") == 0 ))
+        {
+            // This code is used to initialize the original L300 interface board (MS2816)
+            qDebug() << "*** Prototype IF";
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );   // SSB 5V on
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xF6, 0x20 );   // Sled 24V on
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xF7, 0x20 );   // Sled 5V on
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xFF, 0x20 );   // Laser on
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+        }
+        else
+        {
+            // This code is used to initialize the final L300IF board (MS2916)
+            qDebug() << "*** Final IF";
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // First reset the board
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xF2, 0x20 );   // Sled 24V on
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xF3, 0x20 );   // Sled 5V on
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+            ftStatus = FT_SetBitMode( ftHandle, 0xFB, 0x20 );   // Laser on
+            if( ftStatus != FT_OK )
+            {
+                qDebug() << "Could not change bits";
+            }
+            Sleep(100);
+        }
 
-        ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );   // Sled Support 5V on
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not change bits";
-        }
-        Sleep(100);
-        ftStatus = FT_SetBitMode( ftHandle, 0xF6, 0x20 );   // Sled 24V on
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not change bits";
-        }
-        Sleep(100);
-        ftStatus = FT_SetBitMode( ftHandle, 0xF7, 0x20 );   // Sled 5V on
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not change bits";
-        }
-        Sleep(100);
-        ftStatus = FT_SetBitMode( ftHandle, 0xFF, 0x20 );   // Laser on
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Could not change bits";
-        }
-        Sleep(100);
-//        ftStatus = FT_SetBaudRate( ftHandle, 115200);
         ftStatus = FT_SetBaudRate( ftHandle, 9600);
         if( ftStatus != FT_OK )
         {
@@ -371,35 +408,31 @@ void SledSupport::run()
         {
             mutex.lock();
             deviceSettings &device = deviceSettings::Instance();
-            auto currentDevice = device.current();
-            if(currentDevice){
-                qDebug() << "New Device Name: " << device.current()->getDeviceName();
-                int isEnabled = device.current()->getClockingEnabled();
-                QByteArray clockingGain = device.current()->getClockingGain();
-                QByteArray clockingOffset = device.current()->getClockingOffset();
-                int speed = device.current()->getRevolutionsPerMin();
-                QByteArray torqueLimit = device.current()->getTorqueLimit();
-                QByteArray timeLimit = device.current()->getTimeLimit();
-
+//            qDebug() << "New Device Name: " << device.current()->getDeviceName();
+            int isEnabled = device.current()->getClockingEnabled();
+            QByteArray clockingGain = device.current()->getClockingGain();
+            QByteArray clockingOffset = device.current()->getClockingOffset();
+            int speed = device.current()->getRevolutionsPerMin();
+            QByteArray torqueLimit = device.current()->getTorqueLimit();
+            QByteArray timeLimit = device.current()->getTimeLimit();
+            mutex.unlock();
 //            qDebug() << "* SledSupport - run new Device = " << newDevice << "ClockingEnabled:" << isEnabled;
-                newDevice = -1;
+            newDevice = -1;
 
 //            updateDeviceForSledSupport( isEnabled, clockingGain, clockingOffset, speed, torqueLimit, timeLimit );
-                emit setSlider( speed );
-                baParam.setNum( speed );
-                setSledSpeed( baParam );
-                setClockingMode(isEnabled );
-                setClockingOffset( clockingOffset );
-                setClockingGain( clockingGain );
-                setSledTorqueLimit( torqueLimit );
-                setSledTimeLimit( timeLimit );
-            }
-            mutex.unlock();
-
+            emit setSlider( speed );
+            baParam.setNum( speed );
+            setSledSpeed( baParam );
+            setClockingMode(isEnabled );
+            setClockingOffset( clockingOffset );
+            setClockingGain( clockingGain );
+            setSledTorqueLimit( torqueLimit );
+            setSledTimeLimit( timeLimit );
 //            setVOA( 3750 );
         }
         else if( pollingTimer > ClockingUpdateTimer_ms )
         {
+            qDebug() << "****** Polling";
             pollingTimer = 0;
             mutex.lock();
 
@@ -755,10 +788,37 @@ void SledSupport::setPower( int milliWattTenth )
     }
 }
 
+bool SledSupport::isRunningState()
+{
+    bool running = false;
+    if( ftHandle != NULL )
+    {
+        // first get current run mode
+        mutex.lock();
+        ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );   // flush input buffer
+        if( ftStatus != FT_OK )
+        {
+            qDebug() << "Input flush failed";
+        }
+        writeSerial( GetRunningState );
+        msleep( SledCommDelay_ms );                 // sleep to wait for a response
+        QByteArray resp = getResponse();
+        mutex.unlock();
+        qDebug() << "get running state response:" << resp;
+        if( resp.toUpper().contains( "1" )) {
+            running = true;
+        }
+        //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
+        QString respAsString = QTextCodec::codecForMib(106)->toUnicode(resp);
+//        LOG2(respAsString, running)
+    }
+    return running;
+}
+
+
 /*
  * setSledDirection
  */
-
 void SledSupport::setSledDirection( QByteArray dir )
 {
     if( ftHandle != NULL )
@@ -971,6 +1031,7 @@ void SledSupport::getFirmwareVersions( void )
          * via the path through frontend using signals & slots.
          */
 
+        qDebug() << "***** version: " << resp;
         if( resp.startsWith( strPrefix.toLatin1() ) )
         {
             // parse the response
@@ -981,7 +1042,7 @@ void SledSupport::getFirmwareVersions( void )
         }
         sledParams.vSled = sledVersion;
         sledParams.vSSB  = ssbVersion;
-        //qDebug() << "versions: " << sledVersion << " , " << ssbVersion;
+        qDebug() << "versions: " << sledVersion << " , " << ssbVersion;
         emit announceFirmwareVersions( sledVersion, ssbVersion );
         //LOG( INFO, QString( "Firmware versions: Sled - %1, Sled Support Board - %2" ).arg( QString( sledVersion ) ).arg( QString( ssbVersion ) ) );
 

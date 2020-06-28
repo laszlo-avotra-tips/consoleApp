@@ -9,6 +9,10 @@
 #include "daqfactory.h"
 #include <logger.h>
 #include "opacScreen.h"
+#include "Frontend/Screens/frontend.h"
+#include "Frontend/Widgets/caseInformationDialog.h"
+#include "sledsupport.h"
+#include <QTimer>
 
 
 #include <QDebug>
@@ -31,7 +35,6 @@ MainScreen::MainScreen(QWidget *parent)
     m_navigationButtons.push_back(ui->pushButtonRecord);
     m_navigationButtons.push_back(ui->pushButtonCapture);
     m_navigationButtons.push_back(ui->pushButtonFlip);
-    m_navigationButtons.push_back(ui->label);
 
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
@@ -47,8 +50,17 @@ MainScreen::MainScreen(QWidget *parent)
     m_updatetimeTimer.start(500);
     connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
+    m_sledStateQueryTimer.start(500);
+    connect(&m_sledStateQueryTimer, &QTimer::timeout, this, &MainScreen::handleSledRunningState);
+
     m_opacScreen = new OpacScreen(this);
     m_opacScreen->show();
+    m_graphicsView->hide();
+    ui->frameSpeed->hide();
+
+    connect(ui->pushButtonLow, &QPushButton::clicked, this, &MainScreen::udpateToSpeed1);
+    connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
+    connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -69,7 +81,6 @@ bool MainScreen::isVisible() const
     const auto& region = m_graphicsView->visibleRegion();
     return !region.isEmpty();
 }
-
 
 void MainScreen::on_pushButtonFlip_clicked()
 {
@@ -120,6 +131,24 @@ void MainScreen::setCurrentTime()
     ui->labelCurrentTime->setText(timeString);
 }
 
+void MainScreen::setSpeed(int speed)
+{
+    LOG1(speed);
+    const QString qSpeed(QString::number(speed));
+    const QByteArray baSpeed(qSpeed.toStdString().c_str());
+    SledSupport::Instance().setSledSpeed(baSpeed);
+
+}
+
+void MainScreen::highlightSpeedButton(QPushButton *wid)
+{
+    ui->pushButtonLow->setStyleSheet("");
+    ui->pushButtonMedium->setStyleSheet("");
+    ui->pushButtonHigh->setStyleSheet("");
+
+    wid->setStyleSheet("background-color: #F5C400; color: black;");
+}
+
 int MainScreen::getSceneWidth()
 {
     int retVal = m_sceneWidth;
@@ -151,7 +180,18 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
+    m_opacScreen->show();
+    m_graphicsView->hide();
+
+    CaseInformationDialog::reset();
+
     WidgetContainer::instance()->gotoScreen("startScreen");
+
+    WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
+
+    m_updatetimeTimer.stop();
+    ui->labelRunTime->setText(QString("Runtime: 00:00"));
+    ui->frameSpeed->hide();
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -164,8 +204,9 @@ void MainScreen::on_pushButtonCondensUp_clicked()
     on_pushButtonMenu_clicked();
 }
 
-void MainScreen::on_pushButtonCapture_clicked()
+void MainScreen::resetYellowBorder()
 {
+    ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
 }
 
 void MainScreen::setDeviceLabel()
@@ -177,8 +218,11 @@ void MainScreen::setDeviceLabel()
     const QString name{dev.getCurrentDeviceTitle()};
     ui->labelDevice->setText(name);
     m_opacScreen->hide();
+    m_graphicsView->show();
     m_runTime.start();
+    m_updatetimeTimer.start(500);
     updateTime();
+    udpateToSpeed2();
 }
 
 void MainScreen::showSpeed(bool isShown)
@@ -240,7 +284,10 @@ void MainScreen::openDeviceSelectDialog()
 
 void MainScreen::updateTime()
 {
-    int ms = m_runTime.elapsed();
+    int ms{0};
+    if(m_runTime.isValid()){
+        ms = m_runTime.elapsed();
+    }
 
     if(ms){
         int durationInSec = ms / 1000;
@@ -249,12 +296,69 @@ void MainScreen::updateTime()
         QTime dt(0,min,sec,0);
 
         QString elapsed = dt.toString("mm:ss");
-        if(elapsed.isEmpty()){
+        if(elapsed.isEmpty() && !m_runTime.isValid()){
              ui->labelRunTime->setText(QString("Runtime: 00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
         }
     }
 
-   setCurrentTime();
+    setCurrentTime();
+}
+
+void MainScreen::udpateToSpeed1()
+{
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin1();
+
+    setSpeed(speed);
+    highlightSpeedButton(ui->pushButtonLow);
+}
+
+void MainScreen::udpateToSpeed2()
+{
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin2();
+
+    setSpeed(speed);
+    highlightSpeedButton(ui->pushButtonMedium);
+}
+
+void MainScreen::udpateToSpeed3()
+{
+    deviceSettings& ds = deviceSettings::Instance();
+    auto* cd = ds.current();
+    auto speed = cd->getRevolutionsPerMin3();
+
+    setSpeed(speed);
+    highlightSpeedButton(ui->pushButtonHigh);
+}
+
+void MainScreen::on_pushButtonCapture_released()
+{
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+    QString yellowBorder("border:5px solid rgb(245,196,0);");
+    ui->graphicsView->setStyleSheet(yellowBorder);
+    emit captureImage();
+    QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
+}
+
+void MainScreen::on_pushButtonMeasure_clicked(bool checked)
+{
+    emit measureImage(checked);
+}
+
+void MainScreen::handleSledRunningState()
+{
+    const bool isSledRunning =  SledSupport::Instance().isRunningState();
+
+    //exit while in measure mode and the sled is started
+    if(isSledRunning && ui->pushButtonMeasure->isChecked()){
+        ui->pushButtonMeasure->clicked();
+    }
+    ui->pushButtonMeasure->setEnabled(!isSledRunning);
 }

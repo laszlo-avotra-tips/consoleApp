@@ -87,20 +87,27 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     currCaptureNumber++;
     QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber, 3, 10, QLatin1Char( '0' ) );
 
+    //
+    caseInfo &info = caseInfo::Instance();
+    QString saveDirName = info.getCapturesDir();
+    QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
+
+    const int logoX{ SectorWidth_px - LogoImage.width() - 100};
+    const int logoY{50};
+
     /*
      * Paint the procedure data to the sector image.
      */
     QPainter painter( &sectorImage );
 
+    addTimeStamp(painter);
+    addFileName(painter,saveName);
+
     //    Upper Right -- Logo
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
+    painter.drawImage( logoX, logoY, LogoImage );
 
     painter.end();
 
-    // Build the location directory
-    caseInfo &info = caseInfo::Instance();
-    QString saveDirName = info.getCapturesDir();
-    QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
     // Store the capture
     const QString SecName            = saveDirName + "/"        + saveName + SectorImageSuffix    + ".png";
@@ -109,8 +116,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     QMatrix m;
 //    m.rotate( 90 );
-    qDebug() << __FUNCTION__ << ":" << __LINE__ <<" sector sectorImage.width()=" << sectorImage.width() << ", sectorImage.height()=" << sectorImage.height();
-
+//    qDebug() << __FUNCTION__ << ":" << __LINE__ <<" sector sectorImage.width()=" << sectorImage.width() << ", sectorImage.height()=" << sectorImage.height();
+    LOG3(SecName,saveDirName,saveName)
     auto imageRect = sectorImage.rect();
     if( !sectorImage.save( SecName, "PNG", 100 ) )
     {
@@ -141,7 +148,11 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     // Paint the logo on the decorated image in the upper right corner
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
+
+    addTimeStamp(painter);
+    addFileName(painter,saveName);
+
+    painter.drawImage( logoX, logoY, LogoImage );
     painter.end();
 
     QImage dim = decoratedImage.copy(imageRect);
@@ -264,6 +275,34 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     emit sendCaptureTag( ClipName );
     LOG( INFO, "Loop Capture: " + ClipName )
+}
+
+void captureMachine::addTimeStamp(QPainter& painter)
+{
+    const int nowX{100};
+    const int nowDateY{100};
+    const int nowTimeY{160};
+
+    painter.setPen( QPen( Qt::white ) );
+
+    const auto& now = QDateTime::currentDateTime().toUTC();
+    QString timeStampDate = now.toString("yyyy-MM-dd" );
+    QString timeStampTime = now.toString("  hh:mm:ss");
+
+    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    painter.drawText( nowX, nowDateY, timeStampDate);
+    painter.drawText( nowX, nowTimeY, timeStampTime);
+}
+
+void captureMachine::addFileName(QPainter &painter, const QString &fn)
+{
+    const int fnX{100};
+    const int fnY{2100};
+
+    painter.setPen( QPen( Qt::white ) );
+
+    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    painter.drawText( fnX, fnY, fn);
 }
 
 

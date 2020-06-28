@@ -9,14 +9,12 @@
 #include <QInputDialog>
 #include <QDebug>
 #include <QStaticText>
-//#include "buildflags.h"
 #include "../Console/buildflags.h"
 #include "defaults.h"
 #include "areameasurementoverlay.h"
-#ifndef MEASUREMENT_APP
 #include "depthsetting.h"
-#endif
 #include <qmath.h>
+#include "logger.h"
 
 const int PointTolerance = 20;
 
@@ -32,15 +30,10 @@ const int MeasurementPrecision = 2;
 AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     : QGraphicsPixmapItem()
 {
-#ifndef MEASUREMENT_APP
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    box = new QRect( overlayPixmap->width() - 280, overlayPixmap->height() - 180, 1, 1 );
-#else
-    overlayPixmap = new QPixmap( parent->geometry().width(), parent->geometry().height()  );
-    box = new QRect( overlayPixmap->width() - 280, overlayPixmap->height() - 180, 1, 1 );
-#endif
+    box = new QRect( overlayPixmap->width() - 380, overlayPixmap->height() - 280, 1, 1 );
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
@@ -318,20 +311,7 @@ QPolygon AreaMeasurementOverlay::polygonToPoints( QPolygon *list )
  */
 void AreaMeasurementOverlay::setCalibrationScale( const int CalValMm )
 {
-#ifdef MEASUREMENT_APP
-    if( polygonPoints.size() >= 2 )
-    {
-        QLineF l( polygonPoints.at( 0 ), polygonPoints.at( 1 ) );
-
-        currPxPerMm = (float)l.length() / ( (float)CalValMm / 1000 );
-
-        qDebug() << "currPxPerMm: " << currPxPerMm << "(float)l.length()"
-                 << (float)l.length() << "(float)CalValMm" << (float)CalValMm
-                 << "currPxPerMm = (float)l.length() / (float)diameterMm / 1000" << ( (float)l.length() / (float)CalValMm / 1000 );
-    }
-#else
     currPxPerMm = 136; //lcv CalValMm;
-#endif
 }
 
 /*
@@ -584,31 +564,15 @@ void AreaMeasurementOverlay::calculate()
  */
 void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 {
-//lcv - debug live measurement calculation box
-//    static float cppm{0.0f};
-//    if((cppm > currPxPerMm) || (cppm < currPxPerMm)){
-//        qDebug() << __FUNCTION__ << ": currPxPerMm" << currPxPerMm; //lcv
-//        cppm = currPxPerMm;
-//    }
-#ifndef MEASUREMENT_APP
-    const int FontSize = 22;
-#else
     const int FontSize = 14;
-#endif
     QFont font = painter->font();
     font.setPointSize( FontSize );
     painter->setFont( font );
-    const int xMargin = FontSize / 2;
-    const int yMargin = FontSize / 2;
+    const int xMargin = FontSize;
+    const int yMargin = 2*FontSize;
 
     if( polygonPoints.size() == 2 )
     {
-#ifdef MEASUREMENT_APP
-        if( currPxPerMm > 0 )
-        {
-            emit twoPointsDrawn();
-        }
-#endif
         if( currPxPerMm > 0 )
         {
             QLineF line;
@@ -622,9 +586,6 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             st.prepare( QTransform(), font );  // prepare text so we can determine the text size
             box->setWidth( int(st.size().width() + ( 2 * xMargin ) ) );
             box->setHeight( int(st.size().height() + ( 2 * yMargin ) ) );
-#ifdef MEASUREMENT_APP
-            painter->fillRect( *box, QColor( 255, 255, 255, 60 ) );
-#endif
             painter->drawRect( *box );
         }
     }
@@ -666,10 +627,6 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 staticText.prepare( QTransform(), font );                               // prepare text so we can determine the text size
                 box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
                 box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
-#ifdef MEASUREMENT_APP
-                box->setBottom( areaRect.bottom() + yMargin );
-                painter->fillRect( *box, QColor( 255, 255, 255, 50 ) );
-#endif
                 painter->drawRect( *box );
             }
         }

@@ -534,6 +534,7 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             QGraphicsScene::mousePressEvent(event);
         }
     }
+    update();
 }
 
 /*
@@ -589,6 +590,7 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseReleaseEvent(event);
     }
+    update();
 }
 
 /*

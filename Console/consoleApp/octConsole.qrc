@@ -27,7 +27,7 @@
         <file alias="aLogo">Frontend/Resources/L300logo.png</file>
         <file alias="measure">Frontend/Resources/L300measure.png</file>
         <file alias="record">Frontend/Resources/L300record.png</file>
-        <file alias="flip">Frontend/Resources/L300flip.png</file>
+        <file alias="flip_">Frontend/Resources/L300flip.png</file>
         <file alias="zoomIn">Frontend/Resources/L300zoom_in.png</file>
         <file alias="zoomOut">Frontend/Resources/L300zoom_out.png</file>
         <file alias="capture1">Frontend/Resources/L300screenshot.png</file>
@@ -36,7 +36,7 @@
         <file alias="measureYellow">Frontend/Resources/L300measureYellow.png</file>
         <file alias="menuHamburger">Frontend/Resources/L300menu.png</file>
         <file alias="recordRed">Frontend/Resources/L300recordRed.png</file>
-        <file alias="recordWhite">Frontend/Resources/L300recordWhite.png</file>
+        <file alias="recordWhite_">Frontend/Resources/L300recordWhite.png</file>
         <file alias="settingsB">Frontend/Resources/L300settings.png</file>
         <file alias="dropdown">Frontend/Resources/L300dropdown.png</file>
         <file alias="avingerStart">Frontend/Resources/L300AvingerStart.png</file>
@@ -46,5 +46,8 @@
         <file alias="copyrightWhite">Frontend/Resources/Copyright logo White.001.png</file>
         <file alias="copyright">Frontend/Resources/copyright-grey.png</file>
         <file alias="octOutline">Frontend/Resources/Grey OCT Outline.001.png</file>
+        <file alias="recordWhite">Frontend/Resources/REC_helvetica.png</file>
+        <file alias="flip">Frontend/Resources/FLIP-MENU-helvetica.png</file>
+        <file alias="cameraYellow">Frontend/Resources/Screenshow_Yellow.png</file>
     </qresource>
 </RCC>

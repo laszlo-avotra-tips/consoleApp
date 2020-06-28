@@ -14,6 +14,7 @@
 class frontend;
 class liveScene;
 class OpacScreen;
+class QPushButton;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainScreen; }
@@ -33,6 +34,10 @@ public:
     void setDeviceLabel();
     void showSpeed(bool isShown);
 
+signals:
+    void captureImage();
+    void measureImage(bool isMeasureMode);
+
 private slots:
     void on_pushButtonFlip_clicked();
 
@@ -47,12 +52,20 @@ private slots:
     void on_pushButtonDownArrow_clicked();
     void on_pushButtonCondensUp_clicked();
 
-    void on_pushButtonCapture_clicked();
-
     void on_pushButtonSettings_clicked();
     void openCaseInformationDialog();
     void openDeviceSelectDialog();
     void updateTime();
+    void udpateToSpeed1();
+    void udpateToSpeed2();
+    void udpateToSpeed3();
+    void resetYellowBorder();
+
+    void on_pushButtonCapture_released();
+
+    void on_pushButtonMeasure_clicked(bool checked);
+
+    void handleSledRunningState();
 
 private:
     void showEvent(QShowEvent* se) override;
@@ -60,6 +73,8 @@ private:
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
     void setCurrentTime();
+    void setSpeed(int speed);
+    void highlightSpeedButton(QPushButton* wid);
 
 private:
     Ui::MainScreen *ui;
@@ -76,6 +91,7 @@ private:
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
+    QTimer m_sledStateQueryTimer;
     OpacScreen* m_opacScreen{nullptr};
 };
 #endif // MAINSCREEN_H

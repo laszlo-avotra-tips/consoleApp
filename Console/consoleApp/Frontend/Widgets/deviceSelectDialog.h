@@ -5,7 +5,7 @@
 #include <QListWidgetItem>
 
 class frontend;
-class QLabel;
+class QWidget;
 
 namespace Ui {
 class DeviceSelectDialog;
@@ -42,7 +42,7 @@ private slots:
 
 private:
     void removeHighlight();
-    void highlight(QLabel* label);
+    void highlight(QWidget* label);
 
     Ui::DeviceSelectDialog *ui;
 };

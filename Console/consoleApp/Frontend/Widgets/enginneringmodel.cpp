@@ -36,11 +36,12 @@ void EngineeringModel::setVoaAttenuation(int attenuation)
 
 void EngineeringModel::setMotorSpeed(int speed)
 {
+    LOG1(speed)
     m_motorSpeed = speed;
     const QString qSpeed(QString::number(m_motorSpeed));
     const QByteArray baSpeed(qSpeed.toStdString().c_str());
 
-//    SledSupport::Instance().setSledSpeed(baSpeed);
+    SledSupport::Instance().setSledSpeed(baSpeed);
 }
 
 void EngineeringModel::setFileName(const QString &fn)
@@ -70,11 +71,11 @@ void EngineeringModel::setMotorPowerOn(bool isOn)
         LOG1(m_isMotorPowerOn)
         emit motorOnChanged(m_isMotorPowerOn);
 
-        if(!m_isMotorPowerOn){
+//        if(!m_isMotorPowerOn){
 //            SledSupport::Instance().stopSled();
-        } else {
+//        } else {
 //            SledSupport::Instance().startSled();
-        }
+//        }
     }
 }
 

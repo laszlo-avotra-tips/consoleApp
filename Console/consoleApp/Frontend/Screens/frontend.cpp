@@ -277,6 +277,7 @@ frontend::~frontend()
 
         delete m_scene;
         delete lagHandler;
+        delete m_mainScreen;
     }
     else
     {
@@ -455,8 +456,8 @@ int frontend::setupCase( bool isInitialSetup )
 
 void frontend::updateDeviceLabel()
 {
-    if(m_mainWindow){
-        m_mainWindow->setDeviceLabel();
+    if(m_mainScreen){
+        m_mainScreen->setDeviceLabel();
     }
 }
 
@@ -497,9 +498,12 @@ void frontend::setupScene( void )
     m_scene = new liveScene( this );
 //    m_formL300 = new FormL300( this );
 //    m_formL300->setScene(m_scene);
-    m_mainWindow = new MainScreen(this);
-    m_mainWindow->setScene(m_scene);
+    m_mainScreen = new MainScreen(this);
+    m_mainScreen->setScene(m_scene);
 //    m_mainWindow->showFullScreen();
+
+    connect(m_mainScreen, &MainScreen::captureImage, this, &frontend::on_captureImageButton_clicked);
+    connect(m_mainScreen, &MainScreen::measureImage, this, &frontend::on_measureModePushButton_clicked);
 
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -1757,7 +1761,7 @@ void frontend::setIDAQ(IDAQ *object)
 
 void frontend::showSpeed(bool isShown)
 {
-    m_mainWindow->showSpeed(isShown);
+    m_mainScreen->showSpeed(isShown);
 }
 
 /*
@@ -1925,17 +1929,20 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-    image = m_scene->sectorImage();
-    pixmap = m_scene->sectorHandle();
-    m_scene->setDoPaint();
+    if(m_scene){
+        image = m_scene->sectorImage();
+        pixmap = m_scene->sectorHandle();
 
-    if(image){
-        memcpy( image->bits(), frameData->dispData, SectorSize );
-    }
+        m_scene->setDoPaint();
 
-    if(pixmap){
-        QPixmap tmpPixmap = QPixmap::fromImage( *image );
-        pixmap->setPixmap(tmpPixmap);
+        if(image && frameData && frameData->dispData){
+            memcpy( image->bits(), frameData->dispData, SectorSize );
+        }
+
+        if(pixmap){
+            QPixmap tmpPixmap = QPixmap::fromImage( *image );
+            pixmap->setPixmap(tmpPixmap);
+        }
     }
 }
 
@@ -2666,7 +2673,7 @@ void frontend::on_pushButtonLogo_clicked()
         m_formL300->setDepth(*depth);
         m_formL300->showFullScreen(); //lcv m_formL300->showFullScreen(); show();
     }
-    if(m_mainWindow){
-        m_mainWindow->showFullScreen();
+    if(m_mainScreen){
+        m_mainScreen->showFullScreen();
     }
 }

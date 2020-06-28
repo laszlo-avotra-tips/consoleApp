@@ -10,6 +10,7 @@
 //#include "stdafx.h"     // Axsun includes
 extern "C" {
 #include "AxsunOCTCapture.h"
+#include "AxsunOCTControl_LW_C.h"
 }
 #endif
 
@@ -183,7 +184,7 @@ bool DAQ::getData( )
     {
         qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
         missedImgs = (returned_image_number - lastImageIdx - 1);
-        LOG1(missedImgs)
+//        LOG1(missedImgs)
     }
     else
     {
@@ -265,9 +266,12 @@ bool DAQ::startDaq()
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
-//    setLaserDivider(LASER_SCAN_DIVIDER);
+        const int laserDevider{1};
+        LOG1(laserDevider)
+        setLaserDivider(laserDevider);
     } catch (...) {
         qDebug() << "Axsun Error" ;
+        LOG1("Axsun Error")
     }
 
     return axRetVal == NO_AxERROR;
@@ -288,16 +292,18 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider( int divider)
 {
-    int temp = divider + 1;
-    if( temp > 0  && temp <= 4 )
+    const int subsamplingFactor = divider + 1;
+    if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
 #if PCIE_MODE
         axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #else
         axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #endif
+        LOG2(subsamplingFactor, divider)
+        axSetSubsamplingFactor(subsamplingFactor,0);
         axGetMessage( session, axMessage );
-        qDebug() << "***** axSetFPGARegister: " << temp << " message:" << axMessage;
+        qDebug() << "***** axSetFPGARegister: " << subsamplingFactor << " message:" << axMessage;
         qDebug() << "Setting laser divider to:" << divider + 1;
     }
 }

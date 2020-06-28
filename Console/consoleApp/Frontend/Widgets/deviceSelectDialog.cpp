@@ -177,7 +177,6 @@ void DeviceSelectDialog::startDaq(frontend *fe)
     }
     fe->setIDAQ(idaq);
     LOG( INFO, "LASER: serial port control is DISABLED" )
-    LOG( INFO, "SLED support board: serial port control is DISABLED" )
 
     fe->startDaq();
     auto& setting = deviceSettings::Instance();
@@ -189,25 +188,25 @@ void DeviceSelectDialog::startDaq(frontend *fe)
 
 void DeviceSelectDialog::handleDevice0()
 {
-    highlight(ui->labelAthText0);
+    highlight(ui->frame0);
     emit deviceSelected(0);
 }
 
 void DeviceSelectDialog::handleDevice1()
 {
-    highlight(ui->labelAthText1);
+    highlight(ui->frame2);
     emit deviceSelected(1);
 }
 
 void DeviceSelectDialog::handleDevice2()
 {
-    highlight(ui->labelAthText2);
+    highlight(ui->frame3);
     emit deviceSelected(2);
 }
 
 void DeviceSelectDialog::handleDevice3()
 {
-    highlight(ui->labelText1);
+    highlight(ui->frame4);
     emit deviceSelected(3);
 }
 
@@ -221,16 +220,16 @@ void DeviceSelectDialog::handleDeviceSelected(int did)
 
 void DeviceSelectDialog::removeHighlight()
 {
-    std::vector<QLabel*> deviceNames{
-        ui->labelAthText0, ui->labelAthText1, ui->labelAthText2, ui->labelText1
+    std::vector<QWidget*> deviceNames{
+        ui->frame0, ui->frame2, ui->frame3, ui->frame4
     };
     for(auto* label : deviceNames) {
         label->setStyleSheet("");
     }
 }
 
-void DeviceSelectDialog::highlight(QLabel *label)
+void DeviceSelectDialog::highlight(QWidget *label)
 {
     removeHighlight();
-    label->setStyleSheet("background-color:#646464");
+    label->setStyleSheet("background-color:#646464; border-radius: 20px solid grey;");
 }

@@ -1,8 +1,22 @@
 #include "caseInformationModel.h"
+#include "Utility/sessiondatabase.h"
+#include "Utility/userSettings.h"
+#include "util.h"
+#include "logger.h"
+
+CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
 CaseInformationModel::CaseInformationModel()
 {
 
+}
+
+CaseInformationModel *CaseInformationModel::instance()
+{
+    if(!m_instance){
+        m_instance = new CaseInformationModel();
+    }
+    return m_instance;
 }
 
 QStringList CaseInformationModel::physicianNames() const
@@ -90,4 +104,84 @@ QString CaseInformationModel::dateAndTime() const
 void CaseInformationModel::setDateAndTime(const QString &dateAndTime)
 {
     m_dateAndTime = dateAndTime;
+}
+
+void CaseInformationModel::validate()
+{
+    caseInfo &info      = caseInfo::Instance();
+    sessionDatabase db;
+
+    // Set the case information
+    info.setPatientID( m_patientId );
+    info.setDoctor( m_selectedPhysicianName);
+    info.setLocation( m_selectedLocation);
+
+    /*
+     * Create the session directory
+     */
+//    if( caseSetupType == caseInfoWizard::InitialCaseSetup )
+    {
+        QDir dir;
+
+        // set defaults
+        info.setUtcOffset( 0 );
+
+        /*
+         * Create a unique case storage container.  By convention GUID's
+         * have curly brackets around them; however, that causes mkisofs
+         * to complain when exporting so they are removed for our use.
+         */
+        QString uuid = QUuid::createUuid().toString();
+        uuid.remove( "{" ).remove( "}" );
+        info.setCaseID( uuid );
+
+//        // Check the filesystem to see if this case id has been used. Extremely unlikely in this universe.
+//        if( dir.exists( info.getStorageDir() ) )
+//        {
+//            styledMessageBox::warning( tr( "Could not create a new case ID.  Contact Service at %1." ).arg( ServiceNumber ) );
+//            return false;
+//        }
+
+        // Create the case session directories.  If any fail, report the error.
+        if ( !( dir.mkdir( info.getStorageDir()  ) &&
+                dir.mkdir( info.getClipsDir()    ) &&
+                dir.mkdir( info.getCapturesDir() ) &&
+                dir.mkdir( info.getFullCaseDir() ) ) )
+        {
+//            styledMessageBox::critical(
+//                        tr( "File Failure:\nFailed to create session directory: " ) + info.getStorageDir() );
+//            return false;
+        }
+        else
+        {
+            // session directory structure was successfully created
+
+            // determine how far off of UTC we are
+            QDateTime now = QDateTime::currentDateTime();
+
+            // check if we need to account for UTC being tomorrow relative to us
+            int dayOffset = 0;
+            if( now.date() < now.toUTC().date() )
+            {
+                dayOffset = 24;
+            }
+
+            info.setUtcOffset( now.time().hour() - ( now.toUTC().time().hour() + dayOffset ) );
+
+            // Create and save the session information to the case database
+            db.initDb();
+            db.createSession();
+
+            // save a cookie for HomeScreen to find
+            updateSessionCookieFile( info.getCaseID() );
+
+            LOG( INFO, QString( "Case ID: %1" ).arg( info.getCaseID() ) )
+        }
+    }
+//    else
+//    {
+//        // only updating case information
+//        db.updateSession();
+//    }
+
 }

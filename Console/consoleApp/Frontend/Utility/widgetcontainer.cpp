@@ -25,6 +25,24 @@ bool WidgetContainer::registerWidget(const QString &name, QWidget *wid)
     return index >= 0;
 }
 
+bool WidgetContainer::unRegisterWidget(const QString &name)
+{
+    bool success{false};
+    auto nameWidgetPair = m_widgetContainer.find(name);
+    QWidget* wid{nullptr};
+
+    if(nameWidgetPair != m_widgetContainer.end()){
+        wid = nameWidgetPair->second;
+        if(wid){
+            m_stackedWidget->removeWidget(wid);
+            delete wid;
+            m_widgetContainer.erase(nameWidgetPair);
+            success = true;
+        }
+    }
+    return success;
+}
+
 void WidgetContainer::setStackedWidget(QStackedWidget *sw)
 {
     while(sw->count()){

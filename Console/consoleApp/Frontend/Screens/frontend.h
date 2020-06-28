@@ -69,6 +69,7 @@ public:
 
 public slots:
     // methods to start/stop the data consumer thread
+    void setMeasurementMode( bool enable );
     void startDataCapture( void );
     void stopDataCapture( void );
     void startDaq( void );
@@ -267,7 +268,6 @@ private slots:
     void on_crfTestSpinBox_valueChanged(const QString &arg1);
 #endif
 
-    void setMeasurementMode( bool enable );
     void on_measureModePushButton_clicked();
     void on_saveMeasurementButton_clicked();
 
@@ -301,7 +301,7 @@ protected:
 
 private:
      FormL300* m_formL300{nullptr};
-     MainScreen* m_mainWindow{nullptr};
+     MainScreen* m_mainScreen{nullptr};
 };
 
 #endif // FRONTEND_H
