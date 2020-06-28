@@ -1998,17 +1998,20 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-    image = m_scene->sectorImage();
-    pixmap = m_scene->sectorHandle();
-    m_scene->setDoPaint();
+    if(m_scene){
+        image = m_scene->sectorImage();
+        pixmap = m_scene->sectorHandle();
 
-    if(image){
-        memcpy( image->bits(), frameData->dispData, SectorSize );
-    }
+        m_scene->setDoPaint();
 
-    if(pixmap){
-        QPixmap tmpPixmap = QPixmap::fromImage( *image );
-        pixmap->setPixmap(tmpPixmap);
+        if(image && frameData && frameData->dispData){
+            memcpy( image->bits(), frameData->dispData, SectorSize );
+        }
+
+        if(pixmap){
+            QPixmap tmpPixmap = QPixmap::fromImage( *image );
+            pixmap->setPixmap(tmpPixmap);
+        }
     }
 }
 
