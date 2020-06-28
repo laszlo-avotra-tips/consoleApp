@@ -107,7 +107,6 @@ void AreaMeasurementOverlay::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
 
         mouseIsDown = true;
-        LOG1(mouseIsDown)
     }
 }
 
@@ -194,7 +193,6 @@ void AreaMeasurementOverlay::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
 void AreaMeasurementOverlay::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 {
     mouseIsDown = false;
-    LOG1(mouseIsDown)
 
     // Don't duplicate the last point on mouse release.
     if( !clickInBox && event->pos().toPoint() != polygonPoints.last() )
