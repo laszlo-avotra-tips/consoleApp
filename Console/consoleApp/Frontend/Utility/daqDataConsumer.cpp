@@ -297,20 +297,10 @@ void DaqDataConsumer::setupEncoder( videoEncoder **cdc, const QString VidFilenam
 {
     double fps = 0.0;
 
-    deviceSettings &devSettings = deviceSettings::Instance();
-    bool isHighSpeedDevice = true;//( devSettings.current()->isHighSpeed() );
-
-    if( isHighSpeedDevice )
-    {
-        fps = DefaultHsVideoFPS;
-        millisecondsPerFrame = ( 1.0 / fps ) * 1000.0;
-    }
-    else
-    {
-        fps = DefaultLsVideoFPS;
-        millisecondsPerFrame = ( 1.0 / fps ) * 1000.0;
-    }
+    fps = DefaultHsVideoFPS;
+    millisecondsPerFrame = ( 1.0 / fps ) * 1000.0;
     qDebug() << "Starting new clip encoding at " << fps << "fps (millisecondsPerFrame" << millisecondsPerFrame << ")";
+
 
     *cdc = new videoEncoder( VidFilename.toLatin1().data(),
                              SectorWidth_px,

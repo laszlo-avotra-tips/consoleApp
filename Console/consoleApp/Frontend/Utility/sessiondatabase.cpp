@@ -96,7 +96,7 @@ QSqlError sessionDatabase::initDb(void)
 
         // Doesn't exist, create it.
         QSqlQuery q;
-        if( !q.exec(QLatin1String("create table captures(id integer primary key, timestamp timestamp, tag varchar, name varchar, deviceName varchar, isHighSpeed char, pixelsPerMm int)") ) )
+        if( !q.exec(QLatin1String("create table captures(id integer primary key, timestamp timestamp, tag varchar, name varchar, deviceName varchar, pixelsPerMm int)") ) )
         {
             sqlerr = q.lastError();
             displayFailureMessage( QObject::tr( "Database Failure:\nFailed to create db schema - captures table" ), true );
@@ -110,7 +110,7 @@ QSqlError sessionDatabase::initDb(void)
 
         // Doesn't exist, create it.
         QSqlQuery q;
-        if( !q.exec( QLatin1String( "create table octLoops(id integer primary key, timestamp timestamp, tag varchar, name varchar, length_ms integer, catheterView varchar, deviceName varchar, isHighSpeed char)" ) ) )
+        if( !q.exec( QLatin1String( "create table octLoops(id integer primary key, timestamp timestamp, tag varchar, name varchar, length_ms integer, catheterView varchar, deviceName varchar)" ) ) )
         {
             sqlerr = q.lastError();
             displayFailureMessage( QObject::tr( "Database Failure:\nFailed to create db schema - octLoops table" ), true );
@@ -270,7 +270,6 @@ int sessionDatabase::addCapture( QString tag,
                                  uint    timestamp,
                                  QString name,
                                  QString deviceName,
-                                 bool    isHighSpeed,
                                  int     pixelsPerMm )
 {
     QSqlQuery q;
@@ -302,7 +301,7 @@ int sessionDatabase::addCapture( QString tag,
         maxID = result.value( idCol ).toInt() + 1;
     }
 
-    q.prepare( "INSERT INTO captures (id, timestamp, tag, name, deviceName, isHighSpeed, pixelsPerMm)"
+    q.prepare( "INSERT INTO captures (id, timestamp, tag, name, deviceName, pixelsPerMm)"
                "VALUES (?, ?, ?, ?, ?, ?, ?)" );
     LOG1(maxID);
     q.addBindValue( maxID );
@@ -310,7 +309,6 @@ int sessionDatabase::addCapture( QString tag,
     q.addBindValue( tag) ;
     q.addBindValue( name );
     q.addBindValue( deviceName );
-    q.addBindValue( isHighSpeed );
     q.addBindValue( pixelsPerMm );
     q.exec();
 
@@ -327,11 +325,10 @@ int sessionDatabase::addCapture( QString tag,
 /*
  * addClipCapture
  */
-int sessionDatabase::addClipCapture( QString name,
+int sessionDatabase::addClipCapture(QString name,
                                      uint    timestamp,
                                      QString catheterView,
-                                     QString deviceName,
-                                     bool    isHighSpeed )
+                                     QString deviceName)
 {
     QSqlQuery q;
     errorHandler & err = errorHandler::Instance();
@@ -361,7 +358,7 @@ int sessionDatabase::addClipCapture( QString name,
         maxID = result.value( idCol ).toInt() + 1;
     }
 
-    q.prepare( "INSERT INTO octLoops (id, timestamp, tag, name, length_ms, catheterView, deviceName, isHighSpeed)"
+    q.prepare( "INSERT INTO octLoops (id, timestamp, tag, name, length_ms, catheterView, deviceName)"
                "VALUES (?, ?, ?, ?, ? ,?, ?, ?)" );
     q.addBindValue( maxID );
     q.addBindValue( timeStr );
@@ -370,7 +367,6 @@ int sessionDatabase::addClipCapture( QString name,
     q.addBindValue( 0 );            // placeholder until the loop recording stops
     q.addBindValue( catheterView );
     q.addBindValue( deviceName );
-    q.addBindValue( isHighSpeed );
     q.exec();
 
     sqlerr = q.lastError();

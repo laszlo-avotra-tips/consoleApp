@@ -71,9 +71,6 @@ void FileDaq::run()
     // prevent multiple, simultaneous starts
     if( !m_isRunning )
     {
-        deviceSettings &devSettings = deviceSettings::Instance();
-        bool isHighSpeedDevice = true; //devSettings.current()->isHighSpeed();
-
         qDebug() << "Thread: DAQ::run start";
 
 //        m_dsp->start();
@@ -82,12 +79,9 @@ void FileDaq::run()
         m_isRunning = true;
 
         // set the brightness and contrast when the daq starts up
-        if( isHighSpeedDevice )
-        {
-            auto signalModelInstance = SignalModel::instance();
-            signalModelInstance->setBlackLevel( BrightnessLevels_HighSpeed.defaultValue );
-            signalModelInstance->setWhiteLevel( ContrastLevels_HighSpeed.defaultValue );
-        }
+        auto signalModelInstance = SignalModel::instance();
+        signalModelInstance->setBlackLevel( BrightnessLevels_HighSpeed.defaultValue );
+        signalModelInstance->setWhiteLevel( ContrastLevels_HighSpeed.defaultValue );
     }
 
     const auto& pmi = PlaybackManager::instance();
