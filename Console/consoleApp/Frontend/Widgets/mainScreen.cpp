@@ -370,5 +370,10 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
     if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
         ui->pushButtonMeasure->setChecked(false);
     }
+
+    if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
+        emit measureImage(false);
+    }
+
     ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
 }
