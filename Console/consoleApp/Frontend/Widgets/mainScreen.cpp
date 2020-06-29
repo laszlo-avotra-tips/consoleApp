@@ -361,12 +361,6 @@ void MainScreen::handleSledRunningStateTimout()
          m_sledIsInRunningState = currentSledRunningState;
          emit sledRunningStateChanged(m_sledIsInRunningState);
      }
-
-//    //exit while in measure mode and the sled is started
-//    if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-//        ui->pushButtonMeasure->clicked();
-//    }
-//    ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
 }
 
 void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
@@ -374,7 +368,7 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
     LOG1(isInRunningState);
     //exit while in measure mode and the sled is started
     if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-        ui->pushButtonMeasure->clicked(false);
+        ui->pushButtonMeasure->setChecked(false);
     }
     ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
 }
