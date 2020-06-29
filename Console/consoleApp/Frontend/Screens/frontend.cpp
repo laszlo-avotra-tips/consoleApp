@@ -503,7 +503,7 @@ void frontend::setupScene( void )
 //    m_mainWindow->showFullScreen();
 
     connect(m_mainScreen, &MainScreen::captureImage, this, &frontend::on_captureImageButton_clicked);
-    connect(m_mainScreen, &MainScreen::measureImage, this, &frontend::on_measureModePushButton_clicked);
+    connect(m_mainScreen, &MainScreen::measureImage, this, &frontend::setMeasurementMode);
 
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
@@ -1887,7 +1887,6 @@ void frontend::setMeasurementMode( bool enable )
         m_scene->setMeasureModeArea( true, Qt::magenta );
         setSceneCursor( QCursor( Qt::CrossCursor ) );
         ui.liveGraphicsView->setToolTip( "" );
-//        ui.saveMeasurementButton->show();
         ui.measureModePushButton->setChecked( true );
         LOG( INFO, "Measure Mode: start" )
     }
@@ -1895,7 +1894,6 @@ void frontend::setMeasurementMode( bool enable )
     {
         m_scene->setMeasureModeArea( false, Qt::magenta );
         setSceneCursor( QCursor( Qt::OpenHandCursor ) );
-//        ui.saveMeasurementButton->hide();
         ui.measureModePushButton->setChecked( false );
         LOG( INFO, "Measure Mode: stop" )
     }

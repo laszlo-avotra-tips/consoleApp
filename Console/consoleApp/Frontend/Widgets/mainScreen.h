@@ -37,6 +37,7 @@ public:
 signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
+    void sledRunningStateChanged(bool isInRunningState);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -65,7 +66,8 @@ private slots:
 
     void on_pushButtonMeasure_clicked(bool checked);
 
-    void handleSledRunningState();
+    void handleSledRunningStateTimout();
+    void handleSledRunningStateChanged(bool isInRunningState);
 
 private:
     void showEvent(QShowEvent* se) override;
@@ -93,5 +95,6 @@ private:
     QTimer m_updatetimeTimer;
     QTimer m_sledStateQueryTimer;
     OpacScreen* m_opacScreen{nullptr};
+    bool m_sledIsInRunningState{false};
 };
 #endif // MAINSCREEN_H
