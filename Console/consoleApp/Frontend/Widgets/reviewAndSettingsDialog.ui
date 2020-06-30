@@ -45,7 +45,7 @@ background-color:#636363;
 border-radius:10px;
 }
 QPushButton{
-font:12pt;
+font:20pt;
 color:WHITE;
 }
 QDialog{
@@ -157,7 +157,7 @@ color:white;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>534</width>
+                <width>486</width>
                 <height>20</height>
                </size>
               </property>
@@ -189,7 +189,7 @@ color:white;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>533</width>
+                <width>486</width>
                 <height>20</height>
                </size>
               </property>
