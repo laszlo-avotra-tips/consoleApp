@@ -1,6 +1,8 @@
 #include "reviewAndSettingsDialog.h"
 #include "ui_reviewAndSettingsDialog.h"
 
+#include <QTimer>
+
 ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ReviewAndSettingsDialog)
@@ -29,4 +31,34 @@ void ReviewAndSettingsDialog::on_pushButtonExit_clicked()
 void ReviewAndSettingsDialog::on_pushButtonNext_clicked()
 {
     accept();
+}
+
+void ReviewAndSettingsDialog::on_pushButtonDisplayOptions_clicked(bool checked)
+{
+   showLastButtonSelected(ui->pushButtonDisplayOptions, checked);
+}
+
+void ReviewAndSettingsDialog::on_pushButtonCaseReview_clicked(bool checked)
+{
+    showLastButtonSelected(ui->pushButtonCaseReview, checked);
+}
+
+void ReviewAndSettingsDialog::on_pushButtonDeviceSelect_clicked(bool checked)
+{
+    showLastButtonSelected(ui->pushButtonDeviceSelect, checked);
+}
+
+void ReviewAndSettingsDialog::on_pushButtonCaseInformation_clicked(bool checked)
+{
+    showLastButtonSelected(ui->pushButtonCaseInformation, checked);
+}
+
+void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool isChecked)
+{
+    if(isChecked){
+        button->setStyleSheet("background-color:#636363;");
+    } else {
+//        button->setStyleSheet("background-color:#262626;");
+        button->setStyleSheet("background-color:black;");
+    }
 }

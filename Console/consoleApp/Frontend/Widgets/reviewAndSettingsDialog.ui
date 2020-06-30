@@ -180,6 +180,9 @@ color:white;
               <property name="text">
                <string>CASE INFORMATION</string>
               </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -242,6 +245,9 @@ color:white;
               </property>
               <property name="text">
                <string>DEVICE SELECT</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -306,6 +312,12 @@ color:white;
               <property name="text">
                <string>CASE REVIEW</string>
               </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -368,6 +380,12 @@ color:white;
               </property>
               <property name="text">
                <string>DISPLAY OPTIONS</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
               </property>
              </widget>
             </item>

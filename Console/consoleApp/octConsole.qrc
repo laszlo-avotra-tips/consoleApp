@@ -33,7 +33,7 @@
         <file alias="capture1">Frontend/Resources/L300screenshot.png</file>
         <file alias="measureGrey">Frontend/Resources/L300measureGrey.png</file>
         <file alias="measureWhite">Frontend/Resources/L300measureWhite.png</file>
-        <file alias="measureYellow">Frontend/Resources/L300measureYellow.png</file>
+        <file alias="measureYellow_old">Frontend/Resources/L300measureYellow.png</file>
         <file alias="menuHamburger">Frontend/Resources/L300menu.png</file>
         <file alias="recordRed">Frontend/Resources/L300recordRed.png</file>
         <file alias="recordWhite_">Frontend/Resources/L300recordWhite.png</file>
@@ -49,5 +49,6 @@
         <file alias="recordWhite">Frontend/Resources/REC_helvetica.png</file>
         <file alias="flip">Frontend/Resources/FLIP-MENU-helvetica.png</file>
         <file alias="cameraYellow">Frontend/Resources/Screenshow_Yellow.png</file>
+        <file alias="measureYellow">Frontend/Resources/measure-yellow_800x800.png</file>
     </qresource>
 </RCC>

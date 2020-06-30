@@ -20,8 +20,19 @@ private slots:
 
     void on_pushButtonNext_clicked();
 
+    void on_pushButtonDisplayOptions_clicked(bool checked);
+
+    void on_pushButtonCaseReview_clicked(bool checked);
+
+    void on_pushButtonDeviceSelect_clicked(bool checked);
+
+    void on_pushButtonCaseInformation_clicked(bool checked);
+
 private:
+    void showLastButtonSelected(QPushButton* button, bool isChecked);
+
     Ui::ReviewAndSettingsDialog *ui;
+    bool m_isSelection{false};
 };
 
 #endif // REVIEWANDSETTINGSDIALOG_H
