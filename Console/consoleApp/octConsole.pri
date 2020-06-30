@@ -31,6 +31,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/emptyDialog.h \
     $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
+    $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
@@ -141,6 +142,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
+    $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
@@ -232,6 +234,7 @@ FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
+    $$PWD/Frontend/Widgets/reviewAndSettingsDialog.ui \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \

@@ -69,6 +69,8 @@ private slots:
     void handleSledRunningStateTimout();
     void handleSledRunningStateChanged(bool isInRunningState);
 
+    void on_pushButtonRecord_clicked();
+
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;

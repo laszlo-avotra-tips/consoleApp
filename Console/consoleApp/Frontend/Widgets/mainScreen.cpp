@@ -234,7 +234,16 @@ void MainScreen::showSpeed(bool isShown)
 
 void MainScreen::on_pushButtonSettings_clicked()
 {
-    hide();
+    auto result = WidgetContainer::instance()->openDialog(this, "reviewAndSettingsDialog");
+    if(result.first){
+        result.first->hide();
+    }
+    if( result.second == QDialog::Accepted){
+        qDebug() << "Accepted";
+    }
+    else {
+        qDebug() << "Cancelled";
+    }
 }
 
 void MainScreen::showEvent(QShowEvent *se)
@@ -256,10 +265,9 @@ void MainScreen::hideEvent(QHideEvent *he)
 void MainScreen::openCaseInformationDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
-//    auto result = WidgetContainer::instance()->openDialog(this,"emptyDialog");
 
     if(result.first){
-    result.first->hide();
+        result.first->hide();
     }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
@@ -376,4 +384,9 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
     }
 
     ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
+}
+
+void MainScreen::on_pushButtonRecord_clicked()
+{
+    hide();
 }
