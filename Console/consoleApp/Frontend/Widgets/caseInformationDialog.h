@@ -25,7 +25,7 @@ class CaseInformationDialog;
     The CaseInformationDialog class can be used to assign a case ID.
     The CaseInformationDialog class assigns a date and time stamp to the case.
     The CaseInformationDialog is instantiated througt the widget container.
-    \sa WidgetContainer DialogFactory CaseInformationModel
+    \sa WidgetContainer DialogFactory CaseInformationModel SelectDialog ConsoleLineEdit
  */
 
 class CaseInformationDialog : public QDialog
@@ -70,20 +70,61 @@ private slots:
      */
     void openKeyboardLocation();
 
+    /*!
+     * \brief handleNext
+     */
     void handleNext();
+
+    /*!
+     * \brief handlePhysicianNameSelect
+     */
     void handlePhysicianNameSelect();
+
+    /*!
+     * \brief handleLocationSelect
+     */
     void handleLocationSelect();
+
+    /*!
+     * \brief handleBack
+     */
     void handleBack();
+
+    /*!
+     * \brief initDialog
+     */
     void initDialog();
 
 private:
+    /*!
+     * \brief enableNext - enable/disable the < NEXT> > button
+     * \param isNext - enable if true, disable otherwise
+     */
     void enableNext(bool isNext);
 
+    /*!
+     * the widgets
+     */
     Ui::CaseInformationDialog *ui;
+
+    /*!
+     * the date and time
+     */
     QDateTime m_now;
+
+    /*!
+     * the timer that updates the date and time display
+     */
     QTimer m_displayTimer;
+
+    /*!
+     * select dialog - used for selecting or adding a physician or a location
+     */
     SelectDialog* m_selectDialog{nullptr};
 
+    /*!
+     * the model
+     */
     CaseInformationModel& m_model;
 };
 
