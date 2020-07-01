@@ -26,6 +26,10 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     connect(ui->lineEditLocation, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardLocation);
 
     connect(ui->pushButtonBack, &QPushButton::clicked, this, &CaseInformationDialog::handleBack);
+    connect(ui->pushButtonNext, &QPushButton::clicked, this, &CaseInformationDialog::handleNext);
+    connect(ui->pushButtonPhysicianNameDown, &QPushButton::clicked, this, &CaseInformationDialog::handlePhysicianNameSelect);
+    connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &CaseInformationDialog::handleLocationSelect);
+
     initDialog();
 }
 
@@ -37,8 +41,6 @@ CaseInformationDialog::~CaseInformationDialog()
 
 void CaseInformationDialog::reset()
 {
-//    m_model.setSelectedPhysicianName("");
-//    m_model.setSelectedLocation("");
     CaseInformationModel::instance()->setSelectedPhysicianName("");
     CaseInformationModel::instance()->setSelectedLocation("");
 }
@@ -148,7 +150,7 @@ void CaseInformationDialog::openKeyboardLocation()
     }
 }
 
-void CaseInformationDialog::on_pushButtonNext_clicked()
+void CaseInformationDialog::handleNext()
 {
     m_model.setDateAndTime(ui->lineEditDateAndTime->text());
     m_model.validate();
@@ -165,7 +167,7 @@ void CaseInformationDialog::enableNext(bool isNext)
     }
 }
 
-void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
+void CaseInformationDialog::handlePhysicianNameSelect()
 {
     auto* parent = this;
     m_selectDialog = new SelectDialog(parent);
@@ -195,7 +197,7 @@ void CaseInformationDialog::on_pushButtonPhysicianNameDown_clicked()
     enableNext(isNext);
 }
 
-void CaseInformationDialog::on_pushButtonLocationDown_clicked()
+void CaseInformationDialog::handleLocationSelect()
 {
     auto* parent = this;
     m_selectDialog = new SelectDialog(parent);
