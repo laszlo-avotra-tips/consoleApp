@@ -10,11 +10,19 @@ ConsoleLineEdit::ConsoleLineEdit(QWidget *parent):QLineEdit(parent)
 
 void ConsoleLineEdit::mousePressEvent(QMouseEvent *e)
 {
-    auto bt = e->buttons();
-    if(bt == Qt::LeftButton){
-        e->accept();
-        emit mousePressed();
-    }else{
-        e->ignore();
+    if(e){
+        auto bt = e->buttons();
+        if(bt == Qt::LeftButton){
+            /*
+             * handle this event
+             */
+            e->accept();
+            emit mousePressed();
+        }else{
+            /*
+             * ignore the event; to be handled by the parent
+             */
+            e->ignore();
+        }
     }
 }

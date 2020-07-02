@@ -56,9 +56,9 @@ private slots:
     void setDateAndTime();
 
     /*!
-     * \brief openKeyboardPhysicianName - open the keyboard to edit the physicians name
+     * \brief editOrSelectPhysicianName - edit or select physician name
      */
-    void openKeyboardPhysicianName();
+    void editOrSelectPhysicianName();
 
     /*!
      * \brief openKeyboardPatientId - open the keyboard to edit the patient ID
@@ -68,7 +68,7 @@ private slots:
     /*!
      * \brief openKeyboardLocation - open the keyboard to edit the location
      */
-    void openKeyboardLocation();
+    void editOrSelectLocation();
 
     /*!
      * \brief handleNext
