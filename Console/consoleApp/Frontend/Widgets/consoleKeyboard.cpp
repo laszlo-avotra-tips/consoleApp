@@ -76,9 +76,9 @@ void ConsoleKeyboard::handleSpace()
     ui->lineEditParam->setFocus();
 }
 
-void ConsoleKeyboard::handleNumbers(const QString& addText)
+void ConsoleKeyboard::handleNumbers(const QString& number)
 {
-    auto stringList = addText.split("\n");
+    auto stringList = number.split("\n");
     if(stringList.size() == 2){
         const QString val = ui->lineEditParam->text() + stringList[1];
         ui->lineEditParam->setText(val);
@@ -90,9 +90,9 @@ void ConsoleKeyboard::handleNumbers(const QString& addText)
     highlightEnter();
 }
 
-void ConsoleKeyboard::handleLetters(const QString &text)
+void ConsoleKeyboard::handleLetters(const QString &letter)
 {
-    const QString val = ui->lineEditParam->text() + text;
+    const QString val = ui->lineEditParam->text() + letter;
     ui->lineEditParam->setText(val);
     ui->lineEditParam->setFocus();
     if(m_isShift){

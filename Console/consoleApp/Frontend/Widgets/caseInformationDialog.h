@@ -25,7 +25,7 @@ class CaseInformationDialog;
     The CaseInformationDialog class can be used to assign a case ID.
     The CaseInformationDialog class assigns a date and time stamp to the case.
     The CaseInformationDialog is instantiated througt the widget container.
-    \sa WidgetContainer DialogFactory CaseInformationModel SelectDialog ConsoleLineEdit
+    \sa WidgetContainer DialogFactory CaseInformationModel SelectDialog ConsoleLineEdit ConsoleKeyboard
  */
 
 class CaseInformationDialog : public QDialog
