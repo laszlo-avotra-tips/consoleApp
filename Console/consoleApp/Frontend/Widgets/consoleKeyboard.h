@@ -68,7 +68,7 @@ private slots:
     void handleDelete();
     void handleSpace();
     void handleNumbers(const QString& number);
-    void handleLetters(const QString& text);
+    void handleLetters(const QString& letter);
     void handleCapsLock(bool checked);
 
     void on_pushButton_shiftLeft_clicked();
