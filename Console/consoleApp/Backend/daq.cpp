@@ -134,14 +134,14 @@ void DAQ::run( void )
             if( getData() )
             {
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
-                LOG3(gFrameNumber, gBufferLength, loopCount)
+//                LOG3(gFrameNumber, gBufferLength, loopCount)
                 if( scanWorker->isReady )
                 {
                     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
                     emit updateSector(axsunData);
-                    LOG3(gFrameNumber, gBufferLength, loopCount)
+//                    LOG3(gFrameNumber, gBufferLength, loopCount)
                 }
             }
             else
