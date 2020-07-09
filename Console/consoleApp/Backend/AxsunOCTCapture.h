@@ -31,7 +31,7 @@ OpenGL Display Functionality:
 #ifndef AXSUNOCTCAPTURE_H
 #define AXSUNOCTCAPTURE_H
 
-#define _WINDOWS
+//#define _WINDOWS
 
 // includes
 #include "AxsunCommonEnums.h"

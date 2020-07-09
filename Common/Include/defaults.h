@@ -6,7 +6,7 @@
 #include <QSettings>
 #include <QPainter>
 
-
+#define _WINDOWS
 #define SECTOR_HEIGHT_PX 2160
 #define FFT_DATA_SIZE    1024
 //#define MAX_LINES_PER_FRAME 6120 // divisible by 360 seems necessary for Ocelot Synthetic mode

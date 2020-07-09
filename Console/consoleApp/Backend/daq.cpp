@@ -262,7 +262,7 @@ bool DAQ::startDaq()
         axGetMessage(session, axMessage );
         qDebug() << "message:" << axMessage;
 #else
-        axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
+//        axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
@@ -296,12 +296,12 @@ void DAQ::setLaserDivider( int divider)
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
 #if PCIE_MODE
-        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
+//        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #else
-        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
+//        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #endif
         LOG2(subsamplingFactor, divider)
-        axSetSubsamplingFactor(subsamplingFactor,0);
+//        axSetSubsamplingFactor(subsamplingFactor,0);
         axGetMessage( session, axMessage );
         qDebug() << "***** axSetFPGARegister: " << subsamplingFactor << " message:" << axMessage;
         qDebug() << "Setting laser divider to:" << divider + 1;
