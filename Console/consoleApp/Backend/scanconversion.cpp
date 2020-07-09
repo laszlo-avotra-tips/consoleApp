@@ -22,6 +22,8 @@ ScanConversion::ScanConversion()
     {
         isReady = true;
         qDebug() << "initOpenCL() Complete.";
+        LOG1(isReady);
+        LOG1("initOpenCL() Complete.");
     }
 }
 
@@ -34,10 +36,12 @@ bool ScanConversion::initOpenCL()
 
     int err = clGetPlatformIDs( 0, NULL, &numPlatforms );
     qDebug() << "numPlatforms =" << numPlatforms;
+    LOG1(numPlatforms);
 
     if( numPlatforms == 0 )
     {
         qDebug() << "Could not find openCL platform, reason: " << err;
+        LOG1(err);
         return false;
     }
 
@@ -64,15 +68,19 @@ bool ScanConversion::initOpenCL()
             return false;
         }
         qDebug() << "Platform (" << i << ") Vendor:" << vendor << " Name:" << name << " Version:" << version;
-
+        LOG4(i, vendor, name, version);
+//Intel(R) OpenCL HD Graphics
         if( ( QString( vendor ) == "Intel(R) Corporation" &&    // Intel integrated GPU compatibility
               QString( name )   == "Intel(R) OpenCL" ) ||
             ( QString( vendor ) == "Apple" &&                   // Apple compatibility
-              QString( name )   == "Apple" ) )
+              QString( name )   == "Apple" ) ||
+            ( QString( vendor ) == "Intel(R) Corporation" &&    // Intel integrated GPU compatibility
+              QString( name )   == "Intel(R) OpenCL HD Graphics" ))
         {
             amdIdx = i;
 
             qDebug() << "Compatible platform found. Platform ID: " << amdIdx;
+            LOG2("Compatible platform found. Platform ID", amdIdx)
         }
     }
 
@@ -211,6 +219,7 @@ bool ScanConversion::initOpenCL()
     global_unit_dim[ 1 ] = MAX_LINES_PER_FRAME;
 
     qDebug() << "ScanConversion: OpenCL init complete.";
+    LOG1("ScanConversion: OpenCL init complete.");
 
     return true;
 }
