@@ -99,6 +99,7 @@ bool ScanConversion::initOpenCL()
     if( err != CL_SUCCESS )
     {
         qDebug() << "Could not enumerate OpenCL platform IDs, reason: " << err;
+        LOG2("Could not enumerate OpenCL platform IDs, reason: ", err)
         return false;
     }
 
@@ -111,6 +112,7 @@ bool ScanConversion::initOpenCL()
         // fall back to CPU when debugging if GPU not present
         qDebug() << "GPU not present.  Falling back to the CPU.";
         err = clGetDeviceIDs( platformId, CL_DEVICE_TYPE_CPU, 1, &cl_ComputeDeviceId, NULL );
+        LOG2("GPU not present.  Falling back to the CPU.", err)
     }
 
     if( err != CL_SUCCESS )
@@ -129,6 +131,7 @@ bool ScanConversion::initOpenCL()
     if( err != CL_SUCCESS )
     {
         qDebug() << "Could not enumerate OpenCL device IDs, reason: " << err;
+        LOG2("Could not enumerate OpenCL device IDs, reason: ", err)
         return false;
     }
 
@@ -140,10 +143,12 @@ bool ScanConversion::initOpenCL()
     if( err != CL_SUCCESS )
     {
         qDebug() << "Could not get OpenCL device info, reason: " << err;
+        LOG2("Could not get OpenCL device info, reason: ", err)
         return false;
     }
 
     qDebug() << "DSP: Found OpenCL Device " <<  QString( (char *)vendor_name ) + " " + QString( (char *)device_name );
+    LOG3("DSP: Found OpenCL Device ", QString( (char *)vendor_name ), QString( (char *)device_name ))
 
     if( QString( (char *)device_name ) == "Intel(R) HD Graphics 4600" )
     {

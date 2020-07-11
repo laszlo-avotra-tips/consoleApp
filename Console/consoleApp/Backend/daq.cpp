@@ -122,7 +122,7 @@ void DAQ::run( void )
             if( frameTimer.elapsed() > 1000 )
             {
 //                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
-                LOG2(frameCount,loopCount)
+//                LOG2(frameCount,loopCount)
                 emit fpsCount( frameCount );
                 emit linesPerFrameCount( (int)gBufferLength );
                 emit missedImagesCount( missedImgs );
