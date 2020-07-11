@@ -31,8 +31,8 @@
         <file alias="zoomIn">Frontend/Resources/L300zoom_in.png</file>
         <file alias="zoomOut">Frontend/Resources/L300zoom_out.png</file>
         <file alias="capture1">Frontend/Resources/L300screenshot.png</file>
-        <file alias="measureGrey">Frontend/Resources/L300measureGrey.png</file>
-        <file alias="measureWhite">Frontend/Resources/L300measureWhite.png</file>
+        <file alias="measureGrey_old">Frontend/Resources/L300measureGrey.png</file>
+        <file alias="measureWhite_old">Frontend/Resources/L300measureWhite.png</file>
         <file alias="measureYellow_old">Frontend/Resources/L300measureYellow.png</file>
         <file alias="menuHamburger">Frontend/Resources/L300menu.png</file>
         <file alias="recordRed">Frontend/Resources/L300recordRed.png</file>
@@ -49,6 +49,8 @@
         <file alias="recordWhite">Frontend/Resources/REC_helvetica.png</file>
         <file alias="flip">Frontend/Resources/FLIP-MENU-helvetica.png</file>
         <file alias="cameraYellow">Frontend/Resources/Screenshow_Yellow.png</file>
-        <file alias="measureYellow">Frontend/Resources/measure-yellow_800x800.png</file>
+        <file alias="measureYellow">Frontend/Resources/Measurement-tool-yellow.png</file>
+        <file alias="measureWhite">Frontend/Resources/Measurement-tool-white.png</file>
+        <file alias="measureGrey">Frontend/Resources/Measurement-tool-grey.png</file>
     </qresource>
 </RCC>

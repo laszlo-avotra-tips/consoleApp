@@ -122,6 +122,7 @@ void DAQ::run( void )
             if( frameTimer.elapsed() > 1000 )
             {
 //                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
+//                LOG2(frameCount,loopCount)
                 emit fpsCount( frameCount );
                 emit linesPerFrameCount( (int)gBufferLength );
                 emit missedImagesCount( missedImgs );
@@ -133,12 +134,14 @@ void DAQ::run( void )
             if( getData() )
             {
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
+//                LOG3(gFrameNumber, gBufferLength, loopCount)
                 if( scanWorker->isReady )
                 {
                     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
                     emit updateSector(axsunData);
+//                    LOG3(gFrameNumber, gBufferLength, loopCount)
                 }
             }
             else
@@ -262,7 +265,7 @@ bool DAQ::startDaq()
         axGetMessage(session, axMessage );
         qDebug() << "message:" << axMessage;
 #else
-        axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
+//        axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
@@ -296,12 +299,12 @@ void DAQ::setLaserDivider( int divider)
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
 #if PCIE_MODE
-        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
+//        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #else
-        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
+//        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #endif
         LOG2(subsamplingFactor, divider)
-        axSetSubsamplingFactor(subsamplingFactor,0);
+//        axSetSubsamplingFactor(subsamplingFactor,0);
         axGetMessage( session, axMessage );
         qDebug() << "***** axSetFPGARegister: " << subsamplingFactor << " message:" << axMessage;
         qDebug() << "Setting laser divider to:" << divider + 1;

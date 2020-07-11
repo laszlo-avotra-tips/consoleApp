@@ -1931,7 +1931,7 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
         image = m_scene->sectorImage();
         pixmap = m_scene->sectorHandle();
 
-        m_scene->setDoPaint();
+//        m_scene->setDoPaint();
 
         if(image && frameData && frameData->dispData){
             memcpy( image->bits(), frameData->dispData, SectorSize );
@@ -1941,6 +1941,7 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
             QPixmap tmpPixmap = QPixmap::fromImage( *image );
             pixmap->setPixmap(tmpPixmap);
         }
+        m_scene->setDoPaint();
     }
 }
 

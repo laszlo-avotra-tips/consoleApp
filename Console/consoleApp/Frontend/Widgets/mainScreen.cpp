@@ -229,7 +229,7 @@ void MainScreen::setDeviceLabel()
 void MainScreen::showSpeed(bool isShown)
 {
     ui->frameSpeed->setVisible(isShown);
-    ui->labelLive->setStyleSheet("color: green;");
+//    ui->labelLive->setStyleSheet("color: green;");
 }
 
 void MainScreen::on_pushButtonSettings_clicked()
@@ -294,6 +294,7 @@ void MainScreen::openDeviceSelectDialog()
 void MainScreen::updateTime()
 {
     int ms{0};
+
     if(m_runTime.isValid()){
         ms = m_runTime.elapsed();
     }
@@ -374,6 +375,12 @@ void MainScreen::handleSledRunningStateTimout()
 void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 {
     LOG1(isInRunningState);
+
+    if(isInRunningState){
+        ui->labelLive->setStyleSheet("color: green;");
+    }else{
+        ui->labelLive->setStyleSheet("color: grey;");
+    }
     //exit while in measure mode and the sled is started
     if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
         ui->pushButtonMeasure->setChecked(false);
