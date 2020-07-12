@@ -1840,23 +1840,18 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 
 void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
-    QImage* image{nullptr};
-    QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
     if(m_scene){
-        image = m_scene->sectorImage();
-        pixmap = m_scene->sectorHandle();
+        QImage* image {m_scene->sectorImage()};
+        QGraphicsPixmapItem* pixmap {m_scene->sectorHandle()};
 
-        if(image && frameData && frameData->dispData){
+        if(image && frameData && frameData->dispData && pixmap){
             memcpy( image->bits(), frameData->dispData, SectorSize );
-        }
-
-        if(pixmap){
             QPixmap tmpPixmap = QPixmap::fromImage( *image );
             pixmap->setPixmap(tmpPixmap);
+            //        m_scene->setDoPaint();
         }
-//        m_scene->setDoPaint();
     }
 }
 
