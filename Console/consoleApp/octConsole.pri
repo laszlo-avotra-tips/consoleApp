@@ -66,7 +66,6 @@ HEADERS += \
     Frontend/Widgets/deviceselectwizardpage.h \
     Frontend/Widgets/deviceconfirmwizardpage.h \
     Include/qtsingleapplication.h \
-    Frontend/Utility/daqDataConsumer.h \
     Frontend/Widgets/caseinfowizardpage.h \
     Frontend/Widgets/notificationwidget.h \
     Frontend/Utility/sessiondatabase.h \
@@ -169,7 +168,6 @@ SOURCES += \
     Frontend/Widgets/caseinfowizard.cpp \
     Frontend/Widgets/capturelistview.cpp \
     Frontend/Widgets/cliplistview.cpp \
-    Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
     Frontend/Widgets/devicewizard.cpp \
     Frontend/Widgets/deviceselectwizardpage.cpp \

@@ -157,12 +157,7 @@ int main(int argc, char *argv[])
 //        laser.turnDiodeOn();
 //#endif
 
-        // Start the daq and data consumer threads  // XXX needed here?  device select will start the HW
         frontEndWindow.startDaq();
-        auto& setting = deviceSettings::Instance();
-        if(setting.getIsSimulation()){
-            frontEndWindow.startDataCapture();
-        }
         frontEndWindow.on_zoomSlider_valueChanged(100);
 //#if QT_NO_DEBUG
 //        frontEndWindow.setupDeviceForSledSupport();
@@ -170,11 +165,8 @@ int main(int argc, char *argv[])
 
         status = app.exec();
 
-        // Shutdown the data consumer thread and the hardware
-        if(setting.getIsSimulation()){
-            frontEndWindow.stopDataCapture();
-        }
-        frontEndWindow.stopDaq(); // merge into stopDataCapture()?
+        // Shutdown the hardware
+        frontEndWindow.stopDaq();
 
 //#if QT_NO_DEBUG
 //        laser.turnDiodeOff();

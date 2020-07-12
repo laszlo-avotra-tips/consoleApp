@@ -63,7 +63,6 @@ frontend::frontend(QWidget *parent)
     : QWidget(parent), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
 {
     m_scene    = nullptr;
-    consumer = nullptr;
 
     appAborted        = false;
     isAnnotateOn        = false;
@@ -248,17 +247,8 @@ frontend::frontend(QWidget *parent)
  */
 frontend::~frontend()
 {
-    // If start-up is aborted the consumer thread never got started; don't try to stop it
     if( !appAborted )
     {
-        // Shutdown the data consumer and wait for the thread to stop
-        if( consumer )
-        {
-            consumer->stop();
-            consumer->wait();
-            delete consumer;
-        }
-
         // shut down the daq; wait for it to stop
         if(idaq)
         {
@@ -322,49 +312,19 @@ void frontend::init( void )
     // set up the capture and review widget
     ui.reviewWidget->init();
 
-    // How we get the data from the DAQ to the Doc
-//    consumer = new DaqDataConsumer( m_scene,
-//                                    advView,
-//                                    session.getCurrentEventLog() );
-
-//    connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
-
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), m_scene,     SLOT( clearSector() ) );
 
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
     connect( viewOption, SIGNAL(sendManualLagAngle(double)), this, SLOT(handleManualLagAngle(double)) );
 
-    connect( consumer, SIGNAL(updateAdvancedView()), advView, SLOT(addScanline()) );
-    connect( this, SIGNAL(recordBackgroundData(bool)),  consumer, SLOT(recordBackgroundData(bool)) );
-    connect( this, SIGNAL(tagEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
-
-    connect( this,     SIGNAL( autoAdjustBrightnessAndContrast( void ) ), consumer, SLOT( handleAutoAdjustBrightnessAndContrast( void ) ) );
-    connect( consumer, SIGNAL( updateBrightness( int ) ),                 advView,  SLOT( handleBrightnessChanged( int ) ) );
-    connect( consumer, SIGNAL( updateContrast( int ) ),                   advView,  SLOT( handleContrastChanged( int ) ) );
-
-    connect( m_scene, SIGNAL(sendCaptureTag(QString)), consumer, SLOT(handleTagEvent(QString)) );
-
     connect( m_scene, SIGNAL(sendStatusText(QString)), this, SLOT(handleStatusText(QString)) );
 
     connect( this, SIGNAL(disableMouseRotateSector()), m_scene, SLOT(handleDisableMouseRotateSector()) );
     connect( this, SIGNAL(enableMouseRotateSector()),  m_scene, SLOT(handleEnableMouseRotateSector()) );
 
-    connect( &session, SIGNAL(sendSessionEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
-
     // clip recording signals
-    connect( this,     SIGNAL(startClipRecording()),         consumer, SLOT(startClipRecording()) );
-    connect( this,     SIGNAL(stopClipRecording()),          consumer, SLOT(stopClipRecording()) );
-    connect( consumer, SIGNAL(sendVideoDuration( int )),     this,     SLOT(handleSendVideoDuration( int )) );
-
-    connect( this,     SIGNAL(setClipFilename(QString)),     consumer, SLOT(setClipFile(QString)) );
-    connect( consumer, SIGNAL(clipRecordingStopped()),       this,     SLOT(handleClipRecordingStopped()) );
     connect( this,     SIGNAL(captureClipImages(QString)),   m_scene,    SLOT(captureClip(QString)) );
-
-    connect( consumer, SIGNAL(directionOfRotation(directionTracker::Direction_T)),
-             m_scene,    SLOT(updateDirectionOfRotation(directionTracker::Direction_T)) );
-
-    connect( consumer, SIGNAL(alwaysRecordingFullCase(bool)),     advView,  SLOT(showRecordingFullCase(bool)) );
 
     // setup the clip player and its signals
     connect( ui.transportWidget, SIGNAL( play() ),                 this, SLOT( handlePlayButton_clicked()) );
@@ -472,9 +432,6 @@ void frontend::disableStorage( bool disable )
     if( disable )
     {
         disableCaptureButtons();
-
-        // disable full case recording if it was turned enabled
-        consumer->disableFullCaseRecording();
 
         // inform the user
         styledMessageBox::warning( tr( "Captures are disabled due to low storage space.\nContact Service at %1." ).arg( ServiceNumber ) );
@@ -588,7 +545,6 @@ void frontend::on_endCaseButton_clicked()
     if( confirmExit() )
     {
         LOG( INFO, "End case confirmation accepted" )
-        stopDataCapture();
         emit recordBackgroundData( false );
 
         QApplication::quit();
@@ -769,33 +725,6 @@ void frontend::handleError( QString notice )
 {
     // Call the system-wide error handler. This function does not return
     displayFailureMessage( notice, true );
-}
-
-/*
- * startDataCapture
- *
- * Start up the Data Consumer thread as long as a Data Consumer object has been created
- */
-void frontend::startDataCapture( void )
-{
-    if( consumer )
-    {
-        consumer->start();
-    }
-}
-
-/*
- * stopDataCapture
- *
- * Shut down the Data Consumer thread if one exists
- */
-void frontend::stopDataCapture( void )
-{
-    if( consumer )
-    {
-        consumer->stop();
-        consumer->wait();
-    }
 }
 
 
@@ -983,8 +912,6 @@ void frontend::on_scanSyncButton_clicked()
 
     // create a new window (no parent) so the UI is modal
     lagHandler = new lagWizard;
-    connect( consumer,   SIGNAL(directionOfRotation(directionTracker::Direction_T)),
-             lagHandler, SLOT(handleDirectionChange()) );
     connect( m_scene,      SIGNAL(fullRotation()),
              lagHandler, SLOT(handleFullRotation()) );
     connect( lagHandler, SIGNAL(resetIntegrationAngle()),
@@ -1083,9 +1010,6 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
     // Force the wizard to the primary monitor
     dWiz.setGeometry( x, y, dWiz.width(), dWiz.height() );
 
-    // Temporarily pause data while we start
-    stopDataCapture();
-
     deviceSettings &dev = deviceSettings::Instance();
     int previousDevice = dev.getCurrentDevice();
 
@@ -1136,8 +1060,6 @@ void frontend::startDAQprepareView()
     // turn on background recording (if enabled) and event log processing
     emit recordBackgroundData( true );
     emit forwardTurnDiodeOn();
-
-    startDataCapture(); // Paused at the start of the wizard, so restart for rejected or accepted wizard state.
 
     deviceSettings &dev = deviceSettings::Instance();
     if( dev.current() )
@@ -1767,7 +1689,6 @@ void frontend::shutdownHardware( void )
 {
     if( idaq )
     {
-        stopDataCapture();
         stopDaq();
 
         delete idaq;
@@ -2595,7 +2516,6 @@ void frontend::handleDaqReset()
     LOG( INFO, "DAQ Reset requested." )
 
     // Temporarily pause data while we start
-    stopDataCapture();
     emit recordBackgroundData( false );
     shutdownHardware();
 
@@ -2607,7 +2527,6 @@ void frontend::handleDaqReset()
     // turn on background recording (if enabled) and event log processing
     emit recordBackgroundData( true );
     emit forwardTurnDiodeOn();
-    startDataCapture(); // Paused at the start of the wizard, so restart for rejected or accepted wizard state.
     configureControlsForCurrentDevice();
 }
 /*
@@ -2627,16 +2546,9 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     //qDebug() << "**** changeSpeed";
     LOG1(revsPerMin)
     deviceSettings &dev = deviceSettings::Instance();
-//lcv    dev.current()->setLinesPerRevolution( aLines );
-//    dev.current()->setRevolutionsPerMin( revsPerMin );
-//    LOG2(revsPerMin, aLines);
-
-//    lastDirCCW = dev.current()->getRotation();
-    stopDataCapture();
     shutdownHardware();
     startDaq();
     emit forwardTurnDiodeOn();
-    startDataCapture();
     setupDeviceForSledSupport();
 }
 

@@ -30,7 +30,6 @@
 #include <QThread>
 #include <QDebug>
 #include <QString>
-#include "Utility/daqDataConsumer.h"
 #include "session.h"
 #include "Utility/directionTracker.h"
 #include "buildflags.h"
@@ -67,10 +66,7 @@ public:
     void showSpeed(bool isShown);
 
 public slots:
-    // methods to start/stop the data consumer thread
     void setMeasurementMode( bool enable );
-    void startDataCapture( void );
-    void stopDataCapture( void );
     void startDaq( void );
     void pauseDaq( void );
     void resumeDaq( void );
@@ -119,8 +115,6 @@ signals:
     void contrastChange( int );
     void autoAdjustBrightnessAndContrast( void );
 
-    // Call before starting the data consumer to record data to disk. Call while
-    // recording to turn recording on/off (i.e., changing devices, lag correction)
     void recordBackgroundData( bool );
 
     void tagEvent( QString );
@@ -238,9 +232,6 @@ private:
     float   defaultZoomFactor;
     QRect   techMonRect;
     bool 	lastDirCCW;
-
-public:
-    DaqDataConsumer *consumer;
 
 private slots:
     void handlePlayButton_clicked();

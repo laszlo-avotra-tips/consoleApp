@@ -36,8 +36,7 @@ const int ControlScreenHeight = 2160;
 const int B_per_KB = 1024;
 const int KB_per_MB = 1024;
 
-// The size, in sizeof(OCTFile_t) units, of the shared memory buffer for the data producer
-// and consumer.
+// The size, in sizeof(OCTFile_t) units, of the shared memory buffer
 #define FRAME_BUFFER_SIZE 4
 
 #define MININTERPOLATIONANGLE_RAD (0.0005)

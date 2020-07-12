@@ -115,9 +115,5 @@ void StartScreen::startDaq(frontend *fe)
     LOG( INFO, "SLED support board: serial port control is DISABLED" )
 
     fe->startDaq();
-    auto& setting = deviceSettings::Instance();
-    if(setting.getIsSimulation()){
-        fe->startDataCapture();
-    }
     fe->on_zoomSlider_valueChanged(100);
 }
