@@ -8,7 +8,7 @@
 
 #define _WINDOWS
 //#define SECTOR_HEIGHT_PX 2160
-#define SECTOR_HEIGHT_PX 1536
+#define SECTOR_HEIGHT_PX 1024
 #define FFT_DATA_SIZE    1024
 //#define MAX_LINES_PER_FRAME 6120 // divisible by 360 seems necessary for Ocelot Synthetic mode
 #define MAX_LINES_PER_FRAME 7200 // must be larger than 6144 for Pantheris at 100 kHz

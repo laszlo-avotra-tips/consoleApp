@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 //#endif
 
         frontEndWindow.startDaq();
-        frontEndWindow.on_zoomSlider_valueChanged(100);
+        frontEndWindow.on_zoomSlider_valueChanged(200);
 //#if QT_NO_DEBUG
 //        frontEndWindow.setupDeviceForSledSupport();
 //#endif

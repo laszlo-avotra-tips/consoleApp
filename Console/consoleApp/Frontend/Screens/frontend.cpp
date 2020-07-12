@@ -1851,6 +1851,8 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
             QPixmap tmpPixmap = QPixmap::fromImage( *image );
             pixmap->setPixmap(tmpPixmap);
             //        m_scene->setDoPaint();
+            m_scene->setZoomFactor(2.0f);
+            m_scene->setDoPaint();
         }
     }
 }
