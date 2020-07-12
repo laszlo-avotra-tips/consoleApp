@@ -165,6 +165,7 @@ void DaqDataConsumer::run( void )
 
 //lcv            qDebug() << __FILE__ << ":" << __LINE__ << " frame->depth * frame->width = " << frame->depth * frame->width;
             memcpy(m_octData.acqData,m_octData.dispData,int(frame->depth * frame->width));
+            LOG2(frame->depth,frame->width);
             emit  updateSector(&m_octData);
 
             // Add this line to the scene

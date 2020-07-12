@@ -37,7 +37,6 @@
 #include "capturewidget.h"
 #include "windowmanager.h"
 #include <memory>
-#include <forml300.h>
 
 #if ENABLE_COLORMAP_OPTIONS
 #include "Widgets/curvesdialog.h"
@@ -300,7 +299,6 @@ protected:
      void keyPressEvent( QKeyEvent *event );
 
 private:
-     FormL300* m_formL300{nullptr};
      MainScreen* m_mainScreen{nullptr};
 };
 

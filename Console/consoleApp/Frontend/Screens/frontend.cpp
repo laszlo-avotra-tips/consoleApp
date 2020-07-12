@@ -39,7 +39,6 @@
 #include "idaq.h"
 #include "engineeringcontroller.h"
 #include "signalmodel.h"
-#include "forml300.h"
 #include "mainScreen.h"
 #include "Frontend/Utility/widgetcontainer.h"
 
@@ -324,11 +323,11 @@ void frontend::init( void )
     ui.reviewWidget->init();
 
     // How we get the data from the DAQ to the Doc
-    consumer = new DaqDataConsumer( m_scene,
-                                    advView,
-                                    session.getCurrentEventLog() );
+//    consumer = new DaqDataConsumer( m_scene,
+//                                    advView,
+//                                    session.getCurrentEventLog() );
 
-    connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
+//    connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
 
     connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
     connect( viewOption, SIGNAL( updateCatheterView() ), m_scene,     SLOT( clearSector() ) );
@@ -407,7 +406,6 @@ void frontend::init( void )
 
     // connect the level gauge UI element with the depthSettings singleton object
     connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
-    connect( m_formL300, SIGNAL( depthChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
     ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
     ui.imagingDepthWidget->setEnabled( true );
 
@@ -496,8 +494,6 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     m_scene = new liveScene( this );
-//    m_formL300 = new FormL300( this );
-//    m_formL300->setScene(m_scene);
     m_mainScreen = new MainScreen(this);
     m_mainScreen->setScene(m_scene);
 //    m_mainWindow->showFullScreen();
@@ -1931,8 +1927,6 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
         image = m_scene->sectorImage();
         pixmap = m_scene->sectorHandle();
 
-//        m_scene->setDoPaint();
-
         if(image && frameData && frameData->dispData){
             memcpy( image->bits(), frameData->dispData, SectorSize );
         }
@@ -1941,7 +1935,7 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
             QPixmap tmpPixmap = QPixmap::fromImage( *image );
             pixmap->setPixmap(tmpPixmap);
         }
-        m_scene->setDoPaint();
+//        m_scene->setDoPaint();
     }
 }
 
@@ -2664,14 +2658,6 @@ void frontend::hideDecoration(void)
 
 void frontend::on_pushButtonLogo_clicked()
 {
-    if(m_formL300){
-        //TODO synch depth
-        const auto& sm = SignalModel::instance();
-        const int* depth = sm->getImagingDepth_S();
-        qDebug() << __FUNCTION__ << ": depth=" << *depth;
-        m_formL300->setDepth(*depth);
-        m_formL300->showFullScreen(); //lcv m_formL300->showFullScreen(); show();
-    }
     if(m_mainScreen){
         m_mainScreen->showFullScreen();
     }
