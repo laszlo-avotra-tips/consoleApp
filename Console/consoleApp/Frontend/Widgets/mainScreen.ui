@@ -226,7 +226,7 @@ qproperty-flat: true;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../octConsole.qrc">
+         <iconset>
           <normaloff>:/octConsole/capture</normaloff>
           <normalon>:/octConsole/cameraYellow</normalon>:/octConsole/capture</iconset>
         </property>
@@ -309,7 +309,7 @@ qproperty-flat: true;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../octConsole.qrc">
+         <iconset>
           <normaloff>:/octConsole/measureWhite</normaloff>
           <normalon>:/octConsole/measureYellow</normalon>
           <disabledoff>:/octConsole/measureGrey</disabledoff>
@@ -480,7 +480,7 @@ CASE</string>
        <number>0</number>
       </property>
       <item>
-       <widget class="QGraphicsView" name="graphicsView">
+       <widget class="liveView" name="graphicsView">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -880,8 +880,13 @@ font: 20pt &quot;Helvetica Neue&quot;;
    </property>
   </action>
  </widget>
- <resources>
-  <include location="../../octConsole.qrc"/>
- </resources>
+ <customwidgets>
+  <customwidget>
+   <class>liveView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">liveview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
  <connections/>
 </ui>
