@@ -504,11 +504,12 @@ void liveScene::rewindPlayback()
  */
 void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if( zoomFactor != 1.0f ) // no zoom
-    {
-        // capture the event; allows image review to pan and zoom
-    } 
-    else if( reviewing && !isMeasureMode )
+//    if( zoomFactor != 1.0f ) // no zoom
+//    {
+//        // capture the event; allows image review to pan and zoom
+//    }
+//    else
+        if( reviewing && !isMeasureMode )
     {
         dismissReviewImages();
     }
