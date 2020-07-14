@@ -1848,11 +1848,13 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
 
         if(image && frameData && frameData->dispData && pixmap){
             memcpy( image->bits(), frameData->dispData, SectorSize );
+//            QPixmap tmpPixmap = QPixmap::fromImage( *image ).scaled(QSize(2160,2160),  Qt::KeepAspectRatio);
+//            QPixmap tmpPixmap = QPixmap::fromImage( *image ).scaled(QSize(2048,2048),  Qt::KeepAspectRatio);
             QPixmap tmpPixmap = QPixmap::fromImage( *image );
             pixmap->setPixmap(tmpPixmap);
-            //        m_scene->setDoPaint();
-            m_scene->setZoomFactor(2.0f);
-            m_scene->setDoPaint();
+//            pixmap->setScale(2.1);
+//            qreal offset{-256.0};
+//            pixmap->setOffset(offset, offset);
         }
     }
 }

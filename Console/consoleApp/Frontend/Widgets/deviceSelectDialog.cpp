@@ -179,7 +179,7 @@ void DeviceSelectDialog::startDaq(frontend *fe)
     LOG( INFO, "LASER: serial port control is DISABLED" )
 
     fe->startDaq();
-    fe->on_zoomSlider_valueChanged(200);
+    fe->on_zoomSlider_valueChanged(100);
 }
 
 void DeviceSelectDialog::handleDevice0()
