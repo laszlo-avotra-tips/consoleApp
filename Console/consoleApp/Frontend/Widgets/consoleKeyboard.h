@@ -64,34 +64,130 @@ signals:
      */
     void numberClicked(const QString &number);
 
+    /*!
+     * \brief otherThanLetterOrNumberClicked
+     * \param character - the character clicked
+     */
+    void otherThanLetterOrNumberClicked(const QString& character);
+
 private slots:
+    /*!
+     * \brief handleDelete - what happens when <delete> is pressed
+     */
     void handleDelete();
+
+    /*!
+     * \brief handleSpace - what happens when the spacebar is pressed
+     */
     void handleSpace();
-    void handleNumbers(const QString& number);
+
+    /*!
+     * \brief handleNumbersAndOthers - what happens when a number or other key is pressed
+     * \param number - the number or some other key
+     */
+    void handleNumbersAndOthers(const QString& number);
+
+    /*!
+     * \brief handleLetters - what happens when a letter key is pressed
+     * \param letter - the letter key
+     */
     void handleLetters(const QString& letter);
+
+    /*!
+     * \brief handleCapsLock - what happens when a the <caps lock> key is pressed
+     * \param checked - the caps lock is toggled on/off; checked/not checked
+     */
     void handleCapsLock(bool checked);
 
-    void on_pushButton_shiftLeft_clicked();
-    void on_pushButton_shiftRight_clicked();
+    /*!
+     * \brief handleLeftShift - what happens when a the left shift key is pressed
+     */
+    void handleLeftShift();
+
+    /*!
+     * \brief handleRightShift - what happens when a the right shift key is pressed
+     */
+    void handleRightShift();
 
 private:
+    /*!
+     * \brief initButtonContainers -
+     */
     void initButtonContainers();
-    void initNumbers();
-    void initLetters();
+
+    /*!
+     * \brief connectNumbers - connect the m_numberButtons with signals
+     */
+    void connectNumbers();
+
+    /*!
+     * \brief connectLetters - connect the m_letterButtons with signals
+     */
+    void connectLetters();
+
+    /*!
+     * \brief connectOtherThanLetterOrNumber - connect the m_otherThanLetterOrNumberContainer with signals
+     */
+    void connectOtherThanLetterOrNumber();
+
+    /*!
+     * \brief toLowCap - set all letter to low cap
+     */
     void toLowCap();
+
+    /*!
+     * \brief toHighCap - set all letter to high cap
+     */
     void toHighCap();
+
+    /*!
+     * \brief toggleCap - toggle from lowCap to highCap and back
+     */
     void toggleCap();
-    void pushButtonEnabled(QPushButton* button);
-    void pushButtonDisabled(QPushButton* button);
+
+    /*!
+     * \brief buttonToUpper - set button to upper case
+     * \param button
+     */
+    void buttonToUpper(QPushButton* button);
+
+    /*!
+     * \brief buttonToLower - set button to upper case
+     * \param button
+     */
+    void buttonToLower(QPushButton* button);
+
+    /*!
+     * \brief highlightEnter - highlight the enter button
+     */
     void highlightEnter();
 
 private:
     Ui::ConsoleKeyboard *ui;
 
+    /*!
+     * \brief m_letterButtons - widgets for [A..z]
+     */
     ButtonContainer m_letterButtons;
+
+    /*!
+     * \brief m_otherThanLetterOrNumberContainer -  widgets for [[,.-=[]/\]
+     */
+    ButtonContainer m_otherThanLetterOrNumberContainer;
+
+    /*!
+     * \brief m_numberButtons -  widgets for [[0..9]
+     */
     ButtonContainer m_numberButtons;
 
+    /*!
+     * \brief m_isLowCap - keyboard is low cap
+     */
     bool m_isLowCap{true};
+
+    /*!
+     * \brief m_isShift - the shift key is on
+     */
     bool m_isShift{false};
 };
 

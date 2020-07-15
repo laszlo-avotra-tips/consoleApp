@@ -12,11 +12,23 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
 
     setWindowFlags(Qt::SplashScreen);
 
-    auto paramLabel = ui->labelParam;
-    auto paramLineEdit = ui->lineEditParam;
+    auto paramName = ui->labelParam;
+    auto paramValue = ui->lineEditParam;
 
-    paramLabel->setText(param[0]);
-    paramLineEdit->setText(param[1]);
+    /*
+     * paramName - the name of the parameter to be edited
+     */
+    paramName->setText(param[0]);
+
+    /*
+     * paramValue - the value of the parameter
+     */
+    paramValue->setText(param[1]);
+
+    /*
+     * if there is a third parameter passed in the constructor it applies to the
+     * action takem on keyboard enter
+     */
     if(param.size() > 2){
         auto* enterButton = ui->pushButton_enter;
         auto actionOnEnter = param[2];
@@ -26,6 +38,9 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
         }
     }
 
+    /*
+     * connect the UI widgets to this classes functions
+     */
     auto* enterButton = ui->pushButton_enter;
     connect(enterButton, &QPushButton::clicked, this, &QDialog::accept);
 
@@ -38,12 +53,23 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
     auto capsLockButton = ui->pushButton_capsLock;
     connect(capsLockButton, &QPushButton::clicked, this, &ConsoleKeyboard::handleCapsLock);
 
+    auto leftShiftButton = ui->pushButton_shiftLeft;
+    connect(leftShiftButton, &QPushButton::clicked, this, &ConsoleKeyboard::handleLeftShift);
+
+    auto rightShiftButton = ui->pushButton_shiftRight;
+    connect(rightShiftButton, &QPushButton::clicked, this, &ConsoleKeyboard::handleRightShift);
+
+    /*
+     * the keyboard buttons are aranged in containers
+     */
     initButtonContainers();
 
-    initNumbers();
-    connect(this, &ConsoleKeyboard::numberClicked, this, &ConsoleKeyboard::handleNumbers);
+    connectNumbers();
+    connectOtherThanLetterOrNumber();
+    connectLetters();
 
-    initLetters();
+    connect(this, &ConsoleKeyboard::numberClicked, this, &ConsoleKeyboard::handleNumbersAndOthers);
+    connect(this, &ConsoleKeyboard::otherThanLetterOrNumberClicked, this, &ConsoleKeyboard::handleNumbersAndOthers);
     connect(this, &ConsoleKeyboard::letterClicked, this, &ConsoleKeyboard::handleLetters);
 }
 
@@ -76,7 +102,7 @@ void ConsoleKeyboard::handleSpace()
     ui->lineEditParam->setFocus();
 }
 
-void ConsoleKeyboard::handleNumbers(const QString& number)
+void ConsoleKeyboard::handleNumbersAndOthers(const QString& number)
 {
     auto stringList = number.split("\n");
     if(stringList.size() == 2){
@@ -117,6 +143,11 @@ void ConsoleKeyboard::initButtonContainers()
 
         ui->pushButton_eight,
         ui->pushButton_nine,
+    };
+
+    m_numberButtons = numbers;
+
+    const ButtonContainer otherThanLetterOrNumberContainer{
         ui->pushButton_coma,
         ui->pushButton_dot,
 
@@ -127,9 +158,10 @@ void ConsoleKeyboard::initButtonContainers()
 
         ui->pushButton_slash,
         ui->pushButton_backSlash,
+
     };
 
-    m_numberButtons = numbers;
+    m_otherThanLetterOrNumberContainer = otherThanLetterOrNumberContainer;
 
     const ButtonContainer letters{
         ui->pushButton_a,
@@ -169,7 +201,7 @@ void ConsoleKeyboard::initButtonContainers()
     m_letterButtons = letters;
 }
 
-void ConsoleKeyboard::initNumbers()
+void ConsoleKeyboard::connectNumbers()
 {
     for(auto* button : m_numberButtons){
         connect(
@@ -183,7 +215,7 @@ void ConsoleKeyboard::initNumbers()
     }
 }
 
-void ConsoleKeyboard::initLetters()
+void ConsoleKeyboard::connectLetters()
 {
     for(auto* button : m_letterButtons){
         connect(
@@ -191,6 +223,20 @@ void ConsoleKeyboard::initLetters()
             &QPushButton::clicked, [this, button]
             {
                 letterClicked(button->text());
+            }
+        );
+    }
+}
+
+void ConsoleKeyboard::connectOtherThanLetterOrNumber()
+{
+    for(auto* button : m_otherThanLetterOrNumberContainer){
+        connect(
+            button,
+            &QPushButton::clicked,
+            [this, button]
+            {
+                otherThanLetterOrNumberClicked(button->text());
             }
         );
     }
@@ -225,13 +271,13 @@ void ConsoleKeyboard::toggleCap()
     }
 }
 
-void ConsoleKeyboard::pushButtonEnabled(QPushButton *button)
+void ConsoleKeyboard::buttonToUpper(QPushButton *button)
 {
     auto txt = button->text();
     button->setText(txt.toUpper());
 }
 
-void ConsoleKeyboard::pushButtonDisabled(QPushButton *button)
+void ConsoleKeyboard::buttonToLower(QPushButton *button)
 {
     auto txt = button->text();
     button->setText(txt.toLower());
@@ -245,21 +291,21 @@ void ConsoleKeyboard::highlightEnter()
 void ConsoleKeyboard::handleCapsLock(bool checked)
 {
     if(checked){
-        pushButtonEnabled(ui->pushButton_capsLock);
+        buttonToUpper(ui->pushButton_capsLock);
         toHighCap();
     } else {
-        pushButtonDisabled(ui->pushButton_capsLock);
+        buttonToLower(ui->pushButton_capsLock);
         toLowCap();
     }
     ui->lineEditParam->setFocus();
 }
 
-void ConsoleKeyboard::on_pushButton_shiftLeft_clicked()
+void ConsoleKeyboard::handleLeftShift()
 {
-    on_pushButton_shiftRight_clicked();
+    handleRightShift();
 }
 
-void ConsoleKeyboard::on_pushButton_shiftRight_clicked()
+void ConsoleKeyboard::handleRightShift()
 {
     if(m_isLowCap){
         toggleCap();
