@@ -50,9 +50,6 @@ MainScreen::MainScreen(QWidget *parent)
     m_updatetimeTimer.start(500);
     connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
-    m_sledStateQueryTimer.start(500);
-    connect(&m_sledStateQueryTimer, &QTimer::timeout, this, &MainScreen::handleSledRunningStateTimout);
-
     m_opacScreen = new OpacScreen(this);
     m_opacScreen->show();
     m_graphicsView->hide();
@@ -295,6 +292,8 @@ void MainScreen::updateTime()
 {
     int ms{0};
 
+    updateSledRunningState();
+
     if(m_runTime.isValid()){
         ms = m_runTime.elapsed();
     }
@@ -362,7 +361,7 @@ void MainScreen::on_pushButtonMeasure_clicked(bool checked)
     emit measureImage(checked);
 }
 
-void MainScreen::handleSledRunningStateTimout()
+void MainScreen::updateSledRunningState()
 {
     bool currentSledRunningState{SledSupport::Instance().isRunningState()};
 

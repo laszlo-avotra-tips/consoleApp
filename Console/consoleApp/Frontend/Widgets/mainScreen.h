@@ -66,7 +66,7 @@ private slots:
 
     void on_pushButtonMeasure_clicked(bool checked);
 
-    void handleSledRunningStateTimout();
+    void updateSledRunningState();
     void handleSledRunningStateChanged(bool isInRunningState);
 
     void on_pushButtonRecord_clicked();
@@ -95,7 +95,6 @@ private:
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
-    QTimer m_sledStateQueryTimer;
     OpacScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
 };
