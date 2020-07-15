@@ -156,7 +156,7 @@ int MainScreen::getSledRuntime()
         if(m_sledIsInRunningState){
             auto delta = m_runTime.restart();
             m_sledRuntime += delta;
-            LOG2(delta, m_sledRuntime);
+//            LOG2(delta, m_sledRuntime);
         } else {
             m_runTime.start();
         }
