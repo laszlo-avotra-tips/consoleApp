@@ -147,6 +147,23 @@ void MainScreen::highlightSpeedButton(QPushButton *wid)
     wid->setStyleSheet("background-color: #F5C400; color: black;");
 }
 
+int MainScreen::getSledRuntime()
+{
+
+    updateSledRunningState();
+
+    if(m_runTime.isValid()){
+        if(m_sledIsInRunningState){
+            auto delta = m_runTime.restart();
+            m_sledRuntime += delta;
+            LOG2(delta, m_sledRuntime);
+        } else {
+            m_runTime.start();
+        }
+    }
+    return m_sledRuntime;
+}
+
 int MainScreen::getSceneWidth()
 {
     int retVal = m_sceneWidth;
@@ -290,16 +307,10 @@ void MainScreen::openDeviceSelectDialog()
 
 void MainScreen::updateTime()
 {
-    int ms{0};
+    int sledRunTime{getSledRuntime()};
 
-    updateSledRunningState();
-
-    if(m_runTime.isValid()){
-        ms = m_runTime.elapsed();
-    }
-
-    if(ms){
-        int durationInSec = ms / 1000;
+    if(sledRunTime){
+        int durationInSec = sledRunTime / 1000;
         int sec = durationInSec % 60;
         int min = durationInSec / 60;
         QTime dt(0,min,sec,0);

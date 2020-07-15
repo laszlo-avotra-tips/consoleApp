@@ -79,6 +79,8 @@ private:
     void setCurrentTime();
     void setSpeed(int speed);
     void highlightSpeedButton(QPushButton* wid);
+    int getSledRuntime();
+
 
 private:
     Ui::MainScreen *ui;
@@ -97,5 +99,6 @@ private:
     QTimer m_updatetimeTimer;
     OpacScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
+    int m_sledRuntime{0}; //the time the Sled is on in milliseconds
 };
 #endif // MAINSCREEN_H
