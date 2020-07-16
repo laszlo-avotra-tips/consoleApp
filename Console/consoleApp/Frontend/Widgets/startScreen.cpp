@@ -14,6 +14,7 @@
 #include "idaq.h"
 
 #include <QDebug>
+#include <QTimer>
 
 StartScreen::StartScreen(QWidget *parent) :
     QWidget(parent),
@@ -119,6 +120,20 @@ void StartScreen::startDaq(frontend *fe)
 
 void StartScreen::on_pushButtonStart_released()
 {
-//    WidgetContainer::instance()->gotoScreen("l250Frontend");
-    WidgetContainer::instance()->minimize();
+    if(isPressAndHold){
+        WidgetContainer::instance()->minimize();
+    }else{
+        WidgetContainer::instance()->gotoScreen("l250Frontend");
+    }
+}
+
+void StartScreen::setPressAndHold()
+{
+    isPressAndHold = true;
+}
+
+void StartScreen::on_pushButtonStart_pressed()
+{
+    isPressAndHold = false;
+    QTimer::singleShot(2000, this, &StartScreen::setPressAndHold);
 }

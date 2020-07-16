@@ -27,6 +27,10 @@ private slots:
 
     void on_pushButtonStart_released();
 
+    void on_pushButtonStart_pressed();
+
+    void setPressAndHold();
+
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
@@ -35,6 +39,7 @@ private:
 
     Ui::StartScreen *ui;
     Backend* m_backend{nullptr};
+    bool isPressAndHold{false};
 };
 
 #endif // STARTSCREEN_H
