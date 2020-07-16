@@ -2,9 +2,11 @@
 #define STARTSCREEN_H
 
 #include <QWidget>
+#include <QTimer>
 
 class Backend;
 class frontend;
+class QGestureEvent;
 
 namespace Ui {
 class StartScreen;
@@ -31,6 +33,10 @@ private slots:
 
     void setPressAndHold();
 
+    bool event(QEvent *event) override;
+
+    bool gestureEvent(QGestureEvent* ge);
+
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
@@ -39,7 +45,8 @@ private:
 
     Ui::StartScreen *ui;
     Backend* m_backend{nullptr};
-    bool isPressAndHold{false};
+    bool m_isPressAndHold{false};
+    QTimer m_timer;
 };
 
 #endif // STARTSCREEN_H

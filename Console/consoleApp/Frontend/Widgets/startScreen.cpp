@@ -15,6 +15,8 @@
 
 #include <QDebug>
 #include <QTimer>
+#include <QTapAndHoldGesture>
+#include <QGestureEvent>
 
 StartScreen::StartScreen(QWidget *parent) :
     QWidget(parent),
@@ -56,6 +58,8 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
 
     m_backend = new Backend(parent);
+
+    grabGesture(Qt::TapAndHoldGesture);
 }
 
 StartScreen::~StartScreen()
@@ -120,20 +124,57 @@ void StartScreen::startDaq(frontend *fe)
 
 void StartScreen::on_pushButtonStart_released()
 {
-    if(isPressAndHold){
-        WidgetContainer::instance()->minimize();
-    }else{
+    if(!m_isPressAndHold){
+//        m_timer.stop();
         WidgetContainer::instance()->gotoScreen("l250Frontend");
     }
 }
 
 void StartScreen::setPressAndHold()
 {
-    isPressAndHold = true;
+    m_isPressAndHold = true;
+    WidgetContainer::instance()->minimize();
+}
+
+bool StartScreen::event(QEvent *event)
+{
+    if(event->type() == QEvent::Gesture){
+        LOG1(event->type());
+
+        QGestureEvent* ge = dynamic_cast<QGestureEvent*>(event);
+        if(ge){
+            return gestureEvent(ge);
+        }
+    }
+    return QWidget::event(event);
+}
+
+bool StartScreen::gestureEvent(QGestureEvent *ge)
+{
+    bool isHandled{false};
+    LOG1(ge->type());
+
+    if (QGesture *th = ge->gesture(Qt::TapAndHoldGesture))  {
+
+        QTapAndHoldGesture* qth = dynamic_cast<QTapAndHoldGesture*>(th);
+        if(qth){
+            auto x = qth->position().rx();
+            auto y = qth->position().ry();
+            const qreal ox = 1650;
+            const qreal oy = 1020;
+            LOG2(x, y);
+            if(abs(ox - x) < 500 && abs(oy - y) < 500){
+                setPressAndHold();
+                isHandled = true;
+            }
+        }
+    }
+
+    return isHandled;
 }
 
 void StartScreen::on_pushButtonStart_pressed()
 {
-    isPressAndHold = false;
-    QTimer::singleShot(2000, this, &StartScreen::setPressAndHold);
+    m_isPressAndHold = false;
+//    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
 }
