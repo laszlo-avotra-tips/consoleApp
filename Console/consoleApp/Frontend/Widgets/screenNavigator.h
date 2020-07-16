@@ -16,6 +16,7 @@ public:
     ~ScreenNavigator();
     void display();
     void minimize();
+    void showEvent(QShowEvent *event) override;
 
 private:
     void setStylesheet();

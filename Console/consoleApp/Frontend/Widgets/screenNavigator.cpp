@@ -49,6 +49,12 @@ void ScreenNavigator::minimize()
     setWindowState(Qt::WindowMinimized);
 }
 
+void ScreenNavigator::showEvent(QShowEvent *event)
+{
+    QWidget::showEvent(event);
+    showFullScreen();
+}
+
 void ScreenNavigator::setStylesheet()
 {
     QString fn("/Avinger_System/styleSheet.dat");
