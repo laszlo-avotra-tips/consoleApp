@@ -45,6 +45,8 @@ public:
     bool getIsNewCase() const;
     void setIsNewCase(bool isNewCase);
 
+    void minimize();
+
 private:
     static WidgetContainer* m_instance;
     WidgetContainer() = default;

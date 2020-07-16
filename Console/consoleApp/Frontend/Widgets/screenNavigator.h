@@ -15,6 +15,7 @@ public:
     explicit ScreenNavigator(QWidget *parent = nullptr);
     ~ScreenNavigator();
     void display();
+    void minimize();
 
 private:
     void setStylesheet();

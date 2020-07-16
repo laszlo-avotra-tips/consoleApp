@@ -25,6 +25,7 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
     qDebug() << "page count = " << count;
 
     widgets->gotoScreen("startScreen");
+
 }
 
 ScreenNavigator::~ScreenNavigator()
@@ -41,6 +42,11 @@ void ScreenNavigator::display()
     } else {
         show();
     }
+}
+
+void ScreenNavigator::minimize()
+{
+    setWindowState(Qt::WindowMinimized);
 }
 
 void ScreenNavigator::setStylesheet()

@@ -191,6 +191,7 @@ bool SledSupport::init( void )
         {
             // This code is used to initialize the original L300 interface board (MS2816)
             qDebug() << "*** Prototype IF";
+            LOG1("*** Prototype IF");
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );   // SSB 5V on
             if( ftStatus != FT_OK )
@@ -221,6 +222,7 @@ bool SledSupport::init( void )
         {
             // This code is used to initialize the final L300IF board (MS2916)
             qDebug() << "*** Final IF";
+            LOG1("*** Final IF");
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // First reset the board
             if( ftStatus != FT_OK )
@@ -249,32 +251,38 @@ bool SledSupport::init( void )
         }
 
         ftStatus = FT_SetBaudRate( ftHandle, 9600);
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set baud rate";
         }
         ftStatus = FT_SetDataCharacteristics( ftHandle, FT_BITS_8, FT_STOP_BITS_1, FT_PARITY_NONE);
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set data charecteristics";
         }
         ftStatus = FT_SetFlowControl( ftHandle, FT_FLOW_NONE, 0x11, 0x13 );
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set flow control";
         }
         ftStatus = FT_SetTimeouts( ftHandle, 50, 1000 );
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set timeouts ";
         }
         ftStatus = FT_Purge( ftHandle, FT_PURGE_TX | FT_PURGE_RX );
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Purge failed";
         }
 //        start();            // get run thread going
     }
+    LOG1(status);
     return status;
 }
 

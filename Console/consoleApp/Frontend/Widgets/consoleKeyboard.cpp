@@ -39,7 +39,7 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
     }
 
     /*
-     * connect the UI widgets to this classes functions
+     * connect the UI widgets to this classes methods
      */
     auto* enterButton = ui->pushButton_enter;
     connect(enterButton, &QPushButton::clicked, this, &QDialog::accept);

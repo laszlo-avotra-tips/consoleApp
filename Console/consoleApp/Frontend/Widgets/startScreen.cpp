@@ -84,11 +84,6 @@ void StartScreen::on_pushButtonShutdown_clicked()
     WidgetContainer::instance()->close();
 }
 
-void StartScreen::on_pushButtonStart_clicked()
-{
-    WidgetContainer::instance()->gotoScreen("l250Frontend");
-}
-
 void StartScreen::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
@@ -120,4 +115,10 @@ void StartScreen::startDaq(frontend *fe)
         fe->startDataCapture();
     }
     fe->on_zoomSlider_valueChanged(100);
+}
+
+void StartScreen::on_pushButtonStart_released()
+{
+//    WidgetContainer::instance()->gotoScreen("l250Frontend");
+    WidgetContainer::instance()->minimize();
 }

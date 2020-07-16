@@ -136,6 +136,13 @@ void WidgetContainer::setIsNewCase(bool isNewCase)
     m_isNewCase = isNewCase;
 }
 
+void WidgetContainer::minimize()
+{
+    if(m_navigator){
+        m_navigator->minimize();
+    }
+}
+
 int WidgetContainer::ratio() const
 {
     return m_ratio;

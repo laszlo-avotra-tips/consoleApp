@@ -25,7 +25,7 @@ private slots:
 
     void on_pushButtonShutdown_clicked();
 
-    void on_pushButtonStart_clicked();
+    void on_pushButtonStart_released();
 
 private:
     void showEvent(QShowEvent* se) override;
