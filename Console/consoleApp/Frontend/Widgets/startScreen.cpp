@@ -60,6 +60,7 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     m_backend = new Backend(parent);
 
     grabGesture(Qt::TapAndHoldGesture);
+    QTapAndHoldGesture::setTimeout(2000);
 }
 
 StartScreen::~StartScreen()
@@ -160,10 +161,10 @@ bool StartScreen::gestureEvent(QGestureEvent *ge)
         if(qth){
             auto x = qth->position().rx();
             auto y = qth->position().ry();
-            const qreal ox = 1650;
-            const qreal oy = 1020;
+            const qreal ox = 800;
+            const qreal oy = 2080;
             LOG2(x, y);
-            if(abs(ox - x) < 500 && abs(oy - y) < 500){
+            if(abs(ox - x) < 800 && abs(oy - y) < 80){
                 setPressAndHold();
                 isHandled = true;
             }

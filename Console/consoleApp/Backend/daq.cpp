@@ -179,9 +179,11 @@ bool DAQ::getData( )
 
     axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
 //    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
+    LOG2(axRetVal, last_packet_in);
 
     axRetVal = axGetImageInfoAdv(session, -1, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
+    LOG3(axRetVal, returned_image_number, lastImageIdx);
 
     if( returned_image_number > (lastImageIdx + 1) )
     {
@@ -219,6 +221,7 @@ bool DAQ::getData( )
                                    axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
         gBufferLength = width;
+        LOG3(axRetVal,returned_image_number,gDaqCounter)
 
         // write in frame information for recording/playback
         axsunData->frameCount = gDaqCounter;
@@ -234,8 +237,10 @@ bool DAQ::getData( )
     }
     else
     {
+        LOG1(force_trig)
         qDebug() << "Data Not Ready - force_trig:" << force_trig;
     }
+    LOG1(retVal);
 
     return retVal;
 }
