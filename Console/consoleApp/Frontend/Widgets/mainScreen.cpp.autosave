@@ -267,6 +267,9 @@ void MainScreen::on_pushButtonSettings_clicked()
         if(reviewAndSettingsSelection == "CASE INFORMATION"){
             openCaseInformationDialog();
         }
+        if(reviewAndSettingsSelection == "DEVICE SELECT"){
+            openDeviceSelectDialog();
+        }        
     }
     else {
         qDebug() << "Cancelled";

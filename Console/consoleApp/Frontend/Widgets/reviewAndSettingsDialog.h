@@ -35,6 +35,7 @@ private:
     Ui::ReviewAndSettingsDialog *ui;
     bool m_isSelection{false};
     std::vector<QPushButton*> m_selectionButtons;
+    QString m_selection;
 };
 
 #endif // REVIEWANDSETTINGSDIALOG_H

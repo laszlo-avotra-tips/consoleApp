@@ -24,6 +24,7 @@ ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
     };
 
     m_selectionButtons = buttons;
+    ui->pushButtonNext->setEnabled(false);
 }
 
 ReviewAndSettingsDialog::~ReviewAndSettingsDialog()
@@ -63,12 +64,17 @@ void ReviewAndSettingsDialog::on_pushButtonCaseInformation_clicked(bool checked)
 
 void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool isChecked)
 {
-    for( auto* button : m_selectionButtons){
-        button->setStyleSheet("background-color:black;");
+    for( auto* btt : m_selectionButtons){
+        btt->setStyleSheet("background-color:black;");
     }
     ui->frameNext->setStyleSheet("");
+    ui->pushButtonNext->setEnabled(false);
     if(isChecked){
         button->setStyleSheet("background-color:#636363;");
         ui->frameNext->setStyleSheet("background-color: rgb(245,196,0); color: black");
+        ui->pushButtonNext->setEnabled(true);
+        m_selection = button->text();
+        //pass the selection in the window title
+        setWindowTitle(m_selection);
     }
 }
