@@ -16,7 +16,12 @@ DisplayOptionsDialog::~DisplayOptionsDialog()
     delete ui;
 }
 
-void DisplayOptionsDialog::on_pushButton_clicked()
+void DisplayOptionsDialog::on_pushButtonDone_clicked()
 {
     accept();
+}
+
+void DisplayOptionsDialog::on_pushButtonBack_clicked()
+{
+    reject();
 }

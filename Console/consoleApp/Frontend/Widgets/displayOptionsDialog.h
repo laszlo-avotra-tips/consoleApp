@@ -16,7 +16,9 @@ public:
     ~DisplayOptionsDialog();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButtonDone_clicked();
+
+    void on_pushButtonBack_clicked();
 
 private:
     Ui::DisplayOptionsDialog *ui;
