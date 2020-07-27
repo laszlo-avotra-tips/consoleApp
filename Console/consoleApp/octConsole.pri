@@ -28,6 +28,8 @@ HEADERS += \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
+    $$PWD/Frontend/Widgets/displayOptionsDialog.h \
+    $$PWD/Frontend/Widgets/displayOptionsScreen.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
     $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
@@ -139,6 +141,8 @@ SOURCES += \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
+    $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
+    $$PWD/Frontend/Widgets/displayOptionsScreen.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
     $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
@@ -231,6 +235,8 @@ FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/caseInformationDialog.ui \
     $$PWD/Frontend/Widgets/consoleKeyboard.ui \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
+    $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
+    $$PWD/Frontend/Widgets/displayOptionsScreen.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
     $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \

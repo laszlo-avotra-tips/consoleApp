@@ -254,9 +254,14 @@ void MainScreen::on_pushButtonSettings_clicked()
     }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
+        WidgetContainer::instance()->gotoScreen("displayOptionsScreen");
     }
     else {
         qDebug() << "Cancelled";
+        auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");
+        if( result.second == QDialog::Accepted){
+            ;
+        }
     }
 }
 

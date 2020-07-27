@@ -1,5 +1,6 @@
 #include "screenFactory.h"
 #include "startScreen.h"
+#include "displayOptionsScreen.h"
 #include "widgetcontainer.h"
 #include "mainScreen.h"
 #include "forml300.h"
@@ -18,4 +19,7 @@ ScreenFactory::ScreenFactory()
 
     frontend* l2500Frontend = new frontend();
     WidgetContainer::instance()->registerWidget("l250Frontend", l2500Frontend);
+
+    DisplayOptionsScreen* displayOptionsScreen = new DisplayOptionsScreen();
+    WidgetContainer::instance()->registerWidget("displayOptionsScreen", displayOptionsScreen);
 }
