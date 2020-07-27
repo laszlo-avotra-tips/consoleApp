@@ -190,8 +190,9 @@ bool SledSupport::init( void )
         if( (strcmp(ftdiDeviceInfo[0].SerialNumber, "MS2816") == 0 ))
         {
             // This code is used to initialize the original L300 interface board (MS2816)
-            qDebug() << "*** Prototype IF";
-            LOG1("*** Prototype IF");
+            QString msg = QString( "*** Prototype IF");
+            qDebug() << msg;
+            LOG1(msg);
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );   // SSB 5V on
             if( ftStatus != FT_OK )
@@ -221,28 +222,37 @@ bool SledSupport::init( void )
         else
         {
             // This code is used to initialize the final L300IF board (MS2916)
-            qDebug() << "*** Final IF";
-            LOG1("*** Final IF");
+            QString msg = QString( "*** Final IF");
+            qDebug() << msg;
+            LOG1(msg);
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // First reset the board
+            msg = QString("First reset the board");
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";
             }
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF2, 0x20 );   // Sled 24V on
+            msg = QString("Sled 24V on");
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";
             }
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF3, 0x20 );   // Sled 5V on
+            msg = QString("Sled 5V on");
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";
             }
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xFB, 0x20 );   // Laser on
+            msg = QString("Laser on");
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";

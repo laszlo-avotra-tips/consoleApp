@@ -122,7 +122,7 @@ void DAQ::run( void )
             if( frameTimer.elapsed() > 1000 )
             {
 //                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
-                LOG2(frameCount,loopCount)
+//                LOG2(frameCount,loopCount)
                 emit fpsCount( frameCount );
                 emit linesPerFrameCount( (int)gBufferLength );
                 emit missedImagesCount( missedImgs );
@@ -134,14 +134,14 @@ void DAQ::run( void )
             if( getData() )
             {
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
-                LOG3(gFrameNumber, gBufferLength, loopCount)
+//                LOG3(gFrameNumber, gBufferLength, loopCount)
                 if( scanWorker->isReady )
                 {
                     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
                     emit updateSector(axsunData);
-                    LOG3(gFrameNumber, gBufferLength, loopCount)
+//                    LOG3(gFrameNumber, gBufferLength, loopCount)
                 }
             }
             else
@@ -179,17 +179,17 @@ bool DAQ::getData( )
 
     axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
 //    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
-    LOG2(axRetVal, last_packet_in);
+//    LOG2(axRetVal, last_packet_in);
 
     axRetVal = axGetImageInfoAdv(session, -1, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
-    LOG3(axRetVal, returned_image_number, lastImageIdx);
+//    LOG3(axRetVal, returned_image_number, lastImageIdx);
 
     if( returned_image_number > (lastImageIdx + 1) )
     {
         qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
         missedImgs = (returned_image_number - lastImageIdx - 1);
-        LOG1(missedImgs)
+//        LOG1(missedImgs)
     }
     else
     {
@@ -221,7 +221,7 @@ bool DAQ::getData( )
                                    axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
         gBufferLength = width;
-        LOG3(axRetVal,returned_image_number,gDaqCounter)
+//        LOG3(axRetVal,returned_image_number,gDaqCounter)
 
         // write in frame information for recording/playback
         axsunData->frameCount = gDaqCounter;
@@ -237,10 +237,10 @@ bool DAQ::getData( )
     }
     else
     {
-        LOG1(force_trig)
+//        LOG1(force_trig)
         qDebug() << "Data Not Ready - force_trig:" << force_trig;
     }
-    LOG1(retVal);
+//    LOG1(retVal);
 
     return retVal;
 }
