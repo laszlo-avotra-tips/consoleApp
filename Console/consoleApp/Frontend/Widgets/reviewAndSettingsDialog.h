@@ -2,6 +2,7 @@
 #define REVIEWANDSETTINGSDIALOG_H
 
 #include <QDialog>
+#include <vector>
 
 namespace Ui {
 class ReviewAndSettingsDialog;
@@ -33,6 +34,7 @@ private:
 
     Ui::ReviewAndSettingsDialog *ui;
     bool m_isSelection{false};
+    std::vector<QPushButton*> m_selectionButtons;
 };
 
 #endif // REVIEWANDSETTINGSDIALOG_H

@@ -248,20 +248,21 @@ void MainScreen::showSpeed(bool isShown)
 
 void MainScreen::on_pushButtonSettings_clicked()
 {
-    auto result = WidgetContainer::instance()->openDialog(this, "reviewAndSettingsDialog");
+    auto result = WidgetContainer::instance()->openDialog(this, "reviewAndSettingsDialog");//page. 58
     if(result.first){
         result.first->hide();
     }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
-        WidgetContainer::instance()->gotoScreen("displayOptionsScreen");
+        auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
+        if( result.second == QDialog::Accepted){
+            ;
+        } else {
+
+        }
     }
     else {
         qDebug() << "Cancelled";
-        auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");
-        if( result.second == QDialog::Accepted){
-            ;
-        }
     }
 }
 
