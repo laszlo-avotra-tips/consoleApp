@@ -6,6 +6,9 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     ui(new Ui::DisplayOptionsDialog)
 {
     ui->setupUi(this);
+    setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
+    setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
+
 }
 
 DisplayOptionsDialog::~DisplayOptionsDialog()

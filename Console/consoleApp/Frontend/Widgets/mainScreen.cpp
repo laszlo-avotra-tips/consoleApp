@@ -244,7 +244,6 @@ void MainScreen::setDeviceLabel()
 void MainScreen::showSpeed(bool isShown)
 {
     ui->frameSpeed->setVisible(isShown);
-//    ui->labelLive->setStyleSheet("color: green;");
 }
 
 void MainScreen::on_pushButtonSettings_clicked()
@@ -258,14 +257,13 @@ void MainScreen::on_pushButtonSettings_clicked()
         const auto& reviewAndSettingsSelection = dialog->windowTitle();
 
         if(reviewAndSettingsSelection == "DISPLAY OPTIONS"){
-            auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
-            if( result.second == QDialog::Accepted){
-            } else {
-
-            }
+            openDisplayOptionsDialog();
         }
         if(reviewAndSettingsSelection == "CASE INFORMATION"){
             openCaseInformationDialog();
+        }
+        if(reviewAndSettingsSelection == "DEVICE SELECT"){
+            openDeviceSelectDialog();
         }
     }
     else {
@@ -315,6 +313,16 @@ void MainScreen::openDeviceSelectDialog()
     } else {
         qDebug() << "Cancelled";
         openCaseInformationDialog();
+    }
+}
+
+void MainScreen::openDisplayOptionsDialog()
+{
+    auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
+    if( result.second == QDialog::Accepted){
+
+    } else {
+
     }
 }
 

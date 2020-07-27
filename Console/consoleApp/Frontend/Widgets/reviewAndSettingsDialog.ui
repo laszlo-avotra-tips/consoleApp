@@ -48,6 +48,14 @@ QPushButton{
 font:20pt;
 color:WHITE;
 }
+QPushButton#pushButtonExit{
+font:12pt;
+color:WHITE;
+}
+QPushButton#pushButtonNext{
+font:12pt;
+color:WHITE;
+}
 QDialog{
 border:2px solid grey; 
 border-radius:200px;

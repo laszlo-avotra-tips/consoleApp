@@ -56,6 +56,8 @@ private slots:
     void on_pushButtonSettings_clicked();
     void openCaseInformationDialog();
     void openDeviceSelectDialog();
+    void openDisplayOptionsDialog();
+
     void updateTime();
     void udpateToSpeed1();
     void udpateToSpeed2();
