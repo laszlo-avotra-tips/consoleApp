@@ -255,9 +255,10 @@ void DeviceSelectDialog::handleDevice3()
 
 void DeviceSelectDialog::handleDeviceSelected(int did)
 {
-    setSelectedDeviceId(did);
-    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
-    ui->pushButtonDone->setEnabled(true);
+    if(setSelectedDeviceId(did)){
+        ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+        ui->pushButtonDone->setEnabled(true);
+    }
 }
 
 void DeviceSelectDialog::removeHighlight()
@@ -281,7 +282,12 @@ int DeviceSelectDialog::selectedDeviceId() const
     return m_selectedDeviceId;
 }
 
-void DeviceSelectDialog::setSelectedDeviceId(int selectedDeviceId)
+bool DeviceSelectDialog::setSelectedDeviceId(int selectedDeviceId)
 {
-    m_selectedDeviceId = selectedDeviceId;
+    bool selectedDeviceIdChanged{false};
+    if(m_selectedDeviceId != selectedDeviceId){
+        m_selectedDeviceId = selectedDeviceId;
+        selectedDeviceIdChanged = true;
+    }
+    return selectedDeviceIdChanged;
 }

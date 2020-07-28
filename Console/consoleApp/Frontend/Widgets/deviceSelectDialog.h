@@ -44,7 +44,7 @@ private:
     void highlight(QWidget* label);
     void highlightCurrentDevice();
     int selectedDeviceId() const;
-    void setSelectedDeviceId(int selectedDeviceId);
+    bool setSelectedDeviceId(int selectedDeviceId);
 
     Ui::DeviceSelectDialog *ui;
     int m_selectedDeviceId{-1};
