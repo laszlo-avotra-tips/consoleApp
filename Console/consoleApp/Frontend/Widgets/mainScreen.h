@@ -57,6 +57,8 @@ private slots:
     void openCaseInformationDialog();
     void openCaseInformationDialogFromReviewAndSettings();
     void openDeviceSelectDialog();
+    void openDeviceSelectDialogFromReviewAndSettings();
+
     void openDisplayOptionsDialog();
 
     void updateTime();

@@ -21,6 +21,7 @@ public:
 
     void initDialog( void );
 
+
 signals:
     void deviceSelected(int did);
 
@@ -43,8 +44,12 @@ private slots:
 private:
     void removeHighlight();
     void highlight(QWidget* label);
+    void highlightCurrentDevice();
+    int selectedDeviceId() const;
+    void setSelectedDeviceId(int selectedDeviceId);
 
     Ui::DeviceSelectDialog *ui;
+    int m_selectedDeviceId{-1};
 };
 
 #endif // DEVICESELECTDIALOG_H

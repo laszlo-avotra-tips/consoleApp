@@ -264,7 +264,7 @@ void MainScreen::on_pushButtonSettings_clicked()
             openCaseInformationDialogFromReviewAndSettings();
         }
         if(reviewAndSettingsSelection.trimmed() == "DEVICE SELECT"){
-            openDeviceSelectDialog();
+            openDeviceSelectDialogFromReviewAndSettings();
         }
     }
     else {
@@ -331,6 +331,18 @@ void MainScreen::openDeviceSelectDialog()
         qDebug() << "Cancelled";
         openCaseInformationDialog();
     }
+}
+
+void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
+{
+    auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
+
+    if( result.second == QDialog::Accepted){
+        qDebug() << "Accepted";
+    } else {
+        qDebug() << "Cancelled";
+    }
+    on_pushButtonSettings_clicked();
 }
 
 void MainScreen::openDisplayOptionsDialog()

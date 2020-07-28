@@ -53,7 +53,35 @@ void DeviceSelectDialog::initDialog()
 
     connect(this, &DeviceSelectDialog::deviceSelected, this, &DeviceSelectDialog::handleDeviceSelected);
 
+    highlightCurrentDevice();
 }
+
+void DeviceSelectDialog::highlightCurrentDevice()
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    auto did = dev.getCurrentDevice();
+    setSelectedDeviceId(did);
+    if(selectedDeviceId() >= 0){
+        LOG4(did, dev.getCurrentDeviceTitle(),dev.getCurrentDeviceName(), dev.getCurrentSplitDeviceName());
+        switch(did){
+        case 0:
+            highlight(ui->frame0);
+            break;
+        case 1:
+            highlight(ui->frame2);
+            break;
+        case 2:
+            highlight(ui->frame3);
+            break;
+        case 3:
+            highlight(ui->frame4);
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 
 void DeviceSelectDialog::changeEvent(QEvent *e)
 {
@@ -152,8 +180,16 @@ void DeviceSelectDialog::populateList()
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
+    if(selectedDeviceId() >= 0){
+        deviceSettings &dev = deviceSettings::Instance();
+        dev.setCurrentDevice(selectedDeviceId());
+    } else {
+        return;
+    }
+
     auto* device = deviceSettings::Instance().current();
     const bool isSpeed{!device->isAth()};
+    LOG1(selectedDeviceId())
 
     QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
@@ -212,8 +248,7 @@ void DeviceSelectDialog::handleDevice3()
 
 void DeviceSelectDialog::handleDeviceSelected(int did)
 {
-    deviceSettings &dev = deviceSettings::Instance();
-    dev.setCurrentDevice(did);
+    setSelectedDeviceId(did);
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
 }
@@ -232,4 +267,14 @@ void DeviceSelectDialog::highlight(QWidget *label)
 {
     removeHighlight();
     label->setStyleSheet("background-color:#646464; border-radius: 20px solid grey;");
+}
+
+int DeviceSelectDialog::selectedDeviceId() const
+{
+    return m_selectedDeviceId;
+}
+
+void DeviceSelectDialog::setSelectedDeviceId(int selectedDeviceId)
+{
+    m_selectedDeviceId = selectedDeviceId;
 }
