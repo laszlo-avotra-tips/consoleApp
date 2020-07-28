@@ -319,9 +319,9 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
         result.first->hide();
     }
     if( result.second != QDialog::Accepted){
+        on_pushButtonSettings_clicked();
         *CaseInformationModel::instance() = model;
     }
-    on_pushButtonSettings_clicked();
 }
 
 void MainScreen::openDeviceSelectDialog()
@@ -341,12 +341,9 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
     const std::vector<QString> dsdParam{"NO ANIMATION"};
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog",&dsdParam);
 
-    if( result.second == QDialog::Accepted){
-        qDebug() << "Accepted";
-    } else {
-        qDebug() << "Cancelled";
+    if( result.second != QDialog::Accepted){
+        on_pushButtonSettings_clicked();
     }
-    on_pushButtonSettings_clicked();
 }
 
 void MainScreen::openCaseReview()

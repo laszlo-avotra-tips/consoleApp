@@ -30,9 +30,9 @@ DeviceSelectDialog::~DeviceSelectDialog()
 
 void DeviceSelectDialog::initDialog(const std::vector<QString> *param)
 {
-    if(param && !param->empty()){
-        m_isAnimation = false;
-    }
+//    if(param && !param->empty()){
+//        m_isAnimation = false;
+//    }
 
     if(m_isAnimation){
         int duration_ms=1000;

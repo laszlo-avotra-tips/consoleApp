@@ -56,7 +56,7 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
     if(param && !param->empty()){
         const auto& enterButtonText = *param->begin();
         ui->pushButtonNext->setText(enterButtonText);
-        m_isAnimation = false;
+//        m_isAnimation = false;
     }
 
     if(m_isAnimation){
