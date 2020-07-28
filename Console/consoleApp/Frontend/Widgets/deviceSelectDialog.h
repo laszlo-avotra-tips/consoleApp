@@ -16,11 +16,8 @@ class DeviceSelectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit DeviceSelectDialog(QWidget *parent = nullptr);
+    explicit DeviceSelectDialog(QWidget *parent = nullptr, const std::vector<QString> *param = nullptr);
     ~DeviceSelectDialog();
-
-    void initDialog( void );
-
 
 signals:
     void deviceSelected(int did);
@@ -31,6 +28,7 @@ protected:
 private:
     void populateList(void);
     void populateList1(void);
+    void initDialog( const std::vector<QString> *param = nullptr );
 
 private slots:
     void on_pushButtonDone_clicked();
@@ -50,6 +48,7 @@ private:
 
     Ui::DeviceSelectDialog *ui;
     int m_selectedDeviceId{-1};
+    bool m_isAnimation{true};
 };
 
 #endif // DEVICESELECTDIALOG_H

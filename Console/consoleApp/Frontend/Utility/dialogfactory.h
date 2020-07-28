@@ -27,7 +27,7 @@ public:
      * \param parent - the parent controls the instances lifetime
      * \return the created dialog
      */
-    QDialog* createDialog(const QString& name, QWidget* parent, const std::vector<QString> *param = 0);
+    QDialog* createDialog(const QString& name, QWidget* parent, const std::vector<QString> *param = nullptr);
 };
 
 #endif // DIALOGFACTORY_H

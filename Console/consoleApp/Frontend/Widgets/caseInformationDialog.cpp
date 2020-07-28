@@ -56,28 +56,33 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
     if(param && !param->empty()){
         const auto& enterButtonText = *param->begin();
         ui->pushButtonNext->setText(enterButtonText);
+        m_isAnimation = false;
     }
-    /*
-     * Set opacity with animation
-     */
-    const int animationDuration_ms=1000;
-    const QByteArray property{"opacity"};
-    const float startValue{0.0f};
-    const float endValue{0.9f};
 
-    QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
-    QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, property);
-    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+    if(m_isAnimation){
+        /*
+         * Set opacity with animation
+         */
+        const int animationDuration_ms=1000;
+        const QByteArray property{"opacity"};
+        const float startValue{0.0f};
+        const float endValue{0.9f};
+
+        QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
+        QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, property);
+        QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+
+
+        setGraphicsEffect(showing_effect);
+        animation->setStartValue(startValue);
+        animation->setEndValue(endValue);
+        animation->setDuration(animationDuration_ms);
+        group->addAnimation(animation);
+        group->start();
+    }
 
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
-
-    setGraphicsEffect(showing_effect);
-    animation->setStartValue(startValue);
-    animation->setEndValue(endValue);
-    animation->setDuration(animationDuration_ms);
-    group->addAnimation(animation);
-    group->start();
 
     /*
      * required field logic

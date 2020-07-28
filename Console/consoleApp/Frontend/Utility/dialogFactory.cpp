@@ -19,7 +19,7 @@ QDialog *DialogFactory::createDialog(const QString &name, QWidget *parent, const
         dialog = new CaseInformationDialog(parent, param);
     }
     if(name == "deviceSelectDialog"){
-        dialog = new DeviceSelectDialog(parent);
+        dialog = new DeviceSelectDialog(parent, param);
     }
     if(name == "emptyDialog"){
         dialog = new EmptyDialog(parent);

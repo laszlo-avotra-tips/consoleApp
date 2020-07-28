@@ -14,13 +14,13 @@
 #include <QParallelAnimationGroup>
 
 
-DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
+DeviceSelectDialog::DeviceSelectDialog(QWidget *parent, const std::vector<QString> *param) :
     QDialog(parent),
     ui(new Ui::DeviceSelectDialog)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    initDialog();
+    initDialog(param);
 }
 
 DeviceSelectDialog::~DeviceSelectDialog()
@@ -28,19 +28,26 @@ DeviceSelectDialog::~DeviceSelectDialog()
     delete ui;
 }
 
-void DeviceSelectDialog::initDialog()
+void DeviceSelectDialog::initDialog(const std::vector<QString> *param)
 {
-    int duration_ms=1000;
-    QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
-    QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
-    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+    if(param && !param->empty()){
+        m_isAnimation = false;
+    }
 
-    setGraphicsEffect(showing_effect);
-    animation->setStartValue(0);
-    animation->setEndValue(0.9);
-    animation->setDuration(duration_ms);
-    group->addAnimation(animation);
-    group->start();
+    if(m_isAnimation){
+        int duration_ms=1000;
+        QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
+        QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
+        QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+
+        setGraphicsEffect(showing_effect);
+        animation->setStartValue(0);
+        animation->setEndValue(0.9);
+        animation->setDuration(duration_ms);
+        group->addAnimation(animation);
+        group->start();
+    }
+
     populateList();
     populateList1();
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );

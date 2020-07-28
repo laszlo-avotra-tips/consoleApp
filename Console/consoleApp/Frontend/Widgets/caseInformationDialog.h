@@ -128,6 +128,11 @@ private:
      * the model
      */
     CaseInformationModel& m_model;
+
+    /*!
+     * \brief m_isAnimation - enamble animation
+     */
+    bool m_isAnimation{true};
 };
 
 #endif // CASEINFORMATIONDIALOG_H

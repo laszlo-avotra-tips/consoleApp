@@ -266,6 +266,9 @@ void MainScreen::on_pushButtonSettings_clicked()
         if(reviewAndSettingsSelection.trimmed() == "DEVICE SELECT"){
             openDeviceSelectDialogFromReviewAndSettings();
         }
+        if(reviewAndSettingsSelection.trimmed() == "CASE REVIEW"){
+            openCaseReview();
+        }
     }
     else {
         qDebug() << "Cancelled";
@@ -335,7 +338,8 @@ void MainScreen::openDeviceSelectDialog()
 
 void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
 {
-    auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
+    const std::vector<QString> dsdParam{"NO ANIMATION"};
+    auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog",&dsdParam);
 
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
@@ -345,14 +349,16 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
     on_pushButtonSettings_clicked();
 }
 
+void MainScreen::openCaseReview()
+{
+    WidgetContainer::instance()->openDialog(this, "emptyDialog");
+    on_pushButtonSettings_clicked();
+}
+
 void MainScreen::openDisplayOptionsDialog()
 {
-    auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
-    if( result.second == QDialog::Accepted){
-
-    } else {
-
-    }
+    WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
+    on_pushButtonSettings_clicked();
 }
 
 void MainScreen::updateTime()
