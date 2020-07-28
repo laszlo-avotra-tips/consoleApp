@@ -70,7 +70,7 @@ void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool i
     ui->frameNext->setStyleSheet("");
     ui->pushButtonNext->setEnabled(false);
     if(isChecked){
-        button->setStyleSheet("background-color:#636363;");
+        button->setStyleSheet("background-color:#646464;  border-radius: 20px solid grey;");
         ui->frameNext->setStyleSheet("background-color: rgb(245,196,0); color: black");
         ui->pushButtonNext->setEnabled(true);
         m_selection = button->text();

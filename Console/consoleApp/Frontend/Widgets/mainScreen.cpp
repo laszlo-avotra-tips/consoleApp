@@ -256,13 +256,13 @@ void MainScreen::on_pushButtonSettings_clicked()
         auto * dialog = result.first;
         const auto& reviewAndSettingsSelection = dialog->windowTitle();
 
-        if(reviewAndSettingsSelection == "DISPLAY OPTIONS"){
+        if(reviewAndSettingsSelection.trimmed() == "DISPLAY OPTIONS"){
             openDisplayOptionsDialog();
         }
-        if(reviewAndSettingsSelection == "CASE INFORMATION"){
+        if(reviewAndSettingsSelection.trimmed() == "CASE INFORMATION"){
             openCaseInformationDialog();
         }
-        if(reviewAndSettingsSelection == "DEVICE SELECT"){
+        if(reviewAndSettingsSelection.trimmed() == "DEVICE SELECT"){
             openDeviceSelectDialog();
         }
     }

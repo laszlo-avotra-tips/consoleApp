@@ -158,6 +158,9 @@ color:white;
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="spacing">
+             <number>6</number>
+            </property>
             <item>
              <spacer name="horizontalSpacer_2">
               <property name="orientation">
@@ -185,10 +188,19 @@ color:white;
                 <height>100</height>
                </size>
               </property>
+              <property name="sizeIncrement">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
-               <string>CASE INFORMATION</string>
+               <string>  CASE INFORMATION  </string>
               </property>
               <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="flat">
                <bool>true</bool>
               </property>
              </widget>
@@ -252,9 +264,12 @@ color:white;
                </size>
               </property>
               <property name="text">
-               <string>DEVICE SELECT</string>
+               <string>  DEVICE SELECT  </string>
               </property>
               <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="flat">
                <bool>true</bool>
               </property>
              </widget>
@@ -318,13 +333,16 @@ color:white;
                </size>
               </property>
               <property name="text">
-               <string>CASE REVIEW</string>
+               <string>  CASE REVIEW  </string>
               </property>
               <property name="checkable">
                <bool>true</bool>
               </property>
               <property name="checked">
                <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -387,13 +405,16 @@ color:white;
                </size>
               </property>
               <property name="text">
-               <string>DISPLAY OPTIONS</string>
+               <string>  DISPLAY OPTIONS  </string>
               </property>
               <property name="checkable">
                <bool>true</bool>
               </property>
               <property name="checked">
                <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -494,6 +515,9 @@ color:white;
               <property name="text">
                <string>EXIT</string>
               </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
            </layout>
@@ -545,6 +569,9 @@ color:white;
               </property>
               <property name="text">
                <string>NEXT &gt;</string>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
