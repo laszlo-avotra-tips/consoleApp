@@ -65,7 +65,12 @@ void ReviewAndSettingsDialog::on_pushButtonCaseInformation_clicked(bool checked)
 void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool isChecked)
 {
     for( auto* btt : m_selectionButtons){
-        btt->setStyleSheet("background-color:black;");
+        if(button != btt){
+            btt->setStyleSheet("background-color:black;");
+            btt->setChecked(false);
+        } else if(!isChecked){
+            btt->setStyleSheet("background-color:black;");
+        }
     }
     ui->frameNext->setStyleSheet("");
     ui->pushButtonNext->setEnabled(false);
@@ -74,6 +79,7 @@ void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool i
         ui->frameNext->setStyleSheet("background-color: rgb(245,196,0); color: black");
         ui->pushButtonNext->setEnabled(true);
         m_selection = button->text();
+
         //pass the selection in the window title
         setWindowTitle(m_selection);
     }
