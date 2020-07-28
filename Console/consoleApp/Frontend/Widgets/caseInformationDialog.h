@@ -36,8 +36,9 @@ public:
     /*!
      * \brief constructor
      * \param parent - the parent controls the instances lifetime
+     * \param param - list of constructor parameters
      */
-    explicit CaseInformationDialog(QWidget *parent = nullptr);
+    explicit CaseInformationDialog(QWidget *parent = nullptr, const std::vector<QString> *param = nullptr);
 
     /*!
      * \brief destructor
@@ -92,8 +93,9 @@ private slots:
 
     /*!
      * \brief initDialog
+     * \param param - list of constructor parameters
      */
-    void initDialog();
+    void initDialog(const std::vector<QString> *param = nullptr);
 
 private:
     /*!

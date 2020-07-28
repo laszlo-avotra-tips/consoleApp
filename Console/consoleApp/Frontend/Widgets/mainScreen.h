@@ -55,6 +55,7 @@ private slots:
 
     void on_pushButtonSettings_clicked();
     void openCaseInformationDialog();
+    void openCaseInformationDialogFromReviewAndSettings();
     void openDeviceSelectDialog();
     void openDisplayOptionsDialog();
 

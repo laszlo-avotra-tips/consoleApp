@@ -1,6 +1,8 @@
 #ifndef DIALOGFACTORY_H
 #define DIALOGFACTORY_H
 
+#include <vector>
+
 class QWidget;
 class QDialog;
 class QString;
@@ -25,7 +27,7 @@ public:
      * \param parent - the parent controls the instances lifetime
      * \return the created dialog
      */
-    QDialog* createDialog(const QString& name, QWidget* parent);
+    QDialog* createDialog(const QString& name, QWidget* parent, const std::vector<QString> *param = 0);
 };
 
 #endif // DIALOGFACTORY_H

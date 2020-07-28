@@ -25,8 +25,8 @@ public:
     void setStackedWidget(QStackedWidget* sw);
     bool gotoScreen(const QString& name);
     QWidget* getScreen(const QString& name);
-    QDialog* getDialog(const QString& name, QWidget* parent);
-    std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name);
+    QDialog* getDialog(const QString& name, QWidget* parent, const std::vector<QString>* param = 0);
+    std::pair<QDialog *, int> openDialog(QWidget* parent, const QString& name, const std::vector<QString>* param = 0);
     QString openKeyboard(QWidget* parent, const ParameterType& param, int yOffset = 0);
     void close();
     void setNavigator(ScreenNavigator* n);

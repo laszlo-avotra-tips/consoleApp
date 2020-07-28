@@ -11,6 +11,7 @@
 #include "opacScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include "Frontend/Widgets/caseInformationDialog.h"
+#include "Frontend/Widgets/caseInformationModel.h"
 #include "Frontend/Widgets/reviewAndSettingsDialog.h"
 #include "sledsupport.h"
 #include <QTimer>
@@ -260,7 +261,7 @@ void MainScreen::on_pushButtonSettings_clicked()
             openDisplayOptionsDialog();
         }
         if(reviewAndSettingsSelection.trimmed() == "CASE INFORMATION"){
-            openCaseInformationDialog();
+            openCaseInformationDialogFromReviewAndSettings();
         }
         if(reviewAndSettingsSelection.trimmed() == "DEVICE SELECT"){
             openDeviceSelectDialog();
@@ -289,6 +290,7 @@ void MainScreen::hideEvent(QHideEvent *he)
 
 void MainScreen::openCaseInformationDialog()
 {
+    const std::vector<QString> cidParam{"NEXT"};
     auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
 
     if(result.first){
@@ -302,6 +304,21 @@ void MainScreen::openCaseInformationDialog()
         qDebug() << "Cancelled";
         WidgetContainer::instance()->gotoScreen("startScreen");
     }
+}
+
+void MainScreen::openCaseInformationDialogFromReviewAndSettings()
+{
+    CaseInformationModel model = *CaseInformationModel::instance();
+    const std::vector<QString> cidParam{"DONE"};
+    auto result = WidgetContainer::instance()->openDialog(this, "caseInformationDialog", &cidParam);
+
+    if(result.first){
+        result.first->hide();
+    }
+    if( result.second != QDialog::Accepted){
+        *CaseInformationModel::instance() = model;
+    }
+    on_pushButtonSettings_clicked();
 }
 
 void MainScreen::openDeviceSelectDialog()

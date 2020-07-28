@@ -79,15 +79,15 @@ QWidget *WidgetContainer::getScreen(const QString &name)
     return retVal;
 }
 
-QDialog *WidgetContainer::getDialog(const QString &name, QWidget* parent)
+QDialog *WidgetContainer::getDialog(const QString &name, QWidget* parent, const std::vector<QString> *param)
 {
-    return m_dialogFactory.createDialog(name,parent);
+    return m_dialogFactory.createDialog(name,parent,param);
 }
 
-std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QString &name)
+std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QString &name, const std::vector<QString> *param)
 {
     int result{-1};
-    QDialog* dialog = getDialog(name,parent);
+    QDialog* dialog = getDialog(name,parent,param);
 
     if(dialog){
         dialog->show();

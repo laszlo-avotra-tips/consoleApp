@@ -13,7 +13,7 @@
 #include "logger.h"
 
 
-CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
+CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<QString> *param) :
     QDialog(parent),
     ui(new Ui::CaseInformationDialog),
     m_model(*CaseInformationModel::instance())
@@ -33,7 +33,7 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent) :
     connect(ui->pushButtonPhysicianNameDown, &QPushButton::clicked, this, &CaseInformationDialog::handlePhysicianNameSelect);
     connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &CaseInformationDialog::handleLocationSelect);
 
-    initDialog();
+    initDialog(param);
 }
 
 CaseInformationDialog::~CaseInformationDialog()
@@ -51,8 +51,12 @@ void CaseInformationDialog::reset()
     CaseInformationModel::instance()->setSelectedLocation("");
 }
 
-void CaseInformationDialog::initDialog()
+void CaseInformationDialog::initDialog(const std::vector<QString> *param)
 {
+    if(param && !param->empty()){
+        const auto& enterButtonText = *param->begin();
+        ui->pushButtonNext->setText(enterButtonText);
+    }
     /*
      * Set opacity with animation
      */
