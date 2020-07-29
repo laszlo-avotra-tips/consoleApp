@@ -130,9 +130,9 @@ private:
     CaseInformationModel& m_model;
 
     /*!
-     * \brief m_isAnimation - enamble animation
+     * \brief m_isNewCase - true for new case
      */
-    bool m_isAnimation{true};
+    bool m_isNewCase{true};
 };
 
 #endif // CASEINFORMATIONDIALOG_H
