@@ -2,6 +2,9 @@
 #include "ui_reviewAndSettingsDialog.h"
 
 #include <QTimer>
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
 
 ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -25,6 +28,22 @@ ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
 
     m_selectionButtons = buttons;
     ui->pushButtonNext->setEnabled(false);
+
+    const bool isAnimation{true};
+    if(isAnimation){
+        int duration_ms=1000;
+        QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
+        QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
+        QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+
+        setGraphicsEffect(showing_effect);
+        animation->setStartValue(0);
+        animation->setEndValue(0.9);
+        animation->setDuration(duration_ms);
+        group->addAnimation(animation);
+        group->start();
+    }
+
 }
 
 ReviewAndSettingsDialog::~ReviewAndSettingsDialog()
@@ -62,25 +81,19 @@ void ReviewAndSettingsDialog::on_pushButtonCaseInformation_clicked(bool checked)
     showLastButtonSelected(ui->pushButtonCaseInformation, checked);
 }
 
-void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool isChecked)
+void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool)
 {
     for( auto* btt : m_selectionButtons){
         if(button != btt){
             btt->setStyleSheet("background-color:black;");
-            btt->setChecked(false);
-        } else if(!isChecked){
-            btt->setStyleSheet("background-color:black;");
         }
     }
-    ui->frameNext->setStyleSheet("");
-    ui->pushButtonNext->setEnabled(false);
-    if(isChecked){
-        button->setStyleSheet("background-color:#646464;  border-radius: 20px solid grey;");
-        ui->frameNext->setStyleSheet("background-color: rgb(245,196,0); color: black");
-        ui->pushButtonNext->setEnabled(true);
-        m_selection = button->text();
 
-        //pass the selection in the window title
-        setWindowTitle(m_selection);
-    }
+    button->setStyleSheet("background-color:#646464;  border-radius: 20px solid grey;");
+    ui->frameNext->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonNext->setEnabled(true);
+    m_selection = button->text();
+
+    //pass the selection in the window title
+    setWindowTitle(m_selection);
 }
