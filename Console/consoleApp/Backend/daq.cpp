@@ -55,15 +55,6 @@ DAQ::DAQ()
 
 void DAQ::logDecimation()
 {
-//    int decimation{1};
-//    QString fn("/Avinger_System/logConfig.dat");
-//    QFile sf(fn);
-//    if(sf.open(QIODevice::ReadOnly)){
-//        QTextStream ts(&sf);
-//        ts >> m_decimation;
-//        sf.close();
-//    }
-
     userSettings &settings = userSettings::Instance();
     m_decimation = settings.getImageIndexDecimation();
 }
