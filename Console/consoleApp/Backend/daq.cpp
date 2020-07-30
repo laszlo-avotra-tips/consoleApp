@@ -153,7 +153,7 @@ void DAQ::run( void )
                     if(m_decimation && (m_count % m_decimation == 0)){
                         LOG2(m_count, axsunData->frameCount)
                     }
-                    if(m_count % 10 == 0){
+                    if(m_count == 0){
                         emit updateSector(axsunData);
                     }
                 }
