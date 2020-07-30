@@ -145,10 +145,17 @@ void DAQ::run( void )
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
                 if( scanWorker->isReady )
                 {
+
                     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
-                    emit updateSector(axsunData);
+
+                    if(m_decimation && (m_count % m_decimation == 0)){
+                        LOG2(m_count, axsunData->frameCount)
+                    }
+                    if(m_count % 10 == 0){
+                        emit updateSector(axsunData);
+                    }
                 }
             }
             else
@@ -228,7 +235,10 @@ bool DAQ::getData( )
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) )
+//    if( ( axRetVal != DATA_NOT_FOUND_IN_BUFFER ) && ( axRetVal != DATA_ALLOCATION_TOO_SMALL ) && ( force_trig != 1 ) ) - meaning of original
+    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) ) // original
+//    if((axRetVal == NO_AxERROR) && (force_trig != 1)) //try 1
+//    if(axRetVal == NO_AxERROR) //try 2
     {
         axRetVal = axRequestImage( session,
                                    returned_image_number,
