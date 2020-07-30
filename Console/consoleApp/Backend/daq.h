@@ -51,7 +51,7 @@ public slots:
 
 private:
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
-    int logDecimation();
+    void logDecimation();
 
 private:
     AOChandle session = NULL;
@@ -64,7 +64,7 @@ private:
     bool shutdownDaq();
     int lapCounter;
     uint16_t lastPolarLineIndexEntered;
-    int m_decimation[2];
+    int m_decimation{0};
     int m_count{0};
 
 };

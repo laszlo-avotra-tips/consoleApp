@@ -5,6 +5,7 @@
 #include "logger.h"
 #include <algorithm>
 #include "signalmodel.h"
+#include "Utility/userSettings.h"
 
 #ifdef WIN32
 //#include "stdafx.h"     // Axsun includes
@@ -52,17 +53,19 @@ DAQ::DAQ()
 }
 
 
-int DAQ::logDecimation()
+void DAQ::logDecimation()
 {
-    int decimation{1};
-    QString fn("/Avinger_System/logConfig.dat");
-    QFile sf(fn);
-    if(sf.open(QIODevice::ReadOnly)){
-        QTextStream ts(&sf);
-        ts >> m_decimation[0] >> m_decimation[1];
-        sf.close();
-    }
-    return decimation;
+//    int decimation{1};
+//    QString fn("/Avinger_System/logConfig.dat");
+//    QFile sf(fn);
+//    if(sf.open(QIODevice::ReadOnly)){
+//        QTextStream ts(&sf);
+//        ts >> m_decimation;
+//        sf.close();
+//    }
+
+    userSettings &settings = userSettings::Instance();
+    m_decimation = settings.getImageIndexDecimation();
 }
 
 DAQ::~DAQ()
@@ -127,14 +130,13 @@ void DAQ::run( void )
 
         int frameCount = NUM_OF_FRAME_BUFFERS - 1;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-        LOG4(frameCount,loopCount, m_decimation[0], m_decimation[1])
+        LOG3(frameCount,loopCount, m_decimation)
         qDebug() << "***** Thread: DAQ::run()";
         while( isRunning )
         {
             // Rough lines/second counter  XXX
             frameCount++;
             loopCount++;
-            m_count++;
             if( frameTimer.elapsed() > 1000 )
             {
 //                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
@@ -150,18 +152,12 @@ void DAQ::run( void )
             if( getData() )
             {
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
-                if(m_decimation[0] && (m_count % m_decimation[0] == 0)){
-                    LOG3(gFrameNumber, m_count, loopCount)
-                }
                 if( scanWorker->isReady )
                 {
                     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
                     emit updateSector(axsunData);
-                    if(m_decimation[0] && (m_count % m_decimation[0] == 0)){
-                        LOG3(gFrameNumber, m_count, loopCount)
-                    }
                 }
             }
             else
@@ -169,7 +165,6 @@ void DAQ::run( void )
                 // since it was incremented above, decrement upon a failed acquisition.
                 frameCount--;
                 loopCount--;
-                m_count--;
             }
         }
     }
@@ -188,11 +183,11 @@ bool DAQ::getData( )
     bool retVal = false;
 
     uint32_t imaging, last_packet_in, last_frame_in, last_image_in, dropped_packets, frames_since_sync;
-    static uint32_t simaging, slast_packet_in, slast_frame_in, slast_image_in, sdropped_packets, sframes_since_sync;
     dropped_packets = 0;
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
     static uint32_t sreturned_image_number = 0;
+    static uint32_t lostImageCount = 0;
     int32_t width = 0;
     int32_t height = 0;
     AxDataType data_type = U8;
@@ -203,46 +198,20 @@ bool DAQ::getData( )
     axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
 //    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
 
-    if(m_decimation[1] && (m_count % m_decimation[1] == 0)){
-        if(axRetVal == NO_AxERROR){
-            if(imaging != simaging){
-                simaging = imaging;
-                LOG2(m_count, imaging);
-            }
-
-            if(last_packet_in != slast_packet_in){
-                slast_packet_in = last_packet_in;
-                LOG2(m_count, last_packet_in)
-            }
-
-            if(last_frame_in != slast_frame_in){
-                slast_frame_in = last_frame_in;
-                LOG2(m_count, last_frame_in)
-            }
-
-            if(last_image_in != slast_image_in){
-                slast_image_in = last_image_in;
-                LOG2(m_count, last_image_in)
-            }
-
-            if(dropped_packets != sdropped_packets){
-                sdropped_packets = dropped_packets;
-                LOG2(m_count, dropped_packets)
-            }
-        }
-    }
-
     axRetVal = axGetImageInfoAdv(session, -1, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
-    if(m_decimation[1] && (m_count % m_decimation[1] == 0)){
-        if(axRetVal == NO_AxERROR){
-            if(returned_image_number != sreturned_image_number){
-                sreturned_image_number = returned_image_number;
-                LOG3(m_count, returned_image_number,lastImageIdx)
-            }
+    if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
+        sreturned_image_number = returned_image_number;
+        ++m_count;
+        if(m_decimation && (m_count % m_decimation == 0)){
+            LOG4(m_count, returned_image_number, lastImageIdx, lostImageCount)
+        }
+        if( returned_image_number > (lastImageIdx + 1) ){
+           ++lostImageCount;
         }
     }
+
 
     if( returned_image_number > (lastImageIdx + 1) )
     {

@@ -209,7 +209,7 @@ void Logger::logDebugMessage(const QString &msg, const char* function, int line,
     QMutexLocker locker( &mutex );
 
     *output << "[" << QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
-            << "(" << appName << "." << C_PATCH_VERSION << ") THR(" << tId << ") "
+            << "(" << appName << "." << C_PATCH_VERSION << ") DEBUG: THR(" << tId << ") "
             << " - " << function << " (" << line << ") -> "
             << msg << endl;
 }

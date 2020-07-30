@@ -39,6 +39,11 @@ void userSettings::saveSettings()
     settings->setValue( "image/useInvertOctColor",        invertOctColorEnabled );
 }
 
+int userSettings::getImageIndexDecimation() const
+{
+    return imageIndexDecimation;
+}
+
 
 /*
  * loadSettings()
@@ -63,6 +68,7 @@ void userSettings::loadSettings()
     laserIndicatorBrightnessVal = settings->value( "image/laserIndicatorBrightness", DefaultLaserIndicatorBrightness ).toInt();
     noiseReductionVal           = settings->value( "image/noiseReduction",           DefaultCurrFrameWeight_Percent ).toInt();
     invertOctColorEnabled       = settings->value( "image/useInvertOctColor",        DefaultUseInvertOctColor ).toBool();
+    imageIndexDecimation        = settings->value( "log/imageIndexDecimation",       ImageIndexDecimationLog.defaultValue ).toInt();
 }
 
 void userSettings::setBrightness(int level)

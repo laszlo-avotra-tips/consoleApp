@@ -151,6 +151,8 @@ public:
     bool invertOctColor()           { return invertOctColorEnabled; }
     bool isDistalToProximalView();
 
+    int getImageIndexDecimation() const;
+
 private:
     void saveSettings();
 
@@ -162,6 +164,7 @@ private:
     int  noiseReductionVal;           //
     bool noiseReductionEnabled;       //
     bool invertOctColorEnabled;       //
+    int  imageIndexDecimation;        //
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
     CatheterView_t catheterViewMode;  //
 

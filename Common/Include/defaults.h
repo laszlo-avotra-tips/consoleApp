@@ -137,6 +137,7 @@ const DisplayLevel_T BrightnessLevels_LowSpeed  = { 0, 65535, 5000 };
 
 const DisplayLevel_T ContrastLevels_HighSpeed = { 0, 255, 250 };
 const DisplayLevel_T ContrastLevels_LowSpeed  = { 0, 65535, 55000 };
+const DisplayLevel_T ImageIndexDecimationLog  = { 0, 17, 65535 };
 
 
 const int  DefaultReticleBrightness        = 127;

@@ -319,8 +319,8 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
         result.first->hide();
     }
     if( result.second != QDialog::Accepted){
-        on_pushButtonSettings_clicked();
         *CaseInformationModel::instance() = model;
+        on_pushButtonSettings_clicked();
     }
 }
 
