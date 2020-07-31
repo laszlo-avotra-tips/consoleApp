@@ -35,7 +35,7 @@ QString timestampToString( unsigned long ts );
 // the catheter radius ) * 2.
 const int SceneWidth( SectorWidth_px );
 const int SceneHeight( SectorHeight_px );
-const int ScreenRefreshRate_ms( 66 );
+const int ScreenRefreshRate_ms( 33 );
 
 const int TextHeight( 50 ); // Height of text rendered for video info
 const int TextWidth( int(SectorWidth_px / 4.25 ) ); // Width of text rendered for video info, sized to avoid sector edge

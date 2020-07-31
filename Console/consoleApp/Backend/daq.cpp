@@ -150,9 +150,6 @@ void DAQ::run( void )
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
 
-                    if(m_decimation && (m_count % m_decimation == 0)){
-                        LOG2(m_count, axsunData->frameCount)
-                    }
                     emit updateSector(axsunData);
                 }
             }
@@ -185,6 +182,8 @@ bool DAQ::getData( )
     uint32_t returned_image_number = 0;
     static uint32_t sreturned_image_number = 0;
     static uint32_t lostImageCount = 0;
+    static uint32_t imageCount = 0;
+    float lostImagesInPercent = 0.0f;
     int32_t width = 0;
     int32_t height = 0;
     AxDataType data_type = U8;
@@ -201,13 +200,15 @@ bool DAQ::getData( )
     if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
         sreturned_image_number = returned_image_number;
         ++m_count;
+        ++imageCount;
         if(m_decimation && (m_count % m_decimation == 0)){
-            LOG4(m_count, returned_image_number, lastImageIdx, lostImageCount)
+            lostImagesInPercent =  100.0f * lostImageCount / imageCount;
+            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         }
         if( returned_image_number > (lastImageIdx + 1) ){
-           ++lostImageCount;
+           ++lostImageCount;            
         }
-    }
+     }
 
 
     if( returned_image_number > (lastImageIdx + 1) )
