@@ -261,6 +261,7 @@ bool DAQ::getData( )
         {
             return true;
         }
+        yieldCurrentThread();
     }
     else
     {
