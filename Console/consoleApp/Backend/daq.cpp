@@ -128,16 +128,16 @@ void DAQ::run( void )
             // Rough lines/second counter  XXX
             frameCount++;
             loopCount++;
-            if( frameTimer.elapsed() > 1000 )
-            {
-//                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
-//                LOG2(frameCount,loopCount)
-                emit fpsCount( frameCount );
-                emit linesPerFrameCount( (int)gBufferLength );
-                emit missedImagesCount( missedImgs );
-                frameCount = 0;
-                frameTimer.restart();
-            }
+//            if( frameTimer.elapsed() > 1000 )
+//            {
+////                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
+////                LOG2(frameCount,loopCount)
+//                emit fpsCount( frameCount );
+//                emit linesPerFrameCount( (int)gBufferLength );
+//                emit missedImagesCount( missedImgs );
+//                frameCount = 0;
+//                frameTimer.restart();
+//            }
 
             // get data and only procede if the image is new.
             if( getData() )
@@ -162,6 +162,7 @@ void DAQ::run( void )
                 frameCount--;
                 loopCount--;
             }
+            yieldCurrentThread();
         }
     }
     if(shutdownDaq()){
