@@ -150,7 +150,9 @@ void DAQ::run( void )
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
 
-                    emit updateSector(axsunData);
+                    if(m_count % 2 == 0){
+                        emit updateSector(axsunData);
+                    }
                 }
             }
             else
@@ -211,20 +213,20 @@ bool DAQ::getData( )
      }
 
 
-    if( returned_image_number > (lastImageIdx + 1) )
-    {
-        qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
-        missedImgs = (returned_image_number - lastImageIdx - 1);    
-    }
-    else
-    {
-        missedImgs = 0;
-    }
+//    if( returned_image_number > (lastImageIdx + 1) )
+//    {
+//        qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
+//        missedImgs = (returned_image_number - lastImageIdx - 1);
+//    }
+//    else
+//    {
+//        missedImgs = 0;
+//    }
 
-    if( missedImgs > 0 )
-    {
-        emit missedImagesCount( missedImgs );
-    }
+//    if( missedImgs > 0 )
+//    {
+//        emit missedImagesCount( missedImgs );
+//    }
 
 
     if( returned_image_number <= lastImageIdx )
