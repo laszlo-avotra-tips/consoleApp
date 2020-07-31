@@ -1996,6 +1996,7 @@ void frontend::on_saveMeasurementButton_clicked()
  */
 void frontend::on_zoomSlider_valueChanged( int value )
 {
+    value = 200;
     double sx = double(value) / 100.0;
     double sy = sx;
 
