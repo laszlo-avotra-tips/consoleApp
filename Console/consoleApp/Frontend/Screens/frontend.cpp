@@ -2007,86 +2007,92 @@ void frontend::on_zoomSlider_valueChanged( int value )
      * this by the current zoom level keeps the view correct when it
      * returns back to 1:1.
      */
-    docWindow->ui.liveGraphicsView->setTransform( QTransform::fromScale( sx * docViewMatrix.m12(), -sy * docViewMatrix.m21() ) );
-    docWindow->ui.liveGraphicsView->rotate( 90 );
+//    docWindow->ui.liveGraphicsView->setTransform( QTransform::fromScale( sx * docViewMatrix.m12(), -sy * docViewMatrix.m21() ) );
+//    docWindow->ui.liveGraphicsView->rotate( 90 );
 
     /*
      * Scale and keep the original view size on the Technician screen
      */
-    ui.liveGraphicsView->setTransform( QTransform::fromScale( sx * techViewMatrix.m11(), sy * techViewMatrix.m22() ) );
-    auxMon->setTransformForZoom( QTransform::fromScale( sx * auxViewMatrix.m11(), sy * auxViewMatrix.m22() ),
-                                 ( value > 100.0 ) ); // zoomed is true if value is greater than 100.0
-
-    m_scene->setZoomFactor( float(sx) ); // pass the zoom factor to liveScene
-
-    if( value == ui.zoomSlider->minimum() )
-    {
-        centerLiveGraphicsView();
-
-        /*
-         * Back to 1:1 view. Reset view and interactions to normal.
-         */
-        isZoomModeOn = false;
-
-        ui.liveGraphicsView->setDragMode( QGraphicsView::NoDrag );
-
-        QString strZoom{QString::number( ui.zoomSlider->minimum())};
-        ui.zoomFactorLabel->setText( "[1.00x]" );
-        ui.zoomResetPushButton->hide();
-
-        docWindow->ui.zoomFactorLabel->hide();
-//lcv        docWindow->ui.zoomFactorLabel->setText( "" );
-
-        auxMon->setText( AuxMonitor::ZoomFactor, false, "" );
-
-        if( !( isAnnotateOn || isMeasureModeActive ) )
-        {
-            ui.liveGraphicsView->setToolTip( defaultSceneToolTip );
-            setSceneCursor( QCursor( Qt::OpenHandCursor ) );
-        }
-        else
-        {
-            setSceneCursor( QCursor( Qt::CrossCursor ) );
-        }
-
-        // don't reset annotation when in the review state
-        if( !( isImageCaptureLoaded || isLoopLoaded ) )
-        {
-            ui.annotateImagePushButton->setEnabled( true );
-        }
-        else // still in review state
-        {
-            ui.liveGraphicsView->setToolTip( "" );
-        }
-
-        if( isImageCaptureLoaded )
-        {
-            ui.measureModePushButton->setEnabled( true );
-        }
+    const bool old = true;
+    if(old){
+        ui.liveGraphicsView->setTransform( QTransform::fromScale( sx * techViewMatrix.m11(), sy * techViewMatrix.m22() ) );
+    }else{
+        QMatrix matrix = ui.liveGraphicsView->matrix();
+        ui.liveGraphicsView->setTransform( QTransform::fromScale( sx * matrix.m11(), sy * matrix.m22() ) );
     }
-    else
-    {
-        /*
-         * zooming
-         */
-        isZoomModeOn = true;
+//    auxMon->setTransformForZoom( QTransform::fromScale( sx * auxViewMatrix.m11(), sy * auxViewMatrix.m22() ),
+//                                 ( value > 100.0 ) ); // zoomed is true if value is greater than 100.0
 
-        ui.liveGraphicsView->setDragMode( QGraphicsView::ScrollHandDrag );
+//    m_scene->setZoomFactor( float(sx) ); // pass the zoom factor to liveScene
 
-        // show two digits for the zoom factor
-        zoomFactorText = zoomFactorText.setNum( sx, 'f', 2 ).append( "x" );
+//    if( value == ui.zoomSlider->minimum() )
+//    {
+//        centerLiveGraphicsView();
 
-        ui.zoomFactorLabel->setText( "["+ zoomFactorText + "]" );
-//lcv        docWindow->ui.zoomFactorLabel->setText( tr( "Zoom - " ) + zoomFactorText );
-        auxMon->setText( AuxMonitor::ZoomFactor, true, tr( "Zoom - " ) + zoomFactorText );
-        ui.zoomResetPushButton->show();
+//        /*
+//         * Back to 1:1 view. Reset view and interactions to normal.
+//         */
+//        isZoomModeOn = false;
 
-        docWindow->ui.zoomFactorLabel->show();
+//        ui.liveGraphicsView->setDragMode( QGraphicsView::NoDrag );
 
-        ui.liveGraphicsView->setToolTip( "" );
-        ui.annotateImagePushButton->setDisabled( true );
-        ui.measureModePushButton->setDisabled( true );
-    }
+//        QString strZoom{QString::number( ui.zoomSlider->minimum())};
+//        ui.zoomFactorLabel->setText( "[1.00x]" );
+//        ui.zoomResetPushButton->hide();
+
+//        docWindow->ui.zoomFactorLabel->hide();
+////lcv        docWindow->ui.zoomFactorLabel->setText( "" );
+
+//        auxMon->setText( AuxMonitor::ZoomFactor, false, "" );
+
+//        if( !( isAnnotateOn || isMeasureModeActive ) )
+//        {
+//            ui.liveGraphicsView->setToolTip( defaultSceneToolTip );
+//            setSceneCursor( QCursor( Qt::OpenHandCursor ) );
+//        }
+//        else
+//        {
+//            setSceneCursor( QCursor( Qt::CrossCursor ) );
+//        }
+
+//        // don't reset annotation when in the review state
+//        if( !( isImageCaptureLoaded || isLoopLoaded ) )
+//        {
+//            ui.annotateImagePushButton->setEnabled( true );
+//        }
+//        else // still in review state
+//        {
+//            ui.liveGraphicsView->setToolTip( "" );
+//        }
+
+//        if( isImageCaptureLoaded )
+//        {
+//            ui.measureModePushButton->setEnabled( true );
+//        }
+//    }
+//    else
+//    {
+//        /*
+//         * zooming
+//         */
+//        isZoomModeOn = true;
+
+//        ui.liveGraphicsView->setDragMode( QGraphicsView::ScrollHandDrag );
+
+//        // show two digits for the zoom factor
+//        zoomFactorText = zoomFactorText.setNum( sx, 'f', 2 ).append( "x" );
+
+//        ui.zoomFactorLabel->setText( "["+ zoomFactorText + "]" );
+////lcv        docWindow->ui.zoomFactorLabel->setText( tr( "Zoom - " ) + zoomFactorText );
+//        auxMon->setText( AuxMonitor::ZoomFactor, true, tr( "Zoom - " ) + zoomFactorText );
+//        ui.zoomResetPushButton->show();
+
+//        docWindow->ui.zoomFactorLabel->show();
+
+//        ui.liveGraphicsView->setToolTip( "" );
+//        ui.annotateImagePushButton->setDisabled( true );
+//        ui.measureModePushButton->setDisabled( true );
+//    }
 }
 
 /*

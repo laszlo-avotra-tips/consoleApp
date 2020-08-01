@@ -61,6 +61,13 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningStateChanged);
+
+    {
+        double sx = 2.0;
+        double sy = sx;
+        QMatrix matrix = ui->graphicsView->matrix();
+        ui->graphicsView->setTransform( QTransform::fromScale( sx * matrix.m11(), sy * matrix.m22() ) );
+    }
 }
 
 void MainScreen::setScene(liveScene *scene)
