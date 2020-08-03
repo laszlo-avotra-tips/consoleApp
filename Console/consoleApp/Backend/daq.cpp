@@ -128,16 +128,16 @@ void DAQ::run( void )
             // Rough lines/second counter  XXX
             frameCount++;
             loopCount++;
-            if( frameTimer.elapsed() > 1000 )
-            {
-//                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
-//                LOG2(frameCount,loopCount)
-                emit fpsCount( frameCount );
-                emit linesPerFrameCount( (int)gBufferLength );
-                emit missedImagesCount( missedImgs );
-                frameCount = 0;
-                frameTimer.restart();
-            }
+//            if( frameTimer.elapsed() > 1000 )
+//            {
+////                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
+////                LOG2(frameCount,loopCount)
+//                emit fpsCount( frameCount );
+//                emit linesPerFrameCount( (int)gBufferLength );
+//                emit missedImagesCount( missedImgs );
+//                frameCount = 0;
+//                frameTimer.restart();
+//            }
 
             // get data and only procede if the image is new.
             if( getData() )
@@ -145,10 +145,15 @@ void DAQ::run( void )
                 gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
                 if( scanWorker->isReady )
                 {
+
                     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
-                    emit updateSector(axsunData);
+
+//                    if(m_count % 2 == 0)
+                    {
+                        emit updateSector(axsunData);
+                    }
                 }
             }
             else
@@ -157,6 +162,7 @@ void DAQ::run( void )
                 frameCount--;
                 loopCount--;
             }
+            yieldCurrentThread();
         }
     }
     if(shutdownDaq()){
@@ -179,6 +185,8 @@ bool DAQ::getData( )
     uint32_t returned_image_number = 0;
     static uint32_t sreturned_image_number = 0;
     static uint32_t lostImageCount = 0;
+    static uint32_t imageCount = 0;
+    float lostImagesInPercent = 0.0f;
     int32_t width = 0;
     int32_t height = 0;
     AxDataType data_type = U8;
@@ -195,29 +203,31 @@ bool DAQ::getData( )
     if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
         sreturned_image_number = returned_image_number;
         ++m_count;
+        ++imageCount;
         if(m_decimation && (m_count % m_decimation == 0)){
-            LOG4(m_count, returned_image_number, lastImageIdx, lostImageCount)
+            lostImagesInPercent =  100.0f * lostImageCount / imageCount;
+            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         }
         if( returned_image_number > (lastImageIdx + 1) ){
-           ++lostImageCount;
+           ++lostImageCount;            
         }
-    }
+     }
 
 
-    if( returned_image_number > (lastImageIdx + 1) )
-    {
-        qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
-        missedImgs = (returned_image_number - lastImageIdx - 1);    
-    }
-    else
-    {
-        missedImgs = 0;
-    }
+//    if( returned_image_number > (lastImageIdx + 1) )
+//    {
+//        qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
+//        missedImgs = (returned_image_number - lastImageIdx - 1);
+//    }
+//    else
+//    {
+//        missedImgs = 0;
+//    }
 
-    if( missedImgs > 0 )
-    {
-        emit missedImagesCount( missedImgs );
-    }
+//    if( missedImgs > 0 )
+//    {
+//        emit missedImagesCount( missedImgs );
+//    }
 
 
     if( returned_image_number <= lastImageIdx )
@@ -228,7 +238,10 @@ bool DAQ::getData( )
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) )
+//    if( ( axRetVal != DATA_NOT_FOUND_IN_BUFFER ) && ( axRetVal != DATA_ALLOCATION_TOO_SMALL ) && ( force_trig != 1 ) ) - meaning of original
+    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) ) // original
+//    if((axRetVal == NO_AxERROR) && (force_trig != 1)) //try 1
+//    if(axRetVal == NO_AxERROR) //try 2
     {
         axRetVal = axRequestImage( session,
                                    returned_image_number,
@@ -252,6 +265,7 @@ bool DAQ::getData( )
         {
             return true;
         }
+        yieldCurrentThread();
     }
     else
     {

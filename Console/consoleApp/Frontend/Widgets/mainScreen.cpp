@@ -61,6 +61,10 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningStateChanged);
+
+    const double scaleUp = 2.1; //lcv zomFactor
+    QMatrix matrix = ui->graphicsView->matrix();
+    ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 }
 
 void MainScreen::setScene(liveScene *scene)
