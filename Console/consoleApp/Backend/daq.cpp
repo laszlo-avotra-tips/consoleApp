@@ -150,7 +150,7 @@ void DAQ::run( void )
                     sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
 
-//                    if(m_count % 2 == 0)
+                    if(m_count == 0)
                     {
                         emit updateSector(axsunData);
                     }
