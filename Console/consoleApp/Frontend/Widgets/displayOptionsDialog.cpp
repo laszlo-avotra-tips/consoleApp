@@ -12,6 +12,12 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
+    userSettings &settings = userSettings::Instance();
+    if(settings.isDistalToProximalView()){
+        ui->radioButtonDown->setChecked(true);
+    } else {
+        ui->radioButtonUp->setChecked(true);
+    }
 }
 
 DisplayOptionsDialog::~DisplayOptionsDialog()

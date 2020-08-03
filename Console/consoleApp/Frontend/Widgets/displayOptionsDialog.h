@@ -15,6 +15,10 @@ public:
     explicit DisplayOptionsDialog(QWidget *parent = nullptr);
     ~DisplayOptionsDialog();
 
+signals:
+    void setColorModeSepia();
+    void setColorModeGray();
+
 private slots:
     void on_pushButtonDone_clicked();
 

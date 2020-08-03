@@ -358,8 +358,10 @@ void MainScreen::openCaseReview()
 
 void MainScreen::openDisplayOptionsDialog()
 {
-    WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
-    on_pushButtonSettings_clicked();
+    auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
+    if( result.second != QDialog::Accepted){
+        on_pushButtonSettings_clicked();
+    }
 }
 
 void MainScreen::updateTime()
