@@ -179,7 +179,7 @@ bool DAQ::getData( )
     static uint32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
     static uint32_t lastframe = 0;
-    static uint32_t framecount = 0;
+    static uint32_t errorcount = 0;
     float lostImagesInPercent = 0.0f;
     int32_t width = 0;
     int32_t height = 0;
@@ -204,6 +204,11 @@ bool DAQ::getData( )
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
+    if(axRetVal != NO_AxERROR){
+        ++errorcount;
+        return false;
+    }
+
     if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
         sreturned_image_number = returned_image_number;
         ++m_count;
@@ -212,21 +217,21 @@ bool DAQ::getData( )
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
 //            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-//            LOG4(framecount, imageCount, dropped_packets, frames_since_sync)
+            LOG1(errorcount)
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            ++lostImageCount;            
         }
      }
-    if(lastImageIdx == 0){
-        lastImageIdx = returned_image_number;
-    }
+
     if( returned_image_number <= lastImageIdx )
     {
         return false;
     }
 
     lastImageIdx = returned_image_number;
+
+    return true;
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
