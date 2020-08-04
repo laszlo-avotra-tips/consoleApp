@@ -197,9 +197,10 @@ bool DAQ::getData( )
 //        lastframe = last_frame_in;
 //        ++framecount;
 //    }
+    int64_t requestedImageNumber = lastImageIdx + 1;
 
     msleep(10);
-    axRetVal = axGetImageInfoAdv(session, -1, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
+    axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
     if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
