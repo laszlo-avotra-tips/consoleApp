@@ -227,9 +227,9 @@ bool DAQ::getData( )
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
 //    if( ( axRetVal != DATA_NOT_FOUND_IN_BUFFER ) && ( axRetVal != DATA_ALLOCATION_TOO_SMALL ) && ( force_trig != 1 ) ) - meaning of original
-    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) ) // original
+//    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) ) // original
 
-//    if((axRetVal == NO_AxERROR) && (force_trig != 1)) //try 1
+    if((axRetVal == NO_AxERROR) && (force_trig != 1)) //try 1
 //    if(axRetVal == NO_AxERROR) //try 2
     {
         axRetVal = axRequestImage( session,
@@ -241,7 +241,6 @@ bool DAQ::getData( )
                                    axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
         gBufferLength = width;
-//        LOG3(axRetVal,returned_image_number,gDaqCounter)
 
         // write in frame information for recording/playback
         axsunData->frameCount = gDaqCounter;
