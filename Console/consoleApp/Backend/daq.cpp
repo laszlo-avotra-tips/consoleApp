@@ -151,6 +151,7 @@ void DAQ::run( void )
                 // since it was incremented above, decrement upon a failed acquisition.
                 frameCount--;
                 loopCount--;
+//                usleep(10);
             }
             yieldCurrentThread();
         }
@@ -169,8 +170,8 @@ bool DAQ::getData( )
 {
     bool retVal = false;
 
-    uint32_t imaging, last_packet_in, last_frame_in, last_image_in, dropped_packets, frames_since_sync;
-    dropped_packets = 0;
+//    uint32_t imaging, last_packet_in, last_frame_in, last_image_in, dropped_packets, frames_since_sync;
+//    dropped_packets = 0;
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
     static uint32_t sreturned_image_number = 0;
@@ -186,17 +187,18 @@ bool DAQ::getData( )
     uint8_t force_trig;
     uint8_t trig_too_fast;
 
-    axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
-//    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
+//    axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
+////    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
 
-    if(axRetVal != NO_AxERROR){
-        return false;
-    }
-    if(last_frame_in != lastframe){
-        lastframe = last_frame_in;
-        ++framecount;
-    }
+//    if(axRetVal != NO_AxERROR){
+//        return false;
+//    }
+//    if(last_frame_in != lastframe){
+//        lastframe = last_frame_in;
+//        ++framecount;
+//    }
 
+    msleep(1);
     axRetVal = axGetImageInfoAdv(session, -1, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
@@ -207,7 +209,8 @@ bool DAQ::getData( )
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
 //            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-            LOG4(m_count, framecount, lostImageCount, lostImagesInPercent)
+            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+//            LOG4(framecount, imageCount, dropped_packets, frames_since_sync)
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            ++lostImageCount;            
