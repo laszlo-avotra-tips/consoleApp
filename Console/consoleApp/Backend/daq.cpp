@@ -119,22 +119,18 @@ void DAQ::run( void )
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
 
-        int frameCount = NUM_OF_FRAME_BUFFERS - 1;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-        LOG3(frameCount,loopCount, m_decimation)
+        LOG2(loopCount, m_decimation)
         qDebug() << "***** Thread: DAQ::run()";
         while( isRunning )
         {
-            // Rough lines/second counter  XXX
-            frameCount++;
-            loopCount++;
 
             // get data and only procede if the image is new.
             if( getData() )
             {
-                gFrameNumber = loopCount % NUM_OF_FRAME_BUFFERS;
                 if( scanWorker->isReady )
                 {
+                    gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
 
 //                    if(m_count % 2 == 0)
                     if(false)
@@ -146,13 +142,6 @@ void DAQ::run( void )
                         emit updateSector(axsunData);
                     }
                 }
-            }
-            else
-            {
-                // since it was incremented above, decrement upon a failed acquisition.
-                frameCount--;
-                loopCount--;
-//                usleep(10);
             }
             yieldCurrentThread();
         }
@@ -171,12 +160,10 @@ bool DAQ::getData( )
 {
     bool retVal = false;
 
-//    uint32_t imaging, last_packet_in, last_frame_in, last_image_in, dropped_packets, frames_since_sync;
-//    dropped_packets = 0;
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
     static uint32_t sreturned_image_number = 0;
-    static uint32_t lostImageCount = 0;
+    static int32_t lostImageCount = -1;
     static uint32_t imageCount = 0;
     static uint32_t lastframe = 0;
     static uint32_t errorcount = 0;
@@ -191,13 +178,6 @@ bool DAQ::getData( )
 //    axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
 ////    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
 
-//    if(axRetVal != NO_AxERROR){
-//        return false;
-//    }
-//    if(last_frame_in != lastframe){
-//        lastframe = last_frame_in;
-//        ++framecount;
-//    }
     int64_t requestedImageNumber = -1;
 
     msleep(10);
@@ -215,7 +195,6 @@ bool DAQ::getData( )
         ++imageCount;
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
-//            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG2(errorcount,required_buffer_size)
         }
@@ -265,10 +244,8 @@ bool DAQ::getData( )
     }
     else
     {
-//        LOG1(force_trig)
         qDebug() << "Data Not Ready - force_trig:" << force_trig;
     }
-//    LOG1(retVal);
 
     return retVal;
 }
