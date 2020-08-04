@@ -176,6 +176,8 @@ bool DAQ::getData( )
     static uint32_t sreturned_image_number = 0;
     static uint32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
+    static uint32_t lastframe = 0;
+    static uint32_t framecount = 0;
     float lostImagesInPercent = 0.0f;
     int32_t width = 0;
     int32_t height = 0;
@@ -190,6 +192,10 @@ bool DAQ::getData( )
     if(axRetVal != NO_AxERROR){
         return false;
     }
+    if(last_frame_in != lastframe){
+        lastframe = last_frame_in;
+        ++framecount;
+    }
 
     axRetVal = axGetImageInfoAdv(session, -1, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
@@ -200,7 +206,8 @@ bool DAQ::getData( )
         ++imageCount;
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
-            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+//            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+            LOG4(m_count, framecount, lostImageCount, lostImagesInPercent)
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            ++lostImageCount;            
@@ -218,6 +225,7 @@ bool DAQ::getData( )
 
 //    if( ( axRetVal != DATA_NOT_FOUND_IN_BUFFER ) && ( axRetVal != DATA_ALLOCATION_TOO_SMALL ) && ( force_trig != 1 ) ) - meaning of original
     if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) ) // original
+
 //    if((axRetVal == NO_AxERROR) && (force_trig != 1)) //try 1
 //    if(axRetVal == NO_AxERROR) //try 2
     {
