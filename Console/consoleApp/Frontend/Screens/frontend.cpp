@@ -1937,7 +1937,7 @@ void frontend::updateSector(const OCTFile::OctData_t* frameData)
         if(image && frameData && frameData->dispData){
             memcpy( image->bits(), frameData->dispData, SectorSize );
 
-            if(++count % 17 == 0){
+            if(++count % 15 == 0){
                 LOG1(pixmap)
             }
 

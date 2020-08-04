@@ -136,7 +136,7 @@ void DAQ::run( void )
                 if( scanWorker->isReady )
                 {
 
-                    if(m_count % 2 == 0)
+//                    if(m_count % 2 == 0)
                     {
                         OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                         sendToAdvacedView(*axsunData, gFrameNumber);
