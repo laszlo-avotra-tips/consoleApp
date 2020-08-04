@@ -200,7 +200,7 @@ bool DAQ::getData( )
 //    }
     int64_t requestedImageNumber = -1;
 
-//    msleep(10);
+    msleep(10);
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
