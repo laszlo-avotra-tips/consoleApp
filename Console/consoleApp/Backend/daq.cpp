@@ -128,16 +128,6 @@ void DAQ::run( void )
             // Rough lines/second counter  XXX
             frameCount++;
             loopCount++;
-//            if( frameTimer.elapsed() > 1000 )
-//            {
-////                qDebug() << "                       DAQ frameCount/s:" << frameCount << " width:" << gBufferLength << " frame:" << gDaqCounter;
-////                LOG2(frameCount,loopCount)
-//                emit fpsCount( frameCount );
-//                emit linesPerFrameCount( (int)gBufferLength );
-//                emit missedImagesCount( missedImgs );
-//                frameCount = 0;
-//                frameTimer.restart();
-//            }
 
             // get data and only procede if the image is new.
             if( getData() )
@@ -146,12 +136,12 @@ void DAQ::run( void )
                 if( scanWorker->isReady )
                 {
 
-                    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-                    sendToAdvacedView(*axsunData, gFrameNumber);
-                    scanWorker->warpData( axsunData, gBufferLength );
-
-                    if(m_count == 0)
+                    if(m_count % 2 == 0)
                     {
+                        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+                        sendToAdvacedView(*axsunData, gFrameNumber);
+                        scanWorker->warpData( axsunData, gBufferLength );
+
                         emit updateSector(axsunData);
                     }
                 }
@@ -197,6 +187,10 @@ bool DAQ::getData( )
     axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
 //    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
 
+    if(axRetVal != NO_AxERROR){
+        return false;
+    }
+
     axRetVal = axGetImageInfoAdv(session, -1, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
@@ -213,27 +207,11 @@ bool DAQ::getData( )
         }
      }
 
-
-//    if( returned_image_number > (lastImageIdx + 1) )
-//    {
-//        qDebug() << "Missed images: " << ( returned_image_number - lastImageIdx - 1 );
-//        missedImgs = (returned_image_number - lastImageIdx - 1);
-//    }
-//    else
-//    {
-//        missedImgs = 0;
-//    }
-
-//    if( missedImgs > 0 )
-//    {
-//        emit missedImagesCount( missedImgs );
-//    }
-
-
     if( returned_image_number <= lastImageIdx )
     {
         return false;
     }
+
     lastImageIdx = returned_image_number;
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
