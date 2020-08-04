@@ -217,7 +217,7 @@ bool DAQ::getData( )
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
 //            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-            LOG1(errorcount)
+            LOG2(errorcount,required_buffer_size)
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            ++lostImageCount;            
@@ -239,7 +239,6 @@ bool DAQ::getData( )
 //    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) ) // original
 
     if((axRetVal == NO_AxERROR) && (force_trig != 1)) //try 1
-//    if(axRetVal == NO_AxERROR) //try 2
     {
         axRetVal = axRequestImage( session,
                                    returned_image_number,
@@ -286,7 +285,7 @@ bool DAQ::startDaq()
 
     try {
 
-        axRetVal = axStartSession(&session, 500);    // Start Axsun engine session
+        axRetVal = axStartSession(&session, 50);    // Start Axsun engine session
 #if PCIE_MODE
         axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
         axRetVal = axImagingCntrlPCIe(session, -1);
