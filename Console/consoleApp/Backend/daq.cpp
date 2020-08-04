@@ -137,6 +137,7 @@ void DAQ::run( void )
                 {
 
 //                    if(m_count % 2 == 0)
+                    if(false)
                     {
                         OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                         sendToAdvacedView(*axsunData, gFrameNumber);
@@ -197,9 +198,9 @@ bool DAQ::getData( )
 //        lastframe = last_frame_in;
 //        ++framecount;
 //    }
-    int64_t requestedImageNumber = lastImageIdx + 1;
+    int64_t requestedImageNumber = -1;
 
-    msleep(10);
+//    msleep(10);
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
@@ -217,7 +218,9 @@ bool DAQ::getData( )
            ++lostImageCount;            
         }
      }
-
+    if(lastImageIdx == 0){
+        lastImageIdx = returned_image_number;
+    }
     if( returned_image_number <= lastImageIdx )
     {
         return false;
@@ -278,7 +281,7 @@ bool DAQ::startDaq()
 
     try {
 
-        axRetVal = axStartSession(&session, 200);    // Start Axsun engine session
+        axRetVal = axStartSession(&session, 500);    // Start Axsun engine session
 #if PCIE_MODE
         axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
         axRetVal = axImagingCntrlPCIe(session, -1);
