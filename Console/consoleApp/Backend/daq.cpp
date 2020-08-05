@@ -133,7 +133,7 @@ void DAQ::run( void )
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
 
 //                    if(m_count % 2 == 0)
-//1294                    if(false)
+                    if(false)
                     {
                         OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                         sendToAdvacedView(*axsunData, gFrameNumber);
