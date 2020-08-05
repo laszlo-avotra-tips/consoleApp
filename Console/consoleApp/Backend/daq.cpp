@@ -210,7 +210,7 @@ bool DAQ::getData( )
 
     lastImageIdx = returned_image_number;
 
-//1294    return true;
+    return true;
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
