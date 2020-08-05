@@ -133,7 +133,7 @@ void DAQ::run( void )
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
 
 //                    if(m_count % 2 == 0)
-                    if(false)
+//                    if(false)
                     {
                         OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                         sendToAdvacedView(*axsunData, gFrameNumber);
@@ -180,7 +180,7 @@ bool DAQ::getData( )
 
     int64_t requestedImageNumber = -1;
 
-    msleep(1);
+//    msleep(1);
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
