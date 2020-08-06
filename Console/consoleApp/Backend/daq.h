@@ -34,6 +34,7 @@ public:
     IDAQ* getSignalSource() override;
 
     bool getData();
+    bool getData2();
     bool isRunning;
     int generateSyntheticData( unsigned char *pSyntheticData );
     QTime frameTimer;

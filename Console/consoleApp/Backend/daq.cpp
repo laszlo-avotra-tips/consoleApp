@@ -153,10 +153,70 @@ void DAQ::run( void )
     }
 }
 
+bool DAQ::getData( )
+{
+    int64_t requested_image_number = -1;
+    static int32_t lostImageCount = 0;
+    static uint32_t imageCount = 0;
+    static uint32_t sreturned_image_number = -1;
+    float lostImagesInPercent = 0.0f;
+    uint32_t returned_image_number = 0;
+    int32_t width = 0;
+    int32_t height = 0;
+    AxDataType data_type = U8;
+
+    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+    AxErr axSuccess = axRequestImage( session,
+                               requested_image_number,
+                               &returned_image_number,
+                               &height,
+                               &width,
+                               &data_type,
+                               axsunData->acqData,
+                               MAX_ACQ_IMAGE_SIZE );
+
+    if(axSuccess != NO_AxERROR || width < 6000){
+        return false;
+    }
+    if(sreturned_image_number == -1){
+        sreturned_image_number = returned_image_number;
+        lastImageIdx = returned_image_number - 1;
+        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+//        LOG4(errorcount,required_buffer_size,height, width)
+    }
+
+    if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
+        sreturned_image_number = returned_image_number;
+        ++m_count;
+        ++imageCount;
+        if(m_decimation && (m_count % m_decimation == 0)){
+            lostImagesInPercent =  100.0f * lostImageCount / imageCount;
+            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+//            LOG4(errorcount,required_buffer_size,height, width)
+        }
+        if( returned_image_number > (lastImageIdx + 1) ){
+           lostImageCount += returned_image_number - lastImageIdx - 1;
+        }
+     }
+
+    gBufferLength = width;
+
+    // write in frame information for recording/playback
+    axsunData->frameCount = gDaqCounter;
+    axsunData->timeStamp = fileTimer.elapsed();;
+    axsunData->milliseconds = 30;
+
+    gDaqCounter++;
+
+    yieldCurrentThread();
+
+    return true;
+}
+
 /*
  * getData
  */
-bool DAQ::getData( )
+bool DAQ::getData2( )
 {
     bool retVal = false;
 
