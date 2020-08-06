@@ -1923,14 +1923,16 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
     }
 }
 
-void frontend::updateSector(const OCTFile::OctData_t* frameData)
+void frontend::updateSector(OCTFile::OctData_t* frameData)
 {
     QImage* image{nullptr};
     QGraphicsPixmapItem* pixmap{nullptr};
     const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
-    static int count = 0;
 
-    if(m_scene){
+    if(frameData && m_scene && m_scanWorker && m_scanWorker->isReady){
+        auto* sm =  SignalModel::instance();
+        m_scanWorker->warpData( frameData, sm->getBufferLength() );
+
         image = m_scene->sectorImage();
         pixmap = m_scene->sectorHandle();
 

@@ -128,13 +128,13 @@ void DAQ::run( void )
             // get data and only procede if the image is new.
             if( getData() )
             {
-                if( scanWorker->isReady )
+                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
+                auto* sm =  SignalModel::instance();
+                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
+                sm->setBufferLength(gBufferLength);
+//                if( scanWorker->isReady )
                 {
-                    gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
-
-                    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-//                    sendToAdvacedView(*axsunData, gFrameNumber);
-                    scanWorker->warpData( axsunData, gBufferLength );
+//                    scanWorker->warpData( axsunData, gBufferLength );
 
                     emit updateSector(axsunData);
                 }
@@ -247,11 +247,11 @@ bool DAQ::getData( )
 
     if(axRetVal != NO_AxERROR){
         AxErr errorNum = axRetVal;
-        if(auto it = errorTable.find(errorNum) != errorTable.end()){
-            errorTable[errorNum]++;
-        } else {
-            errorTable[errorNum] = 1;
-        }
+//        if(auto it = errorTable.find(errorNum) != errorTable.end()){
+//            errorTable[errorNum]++;
+//        } else {
+//            errorTable[errorNum] = 1;
+//        }
         ++errorcount;
         isReturn = true;
     }
@@ -276,7 +276,8 @@ bool DAQ::getData( )
         lastImageIdx = returned_image_number - 1;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         LOG4(errorcount,required_buffer_size,height, width)
-        LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
+//        LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
+        LOG2(force_trigCount, trig_too_fastCount)
     }
 
     if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
@@ -287,19 +288,20 @@ bool DAQ::getData( )
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(errorcount,required_buffer_size,height, width)
-            LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
-            if(errorTable.size() >= 1){
-                auto it = errorTable.begin();
-                for(int i = 0; i < int(errorTable.size()); ++i ){
-                    AxErr error = it->first;
-                    int errorCode = int(error);
-                    auto errorCount = it->second;
-                    char errorMsg[512];
-                    axGetErrorString(error, errorMsg);
-                    LOG3(errorCode, errorCount, errorMsg)
-                    ++it;
-                }
-             }
+            LOG2(force_trigCount, trig_too_fastCount)
+//            LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
+//            if(errorTable.size() >= 1){
+//                auto it = errorTable.begin();
+//                for(int i = 0; i < int(errorTable.size()); ++i ){
+//                    AxErr error = it->first;
+//                    int errorCode = int(error);
+//                    auto errorCount = it->second;
+//                    char errorMsg[512];
+//                    axGetErrorString(error, errorMsg);
+//                    LOG3(errorCode, errorCount, errorMsg)
+//                    ++it;
+//                }
+//             }
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;

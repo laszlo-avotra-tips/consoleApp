@@ -105,6 +105,9 @@ public: //functions
 
     const uint8_t* getAdvancedViewFrame() const;
 
+    size_t getBufferLength() const;
+    void setBufferLength(const size_t &bufferLength);
+
 private: //functions
     SignalModel();
     void allocateOctData();
@@ -152,6 +155,7 @@ private: //data
     cl_mem m_warpVideoBuffer{nullptr};
 
     int m_dvacedViewSourceFrameNumber{0};
+    size_t m_bufferLength{0};
 };
 
 #endif // SIGNALMODEL_H

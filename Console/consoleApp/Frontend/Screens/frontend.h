@@ -108,7 +108,7 @@ public slots:
     void handleScreenChanges();
     void handleBadMonitorConfig();
     void enableDisableMeasurementForCapture( int pixelsPerMm );
-    void updateSector(const OCTFile::OctData_t*);
+    void updateSector(OCTFile::OctData_t*);
     void on_zoomSlider_valueChanged(int value);
 
 #if ENABLE_COLORMAP_OPTIONS
