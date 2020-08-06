@@ -153,7 +153,7 @@ void DAQ::run( void )
     }
 }
 
-bool DAQ::getData( )
+bool DAQ::getData2( )
 {
     int64_t requested_image_number = -1;
     static int32_t lostImageCount = 0;
@@ -217,7 +217,7 @@ bool DAQ::getData( )
 /*
  * getData
  */
-bool DAQ::getData2( )
+bool DAQ::getData( )
 {
     bool retVal = false;
 
@@ -308,7 +308,7 @@ bool DAQ::getData2( )
         {
             return true;
         }
-        yieldCurrentThread();
+//        yieldCurrentThread();
     }
     else
     {
