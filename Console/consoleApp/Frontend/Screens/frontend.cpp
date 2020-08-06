@@ -1751,6 +1751,7 @@ void frontend::setIDAQ(IDAQ *object)
     if(idaq){
         if(idaq->getSignalSource()){
             connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
+            connect( idaq->getSignalSource(), &IDAQ::updateSector2, this, &frontend::updateSector2);
             connect( idaq->getSignalSource(), &IDAQ::notifyAcqData, advView, &advancedView::handleAcqData);
         }
         idaq->init();
@@ -1923,7 +1924,25 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
     }
 }
 
-void frontend::updateSector((size_t bufferSize, const OCTFile::OctData_t* frameData)
+void frontend::updateSector2(size_t bufferLength)
+{
+    static int loopCount = 3;
+    const int number_of_framebuffers = 4;
+
+    LOG1(bufferLength)
+
+//    if( m_scanWorker->isReady )
+//    {
+//        int frameNumber = ++loopCount % number_of_framebuffers;
+
+//        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(frameNumber);
+//        m_scanWorker->warpData( axsunData, bufferLength );
+//        updateSector(axsunData);
+//    }
+
+}
+
+void frontend::updateSector(const OCTFile::OctData_t* frameData)
 {
     QImage* image{nullptr};
     QGraphicsPixmapItem* pixmap{nullptr};

@@ -35,7 +35,8 @@ signals:
     void handleDisplayAngle( float );
     void signalDaqResetToFrontend( void );
     void attenuateLaser( bool );
-    void updateSector(size_t bufferSize, const OCTFile::OctData_t*);
+    void updateSector(const OCTFile::OctData_t*);
+    void updateSector2(size_t bufferLength );
     void notifyAcqData();
 
 public slots:

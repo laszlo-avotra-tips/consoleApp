@@ -128,6 +128,7 @@ void DAQ::run( void )
             // get data and only procede if the image is new.
             if( getData() )
             {
+//                emit updateSector2(gBufferLength);
                 if( scanWorker->isReady )
                 {
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
@@ -136,7 +137,7 @@ void DAQ::run( void )
 //                    sendToAdvacedView(*axsunData, gFrameNumber);
                     scanWorker->warpData( axsunData, gBufferLength );
 
-                    emit updateSector(gBufferLength, axsunData);
+                    emit updateSector(axsunData);
                 }
             }
             yieldCurrentThread();
@@ -274,7 +275,6 @@ bool DAQ::getData( )
     if(sreturned_image_number == -1){
         sreturned_image_number = returned_image_number;
         lastImageIdx = returned_image_number - 1;
-        force_trigCount = 0;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         LOG4(errorcount,required_buffer_size,height, width)
         LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
