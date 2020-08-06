@@ -128,7 +128,6 @@ void DAQ::run( void )
             // get data and only procede if the image is new.
             if( getData() )
             {
-//                emit updateSector2(gBufferLength);
                 if( scanWorker->isReady )
                 {
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
