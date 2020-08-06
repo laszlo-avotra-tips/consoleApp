@@ -197,6 +197,7 @@ bool DAQ::getData( )
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
         }
+        lastImageIdx = returned_image_number;
      }
 
     gBufferLength = width;
