@@ -209,7 +209,7 @@ bool DAQ::getData( )
 
     gDaqCounter++;
 
-    yieldCurrentThread();
+//    yieldCurrentThread();
 
     return true;
 }
