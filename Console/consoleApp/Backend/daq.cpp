@@ -143,7 +143,7 @@ void DAQ::run( void )
                     }
                 }
             }
-            yieldCurrentThread();
+//            yieldCurrentThread();
         }
     }
     if(shutdownDaq()){
