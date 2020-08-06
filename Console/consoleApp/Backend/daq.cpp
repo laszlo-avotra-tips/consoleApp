@@ -128,22 +128,19 @@ void DAQ::run( void )
             // get data and only procede if the image is new.
             if( getData() )
             {
+//                emit updateSector2(gBufferLength);
                 if( scanWorker->isReady )
                 {
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
 
-//                    if(m_count % 2 == 0)
-//                    if(false)
-                    {
-                        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-                        sendToAdvacedView(*axsunData, gFrameNumber);
-                        scanWorker->warpData( axsunData, gBufferLength );
+                    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+//                    sendToAdvacedView(*axsunData, gFrameNumber);
+                    scanWorker->warpData( axsunData, gBufferLength );
 
-                        emit updateSector(axsunData);
-                    }
+                    emit updateSector(axsunData);
                 }
             }
-//            yieldCurrentThread();
+            yieldCurrentThread();
         }
     }
     if(shutdownDaq()){
@@ -226,15 +223,17 @@ bool DAQ::getData( )
     static int32_t sreturned_image_number = -1;
     static int32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
-    static uint32_t lastframe = 0;
     static uint32_t errorcount = 0;
     float lostImagesInPercent = 0.0f;
     int32_t width = 0;
     int32_t height = 0;
     AxDataType data_type = U8;
-    uint32_t returned_image;
-    uint8_t force_trig;
-    uint8_t trig_too_fast;
+    uint32_t returned_image = 0;
+    uint8_t force_trig = 0;
+    uint8_t trig_too_fast = 0;
+    static std::map<AxErr,int> errorTable;
+    static int force_trigCount = 0;
+    static int trig_too_fastCount = 0;
 
 //    axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
 ////    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
@@ -245,16 +244,40 @@ bool DAQ::getData( )
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
-    if(axRetVal != NO_AxERROR || force_trig == 1){
+    bool isReturn = false;
+
+    if(axRetVal != NO_AxERROR){
+        AxErr errorNum = axRetVal;
+        if(auto it = errorTable.find(errorNum) != errorTable.end()){
+            errorTable[errorNum]++;
+        } else {
+            errorTable[errorNum] = 1;
+        }
         ++errorcount;
+        isReturn = true;
+    }
+
+    if( force_trig == 1){
+        force_trigCount++;
+        isReturn = true;
+    }
+
+    if( trig_too_fast == 1){
+        trig_too_fastCount++;
+        isReturn = true;
+    }
+
+    if(isReturn){
         return false;
     }
+
 
     if(sreturned_image_number == -1){
         sreturned_image_number = returned_image_number;
         lastImageIdx = returned_image_number - 1;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         LOG4(errorcount,required_buffer_size,height, width)
+        LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
     }
 
     if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
@@ -265,6 +288,17 @@ bool DAQ::getData( )
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(errorcount,required_buffer_size,height, width)
+            LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
+            if(errorTable.size() >= 1){
+                auto it = errorTable.begin();
+                for(int i = 0; i < int(errorTable.size()); ++i ){
+                    AxErr error = it->first;
+                    char message_out[512];
+                    axGetErrorString(error, message_out);
+                    LOG2(message_out, it->second)
+                    ++it;
+                }
+             }
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
@@ -308,7 +342,7 @@ bool DAQ::getData( )
         {
             return true;
         }
-//        yieldCurrentThread();
+        yieldCurrentThread();
     }
     else
     {
@@ -331,6 +365,18 @@ bool DAQ::startDaq()
     try {
 
         axRetVal = axStartSession(&session, 50);    // Start Axsun engine session
+        if(axRetVal != NO_AxERROR){
+            char message_out[512];
+            axGetErrorString(axRetVal, message_out);
+            LOG1(message_out)
+        }
+        axRetVal = axSetTrigTimeout(session, 100);
+        if(axRetVal != NO_AxERROR){
+            char message_out[512];
+            axGetErrorString(axRetVal, message_out);
+            LOG1(message_out)
+        }
+
 #if PCIE_MODE
         axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
         axRetVal = axImagingCntrlPCIe(session, -1);

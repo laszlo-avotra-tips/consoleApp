@@ -36,6 +36,7 @@ signals:
     void signalDaqResetToFrontend( void );
     void attenuateLaser( bool );
     void updateSector(const OCTFile::OctData_t*);
+    void updateSector2(size_t bufferLength );
     void notifyAcqData();
 
 public slots:
