@@ -274,6 +274,7 @@ bool DAQ::getData( )
     if(sreturned_image_number == -1){
         sreturned_image_number = returned_image_number;
         lastImageIdx = returned_image_number - 1;
+        force_trigCount = 0;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         LOG4(errorcount,required_buffer_size,height, width)
 //        LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
