@@ -293,9 +293,11 @@ bool DAQ::getData( )
                 auto it = errorTable.begin();
                 for(int i = 0; i < int(errorTable.size()); ++i ){
                     AxErr error = it->first;
-                    char message_out[512];
-                    axGetErrorString(error, message_out);
-                    LOG2(message_out, it->second)
+                    int errorCode = int(error);
+                    auto errorCount = it->second;
+                    char errorMsg[512];
+                    axGetErrorString(error, errorMsg);
+                    LOG3(errorCode, errorCount, errorMsg)
                     ++it;
                 }
              }
