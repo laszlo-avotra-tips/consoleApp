@@ -184,7 +184,7 @@ bool DAQ::getData( )
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 //    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
-    if(axRetVal != NO_AxERROR){
+    if(axRetVal != NO_AxERROR || force_trig == 1){
         ++errorcount;
         return false;
     }
@@ -196,10 +196,10 @@ bool DAQ::getData( )
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-            LOG2(errorcount,required_buffer_size)
+            LOG4(errorcount,required_buffer_size,height, width)
         }
         if( returned_image_number > (lastImageIdx + 1) ){
-           ++lostImageCount;            
+           lostImageCount += returned_image_number - lastImageIdx - 1;
         }
      }
 
