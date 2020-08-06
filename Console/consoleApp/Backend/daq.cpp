@@ -380,13 +380,12 @@ bool DAQ::startDaq()
             axGetErrorString(axRetVal, message_out);
             LOG1(message_out)
         }
-        axRetVal = axDownsampling(session, 1);
-        if(axRetVal != NO_AxERROR){
-            char message_out[512];
-            axGetErrorString(axRetVal, message_out);
-            LOG1(message_out)
-        }
-
+//        axRetVal = axDownsampling(session, 1);
+//        if(axRetVal != NO_AxERROR){
+//            char message_out[512];
+//            axGetErrorString(axRetVal, message_out);
+//            LOG1(message_out)
+//        }
 
 #if PCIE_MODE
         axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
