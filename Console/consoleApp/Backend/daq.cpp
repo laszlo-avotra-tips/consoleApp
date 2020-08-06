@@ -162,8 +162,8 @@ bool DAQ::getData( )
 
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
-    static uint32_t sreturned_image_number = 0;
-    static int32_t lostImageCount = -1;
+    static int32_t sreturned_image_number = -1;
+    static int32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
     static uint32_t lastframe = 0;
     static uint32_t errorcount = 0;
@@ -187,6 +187,13 @@ bool DAQ::getData( )
     if(axRetVal != NO_AxERROR || force_trig == 1){
         ++errorcount;
         return false;
+    }
+
+    if(sreturned_image_number == -1){
+        sreturned_image_number = returned_image_number;
+        lastImageIdx = returned_image_number - 1;
+        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+        LOG4(errorcount,required_buffer_size,height, width)
     }
 
     if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
