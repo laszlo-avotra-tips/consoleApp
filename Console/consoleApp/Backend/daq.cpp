@@ -225,6 +225,7 @@ bool DAQ::getData( )
     AxDataType data_type = U8;
     uint32_t returned_image = 0;
     uint8_t force_trig = 0;
+    uint8_t sforce_trig = 0;
     uint8_t trig_too_fast = 0;
     static std::map<AxErr,int> errorTable;
     static int64_t force_trigCount = 0;
@@ -238,25 +239,18 @@ bool DAQ::getData( )
 
     if(axRetVal != NO_AxERROR){
         ++axErrorCount;
-//        AxErr errorNum = axRetVal;
-//        auto it = errorTable.find(errorNum);
-//        if(it != errorTable.end()){
-//            ++it->second;
-//        } else {
-//            errorTable[errorNum] = 1;
-//        }
         isReturn = true;
     }
 
+    if(force_trig != sforce_trig){
+        sforce_trig = force_trig;
+        if( force_trig == 1){
+            ++force_trigCount;
+        }
+    }
     if( force_trig == 1){
-        ++force_trigCount;
         isReturn = true;
     }
-
-//    if( trig_too_fast == 1){
-//        ++trig_too_fastCount;
-//        isReturn = true;
-//    }
 
     if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
         QString errorMsg("required_buffer_size >= myBufferSize");
@@ -279,7 +273,7 @@ bool DAQ::getData( )
         LOG2(force_trigCount, trig_too_fastCount)
     }
 
-    if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
+    if(axRetVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
         sreturned_image_number = returned_image_number;
         ++m_count;
         ++imageCount;
@@ -289,8 +283,7 @@ bool DAQ::getData( )
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(megaAxErrorCount,required_buffer_size,height, width)
             LOG2(force_trigCount, trig_too_fastCount)
-            LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
-            if(errorTable.size() >= 1){
+             if(errorTable.size() >= 1){
                 auto it = errorTable.begin();
                 for(int i = 0; i < int(errorTable.size()); ++i ){
                     AxErr error = it->first;
@@ -402,7 +395,6 @@ bool DAQ::startDaq()
 
 #if USE_LVDS_TRIGGER
         axRetVal = axGetMessage(session, axMessage );
-//        qDebug() << "message:" << axMessage;
         if(axRetVal != NO_AxERROR){
             char message_out[512];
             axGetErrorString(axRetVal, message_out);
