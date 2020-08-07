@@ -218,7 +218,7 @@ bool DAQ::getData( )
     static int32_t sreturned_image_number = -1;
     static int32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
-    static int64_t errorCount = 0;
+    static int64_t axErrorCount = 0;
     float lostImagesInPercent = 0.0f;
     int32_t width = 0;
     int32_t height = 0;
@@ -240,28 +240,24 @@ bool DAQ::getData( )
     bool isReturn = false;
 
     if(axRetVal != NO_AxERROR){
+        ++axErrorCount;
         AxErr errorNum = axRetVal;
         auto it = errorTable.find(errorNum);
         if(it != errorTable.end()){
-            errorTable[errorNum]++;
-//            auto& count = it->second;
-//            ++count;
+            ++it->second;
         } else {
-            errorTable[errorNum] = 1;
-//            auto& count = it->second;
-//            count = 1;
+            it->second = 1;
         }
-        ++errorCount;
         isReturn = true;
     }
 
     if( force_trig == 1){
-        force_trigCount++;
+        ++force_trigCount;
         isReturn = true;
     }
 
     if( trig_too_fast == 1){
-        trig_too_fastCount++;
+        ++trig_too_fastCount;
         isReturn = true;
     }
 
@@ -274,9 +270,9 @@ bool DAQ::getData( )
         sreturned_image_number = returned_image_number;
         lastImageIdx = returned_image_number - 1;
         force_trigCount = 0;
-        errorCount = 0;
+        axErrorCount = 0;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-        LOG4(errorCount,required_buffer_size,height, width)
+        LOG4(axErrorCount,required_buffer_size,height, width)
         LOG2(force_trigCount, trig_too_fastCount)
     }
 
@@ -284,11 +280,11 @@ bool DAQ::getData( )
         sreturned_image_number = returned_image_number;
         ++m_count;
         ++imageCount;
-        int64_t megaErrorCount = errorCount /(1024 * 1024);
+        int64_t megaAxErrorCount = axErrorCount /(1024 * 1024);
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-            LOG4(megaErrorCount,required_buffer_size,height, width)
+            LOG4(megaAxErrorCount,required_buffer_size,height, width)
             LOG2(force_trigCount, trig_too_fastCount)
             LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
             if(errorTable.size() >= 1){
