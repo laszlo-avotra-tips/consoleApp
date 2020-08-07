@@ -132,12 +132,8 @@ void DAQ::run( void )
                 auto* sm =  SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
                 sm->setBufferLength(gBufferLength);
-//                if( scanWorker->isReady )
-                {
-//                    scanWorker->warpData( axsunData, gBufferLength );
 
-                    emit updateSector(axsunData);
-                }
+                emit updateSector(axsunData);
             }
             yieldCurrentThread();
         }
@@ -235,23 +231,21 @@ bool DAQ::getData( )
     static int trig_too_fastCount = 0;
 
 //    axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
-////    qDebug() << "***** axGetStatus: " << axRetVal << "last_packet_in: " << last_packet_in;
 
     int64_t requestedImageNumber = -1;
 
 //    msleep(1);
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
-//    qDebug() << "***** axGetImageInfoAdv: " << axRetVal << "Image number: " << returned_image_number;
 
     bool isReturn = false;
 
     if(axRetVal != NO_AxERROR){
         AxErr errorNum = axRetVal;
-//        if(auto it = errorTable.find(errorNum) != errorTable.end()){
-//            errorTable[errorNum]++;
-//        } else {
-//            errorTable[errorNum] = 1;
-//        }
+        if(auto it = errorTable.find(errorNum) != errorTable.end()){
+            errorTable[errorNum]++;
+        } else {
+            errorTable[errorNum] = 1;
+        }
         ++errorcount;
         isReturn = true;
     }
@@ -277,7 +271,6 @@ bool DAQ::getData( )
         force_trigCount = 0;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         LOG4(errorcount,required_buffer_size,height, width)
-//        LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
         LOG2(force_trigCount, trig_too_fastCount)
     }
 
@@ -290,19 +283,19 @@ bool DAQ::getData( )
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(errorcount,required_buffer_size,height, width)
             LOG2(force_trigCount, trig_too_fastCount)
-//            LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
-//            if(errorTable.size() >= 1){
-//                auto it = errorTable.begin();
-//                for(int i = 0; i < int(errorTable.size()); ++i ){
-//                    AxErr error = it->first;
-//                    int errorCode = int(error);
-//                    auto errorCount = it->second;
-//                    char errorMsg[512];
-//                    axGetErrorString(error, errorMsg);
-//                    LOG3(errorCode, errorCount, errorMsg)
-//                    ++it;
-//                }
-//             }
+            LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
+            if(errorTable.size() >= 1){
+                auto it = errorTable.begin();
+                for(int i = 0; i < int(errorTable.size()); ++i ){
+                    AxErr error = it->first;
+                    int errorCode = int(error);
+                    auto errorCount = it->second;
+                    char errorMsg[512];
+                    axGetErrorString(error, errorMsg);
+                    LOG3(errorCode, errorCount, errorMsg)
+                    ++it;
+                }
+             }
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
@@ -380,12 +373,6 @@ bool DAQ::startDaq()
             axGetErrorString(axRetVal, message_out);
             LOG1(message_out)
         }
-//        axRetVal = axDownsampling(session, 1);
-//        if(axRetVal != NO_AxERROR){
-//            char message_out[512];
-//            axGetErrorString(axRetVal, message_out);
-//            LOG1(message_out)
-//        }
 
 #if PCIE_MODE
         axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
@@ -396,14 +383,20 @@ bool DAQ::startDaq()
 #endif
 
 #if USE_LVDS_TRIGGER
-        axGetMessage(session, axMessage );
-        qDebug() << "message:" << axMessage;
+        axRetVal = axGetMessage(session, axMessage );
+//        qDebug() << "message:" << axMessage;
+        if(axRetVal != NO_AxERROR){
+            char message_out[512];
+            axGetErrorString(axRetVal, message_out);
+            LOG1(message_out)
+        }
+        LOG1(axMessage)
 #else
 //        axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
-        const int laserDivider{2};
+        const int laserDivider{3};
         LOG1(laserDivider)
         setLaserDivider(laserDivider);
     } catch (...) {
