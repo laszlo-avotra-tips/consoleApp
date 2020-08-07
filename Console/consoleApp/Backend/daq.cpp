@@ -246,7 +246,7 @@ bool DAQ::getData( )
         if(it != errorTable.end()){
             ++it->second;
         } else {
-            it->second = 1;
+            errorTable[errorNum] = 1;
         }
         isReturn = true;
     }
