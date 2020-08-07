@@ -218,7 +218,7 @@ bool DAQ::getData( )
     static int32_t sreturned_image_number = -1;
     static int32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
-    static uint32_t errorcount = 0;
+    static int64_t errorCount = 0;
     float lostImagesInPercent = 0.0f;
     int32_t width = 0;
     int32_t height = 0;
@@ -227,8 +227,8 @@ bool DAQ::getData( )
     uint8_t force_trig = 0;
     uint8_t trig_too_fast = 0;
     static std::map<AxErr,int> errorTable;
-    static int force_trigCount = 0;
-    static int trig_too_fastCount = 0;
+    static int64_t force_trigCount = 0;
+    static int64_t trig_too_fastCount = 0;
 
 //    axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
 
@@ -241,12 +241,17 @@ bool DAQ::getData( )
 
     if(axRetVal != NO_AxERROR){
         AxErr errorNum = axRetVal;
-        if(auto it = errorTable.find(errorNum) != errorTable.end()){
+        auto it = errorTable.find(errorNum);
+        if(it != errorTable.end()){
             errorTable[errorNum]++;
+//            auto& count = it->second;
+//            ++count;
         } else {
             errorTable[errorNum] = 1;
+//            auto& count = it->second;
+//            count = 1;
         }
-        ++errorcount;
+        ++errorCount;
         isReturn = true;
     }
 
@@ -269,8 +274,9 @@ bool DAQ::getData( )
         sreturned_image_number = returned_image_number;
         lastImageIdx = returned_image_number - 1;
         force_trigCount = 0;
+        errorCount = 0;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-        LOG4(errorcount,required_buffer_size,height, width)
+        LOG4(errorCount,required_buffer_size,height, width)
         LOG2(force_trigCount, trig_too_fastCount)
     }
 
@@ -278,10 +284,11 @@ bool DAQ::getData( )
         sreturned_image_number = returned_image_number;
         ++m_count;
         ++imageCount;
+        int64_t megaErrorCount = errorCount /(1024 * 1024);
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-            LOG4(errorcount,required_buffer_size,height, width)
+            LOG4(megaErrorCount,required_buffer_size,height, width)
             LOG2(force_trigCount, trig_too_fastCount)
             LOG3(errorTable.size(), force_trigCount, trig_too_fastCount)
             if(errorTable.size() >= 1){
@@ -289,10 +296,10 @@ bool DAQ::getData( )
                 for(int i = 0; i < int(errorTable.size()); ++i ){
                     AxErr error = it->first;
                     int errorCode = int(error);
-                    auto errorCount = it->second;
+                    int kiloErrorCount = it->second / 1024;
                     char errorMsg[512];
                     axGetErrorString(error, errorMsg);
-                    LOG3(errorCode, errorCount, errorMsg)
+                    LOG3(errorCode, kiloErrorCount, errorMsg)
                     ++it;
                 }
              }
