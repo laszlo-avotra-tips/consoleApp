@@ -225,7 +225,7 @@ bool DAQ::getData( )
     AxDataType data_type = U8;
     uint32_t returned_image = 0;
     uint8_t force_trig = 0;
-    uint8_t sforce_trig = 0;
+    static uint8_t sforce_trig = 0;
     uint8_t trig_too_fast = 0;
     static std::map<AxErr,int> errorTable;
     static int64_t force_trigCount = 0;
