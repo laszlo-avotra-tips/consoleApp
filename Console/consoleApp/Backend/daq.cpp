@@ -403,12 +403,12 @@ bool DAQ::startDaq()
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
-        const int laserDevider{1};
-        LOG1(laserDevider)
-        setLaserDivider(laserDevider);
+        const int laserDivider{2};
+        LOG1(laserDivider)
+        setLaserDivider(laserDivider);
     } catch (...) {
         qDebug() << "Axsun Error" ;
-        LOG1("Axsun Error")
+        LOG1("Axsun init Error")
     }
 
     return axRetVal == NO_AxERROR;
@@ -429,19 +429,35 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider( int divider)
 {
+    AxErr success = axOpenAxsunOCTControl(true);
+    if(success != NO_AxERROR){
+        char msg[512];
+        axGetErrorString(axRetVal, msg);
+        LOG1(msg)
+    }
+
     const int subsamplingFactor = divider + 1;
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
 #if PCIE_MODE
-//        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
-#else
-//        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
+        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #endif
         LOG2(subsamplingFactor, divider)
-//        axSetSubsamplingFactor(subsamplingFactor,0);
-        axGetMessage( session, axMessage );
-        qDebug() << "***** axSetFPGARegister: " << subsamplingFactor << " message:" << axMessage;
-        qDebug() << "Setting laser divider to:" << divider + 1;
+        success = axSetSubsamplingFactor(subsamplingFactor,0);
+        if(success != NO_AxERROR){
+            char msg[512];
+            axGetErrorString(axRetVal, msg);
+            LOG1(msg)
+        }
+        success = axGetMessage( session, axMessage );
+        if(success != NO_AxERROR){
+            char msg[512];
+            axGetErrorString(axRetVal, msg);
+            LOG1(msg)
+        }
+        LOG1(axMessage);
+//        qDebug() << "***** axSetFPGARegister: " << subsamplingFactor << " message:" << axMessage;
+//        qDebug() << "Setting laser divider to:" << divider + 1;
     }
 }
 
