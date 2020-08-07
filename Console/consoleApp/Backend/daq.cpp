@@ -211,7 +211,7 @@ bool DAQ::getData2( )
  */
 bool DAQ::getData( )
 {
-    bool retVal = false;
+    bool success = false;
 
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
@@ -230,24 +230,21 @@ bool DAQ::getData( )
     static int64_t force_trigCount = 0;
     static int64_t trig_too_fastCount = 0;
 
-//    axRetVal = axGetStatus(session, &imaging, &last_packet_in, &last_frame_in, &last_image_in, &dropped_packets, &frames_since_sync );
-
     int64_t requestedImageNumber = -1;
 
-//    msleep(1);
     axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 
     bool isReturn = false;
 
     if(axRetVal != NO_AxERROR){
         ++axErrorCount;
-        AxErr errorNum = axRetVal;
-        auto it = errorTable.find(errorNum);
-        if(it != errorTable.end()){
-            ++it->second;
-        } else {
-            errorTable[errorNum] = 1;
-        }
+//        AxErr errorNum = axRetVal;
+//        auto it = errorTable.find(errorNum);
+//        if(it != errorTable.end()){
+//            ++it->second;
+//        } else {
+//            errorTable[errorNum] = 1;
+//        }
         isReturn = true;
     }
 
@@ -256,9 +253,15 @@ bool DAQ::getData( )
         isReturn = true;
     }
 
-    if( trig_too_fast == 1){
-        ++trig_too_fastCount;
-        isReturn = true;
+//    if( trig_too_fast == 1){
+//        ++trig_too_fastCount;
+//        isReturn = true;
+//    }
+
+    if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
+        QString errorMsg("required_buffer_size >= myBufferSize");
+        LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
+        isReturn = true;;
     }
 
     if(isReturn){
@@ -312,15 +315,14 @@ bool DAQ::getData( )
 
     lastImageIdx = returned_image_number;
 
-//    return true;
-
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-//    if( ( axRetVal != DATA_NOT_FOUND_IN_BUFFER ) && ( axRetVal != DATA_ALLOCATION_TOO_SMALL ) && ( force_trig != 1 ) ) - meaning of original
-//    if( ( axRetVal != -9999 ) && ( axRetVal != -9994 ) && ( force_trig != 1 ) ) // original
-
-    if((axRetVal == NO_AxERROR) && (force_trig != 1)) //try 1
+    if(axRetVal == NO_AxERROR)
     {
+        if( force_trig == 1){
+            ++force_trigCount;
+        }
+
         axRetVal = axRequestImage( session,
                                    returned_image_number,
                                    &returned_image,
@@ -329,6 +331,13 @@ bool DAQ::getData( )
                                    &data_type,
                                    axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
+        if(axRetVal != NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(axRetVal, errorMsg);
+            LOG1(errorMsg)
+            return false;
+        }
+
         gBufferLength = width;
 
         // write in frame information for recording/playback
@@ -338,18 +347,18 @@ bool DAQ::getData( )
 
         gDaqCounter++;
 
-        if( axRetVal == 0 )
-        {
-            return true;
-        }
         yieldCurrentThread();
+
+        return true;
     }
     else
     {
-        qDebug() << "Data Not Ready - force_trig:" << force_trig;
+        char errorMsg[512];
+        axGetErrorString(axRetVal, errorMsg);
+        LOG1(errorMsg)
     }
 
-    return retVal;
+    return success;
 }
 
 /*
@@ -370,7 +379,13 @@ bool DAQ::startDaq()
             axGetErrorString(axRetVal, message_out);
             LOG1(message_out)
         }
-        axRetVal = axSetTrigTimeout(session, 100);
+        const int framesUntilForceTrig {35};
+        /*
+         * The number of frames for which the driver will wait for a Image_sync signal before timing out and entering Force Trigger mode.
+         * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
+         * 35 * 256 = 8960 A lines
+         */
+        axRetVal = axSetTrigTimeout(session, framesUntilForceTrig);
         if(axRetVal != NO_AxERROR){
             char message_out[512];
             axGetErrorString(axRetVal, message_out);
@@ -399,7 +414,7 @@ bool DAQ::startDaq()
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
-        const int laserDivider{3};
+        const int laserDivider{0};
         LOG1(laserDivider)
         setLaserDivider(laserDivider);
     } catch (...) {
