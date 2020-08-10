@@ -1931,16 +1931,19 @@ void frontend::updateSector(OCTFile::OctData_t* frameData)
 
     if(frameData && m_scene && m_scanWorker && m_scanWorker->isReady){
         auto* sm =  SignalModel::instance();
-        m_scanWorker->warpData( frameData, sm->getBufferLength() );
 
         image = m_scene->sectorImage();
+        frameData->dispData = image->bits();
+
+        m_scanWorker->warpData( frameData, sm->getBufferLength() );
+
         pixmap = m_scene->sectorHandle();
 
         if(image && frameData && frameData->dispData){
-            memcpy( image->bits(), frameData->dispData, SectorSize );
+//            memcpy( image->bits(), frameData->dispData, SectorSize );
 
             if(pixmap){
-                QPixmap tmpPixmap = QPixmap::fromImage( *image );
+                QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                 pixmap->setPixmap(tmpPixmap);
             }
             m_scene->setDoPaint();

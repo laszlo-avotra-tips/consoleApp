@@ -38,7 +38,7 @@ const int KB_per_MB = 1024;
 
 // The size, in sizeof(OCTFile_t) units, of the shared memory buffer for the data producer
 // and consumer.
-#define FRAME_BUFFER_SIZE 4
+#define FRAME_BUFFER_SIZE 2
 
 #define MININTERPOLATIONANGLE_RAD (0.0005)
 
