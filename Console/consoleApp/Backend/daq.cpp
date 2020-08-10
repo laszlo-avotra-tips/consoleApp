@@ -230,16 +230,21 @@ bool DAQ::getData( )
     static std::map<AxErr,int> errorTable;
     static int64_t force_trigCount = 0;
     static int64_t trig_too_fastCount = 0;
+    AxErr retVal{NO_AxERROR};
+    static AxErr sRetVal{NO_AxERROR};
 
     int64_t requestedImageNumber = -1;
 
-    axRetVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
+    retVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 
     bool isReturn = false;
 
-    if(axRetVal != NO_AxERROR){
-        ++axErrorCount;
-        isReturn = true;
+    if(retVal != sRetVal){
+        sRetVal = retVal;
+        if(retVal != NO_AxERROR){
+            ++axErrorCount;
+            isReturn = true;
+        }
     }
 
     if(force_trig != sforce_trig){
@@ -248,6 +253,7 @@ bool DAQ::getData( )
             ++force_trigCount;
         }
     }
+
     if( force_trig == 1){
         isReturn = true;
     }
@@ -255,7 +261,7 @@ bool DAQ::getData( )
     if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
         QString errorMsg("required_buffer_size >= myBufferSize");
         LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
-        isReturn = true;;
+        isReturn = true;
     }
 
     if(isReturn){
