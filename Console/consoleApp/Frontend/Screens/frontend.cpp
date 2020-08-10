@@ -1937,7 +1937,7 @@ void frontend::updateSector(OCTFile::OctData_t* frameData)
         pixmap = m_scene->sectorHandle();
 
         if(image && frameData && frameData->dispData){
-//            memcpy( image->bits(), frameData->dispData, SectorSize );
+            memcpy( image->bits(), frameData->dispData, SectorSize );
 
             if(pixmap){
                 QPixmap tmpPixmap = QPixmap::fromImage( *image );
