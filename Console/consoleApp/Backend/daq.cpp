@@ -242,15 +242,15 @@ bool DAQ::getData( )
         isReturn = true;
     }
 
-//    if(force_trig != sforce_trig){
-//        sforce_trig = force_trig;
-//        if( force_trig == 1){
-//            ++force_trigCount;
-//        }
-//    }
-//    if( force_trig == 1){
-//        isReturn = true;
-//    }
+    if(force_trig != sforce_trig){
+        sforce_trig = force_trig;
+        if( force_trig == 1){
+            ++force_trigCount;
+        }
+    }
+    if( force_trig == 1){
+        isReturn = true;
+    }
 
     if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
         QString errorMsg("required_buffer_size >= myBufferSize");
@@ -313,6 +313,8 @@ bool DAQ::getData( )
     if(axRetVal == NO_AxERROR)
     {
         if( force_trig == 1){
+            const QString msg("This should never happen.");
+            LOG2(force_trigCount,msg)
             ++force_trigCount;
         }
 
