@@ -243,8 +243,11 @@ bool DAQ::getData( )
         sRetVal = retVal;
         if(retVal != NO_AxERROR){
             ++axErrorCount;
-            isReturn = true;
         }
+    }
+
+    if(retVal != NO_AxERROR){
+        isReturn = true;
     }
 
     if(force_trig != sforce_trig){
