@@ -140,7 +140,7 @@ void DAQ::run( void )
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
                 sm->setBufferLength(gBufferLength);
 
-//                emit updateSector(axsunData);
+                emit updateSector(axsunData);
             }
             yieldCurrentThread();
         }

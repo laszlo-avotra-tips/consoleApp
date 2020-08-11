@@ -1925,27 +1925,29 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 
 void frontend::updateSector(OCTFile::OctData_t* frameData)
 {
-    QImage* image{nullptr};
-    QGraphicsPixmapItem* pixmap{nullptr};
-    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-    if(frameData && m_scene && m_scanWorker && m_scanWorker->isReady){
-        auto* sm =  SignalModel::instance();
+    if(frameData && m_scene && m_scanWorker){
 
-        image = m_scene->sectorImage();
+        const auto* sm =  SignalModel::instance();
+
+        QImage* image = m_scene->sectorImage();
+
         frameData->dispData = image->bits();
+        auto bufferLength = sm->getBufferLength();
 
-        m_scanWorker->warpData( frameData, sm->getBufferLength() );
+        m_scanWorker->warpData( frameData, bufferLength);
 
-        pixmap = m_scene->sectorHandle();
+        if(m_scanWorker->isReady){
 
-        if(image && frameData && frameData->dispData){
+            if(image && frameData && frameData->dispData){
+                QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-            if(pixmap){
-                QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-                pixmap->setPixmap(tmpPixmap);
+                if(pixmap){
+                    QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                    pixmap->setPixmap(tmpPixmap);
+                }
+                m_scene->setDoPaint();
             }
-            m_scene->setDoPaint();
         }
     }
 }
