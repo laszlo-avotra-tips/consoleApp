@@ -177,7 +177,7 @@ bool DAQ::getData2( )
 //        LOG4(errorcount,required_buffer_size,height, width)
     }
 
-    if(axRetVal == NO_AxERROR && returned_image_number != sreturned_image_number){
+    if(axSuccess == NO_AxERROR && returned_image_number != sreturned_image_number){
         sreturned_image_number = returned_image_number;
         ++m_count;
         ++imageCount;
@@ -232,10 +232,24 @@ bool DAQ::getData( )
     static int64_t trig_too_fastCount = 0;
     AxErr retVal{NO_AxERROR};
     static AxErr sRetVal{NO_AxERROR};
+    bool imageNumberChanged{false};
 
     int64_t requestedImageNumber = -1;
 
+    //initialize performance logging
+    if(sreturned_image_number == -1){
+        sreturned_image_number = returned_image_number;
+        lastImageIdx = returned_image_number - 1;
+        force_trigCount = 0;
+        axErrorCount = 0;
+        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+        LOG4(axErrorCount,required_buffer_size,height, width)
+        LOG2(force_trigCount, trig_too_fastCount)
+    }
     retVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
+
+    imageNumberChanged = (retVal == NO_AxERROR) && (int(returned_image_number) != sreturned_image_number);
+    sreturned_image_number = returned_image_number;
 
     bool isReturn = false;
 
@@ -243,6 +257,7 @@ bool DAQ::getData( )
         sRetVal = retVal;
         if(retVal != NO_AxERROR){
             ++axErrorCount;
+            isReturn = true;
         }
     }
 
@@ -272,38 +287,26 @@ bool DAQ::getData( )
     }
 
 
-    if(sreturned_image_number == -1){
-        sreturned_image_number = returned_image_number;
-        lastImageIdx = returned_image_number - 1;
-        force_trigCount = 0;
-        axErrorCount = 0;
-        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-        LOG4(axErrorCount,required_buffer_size,height, width)
-        LOG2(force_trigCount, trig_too_fastCount)
-    }
+//    if(sreturned_image_number == -1){
+//        sreturned_image_number = returned_image_number;
+//        lastImageIdx = returned_image_number - 1;
+//        force_trigCount = 0;
+//        axErrorCount = 0;
+//        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+//        LOG4(axErrorCount,required_buffer_size,height, width)
+//        LOG2(force_trigCount, trig_too_fastCount)
+//    }
 
-    if(axRetVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
-        sreturned_image_number = returned_image_number;
+//    if(retVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
+//        sreturned_image_number = returned_image_number;
+      if(imageNumberChanged){
         ++m_count;
         ++imageCount;
-        int64_t megaAxErrorCount = axErrorCount /(1024 * 1024);
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-            LOG4(megaAxErrorCount,required_buffer_size,height, width)
+            LOG4(axErrorCount,required_buffer_size,height, width)
             LOG2(force_trigCount, trig_too_fastCount)
-             if(errorTable.size() >= 1){
-                auto it = errorTable.begin();
-                for(int i = 0; i < int(errorTable.size()); ++i ){
-                    AxErr error = it->first;
-                    int errorCode = int(error);
-                    int kiloErrorCount = it->second / 1024;
-                    char errorMsg[512];
-                    axGetErrorString(error, errorMsg);
-                    LOG3(errorCode, kiloErrorCount, errorMsg)
-                    ++it;
-                }
-             }
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
@@ -319,7 +322,7 @@ bool DAQ::getData( )
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-    if(axRetVal == NO_AxERROR)
+    if(retVal == NO_AxERROR)
     {
         if( force_trig == 1){
             const QString msg("This should never happen.");
@@ -327,7 +330,7 @@ bool DAQ::getData( )
             ++force_trigCount;
         }
 
-        axRetVal = axRequestImage( session,
+        retVal = axRequestImage( session,
                                    returned_image_number,
                                    &returned_image,
                                    &height,
@@ -335,9 +338,9 @@ bool DAQ::getData( )
                                    &data_type,
                                    axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
-        if(axRetVal != NO_AxERROR){
+        if(retVal != NO_AxERROR){
             char errorMsg[512];
-            axGetErrorString(axRetVal, errorMsg);
+            axGetErrorString(retVal, errorMsg);
             LOG1(errorMsg)
             return false;
         }
@@ -358,7 +361,7 @@ bool DAQ::getData( )
     else
     {
         char errorMsg[512];
-        axGetErrorString(axRetVal, errorMsg);
+        axGetErrorString(retVal, errorMsg);
         LOG1(errorMsg)
     }
 
@@ -373,14 +376,14 @@ bool DAQ::getData( )
 bool DAQ::startDaq()
 {
     qDebug() << "***** DAQ::startDaq()";
-    axRetVal = NO_AxERROR;
+    AxErr success = NO_AxERROR;
 
     try {
 
-        axRetVal = axStartSession(&session, 50);    // Start Axsun engine session
-        if(axRetVal != NO_AxERROR){
+        success = axStartSession(&session, 50);    // Start Axsun engine session
+        if(success != NO_AxERROR){
             char message_out[512];
-            axGetErrorString(axRetVal, message_out);
+            axGetErrorString(success, message_out);
             LOG1(message_out)
         }
         const int framesUntilForceTrig {35};
@@ -389,31 +392,31 @@ bool DAQ::startDaq()
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
          * 35 * 256 = 8960 A lines
          */
-        axRetVal = axSetTrigTimeout(session, framesUntilForceTrig);
-        if(axRetVal != NO_AxERROR){
+        success = axSetTrigTimeout(session, framesUntilForceTrig);
+        if(success != NO_AxERROR){
             char message_out[512];
-            axGetErrorString(axRetVal, message_out);
+            axGetErrorString(success, message_out);
             LOG1(message_out)
         }
 
 #if PCIE_MODE
-        axRetVal = axSelectInterface(session, AxInterface::PCI_EXPRESS);
-        axRetVal = axImagingCntrlPCIe(session, -1);
-        axRetVal = axPipelineMode(session, EIGHT_BIT);
+        success = axSelectInterface(session, AxInterface::PCI_EXPRESS);
+        success = axImagingCntrlPCIe(session, -1);
+        success = axPipelineMode(session, EIGHT_BIT);
 #else
-        axRetVal = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
+        success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
 #endif
 
 #if USE_LVDS_TRIGGER
-        axRetVal = axGetMessage(session, axMessage );
-        if(axRetVal != NO_AxERROR){
+        success = axGetMessage(session, axMessage );
+        if(success != NO_AxERROR){
             char message_out[512];
-            axGetErrorString(axRetVal, message_out);
+            axGetErrorString(success, message_out);
             LOG1(message_out)
         }
         LOG1(axMessage)
 #else
-//        axRetVal = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
+//        success = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
@@ -425,7 +428,7 @@ bool DAQ::startDaq()
         LOG1("Axsun init Error")
     }
 
-    return axRetVal == NO_AxERROR;
+    return success == NO_AxERROR;
 }
 
 /*
@@ -436,9 +439,15 @@ bool DAQ::startDaq()
 bool DAQ::shutdownDaq()
 {
     qDebug() << "***** DAQ::shutdownDaq()";
-    axRetVal = NO_AxERROR;
-    axRetVal = axStopSession(session);    // Stop Axsun engine session
-    return axRetVal == NO_AxERROR;
+    AxErr success = NO_AxERROR;
+
+    success = axStopSession(session);    // Stop Axsun engine session
+    if(success != NO_AxERROR){
+        char msg[512];
+        axGetErrorString(success, msg);
+        LOG1(msg)
+    }
+    return success == NO_AxERROR;
 }
 
 void DAQ::setLaserDivider( int divider)
@@ -446,7 +455,7 @@ void DAQ::setLaserDivider( int divider)
     AxErr success = axOpenAxsunOCTControl(true);
     if(success != NO_AxERROR){
         char msg[512];
-        axGetErrorString(axRetVal, msg);
+        axGetErrorString(success, msg);
         LOG1(msg)
     }
 
@@ -454,19 +463,19 @@ void DAQ::setLaserDivider( int divider)
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
 #if PCIE_MODE
-        axRetVal = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
+        success = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #endif
         LOG2(subsamplingFactor, divider)
         success = axSetSubsamplingFactor(subsamplingFactor,0);
         if(success != NO_AxERROR){
             char msg[512];
-            axGetErrorString(axRetVal, msg);
+            axGetErrorString(success, msg);
             LOG1(msg)
         }
         success = axGetMessage( session, axMessage );
         if(success != NO_AxERROR){
             char msg[512];
-            axGetErrorString(axRetVal, msg);
+            axGetErrorString(success, msg);
             LOG1(msg)
         }
         LOG1(axMessage);
