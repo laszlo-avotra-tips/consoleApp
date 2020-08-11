@@ -216,6 +216,7 @@ bool DAQ::getData( )
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
     static int32_t sreturned_image_number = -1;
+    static uint32_t sprevReturnedImageNumber = 0;
     static int32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
     static int64_t axErrorCount = 0;
@@ -236,20 +237,10 @@ bool DAQ::getData( )
 
     int64_t requestedImageNumber = -1;
 
-    //initialize performance logging
-    if(sreturned_image_number == -1){
-        sreturned_image_number = returned_image_number;
-        lastImageIdx = returned_image_number - 1;
-        force_trigCount = 0;
-        axErrorCount = 0;
-        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-        LOG4(axErrorCount,required_buffer_size,height, width)
-        LOG2(force_trigCount, trig_too_fastCount)
-    }
     retVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 
-    imageNumberChanged = (retVal == NO_AxERROR) && (int(returned_image_number) != sreturned_image_number);
-    sreturned_image_number = returned_image_number;
+    imageNumberChanged = (retVal == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
+    sprevReturnedImageNumber = returned_image_number;
 
     bool isReturn = false;
 
@@ -287,19 +278,18 @@ bool DAQ::getData( )
     }
 
 
-//    if(sreturned_image_number == -1){
-//        sreturned_image_number = returned_image_number;
-//        lastImageIdx = returned_image_number - 1;
-//        force_trigCount = 0;
-//        axErrorCount = 0;
-//        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-//        LOG4(axErrorCount,required_buffer_size,height, width)
-//        LOG2(force_trigCount, trig_too_fastCount)
-//    }
+    if(sreturned_image_number == -1){
+        sreturned_image_number = returned_image_number;
+        lastImageIdx = returned_image_number - 1;
+        force_trigCount = 0;
+        axErrorCount = 0;
+        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+        LOG4(axErrorCount,required_buffer_size,height, width)
+        LOG2(force_trigCount, trig_too_fastCount)
+    }
 
-//    if(retVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
-//        sreturned_image_number = returned_image_number;
-      if(imageNumberChanged){
+    if(retVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
+        sreturned_image_number = returned_image_number;
         ++m_count;
         ++imageCount;
         if(m_decimation && (m_count % m_decimation == 0)){
