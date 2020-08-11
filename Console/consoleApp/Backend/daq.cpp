@@ -220,6 +220,7 @@ bool DAQ::getData( )
 {
     bool success = false;
 
+    static bool isLoggingInitialized{false};
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
     static int32_t sreturned_image_number = -1;
@@ -263,16 +264,16 @@ bool DAQ::getData( )
         isReturn = true;
     }
 
-    if(imageNumberChanged){
-        if( force_trig == 1){
-            ++force_trigCount;
-        }
-        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
-            QString errorMsg("required_buffer_size >= myBufferSize");
-            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
-            isReturn = true;
-        }
-    }
+//    if(imageNumberChanged){
+//        if( force_trig == 1){
+//            ++force_trigCount;
+//        }
+//        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
+//            QString errorMsg("required_buffer_size >= myBufferSize");
+//            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
+//            isReturn = true;
+//        }
+//    }
 
     if( force_trig == 1){
         isReturn = true;
@@ -284,21 +285,33 @@ bool DAQ::getData( )
     }
 
     //initialize logging
-    if(sreturned_image_number == -1){
-        sreturned_image_number = returned_image_number;
+//    if(sreturned_image_number == -1){
+//        sreturned_image_number = returned_image_number;
+    if(!isLoggingInitialized){
         lastImageIdx = returned_image_number - 1;
         force_trigCount = 0;
         axErrorCount = 0;
+        isLoggingInitialized = true;
         LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
         LOG4(axErrorCount,required_buffer_size,height, width)
         LOG2(force_trigCount, trig_too_fastCount)
     }
 
 //    if(retVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
-    if(imageNumberChanged){
-        sreturned_image_number = returned_image_number;
+    if(imageNumberChanged ){
+//        sreturned_image_number = returned_image_number;
         ++m_count;
         ++imageCount;
+
+        if( force_trig == 1){
+            ++force_trigCount;
+        }
+        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
+            QString errorMsg("required_buffer_size >= myBufferSize");
+            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
+            isReturn = true;
+        }
+
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
@@ -308,10 +321,11 @@ bool DAQ::getData( )
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
         }
-     }
+//     }
 
     if( returned_image_number <= lastImageIdx )
     {
+        LOG2(returned_image_number, lastImageIdx)
         return false;
     }
 
@@ -352,7 +366,7 @@ bool DAQ::getData( )
         yieldCurrentThread();
 
         return true;
-//    }
+    }
 //    else
 //    {
 //        logAxErrorVerbose(__LINE__, retVal);
