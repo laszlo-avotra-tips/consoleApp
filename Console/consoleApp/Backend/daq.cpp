@@ -59,6 +59,13 @@ void DAQ::logDecimation()
     m_decimation = settings.getImageIndexDecimation();
 }
 
+void DAQ::logAxErrorVerbose(int line, AxErr e)
+{
+    char errorMsg[512];
+    axGetErrorString(e, errorMsg);
+    LOG2(line, errorMsg)
+}
+
 DAQ::~DAQ()
 {
 }
@@ -256,8 +263,7 @@ bool DAQ::getData( )
         isReturn = true;
     }
 
-    if(force_trig != sforce_trig){
-        sforce_trig = force_trig;
+    if(imageNumberChanged){
         if( force_trig == 1){
             ++force_trigCount;
         }
@@ -277,7 +283,7 @@ bool DAQ::getData( )
         return false;
     }
 
-
+    //initialize logging
     if(sreturned_image_number == -1){
         sreturned_image_number = returned_image_number;
         lastImageIdx = returned_image_number - 1;
@@ -329,9 +335,10 @@ bool DAQ::getData( )
                                    axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
         if(retVal != NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retVal, errorMsg);
-            LOG1(errorMsg)
+            logAxErrorVerbose(__LINE__, retVal);
+//            char errorMsg[512];
+//            axGetErrorString(retVal, errorMsg);
+//            LOG1(errorMsg)
             return false;
         }
 
@@ -350,9 +357,10 @@ bool DAQ::getData( )
     }
     else
     {
-        char errorMsg[512];
-        axGetErrorString(retVal, errorMsg);
-        LOG1(errorMsg)
+        logAxErrorVerbose(__LINE__, retVal);
+//        char errorMsg[512];
+//        axGetErrorString(retVal, errorMsg);
+//        LOG1(errorMsg)
     }
 
     return success;
@@ -372,9 +380,10 @@ bool DAQ::startDaq()
 
         success = axStartSession(&session, 50);    // Start Axsun engine session
         if(success != NO_AxERROR){
-            char message_out[512];
-            axGetErrorString(success, message_out);
-            LOG1(message_out)
+            logAxErrorVerbose(__LINE__, success);
+//            char message_out[512];
+//            axGetErrorString(success, message_out);
+//            LOG1(message_out)
         }
         const int framesUntilForceTrig {35};
         /*
@@ -384,9 +393,10 @@ bool DAQ::startDaq()
          */
         success = axSetTrigTimeout(session, framesUntilForceTrig);
         if(success != NO_AxERROR){
-            char message_out[512];
-            axGetErrorString(success, message_out);
-            LOG1(message_out)
+            logAxErrorVerbose(__LINE__, success);
+//            char message_out[512];
+//            axGetErrorString(success, message_out);
+//            LOG1(message_out)
         }
 
 #if PCIE_MODE
@@ -400,9 +410,10 @@ bool DAQ::startDaq()
 #if USE_LVDS_TRIGGER
         success = axGetMessage(session, axMessage );
         if(success != NO_AxERROR){
-            char message_out[512];
-            axGetErrorString(success, message_out);
-            LOG1(message_out)
+            logAxErrorVerbose(__LINE__, success);
+//            char message_out[512];
+//            axGetErrorString(success, message_out);
+//            LOG1(message_out)
         }
         LOG1(axMessage)
 #else
@@ -433,9 +444,10 @@ bool DAQ::shutdownDaq()
 
     success = axStopSession(session);    // Stop Axsun engine session
     if(success != NO_AxERROR){
-        char msg[512];
-        axGetErrorString(success, msg);
-        LOG1(msg)
+        logAxErrorVerbose(__LINE__, success);
+//        char msg[512];
+//        axGetErrorString(success, msg);
+//        LOG1(msg)
     }
     return success == NO_AxERROR;
 }
@@ -444,9 +456,10 @@ void DAQ::setLaserDivider( int divider)
 {
     AxErr success = axOpenAxsunOCTControl(true);
     if(success != NO_AxERROR){
-        char msg[512];
-        axGetErrorString(success, msg);
-        LOG1(msg)
+        logAxErrorVerbose(__LINE__, success);
+//        char msg[512];
+//        axGetErrorString(success, msg);
+//        LOG1(msg)
     }
 
     const int subsamplingFactor = divider + 1;
@@ -458,15 +471,17 @@ void DAQ::setLaserDivider( int divider)
         LOG2(subsamplingFactor, divider)
         success = axSetSubsamplingFactor(subsamplingFactor,0);
         if(success != NO_AxERROR){
-            char msg[512];
-            axGetErrorString(success, msg);
-            LOG1(msg)
+            logAxErrorVerbose(__LINE__, success);
+//            char msg[512];
+//            axGetErrorString(success, msg);
+//            LOG1(msg)
         }
         success = axGetMessage( session, axMessage );
         if(success != NO_AxERROR){
-            char msg[512];
-            axGetErrorString(success, msg);
-            LOG1(msg)
+            logAxErrorVerbose(__LINE__, success);
+//            char msg[512];
+//            axGetErrorString(success, msg);
+//            LOG1(msg)
         }
         LOG1(axMessage);
 //        qDebug() << "***** axSetFPGARegister: " << subsamplingFactor << " message:" << axMessage;

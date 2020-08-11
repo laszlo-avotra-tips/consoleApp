@@ -53,6 +53,7 @@ public slots:
 private:
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
     void logDecimation();
+    void logAxErrorVerbose(int line, AxErr e);
 
 private:
     AOChandle session = NULL;
