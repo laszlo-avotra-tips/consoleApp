@@ -59,11 +59,11 @@ void DAQ::logDecimation()
     m_decimation = settings.getImageIndexDecimation();
 }
 
-void DAQ::logAxErrorVerbose(int line, AxErr e)
+void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode)
 {
-    char errorMsg[512];
-    axGetErrorString(e, errorMsg);
-    LOG2(line, errorMsg)
+    char errorVerbose[512];
+    axGetErrorString(axErrorCode, errorVerbose);
+    LOG3(line, axErrorCode, errorVerbose)
 }
 
 DAQ::~DAQ()
@@ -319,13 +319,13 @@ bool DAQ::getData( )
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-    if(retVal == NO_AxERROR)
-    {
-        if( force_trig == 1){
-            const QString msg("This should never happen.");
-            LOG2(force_trigCount,msg)
-            ++force_trigCount;
-        }
+//    if(retVal == NO_AxERROR)
+//    {
+//        if( force_trig == 1){
+//            const QString msg("This should never happen.");
+//            LOG2(force_trigCount,msg)
+//            ++force_trigCount;
+//        }
 
         retVal = axRequestImage( session,
                                    returned_image_number,
@@ -352,13 +352,13 @@ bool DAQ::getData( )
         yieldCurrentThread();
 
         return true;
-    }
-    else
-    {
-        logAxErrorVerbose(__LINE__, retVal);
-    }
+//    }
+//    else
+//    {
+//        logAxErrorVerbose(__LINE__, retVal);
+//    }
 
-    return success;
+//    return success;
 }
 
 /*
