@@ -218,12 +218,9 @@ bool DAQ::getData2( )
  */
 bool DAQ::getData( )
 {
-    bool success = false;
-
     static bool isLoggingInitialized{false};
     uint32_t required_buffer_size = 0;
     uint32_t returned_image_number = 0;
-    static int32_t sreturned_image_number = -1;
     static uint32_t sprevReturnedImageNumber = 0;
     static int32_t lostImageCount = 0;
     static uint32_t imageCount = 0;
@@ -234,59 +231,55 @@ bool DAQ::getData( )
     AxDataType data_type = U8;
     uint32_t returned_image = 0;
     uint8_t force_trig = 0;
-    static uint8_t sforce_trig = 0;
     uint8_t trig_too_fast = 0;
     static std::map<AxErr,int> errorTable;
     static int64_t force_trigCount = 0;
     static int64_t trig_too_fastCount = 0;
-    AxErr retVal{NO_AxERROR};
+    AxErr success{NO_AxERROR};
     static AxErr sRetVal{NO_AxERROR};
-    bool imageNumberChanged{false};
+    bool isReturnedImageNumberChanged{false};
 
     int64_t requestedImageNumber = -1;
 
-    retVal = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
+    success = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 
-    imageNumberChanged = (retVal == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
+    isReturnedImageNumberChanged = (success == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
     sprevReturnedImageNumber = returned_image_number;
 
     bool isReturn = false;
 
-    if(retVal != sRetVal){
-        sRetVal = retVal;
-        if(retVal != NO_AxERROR){
+    if(success != sRetVal){
+        sRetVal = success;
+        if(success != NO_AxERROR){
             ++axErrorCount;
             isReturn = true;
         }
     }
 
-    if(retVal != NO_AxERROR){
+    if(success != NO_AxERROR){
         isReturn = true;
     }
 
-//    if(imageNumberChanged){
-//        if( force_trig == 1){
-//            ++force_trigCount;
-//        }
-//        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
-//            QString errorMsg("required_buffer_size >= myBufferSize");
-//            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
-//            isReturn = true;
-//        }
-//    }
+    if(isReturnedImageNumberChanged){
+        if( force_trig == 1){
+            ++force_trigCount;
+        }
+        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
+            QString errorMsg("required_buffer_size >= myBufferSize");
+            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
+            isReturn = true;
+        }
+    }
 
     if( force_trig == 1){
         isReturn = true;
     }
-
 
     if(isReturn){
         return false;
     }
 
     //initialize logging
-//    if(sreturned_image_number == -1){
-//        sreturned_image_number = returned_image_number;
     if(!isLoggingInitialized){
         lastImageIdx = returned_image_number - 1;
         force_trigCount = 0;
@@ -297,20 +290,9 @@ bool DAQ::getData( )
         LOG2(force_trigCount, trig_too_fastCount)
     }
 
-//    if(retVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
-    if(imageNumberChanged ){
-//        sreturned_image_number = returned_image_number;
+    if(isReturnedImageNumberChanged ){
         ++m_count;
         ++imageCount;
-
-        if( force_trig == 1){
-            ++force_trigCount;
-        }
-        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
-            QString errorMsg("required_buffer_size >= myBufferSize");
-            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
-            isReturn = true;
-        }
 
         if(m_decimation && (m_count % m_decimation == 0)){
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
@@ -321,27 +303,18 @@ bool DAQ::getData( )
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
         }
-//     }
 
-    if( returned_image_number <= lastImageIdx )
-    {
-        LOG2(returned_image_number, lastImageIdx)
-        return false;
-    }
+        if( returned_image_number <= lastImageIdx )
+        {
+            LOG2(returned_image_number, lastImageIdx)
+            return false;
+        }
 
-    lastImageIdx = returned_image_number;
+        lastImageIdx = returned_image_number;
 
-    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-//    if(retVal == NO_AxERROR)
-//    {
-//        if( force_trig == 1){
-//            const QString msg("This should never happen.");
-//            LOG2(force_trigCount,msg)
-//            ++force_trigCount;
-//        }
-
-        retVal = axRequestImage( session,
+        success = axRequestImage( session,
                                    returned_image_number,
                                    &returned_image,
                                    &height,
@@ -349,8 +322,8 @@ bool DAQ::getData( )
                                    &data_type,
                                    axsunData->acqData,
                                    MAX_ACQ_IMAGE_SIZE );
-        if(retVal != NO_AxERROR){
-            logAxErrorVerbose(__LINE__, retVal);
+        if(success != NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
             return false;
         }
 
@@ -367,12 +340,6 @@ bool DAQ::getData( )
 
         return true;
     }
-//    else
-//    {
-//        logAxErrorVerbose(__LINE__, retVal);
-//    }
-
-//    return success;
 }
 
 /*
