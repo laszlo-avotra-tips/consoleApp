@@ -267,17 +267,17 @@ bool DAQ::getData( )
         if( force_trig == 1){
             ++force_trigCount;
         }
+        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
+            QString errorMsg("required_buffer_size >= myBufferSize");
+            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
+            isReturn = true;
+        }
     }
 
     if( force_trig == 1){
         isReturn = true;
     }
 
-    if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
-        QString errorMsg("required_buffer_size >= myBufferSize");
-        LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
-        isReturn = true;
-    }
 
     if(isReturn){
         return false;
@@ -294,7 +294,8 @@ bool DAQ::getData( )
         LOG2(force_trigCount, trig_too_fastCount)
     }
 
-    if(retVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
+//    if(retVal == NO_AxERROR && int(returned_image_number) != sreturned_image_number){
+    if(imageNumberChanged){
         sreturned_image_number = returned_image_number;
         ++m_count;
         ++imageCount;
@@ -336,9 +337,6 @@ bool DAQ::getData( )
                                    MAX_ACQ_IMAGE_SIZE );
         if(retVal != NO_AxERROR){
             logAxErrorVerbose(__LINE__, retVal);
-//            char errorMsg[512];
-//            axGetErrorString(retVal, errorMsg);
-//            LOG1(errorMsg)
             return false;
         }
 
@@ -358,9 +356,6 @@ bool DAQ::getData( )
     else
     {
         logAxErrorVerbose(__LINE__, retVal);
-//        char errorMsg[512];
-//        axGetErrorString(retVal, errorMsg);
-//        LOG1(errorMsg)
     }
 
     return success;
@@ -381,9 +376,6 @@ bool DAQ::startDaq()
         success = axStartSession(&session, 50);    // Start Axsun engine session
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
-//            char message_out[512];
-//            axGetErrorString(success, message_out);
-//            LOG1(message_out)
         }
         const int framesUntilForceTrig {35};
         /*
@@ -394,9 +386,6 @@ bool DAQ::startDaq()
         success = axSetTrigTimeout(session, framesUntilForceTrig);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
-//            char message_out[512];
-//            axGetErrorString(success, message_out);
-//            LOG1(message_out)
         }
 
 #if PCIE_MODE
@@ -411,9 +400,6 @@ bool DAQ::startDaq()
         success = axGetMessage(session, axMessage );
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
-//            char message_out[512];
-//            axGetErrorString(success, message_out);
-//            LOG1(message_out)
         }
         LOG1(axMessage)
 #else
@@ -445,9 +431,6 @@ bool DAQ::shutdownDaq()
     success = axStopSession(session);    // Stop Axsun engine session
     if(success != NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
-//        char msg[512];
-//        axGetErrorString(success, msg);
-//        LOG1(msg)
     }
     return success == NO_AxERROR;
 }
@@ -457,9 +440,6 @@ void DAQ::setLaserDivider( int divider)
     AxErr success = axOpenAxsunOCTControl(true);
     if(success != NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
-//        char msg[512];
-//        axGetErrorString(success, msg);
-//        LOG1(msg)
     }
 
     const int subsamplingFactor = divider + 1;
@@ -472,20 +452,12 @@ void DAQ::setLaserDivider( int divider)
         success = axSetSubsamplingFactor(subsamplingFactor,0);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
-//            char msg[512];
-//            axGetErrorString(success, msg);
-//            LOG1(msg)
         }
         success = axGetMessage( session, axMessage );
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
-//            char msg[512];
-//            axGetErrorString(success, msg);
-//            LOG1(msg)
         }
         LOG1(axMessage);
-//        qDebug() << "***** axSetFPGARegister: " << subsamplingFactor << " message:" << axMessage;
-//        qDebug() << "Setting laser divider to:" << divider + 1;
     }
 }
 
