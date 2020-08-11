@@ -140,7 +140,7 @@ void DAQ::run( void )
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
                 sm->setBufferLength(gBufferLength);
 
-                emit updateSector(axsunData);
+//                emit updateSector(axsunData);
             }
             yieldCurrentThread();
         }
@@ -310,7 +310,7 @@ bool DAQ::getData( )
             return false;
         }
 
-        lastImageIdx = returned_image_number;
+//        lastImageIdx = returned_image_number;
 
         OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
@@ -326,6 +326,7 @@ bool DAQ::getData( )
             logAxErrorVerbose(__LINE__, success);
             return false;
         }
+        lastImageIdx = returned_image;
 
         gBufferLength = width;
 
