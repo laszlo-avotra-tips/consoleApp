@@ -251,6 +251,11 @@ bool DAQ::getData( )
     if(success != sRetVal){
         sRetVal = success;
         if(success != NO_AxERROR){
+            if(auto it = errorTable.find(success) != errorTable.end()){
+                errorTable[success]++;
+            } else {
+                errorTable[success] = 1;
+            }
             ++axErrorCount;
             isReturn = true;
         }
@@ -299,6 +304,16 @@ bool DAQ::getData( )
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(axErrorCount,required_buffer_size,height, width)
             LOG2(force_trigCount, trig_too_fastCount)
+            if(errorTable.size() >= 1){
+                for(auto it = errorTable.begin(); it != errorTable.end(); ++it ){
+                    AxErr error = it->first;
+                    int errorCode = int(error);
+                    auto errorCount = it->second;
+                    char errorMsg[512];
+                    axGetErrorString(error, errorMsg);
+                    LOG3(errorCode, errorCount, errorMsg)
+                }
+             }
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
