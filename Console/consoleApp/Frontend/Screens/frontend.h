@@ -38,6 +38,7 @@
 #include "windowmanager.h"
 #include <memory>
 #include <forml300.h>
+#include "scanconversion.h"
 
 #if ENABLE_COLORMAP_OPTIONS
 #include "Widgets/curvesdialog.h"
@@ -107,7 +108,7 @@ public slots:
     void handleScreenChanges();
     void handleBadMonitorConfig();
     void enableDisableMeasurementForCapture( int pixelsPerMm );
-    void updateSector(const OCTFile::OctData_t*);
+    void updateSector(OCTFile::OctData_t*);
     void on_zoomSlider_valueChanged(int value);
 
 #if ENABLE_COLORMAP_OPTIONS
@@ -302,6 +303,7 @@ protected:
 private:
      FormL300* m_formL300{nullptr};
      MainScreen* m_mainScreen{nullptr};
+     ScanConversion *m_scanWorker{nullptr};
 };
 
 #endif // FRONTEND_H

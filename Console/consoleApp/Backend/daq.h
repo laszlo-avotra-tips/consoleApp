@@ -34,6 +34,7 @@ public:
     IDAQ* getSignalSource() override;
 
     bool getData();
+    bool getData2();
     bool isRunning;
     int generateSyntheticData( unsigned char *pSyntheticData );
     QTime frameTimer;
@@ -52,10 +53,10 @@ public slots:
 private:
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
     void logDecimation();
+    void logAxErrorVerbose(int line, AxErr e);
 
 private:
     AOChandle session = NULL;
-    AxErr axRetVal = NO_AxERROR;
     ScanConversion *scanWorker;
     char axMessage[256];
     uint32_t lastImageIdx;

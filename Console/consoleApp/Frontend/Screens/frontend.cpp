@@ -149,6 +149,8 @@ frontend::frontend(QWidget *parent)
 
     m_ec = new EngineeringController(this);
 
+    m_scanWorker   = new ScanConversion();
+
 
     connect( ui.horizontalSliderBrigtness, SIGNAL(valueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
     connect( ui.horizontalSliderContrast, SIGNAL(valueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
@@ -1921,27 +1923,32 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
     }
 }
 
-void frontend::updateSector(const OCTFile::OctData_t* frameData)
+void frontend::updateSector(OCTFile::OctData_t* frameData)
 {
-    QImage* image{nullptr};
-    QGraphicsPixmapItem* pixmap{nullptr};
-    const int SectorSize = SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX;
 
-    if(m_scene){
-        image = m_scene->sectorImage();
-        pixmap = m_scene->sectorHandle();
+    if(frameData && m_scene && m_scanWorker){
 
-//        m_scene->setDoPaint();
+        const auto* sm =  SignalModel::instance();
 
-        if(image && frameData && frameData->dispData){
-            memcpy( image->bits(), frameData->dispData, SectorSize );
+        QImage* image = m_scene->sectorImage();
+
+        frameData->dispData = image->bits();
+        auto bufferLength = sm->getBufferLength();
+
+        m_scanWorker->warpData( frameData, bufferLength);
+
+        if(m_scanWorker->isReady){
+
+            if(image && frameData && frameData->dispData){
+                QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+                if(pixmap){
+                    QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                    pixmap->setPixmap(tmpPixmap);
+                }
+//                m_scene->setDoPaint();
+            }
         }
-
-        if(pixmap){
-            QPixmap tmpPixmap = QPixmap::fromImage( *image );
-            pixmap->setPixmap(tmpPixmap);
-        }
-        m_scene->setDoPaint();
     }
 }
 

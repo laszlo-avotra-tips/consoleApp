@@ -35,6 +35,16 @@ void SignalModel::allocateOctData()
 
 }
 
+size_t SignalModel::getBufferLength() const
+{
+    return m_bufferLength;
+}
+
+void SignalModel::setBufferLength(const size_t &bufferLength)
+{
+    m_bufferLength = bufferLength;
+}
+
 const cl_int* SignalModel::getSectorHeight_px() const
 {
     return &m_sectorHeight_px;
