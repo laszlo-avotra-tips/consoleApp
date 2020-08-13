@@ -3,12 +3,16 @@
 #include "logger.h"
 #include "signalmodel.h"
 #include "Utility/userSettings.h"
+#include <QGraphicsView>
+#include "livescene.h"
 
 DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DisplayOptionsDialog)
 {
     ui->setupUi(this);
+    m_graphicsView = ui->graphicsView;
+
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
@@ -19,6 +23,16 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
         ui->radioButtonUp->setChecked(true);
     }
 }
+
+void DisplayOptionsDialog::setScene(liveScene *scene)
+{
+    if(!m_scene){
+        m_scene = scene;
+        m_graphicsView->setScene(m_scene);
+    }
+}
+
+
 
 DisplayOptionsDialog::~DisplayOptionsDialog()
 {

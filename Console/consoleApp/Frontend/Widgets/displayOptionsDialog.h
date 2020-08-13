@@ -3,6 +3,9 @@
 
 #include <QDialog>
 
+class liveScene;
+class QGraphicsView;
+
 namespace Ui {
 class DisplayOptionsDialog;
 }
@@ -14,6 +17,7 @@ class DisplayOptionsDialog : public QDialog
 public:
     explicit DisplayOptionsDialog(QWidget *parent = nullptr);
     ~DisplayOptionsDialog();
+    void setScene(liveScene* scene);
 
 signals:
     void setColorModeSepia();
@@ -34,6 +38,8 @@ private slots:
 
 private:
     Ui::DisplayOptionsDialog *ui;
+    QGraphicsView* m_graphicsView{nullptr};
+    liveScene* m_scene{nullptr};
 };
 
 #endif // DISPLAYOPTIONSDIALOG_H

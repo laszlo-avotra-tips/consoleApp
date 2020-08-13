@@ -22,6 +22,7 @@
 #include <QLayout>
 #include <QFile>
 #include <QTextStream>
+#include <QGraphicsView>
 
 MainScreen::MainScreen(QWidget *parent)
     : QWidget(parent)
@@ -358,10 +359,22 @@ void MainScreen::openCaseReview()
 
 void MainScreen::openDisplayOptionsDialog()
 {
-    auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
-    if( result.second != QDialog::Accepted){
-        on_pushButtonSettings_clicked();
+    int result{-1};
+    auto dialog = WidgetContainer::instance()->getDialog("displayOptionsDialog", this);
+
+    if(dialog){
+        dialog->show();
+        result = dialog->exec();
+
+        if( result != QDialog::Accepted){
+            on_pushButtonSettings_clicked();
+        }
     }
+
+//    auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
+//    if( result.second != QDialog::Accepted){
+//        on_pushButtonSettings_clicked();
+//    }
 }
 
 void MainScreen::updateTime()
