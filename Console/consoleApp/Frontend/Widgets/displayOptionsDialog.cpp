@@ -29,6 +29,7 @@ void DisplayOptionsDialog::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
+//        emit ui->radioButtonGrey->clicked(true); //initial state
     }
 }
 
