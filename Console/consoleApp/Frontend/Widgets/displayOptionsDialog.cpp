@@ -90,9 +90,11 @@ void DisplayOptionsDialog::on_radioButtonUp_clicked(bool checked)
 void DisplayOptionsDialog::on_radioButtonGrey_clicked(bool checked)
 {
     LOG1(checked)
+    m_scene->loadColorModeGray();
 }
 
 void DisplayOptionsDialog::on_radioButtonSepia_clicked(bool checked)
 {
     LOG1(checked)
+    m_scene->loadColorModeSepia();
 }

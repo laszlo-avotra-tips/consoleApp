@@ -360,7 +360,7 @@ void MainScreen::openCaseReview()
 void MainScreen::openDisplayOptionsDialog()
 {
     int result{-1};
-    auto dialog = new DisplayOptionsDialog(this); //WidgetContainer::instance()->getDialog("displayOptionsDialog", this);
+    auto dialog = new DisplayOptionsDialog(this);
 
     if(dialog){
         dialog->show();
@@ -371,11 +371,6 @@ void MainScreen::openDisplayOptionsDialog()
             on_pushButtonSettings_clicked();
         }
     }
-
-//    auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
-//    if( result.second != QDialog::Accepted){
-//        on_pushButtonSettings_clicked();
-//    }
 }
 
 void MainScreen::updateTime()
