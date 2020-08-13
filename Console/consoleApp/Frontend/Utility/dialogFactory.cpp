@@ -1,4 +1,4 @@
-#include "dialogFactory.h"
+#include "dialogfactory.h"
 
 #include "caseInformationDialog.h"
 #include "deviceSelectDialog.h"

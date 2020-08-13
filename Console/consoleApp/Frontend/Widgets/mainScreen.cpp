@@ -14,9 +14,9 @@
 #include "Frontend/Widgets/caseInformationModel.h"
 #include "Frontend/Widgets/reviewAndSettingsDialog.h"
 #include "sledsupport.h"
+#include "displayOptionsDialog.h"
+
 #include <QTimer>
-
-
 #include <QDebug>
 #include <QLayoutItem>
 #include <QLayout>
@@ -360,10 +360,11 @@ void MainScreen::openCaseReview()
 void MainScreen::openDisplayOptionsDialog()
 {
     int result{-1};
-    auto dialog = WidgetContainer::instance()->getDialog("displayOptionsDialog", this);
+    auto dialog = new DisplayOptionsDialog(this); //WidgetContainer::instance()->getDialog("displayOptionsDialog", this);
 
     if(dialog){
         dialog->show();
+        dialog->setScene(m_scene);
         result = dialog->exec();
 
         if( result != QDialog::Accepted){
