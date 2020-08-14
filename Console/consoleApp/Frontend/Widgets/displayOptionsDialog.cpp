@@ -22,6 +22,13 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     } else {
         ui->radioButtonUp->setChecked(true);
     }
+
+    const double scaleUp = 1.5; //lcv zomFactor
+    QMatrix matrix = ui->graphicsView->matrix();
+    ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
+
+//    ui->groupBoxCatheterUpDown->title().front().
+
 }
 
 void DisplayOptionsDialog::setScene(liveScene *scene)
@@ -29,7 +36,6 @@ void DisplayOptionsDialog::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
-//        emit ui->radioButtonGrey->clicked(true); //initial state
     }
 }
 

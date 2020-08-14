@@ -16,13 +16,51 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel{
+border-bottom:2px solid grey;
+font:36pt &quot;Helvetica Neue&quot;;
+font-weight:600
+}
+QFrame{
+border:0px;
+}
+QGroupBox{
+border:0px;
+font:24pt &quot;Helvetica Neue&quot;;
+font-weight:600;
+}
+QRadioButton{
+font:24pt &quot;Helvetica Neue&quot;;
+}
+QRadioButton::indicator{
+width: 40px;
+height:40px;
+}
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="frameTop">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>160</height>
+       <height>16777215</height>
       </size>
      </property>
      <property name="frameShape">
@@ -32,12 +70,27 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="label">
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>200</height>
+          <height>300</height>
          </size>
         </property>
         <property name="text">
@@ -64,14 +117,14 @@
        <widget class="QFrame" name="frameImage">
         <property name="minimumSize">
          <size>
-          <width>1024</width>
-          <height>1024</height>
+          <width>1600</width>
+          <height>1600</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>1024</width>
-          <height>2000</height>
+          <width>1600</width>
+          <height>1980</height>
          </size>
         </property>
         <property name="frameShape">
@@ -81,6 +134,18 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QFrame" name="frameOct">
            <property name="sizePolicy">
@@ -91,14 +156,14 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>1048</width>
-             <height>1048</height>
+             <width>1600</width>
+             <height>1600</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>1048</width>
-             <height>1048</height>
+             <width>1600</width>
+             <height>1600</height>
             </size>
            </property>
            <property name="frameShape">
@@ -144,8 +209,11 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>400</height>
+             <height>200</height>
             </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">text-decoration: underline</string>
            </property>
            <property name="title">
             <string>DEPTH</string>
@@ -154,15 +222,47 @@
             <set>Qt::AlignCenter</set>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QPushButton" name="pushButtonDepthMimus">
+              <property name="styleSheet">
+               <string notr="true">text-decoration: none</string>
+              </property>
               <property name="text">
-               <string>-</string>
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normalon>:/octConsole/zoomOut</normalon>
+               </iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>50</width>
+                <height>50</height>
+               </size>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QScrollBar" name="horizontalScrollBar">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -170,8 +270,22 @@
             </item>
             <item>
              <widget class="QPushButton" name="pushButtonDepthPlus">
+              <property name="styleSheet">
+               <string notr="true">text-decoration: none</string>
+              </property>
               <property name="text">
-               <string>+</string>
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normalon>:/octConsole/zoomIn</normalon>
+               </iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>50</width>
+                <height>50</height>
+               </size>
               </property>
              </widget>
             </item>
@@ -190,6 +304,21 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QFrame" name="frameImageControl">
            <property name="frameShape">
@@ -199,6 +328,18 @@
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_9">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
@@ -209,6 +350,9 @@
                   <height>400</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">text-decoration: underline;</string>
+                </property>
                 <property name="title">
                  <string>CATHETER ON FLUORO</string>
                 </property>
@@ -216,6 +360,18 @@
                  <set>Qt::AlignCenter</set>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <widget class="QRadioButton" name="radioButtonDown">
                    <property name="minimumSize">
@@ -223,6 +379,9 @@
                      <width>200</width>
                      <height>60</height>
                     </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">text-decoration: none</string>
                    </property>
                    <property name="text">
                     <string>POINTED DOWN</string>
@@ -237,8 +396,17 @@
                      <height>60</height>
                     </size>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true">text-decoration: none</string>
+                   </property>
                    <property name="text">
                     <string>POINTED UP</string>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>100</width>
+                     <height>100</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
@@ -247,6 +415,9 @@
               </item>
               <item>
                <widget class="QGroupBox" name="groupBoxRingBrightness">
+                <property name="styleSheet">
+                 <string notr="true">text-decoration: underline;</string>
+                </property>
                 <property name="title">
                  <string>RING BRIGHTNESS</string>
                 </property>
@@ -282,6 +453,9 @@
                   <height>400</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">text-decoration: underline;</string>
+                </property>
                 <property name="title">
                  <string>IMAGE COLOR</string>
                 </property>
@@ -296,6 +470,9 @@
                      <width>200</width>
                      <height>60</height>
                     </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">text-decoration: none</string>
                    </property>
                    <property name="text">
                     <string>GREY</string>
@@ -313,6 +490,9 @@
                      <height>60</height>
                     </size>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true">text-decoration: none</string>
+                   </property>
                    <property name="text">
                     <string>SEPIA</string>
                    </property>
@@ -323,6 +503,9 @@
               </item>
               <item row="0" column="1">
                <widget class="QGroupBox" name="groupBoxImageBrightness">
+                <property name="styleSheet">
+                 <string notr="true">text-decoration: underline;</string>
+                </property>
                 <property name="title">
                  <string>IMAGE BRIGHTNESS</string>
                 </property>
@@ -348,6 +531,9 @@
               </item>
               <item row="1" column="1">
                <widget class="QGroupBox" name="groupBoxImageContrast">
+                <property name="styleSheet">
+                 <string notr="true">text-decoration: underline;</string>
+                </property>
                 <property name="title">
                  <string>IMAGE CONTRAST</string>
                 </property>
