@@ -296,7 +296,7 @@ void liveScene::handleReticleBrightnessChanged(int /*value*/)
     auto value = userSettings::Instance().reticleBrightness();
     LOG1(value)
     sector->setReticleBrightness( value );
-    refresh();
+//    refresh();
 }
 
 /*

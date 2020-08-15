@@ -37,6 +37,32 @@ QRadioButton::indicator{
 width: 40px;
 height:40px;
 }
+ /* ---------- Sliders ------------*/
+
+QSlider::groove:horizontal {
+border: 1px solid rgb(  191, 191, 191 );
+background: white;
+height: 30px;
+border-radius: 5px;
+}
+QSlider::sub-page:horizontal {
+background: rgb( 51, 51, 51 );
+border: 1px solid rgb( 51, 51, 51 );
+height: 30px;
+border-radius: 6px;
+}
+QSlider::sub-page:horizontal {
+background:#F5C400;
+border: 1px solid #F5C400;
+height: 30px;
+border-radius: 6px;
+}
+QSlider::handle:horizontal {
+/* image: url(:images/handle_normal.png);*/
+width: 50px;
+margin: -30px 0;
+background: rgb( 69, 69, 69 );
+}
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -90,7 +116,7 @@ height:40px;
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>300</height>
+          <height>200</height>
          </size>
         </property>
         <property name="text">
@@ -124,7 +150,7 @@ height:40px;
         <property name="maximumSize">
          <size>
           <width>1600</width>
-          <height>1980</height>
+          <height>2000</height>
          </size>
         </property>
         <property name="frameShape">
@@ -205,7 +231,7 @@ height:40px;
           </spacer>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBoxGepth">
+          <widget class="QGroupBox" name="groupBoxDepth">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -235,6 +261,19 @@ height:40px;
              <number>0</number>
             </property>
             <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
              <widget class="QPushButton" name="pushButtonDepthMimus">
               <property name="styleSheet">
                <string notr="true">text-decoration: none</string>
@@ -256,12 +295,15 @@ height:40px;
              </widget>
             </item>
             <item>
-             <widget class="QScrollBar" name="horizontalScrollBar">
+             <widget class="QSlider" name="horizontalSlider">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>50</height>
+                <height>300</height>
                </size>
+              </property>
+              <property name="sliderPosition">
+               <number>30</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -288,6 +330,19 @@ height:40px;
                </size>
               </property>
              </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -430,6 +485,12 @@ height:40px;
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <item>
                   <widget class="QSlider" name="horizontalSliderRingBrightness">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>300</height>
+                    </size>
+                   </property>
                    <property name="value">
                     <number>50</number>
                    </property>
@@ -518,6 +579,12 @@ height:40px;
                 <layout class="QVBoxLayout" name="verticalLayout_7">
                  <item>
                   <widget class="QSlider" name="horizontalSliderImageBrightness">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>300</height>
+                    </size>
+                   </property>
                    <property name="value">
                     <number>50</number>
                    </property>
@@ -546,6 +613,12 @@ height:40px;
                 <layout class="QVBoxLayout" name="verticalLayout_8">
                  <item>
                   <widget class="QSlider" name="horizontalSliderImageContrast">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>300</height>
+                    </size>
+                   </property>
                    <property name="value">
                     <number>50</number>
                    </property>

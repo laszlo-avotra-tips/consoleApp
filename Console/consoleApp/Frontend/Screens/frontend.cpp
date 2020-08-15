@@ -1937,7 +1937,7 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 
 void frontend::updateSector(OCTFile::OctData_t* frameData)
 {
-
+    static int count = -1;
     if(frameData && m_scene && m_scanWorker){
 
         const auto* sm =  SignalModel::instance();
@@ -1958,7 +1958,8 @@ void frontend::updateSector(OCTFile::OctData_t* frameData)
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
                 }
-                m_scene->setDoPaint();
+                if(++count % 16 == 0)
+                    m_scene->setDoPaint();
             }
         }
     }
