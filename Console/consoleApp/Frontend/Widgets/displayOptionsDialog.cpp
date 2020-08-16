@@ -156,6 +156,10 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 
 void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int value)
 {
+}
+
+void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int value)
+{
     userSettings::Instance().setReticleBrightness(value);
     emit reticleBrightnessChanged(value);
 }

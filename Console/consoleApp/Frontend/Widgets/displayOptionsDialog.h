@@ -49,6 +49,8 @@ private slots:
 
     void on_horizontalSliderImageBrightness_valueChanged(int value);
 
+    void on_horizontalSliderRingBrightness_valueChanged(int value);
+
 private:
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};
