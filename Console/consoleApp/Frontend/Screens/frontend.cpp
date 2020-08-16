@@ -1958,7 +1958,7 @@ void frontend::updateSector(OCTFile::OctData_t* frameData)
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
                 }
-//                if(++count % 16 == 0)
+                if(++count % 2 == 0)
                     m_scene->setDoPaint();
             }
         }
