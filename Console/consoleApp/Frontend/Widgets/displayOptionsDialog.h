@@ -48,9 +48,10 @@ private:
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
-    const std::vector<int> m_imagingDepth{0,375,450,525,600};
+    const std::vector<int> m_imagingDepth{0,300,375,450,525,600};
     const std::map<int,int> m_m_imagingDepthIndexLut
     {
+        { 300,0},
         { 375,1},
         { 450,2},
         { 525,3},

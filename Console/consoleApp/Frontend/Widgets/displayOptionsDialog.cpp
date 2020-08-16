@@ -111,7 +111,7 @@ void DisplayOptionsDialog::on_radioButtonSepia_clicked(bool checked)
 void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
 {
     auto val = ui->horizontalSlider->value();
-    if(val > 1 && val <= 4 ){
+    if(val > 1 && val <= 5 ){
         int newVal = val - 1;
         if(m_depthIndex != newVal){
             m_depthIndex = newVal;
@@ -125,7 +125,7 @@ void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
 void DisplayOptionsDialog::on_pushButtonDepthPlus_clicked()
 {
     auto val = ui->horizontalSlider->value();
-    if(val < 4 && val >= 0) {
+    if(val < 5 && val >= 0) {
         int newVal = val + 1;
         if(m_depthIndex != newVal){
             m_depthIndex = newVal;
