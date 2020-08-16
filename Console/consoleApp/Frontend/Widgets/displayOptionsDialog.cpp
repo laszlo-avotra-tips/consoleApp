@@ -3,8 +3,10 @@
 #include "logger.h"
 #include "signalmodel.h"
 #include "Utility/userSettings.h"
-#include <QGraphicsView>
 #include "livescene.h"
+#include "depthsetting.h"
+
+#include <QGraphicsView>
 
 DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     QDialog(parent),
@@ -105,3 +107,39 @@ void DisplayOptionsDialog::on_radioButtonSepia_clicked(bool checked)
     LOG1(checked)
     m_scene->loadColorModeSepia();
 }
+
+void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
+{
+    auto val = ui->horizontalSlider->value();
+    if(val > 1 && val <= 4 ){
+        int newVal = val - 1;
+        if(m_depthIndex != newVal){
+            m_depthIndex = newVal;
+            ui->horizontalSlider->setValue(m_depthIndex);
+            ui->horizontalSlider->valueChanged(m_depthIndex);
+            setImagingDepth(m_depthIndex);
+        }
+    }
+}
+
+void DisplayOptionsDialog::on_pushButtonDepthPlus_clicked()
+{
+    auto val = ui->horizontalSlider->value();
+    if(val < 4 && val >= 0) {
+        int newVal = val + 1;
+        if(m_depthIndex != newVal){
+            m_depthIndex = newVal;
+            ui->horizontalSlider->setValue(m_depthIndex);
+            ui->horizontalSlider->valueChanged(m_depthIndex);
+            setImagingDepth(m_depthIndex);
+        }
+    }
+}
+
+void DisplayOptionsDialog::setImagingDepth(int depthIndex)
+{
+    depthSetting &depthManager = depthSetting::Instance();
+    depthManager.updateImagingDepth(m_imagingDepth[depthIndex]);
+
+}
+

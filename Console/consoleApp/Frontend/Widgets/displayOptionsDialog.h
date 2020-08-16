@@ -2,6 +2,8 @@
 #define DISPLAYOPTIONSDIALOG_H
 
 #include <QDialog>
+#include <map>
+#include <vector>
 
 class liveScene;
 class QGraphicsView;
@@ -36,10 +38,26 @@ private slots:
 
     void on_radioButtonSepia_clicked(bool checked);
 
+    void on_pushButtonDepthMimus_clicked();
+
+    void on_pushButtonDepthPlus_clicked();
+
+    void setImagingDepth(int depth);
+
 private:
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
+    const std::vector<int> m_imagingDepth{0,375,450,525,600};
+    const std::map<int,int> m_m_imagingDepthIndexLut
+    {
+        { 375,1},
+        { 450,2},
+        { 525,3},
+        { 600,4}
+    };
+    int m_depthIndex{1};
+
 };
 
 #endif // DISPLAYOPTIONSDIALOG_H
