@@ -24,6 +24,7 @@ public:
 signals:
     void setColorModeSepia();
     void setColorModeGray();
+    void reticleBrightnessChanged(int);
 
 private slots:
     void on_pushButtonDone_clicked();

@@ -363,8 +363,12 @@ void MainScreen::openDisplayOptionsDialog()
     auto dialog = new DisplayOptionsDialog(this);
 
     if(dialog){
-        dialog->show();
         dialog->setScene(m_scene);
+
+        connect( dialog, &DisplayOptionsDialog::reticleBrightnessChanged,
+                 m_scene,     &liveScene::handleReticleBrightnessChanged );
+
+        dialog->show();
         result = dialog->exec();
 
         if( result != QDialog::Accepted){
