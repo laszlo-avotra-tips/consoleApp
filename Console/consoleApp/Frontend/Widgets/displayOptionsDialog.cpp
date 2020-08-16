@@ -143,3 +143,8 @@ void DisplayOptionsDialog::setImagingDepth(int depthIndex)
 
 }
 
+
+void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
+{
+    setImagingDepth(value);
+}

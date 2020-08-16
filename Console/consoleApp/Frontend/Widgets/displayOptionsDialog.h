@@ -44,6 +44,8 @@ private slots:
 
     void setImagingDepth(int depth);
 
+    void on_horizontalSlider_valueChanged(int value);
+
 private:
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};
