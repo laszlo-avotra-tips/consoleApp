@@ -116,7 +116,7 @@ void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
         if(m_depthIndex != newVal){
             m_depthIndex = newVal;
             ui->horizontalSlider->setValue(m_depthIndex);
-            ui->horizontalSlider->valueChanged(m_depthIndex);
+//            ui->horizontalSlider->valueChanged(m_depthIndex);
             setImagingDepth(m_depthIndex);
         }
     }
@@ -125,12 +125,12 @@ void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
 void DisplayOptionsDialog::on_pushButtonDepthPlus_clicked()
 {
     auto val = ui->horizontalSlider->value();
-    if(val < 5 && val >= 0) {
+    if(val < 5 && val >= 1) {
         int newVal = val + 1;
         if(m_depthIndex != newVal){
             m_depthIndex = newVal;
             ui->horizontalSlider->setValue(m_depthIndex);
-            ui->horizontalSlider->valueChanged(m_depthIndex);
+//            ui->horizontalSlider->valueChanged(m_depthIndex);
             setImagingDepth(m_depthIndex);
         }
     }
@@ -146,5 +146,10 @@ void DisplayOptionsDialog::setImagingDepth(int depthIndex)
 
 void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 {
-    setImagingDepth(value);
+    if(value > 0){
+        m_depthIndex = value;
+        setImagingDepth(value);
+    } else {
+        ui->horizontalSlider->setValue(1);
+    }
 }
