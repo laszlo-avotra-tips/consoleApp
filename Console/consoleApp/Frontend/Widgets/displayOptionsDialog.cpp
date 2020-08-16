@@ -29,8 +29,8 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
-//    ui->groupBoxCatheterUpDown->title().front().
-
+    const auto reticleBrightness = userSettings::Instance().reticleBrightness();
+    ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
 }
 
 void DisplayOptionsDialog::setScene(liveScene *scene)
@@ -152,4 +152,9 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
     } else {
         ui->horizontalSlider->setValue(1);
     }
+}
+
+void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int value)
+{
+    userSettings::Instance().setReticleBrightness(value);
 }
