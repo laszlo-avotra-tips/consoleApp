@@ -162,7 +162,7 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int va
 
 void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int value)
 {
-    SignalModel::instance()->setBlackLevel(value);
+    SignalModel::instance()->setWhiteLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( value );
 }
@@ -170,7 +170,7 @@ void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int v
 
 void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int value)
 {
-    SignalModel::instance()->setWhiteLevel(value);
+    SignalModel::instance()->setBlackLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setContrast( value );
 }
