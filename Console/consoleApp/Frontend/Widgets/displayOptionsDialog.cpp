@@ -154,12 +154,23 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
     }
 }
 
-void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int value)
-{
-}
-
 void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int value)
 {
     userSettings::Instance().setReticleBrightness(value);
     emit reticleBrightnessChanged(value);
+}
+
+void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int value)
+{
+    SignalModel::instance()->setBlackLevel(value);
+    userSettings &settings = userSettings::Instance();
+    settings.setBrightness( value );
+}
+
+
+void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int value)
+{
+    SignalModel::instance()->setWhiteLevel(value);
+    userSettings &settings = userSettings::Instance();
+    settings.setContrast( value );
 }
