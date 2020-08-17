@@ -75,14 +75,11 @@ void DisplayOptionsDialog::on_radioButtonDown_clicked(bool checked)
         settings.setCatheterView( userSettings::ProximalToDistal );
         LOG( INFO, "Catheter view: Up - proximal to distal" )
     }
-
-//        emit updateCatheterView();
 }
 
 void DisplayOptionsDialog::on_radioButtonUp_clicked(bool checked)
 {
     LOG1(checked)
-//    SignalModel::instance()->setIsDistalToProximalView(true);
     userSettings &settings = userSettings::Instance();
 
     if( checked )
@@ -118,7 +115,6 @@ void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
         if(m_depthIndex != newVal){
             m_depthIndex = newVal;
             ui->horizontalSlider->setValue(m_depthIndex);
-//            ui->horizontalSlider->valueChanged(m_depthIndex);
             setImagingDepth(m_depthIndex);
         }
     }
@@ -132,7 +128,6 @@ void DisplayOptionsDialog::on_pushButtonDepthPlus_clicked()
         if(m_depthIndex != newVal){
             m_depthIndex = newVal;
             ui->horizontalSlider->setValue(m_depthIndex);
-//            ui->horizontalSlider->valueChanged(m_depthIndex);
             setImagingDepth(m_depthIndex);
         }
     }
@@ -156,25 +151,25 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
     }
 }
 
-void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int value)
+void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness)
 {
-    userSettings::Instance().setReticleBrightness(value);
-    emit reticleBrightnessChanged(value);
+    userSettings::Instance().setReticleBrightness(reticleBrightness);
+    emit reticleBrightnessChanged(reticleBrightness);
 }
 
-void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int value)
+void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
 {
-    SignalModel::instance()->setWhiteLevel(value);
+    SignalModel::instance()->setWhiteLevel(brightness);
     userSettings &settings = userSettings::Instance();
-    settings.setBrightness( value );
+    settings.setBrightness( brightness );
 }
 
 
-void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int value)
+void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int contrast)
 {
-    SignalModel::instance()->setBlackLevel(value);
+    SignalModel::instance()->setBlackLevel(contrast);
     userSettings &settings = userSettings::Instance();
-    settings.setContrast( value );
+    settings.setContrast( contrast );
 }
 
 void DisplayOptionsDialog::initBrightnessAndContrast()
