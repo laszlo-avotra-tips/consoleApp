@@ -118,6 +118,8 @@ void advancedView::addScanline()
 void advancedView::handleBrightnessChanged(int value)
 {
     emit brightnessChanged(value); // Let the DSP know.
+    const auto& brightness{value};
+    LOG1(brightness)
 
     SignalModel::instance()->setBlackLevel(value);
     userSettings &settings = userSettings::Instance();
@@ -135,6 +137,8 @@ void advancedView::handleContrastChanged(int value)
 {
     //lcv    ui.fftDataPlot->changeContrast(value);
     emit contrastChanged(value); // Let the DSP know.
+    const auto& contrast{value};
+    LOG1(contrast)
 
     SignalModel::instance()->setWhiteLevel(value);
     userSettings &settings = userSettings::Instance();
