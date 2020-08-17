@@ -25,6 +25,10 @@ font-weight:600
 QFrame{
 border:0px;
 }
+QPushButton{
+font:12pt;
+color:black;
+}
 QGroupBox{
 border:0px;
 font:24pt &quot;Helvetica Neue&quot;;
@@ -303,8 +307,20 @@ background: rgb( 69, 69, 69 );
              <widget class="QSlider" name="horizontalSlider">
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>800</width>
                 <height>300</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>800</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="sizeIncrement">
+               <size>
+                <width>1</width>
+                <height>0</height>
                </size>
               </property>
               <property name="minimum">
@@ -416,8 +432,14 @@ background: rgb( 69, 69, 69 );
                <widget class="QGroupBox" name="groupBoxCatheterUpDown">
                 <property name="minimumSize">
                  <size>
-                  <width>500</width>
+                  <width>800</width>
                   <height>400</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>500</width>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -434,7 +456,7 @@ background: rgb( 69, 69, 69 );
                   <number>0</number>
                  </property>
                  <property name="topMargin">
-                  <number>40</number>
+                  <number>80</number>
                  </property>
                  <property name="rightMargin">
                   <number>0</number>
@@ -497,34 +519,63 @@ background: rgb( 69, 69, 69 );
                 <property name="flat">
                  <bool>false</bool>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_5">
+                <layout class="QVBoxLayout" name="verticalLayout_11">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
                  <property name="topMargin">
-                  <number>50</number>
+                  <number>80</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
                  </property>
                  <item>
-                  <widget class="QSlider" name="horizontalSliderRingBrightness">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>300</height>
-                    </size>
-                   </property>
-                   <property name="maximum">
-                    <number>255</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>10</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>50</number>
-                   </property>
-                   <property name="value">
-                    <number>200</number>
-                   </property>
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                  </widget>
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <item>
+                    <widget class="QSlider" name="horizontalSliderRingBrightness">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>200</height>
+                      </size>
+                     </property>
+                     <property name="maximum">
+                      <number>255</number>
+                     </property>
+                     <property name="singleStep">
+                      <number>10</number>
+                     </property>
+                     <property name="pageStep">
+                      <number>50</number>
+                     </property>
+                     <property name="value">
+                      <number>200</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_5">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>80</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </widget>
@@ -537,8 +588,14 @@ background: rgb( 69, 69, 69 );
                <widget class="QGroupBox" name="groupBoxImageColor">
                 <property name="minimumSize">
                  <size>
-                  <width>500</width>
+                  <width>800</width>
                   <height>400</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>500</width>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -551,6 +608,9 @@ background: rgb( 69, 69, 69 );
                  <set>Qt::AlignCenter</set>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
+                 <property name="topMargin">
+                  <number>80</number>
+                 </property>
                  <item>
                   <widget class="QRadioButton" name="radioButtonGrey">
                    <property name="minimumSize">
@@ -586,6 +646,22 @@ background: rgb( 69, 69, 69 );
                    </property>
                   </widget>
                  </item>
+                 <item>
+                  <spacer name="verticalSpacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>240</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
                 </layout>
                </widget>
               </item>
@@ -612,7 +688,7 @@ background: rgb( 69, 69, 69 );
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>300</height>
+                     <height>200</height>
                     </size>
                    </property>
                    <property name="minimum">
@@ -664,7 +740,7 @@ background: rgb( 69, 69, 69 );
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>300</height>
+                     <height>200</height>
                     </size>
                    </property>
                    <property name="minimum">
@@ -730,6 +806,10 @@ background: rgb( 69, 69, 69 );
                <width>200</width>
                <height>60</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color:#636363;
+border: 1px solid rgb( 128, 128, 128 );</string>
              </property>
              <property name="text">
               <string>TECH VIEW</string>
@@ -803,6 +883,10 @@ background: rgb( 69, 69, 69 );
                 <height>60</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">background-color:#636363;
+border: 1px solid rgb( 128, 128, 128 );</string>
+              </property>
               <property name="text">
                <string>&lt; BACK</string>
               </property>
@@ -815,6 +899,10 @@ background: rgb( 69, 69, 69 );
                 <width>200</width>
                 <height>60</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color:#F5C400;
+border: 1px solid rgb( 128, 128, 128 );</string>
               </property>
               <property name="text">
                <string>DONE</string>
