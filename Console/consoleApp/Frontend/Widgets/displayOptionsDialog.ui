@@ -26,8 +26,9 @@ QFrame{
 border:0px;
 }
 QPushButton{
-font:12pt;
-color:black;
+font:20pt;
+color:white;
+border-radius: 10px;
 }
 QGroupBox{
 border:0px;
@@ -45,8 +46,8 @@ height:40px;
 QSlider::groove:horizontal {
 border: 1px solid rgb(  191, 191, 191 );
 background: white;
-height: 30px;
-border-radius: 5px;
+height: 20px;
+border-radius: 10px;
 }
 QSlider::sub-page:horizontal {
 background: rgb( 51, 51, 51 );
@@ -57,14 +58,15 @@ border-radius: 6px;
 QSlider::sub-page:horizontal {
 background:#F5C400;
 border: 1px solid #F5C400;
-height: 30px;
-border-radius: 15px;
+height: 20px;
+border-radius: 10px;
 }
 QSlider::handle:horizontal {
 /* image: url(:images/handle_normal.png);*/
-width: 50px;
+width: 30px;
 margin: -30px 0;
 background: rgb( 69, 69, 69 );
+border-radius: 10px;
 }
 </string>
   </property>
@@ -79,10 +81,10 @@ background: rgb( 69, 69, 69 );
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>60</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>40</number>
    </property>
    <item>
     <widget class="QFrame" name="frameTop">
@@ -142,6 +144,21 @@ background: rgb( 69, 69, 69 );
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QFrame" name="frameImage">
         <property name="minimumSize">
@@ -163,6 +180,9 @@ background: rgb( 69, 69, 69 );
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -202,6 +222,9 @@ background: rgb( 69, 69, 69 );
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -238,7 +261,7 @@ background: rgb( 69, 69, 69 );
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>200</height>
+             <height>300</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -308,7 +331,7 @@ background: rgb( 69, 69, 69 );
               <property name="minimumSize">
                <size>
                 <width>800</width>
-                <height>300</height>
+                <height>150</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -392,6 +415,21 @@ background: rgb( 69, 69, 69 );
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <spacer name="verticalSpacer_4">
            <property name="orientation">
@@ -414,6 +452,9 @@ background: rgb( 69, 69, 69 );
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_9">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -428,6 +469,9 @@ background: rgb( 69, 69, 69 );
             </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QGroupBox" name="groupBoxCatheterUpDown">
                 <property name="minimumSize">
@@ -449,9 +493,12 @@ background: rgb( 69, 69, 69 );
                  <string>CATHETER ON FLUORO</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -514,7 +561,7 @@ background: rgb( 69, 69, 69 );
                  <string>RING BRIGHTNESS</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                 <property name="flat">
                  <bool>false</bool>
@@ -534,6 +581,9 @@ background: rgb( 69, 69, 69 );
                  </property>
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
                    <item>
                     <widget class="QSlider" name="horizontalSliderRingBrightness">
                      <property name="minimumSize">
@@ -570,7 +620,7 @@ background: rgb( 69, 69, 69 );
                      <property name="sizeHint" stdset="0">
                       <size>
                        <width>20</width>
-                       <height>80</height>
+                       <height>120</height>
                       </size>
                      </property>
                     </spacer>
@@ -584,6 +634,9 @@ background: rgb( 69, 69, 69 );
             </item>
             <item>
              <layout class="QGridLayout" name="gridLayout">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item row="0" column="0" rowspan="2">
                <widget class="QGroupBox" name="groupBoxImageColor">
                 <property name="minimumSize">
@@ -605,11 +658,23 @@ background: rgb( 69, 69, 69 );
                  <string>IMAGE COLOR</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
                  <property name="topMargin">
                   <number>80</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
                  </property>
                  <item>
                   <widget class="QRadioButton" name="radioButtonGrey">
@@ -674,14 +739,26 @@ background: rgb( 69, 69, 69 );
                  <string>IMAGE BRIGHTNESS</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                 <property name="flat">
                  <bool>false</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
                  <property name="topMargin">
                   <number>80</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
                  </property>
                  <item>
                   <widget class="QSlider" name="horizontalSliderImageBrightness">
@@ -723,17 +800,26 @@ background: rgb( 69, 69, 69 );
                  <string>IMAGE CONTRAST</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                 <property name="flat">
                  <bool>false</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_8">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
                  <property name="topMargin">
                   <number>80</number>
                  </property>
                  <property name="rightMargin">
-                  <number>9</number>
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
                  </property>
                  <item>
                   <widget class="QSlider" name="horizontalSliderImageContrast">
@@ -741,6 +827,12 @@ background: rgb( 69, 69, 69 );
                     <size>
                      <width>0</width>
                      <height>200</height>
+                    </size>
+                   </property>
+                   <property name="sizeIncrement">
+                    <size>
+                     <width>1</width>
+                     <height>3</height>
                     </size>
                    </property>
                    <property name="minimum">
@@ -761,6 +853,9 @@ background: rgb( 69, 69, 69 );
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
                    </property>
+                   <property name="invertedAppearance">
+                    <bool>false</bool>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -776,16 +871,22 @@ background: rgb( 69, 69, 69 );
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>40</height>
+             <height>80</height>
             </size>
            </property>
           </spacer>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <item>
             <spacer name="horizontalSpacer_5">
              <property name="orientation">
@@ -803,13 +904,14 @@ background: rgb( 69, 69, 69 );
             <widget class="QPushButton" name="pushButtonTechView">
              <property name="minimumSize">
               <size>
-               <width>200</width>
-               <height>60</height>
+               <width>400</width>
+               <height>100</height>
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color:#636363;
-border: 1px solid rgb( 128, 128, 128 );</string>
+              <string notr="true">background-color:black;
+border: 2px solid white;
+border-radius: 50px;</string>
              </property>
              <property name="text">
               <string>TECH VIEW</string>
@@ -860,7 +962,19 @@ border: 1px solid rgb( 128, 128, 128 );</string>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <property name="spacing">
-             <number>40</number>
+             <number>60</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
             <item>
              <spacer name="horizontalSpacer">
@@ -879,8 +993,8 @@ border: 1px solid rgb( 128, 128, 128 );</string>
              <widget class="QPushButton" name="pushButtonBack">
               <property name="minimumSize">
                <size>
-                <width>200</width>
-                <height>60</height>
+                <width>280</width>
+                <height>80</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -896,13 +1010,13 @@ border: 1px solid rgb( 128, 128, 128 );</string>
              <widget class="QPushButton" name="pushButtonDone">
               <property name="minimumSize">
                <size>
-                <width>200</width>
-                <height>60</height>
+                <width>280</width>
+                <height>80</height>
                </size>
               </property>
               <property name="styleSheet">
                <string notr="true">background-color:#F5C400;
-border: 1px solid rgb( 128, 128, 128 );</string>
+color: black;</string>
               </property>
               <property name="text">
                <string>DONE</string>
