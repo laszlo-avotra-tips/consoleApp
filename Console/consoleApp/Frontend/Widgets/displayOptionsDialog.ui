@@ -28,7 +28,6 @@ border:0px;
 QGroupBox{
 border:0px;
 font:24pt &quot;Helvetica Neue&quot;;
-font-weight:600;
 }
 QRadioButton{
 font:24pt &quot;Helvetica Neue&quot;;
@@ -55,7 +54,7 @@ QSlider::sub-page:horizontal {
 background:#F5C400;
 border: 1px solid #F5C400;
 height: 30px;
-border-radius: 6px;
+border-radius: 15px;
 }
 QSlider::handle:horizontal {
 /* image: url(:images/handle_normal.png);*/
@@ -378,6 +377,19 @@ background: rgb( 69, 69, 69 );
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
          <item>
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QFrame" name="frameImageControl">
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
@@ -422,7 +434,7 @@ background: rgb( 69, 69, 69 );
                   <number>0</number>
                  </property>
                  <property name="topMargin">
-                  <number>0</number>
+                  <number>40</number>
                  </property>
                  <property name="rightMargin">
                   <number>0</number>
@@ -486,6 +498,9 @@ background: rgb( 69, 69, 69 );
                  <bool>false</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <property name="topMargin">
+                  <number>50</number>
+                 </property>
                  <item>
                   <widget class="QSlider" name="horizontalSliderRingBrightness">
                    <property name="minimumSize">
@@ -589,6 +604,9 @@ background: rgb( 69, 69, 69 );
                  <bool>false</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="topMargin">
+                  <number>80</number>
+                 </property>
                  <item>
                   <widget class="QSlider" name="horizontalSliderImageBrightness">
                    <property name="minimumSize">
@@ -635,6 +653,12 @@ background: rgb( 69, 69, 69 );
                  <bool>false</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_8">
+                 <property name="topMargin">
+                  <number>80</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>9</number>
+                 </property>
                  <item>
                   <widget class="QSlider" name="horizontalSliderImageContrast">
                    <property name="minimumSize">
