@@ -54,6 +54,8 @@ private slots:
     void on_horizontalSliderImageContrast_valueChanged(int value);
 
 private:
+    void initBrightnessAndContrast();
+
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};

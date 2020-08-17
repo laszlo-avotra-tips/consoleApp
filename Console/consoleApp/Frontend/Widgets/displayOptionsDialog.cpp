@@ -31,6 +31,8 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
 
     const auto reticleBrightness = userSettings::Instance().reticleBrightness();
     ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
+
+    initBrightnessAndContrast();
 }
 
 void DisplayOptionsDialog::setScene(liveScene *scene)
@@ -173,4 +175,14 @@ void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int val
     SignalModel::instance()->setBlackLevel(value);
     userSettings &settings = userSettings::Instance();
     settings.setContrast( value );
+}
+
+void DisplayOptionsDialog::initBrightnessAndContrast()
+{
+    userSettings &settings = userSettings::Instance();
+    const auto& brightness = settings.brightness();
+    const auto& contrast = settings.contrast();
+
+    ui->horizontalSliderImageBrightness->setValue(brightness);
+    ui->horizontalSliderImageContrast->setValue(contrast);
 }
