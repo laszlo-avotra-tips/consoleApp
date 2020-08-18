@@ -25,7 +25,7 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
         ui->radioButtonUp->setChecked(true);
     }
 
-    const double scaleUp = 1.5; //lcv zomFactor
+    const double scaleUp = 1.43; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
