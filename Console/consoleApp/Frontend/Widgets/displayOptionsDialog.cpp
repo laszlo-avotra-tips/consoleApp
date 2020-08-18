@@ -155,6 +155,8 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
 {
     userSettings::Instance().setReticleBrightness(reticleBrightness);
     emit reticleBrightnessChanged(reticleBrightness);
+
+    ui->groupBoxRingBrightness->setTitle("RING BRIGHTNESS: " + QString::number(reticleBrightness * 100 / 255 ) + QString("%"));
 }
 
 void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
@@ -162,6 +164,7 @@ void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int b
     SignalModel::instance()->setBlackLevel(brightness);
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( brightness );
+    ui->groupBoxImageBrightness->setTitle("IMAGE BRIGHTNESS: " +  QString::number((brightness + 255) * 100 / 510 )  + QString("%"));
 }
 
 
@@ -170,6 +173,8 @@ void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int con
     SignalModel::instance()->setWhiteLevel(contrast);
     userSettings &settings = userSettings::Instance();
     settings.setContrast( contrast );
+
+    ui->groupBoxImageContrast->setTitle("IMAGE CONTRAST: " +  QString::number((contrast + 255) * 100 / 510 )  + QString("%"));
 }
 
 void DisplayOptionsDialog::initBrightnessAndContrast()
