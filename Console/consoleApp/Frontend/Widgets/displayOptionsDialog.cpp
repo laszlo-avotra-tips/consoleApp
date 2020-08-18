@@ -5,6 +5,7 @@
 #include "Utility/userSettings.h"
 #include "livescene.h"
 #include "depthsetting.h"
+#include "DisplayOptionsModel.h"
 
 #include <QGraphicsView>
 
@@ -174,6 +175,8 @@ void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int con
 
 void DisplayOptionsDialog::initBrightnessAndContrast()
 {
+    const auto* model = DisplayOptionsModel::instance();
+
     userSettings &settings = userSettings::Instance();
     const auto& brightness = settings.brightness();
     const auto& contrast = settings.contrast();
