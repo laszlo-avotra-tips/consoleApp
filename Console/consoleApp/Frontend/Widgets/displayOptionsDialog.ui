@@ -121,7 +121,7 @@ border-radius: 10px;
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>200</height>
+          <height>267</height>
          </size>
         </property>
         <property name="text">
@@ -148,7 +148,7 @@ border-radius: 10px;
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>118</number>
       </property>
       <property name="topMargin">
        <number>0</number>
@@ -163,13 +163,13 @@ border-radius: 10px;
        <widget class="QFrame" name="frameImage">
         <property name="minimumSize">
          <size>
-          <width>1600</width>
+          <width>1472</width>
           <height>1600</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>1600</width>
+          <width>1472</width>
           <height>2000</height>
          </size>
         </property>
@@ -205,14 +205,14 @@ border-radius: 10px;
            </property>
            <property name="minimumSize">
             <size>
-             <width>1600</width>
-             <height>1600</height>
+             <width>1472</width>
+             <height>1472</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>1600</width>
-             <height>1600</height>
+             <width>1472</width>
+             <height>1472</height>
             </size>
            </property>
            <property name="frameShape">
@@ -238,7 +238,20 @@ border-radius: 10px;
              <number>0</number>
             </property>
             <item>
-             <widget class="QGraphicsView" name="graphicsView"/>
+             <widget class="QGraphicsView" name="graphicsView">
+              <property name="minimumSize">
+               <size>
+                <width>1472</width>
+                <height>1472</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>1472</width>
+                <height>1472</height>
+               </size>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -261,7 +274,7 @@ border-radius: 10px;
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>300</height>
+             <height>240</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -273,9 +286,12 @@ border-radius: 10px;
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <property name="spacing">
-             <number>50</number>
+             <number>65</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -295,7 +311,7 @@ border-radius: 10px;
                <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
+               <enum>QSizePolicy::Expanding</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -320,8 +336,8 @@ border-radius: 10px;
               </property>
               <property name="iconSize">
                <size>
-                <width>100</width>
-                <height>100</height>
+                <width>112</width>
+                <height>112</height>
                </size>
               </property>
              </widget>
@@ -330,13 +346,13 @@ border-radius: 10px;
              <widget class="QSlider" name="horizontalSlider">
               <property name="minimumSize">
                <size>
-                <width>800</width>
+                <width>565</width>
                 <height>150</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>800</width>
+                <width>565</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -378,8 +394,8 @@ border-radius: 10px;
               </property>
               <property name="iconSize">
                <size>
-                <width>100</width>
-                <height>100</height>
+                <width>112</width>
+                <height>112</height>
                </size>
               </property>
              </widget>
@@ -390,7 +406,7 @@ border-radius: 10px;
                <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
+               <enum>QSizePolicy::Expanding</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -688,7 +704,7 @@ border-radius: 10px;
                     <string notr="true">text-decoration: none</string>
                    </property>
                    <property name="text">
-                    <string>GREY</string>
+                    <string>GRAY</string>
                    </property>
                    <property name="checked">
                     <bool>true</bool>
