@@ -2,11 +2,10 @@
 #include "ui_displayOptionsDialog.h"
 #include "logger.h"
 #include "signalmodel.h"
-#include "Utility/userSettings.h"
 #include "livescene.h"
 #include "depthsetting.h"
 #include "DisplayOptionsModel.h"
-
+#include "Utility/userSettings.h"
 #include <QGraphicsView>
 
 DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
@@ -30,10 +29,6 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
-    const auto reticleBrightness = userSettings::Instance().reticleBrightness();
-    ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
-
-    initBrightnessAndContrast();
 }
 
 void DisplayOptionsDialog::setScene(liveScene *scene)
@@ -41,6 +36,17 @@ void DisplayOptionsDialog::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
+    }
+}
+
+void DisplayOptionsDialog::setModel(DisplayOptionsModel *model)
+{
+    m_model = model;
+
+    if(m_model){
+        const auto reticleBrightness = m_model->reticleBrightness();
+        ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
+        initBrightnessAndContrast();
     }
 }
 
@@ -100,12 +106,18 @@ void DisplayOptionsDialog::on_radioButtonGrey_clicked(bool checked)
 {
     LOG1(checked)
     m_scene->loadColorModeGray();
+    if(m_model){
+        m_model->setIsImageColorGray(true);
+    }
 }
 
 void DisplayOptionsDialog::on_radioButtonSepia_clicked(bool checked)
 {
     LOG1(checked)
     m_scene->loadColorModeSepia();
+    if(m_model){
+        m_model->setIsImageColorGray(false);
+    }
 }
 
 void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
@@ -117,6 +129,7 @@ void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
             m_depthIndex = newVal;
             ui->horizontalSlider->setValue(m_depthIndex);
             setImagingDepth(m_depthIndex);
+            m_model->setDepthIndex(m_depthIndex);
         }
     }
 }
@@ -130,6 +143,7 @@ void DisplayOptionsDialog::on_pushButtonDepthPlus_clicked()
             m_depthIndex = newVal;
             ui->horizontalSlider->setValue(m_depthIndex);
             setImagingDepth(m_depthIndex);
+            m_model->setDepthIndex(m_depthIndex);
         }
     }
 }
@@ -138,7 +152,9 @@ void DisplayOptionsDialog::setImagingDepth(int depthIndex)
 {
     depthSetting &depthManager = depthSetting::Instance();
     depthManager.updateImagingDepth(m_imagingDepth[depthIndex]);
-
+    m_depthIndex = depthIndex;
+    m_model->setDepthIndex(m_depthIndex);
+    ui->horizontalSlider->setValue(depthIndex);
 }
 
 
@@ -146,41 +162,43 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 {
     if(value > 0){
         m_depthIndex = value;
-        setImagingDepth(value);
     } else {
-        ui->horizontalSlider->setValue(1);
+        m_depthIndex = 1;
     }
+    setImagingDepth(value);
 }
 
 void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness)
 {
-    userSettings::Instance().setReticleBrightness(reticleBrightness);
+//    userSettings::Instance().setReticleBrightness(reticleBrightness);
+    m_model->setImageBrightness(reticleBrightness);
     emit reticleBrightnessChanged(reticleBrightness);
 }
 
 void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
 {
     SignalModel::instance()->setBlackLevel(brightness);
-    userSettings &settings = userSettings::Instance();
-    settings.setBrightness( brightness );
+    m_model->setImageBrightness(brightness);
+//    userSettings &settings = userSettings::Instance();
+//    settings.setBrightness( brightness );
 }
 
 
 void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int contrast)
 {
     SignalModel::instance()->setWhiteLevel(contrast);
-    userSettings &settings = userSettings::Instance();
-    settings.setContrast( contrast );
+    m_model->setImageContrast(contrast);
+//    userSettings &settings = userSettings::Instance();
+//    settings.setContrast( contrast );
 }
 
 void DisplayOptionsDialog::initBrightnessAndContrast()
 {
-    const auto* model = DisplayOptionsModel::instance();
+    if(m_model){
+        const auto& brightness = m_model->imageBrightness();
+        const auto& contrast = m_model->imageContrast();
 
-    userSettings &settings = userSettings::Instance();
-    const auto& brightness = settings.brightness();
-    const auto& contrast = settings.contrast();
-
-    ui->horizontalSliderImageBrightness->setValue(brightness);
-    ui->horizontalSliderImageContrast->setValue(contrast);
+        ui->horizontalSliderImageBrightness->setValue(brightness);
+        ui->horizontalSliderImageContrast->setValue(contrast);
+    }
 }

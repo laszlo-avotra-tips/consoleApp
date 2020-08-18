@@ -7,7 +7,7 @@
 class DisplayOptionsModel
 {
 public:
-    static DisplayOptionsModel* instance();
+    DisplayOptionsModel();
 
     bool isPointedDown() const;
     void setIsPointedDown(bool isPointedDown);
@@ -27,10 +27,9 @@ public:
     uint8_t depthIndex() const;
     void setDepthIndex(const uint8_t &depthIndex);
 
-private:
-    DisplayOptionsModel();
-    static DisplayOptionsModel* m_instance;
+    void persistModel() const;
 
+private:
     bool m_isPointedDown{true};
     bool m_isImageColorGray{true};
     int  m_reticleBrightness{200};

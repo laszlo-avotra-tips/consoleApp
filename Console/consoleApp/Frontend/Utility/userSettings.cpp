@@ -13,7 +13,6 @@
 #include "userSettings.h"
 #include "defaults.h"
 #include "signalmodel.h"
-#include "Frontend/Widgets/DisplayOptionsModel.h"
 
 userSettings* userSettings::theSettings{nullptr};
 caseInfo* caseInfo::theInfo{nullptr};
@@ -32,18 +31,32 @@ userSettings::userSettings()
  */
 void userSettings::saveSettings()
 {
-    auto* displayOptionsModel = DisplayOptionsModel::instance();
-
-    reticleBrightnessVal = displayOptionsModel->reticleBrightness();
-    brightnessVal = displayOptionsModel->imageBrightness();
-    contrastVal = displayOptionsModel->imageContrast();
-
     settings->setValue( "image/brightness",               brightnessVal );
     settings->setValue( "image/contrast",                 contrastVal );
     settings->setValue( "image/reticleBrightness",        reticleBrightnessVal );
     settings->setValue( "image/laserIndicatorBrightness", laserIndicatorBrightnessVal );
     settings->setValue( "image/noiseReduction",           noiseReductionVal );
     settings->setValue( "image/useInvertOctColor",        invertOctColorEnabled );
+}
+
+int userSettings::getImageDepthIndex() const
+{
+    return m_imageDepthIndex;
+}
+
+void userSettings::setImageDepthIndex(int imageDepthIndex)
+{
+    m_imageDepthIndex = imageDepthIndex;
+}
+
+bool userSettings::getIsGray() const
+{
+    return m_isGray;
+}
+
+void userSettings::setIsGray(bool isGray)
+{
+    m_isGray = isGray;
 }
 
 int userSettings::getImageIndexDecimation() const
@@ -76,12 +89,6 @@ void userSettings::loadSettings()
     noiseReductionVal           = settings->value( "image/noiseReduction",           DefaultCurrFrameWeight_Percent ).toInt();
     invertOctColorEnabled       = settings->value( "image/useInvertOctColor",        DefaultUseInvertOctColor ).toBool();
     imageIndexDecimation        = settings->value( "log/imageIndexDecimation",       ImageIndexDecimationLog.defaultValue ).toInt();
-
-    auto* displayOptionsModel = DisplayOptionsModel::instance();
-
-    displayOptionsModel->setReticleBrightness(reticleBrightness());
-    displayOptionsModel->setImageBrightness(brightness());
-    displayOptionsModel->setImageContrast(contrast());
 }
 
 void userSettings::setBrightness(int level)

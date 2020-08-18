@@ -15,6 +15,7 @@
 #include "Frontend/Widgets/reviewAndSettingsDialog.h"
 #include "sledsupport.h"
 #include "displayOptionsDialog.h"
+#include "DisplayOptionsModel.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -360,7 +361,10 @@ void MainScreen::openCaseReview()
 void MainScreen::openDisplayOptionsDialog()
 {
     int result{-1};
+
+    auto model = DisplayOptionsModel();
     auto dialog = new DisplayOptionsDialog(this);
+    dialog->setModel(&model);
 
     if(dialog){
         dialog->setScene(m_scene);
@@ -373,6 +377,7 @@ void MainScreen::openDisplayOptionsDialog()
 
         if( result != QDialog::Accepted){
             on_pushButtonSettings_clicked();
+            model.persistModel();
         }
     }
 }

@@ -1,18 +1,15 @@
 #include "DisplayOptionsModel.h"
+#include "Utility/userSettings.h"
 
-DisplayOptionsModel* DisplayOptionsModel::m_instance{nullptr};
-
-DisplayOptionsModel *DisplayOptionsModel::instance()
-{
-    if(!m_instance){
-        m_instance = new DisplayOptionsModel();
-    }
-    return m_instance;
-}
 
 DisplayOptionsModel::DisplayOptionsModel()
 {
+    userSettings &settings = userSettings::Instance();
+    m_imageContrast = settings.contrast();
+    m_imageBrightness = settings.brightness();
+    m_reticleBrightness = settings.reticleBrightness();
 
+    m_isPointedDown = settings.isDistalToProximalView();
 }
 
 uint8_t DisplayOptionsModel::depthIndex() const
@@ -23,6 +20,21 @@ uint8_t DisplayOptionsModel::depthIndex() const
 void DisplayOptionsModel::setDepthIndex(const uint8_t &depthIndex)
 {
     m_depthIndex = depthIndex;
+}
+
+void DisplayOptionsModel::persistModel() const
+{
+    userSettings &settings = userSettings::Instance();
+    settings.setContrast(imageContrast());
+    settings.setBrightness(imageBrightness());
+    settings.setReticleBrightness(reticleBrightness());
+
+    if(m_isPointedDown){
+        settings.setCatheterView( userSettings::DistalToProximal );
+    } else {
+        settings.setCatheterView( userSettings::ProximalToDistal );
+    }
+
 }
 
 int DisplayOptionsModel::imageContrast() const

@@ -5,6 +5,8 @@
 #include <map>
 #include <vector>
 
+#include "DisplayOptionsModel.h"
+
 class liveScene;
 class QGraphicsView;
 
@@ -20,6 +22,7 @@ public:
     explicit DisplayOptionsDialog(QWidget *parent = nullptr);
     ~DisplayOptionsDialog();
     void setScene(liveScene* scene);
+    void setModel(DisplayOptionsModel* model);
 
 signals:
     void setColorModeSepia();
@@ -69,6 +72,8 @@ private:
         { 600,4}
     };
     int m_depthIndex{1};
+
+    DisplayOptionsModel* m_model{nullptr};
 
 };
 
