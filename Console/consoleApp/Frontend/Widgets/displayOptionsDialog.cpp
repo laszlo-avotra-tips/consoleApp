@@ -206,7 +206,7 @@ void DisplayOptionsDialog::initBrightnessAndContrast()
         SignalModel::instance()->setWhiteLevel(contrast);
         SignalModel::instance()->setBlackLevel(brightness);
 
-        ui->horizontalSliderImageBrightness->setValue(brightness);
-        ui->horizontalSliderImageContrast->setValue(contrast);
+//        ui->horizontalSliderImageBrightness->setValue(brightness);
+//        ui->horizontalSliderImageContrast->setValue(contrast);
     }
 }
