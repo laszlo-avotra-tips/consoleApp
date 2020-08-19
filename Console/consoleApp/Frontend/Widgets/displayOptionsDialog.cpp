@@ -176,7 +176,7 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
     emit reticleBrightnessChanged(reticleBrightness);
 
     ui->labelReticleBrightness->setNum(reticleBrightness * 100 / 255);
-    ui->labelReticleBrightness->setMargin(reticleBrightness * 2);
+//    ui->labelReticleBrightness->setMargin(reticleBrightness * 2);
 }
 
 void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
