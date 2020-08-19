@@ -17,9 +17,14 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLabel{
+   <string notr="true">QLabel#labelTitle{
 border-bottom:2px solid grey;
 font:36pt &quot;Helvetica Neue&quot;;
+font-weight:600
+}
+QLabel{
+border-bottom:2px solid grey;
+font:22pt &quot;Helvetica Neue&quot;;
 font-weight:600
 }
 QFrame{
@@ -102,7 +107,7 @@ border-radius: 10px;
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="labelTitle">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -582,7 +587,10 @@ border-radius: 10px;
                 <property name="flat">
                  <bool>false</bool>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_11">
+                <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -590,35 +598,102 @@ border-radius: 10px;
                   <number>120</number>
                  </property>
                  <property name="rightMargin">
-                  <number>0</number>
+                  <number>60</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>120</number>
+                  <number>40</number>
                  </property>
                  <item>
-                  <widget class="QSlider" name="horizontalSliderRingBrightness">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>112</height>
-                    </size>
-                   </property>
-                   <property name="maximum">
-                    <number>255</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>10</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>50</number>
-                   </property>
-                   <property name="value">
-                    <number>200</number>
-                   </property>
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                  </widget>
+                  <layout class="QHBoxLayout" name="horizontalLayout_8">
+                   <item>
+                    <spacer name="horizontalSpacerReticleBrightness">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>510</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="labelReticleBrightness">
+                     <property name="styleSheet">
+                      <string notr="true">text-decoration: none</string>
+                     </property>
+                     <property name="text">
+                      <string>44</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_7">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_7">
+                   <item>
+                    <widget class="QLabel" name="label_2">
+                     <property name="styleSheet">
+                      <string notr="true">text-decoration: none</string>
+                     </property>
+                     <property name="text">
+                      <string>0</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSlider" name="horizontalSliderRingBrightness">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>102</height>
+                      </size>
+                     </property>
+                     <property name="maximum">
+                      <number>255</number>
+                     </property>
+                     <property name="singleStep">
+                      <number>10</number>
+                     </property>
+                     <property name="pageStep">
+                      <number>50</number>
+                     </property>
+                     <property name="value">
+                      <number>200</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_3">
+                     <property name="styleSheet">
+                      <string notr="true">text-decoration: none</string>
+                     </property>
+                     <property name="text">
+                      <string>100</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </widget>
