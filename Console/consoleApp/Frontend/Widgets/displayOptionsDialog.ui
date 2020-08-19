@@ -18,7 +18,6 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel#labelTitle{
-border-bottom:2px solid grey;
 font:36pt &quot;Helvetica Neue&quot;;
 font-weight:600
 }
@@ -30,7 +29,7 @@ QFrame{
 border:0px;
 }
 QPushButton{
-font:20pt;
+font:19pt;
 color:white;
 border-radius: 10px;
 }
