@@ -44,9 +44,15 @@ private slots:
 
     void on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness);
 
+    void handleUp();
+    void handleDown();
+    void updateUpDownButtonColor();
+    void updateDistalToProximalSetting(bool isUp);
+
 
 private:
     void initBrightnessAndContrast();
+    void initUpDown();
 
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};

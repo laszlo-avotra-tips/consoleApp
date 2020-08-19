@@ -18,13 +18,6 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
-    userSettings &settings = userSettings::Instance();
-//    if(settings.isDistalToProximalView()){
-//        ui->radioButtonDown->setChecked(true);
-//    } else {
-//        ui->radioButtonUp->setChecked(true);
-//    }
-
     const double scaleUp = 1.43; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
@@ -47,6 +40,7 @@ void DisplayOptionsDialog::setModel(DisplayOptionsModel *model)
         const auto reticleBrightness = m_model->reticleBrightness();
         ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
         initBrightnessAndContrast();
+        initUpDown();
     }
 }
 
@@ -176,7 +170,51 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
     emit reticleBrightnessChanged(reticleBrightness);
 
     ui->labelReticleBrightness->setNum(reticleBrightness * 100 / 255);
-//    ui->labelReticleBrightness->setMargin(reticleBrightness * 2);
+    //    ui->labelReticleBrightness->setMargin(reticleBrightness * 2);
+}
+
+void DisplayOptionsDialog::handleUp()
+{
+    if(m_model->isPointedDown()){
+        m_model->setIsPointedDown(false);
+    }
+    updateUpDownButtonColor();
+    updateDistalToProximalSetting(true);
+}
+
+void DisplayOptionsDialog::handleDown()
+{
+    if(!m_model->isPointedDown()){
+        m_model->setIsPointedDown(true);
+    }
+    updateUpDownButtonColor();
+    updateDistalToProximalSetting(false);
+}
+
+void DisplayOptionsDialog::updateUpDownButtonColor()
+{
+    const QString on("background-color: #F5C400;\nborder-radius: 30;");
+    const QString off("background-color: #ffffff;\nborder-radius: 30;");
+
+    if(m_model->isPointedDown()){
+        ui->pushButtonUp->setStyleSheet(off);
+        ui->pushButtonDown->setStyleSheet(on);
+    } else {
+         ui->pushButtonUp->setStyleSheet(on);
+         ui->pushButtonDown->setStyleSheet(off);
+    }
+}
+
+void DisplayOptionsDialog::updateDistalToProximalSetting(bool isUp)
+{
+    userSettings &settings = userSettings::Instance();
+    if(isUp){
+        settings.setCatheterView(userSettings::ProximalToDistal);
+        LOG( INFO, "Catheter view: Up - proximal to distal" )
+    } else {
+        settings.setCatheterView(userSettings::DistalToProximal);
+        LOG( INFO, "Catheter view: Down - distal to proximal" )
+    }
 }
 
 //void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
@@ -208,5 +246,21 @@ void DisplayOptionsDialog::initBrightnessAndContrast()
 
 //        ui->horizontalSliderImageBrightness->setValue(brightness);
 //        ui->horizontalSliderImageContrast->setValue(contrast);
+    }
+}
+
+void DisplayOptionsDialog::initUpDown()
+{
+    connect(ui->pushButtonUp, &QPushButton::clicked, this, &DisplayOptionsDialog::handleUp);
+    connect(ui->pushButtonDown, &QPushButton::clicked, this, &DisplayOptionsDialog::handleDown);
+
+    userSettings &settings = userSettings::Instance();
+    bool isDown = settings.isDistalToProximalView();
+
+    if(isDown)
+    {
+        handleDown();
+    } else {
+        handleUp();
     }
 }
