@@ -614,7 +614,7 @@ border-radius: 10px;
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
-                       <width>510</width>
+                       <width>40</width>
                        <height>20</height>
                       </size>
                      </property>
@@ -622,6 +622,24 @@ border-radius: 10px;
                    </item>
                    <item>
                     <widget class="QLabel" name="labelReticleBrightness">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>1</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>40</height>
+                      </size>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">text-decoration: none</string>
                      </property>
@@ -656,7 +674,7 @@ border-radius: 10px;
                       <string notr="true">text-decoration: none</string>
                      </property>
                      <property name="text">
-                      <string>0</string>
+                      <string>  0</string>
                      </property>
                     </widget>
                    </item>
