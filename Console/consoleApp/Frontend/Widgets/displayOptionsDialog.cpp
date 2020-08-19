@@ -29,6 +29,9 @@ void DisplayOptionsDialog::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
+        if(m_model){
+            initSepiaGray();
+        }
     }
 }
 
@@ -41,7 +44,9 @@ void DisplayOptionsDialog::setModel(DisplayOptionsModel *model)
         ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
         initBrightnessAndContrast();
         initUpDown();
-        initSepiaGray();
+        if(m_scene){
+            initSepiaGray();
+        }
     }
 }
 
