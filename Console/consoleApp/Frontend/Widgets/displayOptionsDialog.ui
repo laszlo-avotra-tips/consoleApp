@@ -525,50 +525,6 @@ border-radius: 10px;
                  <property name="bottomMargin">
                   <number>60</number>
                  </property>
-                 <item>
-                  <widget class="QRadioButton" name="radioButtonDown">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">text-decoration: none</string>
-                   </property>
-                   <property name="text">
-                    <string>POINTED DOWN</string>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>100</width>
-                     <height>100</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButtonUp">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">text-decoration: none</string>
-                   </property>
-                   <property name="text">
-                    <string>POINTED UP</string>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>100</width>
-                     <height>100</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </item>
@@ -767,41 +723,6 @@ border-radius: 10px;
                  <property name="bottomMargin">
                   <number>220</number>
                  </property>
-                 <item>
-                  <widget class="QRadioButton" name="radioButtonGrey">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">text-decoration: none</string>
-                   </property>
-                   <property name="text">
-                    <string>GRAY</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButtonSepia">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">text-decoration: none</string>
-                   </property>
-                   <property name="text">
-                    <string>SEPIA</string>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </item>

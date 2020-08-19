@@ -19,11 +19,11 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
     userSettings &settings = userSettings::Instance();
-    if(settings.isDistalToProximalView()){
-        ui->radioButtonDown->setChecked(true);
-    } else {
-        ui->radioButtonUp->setChecked(true);
-    }
+//    if(settings.isDistalToProximalView()){
+//        ui->radioButtonDown->setChecked(true);
+//    } else {
+//        ui->radioButtonUp->setChecked(true);
+//    }
 
     const double scaleUp = 1.43; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
@@ -67,58 +67,58 @@ void DisplayOptionsDialog::on_pushButtonBack_clicked()
     reject();
 }
 
-void DisplayOptionsDialog::on_radioButtonDown_clicked(bool checked)
-{
-    LOG1(checked)
-    userSettings &settings = userSettings::Instance();
+//void DisplayOptionsDialog::on_radioButtonDown_clicked(bool checked)
+//{
+//    LOG1(checked)
+//    userSettings &settings = userSettings::Instance();
 
-    if( checked )
-    {
-        settings.setCatheterView( userSettings::DistalToProximal );
-        LOG( INFO, "Catheter view: Down - distal to proximal" )
-    }
-    else
-    {
-        settings.setCatheterView( userSettings::ProximalToDistal );
-        LOG( INFO, "Catheter view: Up - proximal to distal" )
-    }
-}
+//    if( checked )
+//    {
+//        settings.setCatheterView( userSettings::DistalToProximal );
+//        LOG( INFO, "Catheter view: Down - distal to proximal" )
+//    }
+//    else
+//    {
+//        settings.setCatheterView( userSettings::ProximalToDistal );
+//        LOG( INFO, "Catheter view: Up - proximal to distal" )
+//    }
+//}
 
-void DisplayOptionsDialog::on_radioButtonUp_clicked(bool checked)
-{
-    LOG1(checked)
-    userSettings &settings = userSettings::Instance();
+//void DisplayOptionsDialog::on_radioButtonUp_clicked(bool checked)
+//{
+//    LOG1(checked)
+//    userSettings &settings = userSettings::Instance();
 
-    if( checked )
-    {
-        settings.setCatheterView( userSettings::ProximalToDistal );
-        LOG( INFO, "Catheter view: Up - proximal to distal" )
-    }
-    else
-    {
-        settings.setCatheterView( userSettings::DistalToProximal );
-        LOG( INFO, "Catheter view: Down - distal to proximal" )
-    }
-    //        emit updateCatheterView();
-}
+//    if( checked )
+//    {
+//        settings.setCatheterView( userSettings::ProximalToDistal );
+//        LOG( INFO, "Catheter view: Up - proximal to distal" )
+//    }
+//    else
+//    {
+//        settings.setCatheterView( userSettings::DistalToProximal );
+//        LOG( INFO, "Catheter view: Down - distal to proximal" )
+//    }
+//    //        emit updateCatheterView();
+//}
 
-void DisplayOptionsDialog::on_radioButtonGrey_clicked(bool checked)
-{
-    LOG1(checked)
-    m_scene->loadColorModeGray();
-    if(m_model){
-        m_model->setIsImageColorGray(true);
-    }
-}
+//void DisplayOptionsDialog::on_radioButtonGrey_clicked(bool checked)
+//{
+//    LOG1(checked)
+//    m_scene->loadColorModeGray();
+//    if(m_model){
+//        m_model->setIsImageColorGray(true);
+//    }
+//}
 
-void DisplayOptionsDialog::on_radioButtonSepia_clicked(bool checked)
-{
-    LOG1(checked)
-    m_scene->loadColorModeSepia();
-    if(m_model){
-        m_model->setIsImageColorGray(false);
-    }
-}
+//void DisplayOptionsDialog::on_radioButtonSepia_clicked(bool checked)
+//{
+//    LOG1(checked)
+//    m_scene->loadColorModeSepia();
+//    if(m_model){
+//        m_model->setIsImageColorGray(false);
+//    }
+//}
 
 void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
 {

@@ -34,14 +34,6 @@ private slots:
 
     void on_pushButtonBack_clicked();
 
-    void on_radioButtonDown_clicked(bool checked);
-
-    void on_radioButtonUp_clicked(bool checked);
-
-    void on_radioButtonGrey_clicked(bool checked);
-
-    void on_radioButtonSepia_clicked(bool checked);
-
     void on_pushButtonDepthMimus_clicked();
 
     void on_pushButtonDepthPlus_clicked();
