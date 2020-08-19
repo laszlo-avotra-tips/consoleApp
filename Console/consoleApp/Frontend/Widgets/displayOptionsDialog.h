@@ -48,11 +48,16 @@ private slots:
     void handleDown();
     void updateUpDownButtonColor();
     void updateDistalToProximalSetting(bool isUp);
+    void handleGray();
+    void handleSepia();
+    void updateGraySepiaButtonColor();
+    void updateGraySepiaSetting();
 
 
 private:
     void initBrightnessAndContrast();
     void initUpDown();
+    void initSepiaGray();
 
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};

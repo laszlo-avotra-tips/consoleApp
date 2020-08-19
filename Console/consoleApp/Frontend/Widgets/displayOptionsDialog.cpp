@@ -41,6 +41,7 @@ void DisplayOptionsDialog::setModel(DisplayOptionsModel *model)
         ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
         initBrightnessAndContrast();
         initUpDown();
+        initSepiaGray();
     }
 }
 
@@ -217,6 +218,47 @@ void DisplayOptionsDialog::updateDistalToProximalSetting(bool isUp)
     }
 }
 
+void DisplayOptionsDialog::handleGray()
+{
+    if(!m_model->isImageColorGray()){
+        m_model->setIsImageColorGray(true);
+    }
+    updateGraySepiaButtonColor();
+    updateGraySepiaSetting();
+}
+
+void DisplayOptionsDialog::handleSepia()
+{
+    if(m_model->isImageColorGray()){
+        m_model->setIsImageColorGray(false);
+    }
+    updateGraySepiaButtonColor();
+    updateGraySepiaSetting();
+}
+
+void DisplayOptionsDialog::updateGraySepiaButtonColor()
+{
+    const QString on("background-color: #F5C400;\nborder-radius: 30;");
+    const QString off("background-color: #ffffff;\nborder-radius: 30;");
+
+    if(m_model->isImageColorGray()){
+        ui->pushButtonGray->setStyleSheet(on);
+        ui->pushButtonSepia->setStyleSheet(off);
+    } else {
+         ui->pushButtonGray->setStyleSheet(off);
+         ui->pushButtonSepia->setStyleSheet(on);
+    }
+}
+
+void DisplayOptionsDialog::updateGraySepiaSetting()
+{
+    if(m_model->isImageColorGray()){
+        m_scene->loadColorModeGray();
+    } else {
+         m_scene->loadColorModeSepia();
+    }
+}
+
 //void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
 //{
 //    SignalModel::instance()->setBlackLevel(brightness);
@@ -255,12 +297,26 @@ void DisplayOptionsDialog::initUpDown()
     connect(ui->pushButtonDown, &QPushButton::clicked, this, &DisplayOptionsDialog::handleDown);
 
     userSettings &settings = userSettings::Instance();
-    bool isDown = settings.isDistalToProximalView();
+    const bool isDown = settings.isDistalToProximalView();
 
     if(isDown)
     {
-        handleDown();
+        emit ui->pushButtonDown->clicked();
     } else {
-        handleUp();
+        emit ui->pushButtonUp->clicked();
+    }
+}
+
+void DisplayOptionsDialog::initSepiaGray()
+{
+    connect(ui->pushButtonGray, &QPushButton::clicked, this, &DisplayOptionsDialog::handleGray);
+    connect(ui->pushButtonSepia, &QPushButton::clicked, this, &DisplayOptionsDialog::handleSepia);
+
+    const bool isGray = m_model->isImageColorGray();
+
+    if(isGray){
+        emit ui->pushButtonGray->clicked();
+    } else {
+        emit ui->pushButtonSepia->clicked();
     }
 }
