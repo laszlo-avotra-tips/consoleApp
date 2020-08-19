@@ -170,9 +170,12 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 
 void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness)
 {
-//    userSettings::Instance().setReticleBrightness(reticleBrightness);
+    LOG1(reticleBrightness)
+    userSettings::Instance().setReticleBrightness(reticleBrightness);
     m_model->setReticleBrightness(reticleBrightness);
     emit reticleBrightnessChanged(reticleBrightness);
+
+    ui->labelReticleBrightness->setNum(reticleBrightness * 100 / 255);
 }
 
 void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
