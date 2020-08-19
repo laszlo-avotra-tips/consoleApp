@@ -32,10 +32,10 @@ border-radius: 10px;
 }
 QGroupBox{
 border:0px;
-font:24pt &quot;Helvetica Neue&quot;;
+font:22pt &quot;Helvetica Neue&quot;;
 }
 QRadioButton{
-font:24pt &quot;Helvetica Neue&quot;;
+font:22pt &quot;Helvetica Neue&quot;;
 }
 QRadioButton::indicator{
 width: 40px;
@@ -466,7 +466,7 @@ border-radius: 10px;
              <number>0</number>
             </property>
             <property name="leftMargin">
-             <number>0</number>
+             <number>138</number>
             </property>
             <property name="topMargin">
              <number>0</number>
@@ -487,7 +487,7 @@ border-radius: 10px;
                 <property name="minimumSize">
                  <size>
                   <width>800</width>
-                  <height>400</height>
+                  <height>300</height>
                  </size>
                 </property>
                 <property name="maximumSize">
@@ -513,20 +513,20 @@ border-radius: 10px;
                   <number>0</number>
                  </property>
                  <property name="topMargin">
-                  <number>80</number>
+                  <number>120</number>
                  </property>
                  <property name="rightMargin">
                   <number>0</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>0</number>
+                  <number>60</number>
                  </property>
                  <item>
                   <widget class="QRadioButton" name="radioButtonDown">
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
-                     <height>60</height>
+                     <height>40</height>
                     </size>
                    </property>
                    <property name="styleSheet">
@@ -535,6 +535,12 @@ border-radius: 10px;
                    <property name="text">
                     <string>POINTED DOWN</string>
                    </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>100</width>
+                     <height>100</height>
+                    </size>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -542,7 +548,7 @@ border-radius: 10px;
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
-                     <height>60</height>
+                     <height>40</height>
                     </size>
                    </property>
                    <property name="styleSheet">
@@ -581,61 +587,38 @@ border-radius: 10px;
                   <number>0</number>
                  </property>
                  <property name="topMargin">
-                  <number>80</number>
+                  <number>120</number>
                  </property>
                  <property name="rightMargin">
                   <number>0</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>0</number>
+                  <number>120</number>
                  </property>
                  <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_5">
-                   <property name="spacing">
-                    <number>0</number>
+                  <widget class="QSlider" name="horizontalSliderRingBrightness">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>112</height>
+                    </size>
                    </property>
-                   <item>
-                    <widget class="QSlider" name="horizontalSliderRingBrightness">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>200</height>
-                      </size>
-                     </property>
-                     <property name="maximum">
-                      <number>255</number>
-                     </property>
-                     <property name="singleStep">
-                      <number>10</number>
-                     </property>
-                     <property name="pageStep">
-                      <number>50</number>
-                     </property>
-                     <property name="value">
-                      <number>200</number>
-                     </property>
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="verticalSpacer_5">
-                     <property name="orientation">
-                      <enum>Qt::Vertical</enum>
-                     </property>
-                     <property name="sizeType">
-                      <enum>QSizePolicy::Fixed</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>120</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
+                   <property name="maximum">
+                    <number>255</number>
+                   </property>
+                   <property name="singleStep">
+                    <number>10</number>
+                   </property>
+                   <property name="pageStep">
+                    <number>50</number>
+                   </property>
+                   <property name="value">
+                    <number>200</number>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -672,26 +655,26 @@ border-radius: 10px;
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
                  <property name="spacing">
-                  <number>0</number>
+                  <number>20</number>
                  </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
                  <property name="topMargin">
-                  <number>80</number>
+                  <number>120</number>
                  </property>
                  <property name="rightMargin">
                   <number>0</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>0</number>
+                  <number>220</number>
                  </property>
                  <item>
                   <widget class="QRadioButton" name="radioButtonGrey">
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
-                     <height>60</height>
+                     <height>40</height>
                     </size>
                    </property>
                    <property name="styleSheet">
@@ -710,7 +693,7 @@ border-radius: 10px;
                    <property name="minimumSize">
                     <size>
                      <width>200</width>
-                     <height>60</height>
+                     <height>40</height>
                     </size>
                    </property>
                    <property name="styleSheet">
@@ -720,22 +703,6 @@ border-radius: 10px;
                     <string>SEPIA</string>
                    </property>
                   </widget>
-                 </item>
-                 <item>
-                  <spacer name="verticalSpacer_6">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeType">
-                    <enum>QSizePolicy::Fixed</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>240</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                 </layout>
                </widget>
@@ -775,7 +742,7 @@ border-radius: 10px;
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>200</height>
+                     <height>112</height>
                     </size>
                    </property>
                    <property name="minimum">
@@ -836,7 +803,7 @@ border-radius: 10px;
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>200</height>
+                     <height>112</height>
                     </size>
                    </property>
                    <property name="sizeIncrement">
@@ -914,14 +881,14 @@ border-radius: 10px;
             <widget class="QPushButton" name="pushButtonTechView">
              <property name="minimumSize">
               <size>
-               <width>400</width>
-               <height>100</height>
+               <width>395</width>
+               <height>103</height>
               </size>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color:black;
 border: 2px solid white;
-border-radius: 50px;</string>
+border-radius: 51px;</string>
              </property>
              <property name="text">
               <string>TECH VIEW</string>

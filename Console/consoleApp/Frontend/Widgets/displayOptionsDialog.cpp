@@ -171,7 +171,7 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness)
 {
 //    userSettings::Instance().setReticleBrightness(reticleBrightness);
-    m_model->setImageBrightness(reticleBrightness);
+    m_model->setReticleBrightness(reticleBrightness);
     emit reticleBrightnessChanged(reticleBrightness);
 }
 
@@ -197,6 +197,10 @@ void DisplayOptionsDialog::initBrightnessAndContrast()
     if(m_model){
         const auto& brightness = m_model->imageBrightness();
         const auto& contrast = m_model->imageContrast();
+
+        LOG2(brightness, contrast)
+        SignalModel::instance()->setWhiteLevel(contrast);
+        SignalModel::instance()->setBlackLevel(brightness);
 
         ui->horizontalSliderImageBrightness->setValue(brightness);
         ui->horizontalSliderImageContrast->setValue(contrast);

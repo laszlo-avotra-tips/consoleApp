@@ -1,5 +1,6 @@
 #include "DisplayOptionsModel.h"
 #include "Utility/userSettings.h"
+#include "logger.h"
 
 
 DisplayOptionsModel::DisplayOptionsModel()
@@ -8,6 +9,7 @@ DisplayOptionsModel::DisplayOptionsModel()
     m_imageContrast = settings.contrast();
     m_imageBrightness = settings.brightness();
     m_reticleBrightness = settings.reticleBrightness();
+    LOG3(m_imageBrightness,m_imageContrast, m_reticleBrightness)
 
     m_isPointedDown = settings.isDistalToProximalView();
 }
