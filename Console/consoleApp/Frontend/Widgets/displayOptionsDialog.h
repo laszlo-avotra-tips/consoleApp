@@ -58,6 +58,8 @@ private:
     void initBrightnessAndContrast();
     void initUpDown();
     void initSepiaGray();
+    void handleImageBrightness(int value);
+    void handleImageContrast(int value);
 
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};

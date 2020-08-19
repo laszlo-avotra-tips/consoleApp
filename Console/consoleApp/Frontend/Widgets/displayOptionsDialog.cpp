@@ -283,6 +283,8 @@ void DisplayOptionsDialog::updateGraySepiaSetting()
 
 void DisplayOptionsDialog::initBrightnessAndContrast()
 {
+    connect(ui->horizontalSliderImageBrightness, &QSlider::valueChanged, this, &DisplayOptionsDialog::handleImageBrightness);
+    connect(ui->horizontalSliderImageContrast, &QSlider::valueChanged, this, &DisplayOptionsDialog::handleImageContrast);
     if(m_model){
         const auto& brightness = m_model->imageBrightness();
         const auto& contrast = m_model->imageContrast();
@@ -324,4 +326,22 @@ void DisplayOptionsDialog::initSepiaGray()
     } else {
         emit ui->pushButtonSepia->clicked();
     }
+}
+
+void DisplayOptionsDialog::handleImageContrast(int contrast)
+{
+    SignalModel::instance()->setWhiteLevel(contrast);
+    m_model->setImageContrast(contrast);
+    userSettings &settings = userSettings::Instance();
+    settings.setContrast( contrast );
+
+}
+
+void DisplayOptionsDialog::handleImageBrightness(int brightness)
+{
+    SignalModel::instance()->setBlackLevel(brightness);
+    m_model->setImageBrightness(brightness);
+    userSettings &settings = userSettings::Instance();
+    settings.setBrightness( brightness );
+
 }
