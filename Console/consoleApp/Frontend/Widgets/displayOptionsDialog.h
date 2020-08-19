@@ -34,14 +34,6 @@ private slots:
 
     void on_pushButtonBack_clicked();
 
-    void on_radioButtonDown_clicked(bool checked);
-
-    void on_radioButtonUp_clicked(bool checked);
-
-    void on_radioButtonGrey_clicked(bool checked);
-
-    void on_radioButtonSepia_clicked(bool checked);
-
     void on_pushButtonDepthMimus_clicked();
 
     void on_pushButtonDepthPlus_clicked();
@@ -50,11 +42,8 @@ private slots:
 
     void on_horizontalSlider_valueChanged(int value);
 
-    void on_horizontalSliderImageBrightness_valueChanged(int brightness);
-
     void on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness);
 
-    void on_horizontalSliderImageContrast_valueChanged(int contrast);
 
 private:
     void initBrightnessAndContrast();
