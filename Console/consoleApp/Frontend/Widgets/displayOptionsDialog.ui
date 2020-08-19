@@ -548,6 +548,66 @@ border-radius: 10px;
                     <number>125</number>
                    </property>
                    <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_10">
+                     <property name="spacing">
+                      <number>30</number>
+                     </property>
+                     <item>
+                      <widget class="QPushButton" name="pushButtonDown">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>60</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: #F5C400;
+border-radius: 30;</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="labelDown">
+                       <property name="styleSheet">
+                        <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
+text-decoration: none;</string>
+                       </property>
+                       <property name="text">
+                        <string>POINTED DOWN</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_6">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
                     <layout class="QVBoxLayout" name="verticalLayout_11">
                      <item>
                       <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -575,7 +635,7 @@ border-radius: 10px;
                           </size>
                          </property>
                          <property name="styleSheet">
-                          <string notr="true">background-color: #F5C400;
+                          <string notr="true">background-color:#ffffff;
 border-radius: 30;</string>
                          </property>
                          <property name="text">
@@ -608,66 +668,6 @@ text-decoration: none;</string>
                         </spacer>
                        </item>
                       </layout>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_10">
-                     <property name="spacing">
-                      <number>30</number>
-                     </property>
-                     <item>
-                      <widget class="QPushButton" name="pushButtonDown">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>60</width>
-                         <height>60</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>60</width>
-                         <height>60</height>
-                        </size>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true">background-color: #ffffff;
-border-radius: 30;</string>
-                       </property>
-                       <property name="text">
-                        <string/>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="labelDown">
-                       <property name="styleSheet">
-                        <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
-text-decoration: none;</string>
-                       </property>
-                       <property name="text">
-                        <string>POINTED DOWN</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="horizontalSpacer_6">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
                      </item>
                     </layout>
                    </item>
