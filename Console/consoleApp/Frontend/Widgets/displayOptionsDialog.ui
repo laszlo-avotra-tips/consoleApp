@@ -546,7 +546,7 @@ border-radius: 10px;
                     <number>0</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>135</number>
+                    <number>125</number>
                    </property>
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -833,6 +833,12 @@ text-decoration: none;</string>
                 </property>
                 <item>
                  <widget class="QGroupBox" name="groupBoxImageColor">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="minimumSize">
                    <size>
                     <width>800</width>
@@ -841,8 +847,8 @@ text-decoration: none;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>500</width>
-                    <height>16777215</height>
+                    <width>400</width>
+                    <height>500</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -1191,7 +1197,7 @@ text-decoration: none;</string>
                       <number>60</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>46</number>
+                      <number>36</number>
                      </property>
                      <item>
                       <layout class="QHBoxLayout" name="horizontalLayout_16">
@@ -1391,9 +1397,12 @@ border-radius: 51px;</string>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
+               <width>640</width>
                <height>20</height>
               </size>
              </property>
