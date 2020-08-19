@@ -39,6 +39,26 @@ void userSettings::saveSettings()
     settings->setValue( "image/useInvertOctColor",        invertOctColorEnabled );
 }
 
+int userSettings::getImageDepthIndex() const
+{
+    return m_imageDepthIndex;
+}
+
+void userSettings::setImageDepthIndex(int imageDepthIndex)
+{
+    m_imageDepthIndex = imageDepthIndex;
+}
+
+bool userSettings::getIsGray() const
+{
+    return m_isGray;
+}
+
+void userSettings::setIsGray(bool isGray)
+{
+    m_isGray = isGray;
+}
+
 int userSettings::getImageIndexDecimation() const
 {
     return imageIndexDecimation;

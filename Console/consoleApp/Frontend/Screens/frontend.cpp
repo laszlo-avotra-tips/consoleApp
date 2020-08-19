@@ -303,6 +303,8 @@ void frontend::init( void )
     TIME_THIS_SCOPE( frontend_init );
     lastDirCCW = true;			// make sure bidirectional devices start CCW (passive)
 
+    LOG1(lastDirCCW);
+
     // Require case information before anything else happens
     caseWizard = std::make_unique<caseInfoWizard>(this);
 
@@ -1748,6 +1750,16 @@ void frontend::setIDAQ(IDAQ *object)
         connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
     }
 
+    {
+        depthSetting &depthManager = depthSetting::Instance();
+        // connect the level gauge UI element with the depthSettings singleton object
+        connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
+//        connect( m_formL300, SIGNAL( depthChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
+        ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
+        ui.imagingDepthWidget->setEnabled( true );
+
+    }
+
     if(idaq){
         if(idaq->getSignalSource()){
             connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
@@ -1925,7 +1937,7 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 
 void frontend::updateSector(OCTFile::OctData_t* frameData)
 {
-
+    static int count = -1;
     if(frameData && m_scene && m_scanWorker){
 
         const auto* sm =  SignalModel::instance();
@@ -1946,7 +1958,8 @@ void frontend::updateSector(OCTFile::OctData_t* frameData)
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
                 }
-//                m_scene->setDoPaint();
+//                if(++count % 2 == 0)
+                    m_scene->setDoPaint();
             }
         }
     }

@@ -153,6 +153,12 @@ public:
 
     int getImageIndexDecimation() const;
 
+    bool getIsGray() const;
+    void setIsGray(bool isGray);
+
+    int getImageDepthIndex() const;
+    void setImageDepthIndex(int imageDepthIndex);
+
 private:
     void saveSettings();
 
@@ -167,6 +173,8 @@ private:
     int  imageIndexDecimation;        //
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
     CatheterView_t catheterViewMode;  //
+    bool m_isGray{true};
+    int  m_imageDepthIndex{1};
 
     userSettings(); // hide ctor
     ~userSettings() {} // hide dtor

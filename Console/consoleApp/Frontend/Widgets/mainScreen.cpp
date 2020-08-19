@@ -14,14 +14,16 @@
 #include "Frontend/Widgets/caseInformationModel.h"
 #include "Frontend/Widgets/reviewAndSettingsDialog.h"
 #include "sledsupport.h"
+#include "displayOptionsDialog.h"
+#include "DisplayOptionsModel.h"
+
 #include <QTimer>
-
-
 #include <QDebug>
 #include <QLayoutItem>
 #include <QLayout>
 #include <QFile>
 #include <QTextStream>
+#include <QGraphicsView>
 
 MainScreen::MainScreen(QWidget *parent)
     : QWidget(parent)
@@ -358,9 +360,25 @@ void MainScreen::openCaseReview()
 
 void MainScreen::openDisplayOptionsDialog()
 {
-    auto result = WidgetContainer::instance()->openDialog(this, "displayOptionsDialog");//page. 118
-    if( result.second != QDialog::Accepted){
-        on_pushButtonSettings_clicked();
+    int result{-1};
+
+    auto model = DisplayOptionsModel();
+    auto dialog = new DisplayOptionsDialog(this);
+    dialog->setModel(&model);
+
+    if(dialog){
+        dialog->setScene(m_scene);
+
+        connect( dialog, &DisplayOptionsDialog::reticleBrightnessChanged,
+                 m_scene,     &liveScene::handleReticleBrightnessChanged );
+
+        dialog->show();
+        result = dialog->exec();
+
+        if( result != QDialog::Accepted){
+            on_pushButtonSettings_clicked();
+            model.persistModel();
+        }
     }
 }
 

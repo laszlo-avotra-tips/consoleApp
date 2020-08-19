@@ -22,6 +22,7 @@ HEADERS += \
     $$PWD/Frontend/Utility/dialogFactory.h \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
+    $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/caseInformationModel.h \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
@@ -134,6 +135,7 @@ SOURCES += \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
+    $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/caseInformationModel.cpp \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \

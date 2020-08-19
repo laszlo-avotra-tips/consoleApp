@@ -6,7 +6,6 @@
 #include <vector>
 #include <map>
 #include <QWidget>
-#include <QGraphicsView>
 #include <QTime>
 #include <QTimer>
 #include <QElapsedTimer>
@@ -15,6 +14,7 @@ class frontend;
 class liveScene;
 class OpacScreen;
 class QPushButton;
+class QGraphicsView;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainScreen; }
