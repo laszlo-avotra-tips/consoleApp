@@ -582,7 +582,8 @@ border-radius: 30;</string>
                      <item>
                       <widget class="QLabel" name="labelUp">
                        <property name="styleSheet">
-                        <string notr="true">font:22pt &quot;Helvetica Neue&quot;;</string>
+                        <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
+text-decoration: none;</string>
                        </property>
                        <property name="text">
                         <string>POINTED UP</string>
@@ -643,7 +644,8 @@ border-radius: 30;</string>
                    <item>
                     <widget class="QLabel" name="labelDown">
                      <property name="styleSheet">
-                      <string notr="true">font:22pt &quot;Helvetica Neue&quot;;</string>
+                      <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
+text-decoration: none;</string>
                      </property>
                      <property name="text">
                       <string>POINTED DOWN</string>
@@ -690,13 +692,13 @@ border-radius: 30;</string>
                   <number>0</number>
                  </property>
                  <property name="topMargin">
-                  <number>120</number>
+                  <number>115</number>
                  </property>
                  <property name="rightMargin">
                   <number>60</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>160</number>
+                  <number>165</number>
                  </property>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -782,7 +784,7 @@ border-radius: 30;</string>
                      <property name="minimumSize">
                       <size>
                        <width>0</width>
-                       <height>102</height>
+                       <height>100</height>
                       </size>
                      </property>
                      <property name="maximum">
@@ -847,22 +849,146 @@ border-radius: 30;</string>
                 <property name="alignment">
                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_6">
+                <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0">
                  <property name="spacing">
-                  <number>20</number>
+                  <number>30</number>
                  </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
                  <property name="topMargin">
-                  <number>120</number>
+                  <number>110</number>
                  </property>
                  <property name="rightMargin">
                   <number>0</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>220</number>
+                  <number>150</number>
                  </property>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_12">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_11">
+                     <property name="spacing">
+                      <number>30</number>
+                     </property>
+                     <item>
+                      <widget class="QPushButton" name="pushButtonGray">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>60</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: #F5C400;
+border-radius: 30;</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="labelGray">
+                       <property name="styleSheet">
+                        <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
+text-decoration: none;</string>
+                       </property>
+                       <property name="text">
+                        <string>GRAY</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_9">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_12">
+                   <property name="spacing">
+                    <number>30</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="pushButtonSepia">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>60</width>
+                       <height>60</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>60</width>
+                       <height>60</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: #ffffff;
+border-radius: 30;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="labelSepia">
+                     <property name="styleSheet">
+                      <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
+text-decoration: none;</string>
+                     </property>
+                     <property name="text">
+                      <string>SEPIA</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_10">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
                 </layout>
                </widget>
               </item>
@@ -896,34 +1022,6 @@ border-radius: 30;</string>
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item>
-                  <widget class="QSlider" name="horizontalSliderImageBrightness">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>112</height>
-                    </size>
-                   </property>
-                   <property name="minimum">
-                    <number>-255</number>
-                   </property>
-                   <property name="maximum">
-                    <number>255</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>10</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>50</number>
-                   </property>
-                   <property name="value">
-                    <number>0</number>
-                   </property>
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </item>
@@ -957,43 +1055,6 @@ border-radius: 30;</string>
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item>
-                  <widget class="QSlider" name="horizontalSliderImageContrast">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>112</height>
-                    </size>
-                   </property>
-                   <property name="sizeIncrement">
-                    <size>
-                     <width>1</width>
-                     <height>3</height>
-                    </size>
-                   </property>
-                   <property name="minimum">
-                    <number>-255</number>
-                   </property>
-                   <property name="maximum">
-                    <number>255</number>
-                   </property>
-                   <property name="singleStep">
-                    <number>10</number>
-                   </property>
-                   <property name="pageStep">
-                    <number>50</number>
-                   </property>
-                   <property name="value">
-                    <number>0</number>
-                   </property>
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="invertedAppearance">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </item>

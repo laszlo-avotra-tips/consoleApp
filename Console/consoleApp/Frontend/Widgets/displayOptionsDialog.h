@@ -42,11 +42,8 @@ private slots:
 
     void on_horizontalSlider_valueChanged(int value);
 
-    void on_horizontalSliderImageBrightness_valueChanged(int brightness);
-
     void on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness);
 
-    void on_horizontalSliderImageContrast_valueChanged(int contrast);
 
 private:
     void initBrightnessAndContrast();
