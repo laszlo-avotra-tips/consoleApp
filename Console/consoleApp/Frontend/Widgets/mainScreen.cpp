@@ -483,5 +483,5 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-    hide();
+//lcv    hide(); only to integrating the L250 features
 }
