@@ -1130,6 +1130,9 @@ text-decoration: none;</string>
                            <height>80</height>
                           </size>
                          </property>
+                         <property name="minimum">
+                          <number>-255</number>
+                         </property>
                          <property name="maximum">
                           <number>255</number>
                          </property>
@@ -1284,6 +1287,9 @@ text-decoration: none;</string>
                            <width>0</width>
                            <height>80</height>
                           </size>
+                         </property>
+                         <property name="minimum">
+                          <number>-255</number>
                          </property>
                          <property name="maximum">
                           <number>255</number>

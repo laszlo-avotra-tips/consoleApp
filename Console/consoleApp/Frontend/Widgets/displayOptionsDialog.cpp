@@ -285,6 +285,7 @@ void DisplayOptionsDialog::initBrightnessAndContrast()
 {
     connect(ui->horizontalSliderImageBrightness, &QSlider::valueChanged, this, &DisplayOptionsDialog::handleImageBrightness);
     connect(ui->horizontalSliderImageContrast, &QSlider::valueChanged, this, &DisplayOptionsDialog::handleImageContrast);
+
     if(m_model){
         const auto& brightness = m_model->imageBrightness();
         const auto& contrast = m_model->imageContrast();
@@ -293,8 +294,8 @@ void DisplayOptionsDialog::initBrightnessAndContrast()
         SignalModel::instance()->setWhiteLevel(contrast);
         SignalModel::instance()->setBlackLevel(brightness);
 
-//        ui->horizontalSliderImageBrightness->setValue(brightness);
-//        ui->horizontalSliderImageContrast->setValue(contrast);
+        ui->horizontalSliderImageBrightness->setValue(brightness);
+        ui->horizontalSliderImageContrast->setValue(contrast);
     }
 }
 
@@ -330,18 +331,23 @@ void DisplayOptionsDialog::initSepiaGray()
 
 void DisplayOptionsDialog::handleImageContrast(int contrast)
 {
+    const int contrastPercent = 100 * (contrast + 255) / 510;
+    ui->labelImageContrast->setNum(contrastPercent);
     SignalModel::instance()->setWhiteLevel(contrast);
     m_model->setImageContrast(contrast);
     userSettings &settings = userSettings::Instance();
     settings.setContrast( contrast );
+    LOG1(contrast)
 
 }
 
 void DisplayOptionsDialog::handleImageBrightness(int brightness)
 {
+    const int brightnessPercent = 100 * (brightness + 255) / 510;
+    ui->labelImageBrightness->setNum(brightnessPercent);
     SignalModel::instance()->setBlackLevel(brightness);
     m_model->setImageBrightness(brightness);
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( brightness );
-
+    LOG1(brightness)
 }
