@@ -77,6 +77,7 @@ private:
     int m_depthIndex{1};
 
     DisplayOptionsModel* m_model{nullptr};
+    DisplayOptionsModel  m_model0;
 
 };
 

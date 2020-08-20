@@ -48,6 +48,7 @@ void DisplayOptionsDialog::setModel(DisplayOptionsModel *model)
         if(m_scene){
             initSepiaGray();
         }
+        m_model0 = *m_model;
     }
 }
 
@@ -65,7 +66,16 @@ void DisplayOptionsDialog::on_pushButtonDone_clicked()
 
 void DisplayOptionsDialog::on_pushButtonBack_clicked()
 {
-//lcv    reject(); under development
+    //restor the model
+    *m_model = m_model0;
+    SignalModel::instance()->setWhiteLevel(m_model0.imageContrast());
+    SignalModel::instance()->setBlackLevel(m_model0.imageBrightness());
+
+    userSettings &settings = userSettings::Instance();
+    settings.setBrightness( m_model0.imageBrightness() );
+    settings.setContrast(m_model0.imageContrast());
+
+    reject();
 }
 
 void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
