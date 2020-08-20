@@ -375,9 +375,10 @@ void MainScreen::openDisplayOptionsDialog()
         dialog->show();
         result = dialog->exec();
 
-        if( result != QDialog::Accepted){
-            on_pushButtonSettings_clicked();
+        if( result == QDialog::Accepted){
             model.persistModel();
+        } else {
+            on_pushButtonSettings_clicked();
         }
     }
 }
