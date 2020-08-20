@@ -44,6 +44,7 @@ void DisplayOptionsDialog::setModel(DisplayOptionsModel *model)
         ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
         initBrightnessAndContrast();
         initUpDown();
+        initImagingDepth();
         if(m_scene){
             initSepiaGray();
         }
@@ -326,6 +327,14 @@ void DisplayOptionsDialog::initSepiaGray()
         emit ui->pushButtonGray->clicked();
     } else {
         emit ui->pushButtonSepia->clicked();
+    }
+}
+
+void DisplayOptionsDialog::initImagingDepth()
+{
+    if(m_model){
+        m_depthIndex = m_model->depthIndex();
+        emit ui->horizontalSlider->valueChanged(m_depthIndex);
     }
 }
 

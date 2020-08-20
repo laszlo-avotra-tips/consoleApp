@@ -13,6 +13,7 @@ DisplayOptionsModel::DisplayOptionsModel()
 
     m_isPointedDown = settings.isDistalToProximalView();
     m_isImageColorGray = settings.getIsGray();
+    m_depthIndex = settings.getImageDepthIndex();
 }
 
 uint8_t DisplayOptionsModel::depthIndex() const
@@ -38,6 +39,7 @@ void DisplayOptionsModel::persistModel() const
         settings.setCatheterView( userSettings::ProximalToDistal );
     }
     settings.setIsGray(m_isImageColorGray);
+    settings.setImageDepthIndex(m_depthIndex);
 }
 
 int DisplayOptionsModel::imageContrast() const

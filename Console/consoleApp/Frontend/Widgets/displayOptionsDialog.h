@@ -52,14 +52,15 @@ private slots:
     void handleSepia();
     void updateGraySepiaButtonColor();
     void updateGraySepiaSetting();
+    void handleImageBrightness(int value);
+    void handleImageContrast(int value);
 
 
 private:
     void initBrightnessAndContrast();
     void initUpDown();
     void initSepiaGray();
-    void handleImageBrightness(int value);
-    void handleImageContrast(int value);
+    void initImagingDepth();
 
     Ui::DisplayOptionsDialog *ui;
     QGraphicsView* m_graphicsView{nullptr};
