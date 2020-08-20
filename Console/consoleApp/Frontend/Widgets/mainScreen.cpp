@@ -375,9 +375,10 @@ void MainScreen::openDisplayOptionsDialog()
         dialog->show();
         result = dialog->exec();
 
-        if( result != QDialog::Accepted){
-            on_pushButtonSettings_clicked();
+        if( result == QDialog::Accepted){
             model.persistModel();
+        } else {
+            on_pushButtonSettings_clicked();
         }
     }
 }
@@ -482,5 +483,5 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-    hide();
+//lcv    hide(); only to integrating the L250 features
 }

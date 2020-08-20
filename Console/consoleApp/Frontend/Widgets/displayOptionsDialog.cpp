@@ -18,13 +18,6 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
-    userSettings &settings = userSettings::Instance();
-//    if(settings.isDistalToProximalView()){
-//        ui->radioButtonDown->setChecked(true);
-//    } else {
-//        ui->radioButtonUp->setChecked(true);
-//    }
-
     const double scaleUp = 1.43; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
@@ -36,6 +29,9 @@ void DisplayOptionsDialog::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
+        if(m_model){
+            initSepiaGray();
+        }
     }
 }
 
@@ -47,6 +43,11 @@ void DisplayOptionsDialog::setModel(DisplayOptionsModel *model)
         const auto reticleBrightness = m_model->reticleBrightness();
         ui->horizontalSliderRingBrightness->setValue(reticleBrightness);
         initBrightnessAndContrast();
+        initUpDown();
+        initImagingDepth();
+        if(m_scene){
+            initSepiaGray();
+        }
     }
 }
 
@@ -64,61 +65,8 @@ void DisplayOptionsDialog::on_pushButtonDone_clicked()
 
 void DisplayOptionsDialog::on_pushButtonBack_clicked()
 {
-    reject();
+//lcv    reject(); under development
 }
-
-//void DisplayOptionsDialog::on_radioButtonDown_clicked(bool checked)
-//{
-//    LOG1(checked)
-//    userSettings &settings = userSettings::Instance();
-
-//    if( checked )
-//    {
-//        settings.setCatheterView( userSettings::DistalToProximal );
-//        LOG( INFO, "Catheter view: Down - distal to proximal" )
-//    }
-//    else
-//    {
-//        settings.setCatheterView( userSettings::ProximalToDistal );
-//        LOG( INFO, "Catheter view: Up - proximal to distal" )
-//    }
-//}
-
-//void DisplayOptionsDialog::on_radioButtonUp_clicked(bool checked)
-//{
-//    LOG1(checked)
-//    userSettings &settings = userSettings::Instance();
-
-//    if( checked )
-//    {
-//        settings.setCatheterView( userSettings::ProximalToDistal );
-//        LOG( INFO, "Catheter view: Up - proximal to distal" )
-//    }
-//    else
-//    {
-//        settings.setCatheterView( userSettings::DistalToProximal );
-//        LOG( INFO, "Catheter view: Down - distal to proximal" )
-//    }
-//    //        emit updateCatheterView();
-//}
-
-//void DisplayOptionsDialog::on_radioButtonGrey_clicked(bool checked)
-//{
-//    LOG1(checked)
-//    m_scene->loadColorModeGray();
-//    if(m_model){
-//        m_model->setIsImageColorGray(true);
-//    }
-//}
-
-//void DisplayOptionsDialog::on_radioButtonSepia_clicked(bool checked)
-//{
-//    LOG1(checked)
-//    m_scene->loadColorModeSepia();
-//    if(m_model){
-//        m_model->setIsImageColorGray(false);
-//    }
-//}
 
 void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
 {
@@ -176,28 +124,99 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
     emit reticleBrightnessChanged(reticleBrightness);
 
     ui->labelReticleBrightness->setNum(reticleBrightness * 100 / 255);
-//    ui->labelReticleBrightness->setMargin(reticleBrightness * 2);
+    //    ui->labelReticleBrightness->setMargin(reticleBrightness * 2); //lcv
 }
 
-//void DisplayOptionsDialog::on_horizontalSliderImageBrightness_valueChanged(int brightness)
-//{
-//    SignalModel::instance()->setBlackLevel(brightness);
-//    m_model->setImageBrightness(brightness);
-////    userSettings &settings = userSettings::Instance();
-////    settings.setBrightness( brightness );
-//}
+void DisplayOptionsDialog::handleUp()
+{
+    if(m_model->isPointedDown()){
+        m_model->setIsPointedDown(false);
+    }
+    updateUpDownButtonColor();
+    updateDistalToProximalSetting(true);
+}
 
+void DisplayOptionsDialog::handleDown()
+{
+    if(!m_model->isPointedDown()){
+        m_model->setIsPointedDown(true);
+    }
+    updateUpDownButtonColor();
+    updateDistalToProximalSetting(false);
+}
 
-//void DisplayOptionsDialog::on_horizontalSliderImageContrast_valueChanged(int contrast)
-//{
-//    SignalModel::instance()->setWhiteLevel(contrast);
-//    m_model->setImageContrast(contrast);
-////    userSettings &settings = userSettings::Instance();
-////    settings.setContrast( contrast );
-//}
+void DisplayOptionsDialog::updateUpDownButtonColor()
+{
+    const QString on("background-color: #F5C400;\nborder-radius: 30;");
+    const QString off("background-color: #ffffff;\nborder-radius: 30;");
+
+    if(m_model->isPointedDown()){
+        ui->pushButtonUp->setStyleSheet(off);
+        ui->pushButtonDown->setStyleSheet(on);
+    } else {
+         ui->pushButtonUp->setStyleSheet(on);
+         ui->pushButtonDown->setStyleSheet(off);
+    }
+}
+
+void DisplayOptionsDialog::updateDistalToProximalSetting(bool isUp)
+{
+    userSettings &settings = userSettings::Instance();
+    if(isUp){
+        settings.setCatheterView(userSettings::ProximalToDistal);
+        LOG( INFO, "Catheter view: Up - proximal to distal" )
+    } else {
+        settings.setCatheterView(userSettings::DistalToProximal);
+        LOG( INFO, "Catheter view: Down - distal to proximal" )
+    }
+}
+
+void DisplayOptionsDialog::handleGray()
+{
+    if(!m_model->isImageColorGray()){
+        m_model->setIsImageColorGray(true);
+    }
+    updateGraySepiaButtonColor();
+    updateGraySepiaSetting();
+}
+
+void DisplayOptionsDialog::handleSepia()
+{
+    if(m_model->isImageColorGray()){
+        m_model->setIsImageColorGray(false);
+    }
+    updateGraySepiaButtonColor();
+    updateGraySepiaSetting();
+}
+
+void DisplayOptionsDialog::updateGraySepiaButtonColor()
+{
+    const QString on("background-color: #F5C400;\nborder-radius: 30;");
+    const QString off("background-color: #ffffff;\nborder-radius: 30;");
+
+    if(m_model->isImageColorGray()){
+        ui->pushButtonGray->setStyleSheet(on);
+        ui->pushButtonSepia->setStyleSheet(off);
+    } else {
+         ui->pushButtonGray->setStyleSheet(off);
+         ui->pushButtonSepia->setStyleSheet(on);
+    }
+}
+
+void DisplayOptionsDialog::updateGraySepiaSetting()
+{
+    if(m_model->isImageColorGray()){
+        m_scene->loadColorModeGray();
+    } else {
+         m_scene->loadColorModeSepia();
+    }
+}
 
 void DisplayOptionsDialog::initBrightnessAndContrast()
 {
+    connect(ui->horizontalSliderImageBrightness, &QSlider::valueChanged, this, &DisplayOptionsDialog::handleImageBrightness);
+    connect(ui->horizontalSliderImageContrast, &QSlider::valueChanged, this, &DisplayOptionsDialog::handleImageContrast);
+
     if(m_model){
         const auto& brightness = m_model->imageBrightness();
         const auto& contrast = m_model->imageContrast();
@@ -206,7 +225,68 @@ void DisplayOptionsDialog::initBrightnessAndContrast()
         SignalModel::instance()->setWhiteLevel(contrast);
         SignalModel::instance()->setBlackLevel(brightness);
 
-//        ui->horizontalSliderImageBrightness->setValue(brightness);
-//        ui->horizontalSliderImageContrast->setValue(contrast);
+        ui->horizontalSliderImageBrightness->setValue(brightness);
+        ui->horizontalSliderImageContrast->setValue(contrast);
     }
+}
+
+void DisplayOptionsDialog::initUpDown()
+{
+    connect(ui->pushButtonUp, &QPushButton::clicked, this, &DisplayOptionsDialog::handleUp);
+    connect(ui->pushButtonDown, &QPushButton::clicked, this, &DisplayOptionsDialog::handleDown);
+
+    userSettings &settings = userSettings::Instance();
+    const bool isDown = settings.isDistalToProximalView();
+
+    if(isDown)
+    {
+        emit ui->pushButtonDown->clicked();
+    } else {
+        emit ui->pushButtonUp->clicked();
+    }
+}
+
+void DisplayOptionsDialog::initSepiaGray()
+{
+    connect(ui->pushButtonGray, &QPushButton::clicked, this, &DisplayOptionsDialog::handleGray);
+    connect(ui->pushButtonSepia, &QPushButton::clicked, this, &DisplayOptionsDialog::handleSepia);
+
+    const bool isGray = m_model->isImageColorGray();
+
+    if(isGray){
+        emit ui->pushButtonGray->clicked();
+    } else {
+        emit ui->pushButtonSepia->clicked();
+    }
+}
+
+void DisplayOptionsDialog::initImagingDepth()
+{
+    if(m_model){
+        m_depthIndex = m_model->depthIndex();
+        emit ui->horizontalSlider->valueChanged(m_depthIndex);
+    }
+}
+
+void DisplayOptionsDialog::handleImageContrast(int contrast)
+{
+    const int contrastPercent = 100 * (contrast + 255) / 510;
+    ui->labelImageContrast->setNum(contrastPercent);
+    SignalModel::instance()->setWhiteLevel(contrast);
+    m_model->setImageContrast(contrast);
+    userSettings &settings = userSettings::Instance();
+    settings.setContrast( contrast );
+    LOG1(contrast)
+
+}
+
+void DisplayOptionsDialog::handleImageBrightness(int brightness)
+{
+    const int brightnessPercent = 100 * (brightness + 255) / 510;
+    ui->labelImageBrightness->setNum(brightnessPercent);
+    SignalModel::instance()->setBlackLevel(brightness);
+    m_model->setImageBrightness(brightness);
+    userSettings &settings = userSettings::Instance();
+    settings.setBrightness( brightness );
+    LOG1(brightness)
 }

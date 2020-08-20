@@ -303,8 +303,6 @@ void frontend::init( void )
     TIME_THIS_SCOPE( frontend_init );
     lastDirCCW = true;			// make sure bidirectional devices start CCW (passive)
 
-    LOG1(lastDirCCW);
-
     // Require case information before anything else happens
     caseWizard = std::make_unique<caseInfoWizard>(this);
 
@@ -1958,7 +1956,7 @@ void frontend::updateSector(OCTFile::OctData_t* frameData)
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
                 }
-//                if(++count % 2 == 0)
+//lcv                if(++count % 2 == 0)
                     m_scene->setDoPaint();
             }
         }

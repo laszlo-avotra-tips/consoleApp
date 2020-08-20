@@ -52,5 +52,7 @@
         <file alias="measureYellow">Frontend/Resources/Measurement-tool-yellow.png</file>
         <file alias="measureWhite">Frontend/Resources/Measurement-tool-white.png</file>
         <file alias="measureGrey">Frontend/Resources/Measurement-tool-grey.png</file>
+        <file alias="zoomInFlipped">Frontend/Resources/Zoom-In-Flipped.png</file>
+        <file alias="zoomOutFlipped">Frontend/Resources/zoom_out_flipped.png</file>
     </qresource>
 </RCC>
