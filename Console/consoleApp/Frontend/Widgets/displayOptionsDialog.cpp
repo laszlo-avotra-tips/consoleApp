@@ -75,6 +75,19 @@ void DisplayOptionsDialog::on_pushButtonBack_clicked()
     settings.setBrightness( m_model0.imageBrightness() );
     settings.setContrast(m_model0.imageContrast());
 
+    //imaging depth
+    setImagingDepth(m_model0.depthIndex());
+
+    //image color
+    updateGraySepiaSetting();
+
+    //up/down
+    updateDistalToProximalSetting(!m_model0.isPointedDown());
+
+    //ring brightness
+    settings.setReticleBrightness(m_model0.reticleBrightness());
+    emit reticleBrightnessChanged(m_model0.reticleBrightness());
+
     reject();
 }
 
