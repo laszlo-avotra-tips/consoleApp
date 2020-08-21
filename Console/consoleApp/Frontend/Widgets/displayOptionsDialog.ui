@@ -23,7 +23,7 @@ font-weight:600
 }
 QLabel{
 border-bottom:2px solid grey;
-font:16pt &quot;Helvetica Neue&quot;;
+font:22pt &quot;Helvetica Neue&quot;;
 }
 QFrame{
 border:0px;
@@ -104,10 +104,10 @@ border-radius: 5px;
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>130</y>
-     <width>431</width>
-     <height>261</height>
+     <x>118</x>
+     <y>267</y>
+     <width>1472</width>
+     <height>1472</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -126,21 +126,21 @@ border-radius: 5px;
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>1530</y>
+     <x>572</x>
+     <y>1954</y>
      <width>565</width>
-     <height>112</height>
+     <height>58</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>565</width>
-     <height>112</height>
+     <height>0</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>565</width>
+     <width>1000</width>
      <height>16777215</height>
     </size>
    </property>
@@ -169,8 +169,8 @@ border-radius: 5px;
   <widget class="QPushButton" name="pushButtonDepthMimus">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>1540</y>
+     <x>402</x>
+     <y>1934</y>
      <width>116</width>
      <height>112</height>
     </rect>
@@ -196,8 +196,8 @@ border-radius: 5px;
   <widget class="QPushButton" name="pushButtonDepthPlus">
    <property name="geometry">
     <rect>
-     <x>1070</x>
-     <y>1520</y>
+     <x>1168</x>
+     <y>1934</y>
      <width>116</width>
      <height>112</height>
     </rect>
@@ -265,8 +265,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
-text-decoration: none;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>POINTED DOWN</string>
@@ -275,14 +274,20 @@ text-decoration: none;</string>
   <widget class="QLabel" name="labelDepthTitle">
    <property name="geometry">
     <rect>
-     <x>600</x>
-     <y>1480</y>
-     <width>181</width>
-     <height>51</height>
+     <x>775</x>
+     <y>1841</y>
+     <width>194</width>
+     <height>84</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
    </property>
    <property name="text">
     <string>DEPTH</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonUp">
@@ -330,8 +335,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
-text-decoration: none;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>POINTED UP</string>
@@ -351,6 +355,9 @@ text-decoration: none;</string>
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
    </property>
    <property name="text">
     <string>CATHETER ON FLUORO</string>
@@ -436,8 +443,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
-text-decoration: none;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>GRAY</string>
@@ -453,8 +459,7 @@ text-decoration: none;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font:22pt &quot;Helvetica Neue&quot;;
-text-decoration: none;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>SEPIA</string>
@@ -468,6 +473,9 @@ text-decoration: none;</string>
      <width>429</width>
      <height>84</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
    </property>
    <property name="text">
     <string>IMAGE COLOR</string>
@@ -487,6 +495,9 @@ text-decoration: none;</string>
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
    </property>
    <property name="text">
     <string>RING BRIGHTNESS</string>
@@ -520,7 +531,7 @@ text-decoration: none;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>0</string>
@@ -532,14 +543,14 @@ text-decoration: none;</string>
   <widget class="QLabel" name="labelRingBrightness0">
    <property name="geometry">
     <rect>
-     <x>2461</x>
+     <x>2455</x>
      <y>659</y>
      <width>37</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
@@ -586,7 +597,7 @@ text-decoration: none;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
@@ -600,6 +611,9 @@ text-decoration: none;</string>
      <width>599</width>
      <height>84</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
    </property>
    <property name="text">
     <string>IMAGE BRIGHTNESS</string>
@@ -633,7 +647,7 @@ text-decoration: none;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>0</string>
@@ -645,14 +659,14 @@ text-decoration: none;</string>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>2461</x>
+     <x>2455</x>
      <y>1045</y>
      <width>37</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
@@ -668,7 +682,7 @@ text-decoration: none;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
@@ -716,6 +730,9 @@ text-decoration: none;</string>
      <width>540</width>
      <height>84</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
    </property>
    <property name="text">
     <string>IMAGE CONTRAST</string>
@@ -783,7 +800,7 @@ text-decoration: none;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>0</string>
@@ -795,14 +812,14 @@ text-decoration: none;</string>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>2461</x>
+     <x>2455</x>
      <y>1311</y>
      <width>37</width>
      <height>64</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
@@ -818,7 +835,7 @@ text-decoration: none;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">text-decoration: none</string>
+    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
