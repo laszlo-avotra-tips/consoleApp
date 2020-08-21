@@ -133,10 +133,10 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 {
     if(value > 0){
         m_depthIndex = value;
+        setImagingDepth(value);
     } else {
-        m_depthIndex = 1;
-    }
-    setImagingDepth(value);
+        emit ui->horizontalSlider->valueChanged(1);
+    }   
 }
 
 void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness)
