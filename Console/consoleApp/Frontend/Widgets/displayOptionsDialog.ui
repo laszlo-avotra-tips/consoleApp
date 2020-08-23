@@ -33,17 +33,6 @@ font:19pt;
 color:white;
 border-radius: 10px;
 }
-QGroupBox{
-border:0px;
-font:22pt &quot;Helvetica Neue&quot;;
-}
-QRadioButton{
-font:22pt &quot;Helvetica Neue&quot;;
-}
-QRadioButton::indicator{
-width: 40px;
-height:40px;
-}
  /* ---------- Sliders ------------*/
 
 QSlider::groove:horizontal {
