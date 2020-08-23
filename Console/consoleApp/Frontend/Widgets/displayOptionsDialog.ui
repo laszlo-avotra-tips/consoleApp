@@ -45,7 +45,6 @@ QSlider::sub-page:horizontal {
 background: rgb( 51, 51, 51 );
 border: 1px solid rgb( 51, 51, 51 );
 height: 20px;
-border-radius: 6px;
 }
 QSlider::sub-page:horizontal {
 background:#F5C400;
@@ -56,9 +55,9 @@ border-radius: 10px;
 QSlider::handle:horizontal {
 /* image: url(:images/handle_normal.png);*/
 width: 31px;
-margin: -29px 0;
+margin: -19px 0;
 background: rgb( 67, 67, 67 );
-border-radius: 5px;
+border-radius: 10px;
 }
 </string>
   </property>
