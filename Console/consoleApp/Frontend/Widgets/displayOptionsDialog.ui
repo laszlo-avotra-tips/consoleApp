@@ -506,7 +506,7 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelReticleBrightness">
    <property name="geometry">
     <rect>
-     <x>2763</x>
+     <x>2760</x>
      <y>617</y>
      <width>59</width>
      <height>60</height>
@@ -537,15 +537,15 @@ border-radius: 30;</string>
     <string>0</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelRingBrightness0">
    <property name="geometry">
     <rect>
-     <x>2455</x>
+     <x>2450</x>
      <y>659</y>
-     <width>37</width>
+     <width>50</width>
      <height>60</height>
     </rect>
    </property>
@@ -559,7 +559,7 @@ border-radius: 30;</string>
   <widget class="QSlider" name="horizontalSliderRingBrightness">
    <property name="geometry">
     <rect>
-     <x>2510</x>
+     <x>2507</x>
      <y>660</y>
      <width>565</width>
      <height>58</height>
@@ -622,8 +622,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageBrightness">
    <property name="geometry">
     <rect>
-     <x>2763</x>
-     <y>1002</y>
+     <x>2760</x>
+     <y>1017</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -653,15 +653,15 @@ border-radius: 30;</string>
     <string>0</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>2455</x>
-     <y>1045</y>
-     <width>37</width>
+     <x>2450</x>
+     <y>1060</y>
+     <width>50</width>
      <height>60</height>
     </rect>
    </property>
@@ -676,7 +676,7 @@ border-radius: 30;</string>
    <property name="geometry">
     <rect>
      <x>3082</x>
-     <y>1045</y>
+     <y>1060</y>
      <width>81</width>
      <height>60</height>
     </rect>
@@ -692,7 +692,7 @@ border-radius: 30;</string>
    <property name="geometry">
     <rect>
      <x>2507</x>
-     <y>1045</y>
+     <y>1060</y>
      <width>565</width>
      <height>58</height>
     </rect>
@@ -775,8 +775,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageContrast">
    <property name="geometry">
     <rect>
-     <x>2763</x>
-     <y>1268</y>
+     <x>2760</x>
+     <y>1269</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -806,16 +806,16 @@ border-radius: 30;</string>
     <string>0</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>2455</x>
+     <x>2450</x>
      <y>1311</y>
-     <width>37</width>
-     <height>64</height>
+     <width>50</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -911,6 +911,40 @@ color: black;</string>
     <string>DONE</string>
    </property>
   </widget>
+  <zorder>labelImageContrast</zorder>
+  <zorder>labelTitle</zorder>
+  <zorder>graphicsView</zorder>
+  <zorder>horizontalSlider</zorder>
+  <zorder>pushButtonDepthMimus</zorder>
+  <zorder>pushButtonDepthPlus</zorder>
+  <zorder>pushButtonDown</zorder>
+  <zorder>labelDown</zorder>
+  <zorder>labelDepthTitle</zorder>
+  <zorder>pushButtonUp</zorder>
+  <zorder>labelUp</zorder>
+  <zorder>labelCatheterOnFluoroTitle</zorder>
+  <zorder>pushButtonGray</zorder>
+  <zorder>pushButtonSepia</zorder>
+  <zorder>labelGray</zorder>
+  <zorder>labelSepia</zorder>
+  <zorder>labelImageColorTitle</zorder>
+  <zorder>labelRingBrightnessTitle</zorder>
+  <zorder>labelReticleBrightness</zorder>
+  <zorder>labelRingBrightness0</zorder>
+  <zorder>horizontalSliderRingBrightness</zorder>
+  <zorder>labelRingBrightness100</zorder>
+  <zorder>labelImageBrightnessTitle</zorder>
+  <zorder>labelImageBrightness</zorder>
+  <zorder>label_4</zorder>
+  <zorder>label_5</zorder>
+  <zorder>horizontalSliderImageBrightness</zorder>
+  <zorder>labelImageContrastTitle</zorder>
+  <zorder>horizontalSliderImageContrast</zorder>
+  <zorder>label_6</zorder>
+  <zorder>label_7</zorder>
+  <zorder>pushButtonTechView</zorder>
+  <zorder>pushButtonBack</zorder>
+  <zorder>pushButtonDone</zorder>
  </widget>
  <resources/>
  <connections/>
