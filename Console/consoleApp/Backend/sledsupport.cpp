@@ -107,7 +107,7 @@ bool SledSupport::writeSerial(QByteArray command)
     //qDebug() << "Command to write: " << command;
     if(command != GetRunningState){
         const QString cmd(command);
-        LOG( INFO, QString( "Sled Support Board: writeSerial command: %1" ).arg( cmd ) );
+        LOG( INFO, QString( "Sled Support Board: writeSerial command: \"%1\" " ).arg( cmd ) );
     }
     bool retVal = true;
     if( ftHandle != NULL )
@@ -128,14 +128,14 @@ bool SledSupport::writeSerial(QByteArray command)
         {
             qDebug() << "Could not write command" << command;
             const QString cmd(command);
-            LOG( WARNING, QString( "Sled Support Board: writeSerial could not write command: %1" ).arg( cmd ) );
+            LOG( WARNING, QString( "Sled Support Board: writeSerial could not write command: \"%1\" " ).arg( cmd ) );
             retVal = false;
         }
         else
         {
             qDebug() << "Serial bytes written: " << bytesWritten;
             if(command != GetRunningState){
-                LOG( INFO, QString( "Sled Support Board: writeSerial bytes written: %1" ).arg( bytesWritten ) );
+                LOG( INFO, QString( "Sled Support Board: writeSerial bytes written: %1 " ).arg( bytesWritten ) );
             }
         }
     }
@@ -1160,7 +1160,7 @@ QByteArray SledSupport::getResponse( void )
         data = buffer;
         data = data.simplified();
     }
-    LOG( INFO, QString("Sled Support getResponse() data: ").arg(buffer) );
+    LOG( INFO, QString("Sled Support getResponse() bytesRead: %1 data: %2").arg(bytesRead).arg(buffer) );
     return data;
 }
 
