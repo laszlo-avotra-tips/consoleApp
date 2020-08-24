@@ -91,14 +91,14 @@ void DeviceSelectDialog::populateList()
         QImage image = d->getIcon();
         if(d->isAth()){
             const QPixmap pm1 = QPixmap::fromImage( image );
-            const QPixmap pm2 = pm1.scaled(300,200);
+            const QPixmap pm2 = pm1.scaled(300,300);
             QListWidgetItem *li = new QListWidgetItem(
                        QIcon( pm2 ),
-                       "",//d->getDeviceName(),
+                       d->getDeviceName(),
                        ui->listWidgetAtherectomy,
                        0 );
-            li->setSizeHint(QSize(300,200));
-//            li->setTextAlignment( Qt::AlignHCenter );
+            li->setSizeHint(QSize(400,100));
+            li->setTextAlignment( Qt::AlignHCenter );
         } else {
             QListWidgetItem *li = new QListWidgetItem(
                        QIcon( QPixmap::fromImage( image ) ),
