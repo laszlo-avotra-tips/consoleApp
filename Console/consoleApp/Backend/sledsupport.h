@@ -103,6 +103,8 @@ private:
     void getFirmwareVersions( void );
     QByteArray qualifyVersion( QByteArray v );
 
+    QString commandToString(const QByteArray& ba);
+
     enum ClockingMode_e
     {
         DiagnosticMode = 0,  // clocking is off

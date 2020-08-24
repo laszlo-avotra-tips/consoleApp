@@ -31,6 +31,7 @@
  * gs         Print Current Speed
  * go         Print Ocelot Speed
  */
+namespace{
 
 // amount of time to wait for responses
 static const int SledCommDelay_ms = 100;
@@ -63,6 +64,11 @@ QByteArray SetPower              = "spw";
 QByteArray GetOcelotSpeed        = "go\r";
 QByteArray SetOcelotSpeed        = "so";
 
+std::map<QByteArray,QString> commandLut{
+
+};
+
+}
 
 /*
  * Constructor
@@ -106,8 +112,7 @@ bool SledSupport::writeSerial(QByteArray command)
 {
     //qDebug() << "Command to write: " << command;
     if(command != GetRunningState){
-        const QString cmd(command);
-        LOG( INFO, QString( "Sled Support Board: writeSerial command: \"%1\" " ).arg( cmd ) );
+        LOG( INFO, QString( "Sled Support Board: writeSerial command: %1 " ).arg( commandToString(command) ) );
     }
     bool retVal = true;
     if( ftHandle != NULL )
@@ -127,8 +132,7 @@ bool SledSupport::writeSerial(QByteArray command)
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not write command" << command;
-            const QString cmd(command);
-            LOG( WARNING, QString( "Sled Support Board: writeSerial could not write command: \"%1\" " ).arg( cmd ) );
+            LOG( WARNING, QString( "Sled Support Board: writeSerial could not write command: %1 " ).arg( commandToString(command) ) );
             retVal = false;
         }
         else
@@ -1136,6 +1140,13 @@ QByteArray SledSupport::qualifyVersion( QByteArray v )
     return newV;
 }
 
+QString SledSupport::commandToString(const QByteArray &ba)
+{
+    QString cmd(ba.simplified());
+    cmd.replace('\n','&');
+    return cmd;
+}
+
 /*
  * Read available data from the serial port.
  */
@@ -1160,7 +1171,9 @@ QByteArray SledSupport::getResponse( void )
         data = buffer;
         data = data.simplified();
     }
-    LOG( INFO, QString("Sled Support getResponse() bytesRead: %1 data: %2").arg(bytesRead).arg(buffer) );
+    if(data.toUpper().contains( "NAK" )){
+        LOG( INFO, QString("Sled Support getResponse() bytesRead: %1 data: %2").arg(bytesRead).arg(commandToString(buffer)) );
+    }
     return data;
 }
 
