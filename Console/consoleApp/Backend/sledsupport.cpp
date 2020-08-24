@@ -104,6 +104,8 @@ SledSupport::~SledSupport()
 bool SledSupport::writeSerial(QByteArray command)
 {
     //qDebug() << "Command to write: " << command;
+    QString cmd(command);
+    LOG( INFO, QString( "Sled Support Board: writeSerial command: %1" ).arg( cmd ) );
     bool retVal = true;
     if( ftHandle != NULL )
     {
@@ -122,11 +124,13 @@ bool SledSupport::writeSerial(QByteArray command)
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not write command" << command;
+            LOG( INFO, QString( "Sled Support Board: writeSerial could not write command: %1" ).arg( cmd ) );
             retVal = false;
         }
         else
         {
-//            qDebug() << "Serial bytes written: " << bytesWritten;
+            qDebug() << "Serial bytes written: " << bytesWritten;
+            LOG( INFO, QString( "Sled Support Board: writeSerial bytes written: %1" ).arg( bytesWritten ) );
         }
     }
     else
@@ -340,7 +344,7 @@ void SledSupport::handleClockingResponse( void )
                 else  // there is no proper signature in the bytes returned
                 {
                     currClockingMode = SledSupport::UnknownMode;
-//                    LOG( WARNING, QString( "Clocking mode is neither on nor off. Mode: %1, Response: %2" ).arg( currClockingMode ).arg( QString( resp ) ) );
+                    LOG( WARNING, QString( "Clocking mode is neither on nor off. Mode: %1, Response: %2" ).arg( currClockingMode ).arg( QString( resp ) ) );
                 }
             }
         }
@@ -427,6 +431,7 @@ void SledSupport::run()
             mutex.lock();
             deviceSettings &device = deviceSettings::Instance();
 //            qDebug() << "New Device Name: " << device.current()->getDeviceName();
+            LOG( INFO, QString( "Sled Support Board new Device Name: %1" ).arg( device.current()->getDeviceName() ) );
             int isEnabled = device.current()->getClockingEnabled();
             QByteArray clockingGain = device.current()->getClockingGain();
             QByteArray clockingOffset = device.current()->getClockingOffset();
@@ -1134,7 +1139,7 @@ QByteArray SledSupport::getResponse( void )
     QByteArray data;
     DWORD bytesToRead = 256;
     DWORD bytesRead;
-    char buffer[256];
+    char buffer[256]= {};
 
     //qDebug() << "Reading Sled Response";
 
@@ -1149,6 +1154,7 @@ QByteArray SledSupport::getResponse( void )
         data = buffer;
         data = data.simplified();
     }
+    LOG( INFO, QString("Sled Support getResponse () data: ").arg(buffer) );
     return data;
 }
 
