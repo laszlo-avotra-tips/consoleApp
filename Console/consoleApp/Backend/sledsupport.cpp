@@ -1154,7 +1154,7 @@ QByteArray SledSupport::getResponse( void )
         data = buffer;
         data = data.simplified();
     }
-    LOG( INFO, QString("Sled Support getResponse () data: ").arg(buffer) );
+    LOG( INFO, QString("Sled Support getResponse() data: ").arg(buffer) );
     return data;
 }
 
