@@ -97,6 +97,7 @@ void DeviceSelectDialog::populateList()
                        "",//d->getDeviceName(),
                        ui->listWidgetAtherectomy,
                        0 );
+            li->setSizeHint(QSize(300,200));
 //            li->setTextAlignment( Qt::AlignHCenter );
         } else {
             QListWidgetItem *li = new QListWidgetItem(
