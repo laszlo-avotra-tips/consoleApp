@@ -1143,8 +1143,9 @@ QByteArray SledSupport::qualifyVersion( QByteArray v )
 QString SledSupport::commandToString(const QByteArray &ba)
 {
     QString cmd(ba.simplified());
-    cmd.replace('\n','&');
-    return cmd;
+    QString fcmd = QString("\"") + cmd + QString("\"");
+//    cmd.replace('\n','&');
+    return fcmd;
 }
 
 /*
