@@ -115,7 +115,7 @@ void DeviceSelectDialog::populateList()
 void DeviceSelectDialog::populateList2()
 {
     // Create model
-    auto model = new QStringListModel(this);
+    m_model = new QStringListModel(this);
 
     deviceSettings &devices = deviceSettings::Instance();
 
@@ -134,10 +134,10 @@ void DeviceSelectDialog::populateList2()
     }
 
     // Populate our model
-    model->setStringList(List);
+    m_model->setStringList(List);
 
     // Glue model and view together
-    ui->listViewAtherectomy->setModel(model);
+    ui->listViewAtherectomy->setModel(m_model);
 
     // Add additional feature so that
     // we can manually modify the data in ListView
@@ -199,5 +199,6 @@ void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &ind
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
 {
     auto i = index.row();
-    LOG1(i)
+    auto val = m_model->data(index);
+    LOG1(val.toString())
 }

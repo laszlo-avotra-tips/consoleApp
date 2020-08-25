@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
+#include <QStringListModel>
 
 class frontend;
 
@@ -39,6 +40,7 @@ private slots:
 
 private:
     Ui::DeviceSelectDialog *ui;
+    QStringListModel* m_model{nullptr};
 };
 
 #endif // DEVICESELECTDIALOG_H

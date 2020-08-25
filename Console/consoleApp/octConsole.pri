@@ -28,6 +28,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
+    $$PWD/Frontend/Widgets/deviceListModel.h \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
@@ -141,6 +142,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
+    $$PWD/Frontend/Widgets/deviceListModel.cpp \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
