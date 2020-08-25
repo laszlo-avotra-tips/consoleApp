@@ -64,8 +64,27 @@ QByteArray SetPower              = "spw";
 QByteArray GetOcelotSpeed        = "go\r";
 QByteArray SetOcelotSpeed        = "so";
 
-std::map<QByteArray,QString> commandLut{
-
+const std::map<QString,QString> commandLut
+{
+    {{QString("scg")},{QString("SetClockingGain "   )}},
+    {{QString("sco")},{QString("SetClockingOffset " )}},
+    {{QString("sto")},{QString("SetTorque "         )}},
+    {{QString("sti")},{QString("SetLimitTime "      )}},
+    {{QString("sbl")},{QString("SetLimitBlink "     )}},
+    {{QString("gcg")},{QString("GetClockingGain "   )}},
+    {{QString("gco")},{QString("GetClockingOffset " )}},
+    {{QString("gto")},{QString("GetTorque "         )}},
+    {{QString("gti")},{QString("GetLimitTime "      )}},
+    {{QString("sr1")},{QString("SetSledOn "         )}},
+    {{QString("sr0")},{QString("SetSledOff "        )}},
+    {{QString("spw")},{QString("SetPower "          )}},
+    {{QString("sc")},{QString("SetClockingMode "    )}},
+    {{QString("ss")},{QString("SetSpeed "           )}},
+    {{QString("sd")},{QString("SetDirection "       )}},
+    {{QString("gc")},{QString("GetClockingMode "    )}},
+    {{QString("gs")},{QString("GetSpeed "           )}},
+    {{QString("gv")},{QString("GetFirmwareVersions ")}},
+    {{QString("gr")},{QString("GetRunningState "    )}}
 };
 
 }
@@ -1143,7 +1162,16 @@ QByteArray SledSupport::qualifyVersion( QByteArray v )
 QString SledSupport::commandToString(const QByteArray &ba)
 {
     QString cmd(ba.simplified());
-    QString fcmd = QString("\"") + cmd + QString("\"");
+
+    const auto it = commandLut.find(cmd);
+
+    QString fcmd;
+
+    if(it != commandLut.end()){
+        fcmd = QString("code: \"") + cmd + QString("\" verbose: ") + it->second;
+    } else {
+        fcmd = QString("code: \"") + cmd + QString("\"");
+    }
 //    cmd.replace('\n','&');
     return fcmd;
 }
@@ -1173,7 +1201,7 @@ QByteArray SledSupport::getResponse( void )
         data = data.simplified();
     }
     if(data.toUpper().contains( "NAK" )){
-        LOG( INFO, QString("Sled Support getResponse() bytesRead: %1 data: %2").arg(bytesRead).arg(commandToString(buffer)) );
+        LOG( INFO, QString("Sled Support getResponse data: %1").arg(bytesRead).arg(commandToString(buffer)) );
     }
     return data;
 }
