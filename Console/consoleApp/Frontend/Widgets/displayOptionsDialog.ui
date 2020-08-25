@@ -36,7 +36,6 @@ border-radius: 10px;
  /* ---------- Sliders ------------*/
 
 QSlider::groove:horizontal {
-border: 1px solid rgb(  191, 191, 191 );
 background: white;
 height: 20px;
 border-radius: 10px;
@@ -134,7 +133,7 @@ border-radius: 10px;
    </property>
    <property name="sizeIncrement">
     <size>
-     <width>1</width>
+     <width>0</width>
      <height>0</height>
     </size>
    </property>
