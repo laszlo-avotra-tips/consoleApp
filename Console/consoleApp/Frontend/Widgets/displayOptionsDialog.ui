@@ -139,7 +139,7 @@ border-radius: 10px;
     </size>
    </property>
    <property name="minimum">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="maximum">
     <number>5</number>
