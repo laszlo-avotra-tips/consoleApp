@@ -6,6 +6,8 @@
 #include "logger.h"
 #include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
+#include "deviceListModel.h"
+
 #include <daqfactory.h>
 #include <QImage>
 #include <QIcon>
@@ -112,7 +114,7 @@ void DeviceSelectDialog::populateList()
     }
 }
 
-void DeviceSelectDialog::populateList2()
+void DeviceSelectDialog::populateList3()
 {
     // Create model
     m_model = new QStringListModel(this);
@@ -146,6 +148,13 @@ void DeviceSelectDialog::populateList2()
             setEditTriggers(QAbstractItemView::AnyKeyPressed |
                             QAbstractItemView::DoubleClicked);
 
+}
+
+void DeviceSelectDialog::populateList2()
+{
+    m_model2 = new DeviceListModel(this);
+    ui->listViewAtherectomy->setModel(m_model2);
+    m_model2->populate();
 }
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()

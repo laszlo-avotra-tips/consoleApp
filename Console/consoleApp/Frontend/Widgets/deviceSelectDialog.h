@@ -5,6 +5,8 @@
 #include <QListWidgetItem>
 #include <QStringListModel>
 
+#include "deviceListModel.h"
+
 class frontend;
 
 namespace Ui {
@@ -28,6 +30,7 @@ protected:
 private:
     void populateList(void);
     void populateList2(void);
+    void populateList3(void);
 
 private slots:
     void on_pushButtonDone_clicked();
@@ -41,6 +44,7 @@ private slots:
 private:
     Ui::DeviceSelectDialog *ui;
     QStringListModel* m_model{nullptr};
+    DeviceListModel* m_model2{nullptr};
 };
 
 #endif // DEVICESELECTDIALOG_H

@@ -1,9 +1,19 @@
 #ifndef DEVICELISTMODEL_H
 #define DEVICELISTMODEL_H
 
-#include <QAbstractItemModel>
+#include <QAbstractListModel>
+#include <QString>
 
-class DeviceListModel : public QAbstractItemModel
+struct DeviceModel{
+    DeviceModel(const QString& name1, bool isAth)
+        : m_name1(name1),  m_isAth(isAth)
+    {}
+
+    QString m_name1;
+    bool m_isAth;
+};
+
+class DeviceListModel : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -15,6 +25,8 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     void populate();
 
+private:
+    QList<DeviceModel> m_data;
 };
 
 #endif // DEVICELISTMODEL_H
