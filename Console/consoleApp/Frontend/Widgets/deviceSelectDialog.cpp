@@ -9,6 +9,7 @@
 #include <daqfactory.h>
 #include <QImage>
 #include <QIcon>
+#include <QStringListModel>
 
 DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -29,6 +30,7 @@ DeviceSelectDialog::~DeviceSelectDialog()
 void DeviceSelectDialog::initDialog()
 {
     populateList();
+    populateList2();
 //    connect(ui->listWidgetAtherectomy, SIGNAL(itemClicked(QListWidgetItem *)),   this, SIGNAL(completeChanged()));
 //    connect(ui->listWidgetAtherectomy, SIGNAL(itemActivated(QListWidgetItem *)), this, SIGNAL(completeChanged()));
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
@@ -110,6 +112,42 @@ void DeviceSelectDialog::populateList()
     }
 }
 
+void DeviceSelectDialog::populateList2()
+{
+    // Create model
+    auto model = new QStringListModel(this);
+
+    deviceSettings &devices = deviceSettings::Instance();
+
+    // Only create the list if devices don't exist.
+    if( devices.list().isEmpty() )
+    {
+        devices.init();
+    }
+
+    QStringList List;
+    QList<device *>devList = devices.list();
+
+    for ( device* d : devList )
+    {
+           List.append(d->getDeviceName());
+    }
+
+    // Populate our model
+    model->setStringList(List);
+
+    // Glue model and view together
+    ui->listViewAtherectomy->setModel(model);
+
+    // Add additional feature so that
+    // we can manually modify the data in ListView
+    // It may be triggered by hitting any key or double-click etc.
+    ui->listViewAtherectomy->
+            setEditTriggers(QAbstractItemView::AnyKeyPressed |
+                            QAbstractItemView::DoubleClicked);
+
+}
+
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
     deviceSettings &dev = deviceSettings::Instance();
@@ -156,4 +194,10 @@ void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &ind
 {
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
+}
+
+void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
+{
+    auto i = index.row();
+    LOG1(i)
 }

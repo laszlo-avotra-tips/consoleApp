@@ -35,6 +35,8 @@ private slots:
 
     void on_listWidgetAtherectomy_clicked(const QModelIndex &index);
 
+    void on_listViewAtherectomy_clicked(const QModelIndex &index);
+    
 private:
     Ui::DeviceSelectDialog *ui;
 };
