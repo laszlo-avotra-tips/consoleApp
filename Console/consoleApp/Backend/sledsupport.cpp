@@ -130,9 +130,9 @@ SledSupport::~SledSupport()
 bool SledSupport::writeSerial(QByteArray command)
 {
     //qDebug() << "Command to write: " << command;
-//    if(command != GetRunningState){
+    if(command != GetRunningState){
         LOG( INFO, QString( "Sled Support Board: writeSerial command: %1 " ).arg( commandToString(command) ) );
-//    }
+    }
     bool retVal = true;
     if( ftHandle != NULL )
     {
@@ -1172,6 +1172,7 @@ QString SledSupport::commandToString(const QByteArray &ba)
     } else {
         fcmd = QString("code: \"") + cmd + QString("\"");
     }
+//    cmd.replace('\n','&');
     return fcmd;
 }
 
@@ -1199,9 +1200,9 @@ QByteArray SledSupport::getResponse( void )
         data = buffer;
         data = data.simplified();
     }
-//    if(data.toUpper().contains( "NAK" )){
+    if(data.toUpper().contains( "NAK" )){
         LOG( INFO, QString("Sled Support getResponse data: %1").arg(bytesRead).arg(commandToString(buffer)) );
-//    }
+    }
     return data;
 }
 
