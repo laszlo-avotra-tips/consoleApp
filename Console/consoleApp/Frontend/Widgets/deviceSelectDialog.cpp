@@ -7,6 +7,7 @@
 #include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
 #include "deviceListModel.h"
+#include "deviceDelegate.h"
 
 #include <daqfactory.h>
 #include <QImage>
@@ -154,6 +155,8 @@ void DeviceSelectDialog::populateList2()
 {
     m_model2 = new DeviceListModel(this);
     ui->listViewAtherectomy->setModel(m_model2);
+    DeviceDelegate* delegate = new DeviceDelegate(this);
+    ui->listViewAtherectomy->setItemDelegate(delegate);
     m_model2->populate();
 }
 
