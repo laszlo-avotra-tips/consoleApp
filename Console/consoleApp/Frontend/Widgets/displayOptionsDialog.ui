@@ -22,11 +22,7 @@ font:36pt &quot;Helvetica Neue&quot;;
 font-weight:600
 }
 QLabel{
-border-bottom:2px solid grey;
 font:22pt &quot;Helvetica Neue&quot;;
-}
-QFrame{
-border:0px;
 }
 QPushButton{
 font:19pt;
@@ -210,8 +206,8 @@ border-radius: 22px;
   <widget class="QPushButton" name="pushButtonDown">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>663</y>
+     <x>2556</x>
+     <y>545</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -245,14 +241,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelDown">
    <property name="geometry">
     <rect>
-     <x>1841</x>
-     <y>651</y>
-     <width>475</width>
-     <height>84</height>
+     <x>2654</x>
+     <y>537</y>
+     <width>436</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>POINTED DOWN</string>
@@ -280,8 +276,8 @@ border-radius: 30;</string>
   <widget class="QPushButton" name="pushButtonUp">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>756</y>
+     <x>2556</x>
+     <y>639</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -315,14 +311,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelUp">
    <property name="geometry">
     <rect>
-     <x>1841</x>
-     <y>745</y>
-     <width>370</width>
-     <height>84</height>
+     <x>2654</x>
+     <y>630</y>
+     <width>340</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>POINTED UP</string>
@@ -331,8 +327,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelCatheterOnFluoroTitle">
    <property name="geometry">
     <rect>
-     <x>1721</x>
-     <y>524</y>
+     <x>2534</x>
+     <y>409</y>
      <width>684</width>
      <height>84</height>
     </rect>
@@ -353,8 +349,8 @@ border-radius: 30;</string>
   <widget class="QPushButton" name="pushButtonGray">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>1059</y>
+     <x>2541</x>
+     <y>983</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -388,8 +384,8 @@ border-radius: 30;</string>
   <widget class="QPushButton" name="pushButtonSepia">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>1152</y>
+     <x>2541</x>
+     <y>1077</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -423,14 +419,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelGray">
    <property name="geometry">
     <rect>
-     <x>1838</x>
-     <y>1047</y>
-     <width>174</width>
-     <height>84</height>
+     <x>2638</x>
+     <y>974</y>
+     <width>161</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>GRAY</string>
@@ -439,14 +435,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelSepia">
    <property name="geometry">
     <rect>
-     <x>1838</x>
-     <y>1141</y>
-     <width>183</width>
-     <height>84</height>
+     <x>2638</x>
+     <y>1068</y>
+     <width>169</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>SEPIA</string>
@@ -455,8 +451,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageColorTitle">
    <property name="geometry">
     <rect>
-     <x>1734</x>
-     <y>924</y>
+     <x>2534</x>
+     <y>850</y>
      <width>429</width>
      <height>84</height>
     </rect>
@@ -471,8 +467,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelRingBrightnessTitle">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>524</y>
+     <x>1757</x>
+     <y>409</y>
      <width>555</width>
      <height>84</height>
     </rect>
@@ -493,8 +489,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelReticleBrightness">
    <property name="geometry">
     <rect>
-     <x>2760</x>
-     <y>617</y>
+     <x>1999</x>
+     <y>526</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -521,18 +517,18 @@ border-radius: 30;</string>
     <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
-    <string>0</string>
+    <string>50</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelRingBrightness0">
    <property name="geometry">
     <rect>
-     <x>2450</x>
-     <y>659</y>
-     <width>50</width>
+     <x>1673</x>
+     <y>627</y>
+     <width>37</width>
      <height>60</height>
     </rect>
    </property>
@@ -542,13 +538,16 @@ border-radius: 30;</string>
    <property name="text">
     <string>  0</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QSlider" name="horizontalSliderRingBrightness">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>660</y>
-     <width>565</width>
+     <x>1734</x>
+     <y>598</y>
+     <width>602</width>
      <height>118</height>
     </rect>
    </property>
@@ -577,8 +576,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelRingBrightness100">
    <property name="geometry">
     <rect>
-     <x>3082</x>
-     <y>659</y>
+     <x>2350</x>
+     <y>627</y>
      <width>81</width>
      <height>60</height>
     </rect>
@@ -589,12 +588,15 @@ border-radius: 30;</string>
    <property name="text">
     <string>100</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="labelImageBrightnessTitle">
    <property name="geometry">
     <rect>
-     <x>2503</x>
-     <y>924</y>
+     <x>1737</x>
+     <y>850</y>
      <width>599</width>
      <height>84</height>
     </rect>
@@ -609,8 +611,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageBrightness">
    <property name="geometry">
     <rect>
-     <x>2760</x>
-     <y>1017</y>
+     <x>1997</x>
+     <y>983</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -637,18 +639,18 @@ border-radius: 30;</string>
     <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
-    <string>0</string>
+    <string>50</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>2450</x>
-     <y>1060</y>
-     <width>50</width>
+     <x>1673</x>
+     <y>1090</y>
+     <width>37</width>
      <height>60</height>
     </rect>
    </property>
@@ -658,12 +660,15 @@ border-radius: 30;</string>
    <property name="text">
     <string>  0</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>3082</x>
-     <y>1060</y>
+     <x>2350</x>
+     <y>1090</y>
      <width>81</width>
      <height>60</height>
     </rect>
@@ -674,13 +679,16 @@ border-radius: 30;</string>
    <property name="text">
     <string>100</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QSlider" name="horizontalSliderImageBrightness">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>1060</y>
-     <width>565</width>
+     <x>1734</x>
+     <y>1061</y>
+     <width>602</width>
      <height>118</height>
     </rect>
    </property>
@@ -712,8 +720,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageContrastTitle">
    <property name="geometry">
     <rect>
-     <x>2504</x>
-     <y>1176</y>
+     <x>1758</x>
+     <y>1287</y>
      <width>540</width>
      <height>84</height>
     </rect>
@@ -728,9 +736,9 @@ border-radius: 30;</string>
   <widget class="QSlider" name="horizontalSliderImageContrast">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>1312</y>
-     <width>565</width>
+     <x>1734</x>
+     <y>1479</y>
+     <width>602</width>
      <height>118</height>
     </rect>
    </property>
@@ -762,8 +770,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageContrast">
    <property name="geometry">
     <rect>
-     <x>2760</x>
-     <y>1269</y>
+     <x>1999</x>
+     <y>1402</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -790,18 +798,18 @@ border-radius: 30;</string>
     <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
-    <string>0</string>
+    <string>50</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>2450</x>
-     <y>1311</y>
-     <width>50</width>
+     <x>1683</x>
+     <y>1508</y>
+     <width>37</width>
      <height>60</height>
     </rect>
    </property>
@@ -811,12 +819,15 @@ border-radius: 30;</string>
    <property name="text">
     <string>  0</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>3082</x>
-     <y>1311</y>
+     <x>2350</x>
+     <y>1508</y>
      <width>81</width>
      <height>60</height>
     </rect>
@@ -826,6 +837,9 @@ border-radius: 30;</string>
    </property>
    <property name="text">
     <string>100</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonTechView">
