@@ -5,14 +5,6 @@
 
 #include "deviceDisplayModel.h"
 
-//struct DeviceDisplayModel{
-//    DeviceDisplayModel(const QString& name)
-//        : m_name(name)
-//    {}
-
-//    QString m_name;
-//};
-
 class DeviceListModel : public QAbstractListModel
 {
     Q_OBJECT
