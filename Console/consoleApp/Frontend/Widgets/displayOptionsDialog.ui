@@ -18,7 +18,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel#labelTitle{
-font:36pt &quot;Helvetica Neue&quot;;
+font:38pt &quot;Helvetica Neue&quot;;
 font-weight:600
 }
 QLabel{
@@ -514,7 +514,7 @@ border-radius: 30;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>50</string>
@@ -533,7 +533,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
@@ -583,7 +583,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
@@ -636,7 +636,7 @@ border-radius: 30;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>50</string>
@@ -655,7 +655,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
@@ -674,7 +674,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
@@ -795,7 +795,7 @@ border-radius: 30;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>50</string>
@@ -807,14 +807,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>1683</x>
-     <y>1508</y>
+     <x>1670</x>
+     <y>1510</y>
      <width>37</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
@@ -833,7 +833,7 @@ border-radius: 30;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
