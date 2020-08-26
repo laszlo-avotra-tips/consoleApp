@@ -37,26 +37,26 @@ border-radius: 10px;
 
 QSlider::groove:horizontal {
 background: white;
-height: 20px;
-border-radius: 10px;
+height: 45px;
+border-radius: 22px;
 }
 QSlider::sub-page:horizontal {
 background: rgb( 51, 51, 51 );
 border: 1px solid rgb( 51, 51, 51 );
-height: 20px;
+height: 45px;
 }
 QSlider::sub-page:horizontal {
 background:#F5C400;
 border: 1px solid #F5C400;
-height: 20px;
-border-radius: 10px;
+height: 45px;
+border-radius: 22px;
 }
 QSlider::handle:horizontal {
 /* image: url(:images/handle_normal.png);*/
-width: 31px;
-margin: -19px 0;
+width: 63px;
+margin: -36px 0;
 background: rgb( 67, 67, 67 );
-border-radius: 10px;
+border-radius: 22px;
 }
 </string>
   </property>
@@ -113,10 +113,10 @@ border-radius: 10px;
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
-     <x>572</x>
-     <y>1954</y>
-     <width>565</width>
-     <height>58</height>
+     <x>453</x>
+     <y>1948</y>
+     <width>802</width>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -147,7 +147,7 @@ border-radius: 10px;
     <number>1</number>
    </property>
    <property name="sliderPosition">
-    <number>1</number>
+    <number>3</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -156,10 +156,10 @@ border-radius: 10px;
   <widget class="QPushButton" name="pushButtonDepthMimus">
    <property name="geometry">
     <rect>
-     <x>402</x>
-     <y>1934</y>
-     <width>116</width>
-     <height>112</height>
+     <x>249</x>
+     <y>1951</y>
+     <width>112</width>
+     <height>114</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -183,8 +183,8 @@ border-radius: 10px;
   <widget class="QPushButton" name="pushButtonDepthPlus">
    <property name="geometry">
     <rect>
-     <x>1168</x>
-     <y>1934</y>
+     <x>1322</x>
+     <y>1951</y>
      <width>116</width>
      <height>112</height>
     </rect>
@@ -263,7 +263,7 @@ border-radius: 30;</string>
     <rect>
      <x>775</x>
      <y>1841</y>
-     <width>194</width>
+     <width>210</width>
      <height>84</height>
     </rect>
    </property>
@@ -549,7 +549,7 @@ border-radius: 30;</string>
      <x>2507</x>
      <y>660</y>
      <width>565</width>
-     <height>58</height>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -681,7 +681,7 @@ border-radius: 30;</string>
      <x>2507</x>
      <y>1060</y>
      <width>565</width>
-     <height>58</height>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -731,7 +731,7 @@ border-radius: 30;</string>
      <x>2507</x>
      <y>1312</y>
      <width>565</width>
-     <height>58</height>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -831,8 +831,8 @@ border-radius: 30;</string>
   <widget class="QPushButton" name="pushButtonTechView">
    <property name="geometry">
     <rect>
-     <x>2188</x>
-     <y>1497</y>
+     <x>2219</x>
+     <y>1742</y>
      <width>395</width>
      <height>103</height>
     </rect>
