@@ -29,6 +29,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
     $$PWD/Frontend/Widgets/deviceDelegate.h \
+    $$PWD/Frontend/Widgets/deviceDisplayModel.h \
     $$PWD/Frontend/Widgets/deviceListModel.h \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
@@ -144,6 +145,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
     $$PWD/Frontend/Widgets/deviceDelegate.cpp \
+    $$PWD/Frontend/Widgets/deviceDisplayModel.cpp \
     $$PWD/Frontend/Widgets/deviceListModel.cpp \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \

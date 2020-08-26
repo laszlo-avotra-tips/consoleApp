@@ -18,7 +18,7 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
 
     if ( role == Qt::DisplayRole)
     {
-        return m_data[index.row()].m_name1;
+        return m_data[index.row()].m_name;
     }
 
     return QVariant();
@@ -33,7 +33,7 @@ void DeviceListModel::populate()
         QList<device *>devList = devices.list();
         for ( device* d : devList )
         {
-            DeviceModel dm(d->getDeviceName());
+            DeviceDisplayModel dm(d->getDeviceName());
             m_data.append(dm);
         }
     }

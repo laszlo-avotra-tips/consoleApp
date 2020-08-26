@@ -2,15 +2,16 @@
 #define DEVICELISTMODEL_H
 
 #include <QAbstractListModel>
-#include <QString>
 
-struct DeviceModel{
-    DeviceModel(const QString& name1)
-        : m_name1(name1)
-    {}
+#include "deviceDisplayModel.h"
 
-    QString m_name1;
-};
+//struct DeviceDisplayModel{
+//    DeviceDisplayModel(const QString& name)
+//        : m_name(name)
+//    {}
+
+//    QString m_name;
+//};
 
 class DeviceListModel : public QAbstractListModel
 {
@@ -24,7 +25,7 @@ public:
     void populate();
 
 private:
-    QList<DeviceModel> m_data;
+    QList<DeviceDisplayModel> m_data;
 };
 
 #endif // DEVICELISTMODEL_H
