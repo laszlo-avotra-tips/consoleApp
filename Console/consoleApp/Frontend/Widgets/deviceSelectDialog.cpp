@@ -95,6 +95,8 @@ void DeviceSelectDialog::populateList2()
         devices.init();
     }
 
+    ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff );
+
     m_model2 = new DeviceListModel(this);
     m_model2->populate();
 
