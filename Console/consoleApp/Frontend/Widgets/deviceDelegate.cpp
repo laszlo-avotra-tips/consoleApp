@@ -28,18 +28,22 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 //        const auto& myType = mdata.value<DeviceDisplayModel>();
 //        LOG2(i,myType.name())
 //    }
-    {
-        LOG2(ddm.name(),index.row())
-    }
+//    {
+//        LOG2(ddm.name(),index.row())
+//    }
 
-//    painter->drawImage(0,20,ddm.image());
-    painter->drawText(20,20,ddm.name());
-    QStyledItemDelegate::paint(painter, option, index);
+    const int yText = 100 * index.row() + 20;
+    const int yImage = 100 * index.row();
+
+    painter->drawImage(20,yImage,ddm.image());
+    painter->drawText(100, yText, ddm.name());
+
+   QStyledItemDelegate::paint(painter, option, index);
 
     painter->restore();
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(200,100); //QStyledItemDelegate::sizeHint(option, index);
+    return QSize(250,100); //QStyledItemDelegate::sizeHint(option, index);
 }
