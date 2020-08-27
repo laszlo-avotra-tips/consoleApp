@@ -18,7 +18,11 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
 
     if ( role == Qt::DisplayRole)
     {
-        return m_data[index.row()].name();
+        int i = index.row();
+        const DeviceDisplayModel& item = m_data.at(i);
+        QVariant retVal;
+        retVal.setValue<DeviceDisplayModel>(item);
+        return retVal;
     }
 
     return QVariant();
