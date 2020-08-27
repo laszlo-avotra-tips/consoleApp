@@ -19,24 +19,12 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     QVariant vImage = index.data();
 
     DeviceDisplayModel ddm = vImage.value<DeviceDisplayModel>();
-//    const auto* amodel = index.model();
-//    auto model = dynamic_cast<const DeviceListModel*>(amodel);
-//    if(model){
 
-//        int i = index.row();
-//        const auto& mdata = model->data(index,Qt::DisplayRole);
-//        const auto& myType = mdata.value<DeviceDisplayModel>();
-//        LOG2(i,myType.name())
-//    }
-//    {
-//        LOG2(ddm.name(),index.row())
-//    }
-
-    const int yText = 100 * index.row() + 20;
-    const int yImage = 100 * index.row();
+    const int yText = 200 * index.row() + 20;
+    const int yImage = 200 * index.row();
 
     painter->drawImage(20,yImage,ddm.image());
-    painter->drawText(100, yText, ddm.name());
+    painter->drawText(200, yText, ddm.name());
 
    QStyledItemDelegate::paint(painter, option, index);
 
@@ -45,5 +33,5 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(250,100); //QStyledItemDelegate::sizeHint(option, index);
+    return QSize(400,200); //QStyledItemDelegate::sizeHint(option, index);
 }
