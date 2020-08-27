@@ -87,6 +87,14 @@ void DeviceSelectDialog::initDialog()
 
 void DeviceSelectDialog::populateList2()
 {
+    deviceSettings &devices = deviceSettings::Instance();
+
+    // Only create the list if devices don't exist.
+    if( devices.list().isEmpty() )
+    {
+        devices.init();
+    }
+
     m_model2 = new DeviceListModel(this);
     m_model2->populate();
 
