@@ -131,9 +131,9 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <property name="geometry">
     <rect>
      <x>1560</x>
-     <y>1230</y>
-     <width>200</width>
-     <height>45</height>
+     <y>1200</y>
+     <width>230</width>
+     <height>72</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -145,7 +145,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <property name="maximumSize">
     <size>
      <width>16777215</width>
-     <height>60</height>
+     <height>16777215</height>
     </size>
    </property>
    <property name="frameShape">
@@ -186,9 +186,9 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <property name="geometry">
     <rect>
      <x>1270</x>
-     <y>1230</y>
-     <width>200</width>
-     <height>45</height>
+     <y>1200</y>
+     <width>230</width>
+     <height>72</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -200,7 +200,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <property name="maximumSize">
     <size>
      <width>16777215</width>
-     <height>60</height>
+     <height>16777215</height>
     </size>
    </property>
    <property name="frameShape">
