@@ -216,6 +216,5 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
     }
     if(m_model2){
         auto val = m_model2->data(index, Qt::DisplayRole);
-        LOG2(val.toString(), index.row())
     }
 }
