@@ -1199,9 +1199,9 @@ QByteArray SledSupport::getResponse( void )
         data = buffer;
         data = data.simplified();
     }
-//    if(data.toUpper().contains( "NAK" )){
+    if(data.toUpper().contains( "NAK" )){
         LOG( INFO, QString("Sled Support getResponse data: %1").arg(bytesRead).arg(commandToString(buffer)) );
-//    }
+    }
     return data;
 }
 

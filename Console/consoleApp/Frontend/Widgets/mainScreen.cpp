@@ -238,7 +238,7 @@ void MainScreen::setDeviceLabel()
     ui->labelRunTime->show();
 
     deviceSettings &dev = deviceSettings::Instance();
-    const QString name{dev.getCurrentDeviceTitle()};
+    const QString name{dev.getCurrentSplitDeviceName()};
     ui->labelDevice->setText(name);
     m_opacScreen->hide();
     m_graphicsView->show();
