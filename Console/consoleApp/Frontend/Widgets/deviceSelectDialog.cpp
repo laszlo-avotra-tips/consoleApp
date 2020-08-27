@@ -28,6 +28,7 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
 DeviceSelectDialog::~DeviceSelectDialog()
 {
     delete ui;
+    delete m_model2;
 }
 
 void DeviceSelectDialog::initDialog()
@@ -49,22 +50,6 @@ bool DeviceSelectDialog::isComplete() const
     }
     return false;
 
-}
-
-void DeviceSelectDialog::changeEvent(QEvent *e)
-{
-    QDialog::changeEvent(e);
-//    switch (e->type())
-//    {
-//    case QEvent::LanguageChange:
-//        ui->retranslateUi(this);
-//        break;
-//    default:
-//        break;
-//    }
-    if( e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
-    }
 }
 
 void DeviceSelectDialog::populateList()
@@ -115,42 +100,6 @@ void DeviceSelectDialog::populateList()
     }
 }
 
-void DeviceSelectDialog::populateList3()
-{
-    // Create model
-    m_model = new QStringListModel(this);
-
-    deviceSettings &devices = deviceSettings::Instance();
-
-    // Only create the list if devices don't exist.
-    if( devices.list().isEmpty() )
-    {
-        devices.init();
-    }
-
-    QStringList List;
-    QList<device *>devList = devices.list();
-
-    for ( device* d : devList )
-    {
-           List.append(d->getDeviceName());
-    }
-
-    // Populate our model
-    m_model->setStringList(List);
-
-    // Glue model and view together
-    ui->listViewAtherectomy->setModel(m_model);
-
-    // Add additional feature so that
-    // we can manually modify the data in ListView
-    // It may be triggered by hitting any key or double-click etc.
-    ui->listViewAtherectomy->
-            setEditTriggers(QAbstractItemView::AnyKeyPressed |
-                            QAbstractItemView::DoubleClicked);
-
-}
-
 void DeviceSelectDialog::populateList2()
 {
     m_model2 = new DeviceListModel(this);
@@ -163,9 +112,6 @@ void DeviceSelectDialog::populateList2()
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
-    deviceSettings &dev = deviceSettings::Instance();
-    int selection = ui->listWidgetAtherectomy->currentRow();
-    dev.setCurrentDevice(selection);
     QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
@@ -177,7 +123,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
 }
 
 void DeviceSelectDialog::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)
-{
+{    
     ui->listWidgetAtherectomy->setCurrentItem( item );
     LOG1(item->text());
 }
@@ -205,17 +151,24 @@ void DeviceSelectDialog::startDaq(frontend *fe)
 
 void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
 {
+    deviceSettings &dev = deviceSettings::Instance();
+    int selection = ui->listWidgetAtherectomy->currentRow();
+    dev.setCurrentDevice(selection);
+
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
 }
 
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
 {
-    if(m_model){
-        auto val = m_model->data(index);
-        LOG1(val.toString())
-    }
-    if(m_model2){
-        auto val = m_model2->data(index, Qt::DisplayRole);
-    }
+//    if(m_model){
+//        auto val = m_model->data(index);
+//        LOG1(val.toString())
+//    }
+    deviceSettings &dev = deviceSettings::Instance();
+    int selection = index.row();
+    dev.setCurrentDevice(selection);
+
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
 }
