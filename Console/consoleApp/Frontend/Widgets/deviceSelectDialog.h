@@ -30,10 +30,7 @@ private:
 
 private slots:
     void on_pushButtonDone_clicked();
-    void on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item);
     void startDaq(frontend *fe);
-
-    void on_listWidgetAtherectomy_clicked(const QModelIndex &index);
 
     void on_listViewAtherectomy_clicked(const QModelIndex &index);
 

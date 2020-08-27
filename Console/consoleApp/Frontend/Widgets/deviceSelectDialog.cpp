@@ -20,8 +20,6 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    ui->listWidgetAtherectomy->setDragEnabled(false);
-    ui->listWidgetCto->setDragEnabled(false);
     initDialog();
 }
 
@@ -33,72 +31,59 @@ DeviceSelectDialog::~DeviceSelectDialog()
 
 void DeviceSelectDialog::initDialog()
 {
-    populateList();
     populateList2();
-//    connect(ui->listWidgetAtherectomy, SIGNAL(itemClicked(QListWidgetItem *)),   this, SIGNAL(completeChanged()));
-//    connect(ui->listWidgetAtherectomy, SIGNAL(itemActivated(QListWidgetItem *)), this, SIGNAL(completeChanged()));
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
 }
 
-bool DeviceSelectDialog::isComplete() const
-{
-    if( ui->listWidgetAtherectomy->currentItem() )
-    {
-        return true;
-    }
-    return false;
+//void DeviceSelectDialog::populateList()
+//{
+//    deviceSettings &devices = deviceSettings::Instance();
 
-}
+//    // Only create the list if devices don't exist.
+//    if( devices.list().isEmpty() )
+//    {
+//        devices.init();
+//    }
 
-void DeviceSelectDialog::populateList()
-{
-    deviceSettings &devices = deviceSettings::Instance();
+//    QList<device *>devList = devices.list();
 
-    // Only create the list if devices don't exist.
-    if( devices.list().isEmpty() )
-    {
-        devices.init();
-    }
+//    // 4 items per row and 2 rows can be displayed without scroll bar
+//    if( devList.size() <= 4 )
+//    {
+//        ui->listWidgetAtherectomy->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//        ui->listWidgetCto->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//    }
 
-    QList<device *>devList = devices.list();
-
-    // 4 items per row and 2 rows can be displayed without scroll bar
-    if( devList.size() <= 4 )
-    {
-        ui->listWidgetAtherectomy->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-        ui->listWidgetCto->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    }
-
-    for ( device* d : devList )
-    {
-        /*
-         * This is not a leak.  QListWidget takes ownership of
-         * the pointers.  It's a weird construct but it's the way
-         * Qt adds items to the list widget.
-         */
-        QImage image = d->getIcon();
-        if(d->isAth()){
-            const QPixmap pm1 = QPixmap::fromImage( image );
-            const QPixmap pm2 = pm1.scaled(300,300);
-            QListWidgetItem *li = new QListWidgetItem(
-                       QIcon( pm2 ),
-                       d->getDeviceName(),
-                       ui->listWidgetAtherectomy,
-                       0 );
-            li->setSizeHint(QSize(400,100));
-            li->setTextAlignment( Qt::AlignHCenter );
-        } else {
-            QListWidgetItem *li = new QListWidgetItem(
-                       QIcon( QPixmap::fromImage( image ) ),
-                       "",//d->getDeviceName(),
-                       ui->listWidgetCto,
-                       0 );
-            li->setTextAlignment( Qt::AlignHCenter );
-        }
-    }
-}
+//    for ( device* d : devList )
+//    {
+//        /*
+//         * This is not a leak.  QListWidget takes ownership of
+//         * the pointers.  It's a weird construct but it's the way
+//         * Qt adds items to the list widget.
+//         */
+//        QImage image = d->getIcon();
+//        if(d->isAth()){
+//            const QPixmap pm1 = QPixmap::fromImage( image );
+//            const QPixmap pm2 = pm1.scaled(300,300);
+//            QListWidgetItem *li = new QListWidgetItem(
+//                       QIcon( pm2 ),
+//                       d->getDeviceName(),
+//                       ui->listWidgetAtherectomy,
+//                       0 );
+//            li->setSizeHint(QSize(400,100));
+//            li->setTextAlignment( Qt::AlignHCenter );
+//        } else {
+//            QListWidgetItem *li = new QListWidgetItem(
+//                       QIcon( QPixmap::fromImage( image ) ),
+//                       "",//d->getDeviceName(),
+//                       ui->listWidgetCto,
+//                       0 );
+//            li->setTextAlignment( Qt::AlignHCenter );
+//        }
+//    }
+//}
 
 void DeviceSelectDialog::populateList2()
 {
@@ -122,12 +107,6 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
     }
 }
 
-void DeviceSelectDialog::on_listWidgetAtherectomy_itemClicked(QListWidgetItem *item)
-{    
-    ui->listWidgetAtherectomy->setCurrentItem( item );
-    LOG1(item->text());
-}
-
 void DeviceSelectDialog::startDaq(frontend *fe)
 {
     auto idaq = daqfactory::instance()->getdaq();
@@ -149,22 +128,8 @@ void DeviceSelectDialog::startDaq(frontend *fe)
     fe->on_zoomSlider_valueChanged(100);
 }
 
-void DeviceSelectDialog::on_listWidgetAtherectomy_clicked(const QModelIndex &index)
-{
-    deviceSettings &dev = deviceSettings::Instance();
-    int selection = ui->listWidgetAtherectomy->currentRow();
-    dev.setCurrentDevice(selection);
-
-    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
-    ui->pushButtonDone->setEnabled(true);
-}
-
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
 {
-//    if(m_model){
-//        auto val = m_model->data(index);
-//        LOG1(val.toString())
-//    }
     deviceSettings &dev = deviceSettings::Instance();
     int selection = index.row();
     dev.setCurrentDevice(selection);

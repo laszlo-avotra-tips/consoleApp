@@ -37,6 +37,7 @@ border: 0px;
 QPushButton{
 font: 12pt;
 color: white;
+background-color:#262626;
 }
 QDialog{
 border: 2px solid grey; 
@@ -66,25 +67,85 @@ font: 24pt &quot;Helvetica Neue&quot;;
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QFrame" name="frameDialog">
+  <widget class="QLabel" name="labelTitle">
    <property name="geometry">
     <rect>
-     <x>61</x>
-     <y>57</y>
-     <width>1800</width>
-     <height>1200</height>
+     <x>480</x>
+     <y>90</y>
+     <width>983</width>
+     <height>134</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>1800</width>
-     <height>1200</height>
+     <width>0</width>
+     <height>120</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>DEVICE SELECTION</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelAtherectomy">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>290</y>
+     <width>525</width>
+     <height>84</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
+   </property>
+   <property name="text">
+    <string>ATHERECTOMY</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelCto">
+   <property name="geometry">
+    <rect>
+     <x>1180</x>
+     <y>280</y>
+     <width>526</width>
+     <height>84</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration: underline;</string>
+   </property>
+   <property name="text">
+    <string>CTO CROSSING</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frameDone">
+   <property name="geometry">
+    <rect>
+     <x>1560</x>
+     <y>1230</y>
+     <width>200</width>
+     <height>45</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>0</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>1922</width>
-     <height>1314</height>
+     <width>16777215</width>
+     <height>60</height>
     </size>
    </property>
    <property name="frameShape">
@@ -95,331 +156,118 @@ font: 24pt &quot;Helvetica Neue&quot;;
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QFrame" name="frameTitle">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>180</height>
-       </size>
+     <widget class="QPushButton" name="pushButtonDone">
+      <property name="enabled">
+       <bool>false</bool>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QLabel" name="labelTitle">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>9</y>
-         <width>402</width>
-         <height>120</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>120</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>DEVICE SELECTION</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="frameInfo">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QFrame" name="frameAtherectomy">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>1251</width>
-         <height>851</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <widget class="QLabel" name="labelAtherectomy">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>9</y>
-          <width>205</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">text-decoration: underline;</string>
-        </property>
-        <property name="text">
-         <string>ATHERECTOMY</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QListWidget" name="listWidgetAtherectomy">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>47</y>
-          <width>631</width>
-          <height>831</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QListView::item:selected{
-background: rgb(99,99,99);
-border-radius: 20px;
-color: white;
-}</string>
-        </property>
-       </widget>
-       <widget class="QListView" name="listViewAtherectomy">
-        <property name="geometry">
-         <rect>
-          <x>730</x>
-          <y>80</y>
-          <width>561</width>
-          <height>741</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QFrame" name="frameCto">
-       <property name="geometry">
-        <rect>
-         <x>1410</x>
-         <y>10</y>
-         <width>274</width>
-         <height>313</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
-        <property name="spacing">
-         <number>40</number>
-        </property>
-        <property name="topMargin">
-         <number>40</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="labelCto">
-          <property name="styleSheet">
-           <string notr="true">text-decoration: underline;</string>
-          </property>
-          <property name="text">
-           <string>CTO CROSSING</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="listWidgetCto">
-          <property name="styleSheet">
-           <string notr="true">border-left: 4px solid grey;</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="frameNext">
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>100</height>
+        <height>0</height>
        </size>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>100</height>
-       </size>
+      <property name="text">
+       <string>DONE</string>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+      <property name="flat">
+       <bool>true</bool>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QFrame" name="frameBack">
-       <property name="geometry">
-        <rect>
-         <x>1322</x>
-         <y>20</y>
-         <width>200</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <property name="leftMargin">
-         <number>20</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>20</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="pushButtonBack">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>&lt; BACK</string>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QFrame" name="frameDone">
-       <property name="geometry">
-        <rect>
-         <x>1582</x>
-         <y>20</y>
-         <width>200</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="leftMargin">
-         <number>20</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>20</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="pushButtonDone">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>DONE</string>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QFrame" name="frameBack">
+   <property name="geometry">
+    <rect>
+     <x>1270</x>
+     <y>1230</y>
+     <width>200</width>
+     <height>45</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>60</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="pushButtonBack">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:#262626;</string>
+      </property>
+      <property name="text">
+       <string>&lt; BACK</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QListView" name="listViewAtherectomy">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>400</y>
+     <width>850</width>
+     <height>771</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListView" name="listViewCto">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>400</y>
+     <width>850</width>
+     <height>771</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>pushButtonDone</sender>
+   <sender>pushButtonBack</sender>
    <signal>clicked()</signal>
    <receiver>DeviceSelectDialog</receiver>
-   <slot>accept()</slot>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1249</x>
+     <x>989</x>
      <y>905</y>
     </hint>
     <hint type="destinationlabel">
@@ -429,13 +277,13 @@ color: white;
    </hints>
   </connection>
   <connection>
-   <sender>pushButtonBack</sender>
+   <sender>pushButtonDone</sender>
    <signal>clicked()</signal>
    <receiver>DeviceSelectDialog</receiver>
-   <slot>reject()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>989</x>
+     <x>1249</x>
      <y>905</y>
     </hint>
     <hint type="destinationlabel">
