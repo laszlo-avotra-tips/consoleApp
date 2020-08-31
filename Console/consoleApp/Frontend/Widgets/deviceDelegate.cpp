@@ -31,6 +31,8 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
    QStyledItemDelegate::paint(painter, option, index);
 
     painter->restore();
+
+    LOG1(ddm.name());
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
