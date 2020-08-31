@@ -75,6 +75,7 @@ int deviceSettings::init( void )
             numDevicesLoaded++;
         }
     }
+    LOG1(numDevicesLoaded)
 
     return numDevicesLoaded;
 }

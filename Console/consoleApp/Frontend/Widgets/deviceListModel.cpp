@@ -28,7 +28,7 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void DeviceListModel::populate()
+void DeviceListModel::populate(bool isCto)
 {
     beginResetModel();
     m_data.clear();
@@ -37,8 +37,14 @@ void DeviceListModel::populate()
         QList<device *>devList = devices.list();
         for ( device* d : devList )
         {
-            DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
-            m_data.append(dm);
+            if(d->isAth() && !isCto){
+                DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
+                m_data.append(dm);
+            }
+            if(!d->isAth() && isCto){
+                DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
+                m_data.append(dm);
+            }
         }
     }
     endResetModel();

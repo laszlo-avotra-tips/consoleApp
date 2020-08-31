@@ -27,6 +27,7 @@ DeviceSelectDialog::~DeviceSelectDialog()
 {
     delete ui;
     delete m_model;
+    delete m_ctoModel;
 }
 
 void DeviceSelectDialog::initDialog()
@@ -88,19 +89,24 @@ void DeviceSelectDialog::populateList()
 {
     deviceSettings &devices = deviceSettings::Instance();
 
+
     // Only create the list if devices don't exist.
     if( devices.list().isEmpty() )
     {
         devices.init();
     }
+    LOG1(devices.list().size())
 
-    ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff );
+    ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
+    ui->listViewCto->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
 
     m_model = new DeviceListModel(this);
-    m_model->populate();
+    m_ctoModel = new DeviceListModel(this);
+    m_model->populate(false);
+    m_ctoModel->populate(true);
 
     ui->listViewAtherectomy->setModel(m_model);
-    ui->listViewCto->setModel(m_model);
+    ui->listViewCto->setModel(m_ctoModel);
     DeviceDelegate* delegate = new DeviceDelegate(this);
     ui->listViewAtherectomy->setItemDelegate(delegate);
     ui->listViewCto->setItemDelegate(delegate);
@@ -140,6 +146,16 @@ void DeviceSelectDialog::startDaq(frontend *fe)
 }
 
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    int selection = index.row();
+    dev.setCurrentDevice(selection);
+
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
+}
+
+void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
 {
     deviceSettings &dev = deviceSettings::Instance();
     int selection = index.row();

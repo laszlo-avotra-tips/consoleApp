@@ -36,6 +36,7 @@ private slots:
 private:
     Ui::DeviceSelectDialog *ui;
     DeviceListModel* m_model{nullptr};
+    DeviceListModel* m_ctoModel{nullptr};
 };
 
 #endif // DEVICESELECTDIALOG_H
