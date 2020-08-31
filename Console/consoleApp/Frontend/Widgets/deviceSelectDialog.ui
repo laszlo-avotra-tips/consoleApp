@@ -22,10 +22,10 @@ background-color: black;
 color: white;
 }
 QLabel{
-font: 20pt &quot;Helvetica Neue&quot;;
+font: 23pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelInfo{
-font: 12pt &quot;Helvetica Neue&quot;;
+font: 22pt &quot;Helvetica Neue&quot;;
 }
 QLineEdit{
 font: 20pt &quot;Helvetica Neue&quot;;
@@ -43,13 +43,8 @@ QDialog{
 border: 2px solid grey; 
 border-radius: 200px;
 }
-QLineEdit{
-border-top: 0px;
-border-bottom: 2px solid grey;
-}
 QLabel#labelTitle{
-border-bottom: 2px solid grey;
-font: 30pt &quot;Helvetica Neue&quot;;
+font: 38pt &quot;Helvetica Neue&quot;;
 font-weight: 600
 }
 QFrame#frameDone{
@@ -60,7 +55,7 @@ QFrame#frameBack{
 background-color:#636363;
 border-radius: 10px;
 }
-QListWidget{
+QListView{
 font: 24pt &quot;Helvetica Neue&quot;;
 }</string>
   </property>
@@ -92,8 +87,8 @@ font: 24pt &quot;Helvetica Neue&quot;;
   <widget class="QLabel" name="labelAtherectomy">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>290</y>
+     <x>248</x>
+     <y>235</y>
      <width>525</width>
      <height>84</height>
     </rect>
@@ -111,9 +106,9 @@ font: 24pt &quot;Helvetica Neue&quot;;
   <widget class="QLabel" name="labelCto">
    <property name="geometry">
     <rect>
-     <x>1180</x>
-     <y>280</y>
-     <width>526</width>
+     <x>1243</x>
+     <y>235</y>
+     <width>546</width>
      <height>84</height>
     </rect>
    </property>
