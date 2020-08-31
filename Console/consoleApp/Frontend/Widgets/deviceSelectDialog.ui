@@ -27,15 +27,11 @@ font: 23pt &quot;Helvetica Neue&quot;;
 QLabel#labelInfo{
 font: 22pt &quot;Helvetica Neue&quot;;
 }
-QLineEdit{
-font: 20pt &quot;Helvetica Neue&quot;;
-color: #A9A9A9;
-}
 QFrame{
-border: 0px;
+border: 2px;
 }
 QPushButton{
-font: 12pt;
+font: 19pt;
 color: white;
 background-color:#262626;
 }
@@ -125,10 +121,10 @@ font: 24pt &quot;Helvetica Neue&quot;;
   <widget class="QFrame" name="frameDone">
    <property name="geometry">
     <rect>
-     <x>1560</x>
-     <y>1200</y>
-     <width>230</width>
-     <height>72</height>
+     <x>1499</x>
+     <y>1163</y>
+     <width>283</width>
+     <height>76</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -150,6 +146,21 @@ font: 24pt &quot;Helvetica Neue&quot;;
     <enum>QFrame::Raised</enum>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QPushButton" name="pushButtonDone">
       <property name="enabled">
@@ -180,10 +191,10 @@ font: 24pt &quot;Helvetica Neue&quot;;
   <widget class="QFrame" name="frameBack">
    <property name="geometry">
     <rect>
-     <x>1270</x>
-     <y>1200</y>
-     <width>230</width>
-     <height>72</height>
+     <x>1149</x>
+     <y>1163</y>
+     <width>283</width>
+     <height>76</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -205,6 +216,21 @@ font: 24pt &quot;Helvetica Neue&quot;;
     <enum>QFrame::Raised</enum>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QPushButton" name="pushButtonBack">
       <property name="sizePolicy">
@@ -235,23 +261,44 @@ font: 24pt &quot;Helvetica Neue&quot;;
   <widget class="QListView" name="listViewAtherectomy">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>400</y>
-     <width>850</width>
-     <height>771</height>
+     <x>89</x>
+     <y>330</y>
+     <width>851</width>
+     <height>811</height>
     </rect>
    </property>
   </widget>
   <widget class="QListView" name="listViewCto">
    <property name="geometry">
     <rect>
-     <x>990</x>
-     <y>400</y>
-     <width>850</width>
-     <height>771</height>
+     <x>979</x>
+     <y>330</y>
+     <width>861</width>
+     <height>811</height>
     </rect>
    </property>
   </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>2</x>
+     <y>231</y>
+     <width>1918</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 2px;</string>
+   </property>
+  </widget>
+  <zorder>widget</zorder>
+  <zorder>labelTitle</zorder>
+  <zorder>labelAtherectomy</zorder>
+  <zorder>labelCto</zorder>
+  <zorder>frameDone</zorder>
+  <zorder>frameBack</zorder>
+  <zorder>listViewAtherectomy</zorder>
+  <zorder>listViewCto</zorder>
  </widget>
  <resources/>
  <connections>

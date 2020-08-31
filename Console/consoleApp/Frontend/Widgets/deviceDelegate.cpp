@@ -20,11 +20,13 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
     DeviceDisplayModel ddm = vImage.value<DeviceDisplayModel>();
 
-    const int yText = 200 * index.row() + 20;
-    const int yImage = 200 * index.row();
+    const int x0 = 85;
+    const int y0 = 80;
+    const int yText = 2* y0 + 250 * index.row() ;
+    const int yImage = y0 + 250 * index.row();
 
-    painter->drawImage(20,yImage,ddm.image());
-    painter->drawText(200, yText, ddm.name());
+    painter->drawImage(x0,yImage,ddm.image());
+    painter->drawText(x0 + 250, yText, ddm.name());
 
    QStyledItemDelegate::paint(painter, option, index);
 
@@ -33,5 +35,5 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(400,200); //QStyledItemDelegate::sizeHint(option, index);
+    return QSize(750,250); //QStyledItemDelegate::sizeHint(option, index);
 }

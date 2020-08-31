@@ -37,7 +37,7 @@ void DeviceListModel::populate()
         QList<device *>devList = devices.list();
         for ( device* d : devList )
         {
-            DeviceDisplayModel dm(d->getDeviceName(), d->getIcon());
+            DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
             m_data.append(dm);
         }
     }
