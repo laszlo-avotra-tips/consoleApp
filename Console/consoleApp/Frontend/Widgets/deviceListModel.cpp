@@ -1,5 +1,6 @@
 #include "deviceListModel.h"
 #include "deviceSettings.h"
+#include "logger.h"
 
 DeviceListModel::DeviceListModel(QObject *parent) : QAbstractListModel(parent)
 {
@@ -20,8 +21,19 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
     {
         int i = index.row();
         const DeviceDisplayModel& item = m_data.at(i);
+        LOG1(i)
+
         QVariant retVal;
-        retVal.setValue<DeviceDisplayModel>(item);
+        retVal.setValue(item.name());
+        return retVal;
+    }
+    if(role == Qt::DecorationRole){
+        int i = index.row();
+        const DeviceDisplayModel& item = m_data.at(i);
+        LOG1(i)
+
+        QVariant retVal;
+        retVal.setValue(item.image());
         return retVal;
     }
 

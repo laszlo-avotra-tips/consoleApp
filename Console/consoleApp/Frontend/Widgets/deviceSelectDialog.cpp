@@ -35,7 +35,6 @@ void DeviceSelectDialog::initDialog()
     populateList();
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
-
 }
 
 //{
@@ -163,9 +162,4 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
-}
-
-void DeviceSelectDialog::on_listViewAtherectomy_viewportEntered()
-{
-    ui->listViewAtherectomy->update();
 }
