@@ -21,7 +21,6 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
     {
         int i = index.row();
         const DeviceDisplayModel& item = m_data.at(i);
-        LOG1(i)
 
         QVariant retVal;
         retVal.setValue(item.name());
@@ -30,7 +29,6 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
     if(role == Qt::DecorationRole){
         int i = index.row();
         const DeviceDisplayModel& item = m_data.at(i);
-        LOG1(i)
 
         QVariant retVal;
         retVal.setValue(item.image());
@@ -47,16 +45,18 @@ void DeviceListModel::populate(bool isCto)
     {
         deviceSettings &devices = deviceSettings::Instance();
         QList<device *>devList = devices.list();
+        int index{0};
         for ( device* d : devList )
         {
             if(d->isAth() && !isCto){
-                DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
+                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon(), index);
                 m_data.append(dm);
             }
             if(!d->isAth() && isCto){
-                DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
+                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon(), index);
                 m_data.append(dm);
             }
+            ++index;
         }
     }
     endResetModel();

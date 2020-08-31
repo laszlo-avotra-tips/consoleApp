@@ -8,6 +8,7 @@
 #include "Frontend/Screens/frontend.h"
 #include "deviceListModel.h"
 #include "deviceDelegate.h"
+#include "deviceDisplayModel.h"
 
 #include <daqfactory.h>
 #include <QImage>
@@ -147,7 +148,20 @@ void DeviceSelectDialog::startDaq(frontend *fe)
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
 {
     deviceSettings &dev = deviceSettings::Instance();
-    int selection = index.row();
+
+    QVariant name = index.data();
+    LOG1(name.toString())
+
+    int selection {0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
+    }
+
     dev.setCurrentDevice(selection);
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
@@ -157,7 +171,19 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
 void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
 {
     deviceSettings &dev = deviceSettings::Instance();
-    int selection = index.row();
+
+    QVariant name = index.data();
+    LOG1(name.toString())
+
+    int selection{0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
+    }
     dev.setCurrentDevice(selection);
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
