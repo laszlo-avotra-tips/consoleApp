@@ -26,18 +26,17 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
 DeviceSelectDialog::~DeviceSelectDialog()
 {
     delete ui;
-    delete m_model2;
+    delete m_model;
 }
 
 void DeviceSelectDialog::initDialog()
 {
-    populateList2();
+    populateList();
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
 }
 
-//void DeviceSelectDialog::populateList()
 //{
 //    deviceSettings &devices = deviceSettings::Instance();
 
@@ -85,7 +84,7 @@ void DeviceSelectDialog::initDialog()
 //    }
 //}
 
-void DeviceSelectDialog::populateList2()
+void DeviceSelectDialog::populateList()
 {
     deviceSettings &devices = deviceSettings::Instance();
 
@@ -97,10 +96,10 @@ void DeviceSelectDialog::populateList2()
 
     ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff );
 
-    m_model2 = new DeviceListModel(this);
-    m_model2->populate();
+    m_model = new DeviceListModel(this);
+    m_model->populate();
 
-    ui->listViewAtherectomy->setModel(m_model2);
+    ui->listViewAtherectomy->setModel(m_model);
     DeviceDelegate* delegate = new DeviceDelegate(this);
     ui->listViewAtherectomy->setItemDelegate(delegate);
 }

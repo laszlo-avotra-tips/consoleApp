@@ -263,8 +263,8 @@ font: 24pt &quot;Helvetica Neue&quot;;
     <rect>
      <x>89</x>
      <y>330</y>
-     <width>851</width>
-     <height>811</height>
+     <width>861</width>
+     <height>750</height>
     </rect>
    </property>
   </widget>
@@ -274,7 +274,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
      <x>979</x>
      <y>330</y>
      <width>861</width>
-     <height>811</height>
+     <height>750</height>
     </rect>
    </property>
   </widget>

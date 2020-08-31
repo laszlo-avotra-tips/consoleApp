@@ -26,7 +26,6 @@ public:
 
 private:
     void populateList(void);
-    void populateList2(void);
 
 private slots:
     void on_pushButtonDone_clicked();
@@ -36,7 +35,7 @@ private slots:
 
 private:
     Ui::DeviceSelectDialog *ui;
-    DeviceListModel* m_model2{nullptr};
+    DeviceListModel* m_model{nullptr};
 };
 
 #endif // DEVICESELECTDIALOG_H
