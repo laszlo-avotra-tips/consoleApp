@@ -31,6 +31,7 @@
  * gs         Print Current Speed
  * go         Print Ocelot Speed
  */
+namespace{
 
 // amount of time to wait for responses
 static const int SledCommDelay_ms = 100;
@@ -62,6 +63,31 @@ QByteArray SetPower              = "spw";
 // Avaialble commands for future extention. Currently unused.
 QByteArray GetOcelotSpeed        = "go\r";
 QByteArray SetOcelotSpeed        = "so";
+
+const std::map<QString,QString> commandLut
+{
+    {{QString("scg")},{QString("SetClockingGain "   )}},
+    {{QString("sco")},{QString("SetClockingOffset " )}},
+    {{QString("sto")},{QString("SetTorque "         )}},
+    {{QString("sti")},{QString("SetLimitTime "      )}},
+    {{QString("sbl")},{QString("SetLimitBlink "     )}},
+    {{QString("gcg")},{QString("GetClockingGain "   )}},
+    {{QString("gco")},{QString("GetClockingOffset " )}},
+    {{QString("gto")},{QString("GetTorque "         )}},
+    {{QString("gti")},{QString("GetLimitTime "      )}},
+    {{QString("sr1")},{QString("SetSledOn "         )}},
+    {{QString("sr0")},{QString("SetSledOff "        )}},
+    {{QString("spw")},{QString("SetPower "          )}},
+    {{QString("sc")},{QString("SetClockingMode "    )}},
+    {{QString("ss")},{QString("SetSpeed "           )}},
+    {{QString("sd")},{QString("SetDirection "       )}},
+    {{QString("gc")},{QString("GetClockingMode "    )}},
+    {{QString("gs")},{QString("GetSpeed "           )}},
+    {{QString("gv")},{QString("GetFirmwareVersions ")}},
+    {{QString("gr")},{QString("GetRunningState "    )}}
+};
+
+}
 
 /*
  * Constructor
@@ -104,6 +130,9 @@ SledSupport::~SledSupport()
 bool SledSupport::writeSerial(QByteArray command)
 {
     //qDebug() << "Command to write: " << command;
+//    if(command != GetRunningState){
+        LOG( INFO, QString( "Sled Support Board: writeSerial command: %1 " ).arg( commandToString(command) ) );
+//    }
     bool retVal = true;
     if( ftHandle != NULL )
     {
@@ -122,11 +151,15 @@ bool SledSupport::writeSerial(QByteArray command)
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not write command" << command;
+            LOG( WARNING, QString( "Sled Support Board: writeSerial could not write command: %1 " ).arg( commandToString(command) ) );
             retVal = false;
         }
         else
         {
-//            qDebug() << "Serial bytes written: " << bytesWritten;
+            qDebug() << "Serial bytes written: " << bytesWritten;
+            if(command != GetRunningState){
+                LOG( INFO, QString( "Sled Support Board: writeSerial bytes written: %1 " ).arg( bytesWritten ) );
+            }
         }
     }
     else
@@ -340,7 +373,7 @@ void SledSupport::handleClockingResponse( void )
                 else  // there is no proper signature in the bytes returned
                 {
                     currClockingMode = SledSupport::UnknownMode;
-//                    LOG( WARNING, QString( "Clocking mode is neither on nor off. Mode: %1, Response: %2" ).arg( currClockingMode ).arg( QString( resp ) ) );
+                    LOG( WARNING, QString( "Clocking mode is neither on nor off. Mode: %1, Response: %2" ).arg( currClockingMode ).arg( QString( resp ) ) );
                 }
             }
         }
@@ -427,6 +460,7 @@ void SledSupport::run()
             mutex.lock();
             deviceSettings &device = deviceSettings::Instance();
 //            qDebug() << "New Device Name: " << device.current()->getDeviceName();
+            LOG( INFO, QString( "Sled Support Board new Device Name: %1" ).arg( device.current()->getDeviceName() ) );
             int isEnabled = device.current()->getClockingEnabled();
             QByteArray clockingGain = device.current()->getClockingGain();
             QByteArray clockingOffset = device.current()->getClockingOffset();
@@ -1125,6 +1159,22 @@ QByteArray SledSupport::qualifyVersion( QByteArray v )
     return newV;
 }
 
+QString SledSupport::commandToString(const QByteArray &ba)
+{
+    QString cmd(ba.simplified());
+
+    const auto it = commandLut.find(cmd);
+
+    QString fcmd;
+
+    if(it != commandLut.end()){
+        fcmd = QString("code: \"") + cmd + QString("\" verbose: ") + it->second;
+    } else {
+        fcmd = QString("code: \"") + cmd + QString("\"");
+    }
+    return fcmd;
+}
+
 /*
  * Read available data from the serial port.
  */
@@ -1134,7 +1184,7 @@ QByteArray SledSupport::getResponse( void )
     QByteArray data;
     DWORD bytesToRead = 256;
     DWORD bytesRead;
-    char buffer[256];
+    char buffer[256]= {};
 
     //qDebug() << "Reading Sled Response";
 
@@ -1148,6 +1198,9 @@ QByteArray SledSupport::getResponse( void )
         buffer[bytesRead] = '\0';
         data = buffer;
         data = data.simplified();
+    }
+    if(data.toUpper().contains( "NAK" )){
+        LOG( INFO, QString("Sled Support getResponse data: %1").arg(bytesRead).arg(commandToString(buffer)) );
     }
     return data;
 }

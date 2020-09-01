@@ -18,15 +18,11 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel#labelTitle{
-font:36pt &quot;Helvetica Neue&quot;;
+font:38pt &quot;Helvetica Neue&quot;;
 font-weight:600
 }
 QLabel{
-border-bottom:2px solid grey;
 font:22pt &quot;Helvetica Neue&quot;;
-}
-QFrame{
-border:0px;
 }
 QPushButton{
 font:19pt;
@@ -36,28 +32,27 @@ border-radius: 10px;
  /* ---------- Sliders ------------*/
 
 QSlider::groove:horizontal {
-border: 1px solid rgb(  191, 191, 191 );
 background: white;
-height: 20px;
-border-radius: 10px;
+height: 45px;
+border-radius: 22px;
 }
 QSlider::sub-page:horizontal {
 background: rgb( 51, 51, 51 );
 border: 1px solid rgb( 51, 51, 51 );
-height: 20px;
+height: 45px;
 }
 QSlider::sub-page:horizontal {
 background:#F5C400;
 border: 1px solid #F5C400;
-height: 20px;
-border-radius: 10px;
+height: 45px;
+border-radius: 22px;
 }
 QSlider::handle:horizontal {
 /* image: url(:images/handle_normal.png);*/
-width: 31px;
-margin: -19px 0;
+width: 63px;
+margin: -36px 0;
 background: rgb( 67, 67, 67 );
-border-radius: 10px;
+border-radius: 22px;
 }
 </string>
   </property>
@@ -114,10 +109,10 @@ border-radius: 10px;
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
-     <x>572</x>
-     <y>1954</y>
-     <width>565</width>
-     <height>58</height>
+     <x>453</x>
+     <y>1948</y>
+     <width>802</width>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -134,12 +129,12 @@ border-radius: 10px;
    </property>
    <property name="sizeIncrement">
     <size>
-     <width>1</width>
+     <width>0</width>
      <height>0</height>
     </size>
    </property>
    <property name="minimum">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="maximum">
     <number>5</number>
@@ -148,7 +143,7 @@ border-radius: 10px;
     <number>1</number>
    </property>
    <property name="sliderPosition">
-    <number>1</number>
+    <number>3</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -157,10 +152,10 @@ border-radius: 10px;
   <widget class="QPushButton" name="pushButtonDepthMimus">
    <property name="geometry">
     <rect>
-     <x>402</x>
-     <y>1934</y>
-     <width>116</width>
-     <height>112</height>
+     <x>249</x>
+     <y>1951</y>
+     <width>112</width>
+     <height>114</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -184,8 +179,8 @@ border-radius: 10px;
   <widget class="QPushButton" name="pushButtonDepthPlus">
    <property name="geometry">
     <rect>
-     <x>1168</x>
-     <y>1934</y>
+     <x>1322</x>
+     <y>1951</y>
      <width>116</width>
      <height>112</height>
     </rect>
@@ -211,8 +206,8 @@ border-radius: 10px;
   <widget class="QPushButton" name="pushButtonDown">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>663</y>
+     <x>2556</x>
+     <y>545</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -246,14 +241,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelDown">
    <property name="geometry">
     <rect>
-     <x>1841</x>
-     <y>651</y>
-     <width>475</width>
-     <height>84</height>
+     <x>2654</x>
+     <y>537</y>
+     <width>436</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>POINTED DOWN</string>
@@ -264,7 +259,7 @@ border-radius: 30;</string>
     <rect>
      <x>775</x>
      <y>1841</y>
-     <width>194</width>
+     <width>210</width>
      <height>84</height>
     </rect>
    </property>
@@ -281,8 +276,8 @@ border-radius: 30;</string>
   <widget class="QPushButton" name="pushButtonUp">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>756</y>
+     <x>2556</x>
+     <y>639</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -316,14 +311,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelUp">
    <property name="geometry">
     <rect>
-     <x>1841</x>
-     <y>745</y>
-     <width>370</width>
-     <height>84</height>
+     <x>2654</x>
+     <y>630</y>
+     <width>340</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>POINTED UP</string>
@@ -332,8 +327,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelCatheterOnFluoroTitle">
    <property name="geometry">
     <rect>
-     <x>1721</x>
-     <y>524</y>
+     <x>2534</x>
+     <y>409</y>
      <width>684</width>
      <height>84</height>
     </rect>
@@ -354,8 +349,8 @@ border-radius: 30;</string>
   <widget class="QPushButton" name="pushButtonGray">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>1059</y>
+     <x>2541</x>
+     <y>983</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -389,8 +384,8 @@ border-radius: 30;</string>
   <widget class="QPushButton" name="pushButtonSepia">
    <property name="geometry">
     <rect>
-     <x>1741</x>
-     <y>1152</y>
+     <x>2541</x>
+     <y>1077</y>
      <width>63</width>
      <height>60</height>
     </rect>
@@ -424,14 +419,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelGray">
    <property name="geometry">
     <rect>
-     <x>1838</x>
-     <y>1047</y>
-     <width>174</width>
-     <height>84</height>
+     <x>2638</x>
+     <y>974</y>
+     <width>161</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>GRAY</string>
@@ -440,14 +435,14 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelSepia">
    <property name="geometry">
     <rect>
-     <x>1838</x>
-     <y>1141</y>
-     <width>183</width>
-     <height>84</height>
+     <x>2638</x>
+     <y>1068</y>
+     <width>169</width>
+     <height>78</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">font: 20pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>SEPIA</string>
@@ -456,8 +451,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageColorTitle">
    <property name="geometry">
     <rect>
-     <x>1734</x>
-     <y>924</y>
+     <x>2534</x>
+     <y>850</y>
      <width>429</width>
      <height>84</height>
     </rect>
@@ -472,8 +467,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelRingBrightnessTitle">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>524</y>
+     <x>1757</x>
+     <y>409</y>
      <width>555</width>
      <height>84</height>
     </rect>
@@ -494,8 +489,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelReticleBrightness">
    <property name="geometry">
     <rect>
-     <x>2760</x>
-     <y>617</y>
+     <x>2005</x>
+     <y>526</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -519,38 +514,41 @@ border-radius: 30;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
-    <string>0</string>
+    <string>50</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelRingBrightness0">
    <property name="geometry">
     <rect>
-     <x>2450</x>
-     <y>659</y>
-     <width>50</width>
+     <x>1673</x>
+     <y>627</y>
+     <width>40</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QSlider" name="horizontalSliderRingBrightness">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>660</y>
-     <width>565</width>
-     <height>58</height>
+     <x>1734</x>
+     <y>598</y>
+     <width>602</width>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -578,24 +576,27 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelRingBrightness100">
    <property name="geometry">
     <rect>
-     <x>3082</x>
-     <y>659</y>
+     <x>2350</x>
+     <y>627</y>
      <width>81</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelImageBrightnessTitle">
    <property name="geometry">
     <rect>
-     <x>2503</x>
-     <y>924</y>
+     <x>1737</x>
+     <y>850</y>
      <width>599</width>
      <height>84</height>
     </rect>
@@ -610,8 +611,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageBrightness">
    <property name="geometry">
     <rect>
-     <x>2760</x>
-     <y>1017</y>
+     <x>2005</x>
+     <y>983</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -635,54 +636,60 @@ border-radius: 30;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
-    <string>0</string>
+    <string>50</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>2450</x>
-     <y>1060</y>
-     <width>50</width>
+     <x>1673</x>
+     <y>1090</y>
+     <width>40</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>3082</x>
-     <y>1060</y>
+     <x>2350</x>
+     <y>1090</y>
      <width>81</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QSlider" name="horizontalSliderImageBrightness">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>1060</y>
-     <width>565</width>
-     <height>58</height>
+     <x>1734</x>
+     <y>1061</y>
+     <width>602</width>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -713,8 +720,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageContrastTitle">
    <property name="geometry">
     <rect>
-     <x>2504</x>
-     <y>1176</y>
+     <x>1758</x>
+     <y>1287</y>
      <width>540</width>
      <height>84</height>
     </rect>
@@ -729,10 +736,10 @@ border-radius: 30;</string>
   <widget class="QSlider" name="horizontalSliderImageContrast">
    <property name="geometry">
     <rect>
-     <x>2507</x>
-     <y>1312</y>
-     <width>565</width>
-     <height>58</height>
+     <x>1734</x>
+     <y>1479</y>
+     <width>602</width>
+     <height>118</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -763,8 +770,8 @@ border-radius: 30;</string>
   <widget class="QLabel" name="labelImageContrast">
    <property name="geometry">
     <rect>
-     <x>2760</x>
-     <y>1269</y>
+     <x>2005</x>
+     <y>1402</y>
      <width>59</width>
      <height>60</height>
     </rect>
@@ -788,52 +795,58 @@ border-radius: 30;</string>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
-    <string>0</string>
+    <string>50</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>2450</x>
-     <y>1311</y>
-     <width>50</width>
+     <x>1670</x>
+     <y>1510</y>
+     <width>40</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>  0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>3082</x>
-     <y>1311</y>
+     <x>2350</x>
+     <y>1508</y>
      <width>81</width>
      <height>60</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;Helvetica Neue&quot;;</string>
+    <string notr="true">font: 15pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>100</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonTechView">
    <property name="geometry">
     <rect>
-     <x>2188</x>
-     <y>1497</y>
+     <x>2219</x>
+     <y>1742</y>
      <width>395</width>
      <height>103</height>
     </rect>
