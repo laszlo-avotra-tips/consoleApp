@@ -224,7 +224,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <property name="geometry">
     <rect>
      <x>89</x>
-     <y>330</y>
+     <y>360</y>
      <width>861</width>
      <height>750</height>
     </rect>
@@ -237,7 +237,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <property name="geometry">
     <rect>
      <x>979</x>
-     <y>330</y>
+     <y>360</y>
      <width>861</width>
      <height>750</height>
     </rect>
@@ -252,7 +252,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
      <x>2</x>
      <y>234</y>
      <width>1918</width>
-     <height>84</height>
+     <height>104</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -264,8 +264,8 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <widget class="QLabel" name="labelCto">
     <property name="geometry">
      <rect>
-      <x>1243</x>
-      <y>2</y>
+      <x>1223</x>
+      <y>22</y>
       <width>546</width>
       <height>84</height>
      </rect>
@@ -284,7 +284,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
     <property name="geometry">
      <rect>
       <x>246</x>
-      <y>2</y>
+      <y>22</y>
       <width>525</width>
       <height>84</height>
      </rect>
@@ -299,6 +299,8 @@ font: 24pt &quot;Helvetica Neue&quot;;
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <zorder>labelAtherectomy</zorder>
+   <zorder>labelCto</zorder>
   </widget>
  </widget>
  <resources/>

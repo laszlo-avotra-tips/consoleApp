@@ -15,9 +15,9 @@ DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    const int x0 = 85;
-    const int y0 = 50;
-    const int yImage = y0 + 250 * index.row();
+//    const int x0 = 85;
+//    const int y0 = 50;
+//    const int yImage = y0 + 250 * index.row();
 
     QVariant vImage = index.data();
 
@@ -27,7 +27,7 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         if(vImage.toString().isEmpty()){
             QImage image = vImage.value<QImage>();
             QImage iHW = image.scaled(160,160);
-            painter->drawImage(x0,yImage,iHW);
+            painter->drawImage(0,0,iHW);
         }
     }
     QStyledItemDelegate::paint(painter, option, index);
