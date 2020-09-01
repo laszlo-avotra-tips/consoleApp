@@ -22,7 +22,7 @@ background-color: black;
 color: white;
 }
 QLabel{
-font: 23pt &quot;Helvetica Neue&quot;;
+font: 22pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelInfo{
 font: 22pt &quot;Helvetica Neue&quot;;
@@ -52,7 +52,7 @@ background-color:#636363;
 border-radius: 10px;
 }
 QListView{
-font: 24pt &quot;Helvetica Neue&quot;;
+font: 22pt &quot;Helvetica Neue&quot;;
 }</string>
   </property>
   <property name="modal">
