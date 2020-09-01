@@ -45,18 +45,16 @@ void DeviceListModel::populate(bool isCto)
     {
         deviceSettings &devices = deviceSettings::Instance();
         QList<device *>devList = devices.list();
-        int index{0};
         for ( device* d : devList )
         {
             if(d->isAth() && !isCto){
-                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon(), index);
+                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon());
                 m_data.append(dm);
             }
             if(!d->isAth() && isCto){
-                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon(), index);
+                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon());
                 m_data.append(dm);
             }
-            ++index;
         }
     }
     endResetModel();

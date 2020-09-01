@@ -38,53 +38,6 @@ void DeviceSelectDialog::initDialog()
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 }
 
-//{
-//    deviceSettings &devices = deviceSettings::Instance();
-
-//    // Only create the list if devices don't exist.
-//    if( devices.list().isEmpty() )
-//    {
-//        devices.init();
-//    }
-
-//    QList<device *>devList = devices.list();
-
-//    // 4 items per row and 2 rows can be displayed without scroll bar
-//    if( devList.size() <= 4 )
-//    {
-//        ui->listWidgetAtherectomy->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-//        ui->listWidgetCto->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-//    }
-
-//    for ( device* d : devList )
-//    {
-//        /*
-//         * This is not a leak.  QListWidget takes ownership of
-//         * the pointers.  It's a weird construct but it's the way
-//         * Qt adds items to the list widget.
-//         */
-//        QImage image = d->getIcon();
-//        if(d->isAth()){
-//            const QPixmap pm1 = QPixmap::fromImage( image );
-//            const QPixmap pm2 = pm1.scaled(300,300);
-//            QListWidgetItem *li = new QListWidgetItem(
-//                       QIcon( pm2 ),
-//                       d->getDeviceName(),
-//                       ui->listWidgetAtherectomy,
-//                       0 );
-//            li->setSizeHint(QSize(400,100));
-//            li->setTextAlignment( Qt::AlignHCenter );
-//        } else {
-//            QListWidgetItem *li = new QListWidgetItem(
-//                       QIcon( QPixmap::fromImage( image ) ),
-//                       "",//d->getDeviceName(),
-//                       ui->listWidgetCto,
-//                       0 );
-//            li->setTextAlignment( Qt::AlignHCenter );
-//        }
-//    }
-//}
-
 void DeviceSelectDialog::populateList()
 {
     deviceSettings &devices = deviceSettings::Instance();
@@ -114,12 +67,16 @@ void DeviceSelectDialog::populateList()
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
+    deviceSettings &devices = deviceSettings::Instance();
+    const auto& dev = devices.deviceAt(devices.getCurrentDevice());
+
+    const bool isShowSpeed(dev->isAth());
     QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
       fw->showFullScreen();
       fw->updateDeviceLabel();
-      fw->showSpeed(false);
+      fw->showSpeed(isShowSpeed);
       startDaq(fw);
     }
 }
