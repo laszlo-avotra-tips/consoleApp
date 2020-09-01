@@ -70,7 +70,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
     deviceSettings &devices = deviceSettings::Instance();
     const auto& dev = devices.deviceAt(devices.getCurrentDevice());
 
-    const bool isShowSpeed(dev->isAth());
+    const bool isShowSpeed(!dev->isAth());
     QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
@@ -112,7 +112,7 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
     int selection {0};
     int i{0};
     for(auto d : dev.list()){
-        if(d->getDeviceName() == name.toString()){
+        if(d->getSplitDeviceName() == name.toString()){
             selection = i;
             break;
         }
@@ -135,7 +135,7 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
     int selection{0};
     int i{0};
     for(auto d : dev.list()){
-        if(d->getDeviceName() == name.toString()){
+        if(d->getSplitDeviceName() == name.toString()){
             selection = i;
             break;
         }

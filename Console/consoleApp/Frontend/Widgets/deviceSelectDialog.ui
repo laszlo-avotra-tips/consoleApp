@@ -27,8 +27,8 @@ font: 23pt &quot;Helvetica Neue&quot;;
 QLabel#labelInfo{
 font: 22pt &quot;Helvetica Neue&quot;;
 }
-QFrame{
-border: 2px;
+QFrame#frameType{
+border-top: 2px solid #676767
 }
 QPushButton{
 font: 19pt;
@@ -75,44 +75,6 @@ font: 24pt &quot;Helvetica Neue&quot;;
    </property>
    <property name="text">
     <string>DEVICE SELECTION</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelAtherectomy">
-   <property name="geometry">
-    <rect>
-     <x>248</x>
-     <y>235</y>
-     <width>525</width>
-     <height>84</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">text-decoration: underline;</string>
-   </property>
-   <property name="text">
-    <string>ATHERECTOMY</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelCto">
-   <property name="geometry">
-    <rect>
-     <x>1243</x>
-     <y>235</y>
-     <width>546</width>
-     <height>84</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">text-decoration: underline;</string>
-   </property>
-   <property name="text">
-    <string>CTO CROSSING</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -267,6 +229,9 @@ font: 24pt &quot;Helvetica Neue&quot;;
      <height>750</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border: 0px;</string>
+   </property>
   </widget>
   <widget class="QListView" name="listViewCto">
    <property name="geometry">
@@ -277,28 +242,64 @@ font: 24pt &quot;Helvetica Neue&quot;;
      <height>750</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border: 0px;</string>
+   </property>
   </widget>
-  <widget class="QWidget" name="widget" native="true">
+  <widget class="QFrame" name="frameType">
    <property name="geometry">
     <rect>
      <x>2</x>
-     <y>231</y>
+     <y>234</y>
      <width>1918</width>
-     <height>81</height>
+     <height>84</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">border: 2px;</string>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="labelCto">
+    <property name="geometry">
+     <rect>
+      <x>1243</x>
+      <y>2</y>
+      <width>546</width>
+      <height>84</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">text-decoration: underline;</string>
+    </property>
+    <property name="text">
+     <string>CTO CROSSING</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelAtherectomy">
+    <property name="geometry">
+     <rect>
+      <x>246</x>
+      <y>2</y>
+      <width>525</width>
+      <height>84</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">text-decoration: underline;</string>
+    </property>
+    <property name="text">
+     <string>ATHERECTOMY</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
-  <zorder>widget</zorder>
-  <zorder>labelTitle</zorder>
-  <zorder>labelAtherectomy</zorder>
-  <zorder>labelCto</zorder>
-  <zorder>frameDone</zorder>
-  <zorder>frameBack</zorder>
-  <zorder>listViewAtherectomy</zorder>
-  <zorder>listViewCto</zorder>
  </widget>
  <resources/>
  <connections>

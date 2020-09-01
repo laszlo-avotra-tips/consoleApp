@@ -48,11 +48,11 @@ void DeviceListModel::populate(bool isCto)
         for ( device* d : devList )
         {
             if(d->isAth() && !isCto){
-                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon());
+                DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
                 m_data.append(dm);
             }
             if(!d->isAth() && isCto){
-                DeviceDisplayModel dm(d->getDeviceName(), d->getIcon());
+                DeviceDisplayModel dm(d->getSplitDeviceName(), d->getIcon());
                 m_data.append(dm);
             }
         }
