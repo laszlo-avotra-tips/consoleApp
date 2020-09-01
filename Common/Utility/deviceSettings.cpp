@@ -75,6 +75,7 @@ int deviceSettings::init( void )
             numDevicesLoaded++;
         }
     }
+    LOG1(numDevicesLoaded)
 
     return numDevicesLoaded;
 }
@@ -307,7 +308,7 @@ QString device::formatDeviceName(const QString &name)
     QString retVal;
     QStringList words = name.split(" ");
     if(words.size() == 3){
-        retVal = QString("%1 %2\n%3").arg(words[0]).arg(words[1]).arg(words[2]);
+        retVal = QString(" %1 %2\n %3").arg(words[0]).arg(words[1]).arg(words[2]);
     }
     return retVal;
 }

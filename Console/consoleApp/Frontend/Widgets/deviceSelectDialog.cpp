@@ -6,208 +6,105 @@
 #include "logger.h"
 #include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"
-#include <daqfactory.h>
-#include "consoleLabel.h"
+#include "deviceListModel.h"
+#include "deviceDelegate.h"
+#include "deviceDisplayModel.h"
 
+#include <daqfactory.h>
+#include <QImage>
+#include <QIcon>
+#include <QStringListModel>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 
-
-DeviceSelectDialog::DeviceSelectDialog(QWidget *parent, const std::vector<QString> *param) :
+DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DeviceSelectDialog)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    initDialog(param);
+    initDialog();
 }
 
 DeviceSelectDialog::~DeviceSelectDialog()
 {
     delete ui;
+    delete m_model;
+    delete m_ctoModel;
 }
 
-void DeviceSelectDialog::initDialog(const std::vector<QString> *param)
+void DeviceSelectDialog::initDialog()
 {
-//    if(param && !param->empty()){
-//        m_isAnimation = false;
-//    }
 
-    if(m_isAnimation){
-        int duration_ms=1000;
-        QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
-        QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, "opacity");
-        QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
+    /*
+     * Set opacity with animation
+     */
+    const int animationDuration_ms=1000;
+    const QByteArray property{"opacity"};
+    const float startValue{0.0f};
+    const float endValue{0.9f};
 
-        setGraphicsEffect(showing_effect);
-        animation->setStartValue(0);
-        animation->setEndValue(0.9);
-        animation->setDuration(duration_ms);
-        group->addAnimation(animation);
-        group->start();
-    }
+    QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
+    QPropertyAnimation* animation = new QPropertyAnimation(showing_effect, property);
+    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
 
-    populateList();
-    populateList1();
+
+    setGraphicsEffect(showing_effect);
+    animation->setStartValue(startValue);
+    animation->setEndValue(endValue);
+    animation->setDuration(animationDuration_ms);
+    group->addAnimation(animation);
+    group->start();
+
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
-    connect(ui->labelAthText0, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice0);
-    connect(ui->labelAthText1, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice1);
-    connect(ui->labelAthText2, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice2);
-    connect(ui->labelText1, &ConsoleLabel::mousePressed, this, &DeviceSelectDialog::handleDevice3);
-
-    connect(this, &DeviceSelectDialog::deviceSelected, this, &DeviceSelectDialog::handleDeviceSelected);
-
-    highlightCurrentDevice();
-}
-
-void DeviceSelectDialog::highlightCurrentDevice()
-{
-    deviceSettings &dev = deviceSettings::Instance();
-    auto did = dev.getCurrentDevice();
-    setSelectedDeviceId(did);
-    if(selectedDeviceId() >= 0){
-        LOG4(did, dev.getCurrentDeviceTitle(),dev.getCurrentDeviceName(), dev.getCurrentSplitDeviceName());
-        switch(did){
-        case 0:
-            highlight(ui->frame0);
-            break;
-        case 1:
-            highlight(ui->frame2);
-            break;
-        case 2:
-            highlight(ui->frame3);
-            break;
-        case 3:
-            highlight(ui->frame4);
-            break;
-        default:
-            break;
-        }
-    }
-}
-
-
-void DeviceSelectDialog::changeEvent(QEvent *e)
-{
-    QDialog::changeEvent(e);
-    if( e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
-    }
-}
-
-void DeviceSelectDialog::populateList1()
-{
-    deviceSettings &devices = deviceSettings::Instance();
-
-    // Only create the list if devices don't exist.
-    if( devices.list().isEmpty() )
-    {
-        devices.init();
-    }
-
-    std::vector<QLabel*> deviceIconLabels{
-        ui->labelIcon1, ui->labelIcon2, ui->labelIcon3
-    };
-
-    std::vector<QLabel*> deviceNames{
-        ui->labelText1, ui->labelText2, ui->labelText3
-    };
-
-    QList<device *>deviceList = devices.list();
-
-    int i = 3;
-    for(auto* name : deviceNames){
-        if(deviceList.size() > i){
-            auto* device = deviceList[i++];
-            if(device){
-                name->setText(device->getSplitDeviceName());
-            }
-        }
-    }
-    i = 3;
-    for(auto* deviceIconLabel : deviceIconLabels){
-        if(deviceList.size() > i){
-            auto* device = deviceList[i++];
-            if(device){
-                const QImage& image = device->getIcon();
-                deviceIconLabel->setText("");
-                deviceIconLabel->setPixmap(QPixmap::fromImage( image ));
-                deviceIconLabel->setMinimumSize(140,140);
-                deviceIconLabel->setMaximumSize(140,140);
-            }
-        }
-    }
+    populateList();
 }
 
 void DeviceSelectDialog::populateList()
 {
     deviceSettings &devices = deviceSettings::Instance();
 
+
     // Only create the list if devices don't exist.
     if( devices.list().isEmpty() )
     {
         devices.init();
     }
+    LOG1(devices.list().size())
 
-    QList<device *>devList = devices.list();
+    ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
+    ui->listViewCto->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
 
-    std::vector<QLabel*> deviceIconLabels{
-        ui->labelAthIcon0, ui->labelAthIcon1, ui->labelAthIcon2
-    };
+    m_model = new DeviceListModel(this);
+    m_ctoModel = new DeviceListModel(this);
+    m_model->populate(false);
+    m_ctoModel->populate(true);
 
-    std::vector<QLabel*> deviceNames{
-        ui->labelAthText0, ui->labelAthText1, ui->labelAthText2
-    };
-
-    QList<device *>deviceList = devices.list();
-    int i = 0;
-    for(auto* name : deviceNames){
-        if(deviceList.size() > i){
-            auto* device = deviceList[i++];
-            if(device){
-                name->setText(device->getSplitDeviceName());
-            }
-        }
-    }
-    i = 0;
-    for(auto* deviceIconLabel : deviceIconLabels){
-        if(deviceList.size() > i){
-            auto* device = deviceList[i++];
-            if(device){
-                const QImage& image = device->getIcon();
-                deviceIconLabel->setText("");
-                deviceIconLabel->setPixmap(QPixmap::fromImage( image ));
-            }
-        }
-    }
+    ui->listViewAtherectomy->setModel(m_model);
+    ui->listViewCto->setModel(m_ctoModel);
+    DeviceDelegate* delegate = new DeviceDelegate(this);
+    ui->listViewAtherectomy->setItemDelegate(delegate);
+    ui->listViewCto->setItemDelegate(delegate);
 }
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
-    if(selectedDeviceId() >= 0){
-        deviceSettings &dev = deviceSettings::Instance();
-        dev.setCurrentDevice(selectedDeviceId());
-    } else {
-        return;
-    }
+    deviceSettings &devices = deviceSettings::Instance();
+    const auto& dev = devices.deviceAt(devices.getCurrentDevice());
 
-    auto* device = deviceSettings::Instance().current();
-    const bool isSpeed{!device->isAth()};
-    LOG1(selectedDeviceId())
-
+    const bool isShowSpeed(!dev->isAth());
     QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
     frontend* fw = dynamic_cast<frontend*>(widget);
     if(fw){
       fw->showFullScreen();
       fw->updateDeviceLabel();
-      fw->showSpeed(isSpeed);
+      fw->showSpeed(isShowSpeed);
       startDaq(fw);
     }
 }
-
 
 void DeviceSelectDialog::startDaq(frontend *fe)
 {
@@ -220,6 +117,7 @@ void DeviceSelectDialog::startDaq(frontend *fe)
     }
     fe->setIDAQ(idaq);
     LOG( INFO, "LASER: serial port control is DISABLED" )
+    LOG( INFO, "SLED support board: serial port control is DISABLED" )
 
     fe->startDaq();
     auto& setting = deviceSettings::Instance();
@@ -229,65 +127,47 @@ void DeviceSelectDialog::startDaq(frontend *fe)
     fe->on_zoomSlider_valueChanged(100);
 }
 
-void DeviceSelectDialog::handleDevice0()
+void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
 {
-    highlight(ui->frame0);
-    emit deviceSelected(0);
-}
+    deviceSettings &dev = deviceSettings::Instance();
 
-void DeviceSelectDialog::handleDevice1()
-{
-    highlight(ui->frame2);
-    emit deviceSelected(1);
-}
+    QVariant name = index.data();
+    LOG1(name.toString())
 
-void DeviceSelectDialog::handleDevice2()
-{
-    highlight(ui->frame3);
-    emit deviceSelected(2);
-}
-
-void DeviceSelectDialog::handleDevice3()
-{
-    highlight(ui->frame4);
-    emit deviceSelected(3);
-}
-
-void DeviceSelectDialog::handleDeviceSelected(int did)
-{
-    if(setSelectedDeviceId(did)){
-        ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
-        ui->pushButtonDone->setEnabled(true);
+    int selection {0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getSplitDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
     }
+
+    dev.setCurrentDevice(selection);
+
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
 }
 
-void DeviceSelectDialog::removeHighlight()
+void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
 {
-    std::vector<QWidget*> deviceNames{
-        ui->frame0, ui->frame2, ui->frame3, ui->frame4
-    };
-    for(auto* label : deviceNames) {
-        label->setStyleSheet("");
+    deviceSettings &dev = deviceSettings::Instance();
+
+    QVariant name = index.data();
+    LOG1(name.toString())
+
+    int selection{0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getSplitDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
     }
-}
+    dev.setCurrentDevice(selection);
 
-void DeviceSelectDialog::highlight(QWidget *label)
-{
-    removeHighlight();
-    label->setStyleSheet("background-color:#646464; border-radius: 20px solid grey;");
-}
-
-int DeviceSelectDialog::selectedDeviceId() const
-{
-    return m_selectedDeviceId;
-}
-
-bool DeviceSelectDialog::setSelectedDeviceId(int selectedDeviceId)
-{
-    bool selectedDeviceIdChanged{false};
-    if(m_selectedDeviceId != selectedDeviceId){
-        m_selectedDeviceId = selectedDeviceId;
-        selectedDeviceIdChanged = true;
-    }
-    return selectedDeviceIdChanged;
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
 }

@@ -3,9 +3,11 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
+#include <QStringListModel>
+
+#include "deviceListModel.h"
 
 class frontend;
-class QWidget;
 
 namespace Ui {
 class DeviceSelectDialog;
@@ -16,39 +18,27 @@ class DeviceSelectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit DeviceSelectDialog(QWidget *parent = nullptr, const std::vector<QString> *param = nullptr);
+    explicit DeviceSelectDialog(QWidget *parent = nullptr);
     ~DeviceSelectDialog();
 
-signals:
-    void deviceSelected(int did);
-
-protected:
-    void changeEvent(QEvent *e);
+    void initDialog( void );
+    bool isComplete() const;
 
 private:
     void populateList(void);
-    void populateList1(void);
-    void initDialog( const std::vector<QString> *param = nullptr );
 
 private slots:
     void on_pushButtonDone_clicked();
     void startDaq(frontend *fe);
-    void handleDevice0();
-    void handleDevice1();
-    void handleDevice2();
-    void handleDevice3();
-    void handleDeviceSelected(int did);
+
+    void on_listViewAtherectomy_clicked(const QModelIndex &index);
+
+    void on_listViewCto_clicked(const QModelIndex &index);
 
 private:
-    void removeHighlight();
-    void highlight(QWidget* label);
-    void highlightCurrentDevice();
-    int selectedDeviceId() const;
-    bool setSelectedDeviceId(int selectedDeviceId);
-
     Ui::DeviceSelectDialog *ui;
-    int m_selectedDeviceId{-1};
-    bool m_isAnimation{true};
+    DeviceListModel* m_model{nullptr};
+    DeviceListModel* m_ctoModel{nullptr};
 };
 
 #endif // DEVICESELECTDIALOG_H
