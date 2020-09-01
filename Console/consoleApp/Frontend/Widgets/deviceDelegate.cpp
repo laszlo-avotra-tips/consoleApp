@@ -26,7 +26,8 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     if(vImage.isValid()){
         if(vImage.toString().isEmpty()){
             QImage image = vImage.value<QImage>();
-            painter->drawImage(x0,yImage,image);
+            QImage iHW = image.scaled(160,160);
+            painter->drawImage(x0,yImage,iHW);
         }
     }
     QStyledItemDelegate::paint(painter, option, index);
@@ -34,7 +35,7 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     painter->restore();
 }
 
-QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const
 {
     return QSize(750,250); //QStyledItemDelegate::sizeHint(option, index);
 }
