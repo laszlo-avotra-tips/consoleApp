@@ -40,7 +40,7 @@ border: 2px solid grey;
 border-radius: 200px;
 }
 QLabel#labelTitle{
-font: 38pt &quot;Helvetica Neue&quot;;
+font: 36pt &quot;Helvetica Neue&quot;;
 font-weight: 600
 }
 QFrame#frameDone{
@@ -264,7 +264,7 @@ font: 24pt &quot;Helvetica Neue&quot;;
    <widget class="QLabel" name="labelCto">
     <property name="geometry">
      <rect>
-      <x>1223</x>
+      <x>1123</x>
       <y>22</y>
       <width>546</width>
       <height>84</height>

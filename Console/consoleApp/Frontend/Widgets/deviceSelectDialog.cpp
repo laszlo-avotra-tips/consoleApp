@@ -36,7 +36,6 @@ DeviceSelectDialog::~DeviceSelectDialog()
 
 void DeviceSelectDialog::initDialog()
 {
-    populateList();
 
     /*
      * Set opacity with animation
@@ -60,6 +59,8 @@ void DeviceSelectDialog::initDialog()
 
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
+
+    populateList();
 }
 
 void DeviceSelectDialog::populateList()
