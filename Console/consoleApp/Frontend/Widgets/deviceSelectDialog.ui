@@ -230,15 +230,19 @@ font: 22pt &quot;Helvetica Neue&quot;;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: 0px;</string>
+    <string notr="true">QFrame{
+border: 0px;
+border-right: 2px solid #ffffff;
+}
+</string>
    </property>
   </widget>
   <widget class="QListView" name="listViewCto">
    <property name="geometry">
     <rect>
-     <x>979</x>
+     <x>1009</x>
      <y>360</y>
-     <width>861</width>
+     <width>831</width>
      <height>750</height>
     </rect>
    </property>
