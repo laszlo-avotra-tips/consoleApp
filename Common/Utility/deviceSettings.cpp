@@ -189,27 +189,29 @@ bool deviceSettings::loadDevice( QString deviceFile )
         }
     }
     testno++;
-    if (retVal != true) qDebug() << "test: " << testno;
-    // do not continue if the device XML version is wrong
-    if( retVal )
-    {
-        if( !checkVersion( doc ) )
-        {
-            retVal = false;
-            //err.warn( QString( "Failed to load device %1\nReason: Version mismatch" ).arg( fileInfo.fileName() ) );
-        }
+    if (retVal != true) {
+        qDebug() << "test: " << testno;
     }
-    testno++;
-    if (retVal != true) qDebug() << "test: " << 2;
+//    // do not continue if the device XML version is wrong
+//    if( retVal )
+//    {
+//        if( !checkVersion( doc ) )
+//        {
+//            retVal = false;
+//            //err.warn( QString( "Failed to load device %1\nReason: Version mismatch" ).arg( fileInfo.fileName() ) );
+//        }
+//    }
+//    testno++;
+//    if (retVal != true) qDebug() << "test: " << 2;
 
     if( retVal )
     {
         // read in data
         QDomElement root = doc->documentElement();
 
-        QDomNode n = root.firstChild();
-        QDomElement e = n.toElement();
-
+//        QDomNode n = root.firstChild();
+//        QDomElement e = n.toElement();
+        QDomElement e = root.toElement();
         // read attributes for device
         if( e.tagName() == "device" )
         {
