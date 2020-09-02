@@ -8,6 +8,7 @@
 #include "deviceListModel.h"
 
 class frontend;
+class QGestureEvent;
 
 namespace Ui {
 class DeviceSelectDialog;
@@ -28,6 +29,9 @@ private:
     void populateList(void);
 
 private slots:
+    bool event(QEvent *event) override;
+    bool gestureEvent(QGestureEvent* ge);
+
     void on_pushButtonDone_clicked();
     void startDaq(frontend *fe);
 

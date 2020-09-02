@@ -17,6 +17,9 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+#include <QGestureEvent>
+#include <QSwipeGesture>
+
 
 DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -25,6 +28,7 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
     initDialog();
+    grabGesture(Qt::SwipeGesture);
 }
 
 DeviceSelectDialog::~DeviceSelectDialog()
@@ -171,3 +175,42 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
 }
+
+bool DeviceSelectDialog::event(QEvent *event)
+{
+    LOG1(event->type());
+    if(event->type() == QEvent::Gesture){
+        LOG1(event->type());
+
+        QGestureEvent* ge = dynamic_cast<QGestureEvent*>(event);
+        if(ge){
+            return gestureEvent(ge);
+        }
+    }
+    return QWidget::event(event);
+}
+
+//#include <QSwipeGesture>
+bool DeviceSelectDialog::gestureEvent(QGestureEvent *ge)
+{
+    bool isHandled{false};
+    LOG1(ge->type());
+    if (QGesture *qg = ge->gesture(Qt::SwipeGesture))  {
+
+        QSwipeGesture* sg = dynamic_cast<QSwipeGesture*>(qg);
+        if(sg){
+            const QSwipeGesture::SwipeDirection& sd =sg->verticalDirection();
+
+            if(sd == QSwipeGesture::Up){
+                LOG1("UP")
+                isHandled = true;
+            }
+            if(sd == QSwipeGesture::Down){
+                LOG1("DOWN")
+                isHandled = true;
+            }
+        }
+    }
+    return isHandled;
+}
+

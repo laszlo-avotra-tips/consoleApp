@@ -242,6 +242,15 @@ border: 0px;
 border-right: 2px solid #ffffff;
 }</string>
    </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+   </property>
+   <property name="autoScrollMargin">
+    <number>0</number>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QListView" name="listViewCto">
    <property name="geometry">
@@ -254,6 +263,12 @@ border-right: 2px solid #ffffff;
    </property>
    <property name="styleSheet">
     <string notr="true">border: 0px;</string>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+   </property>
+   <property name="autoScrollMargin">
+    <number>0</number>
    </property>
   </widget>
   <widget class="QFrame" name="frameType">
