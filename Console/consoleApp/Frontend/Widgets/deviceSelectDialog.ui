@@ -53,7 +53,14 @@ border-radius: 10px;
 }
 QListView{
 font: 22pt &quot;Helvetica Neue&quot;;
-}</string>
+}
+QScrollBar:vertical {
+    background-color:black; width:100px;
+}
+QScrollBar::handle:vertical {
+background-color:rgb(245,196,0) ;min-height: 100px;
+} 
+</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -233,8 +240,7 @@ font: 22pt &quot;Helvetica Neue&quot;;
     <string notr="true">QFrame{
 border: 0px;
 border-right: 2px solid #ffffff;
-}
-</string>
+}</string>
    </property>
   </widget>
   <widget class="QListView" name="listViewCto">
