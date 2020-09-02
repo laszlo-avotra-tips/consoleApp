@@ -130,9 +130,9 @@ SledSupport::~SledSupport()
 bool SledSupport::writeSerial(QByteArray command)
 {
     //qDebug() << "Command to write: " << command;
-//    if(command != GetRunningState){
+    if(command != GetRunningState){
         LOG( INFO, QString( "Sled Support Board: writeSerial command: %1 " ).arg( commandToString(command) ) );
-//    }
+    }
     bool retVal = true;
     if( ftHandle != NULL )
     {
