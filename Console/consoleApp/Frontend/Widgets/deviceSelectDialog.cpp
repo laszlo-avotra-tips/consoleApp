@@ -42,7 +42,7 @@ void DeviceSelectDialog::initDialog()
      */
     const int animationDuration_ms=1000;
     const QByteArray property{"opacity"};
-    const float startValue{0.0f};
+    const float startValue{1.0f};
     const float endValue{0.9f};
 
     QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);
