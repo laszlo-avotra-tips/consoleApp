@@ -309,9 +309,25 @@ QString device::formatDeviceName(const QString &name)
 {
     QString retVal;
     QStringList words = name.split(" ");
-    if(words.size() == 3){
-        retVal = QString(" %1 %2\n %3").arg(words[0]).arg(words[1]).arg(words[2]);
+//    if(words.size() == 3){
+//        retVal = QString(" %1 %2\n %3").arg(words[0]).arg(words[1]).arg(words[2]);
+//    }
+    int i = 0;
+    for(const auto& word : words){
+        switch(i){
+        case 0:
+            retVal = QString(" %1").arg(word);
+            break;
+        case 1:
+            retVal += QString(" %1\n").arg(word);
+            break;
+        default:
+            retVal += QString(" %1").arg(word);
+            break;
+        }
+        ++i;
     }
+
     return retVal;
 }
 
