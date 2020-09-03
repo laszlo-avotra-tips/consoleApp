@@ -163,8 +163,8 @@ public:
 
     QDate getServiceDate() const;
 
-    QStringList getDoctors() const;
-    void setDoctors(const QStringList &doctors);
+    QStringList getPhysicians() const;
+    void setPhysicians(const QStringList &doctors);
 
     QStringList getLocations() const;
     void setLocations(const QStringList &locations);
@@ -196,7 +196,7 @@ private:
     bool invertOctColorEnabled;       //
     int  imageIndexDecimation;        //
     QDate m_serviceDate;
-    QStringList m_doctors;
+    QStringList m_physicians;
     QStringList m_locations;
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
     CatheterView_t catheterViewMode;  //

@@ -38,21 +38,39 @@ void userSettings::saveSettings()
     varSettings->setValue( "displayOptions/reticleBrightness",        reticleBrightnessVal );
 
     LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
+
+    varSettings->setValue( "displayOptions/depthIndex", m_imageDepthIndex );
+
+    if(m_isGray){
+        varSettings->setValue( "displayOptions/color", "gray" );
+    } else {
+        varSettings->setValue( "displayOptions/color", "sepia" );
+    }
+
 }
 
 void userSettings::loadVarSettings()
 {
-    brightnessVal               = varSettings->value( "displayOptions/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
-    contrastVal                 = varSettings->value( "displayOptions/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
-    reticleBrightnessVal        = varSettings->value( "displayOptions/reticleBrightness",        DefaultReticleBrightness ).toInt();
+    brightnessVal        = varSettings->value( "displayOptions/brightness",        0 ).toInt();
+    contrastVal          = varSettings->value( "displayOptions/contrast",          0 ).toInt();
+    reticleBrightnessVal = varSettings->value( "displayOptions/reticleBrightness", 127 ).toInt();
+    m_imageDepthIndex = varSettings->value( "displayOptions/depthIndex", 0 ).toInt();
+
+    QString color =  varSettings->value( "displayOptions/color", "" ).toString();
+    if(color == "gray"){
+        m_isGray = true;
+    } else {
+        m_isGray = false;
+    }
+
     LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
 
     QString date               = varSettings->value( "service/last_service_date",        "" ).toString();
     m_serviceDate = QDate::fromString(date, "MM.dd.yyyy");
     LOG2(date,m_serviceDate.toString())
 
-    m_doctors = varSettings->value( "caseSetup/doctors",        "" ).toStringList();
-    for(const auto& doctor : m_doctors){
+    m_physicians = varSettings->value( "caseSetup/physicians",        "" ).toStringList();
+    for(const auto& doctor : m_physicians){
         LOG1(doctor)
     }
 
@@ -125,14 +143,14 @@ void userSettings::setLocations(const QStringList &locations)
     m_locations = locations;
 }
 
-QStringList userSettings::getDoctors() const
+QStringList userSettings::getPhysicians() const
 {
-    return m_doctors;
+    return m_physicians;
 }
 
-void userSettings::setDoctors(const QStringList &doctors)
+void userSettings::setPhysicians(const QStringList &doctors)
 {
-    m_doctors = doctors;
+    m_physicians = doctors;
 }
 
 QDate userSettings::getServiceDate() const
