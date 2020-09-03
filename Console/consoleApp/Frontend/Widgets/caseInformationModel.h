@@ -141,7 +141,7 @@ private:
     /*!
      * \brief m_physicianNames - the pysician name registry
      */
-    QStringList m_physicianNames{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
+    QStringList m_physicianNames; //{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
 
     /*!
      * \brief m_selectedPhysicianName - the selected physician name for this case - empty string means no selection
@@ -156,7 +156,7 @@ private:
     /*!
      * \brief m_locations - the location registry
      */
-    QStringList m_locations{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
+    QStringList m_locations; //{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
 
     /*!
      * \brief m_selectedLocation - the selected location for this case

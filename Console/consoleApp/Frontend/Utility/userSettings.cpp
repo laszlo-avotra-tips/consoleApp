@@ -13,6 +13,7 @@
 #include "userSettings.h"
 #include "defaults.h"
 #include "signalmodel.h"
+#include "logger.h"
 
 userSettings* userSettings::theSettings{nullptr};
 caseInfo* caseInfo::theInfo{nullptr};
@@ -31,12 +32,36 @@ userSettings::userSettings()
  */
 void userSettings::saveSettings()
 {
-    settings->setValue( "image/brightness",               brightnessVal );
-    settings->setValue( "image/contrast",                 contrastVal );
-    settings->setValue( "image/reticleBrightness",        reticleBrightnessVal );
-    settings->setValue( "image/laserIndicatorBrightness", laserIndicatorBrightnessVal );
-    settings->setValue( "image/noiseReduction",           noiseReductionVal );
-    settings->setValue( "image/useInvertOctColor",        invertOctColorEnabled );
+    settings->setValue( "display options/brightness",               brightnessVal );
+    settings->setValue( "display options/contrast",                 contrastVal );
+    settings->setValue( "display options/reticleBrightness",        reticleBrightnessVal );
+
+    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
+}
+
+QStringList userSettings::getLocations() const
+{
+    return m_locations;
+}
+
+void userSettings::setLocations(const QStringList &locations)
+{
+    m_locations = locations;
+}
+
+QStringList userSettings::getDoctors() const
+{
+    return m_doctors;
+}
+
+void userSettings::setDoctors(const QStringList &doctors)
+{
+    m_doctors = doctors;
+}
+
+QDate userSettings::getServiceDate() const
+{
+    return m_serviceDate;
 }
 
 int userSettings::getImageDepthIndex() const
@@ -80,15 +105,25 @@ userSettings &userSettings::Instance() {
 
 void userSettings::loadSettings()
 {
-    // lag angle is NOT saved across sessions
+    brightnessVal               = settings->value( "display options/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
+    contrastVal                 = settings->value( "display options/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
+    reticleBrightnessVal        = settings->value( "display options/reticleBrightness",        DefaultReticleBrightness ).toInt();
+    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
 
-    brightnessVal               = settings->value( "image/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
-    contrastVal                 = settings->value( "image/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
-    reticleBrightnessVal        = settings->value( "image/reticleBrightness",        DefaultReticleBrightness ).toInt();
-    laserIndicatorBrightnessVal = settings->value( "image/laserIndicatorBrightness", DefaultLaserIndicatorBrightness ).toInt();
-    noiseReductionVal           = settings->value( "image/noiseReduction",           DefaultCurrFrameWeight_Percent ).toInt();
-    invertOctColorEnabled       = settings->value( "image/useInvertOctColor",        DefaultUseInvertOctColor ).toBool();
-    imageIndexDecimation        = settings->value( "log/imageIndexDecimation",       ImageIndexDecimationLog.defaultValue ).toInt();
+    QString date               = settings->value( "service/last_service_date",        "" ).toString();
+    m_serviceDate = QDate::fromString(date, "MM.dd.yyyy");
+    LOG2(date,m_serviceDate.toString())
+
+    m_doctors = settings->value( "caseSetup/doctors",        "" ).toStringList();
+    for(const auto& doctor : m_doctors){
+        LOG1(doctor)
+    }
+
+    m_locations = settings->value( "caseSetup/locations",        "" ).toStringList();
+    for(const auto& location : m_locations){
+        LOG1(location)
+    }
+
 }
 
 void userSettings::setBrightness(int level)

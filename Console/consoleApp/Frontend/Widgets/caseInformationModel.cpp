@@ -8,7 +8,8 @@ CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
 CaseInformationModel::CaseInformationModel()
 {
-
+    m_physicianNames = userSettings::Instance().getDoctors();
+    m_locations = userSettings::Instance().getLocations();
 }
 
 CaseInformationModel *CaseInformationModel::instance()

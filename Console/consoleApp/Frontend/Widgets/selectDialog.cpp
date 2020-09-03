@@ -96,38 +96,40 @@ void SelectDialog::selectItem2()
 
 void SelectDialog::scrollDown()
 {
-    auto lastInView = m_itemsInView[2];
-    auto indexOfLastInView = m_items.indexOf(lastInView);
-    auto maxIndexInView = m_items.size() - 1;
-    if(indexOfLastInView == maxIndexInView){
-        m_itemsInView[0] = m_items[maxIndexInView - 1];
-        m_itemsInView[1] = m_items[maxIndexInView];
-        m_itemsInView[2] = m_items[0];
-    }else if (indexOfLastInView > 0){
-        m_itemsInView[0] = m_items[indexOfLastInView - 1];
-        m_itemsInView[1] = m_items[indexOfLastInView];
-        m_itemsInView[2] = m_items[indexOfLastInView + 1];
-    } else if(indexOfLastInView == 0){
-        m_itemsInView[0] = m_items[maxIndexInView];
-        m_itemsInView[1] = m_items[0];
-        m_itemsInView[2] = m_items[1];
-    }
-
-    int index{0};
-    for(auto* lineEdit : m_selectableWidgets){
-        if(m_items.size()>index){
-            auto style = lineEdit->styleSheet();
-            lineEdit->setText(m_itemsInView[index]);
-            lineEdit->setStyleSheet(style + QString("color:white"));
+    if(m_itemsInView.size() == 3){
+        auto lastInView = m_itemsInView[2];
+        auto indexOfLastInView = m_items.indexOf(lastInView);
+        auto maxIndexInView = m_items.size() - 1;
+        if(indexOfLastInView == maxIndexInView){
+            m_itemsInView[0] = m_items[maxIndexInView - 1];
+            m_itemsInView[1] = m_items[maxIndexInView];
+            m_itemsInView[2] = m_items[0];
+        }else if (indexOfLastInView > 0){
+            m_itemsInView[0] = m_items[indexOfLastInView - 1];
+            m_itemsInView[1] = m_items[indexOfLastInView];
+            m_itemsInView[2] = m_items[indexOfLastInView + 1];
+        } else if(indexOfLastInView == 0){
+            m_itemsInView[0] = m_items[maxIndexInView];
+            m_itemsInView[1] = m_items[0];
+            m_itemsInView[2] = m_items[1];
         }
-        ++index;
-    }
-    auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
-    LOG2(m_selectedItem, highlighted)
-    if(highlighted >= 0 && highlighted < 3){
-        auto* wid = m_selectableWidgets[highlighted];
-        auto style = wid->styleSheet();
-        wid->setStyleSheet(style + QString("color:#F5C400;"));
+
+        int index{0};
+        for(auto* lineEdit : m_selectableWidgets){
+            if(m_items.size()>index){
+                auto style = lineEdit->styleSheet();
+                lineEdit->setText(m_itemsInView[index]);
+                lineEdit->setStyleSheet(style + QString("color:white"));
+            }
+            ++index;
+        }
+        auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
+        LOG2(m_selectedItem, highlighted)
+        if(highlighted >= 0 && highlighted < 3){
+            auto* wid = m_selectableWidgets[highlighted];
+            auto style = wid->styleSheet();
+            wid->setStyleSheet(style + QString("color:#F5C400;"));
+        }
     }
 }
 //border-top: 2px solid rgb( 169, 169, 169);
