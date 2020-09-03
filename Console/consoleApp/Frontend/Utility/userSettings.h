@@ -169,8 +169,22 @@ public:
     QStringList getLocations() const;
     void setLocations(const QStringList &locations);
 
+    float getImagingDepth_mm() const;
+
+    int getALineLength_px() const;
+
+    QString getSled_firmware_version() const;
+
+    QString getInterface_firmware_version() const;
+
+    QString getOct_firmware_version() const;
+
+    QString getInterface_hw_version() const;
+
 private:
     void saveSettings();
+    void loadVarSettings();
+    void loadProfileSettings();
 
     int  brightnessVal;               // or "black-level"
     int  contrastVal;                 // or "white-level"
@@ -189,11 +203,19 @@ private:
     bool m_isGray{true};
     int  m_imageDepthIndex{1};
 
+    float m_imagingDepth_mm{0.0f};
+    int m_aLineLength_px{0};
+    QString m_sled_firmware_version;
+    QString m_interface_firmware_version;
+    QString m_oct_firmware_version;
+    QString m_interface_hw_version;
+
     userSettings(); // hide ctor
     ~userSettings() {} // hide dtor
     userSettings(userSettings const &); // hide copy
     userSettings & operator=(userSettings const &); // hide assign
 
-    QSettings *settings;
+    QSettings *varSettings{nullptr};
+    QSettings *profileSettings{nullptr};
     static userSettings* theSettings;
 };

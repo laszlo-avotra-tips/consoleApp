@@ -20,7 +20,8 @@ caseInfo* caseInfo::theInfo{nullptr};
 
 userSettings::userSettings()
 {
-    settings = new QSettings( SystemVarFile, QSettings::IniFormat );
+    varSettings = new QSettings( SystemVarFile, QSettings::IniFormat );
+    profileSettings = new QSettings( SystemProfileFile, QSettings::IniFormat );
 
     loadSettings();
 }
@@ -32,12 +33,87 @@ userSettings::userSettings()
  */
 void userSettings::saveSettings()
 {
-    settings->setValue( "displayOptions/brightness",               brightnessVal );
-    settings->setValue( "displayOptions/contrast",                 contrastVal );
-    settings->setValue( "displayOptions/reticleBrightness",        reticleBrightnessVal );
+    varSettings->setValue( "displayOptions/brightness",               brightnessVal );
+    varSettings->setValue( "displayOptions/contrast",                 contrastVal );
+    varSettings->setValue( "displayOptions/reticleBrightness",        reticleBrightnessVal );
 
     LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
 }
+
+void userSettings::loadVarSettings()
+{
+    brightnessVal               = varSettings->value( "displayOptions/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
+    contrastVal                 = varSettings->value( "displayOptions/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
+    reticleBrightnessVal        = varSettings->value( "displayOptions/reticleBrightness",        DefaultReticleBrightness ).toInt();
+    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
+
+    QString date               = varSettings->value( "service/last_service_date",        "" ).toString();
+    m_serviceDate = QDate::fromString(date, "MM.dd.yyyy");
+    LOG2(date,m_serviceDate.toString())
+
+    m_doctors = varSettings->value( "caseSetup/doctors",        "" ).toStringList();
+    for(const auto& doctor : m_doctors){
+        LOG1(doctor)
+    }
+
+    m_locations = varSettings->value( "caseSetup/locations",        "" ).toStringList();
+    for(const auto& location : m_locations){
+        LOG1(location)
+    }
+}
+
+void userSettings::loadProfileSettings()
+{
+    imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 0).toInt();
+    LOG1(imageIndexDecimation)
+
+    m_imagingDepth_mm =  profileSettings->value( "octLaser/imagingDepth_mm", 0.0f).toFloat();
+    m_aLineLength_px =  profileSettings->value( "octLaser/aLineLength_px", 0).toInt();
+    LOG2(getImagingDepth_mm(), getALineLength_px())
+
+    m_sled_firmware_version = profileSettings->value( "subSystemVersion/sled_firmware_version", "").toString();
+    m_interface_firmware_version = profileSettings->value( "subSystemVersion/interface_firmware_version", "").toString();
+    m_oct_firmware_version = profileSettings->value( "subSystemVersion/oct_firmware_version", "").toString();
+    m_interface_hw_version = profileSettings->value( "subSystemVersion/interface_hw_version", "").toString();
+    LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
+}
+
+QString userSettings::getInterface_hw_version() const
+{
+    return m_interface_hw_version;
+}
+
+QString userSettings::getOct_firmware_version() const
+{
+    return m_oct_firmware_version;
+}
+
+QString userSettings::getInterface_firmware_version() const
+{
+    return m_interface_firmware_version;
+}
+
+QString userSettings::getSled_firmware_version() const
+{
+    return m_sled_firmware_version;
+}
+
+int userSettings::getALineLength_px() const
+{
+    return m_aLineLength_px;
+}
+
+float userSettings::getImagingDepth_mm() const
+{
+    return m_imagingDepth_mm;
+}
+
+void userSettings::loadSettings()
+{
+    loadVarSettings();
+    loadProfileSettings();
+}
+
 
 QStringList userSettings::getLocations() const
 {
@@ -101,29 +177,6 @@ userSettings &userSettings::Instance() {
         theSettings = new userSettings();
     }
     return *theSettings;
-}
-
-void userSettings::loadSettings()
-{
-    brightnessVal               = settings->value( "displayOptions/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
-    contrastVal                 = settings->value( "displayOptions/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
-    reticleBrightnessVal        = settings->value( "displayOptions/reticleBrightness",        DefaultReticleBrightness ).toInt();
-    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
-
-    QString date               = settings->value( "service/last_service_date",        "" ).toString();
-    m_serviceDate = QDate::fromString(date, "MM.dd.yyyy");
-    LOG2(date,m_serviceDate.toString())
-
-    m_doctors = settings->value( "caseSetup/doctors",        "" ).toStringList();
-    for(const auto& doctor : m_doctors){
-        LOG1(doctor)
-    }
-
-    m_locations = settings->value( "caseSetup/locations",        "" ).toStringList();
-    for(const auto& location : m_locations){
-        LOG1(location)
-    }
-
 }
 
 void userSettings::setBrightness(int level)

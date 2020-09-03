@@ -95,6 +95,7 @@ const QString EventDataLogFileName = "events.xml";
 const QString SessionDatabaseFileName = "session.db";
 const QString SystemSettingsFile   = SystemDir + "/system.ini";
 const QString SystemVarFile   = SystemDir + "/systemVar.ini";
+const QString SystemProfileFile   = SystemDir + "/systemProfile.ini";
 const QString ApprovedAppsIniFile  = SystemDir + "/approvedApps.ini";
 const QString KioskCookieFile      = SystemDir + "/kioskversion.txt";
 const QString TrainingCookieFile   = TrainingDir + "/training_version.txt";
