@@ -54,13 +54,12 @@ border-radius: 10px;
 QListView{
 font: 22pt &quot;Helvetica Neue&quot;;
 }
+QScrollBar::handle:vertical {
+background-color:rgb(245,196,0);
+} 
 QScrollBar:vertical {
     background-color:black; width:100px;
-}
-QScrollBar::handle:vertical {
-background-color:rgb(245,196,0) ;min-height: 100px;
-} 
-</string>
+}</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -242,6 +241,30 @@ border: 0px;
 border-right: 2px solid #ffffff;
 }</string>
    </property>
+   <property name="autoScroll">
+    <bool>false</bool>
+   </property>
+   <property name="autoScrollMargin">
+    <number>0</number>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
+   <property name="showDropIndicator" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="verticalScrollMode">
+    <enum>QAbstractItemView::ScrollPerPixel</enum>
+   </property>
+   <property name="horizontalScrollMode">
+    <enum>QAbstractItemView::ScrollPerPixel</enum>
+   </property>
   </widget>
   <widget class="QListView" name="listViewCto">
    <property name="geometry">
@@ -254,6 +277,24 @@ border-right: 2px solid #ffffff;
    </property>
    <property name="styleSheet">
     <string notr="true">border: 0px;</string>
+   </property>
+   <property name="autoScroll">
+    <bool>false</bool>
+   </property>
+   <property name="autoScrollMargin">
+    <number>0</number>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
+   <property name="showDropIndicator" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="verticalScrollMode">
+    <enum>QAbstractItemView::ScrollPerPixel</enum>
+   </property>
+   <property name="horizontalScrollMode">
+    <enum>QAbstractItemView::ScrollPerPixel</enum>
    </property>
   </widget>
   <widget class="QFrame" name="frameType">
