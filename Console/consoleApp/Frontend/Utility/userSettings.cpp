@@ -42,11 +42,11 @@ void userSettings::saveSettings()
     varSettings->setValue( "displayOptions/depthIndex", m_imageDepthIndex );
 
     if(m_isGray){
-        varSettings->setValue( "displayOptions/color", "gray" );
+        varSettings->setValue( "displayOptions/color", QString("gray" ));
     } else {
-        varSettings->setValue( "displayOptions/color", "sepia" );
+        varSettings->setValue( "displayOptions/color", QString("sepia") );
     }
-
+    LOG2(m_isGray,m_imageDepthIndex)
 }
 
 void userSettings::loadVarSettings()
@@ -166,6 +166,7 @@ int userSettings::getImageDepthIndex() const
 void userSettings::setImageDepthIndex(int imageDepthIndex)
 {
     m_imageDepthIndex = imageDepthIndex;
+    saveSettings();
 }
 
 bool userSettings::getIsGray() const
@@ -176,6 +177,7 @@ bool userSettings::getIsGray() const
 void userSettings::setIsGray(bool isGray)
 {
     m_isGray = isGray;
+    saveSettings();
 }
 
 int userSettings::getImageIndexDecimation() const
