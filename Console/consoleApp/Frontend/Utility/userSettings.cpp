@@ -20,7 +20,7 @@ caseInfo* caseInfo::theInfo{nullptr};
 
 userSettings::userSettings()
 {
-    settings = new QSettings( SystemSettingsFile, QSettings::IniFormat );
+    settings = new QSettings( SystemVarFile, QSettings::IniFormat );
 
     loadSettings();
 }
@@ -32,9 +32,9 @@ userSettings::userSettings()
  */
 void userSettings::saveSettings()
 {
-    settings->setValue( "display options/brightness",               brightnessVal );
-    settings->setValue( "display options/contrast",                 contrastVal );
-    settings->setValue( "display options/reticleBrightness",        reticleBrightnessVal );
+    settings->setValue( "displayOptions/brightness",               brightnessVal );
+    settings->setValue( "displayOptions/contrast",                 contrastVal );
+    settings->setValue( "displayOptions/reticleBrightness",        reticleBrightnessVal );
 
     LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
 }
@@ -105,9 +105,9 @@ userSettings &userSettings::Instance() {
 
 void userSettings::loadSettings()
 {
-    brightnessVal               = settings->value( "display options/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
-    contrastVal                 = settings->value( "display options/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
-    reticleBrightnessVal        = settings->value( "display options/reticleBrightness",        DefaultReticleBrightness ).toInt();
+    brightnessVal               = settings->value( "displayOptions/brightness",               BrightnessLevels_HighSpeed.defaultValue ).toInt();
+    contrastVal                 = settings->value( "displayOptions/contrast",                 ContrastLevels_HighSpeed.defaultValue ).toInt();
+    reticleBrightnessVal        = settings->value( "displayOptions/reticleBrightness",        DefaultReticleBrightness ).toInt();
     LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
 
     QString date               = settings->value( "service/last_service_date",        "" ).toString();
