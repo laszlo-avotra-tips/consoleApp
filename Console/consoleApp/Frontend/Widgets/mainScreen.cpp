@@ -24,6 +24,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QGraphicsView>
+#include <memory>
 
 MainScreen::MainScreen(QWidget *parent)
     : QWidget(parent)
@@ -67,6 +68,7 @@ MainScreen::MainScreen(QWidget *parent)
     const double scaleUp = 2.1; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
+
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -336,6 +338,13 @@ void MainScreen::openDeviceSelectDialog()
 
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
+
+        auto model = std::make_unique<DisplayOptionsModel>();
+        auto dialog = std::make_unique<DisplayOptionsDialog>();
+        dialog->setModel(model.get());
+        dialog->setScene(m_scene);
+        model->persistModel();
+
     } else {
         qDebug() << "Cancelled";
         openCaseInformationDialog();

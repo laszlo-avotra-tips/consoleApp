@@ -68,9 +68,9 @@ int DisplayOptionsModel::reticleBrightness() const
     return m_reticleBrightness;
 }
 
-void DisplayOptionsModel::setReticleBrightness(const int &reticleBrightmness)
+void DisplayOptionsModel::setReticleBrightness(const int &reticleBrightness)
 {
-    m_reticleBrightness = reticleBrightmness;
+    m_reticleBrightness = reticleBrightness;
 }
 
 bool DisplayOptionsModel::isImageColorGray() const
