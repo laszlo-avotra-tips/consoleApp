@@ -93,7 +93,6 @@ HEADERS += \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
     Frontend/Widgets/curveswidget.h \
-    Frontend/Widgets/curvesdialog.h \
     Frontend/Widgets/areameasurementoverlay.h \
     Frontend/Widgets/levelgauge.h \
     ../../Common/GUI/transport.h \
@@ -196,7 +195,6 @@ SOURCES += \
     Backend/depthsetting.cpp \
     Backend/sledsupport.cpp \
     Frontend/Widgets/curveswidget.cpp \
-    Frontend/Widgets/curvesdialog.cpp \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/levelgauge.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
@@ -238,7 +236,6 @@ FORMS += \
     Frontend/Widgets/deviceconfirmwizardpage.ui \
     Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
-    Frontend/Widgets/curvesdialog.ui \
     Frontend/Widgets/levelgauge.ui \
     $$PWD/../../Common/GUI/transport.ui \
     $$PWD/Frontend/Widgets/engineeringdialog.ui
