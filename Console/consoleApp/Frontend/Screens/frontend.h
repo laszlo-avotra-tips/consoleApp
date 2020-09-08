@@ -19,7 +19,6 @@
 #include "ui_frontend.h"
 #include "Widgets/livescene.h"
 #include "Widgets/viewoptions.h"
-#include "Widgets/lagwizard.h"
 #include "../../Common/GUI/transport.h"
 #include "defaults.h"
 #include <QThread>
