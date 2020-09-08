@@ -173,8 +173,6 @@ frontend::frontend(QWidget *parent)
     // place Catheter Orientation label on monitors
     updateCatheterViewLabel();
 
-    lagHandler = nullptr;
-
     // Set the focus on the Tech window so the menu keys are active
     QApplication::setActiveWindow( ui.centralWidget );
 
@@ -224,7 +222,6 @@ frontend::~frontend()
         delete viewOption;
 
         delete m_scene;
-        delete lagHandler;
         delete m_mainScreen;
     }
     else
@@ -765,113 +762,6 @@ void frontend::on_displayOptionsButton_clicked()
     }
 }
 
-/*
- * on_scanSyncButton_clicked()
- *
- * Start the lag adjustment wizard upon request.
- */
-void frontend::on_scanSyncButton_clicked()
-{
-    bool wasClipRecording = false;
-
-    if( isRecordingClip )
-    {
-        wasClipRecording = true;
-        on_recordLoopButton_clicked(); // Stop the recording
-    }
-    // Turn off zooming
-    on_zoomResetPushButton_clicked();
-
-    if( isAnnotateOn )
-    {
-        on_annotateImagePushButton_clicked();
-        ui.annotateImagePushButton->setChecked( false );
-    }
-
-    // make sure the image is live
-    m_scene->dismissReviewImages();
-
-    // Turn off mouse rotation of sector
-    emit disableMouseRotateSector();
-    LOG( INFO, "Scan Sync Adjustment started" )
-
-    userSettings &settings = userSettings::Instance();
-    ui.scanSyncButton->setChecked( true );
-
-    handleStatusText( tr( "Scan Sync setup" ) );
-
-    emit tagEvent( "Scan Sync Adjustment Start" );
-
-    if( lagHandler )
-    {
-        return;
-    }
-
-    // Remove current lag correction value
-    double prevWindAngle = m_scene->getWindAngle();
-    m_scene->setWindAngle( 0 );
-
-    // Start from a fresh uncluttered screen, focus on the sector
-    m_scene->clearImages();
-
-    // create a new window (no parent) so the UI is modal
-    lagHandler = new lagWizard;
-    connect( consumer,   SIGNAL(directionOfRotation(directionTracker::Direction_T)),
-             lagHandler, SLOT(handleDirectionChange()) );
-    connect( m_scene,      SIGNAL(fullRotation()),
-             lagHandler, SLOT(handleFullRotation()) );
-    connect( lagHandler, SIGNAL(resetIntegrationAngle()),
-             m_scene,      SLOT(resetIntegrationAngle()) );
-    lagHandler->setScene( m_scene );
-
-    m_scene->handleLagWizardStart();
-
-    // determine how to center the wizard on the primary screen
-    int x = ( wmgr->getTechnicianDisplayGeometry().width()  - lagHandler->width()  ) / 2;
-    int y = ( wmgr->getTechnicianDisplayGeometry().height() - lagHandler->height() ) / 2;
-
-    // Force the wizard to the primary monitor
-    lagHandler->setGeometry( x, y, lagHandler->width(), lagHandler->height() );
-
-    int result = lagHandler->exec();
-
-    if( result == QDialog::Accepted )
-    {
-        const double NewLagAngle = lagHandler->getAngle();
-
-        m_scene->setWindAngle( NewLagAngle );
-        settings.setLag( int(NewLagAngle) );
-        emit sendLagAngle( NewLagAngle );
-        emit tagEvent( "Scan Sync = " + QString( "%1" ).arg( NewLagAngle ) );
-        LOG( INFO, QString( "Scan Sync = %1" ).arg( NewLagAngle ))
-    }
-    else
-    {
-        // cancelled: reset the previous lag correction
-        m_scene->setWindAngle( prevWindAngle );
-
-        emit tagEvent( "Scan Sync Adjustment Cancelled" );
-        LOG( INFO, "Scan Sync Adjustment Cancelled" )
-    }
-
-    m_scene->resetRotationCounter();
-    m_scene->handleLagWizardStop();
-
-    delete lagHandler;
-    lagHandler = nullptr;
-
-    ui.scanSyncButton->setChecked( false );
-    handleStatusText( tr( "LIVE" ) );
-
-    // Re-enable mouse rotation of sector
-    emit enableMouseRotateSector();
-
-    // Start a new recording if it was recording before ScanSync started
-    if( wasClipRecording )
-    {
-        on_recordLoopButton_clicked();
-    }
-}
 
 /*
  * handleManualLagAngle

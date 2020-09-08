@@ -167,8 +167,6 @@ private:
 
     liveScene *m_scene{nullptr};
 
-    lagWizard *lagHandler;
-
     QTimer mouseCaptureTimer;
     QTimer clockTimer;
     QTimer storageSpaceTimer;
@@ -214,7 +212,6 @@ private slots:
     void handlePauseButton_clicked();
     void on_recordLoopButton_clicked();
     void on_caseDetailsButton_clicked();
-    void on_scanSyncButton_clicked();
     void on_advancedViewButton_clicked();
     void on_displayOptionsButton_clicked();
     void on_endCaseButton_clicked();

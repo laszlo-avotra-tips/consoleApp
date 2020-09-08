@@ -58,7 +58,6 @@ HEADERS += \
     Frontend/Widgets/sectoritem.h \
     Frontend/Utility/capturemachine.h \
     Frontend/Widgets/gridOverlay.h \
-    Frontend/Widgets/lagwizard.h \
     Frontend/Widgets/rotatableLabel.h \
     Include/eventDataLog.h \
     Include/qtsingleapplication.h \
@@ -153,7 +152,6 @@ SOURCES += \
     Frontend/Widgets/sectoritem.cpp \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Widgets/gridOverlay.cpp \
-    Frontend/Widgets/lagwizard.cpp \
     Frontend/Widgets/rotatableLabel.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
@@ -212,7 +210,6 @@ FORMS += \
     $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
-    Frontend/Widgets/lagwizard.ui \
     Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
     Frontend/Widgets/levelgauge.ui \
