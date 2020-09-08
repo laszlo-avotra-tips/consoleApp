@@ -25,10 +25,6 @@
 #include "Utility/userSettings.h"
 
 
-#if ENABLE_COLORMAP_OPTIONS
-QImage sampleMap( 10, 256, QImage::Format_Indexed8 );
-#endif
-
 QString timestampToString( unsigned long ts );
 
 // SceneWidth = sector drawing area. At a minimum, this needs to accommodate ( the 512 pixel radius +
@@ -155,18 +151,6 @@ liveScene::liveScene( QObject *parent )
     activeIndicatorRingImage  = activeIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
-
-#if ENABLE_COLORMAP_OPTIONS
-    sampleMap.setColorTable( currColorMap );
-    // Generate a sample color strip with the brightest at the top and the darkest at the bottom.
-    for( int i = 0; i < 256; i++ )
-    {
-        for( int j = 0; j < 10; j++ )
-        {
-            sampleMap.setPixel( j, i, ( 255 - i ) );
-        }
-    }
-#endif
 
     annotateOverlayItem      = nullptr;
     isAnnotateModeEnabled    = false;
@@ -797,11 +781,6 @@ void liveScene::loadColormap( QString colormapFile )
 
         currColorMap[ i ] =  qRgb( r, g, b );
     }
-
-#if ENABLE_COLORMAP_OPTIONS
-    // Using the table of color options, we do this to produce a colormap preview strip (sampleMap).
-    sampleMap.setColorTable( currColorMap );
-#endif
 
     sector->updateColorMap( currColorMap );
 

@@ -45,10 +45,6 @@
 #define HIGH_QUALITY_RENDERING 0
 
 
-#if ENABLE_COLORMAP_OPTIONS
-extern QImage sampleMap;
-#endif
-
 const int MouseCaptureInterval_ms      = 200;    // time to check mouse position
 const int DaqWaitTimeout_ms            = 10000;  // XXX: really long. helps an issue with the High Speed DAQ not shutting down
                                                  //      quickly when changing devices. Needs more investigation. See #1149.
@@ -1593,61 +1589,6 @@ void frontend::shutdownHardware( void )
     Sleep( 500 );
 }
 
-#if ENABLE_COLORMAP_OPTIONS
-// R&D only
-void frontend::on_contrastCurveButton_clicked()
-{
-    if( !curveDlg )
-    {
-        curveDlg = new curvesDialog(this);
-    }
-
-    connect( curveDlg, SIGNAL(accepted()), this, SLOT(curvesDialogFinished()) );
-    connect( curveDlg, SIGNAL(rejected()), this, SLOT(curvesDialogFinished()) );
-    connect( curveDlg, SIGNAL(updateCurveMap()), this, SLOT(curveMapChanged()) );
-
-    curveDlg->show();
-}
-
-// R&D only
-void frontend::curvesDialogFinished()
-{
-    m_scene->updateGrayScaleMap( curveDlg->getMap() );
-    curveDlg->hide();
-}
-
-// R&D only
-void frontend::curveMapChanged(void)
-{
-    m_scene->updateGrayScaleMap( curveDlg->getMap() );
-}
-
-/*
- * populateColormapList
- *
- * Add all available colormaps
- * R&D only
- */
-void frontend::populateColormapList( void )
-{
-    QDir dir( SystemDir + "/colormaps" );
-    QStringList filters;
-    filters << "*.csv";
-    QFileInfoList list = dir.entryInfoList( filters );
-
-    for( int i = 0; i < list.size(); i++ )
-    {
-        ui.colormapListWidget->addItem( list.at( i ).baseName() );
-    }
-}
-
-// R&D
-void frontend::on_colormapListWidget_doubleClicked( const QModelIndex &index )
-{
-    m_scene->loadColormap( SystemDir + "/colormaps/" + index.data().toString() + ".csv" );
-    ui.colormapLabel->setPixmap( QPixmap::fromImage( sampleMap ) );
-}
-#endif
 
 #if ENABLE_VIDEO_CRF_QUALITY_TESTING
 // R&D -- global variable

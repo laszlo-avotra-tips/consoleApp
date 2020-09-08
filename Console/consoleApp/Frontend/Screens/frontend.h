@@ -36,9 +36,6 @@
 #include "scanconversion.h"
 #include <QTime>
 
-#if ENABLE_COLORMAP_OPTIONS
-#include "Widgets/curvesdialog.h"
-#endif
 
 const int mouseSamplingInterval(50); // msec
 
@@ -104,11 +101,6 @@ public slots:
     void enableDisableMeasurementForCapture( int pixelsPerMm );
     void updateSector(OCTFile::OctData_t*);
     void on_zoomSlider_valueChanged(int value);
-
-#if ENABLE_COLORMAP_OPTIONS
-    void curvesDialogFinished();
-    void curveMapChanged();
-#endif
 
 signals:
     void brightnessChange( int );
@@ -182,10 +174,6 @@ private:
 
     WindowManager *wmgr;
 
-#if ENABLE_COLORMAP_OPTIONS
-   	curvesDialog *curveDlg;
-#endif
-
     liveScene *m_scene{nullptr};
 
     lagWizard *lagHandler;
@@ -201,9 +189,6 @@ private:
 
     Session session;
 
-#if ENABLE_SINGLE_STREAM_RECORDING
-    bool      isShuttingDown;
-#endif
     bool      isImageCaptureLoaded;
 
     bool      isLoopLoaded;
@@ -247,12 +232,6 @@ private slots:
     void hideMouseTimerExpiry();
     void storageSpaceTimerExpiry();
     void reenableRecordLoopButtonExpiry();
-
-#if ENABLE_COLORMAP_OPTIONS
-    void on_contrastCurveButton_clicked();
-    void populateColormapList( void );
-    void on_colormapListWidget_doubleClicked( const QModelIndex &index );
-#endif
 
 #if ENABLE_VIDEO_CRF_QUALITY_TESTING
     void on_crfTestSpinBox_valueChanged(const QString &arg1);

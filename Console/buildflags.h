@@ -58,7 +58,6 @@
  * Debug output of frame processing speeds
  */
 #define ENABLE_LOGGING_TO_DEBUG_WINDOW       0
-#define ENABLE_COLORMAP_OPTIONS              0
 #define ENABLE_VIDEO_CRF_QUALITY_TESTING     0
 #define ENABLE_SINGLE_STREAM_RECORDING       0
 #define ENABLE_SLED_SUPPORT_BOARD_TESTING    0
