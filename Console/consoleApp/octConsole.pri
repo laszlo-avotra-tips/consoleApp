@@ -66,7 +66,6 @@ HEADERS += \
     Frontend/Widgets/rotatableLabel.h \
     Frontend/Widgets/caseinfowizard.h \
     Frontend/Widgets/capturelistview.h \
-    Frontend/Widgets/cliplistview.h \
     Include/eventDataLog.h \
     Frontend/Widgets/devicewizard.h \
     Frontend/Widgets/deviceselectwizardpage.h \
@@ -180,7 +179,6 @@ SOURCES += \
     Frontend/Widgets/rotatableLabel.cpp \
     Frontend/Widgets/caseinfowizard.cpp \
     Frontend/Widgets/capturelistview.cpp \
-    Frontend/Widgets/cliplistview.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
     Frontend/Widgets/devicewizard.cpp \

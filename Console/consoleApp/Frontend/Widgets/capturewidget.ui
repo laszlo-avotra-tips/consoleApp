@@ -618,7 +618,7 @@ QGroupBox::title {
        </layout>
       </item>
       <item>
-       <widget class="clipListView" name="loopsListView">
+       <widget class="QListView" name="loopsListView">
         <property name="palette">
          <palette>
           <active>
@@ -836,11 +836,6 @@ QGroupBox::title {
    <class>captureListView</class>
    <extends>QListView</extends>
    <header>Widgets/capturelistview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>clipListView</class>
-   <extends>QListView</extends>
-   <header>Widgets/cliplistview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
