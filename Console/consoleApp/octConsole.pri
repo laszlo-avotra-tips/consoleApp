@@ -92,7 +92,6 @@ HEADERS += \
     Backend/dsp.h \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
-    Frontend/Widgets/curveswidget.h \
     Frontend/Widgets/areameasurementoverlay.h \
     Frontend/Widgets/levelgauge.h \
     ../../Common/GUI/transport.h \
@@ -194,7 +193,6 @@ SOURCES += \
     Backend/dsp.cpp \
     Backend/depthsetting.cpp \
     Backend/sledsupport.cpp \
-    Frontend/Widgets/curveswidget.cpp \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/levelgauge.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
