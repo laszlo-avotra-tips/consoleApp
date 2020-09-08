@@ -17,7 +17,6 @@
 #include <QMouseEvent>
 #include <QTimer>
 #include "ui_frontend.h"
-#include "docscreen.h"
 #include "auxmonitor.h"
 #include "Widgets/livescene.h"
 #include "Widgets/viewoptions.h"
@@ -61,7 +60,6 @@ public:
     ~frontend();
     void init( void );
     void abortStartUp( void ) { appAborted = true; }
-    void turnOffPhysicianScreen( void ) { docWindow->hide(); }
     int setupCase( bool isInitialSetup );
     void updateDeviceLabel();
 
@@ -181,7 +179,6 @@ private:
     bool measureModeAllowed{true};
 
     Ui::frontendClass ui;
-    docscreen *docWindow;
     AuxMonitor *auxMon;
 
     viewOptions *viewOption;
@@ -269,7 +266,6 @@ private slots:
 #endif
 
     void on_measureModePushButton_clicked();
-    void on_saveMeasurementButton_clicked();
 
     void handleTechViewHorizontalPan(int value);
     void handleTechViewVerticalPan(int value);

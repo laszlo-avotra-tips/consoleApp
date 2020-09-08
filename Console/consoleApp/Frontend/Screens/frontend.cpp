@@ -144,7 +144,6 @@ frontend::frontend(QWidget *parent)
     ui.horizontalSliderBrigtness->setValue(settings.brightness());
     ui.horizontalSliderContrast->setValue(settings.contrast());
 
-    docWindow = nullptr;
     auxMon = nullptr;
 
     wmgr = &WindowManager::Instance();
@@ -152,8 +151,6 @@ frontend::frontend(QWidget *parent)
     connect( wmgr, SIGNAL(badMonitorConfigDetected()), this, SLOT(handleBadMonitorConfig()) );
     wmgr->init();
     createDisplays();
-
-    docWindow->ui.zoomFactorLabel->hide();
 
     /*
      * Create a new Aux monitor even if one is not connected.
@@ -237,9 +234,6 @@ frontend::~frontend()
 
         // Free up all used memory. If we got here, these were all created.
         delete viewOption;
-
-        delete docWindow;
-        docWindow = nullptr;  // docWindow is checked in the zoom pan handler
 
         delete m_scene;
         delete lagHandler;
@@ -339,7 +333,6 @@ void frontend::init( void )
     connect( ui.reviewWidget, SIGNAL(sendStatusText(QString)),   this,      SLOT(handleStatusText(QString)) );
     connect( ui.reviewWidget, SIGNAL(displayingCapture()),       this,      SLOT(handleDisplayingCapture()) );
     connect( ui.reviewWidget, SIGNAL(sendDeviceName(QString)),   this,      SLOT(handleReviewDeviceName(QString)) );
-    connect( ui.reviewWidget, SIGNAL(sendDeviceName(QString)),   docWindow, SLOT(setDeviceName(QString)) );
 
     connect( this, SIGNAL(setClipName(QString)),  ui.transportWidget, SLOT(handleClipName(QString)) );
     connect( this, SIGNAL(forcePauseButtonOff()), ui.transportWidget, SLOT(handleForcePauseButtonOff()) );
@@ -489,9 +482,6 @@ void frontend::setupScene( void )
     connect( ui.reviewWidget, SIGNAL(sendReviewImageCalibrationFactors(int,float)),
              this,            SLOT(enableDisableMeasurementForCapture(int)) );
 
-    connect( ui.reviewWidget, SIGNAL(currentCaptureChanged(QModelIndex)),
-             docWindow,       SLOT(updatePreview(QModelIndex)) );
-
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              m_scene,      SLOT(handleReticleBrightnessChanged(int)) );
 
@@ -506,12 +496,10 @@ void frontend::setupScene( void )
     // Associate the views with the m_scene
     ui.liveGraphicsView->setMatrix( QMatrix() );
 
-    docWindow->setScene( m_scene );
     auxMon->setScene( m_scene );
 
     // save the original transform matrix for this view to use with the zoom feature
     techViewMatrix = ui.liveGraphicsView->matrix();
-    docViewMatrix  = docWindow->ui.liveGraphicsView->matrix();
     auxViewMatrix  = auxMon->getMatrix();
 
     // High quality scaling algorithms
@@ -660,7 +648,6 @@ void frontend::clockTimerExpiry()
 {
     ui.timeFieldLabel->setText( QTime::currentTime().toString() );
     ui.timeFieldLabel_mini->setText( QTime::currentTime().toString() );
-//lcv    docWindow->ui.timeFieldLabel->setText( QTime::currentTime().toString() );
     auxMon->updateTime( QTime::currentTime().toString() );
 
     update();
@@ -1028,10 +1015,6 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
     QGraphicsView::ViewportUpdateMode oldTechMode = ui.liveGraphicsView->viewportUpdateMode();
     ui.liveGraphicsView->setViewportUpdateMode( QGraphicsView::NoViewportUpdate );
 
-    QGraphicsView::ViewportUpdateMode oldDocMode = docWindow->ui.liveGraphicsView->viewportUpdateMode();
-    docWindow->ui.liveGraphicsView->setViewportUpdateMode( QGraphicsView::NoViewportUpdate );
-    ui.zoomSlider->setValue( ui.zoomSlider->minimum() );
-
     /*
      * If this is the first time the device wizard has been called, make sure a device
      * is configured. If the wizard is cancelled, set to the previously selected device,
@@ -1058,7 +1041,6 @@ QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
         // Restore updates
         m_scene->clearImages();
         ui.liveGraphicsView->setViewportUpdateMode( oldTechMode );
-        docWindow->ui.liveGraphicsView->setViewportUpdateMode( oldDocMode );
     }
     return retVal;
 }
@@ -1102,7 +1084,6 @@ void frontend::startDAQprepareView()
 void frontend::handleShowCurrentDeviceLabel()
 {
     deviceSettings &dev = deviceSettings::Instance();
-    docWindow->setDeviceName( dev.current()->getDeviceName() );
 }
 
 /*
@@ -1116,7 +1097,6 @@ void frontend::handleDeviceChange()
 //	qDebug() << "**** frontend::handleDeviceChange()";
     deviceSettings &dev = deviceSettings::Instance();
     ui.deviceFieldLabel->setText( dev.current()->getDeviceName() );
-    docWindow->setDeviceName( dev.current()->getDeviceName() );
     auxMon->setDeviceName( dev.current()->getDeviceName() );
 /*
     SledSupport &sledSupport = SledSupport::Instance();
@@ -1198,7 +1178,6 @@ void frontend::on_recordLoopButton_clicked()
         viewOption->disableButtons();
         ui.reviewWidget->disableClipSelection();
         ui.recordingLabel->show();
-        docWindow->ui.recordingLabel->show();
         auxMon->setText( AuxMonitor::Recording, true );
 //        ui.loopMaskLabel->show();
 
@@ -1267,7 +1246,6 @@ void frontend::handleClipRecordingStopped( void )
     // stop recording the clips
     ui.deviceSelectButton->setDisabled( false );
     ui.recordingLabel->hide();
-    docWindow->ui.recordingLabel->hide();
     auxMon->setText( AuxMonitor::Recording, false );
 //    ui.loopMaskLabel->hide();
 
@@ -1335,7 +1313,6 @@ void frontend::updateCatheterViewLabel()
         str = CatheterPointedUpText;
     }
     ui.catheterViewLabel->setText( str );
-//lcv    docWindow->ui.catheterViewLabel->setText( str );
     auxMon->setText( AuxMonitor::CatheterView, true, str );
 }
 
@@ -1424,7 +1401,6 @@ void frontend::closePlayback()
     playbackControlsVisible( false );
 
     // reset the view status to the current settings
-    docWindow->setDeviceName( dev.current()->getDeviceName() );
     ui.physicianPreviewButton->setEnabled( true ); // re-enable the button
 
     enableCaptureButtons();
@@ -1467,7 +1443,6 @@ void frontend::playbackControlsVisible( bool state )
 void frontend::handleStatusText( QString status )
 {
     ui.label_live->setText( status );
-//lcv    docWindow->ui.statusLabel->setText( status );
     auxMon->setText( AuxMonitor::Status, true, status );
 }
 
@@ -1480,7 +1455,6 @@ void frontend::handleStatusText( QString status )
 void frontend::configureClock( void )
 {
     connect( &clockTimer, SIGNAL(timeout()), this, SLOT(clockTimerExpiry()) );
-    docWindow->ui.timeFieldLabel->setStyleSheet( "QFrame { color: white }" );
 }
 
 /*
@@ -1593,7 +1567,6 @@ void frontend::hideCatheterView( void )
 {
     ui.line->hide();
     ui.catheterViewLabel->hide();
-    docWindow->ui.catheterViewLabel->hide();
     auxMon->setText( AuxMonitor::CatheterView, false );
 }
 
@@ -1605,7 +1578,6 @@ void frontend::showCatheterView( void )
 {
     ui.line->show();
     ui.catheterViewLabel->show();
-    docWindow->ui.catheterViewLabel->show();
     auxMon->setText( AuxMonitor::CatheterView, true );
 }
 
@@ -1884,49 +1856,6 @@ void frontend::updateSector(OCTFile::OctData_t* frameData)
 }
 
 /*
- * on_saveMeasurementButton_clicked
- *
- * Capture the tech screen when zooming because the overlays in the doc screen might be
- * out of view. This is due to the different sizes and aspect ratios Tech vs Doc. Once the
- * tech screen is captured, it must be scaled to the docscreen size and rotated to be
- * displayed on the docscreen. Also, the scaling from techscreen size to docscreen size
- * requires scaling the zoom factor. This is best done by comparing aspect ratios of the
- * liveGraphicsView of each screen.
- */
-void frontend::on_saveMeasurementButton_clicked()
-{
-    return; //lcv
-
-    // capture the screen and overwrite the decorated image of the current capture.
-//    QImage p = QPixmap::grabWidget( docWindow->ui.liveGraphicsView ).toImage();
-    QImage p = docWindow->ui.liveGraphicsView->grab().toImage();
-
-    // Take the tech screen view if zoomed because overlays may be out of view on doc screen.
-    if( ( ui.zoomSlider->value() / 100.0 ) > 1.0 )
-    {
-        float scaledImageFactor = 1.0;
-        //p = QPixmap::grabWidget( ui.liveGraphicsView ).toImage();
-        QImage p = ui.liveGraphicsView->grab().toImage();
-
-        p = p.scaledToWidth( docWindow->ui.liveGraphicsView->height(), Qt::SmoothTransformation );
-
-        QTransform trans;
-        trans.rotate( 90 );
-        p = p.transformed( trans, Qt::SmoothTransformation );
-
-        float docScreenRatio = float(docWindow->ui.liveGraphicsView->height()) / float(docWindow->ui.liveGraphicsView->width() );
-        float techScreenRatio = float(ui.liveGraphicsView->width()) / float(ui.liveGraphicsView->height());
-        scaledImageFactor = techScreenRatio / docScreenRatio;
-
-        // update zoom factor if necessary
-        ui.reviewWidget->updateZoomFactor( ui.zoomSlider->value() / 100.0f / scaledImageFactor );
-    }
-
-    // send image to captureListModel
-    ui.reviewWidget->replaceDecoratedImage( p );
-}
-
-/*
  * on_zoomSlider_valueChanged
  *
  * Smooth zooming. The slider has values from 100 (1x) to ( max magnification * 100 ).
@@ -1936,16 +1865,6 @@ void frontend::on_zoomSlider_valueChanged( int value )
 {
     double sx = double(value) / 100.0;
     double sy = sx;
-
-    /*
-     * Scale and keep the original view size on the Physician screen.
-     * Since the Physician screen is rotated 90 deg, the shear factors
-     * from the tranform matrix contain the zoom parameters.  Multipling
-     * this by the current zoom level keeps the view correct when it
-     * returns back to 1:1.
-     */
-    docWindow->ui.liveGraphicsView->setTransform( QTransform::fromScale( sx * docViewMatrix.m12(), -sy * docViewMatrix.m21() ) );
-    docWindow->ui.liveGraphicsView->rotate( 90 );
 
     /*
      * Scale and keep the original view size on the Technician screen
@@ -1970,9 +1889,6 @@ void frontend::on_zoomSlider_valueChanged( int value )
         QString strZoom{QString::number( ui.zoomSlider->minimum())};
         ui.zoomFactorLabel->setText( "[1.00x]" );
         ui.zoomResetPushButton->hide();
-
-        docWindow->ui.zoomFactorLabel->hide();
-//lcv        docWindow->ui.zoomFactorLabel->setText( "" );
 
         auxMon->setText( AuxMonitor::ZoomFactor, false, "" );
 
@@ -2014,11 +1930,8 @@ void frontend::on_zoomSlider_valueChanged( int value )
         zoomFactorText = zoomFactorText.setNum( sx, 'f', 2 ).append( "x" );
 
         ui.zoomFactorLabel->setText( "["+ zoomFactorText + "]" );
-//lcv        docWindow->ui.zoomFactorLabel->setText( tr( "Zoom - " ) + zoomFactorText );
         auxMon->setText( AuxMonitor::ZoomFactor, true, tr( "Zoom - " ) + zoomFactorText );
         ui.zoomResetPushButton->show();
-
-        docWindow->ui.zoomFactorLabel->show();
 
         ui.liveGraphicsView->setToolTip( "" );
         ui.annotateImagePushButton->setDisabled( true );
@@ -2047,26 +1960,20 @@ void frontend::centerLiveGraphicsView( void )
  */
 void frontend::handleTechViewHorizontalPan( int value )
 {
-    if( ( ui.liveGraphicsView ) && ( docWindow ) )
+    if( ui.liveGraphicsView )
     {
         int techRange = ui.liveGraphicsView->horizontalScrollBar()->maximum() -
                         ui.liveGraphicsView->horizontalScrollBar()->minimum();
-
-        int docMin    = docWindow->ui.liveGraphicsView->verticalScrollBar()->minimum();
-        int docRange  = docWindow->ui.liveGraphicsView->verticalScrollBar()->maximum() - docMin;
 
         int auxMin = auxMon->getLiveGraphicsViewHorizontalScrollBar()->minimum();
         int auxRange = auxMon->getLiveGraphicsViewHorizontalScrollBar()->maximum() - auxMin;
 
         if( techRange != 0 )
         {
-            int newValue = ( ( value * docRange ) / techRange ) + docMin;
-            docWindow->ui.liveGraphicsView->verticalScrollBar()->setValue( newValue );
-
             // prevent auxMon panning during zoom
             if( !isZooming )
             {
-                newValue = ( ( value * auxRange ) / techRange ) + auxMin;
+                int newValue = ( ( value * auxRange ) / techRange ) + auxMin;
                 auxMon->setLiveGraphicsViewHorizontalScrollBar( newValue );
             }
         }
@@ -2083,27 +1990,20 @@ void frontend::handleTechViewHorizontalPan( int value )
  */
 void frontend::handleTechViewVerticalPan( int value )
 {
-    if( ( ui.liveGraphicsView ) && ( docWindow ) )
+    if( ui.liveGraphicsView  )
     {
         int techMax   = ui.liveGraphicsView->verticalScrollBar()->maximum();
         int techRange = techMax - ui.liveGraphicsView->verticalScrollBar()->minimum();
-
-        int docMin    = docWindow->ui.liveGraphicsView->horizontalScrollBar()->minimum();
-        int docRange  = docWindow->ui.liveGraphicsView->horizontalScrollBar()->maximum() - docMin;
 
         int auxMin = auxMon->getLiveGraphicsViewVerticalScrollBar()->minimum();
         int auxRange = auxMon->getLiveGraphicsViewVerticalScrollBar()->maximum() - auxMin;
 
         if( techRange != 0 )
         {
-            // ( techMax - value ) accounts for 90 deg rotation of the Physician screen
-            int newValue = ( ( ( techMax - value ) * docRange ) / techRange ) + docMin;
-            docWindow->ui.liveGraphicsView->horizontalScrollBar()->setValue( newValue );
-
             // prevent auxMon panning during zoom
             if( !isZooming )
             {
-                newValue = ( ( value * auxRange ) / techRange ) + auxMin;
+                int newValue = ( ( value * auxRange ) / techRange ) + auxMin;
                 auxMon->setLiveGraphicsViewVerticalScrollBar( newValue );
             }
         }
@@ -2146,7 +2046,6 @@ void frontend::on_zoomSlider_sliderReleased()
  */
 void frontend::on_physicianPreviewButton_toggled( bool checked )
 {
-    docWindow->showPreview( checked );
     isPhysicianPreviewDisplayed = checked;
 }
 
@@ -2163,7 +2062,6 @@ void frontend::handleDisplayingCapture()
     if( isRecordingClip )
     {
         ui.recordingLabel->hide();
-        docWindow->ui.recordingLabel->hide();
         auxMon->setText( AuxMonitor::Recording, false );
     }
 
@@ -2189,7 +2087,6 @@ void frontend::configureDisplayForReview()
 
     disableCaptureButtons();
     hideCatheterView();
-    docWindow->ui.timeFieldLabel->hide();
     auxMon->setText( AuxMonitor::TimeField, false );
     ui.scanSyncButton->setEnabled( false );
     ui.displayOptionsButton->setDisabled( true );
@@ -2214,7 +2111,6 @@ void frontend::configureDisplayForReview()
     ui.physicianPreviewButton->setDisabled( true );
 
     m_scene->hideAnnotations();
-    docWindow->configureDisplayForReview();
     auxMon->configureDisplayForReview();
     ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 24pt DinPRO-Medium; color: yellow; }" );
     ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 24pt DINPro-medium;}" );
@@ -2252,7 +2148,6 @@ void frontend::on_liveViewPushButton_clicked()
     if( isRecordingClip )
     {
         ui.recordingLabel->show();
-        docWindow->ui.recordingLabel->show();
         auxMon->setText( AuxMonitor::Recording, true );
     }
     else
@@ -2263,7 +2158,6 @@ void frontend::on_liveViewPushButton_clicked()
 
     enableCaptureButtons();
 
-    docWindow->ui.timeFieldLabel->show();
     auxMon->setText( AuxMonitor::TimeField, true );
 
     ui.displayOptionsButton->setEnabled( true );
@@ -2299,7 +2193,6 @@ void frontend::on_liveViewPushButton_clicked()
     on_zoomResetPushButton_clicked();
 
     m_scene->showAnnotations();
-    docWindow->configureDisplayForLiveView();
     auxMon->configureDisplayForLiveView();
     ui.physicianPreviewButton->setEnabled( true ); // re-enable this button
 
@@ -2430,10 +2323,6 @@ void frontend::hideDisplays()
     {
         auxMon->hide();
     }
-    if( docWindow )
-    {
-        docWindow->hide();
-    }
 }
 
 /*
@@ -2442,11 +2331,6 @@ void frontend::hideDisplays()
 void frontend::createDisplays()
 {
     // create displays even if they aren't going to be driven
-    if( !docWindow )
-    {
-        docWindow = new docscreen( this );
-        docWindow->hide();
-    }
     if( !auxMon )
     {
         auxMon = new AuxMonitor( this );
@@ -2459,14 +2343,6 @@ void frontend::createDisplays()
     qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
     this->setGeometry( rect );
 //    showFullScreen(); //lcv this->showFullScreen(); show();
-
-
-    docWindow->hide();
-    if( !wmgr->getPhysicianDisplayGeometry().isNull() )
-    {
-        docWindow->setGeometry( wmgr->getPhysicianDisplayGeometry() );
-//        docWindow->showFullScreen();//docWindow->show(); //lcv docWindow->showFullScreen();
-    }
 
     if( wmgr->isAuxMonPresent() )
     {
@@ -2490,10 +2366,6 @@ void frontend::testDisplays()
     bool checksAreGood = true;
     // compare frontend displays with WindowManager
     if( this->geometry() != wmgr->getTechnicianDisplayGeometry() )
-    {
-        checksAreGood = false;
-    }
-    if( docWindow->geometry() != wmgr->getPhysicianDisplayGeometry() )
     {
         checksAreGood = false;
     }

@@ -50,7 +50,6 @@ HEADERS += \
     Include/dataPlotWidget.h \
     Include/octFile.h \
     Include/scanLine.h \
-    Frontend/Screens/docscreen.h \
     Frontend/Screens/frontend.h \
     Frontend/Utility/captureListModel.h \
     Frontend/Utility/clipListModel.h \
@@ -160,7 +159,6 @@ SOURCES += \
     Backend/laser.cpp \
     Backend/videoencoder.cpp \
     Utility/octFile.cpp \
-    Frontend/Screens/docscreen.cpp \
     Frontend/Screens/frontend.cpp \
     Frontend/Utility/captureListModel.cpp \
     Frontend/Utility/clipListModel.cpp \
@@ -231,7 +229,7 @@ win32:SOURCES += Utility/qtsingleapplication_win.cpp
 unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 
 # Forms
-FORMS += Frontend/Screens/docscreen.ui \
+FORMS += \
     $$PWD/Frontend/Widgets/caseInformationDialog.ui \
     $$PWD/Frontend/Widgets/consoleKeyboard.ui \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \

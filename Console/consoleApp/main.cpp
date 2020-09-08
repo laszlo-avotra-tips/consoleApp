@@ -58,11 +58,6 @@ int main(int argc, char *argv[])
 //    pdb.powerOn();
 //#endif
 
-    // if both monitors are not present, only show the technician's
-    if( !backEndLogic.isPhysicianScreenAvailable() )
-    {
-        frontEndWindow.turnOffPhysicianScreen();
-    }
 
 //    app.setActivationWindow( &frontEndWindow );
 
