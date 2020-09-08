@@ -34,7 +34,6 @@
 #include <QToolTip>
 #include "fileUtil.h"
 #include "idaq.h"
-#include "engineeringcontroller.h"
 #include "signalmodel.h"
 #include "forml300.h"
 #include "mainScreen.h"
@@ -54,7 +53,7 @@ const int VariableDepthNumChunks = 5;
  * Constructor
  */
 frontend::frontend(QWidget *parent)
-    : QWidget(parent), idaq(nullptr), m_ed(nullptr), m_ec(nullptr)
+    : QWidget(parent), idaq(nullptr)
 {
     m_scene    = nullptr;
     consumer = nullptr;
@@ -127,8 +126,6 @@ frontend::frontend(QWidget *parent)
 
     // set the initial state
     userSettings &settings = userSettings::Instance();
-
-    m_ec = new EngineeringController(this);
 
     m_scanWorker   = new ScanConversion();
 
@@ -2073,12 +2070,6 @@ void frontend::changeDeviceSpeed(int revsPerMin, int aLines )
     setupDeviceForSledSupport();
 }
 
-
-void frontend::on_EgineeringButton_toggled(bool checked)
-{
-    m_ec->setViewPosition(ui.capturesGroupBox->x());
-    m_ec->showOrHideView(checked);
-}
 
 void frontend::hideDecoration(void)
 {

@@ -167,9 +167,6 @@ private:
     Ui::frontendClass ui;
     viewOptions *viewOption;
 
-    QWidget* m_ed;
-    EngineeringController* m_ec;
-
     WindowManager *wmgr;
 
     liveScene *m_scene{nullptr};
@@ -251,7 +248,6 @@ private slots:
     void on_captureImageButton_clicked();
     void on_annotateImagePushButton_clicked();
 
-    void on_EgineeringButton_toggled(bool checked);
     void hideDecoration();
 
     void on_pushButtonLogo_clicked();

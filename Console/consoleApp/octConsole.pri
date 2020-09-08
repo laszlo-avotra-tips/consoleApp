@@ -100,9 +100,6 @@ HEADERS += \
     Backend/ftd2xx.h \
     $$PWD/Backend/daqfactory.h \
     $$PWD/Backend/idaq.h \
-    $$PWD/Frontend/Widgets/engineeringdialog.h \
-    $$PWD/Frontend/Widgets/engineeringcontroller.h \
-    $$PWD/Frontend/Widgets/enginneringmodel.h \
     $$PWD/Backend/playbackmanager.h \
     $$PWD/Backend/filedaq.h \
     $$PWD/Backend/signalmanager.h \
@@ -196,9 +193,6 @@ SOURCES += \
     ../../Common/GUI/backgroundmask.cpp \
     ../../Common/GUI/windowmanager.cpp \
     $$PWD/Backend/daqfactory.cpp \
-    $$PWD/Frontend/Widgets/engineeringdialog.cpp \
-    $$PWD/Frontend/Widgets/engineeringcontroller.cpp \
-    $$PWD/Frontend/Widgets/enginneringmodel.cpp \
     $$PWD/Backend/playbackmanager.cpp \
     $$PWD/Backend/filedaq.cpp \
     $$PWD/Backend/signalmanager.cpp \
@@ -225,8 +219,7 @@ FORMS += \
     Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
     Frontend/Widgets/levelgauge.ui \
-    $$PWD/../../Common/GUI/transport.ui \
-    $$PWD/Frontend/Widgets/engineeringdialog.ui
+    $$PWD/../../Common/GUI/transport.ui
 
 # Resource file(s)
 RESOURCES += ./octConsole.qrc \
