@@ -74,7 +74,6 @@ HEADERS += \
     Frontend/Widgets/caseinfowizardpage.h \
     Frontend/Widgets/notificationwidget.h \
     Frontend/Utility/sessiondatabase.h \
-    Frontend/Widgets/avDisplayControls.h \
     Frontend/Widgets/viewoptions.h \
     Frontend/Utility/directionTracker.h \
     ../../Common/Include/rotaryAverage.h \
@@ -187,7 +186,6 @@ SOURCES += \
     Frontend/Widgets/viewoptions.cpp \
     Utility/qtsingleapplication.cpp \
     Frontend/Utility/sessiondatabase.cpp \
-    Frontend/Widgets/avDisplayControls.cpp \
     Frontend/Utility/directionTracker.cpp \
     ../../Common/Utility/rotaryAverage.cpp \
     ../../Common/Utility/Integrator.cpp \
