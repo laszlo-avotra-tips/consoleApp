@@ -144,13 +144,11 @@ frontend::frontend(QWidget *parent)
     ui.horizontalSliderBrigtness->setValue(settings.brightness());
     ui.horizontalSliderContrast->setValue(settings.contrast());
 
-    auxMon = nullptr;
 
     wmgr = &WindowManager::Instance();
     connect( wmgr, SIGNAL(monitorChangesDetected()), this, SLOT(handleScreenChanges()) );
     connect( wmgr, SIGNAL(badMonitorConfigDetected()), this, SLOT(handleBadMonitorConfig()) );
     wmgr->init();
-    createDisplays();
 
     /*
      * Create a new Aux monitor even if one is not connected.
@@ -496,11 +494,8 @@ void frontend::setupScene( void )
     // Associate the views with the m_scene
     ui.liveGraphicsView->setMatrix( QMatrix() );
 
-    auxMon->setScene( m_scene );
-
     // save the original transform matrix for this view to use with the zoom feature
     techViewMatrix = ui.liveGraphicsView->matrix();
-    auxViewMatrix  = auxMon->getMatrix();
 
     // High quality scaling algorithms
 #if HIGH_QUALITY_RENDERING
@@ -648,7 +643,6 @@ void frontend::clockTimerExpiry()
 {
     ui.timeFieldLabel->setText( QTime::currentTime().toString() );
     ui.timeFieldLabel_mini->setText( QTime::currentTime().toString() );
-    auxMon->updateTime( QTime::currentTime().toString() );
 
     update();
 }
@@ -1097,7 +1091,6 @@ void frontend::handleDeviceChange()
 //	qDebug() << "**** frontend::handleDeviceChange()";
     deviceSettings &dev = deviceSettings::Instance();
     ui.deviceFieldLabel->setText( dev.current()->getDeviceName() );
-    auxMon->setDeviceName( dev.current()->getDeviceName() );
 /*
     SledSupport &sledSupport = SledSupport::Instance();
     if( devSettings.current()->isBidirectional())
@@ -1178,8 +1171,6 @@ void frontend::on_recordLoopButton_clicked()
         viewOption->disableButtons();
         ui.reviewWidget->disableClipSelection();
         ui.recordingLabel->show();
-        auxMon->setText( AuxMonitor::Recording, true );
-//        ui.loopMaskLabel->show();
 
         // record the start time
         clipTimestamp = QDateTime::currentDateTime().toUTC();
@@ -1246,8 +1237,6 @@ void frontend::handleClipRecordingStopped( void )
     // stop recording the clips
     ui.deviceSelectButton->setDisabled( false );
     ui.recordingLabel->hide();
-    auxMon->setText( AuxMonitor::Recording, false );
-//    ui.loopMaskLabel->hide();
 
     viewOption->enableButtons();
     ui.reviewWidget->enableClipSelection();
@@ -1313,7 +1302,6 @@ void frontend::updateCatheterViewLabel()
         str = CatheterPointedUpText;
     }
     ui.catheterViewLabel->setText( str );
-    auxMon->setText( AuxMonitor::CatheterView, true, str );
 }
 
 /*
@@ -1443,7 +1431,6 @@ void frontend::playbackControlsVisible( bool state )
 void frontend::handleStatusText( QString status )
 {
     ui.label_live->setText( status );
-    auxMon->setText( AuxMonitor::Status, true, status );
 }
 
 /*
@@ -1567,7 +1554,6 @@ void frontend::hideCatheterView( void )
 {
     ui.line->hide();
     ui.catheterViewLabel->hide();
-    auxMon->setText( AuxMonitor::CatheterView, false );
 }
 
 /*
@@ -1578,7 +1564,6 @@ void frontend::showCatheterView( void )
 {
     ui.line->show();
     ui.catheterViewLabel->show();
-    auxMon->setText( AuxMonitor::CatheterView, true );
 }
 
 /*
@@ -1870,9 +1855,6 @@ void frontend::on_zoomSlider_valueChanged( int value )
      * Scale and keep the original view size on the Technician screen
      */
     ui.liveGraphicsView->setTransform( QTransform::fromScale( sx * techViewMatrix.m11(), sy * techViewMatrix.m22() ) );
-    auxMon->setTransformForZoom( QTransform::fromScale( sx * auxViewMatrix.m11(), sy * auxViewMatrix.m22() ),
-                                 ( value > 100.0 ) ); // zoomed is true if value is greater than 100.0
-
     m_scene->setZoomFactor( float(sx) ); // pass the zoom factor to liveScene
 
     if( value == ui.zoomSlider->minimum() )
@@ -1889,8 +1871,6 @@ void frontend::on_zoomSlider_valueChanged( int value )
         QString strZoom{QString::number( ui.zoomSlider->minimum())};
         ui.zoomFactorLabel->setText( "[1.00x]" );
         ui.zoomResetPushButton->hide();
-
-        auxMon->setText( AuxMonitor::ZoomFactor, false, "" );
 
         if( !( isAnnotateOn || isMeasureModeActive ) )
         {
@@ -1930,7 +1910,6 @@ void frontend::on_zoomSlider_valueChanged( int value )
         zoomFactorText = zoomFactorText.setNum( sx, 'f', 2 ).append( "x" );
 
         ui.zoomFactorLabel->setText( "["+ zoomFactorText + "]" );
-        auxMon->setText( AuxMonitor::ZoomFactor, true, tr( "Zoom - " ) + zoomFactorText );
         ui.zoomResetPushButton->show();
 
         ui.liveGraphicsView->setToolTip( "" );
@@ -1947,7 +1926,6 @@ void frontend::on_zoomSlider_valueChanged( int value )
 void frontend::centerLiveGraphicsView( void )
 {
     ui.liveGraphicsView->centerOn( SectorWidth_px / 2, SectorWidth_px / 2 );
-    auxMon->liveGraphicsViewCenterOn( SectorWidth_px / 2, SectorWidth_px / 2 );
 }
 
 /*
@@ -1960,24 +1938,6 @@ void frontend::centerLiveGraphicsView( void )
  */
 void frontend::handleTechViewHorizontalPan( int value )
 {
-    if( ui.liveGraphicsView )
-    {
-        int techRange = ui.liveGraphicsView->horizontalScrollBar()->maximum() -
-                        ui.liveGraphicsView->horizontalScrollBar()->minimum();
-
-        int auxMin = auxMon->getLiveGraphicsViewHorizontalScrollBar()->minimum();
-        int auxRange = auxMon->getLiveGraphicsViewHorizontalScrollBar()->maximum() - auxMin;
-
-        if( techRange != 0 )
-        {
-            // prevent auxMon panning during zoom
-            if( !isZooming )
-            {
-                int newValue = ( ( value * auxRange ) / techRange ) + auxMin;
-                auxMon->setLiveGraphicsViewHorizontalScrollBar( newValue );
-            }
-        }
-    }
 }
 
 /*
@@ -1990,24 +1950,6 @@ void frontend::handleTechViewHorizontalPan( int value )
  */
 void frontend::handleTechViewVerticalPan( int value )
 {
-    if( ui.liveGraphicsView  )
-    {
-        int techMax   = ui.liveGraphicsView->verticalScrollBar()->maximum();
-        int techRange = techMax - ui.liveGraphicsView->verticalScrollBar()->minimum();
-
-        int auxMin = auxMon->getLiveGraphicsViewVerticalScrollBar()->minimum();
-        int auxRange = auxMon->getLiveGraphicsViewVerticalScrollBar()->maximum() - auxMin;
-
-        if( techRange != 0 )
-        {
-            // prevent auxMon panning during zoom
-            if( !isZooming )
-            {
-                int newValue = ( ( value * auxRange ) / techRange ) + auxMin;
-                auxMon->setLiveGraphicsViewVerticalScrollBar( newValue );
-            }
-        }
-    }
 }
 
 /*
@@ -2062,7 +2004,6 @@ void frontend::handleDisplayingCapture()
     if( isRecordingClip )
     {
         ui.recordingLabel->hide();
-        auxMon->setText( AuxMonitor::Recording, false );
     }
 
     ui.liveViewPushButton->show();
@@ -2087,7 +2028,6 @@ void frontend::configureDisplayForReview()
 
     disableCaptureButtons();
     hideCatheterView();
-    auxMon->setText( AuxMonitor::TimeField, false );
     ui.scanSyncButton->setEnabled( false );
     ui.displayOptionsButton->setDisabled( true );
     ui.deviceSelectButton->setDisabled( true );
@@ -2111,7 +2051,6 @@ void frontend::configureDisplayForReview()
     ui.physicianPreviewButton->setDisabled( true );
 
     m_scene->hideAnnotations();
-    auxMon->configureDisplayForReview();
     ui.deviceFieldLabel->setStyleSheet( "QLabel { font: 24pt DinPRO-Medium; color: yellow; }" );
     ui.label_live->setStyleSheet( "QLabel { color: yellow; font: 24pt DINPro-medium;}" );
 }
@@ -2148,7 +2087,6 @@ void frontend::on_liveViewPushButton_clicked()
     if( isRecordingClip )
     {
         ui.recordingLabel->show();
-        auxMon->setText( AuxMonitor::Recording, true );
     }
     else
     {
@@ -2157,8 +2095,6 @@ void frontend::on_liveViewPushButton_clicked()
     }
 
     enableCaptureButtons();
-
-    auxMon->setText( AuxMonitor::TimeField, true );
 
     ui.displayOptionsButton->setEnabled( true );
     ui.deviceSelectButton->setEnabled( true );
@@ -2193,7 +2129,6 @@ void frontend::on_liveViewPushButton_clicked()
     on_zoomResetPushButton_clicked();
 
     m_scene->showAnnotations();
-    auxMon->configureDisplayForLiveView();
     ui.physicianPreviewButton->setEnabled( true ); // re-enable this button
 
     deviceSettings &dev = deviceSettings::Instance();
@@ -2290,9 +2225,6 @@ void frontend::on_annotateImagePushButton_clicked()
  */
 void frontend::handleScreenChanges()
 {
-    hideDisplays();
-    createDisplays();
-    testDisplays();
 }
 
 /*
@@ -2301,7 +2233,6 @@ void frontend::handleScreenChanges()
 void frontend::handleBadMonitorConfig()
 {
     captureMouse( false );
-    hideDisplays();
 
     const auto& rect = wmgr->getDefaultDisplayGeometry();
     qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
@@ -2313,90 +2244,6 @@ void frontend::handleBadMonitorConfig()
     captureMouse( true );
 }
 
-/*
- * hideDisplays
- */
-void frontend::hideDisplays()
-{
-    this->hide();
-    if( auxMon )
-    {
-        auxMon->hide();
-    }
-}
-
-/*
- * createDisplays
- */
-void frontend::createDisplays()
-{
-    // create displays even if they aren't going to be driven
-    if( !auxMon )
-    {
-        auxMon = new AuxMonitor( this );
-        auxMon->hide();
-    }
-
-    this->hide();
-    const auto& rect = wmgr->getTechnicianDisplayGeometry();
-    qDebug() << __FUNCTION__ << ", x=" << rect.x() << ", y=" << rect.y();
-    qDebug() << __FUNCTION__ << ", w=" << rect.width() << ", h=" << rect.height();
-    this->setGeometry( rect );
-//    showFullScreen(); //lcv this->showFullScreen(); show();
-
-    if( wmgr->isAuxMonPresent() )
-    {
-        /*
-         * This sequence is important to ensure the proper geometry is displayed on the Aux Monitor
-         * and that the matrix is set properly, which is absolutely necessary for Zoom.
-         */
-//lcv disable aux monitor here
-//        auxMon->show();
-//        auxMon->setGeometry( wmgr->getAuxilliaryDisplayGeometry() );
-//        auxViewMatrix = auxMon->getMatrix();
-//        auxMon->showFullScreen();
-    }
-}
-
-/*
- * testDisplays
- */
-void frontend::testDisplays()
-{
-    bool checksAreGood = true;
-    // compare frontend displays with WindowManager
-    if( this->geometry() != wmgr->getTechnicianDisplayGeometry() )
-    {
-        checksAreGood = false;
-    }
-    if( auxMon->isHidden() && wmgr->isAuxMonPresent() )
-    {
-        checksAreGood = false;
-    }
-    if( wmgr->isAuxMonPresent() )
-    {
-        if( auxMon->geometry() != wmgr->getAuxilliaryDisplayGeometry() )
-        {
-            checksAreGood = false;
-        }
-    }
-    else
-    {
-        if( !auxMon->isHidden() )
-        {
-            checksAreGood = false;
-        }
-    }
-
-    if( checksAreGood )
-    {
-        wmgr->hideInfoMessage();
-    }
-//    else //lcv
-//    {
-//        handleScreenChanges();
-//    }
-}
 
 /*
  * handleDaqReset()

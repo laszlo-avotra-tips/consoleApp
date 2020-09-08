@@ -17,7 +17,6 @@
 #include <QMouseEvent>
 #include <QTimer>
 #include "ui_frontend.h"
-#include "auxmonitor.h"
 #include "Widgets/livescene.h"
 #include "Widgets/viewoptions.h"
 #include "Widgets/lagwizard.h"
@@ -179,8 +178,6 @@ private:
     bool measureModeAllowed{true};
 
     Ui::frontendClass ui;
-    AuxMonitor *auxMon;
-
     viewOptions *viewOption;
 
     QWidget* m_ed;
@@ -280,10 +277,6 @@ private slots:
     void on_autoAdjustBrightnessContrastButton_clicked();
     void on_captureImageButton_clicked();
     void on_annotateImagePushButton_clicked();
-
-    void createDisplays();
-    void hideDisplays();
-    void testDisplays();
 
     void on_EgineeringButton_toggled(bool checked);
     void hideDecoration();

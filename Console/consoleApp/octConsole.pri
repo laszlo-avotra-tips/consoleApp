@@ -103,7 +103,6 @@ HEADERS += \
     ../../Common/GUI/transport.h \
     Frontend/Widgets/annotateoverlay.h \
     $$PWD/../../Common/GUI/scrubbar.h \
-    Frontend/Screens/auxmonitor.h \
     ../../Common/Include/keyboardinputcontext.h \
     ../../Common/Include/keyboard.h \
     ../../Common/Include/backgroundmask.h \
@@ -211,7 +210,6 @@ SOURCES += \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/transport.cpp \
     ../../Common/GUI/scrubbar.cpp \
-    Frontend/Screens/auxmonitor.cpp \
     ../../Common/GUI/touchKeyboard/keyboardinputcontext.cpp \
     ../../Common/GUI/touchKeyboard/keyboard.cpp \
     ../../Common/GUI/backgroundmask.cpp \
@@ -254,7 +252,6 @@ FORMS += \
     Frontend/Widgets/curvesdialog.ui \
     Frontend/Widgets/levelgauge.ui \
     $$PWD/../../Common/GUI/transport.ui \
-    Frontend/Screens/auxmonitor.ui \
     $$PWD/Frontend/Widgets/engineeringdialog.ui
 
 # Resource file(s)
