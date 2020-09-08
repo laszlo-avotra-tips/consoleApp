@@ -20,7 +20,6 @@
 #include "Widgets/livescene.h"
 #include "Widgets/viewoptions.h"
 #include "Widgets/lagwizard.h"
-#include "Widgets/caseinfowizard.h"
 #include "Widgets/devicewizard.h"
 #include "../../Common/GUI/transport.h"
 #include "defaults.h"
@@ -58,7 +57,6 @@ public:
     ~frontend();
     void init( void );
     void abortStartUp( void ) { appAborted = true; }
-    int setupCase( bool isInitialSetup );
     void updateDeviceLabel();
 
     void setIDAQ(IDAQ* object);
@@ -191,7 +189,6 @@ private:
     liveScene *m_scene{nullptr};
 
     lagWizard *lagHandler;
-    std::unique_ptr<caseInfoWizard> caseWizard{nullptr};
 
     QTimer mouseCaptureTimer;
     QTimer clockTimer;

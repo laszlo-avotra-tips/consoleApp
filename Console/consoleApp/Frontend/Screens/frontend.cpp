@@ -33,7 +33,6 @@
 #include "Backend/depthsetting.h"
 #include "sledsupport.h"
 #include <QToolTip>
-#include "Widgets/caseinfowizardpage.h"
 #include "fileUtil.h"
 #include "idaq.h"
 #include "engineeringcontroller.h"
@@ -259,17 +258,6 @@ void frontend::init( void )
     TIME_THIS_SCOPE( frontend_init );
     lastDirCCW = true;			// make sure bidirectional devices start CCW (passive)
 
-    // Require case information before anything else happens
-    caseWizard = std::make_unique<caseInfoWizard>(this);
-
-    /*
-     * Create the case info with default values (default doctor, default location, and
-     * default PatientID. Don't call exec(), but call init() and validatePage();
-     * accept() is required to save this info.
-     */
-    caseWizard->init( caseInfoWizard::InitialCaseSetup );
-    caseWizard->accept();
-
     // Connect the error handler
     errorHandler &err = errorHandler::Instance();
     connect( &err, SIGNAL( warning( QString ) ), this, SLOT( handleWarning( QString ) ) );
@@ -360,39 +348,6 @@ void frontend::init( void )
     connect( &storageSpaceTimer, SIGNAL(timeout()), this, SLOT(storageSpaceTimerExpiry()) );
 
     connect( &preventFastRecordingsTimer, SIGNAL(timeout()), this, SLOT(reenableRecordLoopButtonExpiry()) );
-}
-
-/*
- * setupCase
- *
- * Launch the Case Wizard and get the case configuration from the user
- */
-int frontend::setupCase( bool isInitialSetup )
-{
-    if( isInitialSetup )
-    {
-        // Launch the device selection wizard
-//        return on_deviceSelectButton_clicked();
-        return -1;
-    }
-    else // Launched from the case details button.
-    {
-        // Require case information before anything else happens
-        caseInfoWizard *caseWizardLocal = new caseInfoWizard( this );
-
-        // reload data for updating
-        caseWizardLocal->init( caseInfoWizard::UpdateCaseSetup );
-
-        // Force the wizard to the center of the primary monitor
-        int x = ( wmgr->getTechnicianDisplayGeometry().width() - caseWizardLocal->width() ) / 2;
-        int y = ( wmgr->getTechnicianDisplayGeometry().height() - caseWizardLocal->width() ) / 2;
-        caseWizardLocal->setGeometry( x, y, caseWizardLocal->width(), caseWizardLocal->height() );
-
-        // Get the case information.
-        int result = caseWizardLocal->exec();
-        delete caseWizardLocal;
-        return result;
-    }
 }
 
 void frontend::updateDeviceLabel()
@@ -1100,20 +1055,6 @@ void frontend::updateCaseInfo()
  */
 void frontend::on_caseDetailsButton_clicked()
 {
-    LOG( INFO, "Case details button clicked" )
-
-//    // Update session case information
-//    if( setupCase( false ) )
-//    {
-//        // Update information on the screen
-//        updateCaseInfo();
-
-//        LOG( INFO, "Case details modified" )
-//    }
-//    else
-//    {
-//        LOG( INFO, "Case details were not changed")
-//    }
 }
 
 /*

@@ -1,8 +1,6 @@
 #include "backend.h"
 #include "logger.h"
 #include "util.h"
-#include "Widgets/caseinfowizardpage.h"
-#include "Widgets/caseinfowizard.h"
 #include <QDate>
 
 

@@ -1,8 +1,6 @@
 #include "startScreen.h"
 #include "ui_startScreen.h"
 #include "Utility/widgetcontainer.h"
-#include "Widgets/caseinfowizardpage.h"
-#include "Widgets/caseinfowizard.h"
 #include <backend.h>
 #include "devicewizard.h"
 #include "logger.h"

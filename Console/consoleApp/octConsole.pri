@@ -61,14 +61,12 @@ HEADERS += \
     Frontend/Widgets/gridOverlay.h \
     Frontend/Widgets/lagwizard.h \
     Frontend/Widgets/rotatableLabel.h \
-    Frontend/Widgets/caseinfowizard.h \
     Include/eventDataLog.h \
     Frontend/Widgets/devicewizard.h \
     Frontend/Widgets/deviceselectwizardpage.h \
     Frontend/Widgets/deviceconfirmwizardpage.h \
     Include/qtsingleapplication.h \
     Frontend/Utility/daqDataConsumer.h \
-    Frontend/Widgets/caseinfowizardpage.h \
     Frontend/Widgets/notificationwidget.h \
     Frontend/Utility/sessiondatabase.h \
     Frontend/Widgets/viewoptions.h \
@@ -168,13 +166,11 @@ SOURCES += \
     Frontend/Widgets/gridOverlay.cpp \
     Frontend/Widgets/lagwizard.cpp \
     Frontend/Widgets/rotatableLabel.cpp \
-    Frontend/Widgets/caseinfowizard.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
     Frontend/Widgets/devicewizard.cpp \
     Frontend/Widgets/deviceselectwizardpage.cpp \
     Frontend/Widgets/deviceconfirmwizardpage.cpp \
-    Frontend/Widgets/caseinfowizardpage.cpp \
     Frontend/Widgets/notificationwidget.cpp \
     Frontend/Widgets/viewoptions.cpp \
     Utility/qtsingleapplication.cpp \
@@ -237,11 +233,9 @@ FORMS += \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/lagwizard.ui \
-    Frontend/Widgets/caseinfowizard.ui \
     Frontend/Widgets/devicewizard.ui \
     Frontend/Widgets/deviceselectwizardpage.ui \
     Frontend/Widgets/deviceconfirmwizardpage.ui \
-    Frontend/Widgets/caseinfowizardpage.ui \
     Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
     Frontend/Widgets/curvesdialog.ui \
