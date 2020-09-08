@@ -63,7 +63,6 @@ HEADERS += \
     Frontend/Widgets/lagwizard.h \
     Frontend/Widgets/rotatableLabel.h \
     Frontend/Widgets/caseinfowizard.h \
-    Frontend/Widgets/capturelistview.h \
     Include/eventDataLog.h \
     Frontend/Widgets/devicewizard.h \
     Frontend/Widgets/deviceselectwizardpage.h \
@@ -172,7 +171,6 @@ SOURCES += \
     Frontend/Widgets/lagwizard.cpp \
     Frontend/Widgets/rotatableLabel.cpp \
     Frontend/Widgets/caseinfowizard.cpp \
-    Frontend/Widgets/capturelistview.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
     Frontend/Widgets/devicewizard.cpp \

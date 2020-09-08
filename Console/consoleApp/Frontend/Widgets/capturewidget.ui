@@ -364,7 +364,7 @@ QGroupBox::title {
        </layout>
       </item>
       <item>
-       <widget class="captureListView" name="capListView">
+       <widget class="QListView" name="capListView">
         <property name="palette">
          <palette>
           <active>
@@ -831,13 +831,6 @@ QGroupBox::title {
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>captureListView</class>
-   <extends>QListView</extends>
-   <header>Widgets/capturelistview.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
  <designerdata>
