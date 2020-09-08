@@ -2,7 +2,6 @@
 #include "ui_startScreen.h"
 #include "Utility/widgetcontainer.h"
 #include <backend.h>
-#include "devicewizard.h"
 #include "logger.h"
 #include "mainScreen.h"
 #include "Frontend/Screens/frontend.h"

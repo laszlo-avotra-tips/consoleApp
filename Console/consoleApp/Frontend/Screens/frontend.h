@@ -20,7 +20,6 @@
 #include "Widgets/livescene.h"
 #include "Widgets/viewoptions.h"
 #include "Widgets/lagwizard.h"
-#include "Widgets/devicewizard.h"
 #include "../../Common/GUI/transport.h"
 #include "defaults.h"
 #include <QThread>
@@ -81,7 +80,6 @@ public slots:
     void handleError( QString notice );  
 
     void handleDeviceChange();
-    QDialog::DialogCode on_deviceSelectButton_clicked();
     void updateCaseInfo();
     void sendDaqLevel( QString level ) { emit forwardDaqLevel( level ); }
     void shutdownCleanup();

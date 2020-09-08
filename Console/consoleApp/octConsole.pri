@@ -62,7 +62,6 @@ HEADERS += \
     Frontend/Widgets/lagwizard.h \
     Frontend/Widgets/rotatableLabel.h \
     Include/eventDataLog.h \
-    Frontend/Widgets/devicewizard.h \
     Frontend/Widgets/deviceselectwizardpage.h \
     Include/qtsingleapplication.h \
     Frontend/Utility/daqDataConsumer.h \
@@ -164,7 +163,6 @@ SOURCES += \
     Frontend/Widgets/rotatableLabel.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
-    Frontend/Widgets/devicewizard.cpp \
     Frontend/Widgets/deviceselectwizardpage.cpp \
     Frontend/Widgets/notificationwidget.cpp \
     Frontend/Widgets/viewoptions.cpp \
@@ -226,7 +224,6 @@ FORMS += \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/lagwizard.ui \
-    Frontend/Widgets/devicewizard.ui \
     Frontend/Widgets/deviceselectwizardpage.ui \
     Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 

@@ -19,7 +19,6 @@
 #include "profiler.h"
 #include "notificationwidget.h"
 #include "Widgets/lagwizard.h"
-#include "Widgets/devicewizard.h"
 #include "deviceSettings.h"
 #include "Utility/userSettings.h"
 #include "Utility/captureListModel.h"
@@ -892,77 +891,6 @@ void frontend::handleManualLagAngle( double newAngle )
     m_scene->setWindAngle( newAngle );
     emit tagEvent( "Scan Sync = " + QString( "%1" ).arg( newAngle ) );
     LOG( INFO, QString( "Scan Sync = %1" ).arg( newAngle ))
-}
-
-/*
- * on_deviceSelectButton_clicked()
- *
- * Start the device selection wizard to setup the catheter imaging parameters.
- */
-QDialog::DialogCode frontend::on_deviceSelectButton_clicked()
-{
-    LOG( INFO, "Device Selection: Start" )
-    emit tagEvent( "Device Change Started" );
-    handleStatusText( tr( "Changing Devices" ) );
-    ui.deviceSelectButton->setChecked( true );
-
-    SledSupport &sled = SledSupport::Instance();
-//	sled.stopSled();		// stop sled if running
-//    sled.stop();			// stop sled processing
-
-    if( isAnnotateOn )
-    {
-        on_annotateImagePushButton_clicked();
-        ui.annotateImagePushButton->setChecked( false );
-    }
-
-    deviceWizard dWiz;
-
-    // determine how to center the wizard on the primary screen
-    int x = ( wmgr->getTechnicianDisplayGeometry().width() - dWiz.width() )   / 2;
-    int y = ( wmgr->getTechnicianDisplayGeometry().height() - dWiz.height() ) / 2;
-
-    // Force the wizard to the primary monitor
-    dWiz.setGeometry( x, y, dWiz.width(), dWiz.height() );
-
-    // Temporarily pause data while we start
-    stopDataCapture();
-
-    deviceSettings &dev = deviceSettings::Instance();
-    int previousDevice = dev.getCurrentDevice();
-
-    // Turn off updates for the main screens while this is running
-    QGraphicsView::ViewportUpdateMode oldTechMode = ui.liveGraphicsView->viewportUpdateMode();
-    ui.liveGraphicsView->setViewportUpdateMode( QGraphicsView::NoViewportUpdate );
-
-    /*
-     * If this is the first time the device wizard has been called, make sure a device
-     * is configured. If the wizard is cancelled, set to the previously selected device,
-     * or return as QDialog::Rejected if no previous device exists.
-     */
-    QDialog::DialogCode retVal = QDialog::DialogCode(dWiz.exec());
-    if( retVal == QDialog::Rejected )
-    {
-        // User cancelled the device change, revert to the previously selected device.
-        LOG( INFO, "Device change cancelled." )
-
-        // If no device has been selected, then this is the first pass through and the user wants to return to Homescreen.
-        if( previousDevice == -1 )
-        {
-            return retVal;
-        }
-    }
-    else
-    {
-        emit recordBackgroundData( false );
-        shutdownHardware();
-        LOG( INFO, QString( "Current Device: %1" ).arg( dev.getCurrentDeviceName() ) )
-
-        // Restore updates
-        m_scene->clearImages();
-        ui.liveGraphicsView->setViewportUpdateMode( oldTechMode );
-    }
-    return retVal;
 }
 
 void frontend::startDAQprepareView()
