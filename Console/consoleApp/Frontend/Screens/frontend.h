@@ -31,17 +31,13 @@
 #include "buildflags.h"
 #include "windowmanager.h"
 #include <memory>
-#include <forml300.h>
 #include "scanconversion.h"
 #include <QTime>
 
 
 const int mouseSamplingInterval(50); // msec
 
-//class DAQ;
 class IDAQ;
-class EngineeringController;
-class FormL300;
 class MainScreen;
 
 class frontend : public QWidget
@@ -258,7 +254,6 @@ protected:
      void keyPressEvent( QKeyEvent *event );
 
 private:
-     FormL300* m_formL300{nullptr};
      MainScreen* m_mainScreen{nullptr};
      ScanConversion *m_scanWorker{nullptr};
 };

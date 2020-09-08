@@ -35,7 +35,6 @@
 #include "fileUtil.h"
 #include "idaq.h"
 #include "signalmodel.h"
-#include "forml300.h"
 #include "mainScreen.h"
 #include "Frontend/Utility/widgetcontainer.h"
 
@@ -328,7 +327,6 @@ void frontend::init( void )
 
     // connect the level gauge UI element with the depthSettings singleton object
     connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
-    connect( m_formL300, SIGNAL( depthChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
     ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
     ui.imagingDepthWidget->setEnabled( true );
 
@@ -384,11 +382,8 @@ void frontend::setupScene( void )
     deviceSettings &dev = deviceSettings::Instance();
 
     m_scene = new liveScene( this );
-//    m_formL300 = new FormL300( this );
-//    m_formL300->setScene(m_scene);
     m_mainScreen = new MainScreen(this);
     m_mainScreen->setScene(m_scene);
-//    m_mainWindow->showFullScreen();
 
     connect(m_mainScreen, &MainScreen::captureImage, this, &frontend::on_captureImageButton_clicked);
     connect(m_mainScreen, &MainScreen::measureImage, this, &frontend::setMeasurementMode);
@@ -1465,7 +1460,6 @@ void frontend::setIDAQ(IDAQ *object)
         depthSetting &depthManager = depthSetting::Instance();
         // connect the level gauge UI element with the depthSettings singleton object
         connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
-//        connect( m_formL300, SIGNAL( depthChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
         ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
         ui.imagingDepthWidget->setEnabled( true );
 
@@ -2082,14 +2076,6 @@ void frontend::hideDecoration(void)
 
 void frontend::on_pushButtonLogo_clicked()
 {
-    if(m_formL300){
-        //TODO synch depth
-        const auto& sm = SignalModel::instance();
-        const int* depth = sm->getImagingDepth_S();
-        qDebug() << __FUNCTION__ << ": depth=" << *depth;
-        m_formL300->setDepth(*depth);
-        m_formL300->showFullScreen(); //lcv m_formL300->showFullScreen(); show();
-    }
     if(m_mainScreen){
         m_mainScreen->showFullScreen();
     }

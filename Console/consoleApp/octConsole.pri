@@ -34,7 +34,6 @@ HEADERS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
-    $$PWD/Frontend/Widgets/forml300.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
@@ -133,7 +132,6 @@ SOURCES += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
-    $$PWD/Frontend/Widgets/forml300.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
@@ -208,7 +206,6 @@ FORMS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
-    $$PWD/Frontend/Widgets/forml300.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.ui \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
