@@ -278,9 +278,6 @@ void frontend::init( void )
     // set-up the session and file handles
     session.init();
 
-    // set up the capture and review widget
-    ui.reviewWidget->init();
-
     // How we get the data from the DAQ to the Doc
     consumer = new DaqDataConsumer( m_scene,
                                     session.getCurrentEventLog() );
@@ -327,16 +324,9 @@ void frontend::init( void )
     connect( ui.transportWidget, SIGNAL( seekRequest( qint64 ) ), m_scene, SLOT( seekWithinClip( qint64 ) ) );
     connect( m_scene, SIGNAL( clipLengthChanged( qint64 ) ),        ui.transportWidget, SLOT( handleClipLengthChanged( qint64 ) ) );
 
-    connect( ui.reviewWidget, SIGNAL(sendLoopFilename(QString)), this,      SLOT(handleLoopLoaded(QString)) );
-    connect( ui.reviewWidget, SIGNAL(sendStatusText(QString)),   this,      SLOT(handleStatusText(QString)) );
-    connect( ui.reviewWidget, SIGNAL(displayingCapture()),       this,      SLOT(handleDisplayingCapture()) );
-    connect( ui.reviewWidget, SIGNAL(sendDeviceName(QString)),   this,      SLOT(handleReviewDeviceName(QString)) );
-
     connect( this, SIGNAL(setClipName(QString)),  ui.transportWidget, SLOT(handleClipName(QString)) );
     connect( this, SIGNAL(forcePauseButtonOff()), ui.transportWidget, SLOT(handleForcePauseButtonOff()) );
 
-    connect( m_scene, SIGNAL(updateCaptureCount()),     ui.reviewWidget, SLOT(updateCaptureCount()) );
-    connect( m_scene, SIGNAL(updateClipCount()),        ui.reviewWidget, SLOT(updateClipCount()) );
     connect( m_scene, SIGNAL( sendWarning( QString ) ),            this, SLOT( handleWarning( QString ) ) );
     connect( m_scene, SIGNAL( sendError( QString ) ),              this, SLOT( handleError( QString ) ) );
 
@@ -463,22 +453,7 @@ void frontend::setupScene( void )
 
     connect( m_scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
 
-    connect( ui.reviewWidget, SIGNAL(showCapture(const QImage &)),
-             m_scene,           SLOT(showReview( const QImage & )) );
-
-    connect( ui.reviewWidget, SIGNAL(initCaptureWidget()),
-             this,           SLOT(hideDecoration()) );
-
     connect( this,	SIGNAL(setDoPaint()),		m_scene, SLOT(setDoPaint()) );
-
-    /*
-     * Set pixelsPerMm conversion and zoom factor at the time of image capture for measurement calibration.
-     * Use the pixelsPerMm value to disable the measurement feature.
-     */
-    connect( ui.reviewWidget, SIGNAL(sendReviewImageCalibrationFactors(int,float)),
-             m_scene,           SLOT(setCalibrationScale(int,float)) );
-    connect( ui.reviewWidget, SIGNAL(sendReviewImageCalibrationFactors(int,float)),
-             this,            SLOT(enableDisableMeasurementForCapture(int)) );
 
     connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
              m_scene,      SLOT(handleReticleBrightnessChanged(int)) );
@@ -1169,7 +1144,6 @@ void frontend::on_recordLoopButton_clicked()
         ui.recordLoopButton->setDisabled( true );
         ui.deviceSelectButton->setDisabled( true );
         viewOption->disableButtons();
-        ui.reviewWidget->disableClipSelection();
         ui.recordingLabel->show();
 
         // record the start time
@@ -1239,7 +1213,6 @@ void frontend::handleClipRecordingStopped( void )
     ui.recordingLabel->hide();
 
     viewOption->enableButtons();
-    ui.reviewWidget->enableClipSelection();
 
     isRecordingClip = false;
 
@@ -2007,8 +1980,7 @@ void frontend::handleDisplayingCapture()
     }
 
     ui.liveViewPushButton->show();
-    ui.reviewWidget->disableClipSelection();
-//    ui.loopMaskLabel->show();
+
     ui.measureModePushButton->show(); // Allow access to Measurement during capture review
     ui.measureModePushButton->setEnabled( true );
     configureDisplayForReview();
@@ -2088,11 +2060,6 @@ void frontend::on_liveViewPushButton_clicked()
     {
         ui.recordingLabel->show();
     }
-    else
-    {
-        ui.reviewWidget->enableClipSelection();
-//        ui.loopMaskLabel->hide();
-    }
 
     enableCaptureButtons();
 
@@ -2121,11 +2088,6 @@ void frontend::on_liveViewPushButton_clicked()
         disableCaptureButtons();
     }
 
-    /*
-     * reviewStateEnded() must be called before on_zoomResetPushButton_clicked() because zoom reset
-     * depends on the review state.
-     */
-    ui.reviewWidget->reviewStateEnded();
     on_zoomResetPushButton_clicked();
 
     m_scene->showAnnotations();

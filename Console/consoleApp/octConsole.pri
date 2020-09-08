@@ -58,7 +58,6 @@ HEADERS += \
     Frontend/Widgets/liveview.h \
     Frontend/Widgets/sectoritem.h \
     Frontend/Utility/capturemachine.h \
-    Frontend/Widgets/capturewidget.h \
     Frontend/Widgets/gridOverlay.h \
     Frontend/Widgets/lagwizard.h \
     Frontend/Widgets/rotatableLabel.h \
@@ -166,7 +165,6 @@ SOURCES += \
     Frontend/Widgets/liveview.cpp \
     Frontend/Widgets/sectoritem.cpp \
     Frontend/Utility/capturemachine.cpp \
-    Frontend/Widgets/capturewidget.cpp \
     Frontend/Widgets/gridOverlay.cpp \
     Frontend/Widgets/lagwizard.cpp \
     Frontend/Widgets/rotatableLabel.cpp \
@@ -238,7 +236,6 @@ FORMS += \
     $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
-    Frontend/Widgets/capturewidget.ui \
     Frontend/Widgets/lagwizard.ui \
     Frontend/Widgets/caseinfowizard.ui \
     Frontend/Widgets/devicewizard.ui \

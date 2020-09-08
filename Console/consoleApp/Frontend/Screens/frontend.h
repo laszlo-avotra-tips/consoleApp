@@ -31,7 +31,6 @@
 #include "session.h"
 #include "Utility/directionTracker.h"
 #include "buildflags.h"
-#include "capturewidget.h"
 #include "windowmanager.h"
 #include <memory>
 #include <forml300.h>
