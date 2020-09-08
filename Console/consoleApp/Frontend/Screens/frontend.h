@@ -20,7 +20,6 @@
 #include "docscreen.h"
 #include "auxmonitor.h"
 #include "Widgets/livescene.h"
-#include "Widgets/advancedview.h"
 #include "Widgets/viewoptions.h"
 #include "Widgets/lagwizard.h"
 #include "Widgets/caseinfowizard.h"
@@ -39,6 +38,7 @@
 #include <memory>
 #include <forml300.h>
 #include "scanconversion.h"
+#include <QTime>
 
 #if ENABLE_COLORMAP_OPTIONS
 #include "Widgets/curvesdialog.h"
@@ -184,7 +184,6 @@ private:
     docscreen *docWindow;
     AuxMonitor *auxMon;
 
-    advancedView *advView;
     viewOptions *viewOption;
 
     QWidget* m_ed;

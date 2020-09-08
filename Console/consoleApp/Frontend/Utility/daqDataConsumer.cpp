@@ -10,6 +10,8 @@
  */
 
 #include <QDebug>
+#include <QApplication>
+
 #include "daqDataConsumer.h"
 #include "defaults.h"
 #include "logger.h"
@@ -33,12 +35,10 @@ const int ThreadWaitTimeout_ms = 5000;  // XXX: Make sure the video threads exit
 /*
  * constructor
  */
-DaqDataConsumer::DaqDataConsumer( liveScene *s,
-                                  advancedView *adv,
+DaqDataConsumer::DaqDataConsumer(liveScene *s,
                                   EventDataLog *eLog )
 {
     sceneInThread        = s;
-    advViewInThread      = adv;
     eventLog             = eLog;
     isRunning            = false;
     isRecordFullCaseOn   = true;
@@ -140,15 +140,6 @@ void DaqDataConsumer::run( void )
             }
 
             timeoutCounter = HsVideoTimeoutCount;
-
-            if( advViewInThread->isVisible() )
-            {
-                /*
-                 *  Send raw and FFT data to the Advanced View plots. This MUST
-                 *  be done via signal or the shared pointer does strange things.
-                 */
-                emit updateAdvancedView( );
-            }
 
             // copy frame data into the shared pointer for this line
             QSharedPointer<scanframe> frame = QSharedPointer<scanframe>( new scanframe() );

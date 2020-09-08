@@ -55,7 +55,6 @@ HEADERS += \
     Frontend/Utility/captureListModel.h \
     Frontend/Utility/clipListModel.h \
     Frontend/Utility/userSettings.h \
-    Frontend/Widgets/advancedview.h \
     Frontend/Widgets/livescene.h \
     Frontend/Widgets/liveview.h \
     Frontend/Widgets/sectoritem.h \
@@ -167,7 +166,6 @@ SOURCES += \
     Frontend/Utility/captureListModel.cpp \
     Frontend/Utility/clipListModel.cpp \
     Frontend/Utility/userSettings.cpp \
-    Frontend/Widgets/advancedview.cpp \
     Frontend/Widgets/dataPlotWidget.cpp \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/liveview.cpp \
@@ -248,7 +246,6 @@ FORMS += Frontend/Screens/docscreen.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
-    Frontend/Widgets/advancedview.ui \
     Frontend/Widgets/capturewidget.ui \
     Frontend/Widgets/lagwizard.ui \
     Frontend/Widgets/caseinfowizard.ui \

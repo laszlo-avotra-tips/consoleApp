@@ -14,7 +14,7 @@
 
 #include <QQueue>
 #include <QThread>
-#include "advancedview.h"
+#include <QTime>
 #include "eventDataLog.h"
 #include "livescene.h"
 #include "octFile.h"
@@ -27,7 +27,6 @@ class DaqDataConsumer : public QThread
 
 public:
     DaqDataConsumer( liveScene *s,
-                     advancedView *adv,
                      EventDataLog *eLog );
     ~DaqDataConsumer();
     void stop( void ) { isRunning = false; }
@@ -61,7 +60,6 @@ private:
     videoEncoder *clipEncoder;
     videoEncoder *caseEncoder;
     liveScene *sceneInThread;
-    advancedView *advViewInThread;
     EventDataLog *eventLog;
     OCTFile::OctData_t m_octData;
     bool isRunning;

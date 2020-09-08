@@ -18,7 +18,6 @@
 #include "logger.h"
 #include "profiler.h"
 #include "notificationwidget.h"
-#include "Widgets/advancedview.h"
 #include "Widgets/lagwizard.h"
 #include "Widgets/devicewizard.h"
 #include "deviceSettings.h"
@@ -120,11 +119,6 @@ frontend::frontend(QWidget *parent)
 
     ui.recordingLabel->hide();
 
-    /*
-     * pre-create the advanced view
-     */
-    advView = new advancedView( this );
-    advView->hide();
 
     /*
      * pre-create the View Options pane
@@ -140,38 +134,9 @@ frontend::frontend(QWidget *parent)
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
-    advView->setGeometry( 3240 - advView->width() - 125,
-                          0,
-                          advView->width(),
-                          advView->height() );
-
-    advView->hide();
-
     m_ec = new EngineeringController(this);
 
     m_scanWorker   = new ScanConversion();
-
-
-    connect( ui.horizontalSliderBrigtness, SIGNAL(valueChanged(int)), advView, SLOT(handleBrightnessChanged(int)) );
-    connect( ui.horizontalSliderContrast, SIGNAL(valueChanged(int)), advView, SLOT(handleContrastChanged(int)) );
-
-    connect( advView, SIGNAL(brightnessChanged(int)), ui.horizontalSliderBrigtness , SLOT(setValue(int)) );
-    connect( advView, SIGNAL(contrastChanged(int)),   ui.horizontalSliderContrast, SLOT(setValue(int)) );
-
-//    connect( this,    SIGNAL(brightnessChange(int)), ui.displayControlsSlider, SLOT(setLowerPosition(int)) );
-//    connect( this,    SIGNAL(contrastChange(int)),   ui.displayControlsSlider, SLOT(setUpperPosition(int)) );
-
-    connect( advView, SIGNAL(brightnessChanged(int)),  this, SIGNAL(brightnessChange(int)) );
-    connect( advView, SIGNAL(contrastChanged(int)),    this, SIGNAL(contrastChange(int)) );
-    connect( advView, SIGNAL(turnDiodeOn()),           this, SIGNAL(forwardTurnDiodeOn()) );
-    connect( advView, SIGNAL(turnDiodeOff()),          this, SIGNAL(forwardTurnDiodeOff()) );
-    connect( advView, SIGNAL(checkLaserDiodeStatus()), this, SIGNAL(checkLaserDiodeStatus()) );
-    connect( advView, SIGNAL(checkSledStatus()),       this, SIGNAL(checkSledStatus()) );
-
-    connect( this, SIGNAL(forwardDaqLevel(QString)),                         advView, SLOT(handleDaqLevel(QString)) );
-    connect( this, SIGNAL(forwardLaserDiodeStatus(bool)),                    advView, SLOT(handleLaserDiodeStatus(bool)) );
-    connect( this, SIGNAL(announceClockingMode(int)),                        advView, SLOT(displayClockingMode(int)) );
-    connect( this, SIGNAL(announceFirmwareVersions(QByteArray, QByteArray)), advView, SLOT(displayFirmwareVersions(QByteArray, QByteArray)) );
 
     connect( &session, SIGNAL(sendError(QString)),   this, SLOT(handleError(QString)) );
     connect( &session, SIGNAL(sendWarning(QString)), this, SLOT(handleWarning(QString)) );
@@ -271,7 +236,6 @@ frontend::~frontend()
         }
 
         // Free up all used memory. If we got here, these were all created.
-        delete advView;
         delete viewOption;
 
         delete docWindow;
@@ -327,7 +291,6 @@ void frontend::init( void )
 
     // How we get the data from the DAQ to the Doc
     consumer = new DaqDataConsumer( m_scene,
-                                    advView,
                                     session.getCurrentEventLog() );
 
     connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
@@ -338,13 +301,10 @@ void frontend::init( void )
     connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
     connect( viewOption, SIGNAL(sendManualLagAngle(double)), this, SLOT(handleManualLagAngle(double)) );
 
-    connect( consumer, SIGNAL(updateAdvancedView()), advView, SLOT(addScanline()) );
     connect( this, SIGNAL(recordBackgroundData(bool)),  consumer, SLOT(recordBackgroundData(bool)) );
     connect( this, SIGNAL(tagEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
     connect( this,     SIGNAL( autoAdjustBrightnessAndContrast( void ) ), consumer, SLOT( handleAutoAdjustBrightnessAndContrast( void ) ) );
-    connect( consumer, SIGNAL( updateBrightness( int ) ),                 advView,  SLOT( handleBrightnessChanged( int ) ) );
-    connect( consumer, SIGNAL( updateContrast( int ) ),                   advView,  SLOT( handleContrastChanged( int ) ) );
 
     connect( m_scene, SIGNAL(sendCaptureTag(QString)), consumer, SLOT(handleTagEvent(QString)) );
 
@@ -366,8 +326,6 @@ void frontend::init( void )
 
     connect( consumer, SIGNAL(directionOfRotation(directionTracker::Direction_T)),
              m_scene,    SLOT(updateDirectionOfRotation(directionTracker::Direction_T)) );
-
-    connect( consumer, SIGNAL(alwaysRecordingFullCase(bool)),     advView,  SLOT(showRecordingFullCase(bool)) );
 
     // setup the clip player and its signals
     connect( ui.transportWidget, SIGNAL( play() ),                 this, SLOT( handlePlayButton_clicked()) );
@@ -509,7 +467,6 @@ void frontend::setupScene( void )
 
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
-    connect( &dev, SIGNAL(deviceChanged()), advView,    SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), viewOption, SLOT(handleDeviceChange()) );
 //    connect( &dev, SIGNAL(deviceChanged()), ui.displayControlsSlider, SLOT(updateBrightnessContrastLimits()) );
 
@@ -889,25 +846,6 @@ void frontend::on_advancedViewButton_clicked()
         on_displayOptionsButton_clicked();
         ui.displayOptionsButton->setChecked( false );
     }
-
-    /*
-     * Toggle the advanced view
-     */
-    if( advView->isVisible() )
-    {
-        advView->hide();
-        LOG( INFO, "Advanced View: stop" )
-    }
-    else
-    {
-        // Send in the proper sizes for the displays
-        advView->handleRawDataLengthChange( idaq->getRecordLength() );
-        qDebug() <<  " getRecordLength = " << idaq->getRecordLength() << endl;
-
-        advView->show();
-        emit checkLaserDiodeStatus();
-        LOG( INFO, "Advanced View: start" )
-    }
 }
 
 /*
@@ -917,15 +855,6 @@ void frontend::on_advancedViewButton_clicked()
  */
 void frontend::on_displayOptionsButton_clicked()
 {
-    /*
-     * Hide the Advanced View window if it is showing
-     */
-    if( advView->isVisible() )
-    {
-        on_advancedViewButton_clicked();
-        ui.advancedViewButton->setChecked( false );
-    }
-
     if( viewOption->isVisible() )
     {
         viewOption->hide();
@@ -1725,10 +1654,6 @@ void frontend::setIDAQ(IDAQ *object)
         connect( signalSource, SIGNAL( sendError( QString ) ),         this,    SLOT( handleError( QString ) ) );
         connect( signalSource, SIGNAL( signalDaqResetToFrontend() ),   this,    SLOT( handleDaqReset() ) );
 
-        // daq to advView
-        connect( signalSource, SIGNAL( frameRate(int) ),               advView, SLOT( updateDaqUpdatesPerSecond(int) ) );
-        connect( signalSource, SIGNAL( attenuateLaser(bool) ),         advView, SLOT( attenuateLaser(bool) ) );
-
         // frontend controls to daq
         connect( this,       SIGNAL( brightnessChange( int ) ),    SignalModel::instance(),  SLOT( setBlackLevel( int ) ) );
         connect( this,       SIGNAL( contrastChange( int ) ),      SignalModel::instance(),  SLOT( setWhiteLevel( int ) ) );
@@ -1742,10 +1667,6 @@ void frontend::setIDAQ(IDAQ *object)
         // view options to set color mode
         connect( viewOption, SIGNAL( setColorModeGray() ),         m_scene, SLOT( loadColorModeGray() ) );
         connect( viewOption, SIGNAL( setColorModeSepia() ),        m_scene, SLOT( loadColorModeSepia() ) );
-
-        connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
-
-        connect( advView, SIGNAL( tdcToggled(bool) ), signalSource, SLOT(enableAuxTriggerAsTriggerEnable(bool) ) ); // * R&D only
     }
 
     {
@@ -1761,7 +1682,6 @@ void frontend::setIDAQ(IDAQ *object)
     if(idaq){
         if(idaq->getSignalSource()){
             connect( idaq->getSignalSource(), &IDAQ::updateSector, this, &frontend::updateSector);
-            connect( idaq->getSignalSource(), &IDAQ::notifyAcqData, advView, &advancedView::handleAcqData);
         }
         idaq->init();
     }
@@ -2275,7 +2195,6 @@ void frontend::configureDisplayForReview()
     ui.displayOptionsButton->setDisabled( true );
     ui.deviceSelectButton->setDisabled( true );
     ui.GroupBoxBandC->setDisabled( true );
-    advView->setReviewState();
     ui.advancedViewButton->setDisabled( true );
     ui.recordLoopButton->setDisabled( true );
     viewOption->disableButtons();
@@ -2350,7 +2269,6 @@ void frontend::on_liveViewPushButton_clicked()
     ui.displayOptionsButton->setEnabled( true );
     ui.deviceSelectButton->setEnabled( true );
     ui.GroupBoxBandC->setEnabled( true );
-    advView->setLiveState();
     ui.advancedViewButton->setEnabled( true );
     viewOption->enableButtons();
     ui.annotateImagePushButton->setEnabled( true );
