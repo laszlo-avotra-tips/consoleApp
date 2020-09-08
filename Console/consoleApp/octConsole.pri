@@ -64,7 +64,6 @@ HEADERS += \
     Include/eventDataLog.h \
     Frontend/Widgets/devicewizard.h \
     Frontend/Widgets/deviceselectwizardpage.h \
-    Frontend/Widgets/deviceconfirmwizardpage.h \
     Include/qtsingleapplication.h \
     Frontend/Utility/daqDataConsumer.h \
     Frontend/Widgets/notificationwidget.h \
@@ -167,7 +166,6 @@ SOURCES += \
     Utility/eventDataLog.cpp \
     Frontend/Widgets/devicewizard.cpp \
     Frontend/Widgets/deviceselectwizardpage.cpp \
-    Frontend/Widgets/deviceconfirmwizardpage.cpp \
     Frontend/Widgets/notificationwidget.cpp \
     Frontend/Widgets/viewoptions.cpp \
     Utility/qtsingleapplication.cpp \
@@ -230,7 +228,6 @@ FORMS += \
     Frontend/Widgets/lagwizard.ui \
     Frontend/Widgets/devicewizard.ui \
     Frontend/Widgets/deviceselectwizardpage.ui \
-    Frontend/Widgets/deviceconfirmwizardpage.ui \
     Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
     Frontend/Widgets/levelgauge.ui \
