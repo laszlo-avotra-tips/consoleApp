@@ -156,7 +156,6 @@ SOURCES += \
     Frontend/Utility/captureListModel.cpp \
     Frontend/Utility/clipListModel.cpp \
     Frontend/Utility/userSettings.cpp \
-    Frontend/Widgets/dataPlotWidget.cpp \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/liveview.cpp \
     Frontend/Widgets/sectoritem.cpp \
