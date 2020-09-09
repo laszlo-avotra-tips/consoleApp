@@ -18,7 +18,6 @@
 #include <QTimer>
 #include "ui_frontend.h"
 #include "Widgets/livescene.h"
-#include "Widgets/viewoptions.h"
 #include "../../Common/GUI/transport.h"
 #include "defaults.h"
 #include <QThread>
@@ -160,7 +159,6 @@ private:
     bool measureModeAllowed{true};
 
     Ui::frontendClass ui;
-    viewOptions *viewOption;
 
     WindowManager *wmgr;
 
@@ -211,8 +209,6 @@ private slots:
     void handlePauseButton_clicked();
     void on_recordLoopButton_clicked();
     void on_caseDetailsButton_clicked();
-    void on_advancedViewButton_clicked();
-    void on_displayOptionsButton_clicked();
     void on_endCaseButton_clicked();
     void mouseTimerExpiry();
     void clockTimerExpiry();

@@ -109,18 +109,6 @@ frontend::frontend(QWidget *parent)
 
     ui.recordingLabel->hide();
 
-
-    /*
-     * pre-create the View Options pane
-     */
-    viewOption = new viewOptions( this );
-    viewOption->setGeometry( 3240 - viewOption->width() - 125,
-                             0,
-                             viewOption->width(),
-                             viewOption->height() );
-
-    viewOption->hide();
-
     // set the initial state
     userSettings &settings = userSettings::Instance();
 
@@ -216,9 +204,6 @@ frontend::~frontend()
             delete idaq;
         }
 
-        // Free up all used memory. If we got here, these were all created.
-        delete viewOption;
-
         delete m_scene;
         delete m_mainScreen;
     }
@@ -257,12 +242,6 @@ void frontend::init( void )
                                     session.getCurrentEventLog() );
 
     connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
-
-    connect( viewOption, SIGNAL( updateCatheterView() ), this,      SLOT( updateCatheterViewLabel() ) );
-    connect( viewOption, SIGNAL( updateCatheterView() ), m_scene,     SLOT( clearSector() ) );
-
-    connect( this, SIGNAL(sendLagAngle(double)), viewOption, SLOT(handleNewLagAngle(double)) );
-    connect( viewOption, SIGNAL(sendManualLagAngle(double)), this, SLOT(handleManualLagAngle(double)) );
 
     connect( this, SIGNAL(recordBackgroundData(bool)),  consumer, SLOT(recordBackgroundData(bool)) );
     connect( this, SIGNAL(tagEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
@@ -384,18 +363,10 @@ void frontend::setupScene( void )
 
     connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
     connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
-    connect( &dev, SIGNAL(deviceChanged()), viewOption, SLOT(handleDeviceChange()) );
-//    connect( &dev, SIGNAL(deviceChanged()), ui.displayControlsSlider, SLOT(updateBrightnessContrastLimits()) );
 
     connect( m_scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
 
     connect( this,	SIGNAL(setDoPaint()),		m_scene, SLOT(setDoPaint()) );
-
-    connect( viewOption, SIGNAL(reticleBrightnessChanged(int)),
-             m_scene,      SLOT(handleReticleBrightnessChanged(int)) );
-
-    connect( viewOption, SIGNAL(laserIndicatorBrightnessChanged(int)),
-             m_scene,      SLOT(handleLaserIndicatorBrightnessChanged(int)) );
 
     connect( m_scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
 
@@ -723,42 +694,6 @@ void frontend::handleWarning( QString notice )
     displayWarningMessage( notice );
 }
 
-/*
- * on_advancedViewButton_clicked()
- *
- * Display the advanced view screen upon user request.
- */
-void frontend::on_advancedViewButton_clicked()
-{
-    /*
-     * Hide the Display Options window if it is showing
-     */
-    if( viewOption->isVisible() )
-    {
-        on_displayOptionsButton_clicked();
-        ui.displayOptionsButton->setChecked( false );
-    }
-}
-
-/*
- * on_displayOptionsButton_clicked()
- *
- * Display view options screen upon user request.
- */
-void frontend::on_displayOptionsButton_clicked()
-{
-    if( viewOption->isVisible() )
-    {
-        viewOption->hide();
-        LOG( INFO, "Display Options: stop" )
-    }
-    else
-    {
-        viewOption->show();
-        LOG( INFO, "Display Options: start" )
-    }
-}
-
 
 /*
  * handleManualLagAngle
@@ -775,7 +710,6 @@ void frontend::handleManualLagAngle( double newAngle )
 void frontend::startDAQprepareView()
 {
     startDaq();
-    viewOption->setLagAngleToZero();
 
     // turn on background recording (if enabled) and event log processing
     emit recordBackgroundData( true );
@@ -886,7 +820,6 @@ void frontend::on_recordLoopButton_clicked()
 
         ui.recordLoopButton->setDisabled( true );
         ui.deviceSelectButton->setDisabled( true );
-        viewOption->disableButtons();
         ui.recordingLabel->show();
 
         // record the start time
@@ -954,8 +887,6 @@ void frontend::handleClipRecordingStopped( void )
     // stop recording the clips
     ui.deviceSelectButton->setDisabled( false );
     ui.recordingLabel->hide();
-
-    viewOption->enableButtons();
 
     isRecordingClip = false;
 
@@ -1317,8 +1248,6 @@ void frontend::setIDAQ(IDAQ *object)
 
     if(signalSource)
     {
-        connect( viewOption, SIGNAL(currFrameWeight_percentChanged(int)), SignalModel::instance(), SLOT(setCurrFrameWeight_percent(int)) );
-
         connect( m_scene, SIGNAL(sendDisplayAngle(float)), signalSource, SIGNAL(handleDisplayAngle(float)) );
 
         // connect error/warning handlers before initializing the hardware
@@ -1332,13 +1261,6 @@ void frontend::setIDAQ(IDAQ *object)
         connect( this,       SIGNAL( brightnessChange( int ) ),    signalSource,  SIGNAL( setBlackLevel( int ) ) );
         connect( this,       SIGNAL( contrastChange( int ) ),      signalSource,  SIGNAL( setWhiteLevel( int ) ) );
 
-        // view option controls to daq
-        connect( viewOption, SIGNAL( enableAveraging( bool ) ),    SignalModel::instance(),   SLOT( setIsAveragingNoiseReduction( bool ) ) );
-        connect( viewOption, SIGNAL( enableInvertColors( bool ) ), SignalModel::instance(),   SLOT( setIsInvertColors( bool ) ) );
-
-        // view options to set color mode
-        connect( viewOption, SIGNAL( setColorModeGray() ),         m_scene, SLOT( loadColorModeGray() ) );
-        connect( viewOption, SIGNAL( setColorModeSepia() ),        m_scene, SLOT( loadColorModeSepia() ) );
     }
 
     {
@@ -1355,8 +1277,6 @@ void frontend::setIDAQ(IDAQ *object)
         }
         idaq->init();
     }
-    // Sync the view options from the System.ini
-    viewOption->updateValues();
 
     startDAQprepareView();
 }
@@ -1691,7 +1611,6 @@ void frontend::configureDisplayForReview()
     ui.GroupBoxBandC->setDisabled( true );
     ui.advancedViewButton->setDisabled( true );
     ui.recordLoopButton->setDisabled( true );
-    viewOption->disableButtons();
     ui.liveViewPushButton->show();
     ui.annotateImagePushButton->setDisabled( true );
     ui.timeFieldLabel_mini->hide();
@@ -1751,7 +1670,6 @@ void frontend::on_liveViewPushButton_clicked()
     ui.deviceSelectButton->setEnabled( true );
     ui.GroupBoxBandC->setEnabled( true );
     ui.advancedViewButton->setEnabled( true );
-    viewOption->enableButtons();
     ui.annotateImagePushButton->setEnabled( true );
     ui.timeFieldLabel_mini->show();
 

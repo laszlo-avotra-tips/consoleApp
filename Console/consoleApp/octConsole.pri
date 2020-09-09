@@ -60,7 +60,6 @@ HEADERS += \
     Include/qtsingleapplication.h \
     Frontend/Utility/daqDataConsumer.h \
     Frontend/Utility/sessiondatabase.h \
-    Frontend/Widgets/viewoptions.h \
     Frontend/Utility/directionTracker.h \
     ../../Common/Include/rotaryAverage.h \
     ../../Common/Include/unwindMachine.h \
@@ -147,7 +146,6 @@ SOURCES += \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
-    Frontend/Widgets/viewoptions.cpp \
     Utility/qtsingleapplication.cpp \
     Frontend/Utility/sessiondatabase.cpp \
     Frontend/Utility/directionTracker.cpp \
@@ -200,7 +198,6 @@ FORMS += \
     $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     Frontend/Screens/frontend.ui \
-    Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
     $$PWD/../../Common/GUI/transport.ui
 
