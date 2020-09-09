@@ -1267,7 +1267,7 @@ font: 36px &quot;DINPro-Medium&quot;;</string>
          </widget>
         </item>
         <item>
-         <widget class="liveView" name="liveGraphicsView">
+         <widget class="QGraphicsView" name="liveGraphicsView">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -2269,11 +2269,6 @@ DIALOG</string>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>liveView</class>
-   <extends>QGraphicsView</extends>
-   <header>liveview.h</header>
-  </customwidget>
   <customwidget>
    <class>transport</class>
    <extends>QWidget</extends>

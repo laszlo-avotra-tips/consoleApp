@@ -54,7 +54,6 @@ HEADERS += \
     Frontend/Utility/clipListModel.h \
     Frontend/Utility/userSettings.h \
     Frontend/Widgets/livescene.h \
-    Frontend/Widgets/liveview.h \
     Frontend/Widgets/sectoritem.h \
     Frontend/Utility/capturemachine.h \
     Frontend/Widgets/rotatableLabel.h \
@@ -146,7 +145,6 @@ SOURCES += \
     Frontend/Utility/clipListModel.cpp \
     Frontend/Utility/userSettings.cpp \
     Frontend/Widgets/livescene.cpp \
-    Frontend/Widgets/liveview.cpp \
     Frontend/Widgets/sectoritem.cpp \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Widgets/rotatableLabel.cpp \
