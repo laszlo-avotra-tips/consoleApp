@@ -443,7 +443,8 @@ void MainScreen::on_pushButtonCapture_released()
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
-    emit captureImage();
+    //emit captureImage();
+    onCaptureImage();
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
 }
 
@@ -486,6 +487,43 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 void MainScreen::on_pushButtonRecord_clicked()
 {
     //lcv    hide(); only to integrating the L250 features
+}
+
+void MainScreen::onCaptureImage()
+{
+    static int currImgNumber = 0;
+    // tag the images as "img-001, img-002, ..."
+    currImgNumber++;
+    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
+    LOG1(tag);
+    QRect rectangle = ui->graphicsView->rect();
+//    rectangle.setWidth(1440);
+//    rectangle.setHeight(1440);
+    qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
+    QImage p = ui->graphicsView->grab(rectangle).toImage();
+    m_scene->captureDi( p, tag );
+
+}
+
+void MainScreen::setMeasurementMode(bool enable)
+{
+    if( enable )
+    {
+        m_scene->setMeasureModeArea( true, Qt::magenta );
+//        setSceneCursor( QCursor( Qt::CrossCursor ) );
+        ui->graphicsView->setToolTip( "" );
+//        ui.measureModePushButton->setChecked( true );
+        LOG( INFO, "Measure Mode: start" )
+    }
+    else
+    {
+        m_scene->setMeasureModeArea( false, Qt::magenta );
+//        setSceneCursor( QCursor( Qt::OpenHandCursor ) );
+//        ui.measureModePushButton->setChecked( false );
+        LOG( INFO, "Measure Mode: stop" )
+    }
+//    isMeasureModeActive = enable; // state variable for toggle action
+
 }
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
