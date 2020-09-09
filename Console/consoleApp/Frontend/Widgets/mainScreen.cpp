@@ -510,7 +510,7 @@ void MainScreen::setMeasurementMode(bool enable)
     if( enable )
     {
         m_scene->setMeasureModeArea( true, Qt::magenta );
-//        setSceneCursor( QCursor( Qt::CrossCursor ) );
+        setSceneCursor( QCursor( Qt::CrossCursor ) );
         ui->graphicsView->setToolTip( "" );
 //        ui.measureModePushButton->setChecked( true );
         LOG( INFO, "Measure Mode: start" )
@@ -518,12 +518,17 @@ void MainScreen::setMeasurementMode(bool enable)
     else
     {
         m_scene->setMeasureModeArea( false, Qt::magenta );
-//        setSceneCursor( QCursor( Qt::OpenHandCursor ) );
+        setSceneCursor( QCursor( Qt::OpenHandCursor ) );
 //        ui.measureModePushButton->setChecked( false );
         LOG( INFO, "Measure Mode: stop" )
     }
 //    isMeasureModeActive = enable; // state variable for toggle action
 
+}
+
+void MainScreen::setSceneCursor( QCursor cursor )
+{
+    ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
