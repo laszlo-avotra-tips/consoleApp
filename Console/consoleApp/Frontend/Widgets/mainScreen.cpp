@@ -2,18 +2,17 @@
 #include "ui_mainScreen.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
-#include "Frontend/Screens/frontend.h"
 #include "deviceSettings.h"
 #include "daqfactory.h"
-#include <logger.h>
+#include "logger.h"
 #include "opacScreen.h"
-#include "Frontend/Screens/frontend.h"
 #include "Frontend/Widgets/caseInformationDialog.h"
 #include "Frontend/Widgets/caseInformationModel.h"
 #include "Frontend/Widgets/reviewAndSettingsDialog.h"
-#include "sledsupport.h"
 #include "displayOptionsDialog.h"
 #include "DisplayOptionsModel.h"
+#include "sledsupport.h"
+#include "livescene.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -41,14 +40,6 @@ MainScreen::MainScreen(QWidget *parent)
 
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
-
-    auto wid = WidgetContainer::instance()->getScreen("l250Frontend");
-
-    frontend* fw = dynamic_cast<frontend*>(wid);
-    if(fw)
-    {
-        m_frontEndWindow = fw;
-    }
 
     m_updatetimeTimer.start(500);
     connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);

@@ -10,7 +10,6 @@
 #include <QTimer>
 #include <QElapsedTimer>
 
-class frontend;
 class liveScene;
 class OpacScreen;
 class QPushButton;
@@ -99,7 +98,6 @@ private:
 
     std::vector<QWidget*> m_navigationButtons;
 
-    frontend* m_frontEndWindow{nullptr};
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
