@@ -23,7 +23,6 @@
 #include <QThread>
 #include <QDebug>
 #include <QString>
-#include "Utility/daqDataConsumer.h"
 #include "session.h"
 #include "Utility/directionTracker.h"
 #include "buildflags.h"
@@ -200,9 +199,6 @@ private:
     float   defaultZoomFactor;
     QRect   techMonRect;
     bool 	lastDirCCW;
-
-public:
-    DaqDataConsumer *consumer;
 
 private slots:
     void handlePlayButton_clicked();

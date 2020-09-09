@@ -58,6 +58,8 @@ MainScreen::MainScreen(QWidget *parent)
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
+//    m_scene = new liveScene( this );
+//    m_graphicsView->setScene(m_scene);
 }
 
 void MainScreen::setScene(liveScene *scene)

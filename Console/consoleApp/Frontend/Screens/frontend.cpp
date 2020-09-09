@@ -53,7 +53,6 @@ frontend::frontend(QWidget *parent)
     : QWidget(parent), idaq(nullptr)
 {
     m_scene    = nullptr;
-    consumer = nullptr;
 
     appAborted        = false;
     isAnnotateOn        = false;
@@ -65,9 +64,6 @@ frontend::frontend(QWidget *parent)
     zoomFactorText      = "";
     defaultZoomFactor   = 1.0;
 
-#if ENABLE_SINGLE_STREAM_RECORDING
-    isShuttingDown   = false;
-#endif
     isImageCaptureLoaded  = false;
 
     isLoopLoaded     = false;
@@ -85,92 +81,10 @@ frontend::frontend(QWidget *parent)
     isPhysicianPreviewDisplayed = false;
 
     ui.setupUi( this );
-
-    ui.endCaseButton->setEnabled(false);
-
-    // save the tip as defined in Designer so it can be restored as necessary
-    defaultSceneToolTip = ui.liveGraphicsView->toolTip();
-
-//    ui.loopMaskLabel->hide();
-
-    // these are always hidden at start-up
-//    ui.measureModePushButton->hide();
-    ui.saveMeasurementButton->hide();
-
-
-    ui.zoomLevelLabel->setBuddy( ui.zoomSlider );
-    ui.zoomResetPushButton->hide();
-
-    ui.liveViewPushButton->hide();
-
-    // Hide things that only appear on demand.
-    playbackControlsVisible( false );
-
-
-    ui.recordingLabel->hide();
-
-    // set the initial state
-    userSettings &settings = userSettings::Instance();
-
-    m_scanWorker   = new ScanConversion();
-
-    connect( &session, SIGNAL(sendError(QString)),   this, SLOT(handleError(QString)) );
-    connect( &session, SIGNAL(sendWarning(QString)), this, SLOT(handleWarning(QString)) );
-
-    ui.horizontalSliderBrigtness->setValue(settings.brightness());
-    ui.horizontalSliderContrast->setValue(settings.contrast());
-
-
-    wmgr = &WindowManager::Instance();
-    connect( wmgr, SIGNAL(monitorChangesDetected()), this, SLOT(handleScreenChanges()) );
-    connect( wmgr, SIGNAL(badMonitorConfigDetected()), this, SLOT(handleBadMonitorConfig()) );
-    wmgr->init();
-
-    /*
-     * Create a new Aux monitor even if one is not connected.
-     * Hard align the window to be beside the Tech + Physician Monitors.
-     */
-
-    handleStatusText( tr( "Initializing..." ) );
-
     /*
      * Set up all the items in the live view (sector, indicators, etc.)
      */
     setupScene();
-
-    /*
-     * Use a timer to sample the mouse location, make sure it
-     * is kept within the technician window (this one).
-     */
-    mouseCaptureTimer.start( MouseCaptureInterval_ms );
-    captureMouse( true );
-
-    clockTimer.start( 1000 );
-
-    /*
-     * Hide the cursor after a period of inactivity.
-     */
-    hideMouseTimer.start( HideMouseDelay_ms );
-    connect( &hideMouseTimer, SIGNAL(timeout()), this, SLOT(hideMouseTimerExpiry()) );
-
-    // set up the time source for the on-screen clocks
-    configureClock();
-
-    // place Catheter Orientation label on monitors
-    updateCatheterViewLabel();
-
-    // Set the focus on the Tech window so the menu keys are active
-    QApplication::setActiveWindow( ui.centralWidget );
-
-    // monitor events for the entire application (includes all child windows)
-    if( qApp )
-    {
-        qApp->installEventFilter( this );
-    }
-
-    // Save the style sheet for restoring after using review mode
-    origDeviceLabelStyleSheet = ui.deviceFieldLabel->styleSheet();
-    origLiveQLabelStyleSheet = ui.label_live->styleSheet();
 
 #if ENABLE_MEASUREMENT_PRECISION
     QLabel *measurementPrecisionLabel = new QLabel( "Measurement Precision Enabled\nNOT FOR HUMAN USE", this );
@@ -188,13 +102,6 @@ frontend::~frontend()
     // If start-up is aborted the consumer thread never got started; don't try to stop it
     if( !appAborted )
     {
-        // Shutdown the data consumer and wait for the thread to stop
-        if( consumer )
-        {
-            consumer->stop();
-            consumer->wait();
-            delete consumer;
-        }
 
         // shut down the daq; wait for it to stop
         if(idaq)
@@ -237,37 +144,10 @@ void frontend::init( void )
     // set-up the session and file handles
     session.init();
 
-    // How we get the data from the DAQ to the Doc
-    consumer = new DaqDataConsumer( m_scene,
-                                    session.getCurrentEventLog() );
-
-    connect( consumer, &DaqDataConsumer::updateSector, this, &frontend::updateSector);
-
-    connect( this, SIGNAL(recordBackgroundData(bool)),  consumer, SLOT(recordBackgroundData(bool)) );
-    connect( this, SIGNAL(tagEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
-
-    connect( this,     SIGNAL( autoAdjustBrightnessAndContrast( void ) ), consumer, SLOT( handleAutoAdjustBrightnessAndContrast( void ) ) );
-
-    connect( m_scene, SIGNAL(sendCaptureTag(QString)), consumer, SLOT(handleTagEvent(QString)) );
-
     connect( m_scene, SIGNAL(sendStatusText(QString)), this, SLOT(handleStatusText(QString)) );
 
     connect( this, SIGNAL(disableMouseRotateSector()), m_scene, SLOT(handleDisableMouseRotateSector()) );
     connect( this, SIGNAL(enableMouseRotateSector()),  m_scene, SLOT(handleEnableMouseRotateSector()) );
-
-    connect( &session, SIGNAL(sendSessionEvent(QString)), consumer, SLOT(handleTagEvent(QString)) );
-
-    // clip recording signals
-    connect( this,     SIGNAL(startClipRecording()),         consumer, SLOT(startClipRecording()) );
-    connect( this,     SIGNAL(stopClipRecording()),          consumer, SLOT(stopClipRecording()) );
-    connect( consumer, SIGNAL(sendVideoDuration( int )),     this,     SLOT(handleSendVideoDuration( int )) );
-
-    connect( this,     SIGNAL(setClipFilename(QString)),     consumer, SLOT(setClipFile(QString)) );
-    connect( consumer, SIGNAL(clipRecordingStopped()),       this,     SLOT(handleClipRecordingStopped()) );
-    connect( this,     SIGNAL(captureClipImages(QString)),   m_scene,    SLOT(captureClip(QString)) );
-
-    connect( consumer, SIGNAL(directionOfRotation(directionTracker::Direction_T)),
-             m_scene,    SLOT(updateDirectionOfRotation(directionTracker::Direction_T)) );
 
     // setup the clip player and its signals
     connect( ui.transportWidget, SIGNAL( play() ),                 this, SLOT( handlePlayButton_clicked()) );
@@ -334,9 +214,6 @@ void frontend::disableStorage( bool disable )
     {
         disableCaptureButtons();
 
-        // disable full case recording if it was turned enabled
-        consumer->disableFullCaseRecording();
-
         // inform the user
         styledMessageBox::warning( tr( "Captures are disabled due to low storage space.\nContact Service at %1." ).arg( ServiceNumber ) );
 
@@ -352,37 +229,9 @@ void frontend::disableStorage( bool disable )
  */
 void frontend::setupScene( void )
 {
-    deviceSettings &dev = deviceSettings::Instance();
-
     m_scene = new liveScene( this );
     m_mainScreen = new MainScreen(this);
     m_mainScreen->setScene(m_scene);
-
-    connect(m_mainScreen, &MainScreen::captureImage, this, &frontend::on_captureImageButton_clicked);
-    connect(m_mainScreen, &MainScreen::measureImage, this, &frontend::setMeasurementMode);
-
-    connect( &dev, SIGNAL(deviceChanged()), m_scene,      SLOT(handleDeviceChange()) );
-    connect( &dev, SIGNAL(deviceChanged()), this,       SLOT(handleDeviceChange()) );
-
-    connect( m_scene, SIGNAL(showCurrentDeviceLabel()),    this, SLOT(handleShowCurrentDeviceLabel()) );
-
-    connect( this,	SIGNAL(setDoPaint()),		m_scene, SLOT(setDoPaint()) );
-
-    connect( m_scene, SIGNAL(sendFileToKey(QString)), &session, SLOT(handleFileToKey(QString)) );
-
-    // Auto fill the background with black
-    m_scene->setBackgroundBrush( QColor( 0,0,0 ) );
-
-    // Associate the views with the m_scene
-    ui.liveGraphicsView->setMatrix( QMatrix() );
-
-    // save the original transform matrix for this view to use with the zoom feature
-    techViewMatrix = ui.liveGraphicsView->matrix();
-
-    // High quality scaling algorithms
-#if HIGH_QUALITY_RENDERING
-    ui.liveGraphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-#endif
 }
 
 /*
@@ -604,10 +453,6 @@ void frontend::handleError( QString notice )
  */
 void frontend::startDataCapture( void )
 {
-    if( consumer )
-    {
-        consumer->start();
-    }
 }
 
 /*
@@ -617,11 +462,6 @@ void frontend::startDataCapture( void )
  */
 void frontend::stopDataCapture( void )
 {
-    if( consumer )
-    {
-        consumer->stop();
-        consumer->wait();
-    }
 }
 
 
@@ -1391,6 +1231,9 @@ void frontend::enableDisableMeasurementForCapture( int pixelsPerMm )
 void frontend::updateSector(OCTFile::OctData_t* frameData)
 {
     static int count = -1;
+    if(!m_scanWorker){
+        m_scanWorker = new ScanConversion();
+    }
     if(frameData && m_scene && m_scanWorker){
 
         const auto* sm =  SignalModel::instance();

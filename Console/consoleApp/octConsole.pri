@@ -58,7 +58,6 @@ HEADERS += \
     Frontend/Utility/capturemachine.h \
     Include/eventDataLog.h \
     Include/qtsingleapplication.h \
-    Frontend/Utility/daqDataConsumer.h \
     Frontend/Utility/sessiondatabase.h \
     Frontend/Utility/directionTracker.h \
     ../../Common/Include/rotaryAverage.h \
@@ -144,7 +143,6 @@ SOURCES += \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/sectoritem.cpp \
     Frontend/Utility/capturemachine.cpp \
-    Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
     Utility/qtsingleapplication.cpp \
     Frontend/Utility/sessiondatabase.cpp \
