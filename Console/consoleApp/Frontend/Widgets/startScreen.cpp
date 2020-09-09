@@ -123,8 +123,8 @@ void StartScreen::startDaq(frontend *fe)
 void StartScreen::on_pushButtonStart_released()
 {
     if(!m_isPressAndHold){
-//        m_timer.stop();
-        WidgetContainer::instance()->gotoScreen("l250Frontend");
+        WidgetContainer::instance()->gotoScreen("mainScreen");
+//        WidgetContainer::instance()->gotoScreen("l250Frontend");
     }
 }
 

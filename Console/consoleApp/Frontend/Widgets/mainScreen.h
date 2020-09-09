@@ -2,6 +2,7 @@
 #define MAINSCREEN_H
 
 #include "signalmanager.h"
+#include "octFile.h"
 
 #include <vector>
 #include <map>
@@ -14,6 +15,8 @@ class liveScene;
 class OpacScreen;
 class QPushButton;
 class QGraphicsView;
+class ScanConversion;
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainScreen; }
@@ -76,6 +79,9 @@ private slots:
 
     void on_pushButtonRecord_clicked();
 
+public slots:
+    void updateSector(OCTFile::OctData_t* frameData);
+
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
@@ -104,5 +110,8 @@ private:
     OpacScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
     int m_sledRuntime{0}; //the time the Sled is on in milliseconds
+
+    ScanConversion *m_scanWorker{nullptr};
+
 };
 #endif // MAINSCREEN_H

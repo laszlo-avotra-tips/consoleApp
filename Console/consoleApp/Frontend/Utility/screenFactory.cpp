@@ -17,4 +17,8 @@ ScreenFactory::ScreenFactory()
 
     frontend* l2500Frontend = new frontend();
     WidgetContainer::instance()->registerWidget("l250Frontend", l2500Frontend);
+
+    MainScreen* mainScreen = new MainScreen();
+    WidgetContainer::instance()->registerWidget("mainScreen", mainScreen);
+
 }

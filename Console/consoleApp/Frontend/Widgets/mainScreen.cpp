@@ -13,6 +13,8 @@
 #include "DisplayOptionsModel.h"
 #include "sledsupport.h"
 #include "livescene.h"
+#include "scanconversion.h"
+#include "signalmodel.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -58,8 +60,8 @@ MainScreen::MainScreen(QWidget *parent)
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
-//    m_scene = new liveScene( this );
-//    m_graphicsView->setScene(m_scene);
+    m_scene = new liveScene( this );
+    m_graphicsView->setScene(m_scene);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -483,5 +485,38 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-//lcv    hide(); only to integrating the L250 features
+    //lcv    hide(); only to integrating the L250 features
+}
+
+void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+{
+    static int count = -1;
+    if(!m_scanWorker){
+        m_scanWorker = new ScanConversion();
+    }
+    if(frameData && m_scene && m_scanWorker){
+
+        const auto* sm =  SignalModel::instance();
+
+        QImage* image = m_scene->sectorImage();
+
+        frameData->dispData = image->bits();
+        auto bufferLength = sm->getBufferLength();
+
+        m_scanWorker->warpData( frameData, bufferLength);
+
+        if(m_scanWorker->isReady){
+
+            if(image && frameData && frameData->dispData){
+                QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+                if(pixmap){
+                    QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                    pixmap->setPixmap(tmpPixmap);
+                }
+//lcv                if(++count % 2 == 0)
+                    m_scene->setDoPaint();
+            }
+        }
+    }
 }

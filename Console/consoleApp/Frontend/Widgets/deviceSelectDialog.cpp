@@ -5,10 +5,10 @@
 #include "util.h"
 #include "logger.h"
 #include "mainScreen.h"
-#include "Frontend/Screens/frontend.h"
 #include "deviceListModel.h"
 #include "deviceDelegate.h"
 #include "deviceDisplayModel.h"
+#include "idaq.h"
 
 #include <daqfactory.h>
 #include <QImage>
@@ -101,35 +101,41 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
     const auto& dev = devices.deviceAt(devices.getCurrentDevice());
 
     const bool isShowSpeed(!dev->isAth());
-    QWidget* widget = WidgetContainer::instance()->getScreen("l250Frontend");
-    frontend* fw = dynamic_cast<frontend*>(widget);
-    if(fw){
-      fw->showFullScreen();
-      fw->updateDeviceLabel();
-      fw->showSpeed(isShowSpeed);
-      startDaq(fw);
+    QWidget* widget = WidgetContainer::instance()->getScreen("mainScreen");
+    MainScreen* ms = dynamic_cast<MainScreen*>(widget);
+    if(ms){
+      ms->showFullScreen();
+      ms->setDeviceLabel();
+      ms->showSpeed(isShowSpeed);
+      startDaq(ms);
     }
 }
 
-void DeviceSelectDialog::startDaq(frontend *fe)
+void DeviceSelectDialog::startDaq(MainScreen *ms)
 {
     auto idaq = daqfactory::instance()->getdaq();
 
     if(!idaq){
-        fe->abortStartUp();
-
         LOG( INFO, "Device not supported. OCT Console cancelled" )
+        return;
     }
-    fe->setIDAQ(idaq);
-    LOG( INFO, "LASER: serial port control is DISABLED" )
-    LOG( INFO, "SLED support board: serial port control is DISABLED" )
+//    ms->setIDAQ(idaq);
+    if(idaq){
+        if(idaq->getSignalSource()){
+            connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector);
+        }
+        idaq->init();
+    }
 
-    fe->startDaq();
-    auto& setting = deviceSettings::Instance();
-    if(setting.getIsSimulation()){
-        fe->startDataCapture();
-    }
-    fe->on_zoomSlider_valueChanged(100);
+
+    //ms->startDaq();
+    idaq->start();
+
+//    auto& setting = deviceSettings::Instance();
+//    if(setting.getIsSimulation()){
+//        ms->startDataCapture();
+//    }
+//    ms->on_zoomSlider_valueChanged(100);
 }
 
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
