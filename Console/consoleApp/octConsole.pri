@@ -87,7 +87,6 @@ HEADERS += \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
     Frontend/Widgets/areameasurementoverlay.h \
-    Frontend/Widgets/levelgauge.h \
     ../../Common/GUI/transport.h \
     Frontend/Widgets/annotateoverlay.h \
     $$PWD/../../Common/GUI/scrubbar.h \
@@ -178,7 +177,6 @@ SOURCES += \
     Backend/depthsetting.cpp \
     Backend/sledsupport.cpp \
     Frontend/Widgets/areameasurementoverlay.cpp \
-    Frontend/Widgets/levelgauge.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/transport.cpp \
     ../../Common/GUI/scrubbar.cpp \
@@ -210,7 +208,6 @@ FORMS += \
     Frontend/Screens/frontend.ui \
     Frontend/Widgets/viewoptions.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
-    Frontend/Widgets/levelgauge.ui \
     $$PWD/../../Common/GUI/transport.ui
 
 # Resource file(s)

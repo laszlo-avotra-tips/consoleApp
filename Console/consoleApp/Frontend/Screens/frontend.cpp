@@ -323,7 +323,6 @@ void frontend::init( void )
 
     // connect the level gauge UI element with the depthSettings singleton object
     connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
-    ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
     ui.imagingDepthWidget->setEnabled( true );
 
     // start this session
@@ -793,7 +792,6 @@ void frontend::startDAQprepareView()
 
     // Want an indicator with 5 positions for High Speed, will be disabled if a LS device is chosen.
     depthSetting &ds = depthSetting::Instance();
-    ui.imagingDepthWidget->init( VariableDepthNumChunks, ds.getImagingDepth_S(), "DEPTH", ds.getMinDepth_px(), ds.getMaxDepth_px() );
     ui.imagingDepthWidget->setToolTip( "Change Imaging Depth." );
     configureControlsForCurrentDevice();
 
@@ -1131,7 +1129,6 @@ void frontend::configureControlsForCurrentDevice()
 {
     deviceSettings &dev = deviceSettings::Instance();
     ui.scanSyncButton->setDisabled( true );
-    ui.imagingDepthWidget->enableControls( true );
 }
 
 /*
@@ -1349,7 +1346,6 @@ void frontend::setIDAQ(IDAQ *object)
         depthSetting &depthManager = depthSetting::Instance();
         // connect the level gauge UI element with the depthSettings singleton object
         connect( ui.imagingDepthWidget, SIGNAL( valueChanged(double) ), &depthManager, SLOT( updateImagingDepth(double) ) );
-        ui.imagingDepthWidget->init( 5, 3, "DEPTH", 1, 5 ); // dummy settings that will be overwritten at device selection
         ui.imagingDepthWidget->setEnabled( true );
 
     }
@@ -1699,7 +1695,6 @@ void frontend::configureDisplayForReview()
     viewOption->disableButtons();
     ui.liveViewPushButton->show();
     ui.annotateImagePushButton->setDisabled( true );
-    ui.imagingDepthWidget->enableControls( false );
     ui.timeFieldLabel_mini->hide();
 
     // Turn off zooming

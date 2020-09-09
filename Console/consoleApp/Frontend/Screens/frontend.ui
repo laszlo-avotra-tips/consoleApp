@@ -511,7 +511,7 @@ OVERLAY</string>
          </widget>
         </item>
         <item>
-         <widget class="levelGauge" name="imagingDepthWidget" native="true">
+         <widget class="QWidget" name="imagingDepthWidget" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2269,12 +2269,6 @@ DIALOG</string>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>levelGauge</class>
-   <extends>QWidget</extends>
-   <header>levelgauge.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>liveView</class>
    <extends>QGraphicsView</extends>
