@@ -836,7 +836,7 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
 /*
  * setCalibrationScale
  *
- * This is called through frontend when a capture has been selected for review.
+ * This was called through the gui when a capture has been selected for review.
  * The pixelsPerMm and zoomFactor are stored with the capture, and these create
  * the calibration scale that is passed to the measurement overlay for
  * converting pixel lengths to mm scale.

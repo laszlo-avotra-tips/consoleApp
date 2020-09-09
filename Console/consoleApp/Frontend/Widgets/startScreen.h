@@ -5,7 +5,6 @@
 #include <QTimer>
 
 class Backend;
-class frontend;
 class QGestureEvent;
 
 namespace Ui {
@@ -40,8 +39,6 @@ private slots:
 private:
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* he) override;
-
-    void startDaq(frontend *fe);
 
     Ui::StartScreen *ui;
     Backend* m_backend{nullptr};

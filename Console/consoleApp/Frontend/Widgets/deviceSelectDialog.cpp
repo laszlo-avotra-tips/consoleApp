@@ -119,23 +119,13 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
         LOG( INFO, "Device not supported. OCT Console cancelled" )
         return;
     }
-//    ms->setIDAQ(idaq);
     if(idaq){
         if(idaq->getSignalSource()){
             connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector);
         }
         idaq->init();
     }
-
-
-    //ms->startDaq();
     idaq->start();
-
-//    auto& setting = deviceSettings::Instance();
-//    if(setting.getIsSimulation()){
-//        ms->startDataCapture();
-//    }
-//    ms->on_zoomSlider_valueChanged(100);
 }
 
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)

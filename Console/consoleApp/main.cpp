@@ -12,7 +12,6 @@
 #include <QObject>
 #include <QCommandLineOption>
 #include "qtsingleapplication.h"
-#include "Screens/frontend.h"
 #include "buildflags.h"
 #include "initialization.h"
 #include "laser.h"

@@ -585,7 +585,7 @@ void SledSupport::setClockingParams( DeviceClockingParams_T params )
 /*
  * updateDeviceForSledSupport
  *
- * This slot is executed in main and signaled by frontend. Call to set up
+ * This slot is executed in main and signaled by the gui. Call to set up
  * parameters for a new device. First completes run() by calling stop(),
  * then shared resources can be assumed safe for use.
  */
@@ -1079,8 +1079,7 @@ void SledSupport::getFirmwareVersions( void )
 
         /*
          * Announce the firmware version if the correct response can be parsed,
-         * display "N/A" if not. The version strings are messaged to advanced view
-         * via the path through frontend using signals & slots.
+         * display "N/A" if not. The version strings are messaged to the gui
          */
 
         qDebug() << "***** version: " << resp;

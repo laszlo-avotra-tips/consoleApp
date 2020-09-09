@@ -191,7 +191,7 @@ public:
 signals:
     void deviceChanged( );
     void sendWarning( QString );
-    void sendFailure( QString ); // signal to consoleApp frontend
+    void sendFailure( QString ); // signal to consoleApp
     void displayMask( int );
 
 public slots:
