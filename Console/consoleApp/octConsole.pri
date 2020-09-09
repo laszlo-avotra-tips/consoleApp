@@ -59,7 +59,6 @@ HEADERS += \
     Include/eventDataLog.h \
     Include/qtsingleapplication.h \
     Frontend/Utility/daqDataConsumer.h \
-    Frontend/Widgets/notificationwidget.h \
     Frontend/Utility/sessiondatabase.h \
     Frontend/Widgets/viewoptions.h \
     Frontend/Utility/directionTracker.h \
@@ -148,7 +147,6 @@ SOURCES += \
     Frontend/Utility/capturemachine.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
-    Frontend/Widgets/notificationwidget.cpp \
     Frontend/Widgets/viewoptions.cpp \
     Utility/qtsingleapplication.cpp \
     Frontend/Utility/sessiondatabase.cpp \
