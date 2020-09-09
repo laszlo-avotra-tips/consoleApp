@@ -8,29 +8,8 @@
  * Copyright (c) 2009-2018 Avinger, Inc.
  *
  */
-#include <QDebug>
-#include <QObject>
-#include <QCommandLineOption>
-#include "qtsingleapplication.h"
-#include "buildflags.h"
-#include "initialization.h"
-#include "laser.h"
-#include "logger.h"
-#include "util.h"
-#include "version.h"
-#include "Utility/sessiondatabase.h"
-#include "powerdistributionboard.h"
-#include "styledmessagebox.h"
-#include "util.h"
-#include "keyboardinputcontext.h"
-#include "sledsupport.h"
-#include "daqfactory.h"
-#include "signalmanager.h"
-#include "deviceSettings.h"
-#include "backend.h"
 #include "screenNavigator.h"
-#include "keyboardinputcontext.h"
-
+#include <QApplication>
 
 /*
  * main
