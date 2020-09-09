@@ -17,7 +17,6 @@
 #include "frontend.h"
 #include "logger.h"
 #include "profiler.h"
-#include "notificationwidget.h"
 #include "deviceSettings.h"
 #include "Utility/userSettings.h"
 #include "Utility/captureListModel.h"
