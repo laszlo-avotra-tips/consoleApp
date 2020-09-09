@@ -49,7 +49,6 @@ HEADERS += \
     Include/dataPlotWidget.h \
     Include/octFile.h \
     Include/scanLine.h \
-    Frontend/Screens/frontend.h \
     Frontend/Utility/captureListModel.h \
     Frontend/Utility/clipListModel.h \
     Frontend/Utility/userSettings.h \
@@ -136,7 +135,6 @@ SOURCES += \
     Backend/laser.cpp \
     Backend/videoencoder.cpp \
     Utility/octFile.cpp \
-    Frontend/Screens/frontend.cpp \
     Frontend/Utility/captureListModel.cpp \
     Frontend/Utility/clipListModel.cpp \
     Frontend/Utility/userSettings.cpp \
@@ -195,7 +193,6 @@ FORMS += \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
-    Frontend/Screens/frontend.ui \
     ../../Common/GUI/styledmessagebox.ui \ 
     $$PWD/../../Common/GUI/transport.ui
 
