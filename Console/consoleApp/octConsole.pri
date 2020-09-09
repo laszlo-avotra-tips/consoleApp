@@ -56,7 +56,6 @@ HEADERS += \
     Frontend/Widgets/livescene.h \
     Frontend/Widgets/sectoritem.h \
     Frontend/Utility/capturemachine.h \
-    Frontend/Widgets/rotatableLabel.h \
     Include/eventDataLog.h \
     Include/qtsingleapplication.h \
     Frontend/Utility/daqDataConsumer.h \
@@ -147,7 +146,6 @@ SOURCES += \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/sectoritem.cpp \
     Frontend/Utility/capturemachine.cpp \
-    Frontend/Widgets/rotatableLabel.cpp \
     Frontend/Utility/daqDataConsumer.cpp \
     Utility/eventDataLog.cpp \
     Frontend/Widgets/notificationwidget.cpp \
