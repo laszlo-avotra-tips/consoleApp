@@ -69,7 +69,6 @@ HEADERS += \
     ../../Common/Include/sawFile.h \
     ../../Common/Include/keys.h \
     ../../Common/Include/util.h \
-    ../../Common/Include/fileUtil.h \
     ../../Common/Include/windowmanager.h \
     Backend/ioController.h \
     Backend/evoa.h \
@@ -150,7 +149,6 @@ SOURCES += \
     ../../Common/Utility/sawFile.cpp \
     ../../Common/Utility/util.cpp \
     ../../Common/Utility/keys.cpp \
-    ../../Common/Utility/fileUtil.cpp \
     Backend/ioController.cpp \
     Backend/evoa.cpp \ 
     Backend/powerdistributionboard.cpp \
