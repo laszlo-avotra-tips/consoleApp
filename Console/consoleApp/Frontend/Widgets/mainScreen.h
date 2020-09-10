@@ -12,7 +12,7 @@
 #include <QElapsedTimer>
 
 class liveScene;
-class OpacScreen;
+class OpaqueScreen;
 class QPushButton;
 class QGraphicsView;
 class ScanConversion;
@@ -109,7 +109,7 @@ private:
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
-    OpacScreen* m_opacScreen{nullptr};
+    OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
     int m_sledRuntime{0}; //the time the Sled is on in milliseconds
 

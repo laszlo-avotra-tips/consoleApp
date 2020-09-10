@@ -5,7 +5,7 @@
 #include "deviceSettings.h"
 #include "daqfactory.h"
 #include "logger.h"
-#include "opacScreen.h"
+#include "opaqueScreen.h"
 #include "Frontend/Widgets/caseInformationDialog.h"
 #include "Frontend/Widgets/caseInformationModel.h"
 #include "Frontend/Widgets/reviewAndSettingsDialog.h"
@@ -46,7 +46,7 @@ MainScreen::MainScreen(QWidget *parent)
     m_updatetimeTimer.start(500);
     connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
-    m_opacScreen = new OpacScreen(this);
+    m_opacScreen = new OpaqueScreen(this);
     m_opacScreen->show();
     m_graphicsView->hide();
     ui->frameSpeed->hide();

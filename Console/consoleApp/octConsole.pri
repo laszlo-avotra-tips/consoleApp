@@ -35,7 +35,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
-    $$PWD/Frontend/Widgets/opacScreen.h \
+    $$PWD/Frontend/Widgets/opaqueScreen.h \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
@@ -113,7 +113,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
-    $$PWD/Frontend/Widgets/opacScreen.cpp \
+    $$PWD/Frontend/Widgets/opaqueScreen.cpp \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
@@ -168,7 +168,7 @@ FORMS += \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
-    $$PWD/Frontend/Widgets/opacScreen.ui \
+    $$PWD/Frontend/Widgets/opaqueScreen.ui \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.ui \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
