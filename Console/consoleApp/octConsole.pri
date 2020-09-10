@@ -41,6 +41,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/startScreen.h \
     ../version.h \
     Backend/dspgpu.h \
+    Backend/initialization.h \
     Backend/daqSettings.h \
     Backend/videoencoder.h \
     Include/dataPlotWidget.h \
@@ -120,6 +121,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
     Backend/dspgpu.cpp \
+    Backend/initialization.cpp \
     Backend/daqSettings.cpp \
     Backend/videoencoder.cpp \
     Utility/octFile.cpp \
