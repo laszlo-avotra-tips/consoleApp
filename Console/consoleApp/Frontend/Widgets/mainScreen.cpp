@@ -450,7 +450,8 @@ void MainScreen::on_pushButtonCapture_released()
 
 void MainScreen::on_pushButtonMeasure_clicked(bool checked)
 {
-    emit measureImage(checked);
+//    emit measureImage(checked);
+    setMeasurementMode(checked);
 }
 
 void MainScreen::updateSledRunningState()
@@ -478,7 +479,8 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
     }
 
     if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-        emit measureImage(false);
+//        emit measureImage(false);
+        setMeasurementMode(false);
     }
 
     ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
