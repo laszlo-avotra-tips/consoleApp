@@ -79,7 +79,6 @@ HEADERS += \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
     Frontend/Widgets/areameasurementoverlay.h \
-    ../../Common/GUI/transport.h \
     Frontend/Widgets/annotateoverlay.h \
     ../../Common/Include/keyboardinputcontext.h \
     ../../Common/Include/keyboard.h \
@@ -162,7 +161,6 @@ SOURCES += \
     Backend/sledsupport.cpp \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
-    ../../Common/GUI/transport.cpp \
     ../../Common/GUI/touchKeyboard/keyboardinputcontext.cpp \
     ../../Common/GUI/touchKeyboard/keyboard.cpp \
     ../../Common/GUI/backgroundmask.cpp \
@@ -188,8 +186,7 @@ FORMS += \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
-    ../../Common/GUI/styledmessagebox.ui \ 
-    $$PWD/../../Common/GUI/transport.ui
+    ../../Common/GUI/styledmessagebox.ui  
 
 # Resource file(s)
 RESOURCES += ./octConsole.qrc \

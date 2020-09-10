@@ -376,17 +376,6 @@ void liveScene::setClipForPlayback( QString name )
 }
 
 /*
- * seekWithinClip()
- *
- * The transport, or other user, has requested to change position
- * within the currently playing clip.
- */
-void liveScene::seekWithinClip( qint64 /*pos*/ )
-{
-//    clipPlayer->seek( pos );
-}
-
-/*
  * showMessage()
  *
  * Display a message on the doctor view.

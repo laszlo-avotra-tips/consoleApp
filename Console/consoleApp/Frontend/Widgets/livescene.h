@@ -170,7 +170,6 @@ public slots:
     void pausePlayback(  );
     void advancePlayback( );
     void rewindPlayback( );
-    void seekWithinClip( qint64 );
 
     void updateGrayScaleMap( QVector<unsigned char> map );
     void loadColormap( QString colormapFile );
