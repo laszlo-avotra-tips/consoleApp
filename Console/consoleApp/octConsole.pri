@@ -65,7 +65,6 @@ HEADERS += \
     ../../Common/Include/session.h \
     ../../Common/Include/logger.h \
     ../../Common/Include/deviceSettings.h \
-    ../../Common/Include/avTimeEdit.h \
     ../../Common/Include/styledmessagebox.h \
     ../../Common/Include/sawFile.h \
     ../../Common/Include/keys.h \
@@ -147,7 +146,6 @@ SOURCES += \
     ../../Common/Utility/session.cpp \
     ../../Common/Utility/logger.cpp \
     ../../Common/Utility/deviceSettings.cpp \
-    ../../Common/Utility/avTimeEdit.cpp \
     ../../Common/GUI/styledmessagebox.cpp \
     ../../Common/Utility/sawFile.cpp \
     ../../Common/Utility/util.cpp \
