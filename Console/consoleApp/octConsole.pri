@@ -69,7 +69,6 @@ HEADERS += \
     ../../Common/Include/util.h \
     ../../Common/Include/windowmanager.h \
     Backend/ioController.h \
-    Backend/evoa.h \
     Backend/powerdistributionboard.h \
     Backend/dsp.h \
     Backend/depthsetting.h \
@@ -146,7 +145,6 @@ SOURCES += \
     ../../Common/Utility/util.cpp \
     ../../Common/Utility/keys.cpp \
     Backend/ioController.cpp \
-    Backend/evoa.cpp \ 
     Backend/powerdistributionboard.cpp \
     Backend/dsp.cpp \
     Backend/depthsetting.cpp \
