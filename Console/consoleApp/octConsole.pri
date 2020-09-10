@@ -62,7 +62,6 @@ HEADERS += \
     ../../Common/Include/trigLookupTable.h \
     ../../Common/Include/Integrator.h \
     ../../Common/Include/defaults.h \
-    ../../Common/Include/session.h \
     ../../Common/Include/logger.h \
     ../../Common/Include/deviceSettings.h \
     ../../Common/Include/styledmessagebox.h \
@@ -142,7 +141,6 @@ SOURCES += \
     ../../Common/Utility/Integrator.cpp \
     ../../Common/Utility/trigLookupTable.cpp \
     ../../Common/Utility/unwindMachine.cpp \
-    ../../Common/Utility/session.cpp \
     ../../Common/Utility/logger.cpp \
     ../../Common/Utility/deviceSettings.cpp \
     ../../Common/GUI/styledmessagebox.cpp \

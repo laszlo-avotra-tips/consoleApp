@@ -118,7 +118,7 @@ QSqlError sessionDatabase::initDb(void)
         }
     }
 
-    // Set up the Session table
+    // Set up the session table
     if( !tables.contains( "session", Qt::CaseInsensitive ) )
     {
 
@@ -188,7 +188,7 @@ void sessionDatabase::createSession( void )
 
     populateVersionTable();
 
-    // Session start time is UTC
+    // start time is UTC
     QString timeStr = QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss" );
 
     q.prepare( QString( "INSERT INTO session (caseid, timestamp, utcOffset, patient, doctor, location, notes, cleanExit)"
