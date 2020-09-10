@@ -50,7 +50,6 @@ HEADERS += \
     Include/octFile.h \
     Include/scanLine.h \
     Frontend/Utility/captureListModel.h \
-    Frontend/Utility/clipListModel.h \
     Frontend/Utility/userSettings.h \
     Frontend/Widgets/livescene.h \
     Frontend/Widgets/sectoritem.h \
@@ -136,7 +135,6 @@ SOURCES += \
     Backend/videoencoder.cpp \
     Utility/octFile.cpp \
     Frontend/Utility/captureListModel.cpp \
-    Frontend/Utility/clipListModel.cpp \
     Frontend/Utility/userSettings.cpp \
     Frontend/Widgets/livescene.cpp \
     Frontend/Widgets/sectoritem.cpp \
