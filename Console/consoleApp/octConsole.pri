@@ -41,7 +41,6 @@ HEADERS += \
     ../version.h \
     Backend/dspgpu.h \
     Backend/daqSettings.h \
-    Backend/laser.h \
     Backend/videoencoder.h \
     Include/dataPlotWidget.h \
     Include/octFile.h \
@@ -120,7 +119,6 @@ SOURCES += \
     $$PWD/main.cpp \
     Backend/dspgpu.cpp \
     Backend/daqSettings.cpp \
-    Backend/laser.cpp \
     Backend/videoencoder.cpp \
     Utility/octFile.cpp \
     Frontend/Utility/captureListModel.cpp \
