@@ -15,7 +15,6 @@
  */
 
 #include "powerdistributionboard.h"
-#include "ioController.h"
 #include "util.h"
 #include "logger.h"
 

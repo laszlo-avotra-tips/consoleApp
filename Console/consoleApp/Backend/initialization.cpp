@@ -18,7 +18,6 @@
 #include "defaults.h"
 #include "keys.h"
 #include "logger.h"
-#include "ioController.h"
 #include "sledsupport.h"
 #include "windowmanager.h"
 
@@ -49,29 +48,7 @@ bool Initialization::init( )
     LOG( INFO, QString( "Qt Version: %1" ).arg( qVersion() ) )
     qDebug() << QString( "Qt Version: %1" ).arg( qVersion() );
 
-//    QT_REQUIRE_VERSION( argc, argv, "5.12.6" );
-
-    // Verify that an application instance has been created before running these
-    // checks.  The hard drive space check and the pop-up at the end need the
-    // instance to exist even though they do not access it directly.  Getting
-    // rid of it immediately prevents the compiler from complaining about an
-    // unused local variable.
-//    if ( !qApp )
-//    {
-//        QApplication *tmp = new QApplication( argc, argv );
-//        if( tmp )
-//        {
-//            delete tmp;
-//        }
-//    }
-
-    // Verify the EXE is the one that was installed and has not been modified or
-    // tampered with. This check only occurs in the release version but can be
-    // overridden with a command line argument.
     bool isExeOk = true;
-
-
-    ioController &ioc = ioController::Instance();
 
     SledSupport &ss = SledSupport::Instance();
 
@@ -80,27 +57,6 @@ bool Initialization::init( )
     {
         statusMessage = tr( "ERROR: The executable file has been tampered with or\n" \
                             "       is not the original version that was installed." );
-        isReady = false;
-    }
-//lcv
-//    else if( !DAQ::isDaqPresent() )
-//    {
-//        statusMessage = tr( "ERROR: No DAQ Hardware found." );
-//        isReady = false;
-//    }
-//    else if( !DAQ::checkSDKVersion() )
-//    {
-//        statusMessage = tr( "ERROR: DAQ SDK Version mismatch." );
-//        isReady = false;
-//    }
-//    else if( !DAQ::checkDriverVersion() )
-//    {
-//        statusMessage = tr( "ERROR: DAQ Driver Version mismatch." );
-//        isReady = false;
-//    }
-    else if( !ioc.queryDevice() )
-    {
-        statusMessage = tr( "ERROR: Unable to communicate with the USB DAC hardware." );
         isReady = false;
     }
     else if( !ss.init() )
