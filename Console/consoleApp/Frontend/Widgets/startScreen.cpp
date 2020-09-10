@@ -1,6 +1,7 @@
 #include "startScreen.h"
 #include "ui_startScreen.h"
 #include "Utility/widgetcontainer.h"
+#include <backend.h>
 #include "logger.h"
 #include "mainScreen.h"
 #include <daqfactory.h>
@@ -51,6 +52,8 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
 
     ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,middleFrameWidth));
     ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
+
+    m_backend = new Backend(parent);
 
     grabGesture(Qt::TapAndHoldGesture);
     QTapAndHoldGesture::setTimeout(2000);

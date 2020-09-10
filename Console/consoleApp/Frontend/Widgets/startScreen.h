@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTimer>
 
+class Backend;
 class QGestureEvent;
 
 namespace Ui {
@@ -40,6 +41,7 @@ private:
     void hideEvent(QHideEvent* he) override;
 
     Ui::StartScreen *ui;
+    Backend* m_backend{nullptr};
     bool m_isPressAndHold{false};
     QTimer m_timer;
 };
