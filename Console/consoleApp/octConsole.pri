@@ -68,7 +68,6 @@ HEADERS += \
     ../../Common/Include/keys.h \
     ../../Common/Include/util.h \
     ../../Common/Include/windowmanager.h \
-    Backend/powerdistributionboard.h \
     Backend/dsp.h \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
@@ -143,7 +142,6 @@ SOURCES += \
     ../../Common/Utility/sawFile.cpp \
     ../../Common/Utility/util.cpp \
     ../../Common/Utility/keys.cpp \
-    Backend/powerdistributionboard.cpp \
     Backend/dsp.cpp \
     Backend/depthsetting.cpp \
     Backend/sledsupport.cpp \
