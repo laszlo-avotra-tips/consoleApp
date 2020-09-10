@@ -81,7 +81,6 @@ HEADERS += \
     Frontend/Widgets/areameasurementoverlay.h \
     ../../Common/GUI/transport.h \
     Frontend/Widgets/annotateoverlay.h \
-    $$PWD/../../Common/GUI/scrubbar.h \
     ../../Common/Include/keyboardinputcontext.h \
     ../../Common/Include/keyboard.h \
     ../../Common/Include/backgroundmask.h \
@@ -164,7 +163,6 @@ SOURCES += \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/transport.cpp \
-    ../../Common/GUI/scrubbar.cpp \
     ../../Common/GUI/touchKeyboard/keyboardinputcontext.cpp \
     ../../Common/GUI/touchKeyboard/keyboard.cpp \
     ../../Common/GUI/backgroundmask.cpp \
