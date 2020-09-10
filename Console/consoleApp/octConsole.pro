@@ -98,11 +98,8 @@ DEPENDPATH += $$PWD/../../lib/amd64/FTDI
 RESOURCES += \
     OpenClResources.qrc
 
-FORMS += \
-    Frontend/opacscreen.ui
+FORMS +=
 
-HEADERS += \
-    Frontend/opacScreen.h
+HEADERS +=
 
-SOURCES += \
-    Frontend/opacScreen.cpp
+SOURCES +=
