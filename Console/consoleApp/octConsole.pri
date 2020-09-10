@@ -40,7 +40,6 @@ HEADERS += \
     $$PWD/Frontend/Widgets/startScreen.h \
     ../version.h \
     Backend/dspgpu.h \
-    Backend/initialization.h \
     Backend/daqSettings.h \
     Backend/laser.h \
     Backend/videoencoder.h \
@@ -120,7 +119,6 @@ SOURCES += \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
     Backend/dspgpu.cpp \
-    Backend/initialization.cpp \
     Backend/daqSettings.cpp \
     Backend/laser.cpp \
     Backend/videoencoder.cpp \
