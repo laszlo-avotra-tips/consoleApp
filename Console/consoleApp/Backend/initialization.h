@@ -29,14 +29,12 @@ public:
     bool init();
     bool warningPosted( void ) { return hasWarning; }
     QString getStatusMessage( void ) { return statusMessage; }
-    void setExeCheck( bool arg ) { runExeCheck = arg; }
     bool isPhysicianScreenAvailable( void ) { return docScreenAvailable; }
 
 signals:
 
 private:
     bool hasWarning;
-    bool runExeCheck;
     bool docScreenAvailable;
     QString statusMessage;
 

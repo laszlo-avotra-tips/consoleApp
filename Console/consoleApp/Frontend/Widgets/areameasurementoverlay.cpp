@@ -9,7 +9,6 @@
 #include <QInputDialog>
 #include <QDebug>
 #include <QStaticText>
-#include "../Console/buildflags.h"
 #include "defaults.h"
 #include "areameasurementoverlay.h"
 #include "depthsetting.h"
@@ -18,11 +17,7 @@
 
 const int PointTolerance = 20;
 
-#if !ENABLE_MEASUREMENT_PRECISION
 const int MeasurementPrecision = 1;
-#else
-const int MeasurementPrecision = 2;
-#endif
 
 /*
  * Constructor

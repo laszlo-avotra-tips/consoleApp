@@ -20,7 +20,6 @@
 #include <QApplication>
 #include <QRect>
 #include "Windows.h"
-#include "buildflags.h"
 #include "styledmessagebox.h"
 #include <QTimer>
 

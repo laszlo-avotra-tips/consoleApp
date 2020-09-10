@@ -16,7 +16,6 @@
 #define SCANLINE_H_
 
 #include <QByteArray>
-#include "buildflags.h"
 
 /*
  *

@@ -10,7 +10,6 @@
  *
  */
 
-//#include <QtGui/QApplication>
 #include <QApplication>
 #include "styledmessagebox.h"
 #include <QThread>
@@ -21,8 +20,6 @@
 #include "util.h"
 #include "defaults.h"
 #include "version.h"
-#include "buildflags.h"
-//#include "laser.h"
 #include "logger.h"
 
 /*

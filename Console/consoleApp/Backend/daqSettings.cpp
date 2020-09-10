@@ -14,7 +14,6 @@
 #include "daqSettings.h"
 #include "defaults.h"
 #include "logger.h"
-#include "buildflags.h"
 #include "util.h"
 
 DaqSettings* DaqSettings::theSettings{nullptr};

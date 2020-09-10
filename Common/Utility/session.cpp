@@ -15,7 +15,6 @@
 #include "session.h"
 #include "Utility/userSettings.h"
 #include "logger.h"
-#include "buildflags.h"
 
 /*
  * Constructor

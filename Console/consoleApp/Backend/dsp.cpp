@@ -34,7 +34,6 @@
 #include "daqSettings.h"
 #include "deviceSettings.h"
 #include "util.h"
-#include "buildflags.h"
 #include "depthsetting.h"
 #include "Utility/userSettings.h"
 #include "signalmodel.h"

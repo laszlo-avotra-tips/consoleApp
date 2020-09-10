@@ -17,15 +17,9 @@
 #include <QDebug>
 #include <QApplication>
 #include <QSettings>
-#include "buildflags.h"
 #include "defaults.h"
 #include "logger.h"
 
-#if ENABLE_VIDEO_CRF_QUALITY_TESTING
-extern QString gCrfTestValue;
-#endif
-
-//const int UsecPerMsec = 1000;
 
 /*
  * Constructor

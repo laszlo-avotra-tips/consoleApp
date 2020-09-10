@@ -18,7 +18,6 @@
 #include <QString>
 #include <QTextStream>
 #include "defaults.h"
-#include "buildflags.h"
 
 class OCTFile : public QObject
 {

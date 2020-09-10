@@ -39,7 +39,6 @@ HEADERS += \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
-    ../buildflags.h \
     ../version.h \
     Backend/dspgpu.h \
     Backend/initialization.h \

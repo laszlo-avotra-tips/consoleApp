@@ -14,7 +14,6 @@
 #include <QSettings>
 #include "ioController.h"
 #include "logger.h"
-#include "buildflags.h"
 #include "defaults.h"
 #include "deviceSettings.h"
 

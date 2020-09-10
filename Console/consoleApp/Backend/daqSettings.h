@@ -15,7 +15,6 @@
 #define DAQSETTINGS_H_
 
 #include <QSettings>
-#include "buildflags.h"
 
 // ATS DAQ records must be aligned at specific boundaries. Records may shift within
 // a buffer if alingment requirements are not met.

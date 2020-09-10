@@ -12,7 +12,6 @@
 #define EVOA_H
 
 #include <QObject>
-#include "buildflags.h"
 
 class EVOA : public QObject
 {

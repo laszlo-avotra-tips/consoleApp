@@ -243,7 +243,6 @@ void WindowManager::handleWindowingSystemEvents()
  */
 void WindowManager::configure()
 {
-#if !( ENABLE_LAPTOP_MODE || ENABLE_DEMO_MODE )
     goodMonitorConfigFound = false;
     failedTestCount = 0; // clear the count
 
@@ -262,9 +261,6 @@ void WindowManager::configure()
         emit badMonitorConfigDetected();
         failedTestCount = 0;
     }
-#else
-    setScreenGeometries();
-#endif
 }
 
 /*
@@ -483,13 +479,9 @@ void WindowManager::setScreenGeometries()
 {
     for( int i = 0; i < qdw->screenCount(); i++ )
     {
-#if !( ENABLE_LAPTOP_MODE || ENABLE_DEMO_MODE )
         if( qdw->screenGeometry( i ).width()  == TechScreenWidth &&
             qdw->screenGeometry( i ).height() == TechScreenHeight &&
             qdw->primaryScreen() == i )
-#else
-        if( qdw->primaryScreen() == i )
-#endif
         {
             TechnicianDisplayRect = qdw->screenGeometry( i );
         }

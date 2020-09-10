@@ -20,7 +20,6 @@
 #include "logger.h"
 #include "profiler.h"
 #include "util.h"
-#include "buildflags.h"
 #include "deviceSettings.h"
 #include "depthsetting.h"
 #include "signalmanager.h"

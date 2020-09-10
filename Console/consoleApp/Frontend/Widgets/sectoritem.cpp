@@ -27,7 +27,6 @@
 #include "Utility/userSettings.h"
 #include <QTime>
 #include "daqSettings.h"
-#include "buildflags.h"
 #include "depthsetting.h"
 #include "sledsupport.h"
 

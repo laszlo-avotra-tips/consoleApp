@@ -23,9 +23,7 @@
 #include <QTimer>
 #include <QMutex>
 #include "sectoritem.h"
-//lcv #include "../../Common/GUI/videodecoderitem.h"
 #include "Utility/capturemachine.h"
-#include "buildflags.h"
 #include "annotateoverlay.h"
 #include "Widgets/areameasurementoverlay.h"
 
