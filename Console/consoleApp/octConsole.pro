@@ -30,7 +30,7 @@ win32 {
    #   MAP  Create memory map
    #   OPT:REF  Eliminate functions and/or data that are not referenced
    #   OPT:ICF  Perform identical COMDAT folding (identical code is only referenced once)
-   QMAKE_LFLAGS_RELEASE += /DEBUG /MAP /OPT:REF /OPT:ICF 
+   QMAKE_LFLAGS_RELEASE += /DEBUG /MAP /OPT:REF /OPT:ICF
 
    INCLUDEPATH +=                           \
        .                                    \
@@ -43,8 +43,6 @@ win32 {
        Include                              \
        Frontend/Widgets                     \
        Frontend
-
-    INCLUDEPATH *= $$CUDA_DIR1
 
 #    LIBS += -L$$OPENCL_DIR_7/lib/x64 -lopencl
     LIBS += -L$$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/lib/x64/ -lOpenCL
@@ -78,9 +76,9 @@ DEPENDPATH += .
 #Include file(s)
 include( $${TARGET}.pri )
 
-CONFIG( release ) {
-    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
-}
+#CONFIG( release ) {
+#    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
+#}
 
 INCLUDEPATH += $$PWD/../../lib/amd64/Axsun
 DEPENDPATH += $$PWD/../../lib/amd64/Axsun
