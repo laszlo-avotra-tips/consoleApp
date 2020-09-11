@@ -304,7 +304,7 @@ QPolygon AreaMeasurementOverlay::polygonToPoints( QPolygon *list )
  * that a line the length of the catheter center is drawn. These values are calibrated
  * to determine the pxPerMm conversion.
  */
-void AreaMeasurementOverlay::setCalibrationScale( const int CalValMm )
+void AreaMeasurementOverlay::setCalibrationScale( const int /*CalValMm*/ )
 {
     currPxPerMm = 136; //lcv CalValMm;
 }

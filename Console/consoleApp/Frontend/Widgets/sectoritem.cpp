@@ -463,7 +463,6 @@ void sectorItem::paintSector ( bool force )
     }
 
     sectorShouldPaint = false;
-    trigLookupTable &quickTrig = trigLookupTable::Instance();
 
     QPixmap tmpPixmap = QPixmap::fromImage( *(sectorImage) );
     painter->begin( &tmpPixmap );

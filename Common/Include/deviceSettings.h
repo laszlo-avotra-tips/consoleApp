@@ -89,7 +89,7 @@ public:
         }
     }
 
-    QString getDeviceName(void)           { return deviceName; }
+    const QString& getDeviceName(void)           { return deviceName; }
     const QString &getSplitDeviceName() const;
     QString getCatheterType(void)         { return catheterType; }
     int getInternalImagingMask_px(void)   { return internalImagingMask_px; }

@@ -356,6 +356,7 @@ bool DAQ::getData( )
 
         return true;
     }
+    return false;
 }
 
 /*
