@@ -76,7 +76,6 @@ HEADERS += \
     Backend/ftd2xx.h \
     $$PWD/Backend/daqfactory.h \
     $$PWD/Backend/idaq.h \
-    $$PWD/Backend/playbackmanager.h \
     $$PWD/Backend/signalmanager.h \
     $$PWD/Backend/signalmodel.h
 
@@ -145,7 +144,6 @@ SOURCES += \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/backgroundmask.cpp \
     $$PWD/Backend/daqfactory.cpp \
-    $$PWD/Backend/playbackmanager.cpp \
     $$PWD/Backend/signalmanager.cpp \
     $$PWD/Backend/signalmodel.cpp
 

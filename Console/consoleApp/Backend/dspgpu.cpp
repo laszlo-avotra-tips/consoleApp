@@ -23,7 +23,6 @@
 #include "deviceSettings.h"
 #include "depthsetting.h"
 #include "signalmanager.h"
-#include "playbackmanager.h"
 #include "signalmodel.h"
 #include "signalprocessingfactory.h"
 #include "daqSettings.h"
