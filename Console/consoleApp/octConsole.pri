@@ -77,7 +77,6 @@ HEADERS += \
     $$PWD/Backend/daqfactory.h \
     $$PWD/Backend/idaq.h \
     $$PWD/Backend/playbackmanager.h \
-    $$PWD/Backend/filedaq.h \
     $$PWD/Backend/signalmanager.h \
     $$PWD/Backend/signalmodel.h
 
@@ -147,7 +146,6 @@ SOURCES += \
     ../../Common/GUI/backgroundmask.cpp \
     $$PWD/Backend/daqfactory.cpp \
     $$PWD/Backend/playbackmanager.cpp \
-    $$PWD/Backend/filedaq.cpp \
     $$PWD/Backend/signalmanager.cpp \
     $$PWD/Backend/signalmodel.cpp
 

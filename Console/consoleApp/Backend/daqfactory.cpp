@@ -1,7 +1,6 @@
 #include "daqfactory.h"
 #include "deviceSettings.h"
 #include "daqSettings.h"
-#include "filedaq.h"
 #include "logger.h"
 #include "daq.h"
 
@@ -30,13 +29,8 @@ IDAQ *daqfactory::getdaq()
 
         LOG1(deviceName)
 
-        if(deviceName == "Simulation"){
-            idaq = new FileDaq();
-            setting.setIsSimulation(true);
-        } else {
-            idaq = new DAQ();
-            setting.setIsSimulation(false);
-        }
+        idaq = new DAQ();
+        setting.setIsSimulation(false);
     }
 
     return idaq;
