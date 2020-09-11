@@ -10,7 +10,6 @@ HEADERS += \
     $$PWD/Backend/backend.h \
     $$PWD/Backend/daq.h \
     $$PWD/Backend/imagedescriptor.h \
-    $$PWD/Backend/producer.h \
     $$PWD/Backend/scanconversion.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
     $$PWD/Frontend/Utility/screenFactory.h \
@@ -75,7 +74,6 @@ SOURCES += \
     $$PWD/Backend/backend.cpp \
     $$PWD/Backend/daq.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
-    $$PWD/Backend/producer.cpp \
     $$PWD/Backend/scanconversion.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
     $$PWD/Frontend/Utility/screenFactory.cpp \
