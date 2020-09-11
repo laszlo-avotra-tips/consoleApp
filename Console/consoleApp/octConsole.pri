@@ -9,7 +9,6 @@ HEADERS += \
     $$PWD/Backend/AxsunOCTControl_LW_C.h \
     $$PWD/Backend/backend.h \
     $$PWD/Backend/daq.h \
-    $$PWD/Backend/ikernelfunction.h \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/producer.h \
     $$PWD/Backend/scanconversion.h \
