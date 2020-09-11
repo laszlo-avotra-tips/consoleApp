@@ -41,7 +41,6 @@ HEADERS += \
     $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
     ../version.h \
-    Backend/dspgpu.h \
     Backend/initialization.h \
     Backend/daqSettings.h \
     Include/dataPlotWidget.h \
@@ -114,7 +113,6 @@ SOURCES += \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
-    Backend/dspgpu.cpp \
     Backend/initialization.cpp \
     Backend/daqSettings.cpp \
     Utility/octFile.cpp \

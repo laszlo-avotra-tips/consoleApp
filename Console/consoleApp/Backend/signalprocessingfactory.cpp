@@ -3,7 +3,7 @@
 
 #include <QDebug>
 #include <QString>
-#include <QTime>
+#include <QElapsedTimer>
 
 #include <logger.h>
 
@@ -292,8 +292,7 @@ bool SignalProcessingFactory::buildKernelFuncionCode(const QString &kernelFuncti
  */
 bool SignalProcessingFactory::buildOpenCLKernel( QString clSourceFile, const char *kernelName, cl_program *program, cl_kernel *kernel )
 {
-//    qDebug() << "DSPGPU::buildOpenCLKernel:" << clSourceFile;
-    QTime buildTimer;
+    QElapsedTimer buildTimer;
     buildTimer.start();
 
     int err;
@@ -345,7 +344,7 @@ bool SignalProcessingFactory::buildOpenCLKernel( QString clSourceFile, const cha
         displayFailureMessage( QString( "Could not create compute kernel, reason %1" ).arg( err ), true );
         return false;
     }
-//    LOG1( buildTimer.elapsed());
+    LOG1( buildTimer.elapsed());
     return true;
 }
 

@@ -7,7 +7,7 @@
 
 int gCounter = 1;
 
-#define DEFAULT_LOCAL_UNITS  ( 16 ) // size of number of buffers from DSPGPU
+#define DEFAULT_LOCAL_UNITS  ( 16 ) // size of number of buffers
 size_t global_unit_dim[] = { FFT_DATA_SIZE, FFT_DATA_SIZE };
 size_t local_unit_dim[]  = { DEFAULT_LOCAL_UNITS,  DEFAULT_LOCAL_UNITS  };
 
