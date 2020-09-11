@@ -73,8 +73,6 @@ HEADERS += \
     Backend/sledsupport.h \
     Frontend/Widgets/areameasurementoverlay.h \
     Frontend/Widgets/annotateoverlay.h \
-    ../../Common/Include/keyboardinputcontext.h \
-    ../../Common/Include/keyboard.h \
     ../../Common/Include/backgroundmask.h \
     Backend/ftd2xx.h \
     $$PWD/Backend/daqfactory.h \
@@ -147,8 +145,6 @@ SOURCES += \
     Backend/sledsupport.cpp \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
-    ../../Common/GUI/touchKeyboard/keyboardinputcontext.cpp \
-    ../../Common/GUI/touchKeyboard/keyboard.cpp \
     ../../Common/GUI/backgroundmask.cpp \
     ../../Common/GUI/windowmanager.cpp \
     $$PWD/Backend/daqfactory.cpp \
