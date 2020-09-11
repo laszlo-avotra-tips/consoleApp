@@ -1,6 +1,5 @@
 #include "daqfactory.h"
 #include "deviceSettings.h"
-#include "daqSettings.h"
 #include "logger.h"
 #include "daq.h"
 

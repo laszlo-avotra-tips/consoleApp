@@ -31,7 +31,6 @@
 #include "octFile.h"
 #include "profiler.h"
 #include "sawFile.h"
-#include "daqSettings.h"
 #include "deviceSettings.h"
 #include "util.h"
 #include "depthsetting.h"
@@ -190,7 +189,7 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
  */
 quint32 DSP::getAvgAmplitude( quint16 *pA )
 {
-    quint32 recordLength{DaqSettings::Instance().getRecordLength()};
+    quint32 recordLength{4096};
 
     size_t average = 0;
     const quint32 start_idx = recordLength / 3 ;

@@ -42,7 +42,6 @@ HEADERS += \
     $$PWD/Frontend/Widgets/startScreen.h \
     ../version.h \
     Backend/initialization.h \
-    Backend/daqSettings.h \
     Include/dataPlotWidget.h \
     Include/octFile.h \
     Include/scanLine.h \
@@ -114,7 +113,6 @@ SOURCES += \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/main.cpp \
     Backend/initialization.cpp \
-    Backend/daqSettings.cpp \
     Utility/octFile.cpp \
     Frontend/Utility/captureListModel.cpp \
     Frontend/Utility/userSettings.cpp \

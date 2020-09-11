@@ -1,5 +1,4 @@
 #include "signalmodel.h"
-#include "daqSettings.h"
 #include "logger.h"
 
 
@@ -12,9 +11,8 @@ SignalModel::SignalModel()
 
 void SignalModel::allocateOctData()
 {
-    DaqSettings &settings = DaqSettings::Instance();
 
-    const size_t rawDataSize{settings.getRecordLength()}; //4096
+    const size_t rawDataSize{4096}; //4096
     const size_t fftDataSize{FFTDataSize};
     const size_t dispDataSize{SectorHeight_px * SectorWidth_px};
 
