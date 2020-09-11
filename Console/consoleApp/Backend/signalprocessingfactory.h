@@ -22,7 +22,6 @@ public:
 
     IKernelFunction* getPostFft();
     IKernelFunction* getBandC();
-    IKernelFunction* getWarp();
 
     cl_command_queue getCommandQueue() const;
 

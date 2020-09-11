@@ -9,7 +9,6 @@
 
 #include <postfft.h>
 #include <bandc.h>
-#include <warp.h>
 
 
 SignalProcessingFactory* SignalProcessingFactory::m_instance{nullptr};
@@ -41,17 +40,6 @@ IKernelFunction *SignalProcessingFactory::getBandC()
             m_bandcKernelFunction = std::make_shared<BeAndCe>(m_context);
         }
         return m_bandcKernelFunction.get();
-    }
-    return nullptr;
-}
-
-IKernelFunction *SignalProcessingFactory::getWarp()
-{
-    if(m_openClSuccess){
-        if(!m_warpKernelFunction){
-            m_warpKernelFunction = std::make_shared<Warp>(m_context);
-        }
-        return m_warpKernelFunction.get();
     }
     return nullptr;
 }
