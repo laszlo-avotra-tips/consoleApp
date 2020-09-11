@@ -14,6 +14,7 @@
 #include "livescene.h"
 #include "scanconversion.h"
 #include "signalmodel.h"
+#include "daqfactory.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -68,6 +69,7 @@ void MainScreen::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
+        daqfactory::instance()->getdaq();
     }
 }
 
