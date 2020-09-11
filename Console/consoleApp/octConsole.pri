@@ -18,7 +18,6 @@ HEADERS += \
     $$PWD/Backend/scanconversion.h \
     $$PWD/Backend/signalprocessingfactory.h \
     $$PWD/Backend/warp.h \
-    $$PWD/Backend/warpbc.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
@@ -89,7 +88,6 @@ SOURCES += \
     $$PWD/Backend/scanconversion.cpp \
     $$PWD/Backend/signalprocessingfactory.cpp \
     $$PWD/Backend/warp.cpp \
-    $$PWD/Backend/warpbc.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
