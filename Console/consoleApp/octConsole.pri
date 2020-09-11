@@ -66,7 +66,6 @@ HEADERS += \
     Backend/ftd2xx.h \
     $$PWD/Backend/daqfactory.h \
     $$PWD/Backend/idaq.h \
-    $$PWD/Backend/signalmanager.h \
     $$PWD/Backend/signalmodel.h
 
 # Source files
@@ -125,7 +124,6 @@ SOURCES += \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/backgroundmask.cpp \
     $$PWD/Backend/daqfactory.cpp \
-    $$PWD/Backend/signalmanager.cpp \
     $$PWD/Backend/signalmodel.cpp
 
 win32:SOURCES += Utility/qtsingleapplication_win.cpp

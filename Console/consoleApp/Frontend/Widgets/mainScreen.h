@@ -1,7 +1,6 @@
 #ifndef MAINSCREEN_H
 #define MAINSCREEN_H
 
-#include "signalmanager.h"
 #include "octFile.h"
 
 #include <vector>
