@@ -19,7 +19,6 @@
 #include "keys.h"
 #include "logger.h"
 #include "sledsupport.h"
-#include "windowmanager.h"
 
 /*
  * Constructor

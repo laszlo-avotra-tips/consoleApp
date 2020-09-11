@@ -67,7 +67,6 @@ HEADERS += \
     ../../Common/Include/sawFile.h \
     ../../Common/Include/keys.h \
     ../../Common/Include/util.h \
-    ../../Common/Include/windowmanager.h \
     Backend/dsp.h \
     Backend/depthsetting.h \
     Backend/sledsupport.h \
@@ -146,7 +145,6 @@ SOURCES += \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/backgroundmask.cpp \
-    ../../Common/GUI/windowmanager.cpp \
     $$PWD/Backend/daqfactory.cpp \
     $$PWD/Backend/playbackmanager.cpp \
     $$PWD/Backend/filedaq.cpp \

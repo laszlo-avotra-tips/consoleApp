@@ -36,7 +36,6 @@ public:
     static void critical( QString message );
 
 private:
-    void center();
     Ui::styledMessageBox *ui;
     backgroundMask *mask;
 };
