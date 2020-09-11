@@ -1,4 +1,5 @@
 #include "signalprocessingfactory.h"
+#include "ikernelfunction.h"
 #include <util.h>
 
 #include <QDebug>
@@ -6,8 +7,6 @@
 #include <QElapsedTimer>
 
 #include <logger.h>
-
-#include <bandc.h>
 
 
 SignalProcessingFactory* SignalProcessingFactory::m_instance{nullptr};
@@ -18,17 +17,6 @@ SignalProcessingFactory *SignalProcessingFactory::instance()
         m_instance = new SignalProcessingFactory();
     }
     return m_instance;
-}
-
-IKernelFunction *SignalProcessingFactory::getBandC()
-{
-    if(m_openClSuccess){
-        if(!m_bandcKernelFunction){
-            m_bandcKernelFunction = std::make_shared<BeAndCe>(m_context);
-        }
-        return m_bandcKernelFunction.get();
-    }
-    return nullptr;
 }
 
 SignalProcessingFactory::SignalProcessingFactory()

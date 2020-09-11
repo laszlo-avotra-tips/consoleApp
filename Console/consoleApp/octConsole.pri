@@ -8,7 +8,6 @@ HEADERS += \
     $$PWD/Backend/AxsunOCTCapture.h \
     $$PWD/Backend/AxsunOCTControl_LW_C.h \
     $$PWD/Backend/backend.h \
-    $$PWD/Backend/bandc.h \
     $$PWD/Backend/daq.h \
     $$PWD/Backend/ikernelfunction.h \
     $$PWD/Backend/imagedescriptor.h \
@@ -77,7 +76,6 @@ HEADERS += \
 # Source files
 SOURCES += \
     $$PWD/Backend/backend.cpp \
-    $$PWD/Backend/bandc.cpp \
     $$PWD/Backend/daq.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/kernelfunctionbase.cpp \
