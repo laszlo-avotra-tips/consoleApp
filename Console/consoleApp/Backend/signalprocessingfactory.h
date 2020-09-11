@@ -20,7 +20,6 @@ class SignalProcessingFactory
 public:
     static SignalProcessingFactory* instance();
 
-    IKernelFunction* getPostFft();
     IKernelFunction* getBandC();
 
     cl_command_queue getCommandQueue() const;
