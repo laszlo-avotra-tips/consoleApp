@@ -11,7 +11,6 @@ HEADERS += \
     $$PWD/Backend/daq.h \
     $$PWD/Backend/ikernelfunction.h \
     $$PWD/Backend/imagedescriptor.h \
-    $$PWD/Backend/kernelfunctionbase.h \
     $$PWD/Backend/producer.h \
     $$PWD/Backend/scanconversion.h \
     $$PWD/Backend/signalprocessingfactory.h \
@@ -78,7 +77,6 @@ SOURCES += \
     $$PWD/Backend/backend.cpp \
     $$PWD/Backend/daq.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
-    $$PWD/Backend/kernelfunctionbase.cpp \
     $$PWD/Backend/producer.cpp \
     $$PWD/Backend/scanconversion.cpp \
     $$PWD/Backend/signalprocessingfactory.cpp \
