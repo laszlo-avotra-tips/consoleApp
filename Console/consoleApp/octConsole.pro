@@ -41,7 +41,6 @@ win32 {
        $$OPENCL_DIR_7/include               \
        Backend                              \
        Include                              \
-       Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
        Frontend
 
@@ -66,7 +65,6 @@ unix {
        ../../Common/Include                 \
        Backend                              \
        Include                              \
-       Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
        Frontend
 
@@ -76,15 +74,13 @@ unix {
 
 
 DEPENDPATH += .
-UI_DIR  += ./Frontend/GeneratedFiles
-RCC_DIR += ./Frontend/GeneratedFiles
 
 #Include file(s)
 include( $${TARGET}.pri )
 
-#CONFIG( release ) {
-#    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
-#}
+CONFIG( release ) {
+    QMAKE_CLEAN += release\\$${TARGET}.map release\\$${TARGET}.pdb release\\$${TARGET}.key
+}
 
 INCLUDEPATH += $$PWD/../../lib/amd64/Axsun
 DEPENDPATH += $$PWD/../../lib/amd64/Axsun
