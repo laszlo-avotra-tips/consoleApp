@@ -3,7 +3,6 @@
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
 #include "deviceSettings.h"
-#include "daqfactory.h"
 #include "logger.h"
 #include "opaqueScreen.h"
 #include "Frontend/Widgets/caseInformationDialog.h"

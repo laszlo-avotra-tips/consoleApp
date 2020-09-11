@@ -124,8 +124,8 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
             connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector);
         }
         idaq->init();
+        idaq->start();
     }
-    idaq->start();
 }
 
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
