@@ -198,7 +198,7 @@ private:
     QStringList m_physicians;
     QStringList m_locations;
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
-    CatheterView_t catheterViewMode;  //
+    CatheterView_t catheterViewMode{DistalToProximal};  //
     bool m_isGray{true};
     int  m_imageDepthIndex{1};
 
