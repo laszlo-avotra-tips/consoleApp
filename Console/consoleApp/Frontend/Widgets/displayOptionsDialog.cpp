@@ -86,7 +86,7 @@ void DisplayOptionsDialog::on_pushButtonBack_clicked()
 
     //ring brightness
     settings.setReticleBrightness(m_model0.reticleBrightness());
-    emit reticleBrightnessChanged(m_model0.reticleBrightness());
+    emit reticleBrightnessChanged();
 
     reject();
 }
@@ -144,7 +144,7 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
     LOG1(reticleBrightness)
     userSettings::Instance().setReticleBrightness(reticleBrightness);
     m_model->setReticleBrightness(reticleBrightness);
-    emit reticleBrightnessChanged(reticleBrightness);
+    emit reticleBrightnessChanged();
 
     ui->labelReticleBrightness->setNum(reticleBrightness * 100 / 255);
     //    ui->labelReticleBrightness->setMargin(reticleBrightness * 2); //lcv

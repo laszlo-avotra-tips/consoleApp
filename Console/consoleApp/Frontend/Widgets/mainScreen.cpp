@@ -62,6 +62,7 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_scene = new liveScene( this );
     m_graphicsView->setScene(m_scene);
+    m_scene->handleReticleBrightnessChanged();
 }
 
 void MainScreen::setScene(liveScene *scene)

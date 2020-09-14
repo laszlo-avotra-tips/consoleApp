@@ -81,12 +81,11 @@ public slots:
     }
 
     void handleDeviceChange(void) {
-//		qDebug() << "**** livescene::handleDeviceChange()";
         sector->deviceChanged();
         videoSector->deviceChanged();
     }
 
-    void handleReticleBrightnessChanged( int value );
+    void handleReticleBrightnessChanged();
 
     void handleLaserIndicatorBrightnessChanged( int value ) {
         sector->setLaserIndicatorBrightness( value );

@@ -37,7 +37,7 @@ void userSettings::saveSettings()
     varSettings->setValue( "displayOptions/contrast",                 contrastVal );
     varSettings->setValue( "displayOptions/reticleBrightness",        reticleBrightnessVal );
 
-    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
+//    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
 
     varSettings->setValue( "displayOptions/depthIndex", m_imageDepthIndex );
 
@@ -46,7 +46,7 @@ void userSettings::saveSettings()
     } else {
         varSettings->setValue( "displayOptions/color", QString("sepia") );
     }
-    LOG2(m_isGray,m_imageDepthIndex)
+//    LOG2(m_isGray,m_imageDepthIndex)
 }
 
 void userSettings::loadVarSettings()

@@ -275,7 +275,7 @@ void liveScene::resetRotationCounter( )
     sector->clearRotationFlag();
 }
 
-void liveScene::handleReticleBrightnessChanged(int /*value*/)
+void liveScene::handleReticleBrightnessChanged()
 {
     auto value = userSettings::Instance().reticleBrightness();
     LOG1(value)
