@@ -40,7 +40,6 @@ void DisplayOptionsModel::persistModel() const
     }
     settings.setIsGray(m_isImageColorGray);
     settings.setImageDepthIndex(m_depthIndex);
-    LOG3(m_isImageColorGray, m_depthIndex, reticleBrightness());
 }
 
 int DisplayOptionsModel::imageContrast() const
