@@ -222,8 +222,6 @@ void liveScene::setAnnotateMode( bool state, QColor color )
  */
 void liveScene::refresh( void )
 {
-    TIME_THIS_SCOPE( liveScene_render );
-
     if( doPaint )
     {
         doPaint = false;
@@ -317,8 +315,6 @@ void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
  */
 void liveScene::captureDi( QImage decoratedImage, QString tagText )
 {
-    TIME_THIS_SCOPE( captureTotal );
-
     /*
      * Render the sector image,
      * then pass of to the capturer to write to
@@ -326,7 +322,6 @@ void liveScene::captureDi( QImage decoratedImage, QString tagText )
      */
     QImage secImage;
     {
-        TIME_THIS_SCOPE( freezeSector );
         secImage = sector->freeze();
     }
 
@@ -344,7 +339,6 @@ void liveScene::captureDi( QImage decoratedImage, QString tagText )
      * Perform the capture. Allow the capture text to be translated.
      */
     {
-        TIME_THIS_SCOPE( captureSave );
         emit captureAll( decoratedImage, secImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
     }
 }

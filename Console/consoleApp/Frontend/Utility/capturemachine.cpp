@@ -116,7 +116,6 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     QMatrix m;
 //    m.rotate( 90 );
-//    qDebug() << __FUNCTION__ << ":" << __LINE__ <<" sector sectorImage.width()=" << sectorImage.width() << ", sectorImage.height()=" << sectorImage.height();
     LOG3(SecName,saveDirName,saveName)
     auto imageRect = sectorImage.rect();
     if( !sectorImage.save( SecName, "PNG", 100 ) )
@@ -127,7 +126,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     {
         emit sendFileToKey( SecName );
     }
-    qDebug() << __FUNCTION__ << ":" << __LINE__ << " imageRect.x()=" << imageRect.x() << " imageRect.y()=" <<imageRect.y();
+    LOG4(imageRect.x(), imageRect.y(), imageRect.height(), imageRect.width())
 
     // save a thumbnail image for the UI to use
     if( !sectorImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
@@ -154,8 +153,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     painter.drawImage( logoX, logoY, LogoImage );
     painter.end();
-
-    QImage dim = decoratedImage.copy(imageRect);
+    QRect myRect(imageRect.x(), imageRect.y(),imageRect.width() * 2.1, imageRect.height() * 2.1);
+//    QImage dim = decoratedImage.copy(imageRect);
+    QImage dim = decoratedImage.copy(myRect);
 
     if( !dim.save( DecoratedImageName, "PNG", 100 ) )
     {

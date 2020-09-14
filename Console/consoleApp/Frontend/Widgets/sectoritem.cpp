@@ -302,9 +302,6 @@ void sectorItem::setSectorImage(QImage *value)
  */
 void sectorItem::addFrame( QSharedPointer<scanframe> &data )
 {
-//	qDebug() << ">>>>>> 9";
-    TIME_THIS_SCOPE(sectorItem_addFrame);
-
     // Copy the image into the display buffer
     memcpy( sectorImage->bits(), data->dispData->data(), SectorWidth_px * SectorHeight_px );
     sectorShouldPaint = true;
@@ -321,9 +318,6 @@ void sectorItem::addFrame( QSharedPointer<scanframe> &data )
  */
 void sectorItem::render( void )
 {
-//	qDebug() << ">>>>>> 10";
-    TIME_THIS_SCOPE( sectorItem_render );
-
     float angle_rad     = float(currentAngle_deg * degToRad);
     float lastAngle_rad = float(lastAngle_deg * degToRad);
     float interpAngle_rad;
@@ -391,7 +385,6 @@ void sectorItem::render( void )
         // Draw the full sector from the internal imaging mask out to the last pixel
         for( int j = internalImagingMask_px; j < currentAlineLength_px; j++ )
         {
-            // TIME_THIS_SCOPE( render_for_cached );
             correctedRho = rhoCorrectionFactor * ( j + catheterRadius_px - internalImagingMask_px );
             v1 = float( oldLine.at( j ) );
             v2 = float( newLine.at( j ) );
@@ -452,9 +445,6 @@ void sectorItem::render( void )
  */
 void sectorItem::paintSector ( bool force )
 {
-    TIME_THIS_SCOPE( sectorItem_paintSector );
-//	qDebug() << ">>>>>> 11";
-
     // no change in the data
     if( !sectorShouldPaint && !force )
     {

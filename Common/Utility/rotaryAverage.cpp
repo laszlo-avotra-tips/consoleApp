@@ -86,8 +86,6 @@ void rotaryAverage::reset( int newWidth, int newRange )
  */
 double rotaryAverage::getNextValue( double newValue )
 {
-    TIME_THIS_SCOPE( getNextValue );
-
     if ( !values )
     {
         return( 0.0 );
