@@ -3,7 +3,6 @@
 
 #include <QThread>
 #include <QString>
-#include "buildflags.h"
 #include "octFile.h"
 
 class IDAQ : public QThread

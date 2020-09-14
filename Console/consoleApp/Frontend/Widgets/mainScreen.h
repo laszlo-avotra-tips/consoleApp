@@ -1,7 +1,7 @@
 #ifndef MAINSCREEN_H
 #define MAINSCREEN_H
 
-#include "signalmanager.h"
+#include "octFile.h"
 
 #include <vector>
 #include <map>
@@ -10,11 +10,12 @@
 #include <QTimer>
 #include <QElapsedTimer>
 
-class frontend;
 class liveScene;
-class OpacScreen;
+class OpaqueScreen;
 class QPushButton;
 class QGraphicsView;
+class ScanConversion;
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainScreen; }
@@ -76,6 +77,11 @@ private slots:
     void handleSledRunningStateChanged(bool isInRunningState);
 
     void on_pushButtonRecord_clicked();
+    void onCaptureImage();
+    void setMeasurementMode(bool enabled);
+
+public slots:
+    void updateSector(OCTFile::OctData_t* frameData);
 
 private:
     void showEvent(QShowEvent* se) override;
@@ -86,7 +92,7 @@ private:
     void setSpeed(int speed);
     void highlightSpeedButton(QPushButton* wid);
     int getSledRuntime();
-
+    void setSceneCursor( QCursor cursor );
 
 private:
     Ui::MainScreen *ui;
@@ -99,12 +105,14 @@ private:
 
     std::vector<QWidget*> m_navigationButtons;
 
-    frontend* m_frontEndWindow{nullptr};
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
-    OpacScreen* m_opacScreen{nullptr};
+    OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
     int m_sledRuntime{0}; //the time the Sled is on in milliseconds
+
+    ScanConversion *m_scanWorker{nullptr};
+
 };
 #endif // MAINSCREEN_H

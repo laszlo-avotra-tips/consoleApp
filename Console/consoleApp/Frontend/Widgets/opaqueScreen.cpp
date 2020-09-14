@@ -1,10 +1,10 @@
-#include "opacScreen.h"
-#include "ui_opacscreen.h"
+#include "opaqueScreen.h"
+#include "ui_opaqueScreen.h"
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 
-OpacScreen::OpacScreen(QWidget *parent) :
+OpaqueScreen::OpaqueScreen(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OpacScreen)
 {
@@ -12,12 +12,12 @@ OpacScreen::OpacScreen(QWidget *parent) :
     init();
 }
 
-OpacScreen::~OpacScreen()
+OpaqueScreen::~OpaqueScreen()
 {
     delete ui;
 }
 
-void OpacScreen::init()
+void OpaqueScreen::init()
 {
     int duration_ms=500;
     QGraphicsOpacityEffect * showing_effect = new QGraphicsOpacityEffect(this);

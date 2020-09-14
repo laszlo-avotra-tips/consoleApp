@@ -89,7 +89,7 @@ public:
         }
     }
 
-    QString getDeviceName(void)           { return deviceName; }
+    const QString& getDeviceName(void)           { return deviceName; }
     const QString &getSplitDeviceName() const;
     QString getCatheterType(void)         { return catheterType; }
     int getInternalImagingMask_px(void)   { return internalImagingMask_px; }
@@ -191,7 +191,7 @@ public:
 signals:
     void deviceChanged( );
     void sendWarning( QString );
-    void sendFailure( QString ); // signal to consoleApp frontend
+    void sendFailure( QString ); // signal to consoleApp
     void displayMask( int );
 
 public slots:

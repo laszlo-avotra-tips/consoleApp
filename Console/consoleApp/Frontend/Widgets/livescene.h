@@ -23,9 +23,7 @@
 #include <QTimer>
 #include <QMutex>
 #include "sectoritem.h"
-//lcv #include "../../Common/GUI/videodecoderitem.h"
 #include "Utility/capturemachine.h"
-#include "buildflags.h"
 #include "annotateoverlay.h"
 #include "Widgets/areameasurementoverlay.h"
 
@@ -172,7 +170,6 @@ public slots:
     void pausePlayback(  );
     void advancePlayback( );
     void rewindPlayback( );
-    void seekWithinClip( qint64 );
 
     void updateGrayScaleMap( QVector<unsigned char> map );
     void loadColormap( QString colormapFile );

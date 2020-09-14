@@ -12,7 +12,6 @@
 #include "ui_styledmessagebox.h"
 #include <QStyle>
 #include <QPushButton>
-#include "windowmanager.h"
 #include "logger.h"
 
 /*
@@ -130,22 +129,6 @@ QString styledMessageBox::text( void )
     return ui->messageText->text();
 }
 
-/*
- * center
- *
- * Centers the dialog box on the primary screen.
- */
-void styledMessageBox::center( void )
-{
-//    WindowManager &wm = WindowManager::Instance();
-
-//    // determine how to center the wizard on the primary screen
-//    int x = ( wm.getTechnicianDisplayGeometry().width()  - this->width()  ) / 2;
-//    int y = ( wm.getTechnicianDisplayGeometry().height() - this->height() ) / 2;
-
-//    // Force the wizard to the primary monitor
-//    setGeometry( x, y, this->width(), this->height() ); // force position of messagebox
-}
 
 /*
  * warning()
@@ -160,7 +143,6 @@ void styledMessageBox::warning( QString message )
     msg.setInstructions( tr( "" ) );
     msg.setText( message );
     msg.setHasCancel( false );
-    msg.center();
     msg.exec();
 
     LOG( WARNING, message.toLatin1() )
@@ -179,7 +161,6 @@ void styledMessageBox::info( QString message )
     msg.setInstructions( tr( "" ) );
     msg.setText( message );
     msg.setHasCancel( false );
-    msg.center();
     msg.exec();
 
     LOG( INFO, message.toLatin1() )
@@ -198,7 +179,6 @@ void styledMessageBox::critical( QString message )
     msg.setInstructions( tr( "" ) );
     msg.setText( message );
     msg.setHasCancel( false );
-    msg.center();
     msg.exec();
 
     LOG( FATAL, message.toLatin1() )

@@ -26,8 +26,6 @@
 #include "trigLookupTable.h"
 #include "Utility/userSettings.h"
 #include <QTime>
-#include "daqSettings.h"
-#include "buildflags.h"
 #include "depthsetting.h"
 #include "sledsupport.h"
 
@@ -464,7 +462,6 @@ void sectorItem::paintSector ( bool force )
     }
 
     sectorShouldPaint = false;
-    trigLookupTable &quickTrig = trigLookupTable::Instance();
 
     QPixmap tmpPixmap = QPixmap::fromImage( *(sectorImage) );
     painter->begin( &tmpPixmap );

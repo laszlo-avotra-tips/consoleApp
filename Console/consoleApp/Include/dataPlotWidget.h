@@ -19,7 +19,6 @@
 //#include <qwt_plot_grid.h>
 //#include <qwt_scale_draw.h>
 //#include <qwt_plot_marker.h>
-//#include "buildflags.h"
 
 //const int updateTimeMS(33); //lcv
 

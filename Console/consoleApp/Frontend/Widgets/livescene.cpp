@@ -25,10 +25,6 @@
 #include "Utility/userSettings.h"
 
 
-#if ENABLE_COLORMAP_OPTIONS
-QImage sampleMap( 10, 256, QImage::Format_Indexed8 );
-#endif
-
 QString timestampToString( unsigned long ts );
 
 // SceneWidth = sector drawing area. At a minimum, this needs to accommodate ( the 512 pixel radius +
@@ -155,18 +151,6 @@ liveScene::liveScene( QObject *parent )
     activeIndicatorRingImage  = activeIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
-
-#if ENABLE_COLORMAP_OPTIONS
-    sampleMap.setColorTable( currColorMap );
-    // Generate a sample color strip with the brightest at the top and the darkest at the bottom.
-    for( int i = 0; i < 256; i++ )
-    {
-        for( int j = 0; j < 10; j++ )
-        {
-            sampleMap.setPixel( j, i, ( 255 - i ) );
-        }
-    }
-#endif
 
     annotateOverlayItem      = nullptr;
     isAnnotateModeEnabled    = false;
@@ -389,17 +373,6 @@ void liveScene::setClipForPlayback( QString name )
 //    clipPlayer->show();
     overlays->setVisible( false );
     reviewing = true;
-}
-
-/*
- * seekWithinClip()
- *
- * The transport, or other user, has requested to change position
- * within the currently playing clip.
- */
-void liveScene::seekWithinClip( qint64 /*pos*/ )
-{
-//    clipPlayer->seek( pos );
 }
 
 /*
@@ -798,11 +771,6 @@ void liveScene::loadColormap( QString colormapFile )
         currColorMap[ i ] =  qRgb( r, g, b );
     }
 
-#if ENABLE_COLORMAP_OPTIONS
-    // Using the table of color options, we do this to produce a colormap preview strip (sampleMap).
-    sampleMap.setColorTable( currColorMap );
-#endif
-
     sector->updateColorMap( currColorMap );
 
     // free the pointer.  nullptr check done above.
@@ -857,7 +825,7 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
 /*
  * setCalibrationScale
  *
- * This is called through frontend when a capture has been selected for review.
+ * This was called through the gui when a capture has been selected for review.
  * The pixelsPerMm and zoomFactor are stored with the capture, and these create
  * the calibration scale that is passed to the measurement overlay for
  * converting pixel lengths to mm scale.

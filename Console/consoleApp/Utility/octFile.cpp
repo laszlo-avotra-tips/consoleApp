@@ -18,7 +18,6 @@
 #include "octFile.h"
 #include "util.h"
 #include "styledmessagebox.h"
-#include "buildflags.h"
 
 // ID for the any programs that parses the data
 const unsigned char OctFileFormatVersion = 4;

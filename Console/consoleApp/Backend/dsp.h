@@ -15,7 +15,6 @@
 
 #include <QTime>
 #include "octFile.h"
-#include "buildflags.h"
 
 
 class DSP

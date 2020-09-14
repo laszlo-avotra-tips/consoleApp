@@ -30,7 +30,7 @@ win32 {
    #   MAP  Create memory map
    #   OPT:REF  Eliminate functions and/or data that are not referenced
    #   OPT:ICF  Perform identical COMDAT folding (identical code is only referenced once)
-   QMAKE_LFLAGS_RELEASE += /DEBUG /MAP /OPT:REF /OPT:ICF 
+   QMAKE_LFLAGS_RELEASE += /DEBUG /MAP /OPT:REF /OPT:ICF
 
    INCLUDEPATH +=                           \
        .                                    \
@@ -41,11 +41,8 @@ win32 {
        $$OPENCL_DIR_7/include               \
        Backend                              \
        Include                              \
-       Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
        Frontend
-
-    INCLUDEPATH *= $$CUDA_DIR1
 
 #    LIBS += -L$$OPENCL_DIR_7/lib/x64 -lopencl
     LIBS += -L$$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/lib/x64/ -lOpenCL
@@ -66,7 +63,6 @@ unix {
        ../../Common/Include                 \
        Backend                              \
        Include                              \
-       Frontend/GeneratedFiles              \
        Frontend/Widgets                     \
        Frontend
 
@@ -76,8 +72,6 @@ unix {
 
 
 DEPENDPATH += .
-UI_DIR  += ./Frontend/GeneratedFiles
-RCC_DIR += ./Frontend/GeneratedFiles
 
 #Include file(s)
 include( $${TARGET}.pri )
@@ -98,11 +92,8 @@ DEPENDPATH += $$PWD/../../lib/amd64/FTDI
 RESOURCES += \
     OpenClResources.qrc
 
-FORMS += \
-    Frontend/opacscreen.ui
+FORMS +=
 
-HEADERS += \
-    Frontend/opacScreen.h
+HEADERS +=
 
-SOURCES += \
-    Frontend/opacScreen.cpp
+SOURCES +=

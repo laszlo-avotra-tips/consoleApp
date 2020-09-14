@@ -7,13 +7,13 @@ namespace Ui {
 class OpacScreen;
 }
 
-class OpacScreen : public QWidget
+class OpaqueScreen : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit OpacScreen(QWidget *parent = nullptr);
-    ~OpacScreen();
+    explicit OpaqueScreen(QWidget *parent = nullptr);
+    ~OpaqueScreen();
 
 private:
     void init();

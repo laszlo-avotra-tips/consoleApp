@@ -7,7 +7,7 @@
 
 #include "deviceListModel.h"
 
-class frontend;
+class MainScreen;
 
 namespace Ui {
 class DeviceSelectDialog;
@@ -29,7 +29,7 @@ private:
 
 private slots:
     void on_pushButtonDone_clicked();
-    void startDaq(frontend *fe);
+    void startDaq(MainScreen *fe);
 
     void on_listViewAtherectomy_clicked(const QModelIndex &index);
 

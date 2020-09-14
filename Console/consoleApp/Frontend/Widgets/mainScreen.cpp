@@ -2,20 +2,19 @@
 #include "ui_mainScreen.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
-#include "Frontend/Screens/frontend.h"
-#include "devicewizard.h"
-#include "deviceselectwizardpage.h"
 #include "deviceSettings.h"
-#include "daqfactory.h"
-#include <logger.h>
-#include "opacScreen.h"
-#include "Frontend/Screens/frontend.h"
+#include "logger.h"
+#include "opaqueScreen.h"
 #include "Frontend/Widgets/caseInformationDialog.h"
 #include "Frontend/Widgets/caseInformationModel.h"
 #include "Frontend/Widgets/reviewAndSettingsDialog.h"
-#include "sledsupport.h"
 #include "displayOptionsDialog.h"
 #include "DisplayOptionsModel.h"
+#include "sledsupport.h"
+#include "livescene.h"
+#include "scanconversion.h"
+#include "signalmodel.h"
+#include "daqfactory.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -44,18 +43,10 @@ MainScreen::MainScreen(QWidget *parent)
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
 
-    auto wid = WidgetContainer::instance()->getScreen("l250Frontend");
-
-    frontend* fw = dynamic_cast<frontend*>(wid);
-    if(fw)
-    {
-        m_frontEndWindow = fw;
-    }
-
     m_updatetimeTimer.start(500);
     connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
-    m_opacScreen = new OpacScreen(this);
+    m_opacScreen = new OpaqueScreen(this);
     m_opacScreen->show();
     m_graphicsView->hide();
     ui->frameSpeed->hide();
@@ -69,6 +60,8 @@ MainScreen::MainScreen(QWidget *parent)
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
+    m_scene = new liveScene( this );
+    m_graphicsView->setScene(m_scene);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -76,6 +69,7 @@ void MainScreen::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
+        daqfactory::instance()->getdaq();
     }
 }
 
@@ -450,13 +444,15 @@ void MainScreen::on_pushButtonCapture_released()
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
-    emit captureImage();
+    //emit captureImage();
+    onCaptureImage();
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
 }
 
 void MainScreen::on_pushButtonMeasure_clicked(bool checked)
 {
-    emit measureImage(checked);
+//    emit measureImage(checked);
+    setMeasurementMode(checked);
 }
 
 void MainScreen::updateSledRunningState()
@@ -484,7 +480,8 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
     }
 
     if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-        emit measureImage(false);
+//        emit measureImage(false);
+        setMeasurementMode(false);
     }
 
     ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
@@ -492,5 +489,80 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-//lcv    hide(); only to integrating the L250 features
+    //lcv    hide(); only to integrating the L250 features
+}
+
+void MainScreen::onCaptureImage()
+{
+    static int currImgNumber = 0;
+    // tag the images as "img-001, img-002, ..."
+    currImgNumber++;
+    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
+    LOG1(tag);
+    QRect rectangle = ui->graphicsView->rect();
+//    rectangle.setWidth(1440);
+//    rectangle.setHeight(1440);
+    qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
+    QImage p = ui->graphicsView->grab(rectangle).toImage();
+    m_scene->captureDi( p, tag );
+
+}
+
+void MainScreen::setMeasurementMode(bool enable)
+{
+    if( enable )
+    {
+        m_scene->setMeasureModeArea( true, Qt::magenta );
+        setSceneCursor( QCursor( Qt::CrossCursor ) );
+        ui->graphicsView->setToolTip( "" );
+//        ui.measureModePushButton->setChecked( true );
+        LOG( INFO, "Measure Mode: start" )
+    }
+    else
+    {
+        m_scene->setMeasureModeArea( false, Qt::magenta );
+        setSceneCursor( QCursor( Qt::OpenHandCursor ) );
+//        ui.measureModePushButton->setChecked( false );
+        LOG( INFO, "Measure Mode: stop" )
+    }
+//    isMeasureModeActive = enable; // state variable for toggle action
+
+}
+
+void MainScreen::setSceneCursor( QCursor cursor )
+{
+    ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
+}
+
+void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+{
+    static int count = -1;
+    if(!m_scanWorker){
+        m_scanWorker = new ScanConversion();
+    }
+    if(frameData && m_scene && m_scanWorker){
+
+        const auto* sm =  SignalModel::instance();
+
+        QImage* image = m_scene->sectorImage();
+
+        frameData->dispData = image->bits();
+        auto bufferLength = sm->getBufferLength();
+
+        m_scanWorker->warpData( frameData, bufferLength);
+
+        if(m_scanWorker->isReady){
+
+            if(image && frameData && frameData->dispData){
+                QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+                if(pixmap){
+                    QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                    pixmap->setPixmap(tmpPixmap);
+                }
+//lcv                if(++count % 2 == 0)
+                    m_scene->setDoPaint();
+            }
+        }
+    }
 }

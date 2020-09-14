@@ -17,7 +17,6 @@
 
 #include "defaults.h"
 #include "deviceSettings.h"
-#include "buildflags.h"
 
 class caseInfo
 {

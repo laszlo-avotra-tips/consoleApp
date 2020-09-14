@@ -14,7 +14,6 @@
 #include "logger.h"
 #include "defaults.h"
 #include "util.h"
-#include "buildflags.h"
 #include "version.h"
 
 Logger* Logger::theLogger{nullptr};
@@ -197,11 +196,6 @@ void Logger::logMessage( QString msg, const char *severity, const char *file, in
                 << file << " (" << line << ")"
                 << endl;
     }
-
-#if ENABLE_LOGGING_TO_DEBUG_WINDOW
-    // Send all log messages to the debug window as well
-    qDebug() << severity << msg.toLatin1();
-#endif
 }
 
 void Logger::logDebugMessage(const QString &msg, const char* function, int line, Qt::HANDLE tId)

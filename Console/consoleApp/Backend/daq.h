@@ -3,7 +3,7 @@
 
 #include <QtCore>
 #include <QThread>
-#include <QTime>
+#include <QElapsedTimer>
 #include "scanconversion.h"
 #include "octFile.h"
 #include "AxsunOCTCapture.h"
@@ -34,11 +34,10 @@ public:
     IDAQ* getSignalSource() override;
 
     bool getData();
-    bool getData2();
     bool isRunning;
     int generateSyntheticData( unsigned char *pSyntheticData );
-    QTime frameTimer;
-    QTime fileTimer;
+    QElapsedTimer frameTimer;
+    QElapsedTimer fileTimer;
 
 signals:
     void fpsCount( int );

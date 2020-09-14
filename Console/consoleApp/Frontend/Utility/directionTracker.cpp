@@ -13,7 +13,6 @@
 #include <QDebug>
 #include "util.h"
 #include "directionTracker.h"
-#include "daqSettings.h"
 #include "deviceSettings.h"
 
 // Local constants

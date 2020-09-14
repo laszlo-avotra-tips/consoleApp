@@ -65,7 +65,7 @@ depthSetting::depthSetting() :  minDepth_px(300),maxDepth_px(600), fractionOfCan
     // minDepth_px 300 is a little less than 2 mm
     // maxDepth_px 600 is ~3.75mm
 
-    // 0.475 out of 0.50 is used in Warp.CL, that extra 0.025 is reserved for cardinal tick marks.
+    // 0.475 out of 0.50 is used in CL, that extra 0.025 is reserved for cardinal tick marks.
 //    fractionOfCanvas = 0.475f;
     SignalModel::instance()->setFractionOfCanvas(fractionOfCanvas);
 

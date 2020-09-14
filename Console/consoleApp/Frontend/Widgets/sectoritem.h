@@ -23,7 +23,6 @@
 #include "rotaryAverage.h"
 #include "unwindMachine.h"
 #include "defaults.h"
-#include "buildflags.h"
 #include "util.h"
 #include "Integrator.h"
 #include "scanLine.h"

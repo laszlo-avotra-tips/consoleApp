@@ -1,14 +1,9 @@
 #include "startScreen.h"
 #include "ui_startScreen.h"
 #include "Utility/widgetcontainer.h"
-#include "Widgets/caseinfowizardpage.h"
-#include "Widgets/caseinfowizard.h"
 #include <backend.h>
-#include "devicewizard.h"
 #include "logger.h"
 #include "mainScreen.h"
-#include "Frontend/Screens/frontend.h"
-#include <daqfactory.h>
 #include "deviceSettings.h"
 #include "util.h"
 #include "idaq.h"
@@ -102,32 +97,10 @@ void StartScreen::hideEvent(QHideEvent *he)
     QWidget::hideEvent( he );
 }
 
-void StartScreen::startDaq(frontend *fe)
-{
-    auto idaq = daqfactory::instance()->getdaq();
-
-    if(!idaq){
-        fe->abortStartUp();
-
-        LOG( INFO, "Device not supported. OCT Console cancelled" )
-    }
-    fe->setIDAQ(idaq);
-    LOG( INFO, "LASER: serial port control is DISABLED" )
-    LOG( INFO, "SLED support board: serial port control is DISABLED" )
-
-    fe->startDaq();
-    auto& setting = deviceSettings::Instance();
-    if(setting.getIsSimulation()){
-        fe->startDataCapture();
-    }
-    fe->on_zoomSlider_valueChanged(100);
-}
-
 void StartScreen::on_pushButtonStart_released()
 {
     if(!m_isPressAndHold){
-//        m_timer.stop();
-        WidgetContainer::instance()->gotoScreen("l250Frontend");
+        WidgetContainer::instance()->gotoScreen("mainScreen");
     }
 }
 
