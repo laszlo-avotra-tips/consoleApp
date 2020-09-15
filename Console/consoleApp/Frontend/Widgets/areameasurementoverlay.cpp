@@ -28,7 +28,7 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    box = new QRect( overlayPixmap->width() - 380, overlayPixmap->height() - 280, 1, 1 );
+    box = new QRect( overlayPixmap->width() - int(380/2.11), overlayPixmap->height() - int(280/2.11), 1, 1 );
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
@@ -559,7 +559,7 @@ void AreaMeasurementOverlay::calculate()
  */
 void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 {
-    const int FontSize = 14;
+    const int FontSize = 7;
     QFont font = painter->font();
     font.setPointSize( FontSize );
     painter->setFont( font );
