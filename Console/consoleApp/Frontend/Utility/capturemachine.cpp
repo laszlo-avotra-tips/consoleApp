@@ -79,6 +79,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
+    auto imageRect = sectorImage.rect();
+    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * decoratedImageScaleFactor, imageRect.height() * decoratedImageScaleFactor);
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Obtain the current timestamp
@@ -93,19 +95,20 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
+    const int logoX0{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     const int logoY{50};
 
     /*
      * Paint the procedure data to the sector image.
      */
-    QPainter painter( &sectorImage );
+    QImage plainImage = sectorImage.scaled(scaledRect.width(), scaledRect.height());
+    QPainter painter(&plainImage);
 
     addTimeStamp(painter);
     addFileName(painter,saveName);
 
     //    Upper Right -- Logo
-    painter.drawImage( logoX, logoY, LogoImage );
+    painter.drawImage( logoX0, logoY, LogoImage );
 
     painter.end();
 
@@ -118,8 +121,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QMatrix m;
 //    m.rotate( 90 );
     LOG3(SecName,saveDirName,saveName)
-    auto imageRect = sectorImage.rect();
-    if( !sectorImage.save( SecName, "PNG", 100 ) )
+    if( !plainImage.save( SecName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector capture failed" )
     }
@@ -127,10 +129,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     {
         emit sendFileToKey( SecName );
     }
-    LOG4(imageRect.x(), imageRect.y(), imageRect.height(), imageRect.width())
 
     // save a thumbnail image for the UI to use
-    if( !sectorImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
+    if( !plainImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
     }
@@ -152,11 +153,10 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     addTimeStamp(painter);
     addFileName(painter,saveName);
 
-    painter.drawImage( logoX, logoY, LogoImage );
+    const int logoX1{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
+    painter.drawImage( logoX1, logoY, LogoImage );
     painter.end();
-    QRect myRect(imageRect.x(), imageRect.y(),imageRect.width() * decoratedImageScaleFactor, imageRect.height() * decoratedImageScaleFactor);
-//    QImage dim = decoratedImage.copy(imageRect);
-    QImage dim = decoratedImage.copy(myRect);
+    QImage dim = decoratedImage.copy(scaledRect);
 
     if( !dim.save( DecoratedImageName, "PNG", 100 ) )
     {
@@ -166,7 +166,6 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     {
         emit sendFileToKey( DecoratedImageName );
     }
-    qDebug() << __FUNCTION__ << ": decoratedImage.width()=" << dim.width() << ", decoratedImage.height()" << dim.height();
 
     // update the model
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
