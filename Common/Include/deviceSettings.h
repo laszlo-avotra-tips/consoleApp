@@ -67,7 +67,6 @@ public:
         aLineLengthNormal_px     = 512;
         aLineLengthDeep_px       = 1024;
         imagingDepthNormal_mm    = (float) 3.18;
-        imagingDepthDeep_mm      = (float) 6.36;
         clockingEnabled          = inClockingEnabled;
         clockingGain             = inClockingGain;
         clockingOffset           = inClockingOffset;
@@ -108,7 +107,6 @@ public:
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
     QByteArray getTimeLimit(void)         { return timeLimit; }
     float getImagingDepthNormal_mm(void)  { return imagingDepthNormal_mm; }
-    float getImagingDepthDeep_mm(void)    { return imagingDepthDeep_mm; }
     QImage getIcon(void)                  { return icon->copy(); }
     bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }
@@ -141,7 +139,6 @@ private:
     QByteArray torqueLimit;
     QByteArray timeLimit;
     float      imagingDepthNormal_mm;
-    float      imagingDepthDeep_mm;
     float      pixelsPerMm;
     float      pixelsPerUm;
     QString    disclaimerText;
