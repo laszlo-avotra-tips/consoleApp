@@ -75,6 +75,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
     // TBD: cannot be global to the class?
     const QImage LogoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
+    const double decoratedImageScaleFactor{2.11};
 
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
@@ -92,7 +93,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX{ SectorWidth_px - LogoImage.width() - 100};
+    const int logoX{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     const int logoY{50};
 
     /*
@@ -153,7 +154,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     painter.drawImage( logoX, logoY, LogoImage );
     painter.end();
-    QRect myRect(imageRect.x(), imageRect.y(),imageRect.width() * 2.1, imageRect.height() * 2.1);
+    QRect myRect(imageRect.x(), imageRect.y(),imageRect.width() * decoratedImageScaleFactor, imageRect.height() * decoratedImageScaleFactor);
 //    QImage dim = decoratedImage.copy(imageRect);
     QImage dim = decoratedImage.copy(myRect);
 
