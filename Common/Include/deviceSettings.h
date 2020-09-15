@@ -65,7 +65,6 @@ public:
         revolutionsPerMin2       = inRevolutionsPerMin2;
         revolutionsPerMin3       = inRevolutionsPerMin3;
         aLineLengthNormal_px     = 512;
-        aLineLengthDeep_px       = 1024;
         imagingDepthNormal_mm    = (float) 3.18;
         clockingEnabled          = inClockingEnabled;
         clockingGain             = inClockingGain;
@@ -98,15 +97,14 @@ public:
     int getRevolutionsPerMin1(void)        { return revolutionsPerMin1; }
     int getRevolutionsPerMin2(void)        { return revolutionsPerMin2; }
     int getRevolutionsPerMin3(void)        { return revolutionsPerMin3; }
-    int getALineLengthNormal_px(void)     { return aLineLengthNormal_px; }
-    int getALineLengthDeep_px(void)       { return aLineLengthDeep_px; }
+    int getALineLengthNormal_px(void);
     int getMeaurementVersion(void)        { return measurementVersion; }
     int getClockingEnabled(void)          { return clockingEnabled; }
     QByteArray getClockingGain(void)      { return clockingGain; }
     QByteArray getClockingOffset(void)    { return clockingOffset; }
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
     QByteArray getTimeLimit(void)         { return timeLimit; }
-    float getImagingDepthNormal_mm(void)  { return imagingDepthNormal_mm; }
+    float getImagingDepthNormal_mm(void);
     QImage getIcon(void)                  { return icon->copy(); }
     bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }
@@ -117,9 +115,13 @@ public:
 static QString formatDeviceName(const QString& name);
 bool isAth() const {return m_isAth;}
 
+void setImagingDepthNormal_mm(float value);
+
+void setALineLengthNormal_px(int value);
+
 private:
-    QString    deviceName;
-    QString    splitDeviceName;
+QString    deviceName;
+QString    splitDeviceName;
 
     QByteArray catheterType;
     int        catheterLength;
@@ -131,7 +133,6 @@ private:
     int        revolutionsPerMin2;
     int        revolutionsPerMin3;
     int        aLineLengthNormal_px;
-    int        aLineLengthDeep_px;
     int        measurementVersion;
     int        clockingEnabled;
     QByteArray clockingGain;

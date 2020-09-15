@@ -22,6 +22,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <logger.h>
+#include "Utility/userSettings.h"
 
 
 #define MASK_STEP_SIZE 1
@@ -75,7 +76,14 @@ int deviceSettings::init( void )
             numDevicesLoaded++;
         }
     }
-    LOG1(numDevicesLoaded)
+    auto& settings = userSettings::Instance();
+    const float depthNormal = settings.getImagingDepth_mm() / 2.0f;
+    const int aLineLengthNormal = settings.getALineLength_px() / 2;
+    LOG3(numDevicesLoaded, depthNormal, aLineLengthNormal)
+    for(auto device : deviceList){
+        device->setImagingDepthNormal_mm(depthNormal);
+        device->setALineLengthNormal_px(aLineLengthNormal);
+    }
 
     return numDevicesLoaded;
 }
@@ -328,6 +336,16 @@ QString device::formatDeviceName(const QString &name)
     return retVal;
 }
 
+void device::setImagingDepthNormal_mm(float value)
+{
+    imagingDepthNormal_mm = value;
+}
+
+void device::setALineLengthNormal_px(int value)
+{
+    aLineLengthNormal_px = value;
+}
+
 bool deviceSettings::getIsSimulation() const
 {
     return m_isSimulation;
@@ -341,4 +359,14 @@ void deviceSettings::setIsSimulation(bool isSimulation)
 const QString &device::getSplitDeviceName() const
 {
     return splitDeviceName;
+}
+
+int device::getALineLengthNormal_px()
+{
+    return aLineLengthNormal_px;
+}
+
+float device::getImagingDepthNormal_mm()
+{
+    return imagingDepthNormal_mm;
 }

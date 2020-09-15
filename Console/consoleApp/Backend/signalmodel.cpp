@@ -133,16 +133,6 @@ void SignalModel::setALineLengthNormal_px(const cl_int &aLineLengthNormal_px)
     m_aLineLengthNormal_px = aLineLengthNormal_px;
 }
 
-const cl_float *SignalModel::getImagingDehthNormal_mm() const
-{
-    return &m_imagingDepthNormal_mm;
-}
-
-void SignalModel::setImagingDepthNormal_mm(const cl_float &imagingDepthNormal_mm)
-{
-    m_imagingDepthNormal_mm = imagingDepthNormal_mm;
-}
-
 const cl_float *SignalModel::getInternalImagingMask_px() const
 {
     return &m_internalImagingMask_px;
