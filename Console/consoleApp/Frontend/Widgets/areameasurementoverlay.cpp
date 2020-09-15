@@ -25,10 +25,11 @@ const int MeasurementPrecision = 1;
 AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     : QGraphicsPixmapItem()
 {
+    const double decoratedImageScaleFactor{2.11};
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    box = new QRect( overlayPixmap->width() - int(380/2.11), overlayPixmap->height() - int(280/2.11), 1, 1 );
+    box = new QRect( overlayPixmap->width() - int(380/decoratedImageScaleFactor), overlayPixmap->height() - int(280/decoratedImageScaleFactor), 1, 1 );
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
