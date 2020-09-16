@@ -344,7 +344,7 @@ bool DAQ::startDaq()
         axGetMessage( session, axMessage );
         qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
 #endif
-        const int laserDivider{3};
+        const int laserDivider{2};
         LOG1(laserDivider)
         setLaserDivider(laserDivider);
     } catch (...) {
