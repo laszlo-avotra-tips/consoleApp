@@ -17,7 +17,7 @@
 const int SectorWidth_px  = SECTOR_HEIGHT_PX;
 const int SectorHeight_px = SECTOR_HEIGHT_PX;
 
-#define MAX_ACQ_IMAGE_SIZE ( FFT_DATA_SIZE * MAX_LINES_PER_FRAME ) // max acquired frame size
+#define MAX_ACQ_IMAGE_SIZE ( FFT_DATA_SIZE * MAX_LINES_PER_FRAME * 2) // max acquired frame size
 
 #define SURFACE_BOOK 0
 #define SIMULATION_MODE 0
