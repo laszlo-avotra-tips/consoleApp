@@ -3,6 +3,7 @@
 #include "Utility/userSettings.h"
 #include "util.h"
 #include "logger.h"
+#include "fullCaseRecorder.h"
 
 CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
@@ -136,7 +137,9 @@ void CaseInformationModel::validate()
      */
     QString uuid = QUuid::createUuid().toString();
     uuid.remove( "{" ).remove( "}" );
-    info.setCaseID( uuid );
+    info.setCaseID( uuid );    
+
+    FullCaseRecorder::instance()->setFullCaseDir(info.getFullCaseDir());
 
     /*
      *  Create the case session directories.
