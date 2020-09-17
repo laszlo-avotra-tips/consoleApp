@@ -451,7 +451,6 @@ void SledSupport::run()
         {
             mutex.lock();
             deviceSettings &device = deviceSettings::Instance();
-//            qDebug() << "New Device Name: " << device.current()->getDeviceName();
             LOG( INFO, QString( "Sled Support Board new Device Name: %1" ).arg( device.current()->getDeviceName() ) );
             int isEnabled = device.current()->getClockingEnabled();
             QByteArray clockingGain = device.current()->getClockingGain();
@@ -460,10 +459,8 @@ void SledSupport::run()
             QByteArray torqueLimit = device.current()->getTorqueLimit();
             QByteArray timeLimit = device.current()->getTimeLimit();
             mutex.unlock();
-//            qDebug() << "* SledSupport - run new Device = " << newDevice << "ClockingEnabled:" << isEnabled;
             newDevice = -1;
 
-//            updateDeviceForSledSupport( isEnabled, clockingGain, clockingOffset, speed, torqueLimit, timeLimit );
             emit setSlider( speed );
             baParam.setNum( speed );
             setSledSpeed( baParam );
@@ -472,7 +469,14 @@ void SledSupport::run()
             setClockingGain( clockingGain );
             setSledTorqueLimit( torqueLimit );
             setSledTimeLimit( timeLimit );
-//            setVOA( 3750 );
+
+            auto currentDev = device.current();
+            const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
+            if(isBiDirectionalEnabled){
+                writeSerial("sbm1");
+            } else {
+                 writeSerial("sbm0");
+            }
         }
         else if( pollingTimer > ClockingUpdateTimer_ms )
         {

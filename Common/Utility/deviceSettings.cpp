@@ -241,7 +241,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                      e.attribute( "catheterLength", "" ).toInt(),
                                      e.attribute( "catheterRadius_um", "" ).toInt(),
                                      e.attribute( "internalImagingMask_px", "" ).toInt(),
-                                     e.attribute( "biDirectional", "1" ).toInt(),
+                                     e.attribute( "biDirectional", "0" ).toInt(),
                                      e.attribute( "numberOfSpeeds", "1" ).toInt(),
                                      e.attribute( "revolutionsPerMin1", "0" ).toInt(),
                                      e.attribute( "revolutionsPerMin2", "0" ).toInt(),
