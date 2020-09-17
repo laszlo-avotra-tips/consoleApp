@@ -99,7 +99,6 @@ private:
     void setSledTimeLimit( QByteArray );
     void setSledLimitBlink( int );
     void handleClockingResponse( void );
-    void setSledDirection( QByteArray );
     void getFirmwareVersions( void );
     QByteArray qualifyVersion( QByteArray v );
 

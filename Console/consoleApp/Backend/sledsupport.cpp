@@ -447,14 +447,6 @@ void SledSupport::run()
             mutex.unlock();
             setSledSpeed( baParam );
         }
-        else if( newDir >= 0 )
-        {
-            mutex.lock();
-            baParam.setNum( newDir );
-            newDir = -1;
-            mutex.unlock();
-            setSledDirection( baParam );
-        }
         else if( newDevice >= 0 )
         {
             mutex.lock();
@@ -578,7 +570,6 @@ void SledSupport::setClockingParams( DeviceClockingParams_T params )
         setSledSpeed( params.speed );
         setSledTorqueLimit( params.torque );
         setSledTimeLimit( params.time );
-        setSledDirection( params.dir );
         setSledLimitBlink( params.blinkEnabled );
 }
 
@@ -867,60 +858,6 @@ bool SledSupport::isRunningState()
     return running;
 }
 
-
-/*
- * setSledDirection
- */
-void SledSupport::setSledDirection( QByteArray dir )
-{
-    if( ftHandle != NULL )
-    {
-        bool running = false;
-        // first get current run mode
-        mutex.lock();
-        ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );   // flush input buffer
-        if( ftStatus != FT_OK )
-        {
-            qDebug() << "Input flush failed";
-        }
-        writeSerial( GetRunningState );
-        msleep( SledCommDelay_ms );                 // sleep to wait for a response
-        QByteArray resp = getResponse();
-        mutex.unlock();
-        qDebug() << "get running state response:" << resp;
-        if( resp.toUpper().contains( "1" )) running = true;
-
-        // remember direction in case Sled of off-line
-        sledParams.dir =  dir ;
-
-        QByteArray setDirSerialCmd = QByteArray( SetDirection ).append( dir ).append( "\r" );
-
-        mutex.lock();
-        qDebug() << "Tx:" << setDirSerialCmd;
-        writeSerial( setDirSerialCmd );
-        msleep( SledCommDelay_ms );                 // sleep to wait for a response
-        resp = getResponse();
-        mutex.unlock();
-        qDebug() << "set direction response:" << resp;
-
-        qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
-        {
-            qDebug() << "set direction returned NAK" << resp.toUpper();
-            //LOG( WARNING, QString( "Sled Support Board: set direction returned NAK. Response: %1" ).arg( QString( resp ) ) );
-        }
-        float fdegrees = (float) 0.0;
-        emit setDisplayAngle( fdegrees , dir.toInt() );
-
-        if( running )
-        {
-            msleep( 200 );                 // make sure the Sled is stopped
-            mutex.lock();
-            writeSerial( SetSledOn );
-            mutex.unlock();
-        }
-    }
-}
 
 /*
  * setSledTorque
