@@ -137,8 +137,9 @@ void CaseInformationModel::validate()
      */
     QString uuid = QUuid::createUuid().toString();
     uuid.remove( "{" ).remove( "}" );
-    info.setCaseID( uuid );    
+    info.setCaseID( uuid );
 
+    FullCaseRecorder::instance()->startRecording();
     FullCaseRecorder::instance()->setFullCaseDir(info.getFullCaseDir());
 
     /*

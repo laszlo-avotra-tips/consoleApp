@@ -40,8 +40,6 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
         m_theVideoRecorderProcess->setProgram(m_programName);
         m_theVideoRecorderProcess->start();
         LOG3(m_configFileName, outputDirectory, m_commandFileName)
-        QThread::sleep(1);
-        startRecording();
     }
 }
 
@@ -65,7 +63,8 @@ void FullCaseRecorder::stopRecording()
 
 void FullCaseRecorder::closeRecorder()
 {
+    LOG1(m_theVideoRecorderProcess)
     stopRecording();
     QThread::msleep(100);
-    m_theVideoRecorderProcess->close();
+//    m_theVideoRecorderProcess->close();
 }
