@@ -9,6 +9,12 @@
 
 FullCaseRecorder* FullCaseRecorder::m_instance{nullptr};
 
+FullCaseRecorder::~FullCaseRecorder()
+{
+    delete m_theVideoRecorderProcess;
+    LOG1(m_theVideoRecorderProcess)
+}
+
 FullCaseRecorder *FullCaseRecorder::instance()
 {
     if(!m_instance){
@@ -26,13 +32,14 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
 {
     if(m_caseId.isEmpty()){
         m_caseId = fullCaseDir;
-        m_theVideoRecorderProcess = std::make_unique<QProcess>();
+        m_theVideoRecorderProcess = new QProcess();
 
         const QString& outputDirectory = fullCaseDir;
         QStringList arguments {m_configFileName, outputDirectory, m_commandFileName};
         m_theVideoRecorderProcess->setArguments(arguments);
         m_theVideoRecorderProcess->setProgram(m_programName);
         m_theVideoRecorderProcess->start();
+        LOG3(m_configFileName, outputDirectory, m_commandFileName)
         QThread::sleep(1);
         startRecording();
     }

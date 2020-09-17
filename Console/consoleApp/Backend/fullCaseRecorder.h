@@ -11,6 +11,7 @@ class FullCaseRecorder : public QObject
 {
   Q_OBJECT
 public:
+  ~FullCaseRecorder();
   static FullCaseRecorder* instance();
 
   void setFullCaseDir(const QString &fullCaseDir);
@@ -23,7 +24,7 @@ private:
   void startTheVideoRecorderProcess();
   static  FullCaseRecorder* m_instance;
 
-  std::unique_ptr<QProcess> m_theVideoRecorderProcess{nullptr};
+  QProcess* m_theVideoRecorderProcess{nullptr};
   QString m_caseId;
   const QString m_programName{"VideoCapture.exe"};
   const QString m_configFileName{"config.json"};
