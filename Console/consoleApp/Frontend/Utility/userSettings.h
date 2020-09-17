@@ -17,6 +17,7 @@
 
 #include "defaults.h"
 #include "deviceSettings.h"
+#include "logger.h"
 
 class caseInfo
 {
@@ -30,6 +31,7 @@ public:
     void setCaseID( QString id ) {
         caseIDSet = true;
         caseID = id;
+        LOG2(caseID, getClipsDir())
     }
     void setDoctor( QString name ) {
         doctor = name;
