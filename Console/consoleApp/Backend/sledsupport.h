@@ -33,6 +33,7 @@ public:
     bool init( void );
     void setSledSpeed( QByteArray );
     bool isRunningState();
+    void enableBidirectional();
 
     struct DeviceClockingParams_T
     {

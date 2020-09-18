@@ -470,13 +470,7 @@ void SledSupport::run()
             setSledTorqueLimit( torqueLimit );
             setSledTimeLimit( timeLimit );
 
-            auto currentDev = device.current();
-            const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
-            if(isBiDirectionalEnabled){
-                writeSerial("sbm1");
-            } else {
-                 writeSerial("sbm0");
-            }
+            enableBidirectional();
         }
         else if( pollingTimer > ClockingUpdateTimer_ms )
         {
@@ -1144,4 +1138,18 @@ QByteArray SledSupport::getResponse( void )
     }
     return data;
 }
+
+void SledSupport::enableBidirectional()
+{
+    deviceSettings &device = deviceSettings::Instance();
+
+    auto currentDev = device.current();
+    const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
+    if(isBiDirectionalEnabled){
+        writeSerial("sbm1");
+    } else {
+         writeSerial("sbm0");
+    }
+}
+
 

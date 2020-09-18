@@ -470,6 +470,9 @@ void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 {
     LOG1(isInRunningState);
 
+//    auto& sled = SledSupport::Instance();
+//    sled.enableBidirectional();
+
     if(isInRunningState){
         ui->labelLive->setStyleSheet("color: green;");
     }else{
