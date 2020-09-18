@@ -7,6 +7,7 @@
 #include "deviceSettings.h"
 #include "util.h"
 #include "idaq.h"
+#include "fullCaseRecorder.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -82,6 +83,7 @@ void StartScreen::on_pushButtonPreferences_clicked()
 
 void StartScreen::on_pushButtonShutdown_clicked()
 {
+    FullCaseRecorder::instance()->closeRecorder();
     WidgetContainer::instance()->close();
 }
 
