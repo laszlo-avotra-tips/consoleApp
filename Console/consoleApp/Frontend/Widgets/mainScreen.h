@@ -38,7 +38,7 @@ public:
 signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
-    void sledRunningStateChanged(bool isInRunningState);
+    void sledRunningStateChanged(int isInRunningState);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -74,7 +74,7 @@ private slots:
     void on_pushButtonMeasure_clicked(bool checked);
 
     void updateSledRunningState();
-    void handleSledRunningStateChanged(bool isInRunningState);
+    void handleSledRunningStateChanged(int runningStateVal);
 
     void on_pushButtonRecord_clicked();
     void onCaptureImage();
@@ -110,6 +110,7 @@ private:
     QTimer m_updatetimeTimer;
     OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
+    int m_sledRunningStateVal{0};
     int m_sledRuntime{0}; //the time the Sled is on in milliseconds
 
     ScanConversion *m_scanWorker{nullptr};

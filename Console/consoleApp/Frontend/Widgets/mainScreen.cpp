@@ -162,7 +162,7 @@ int MainScreen::getSledRuntime()
     updateSledRunningState();
 
     if(m_runTime.isValid()){
-        if(m_sledIsInRunningState){
+        if(m_sledRunningStateVal){
             auto delta = m_runTime.restart();
             m_sledRuntime += delta;
 //            LOG2(delta, m_sledRuntime);
@@ -462,20 +462,22 @@ void MainScreen::on_pushButtonMeasure_clicked(bool checked)
 
 void MainScreen::updateSledRunningState()
 {
-    bool currentSledRunningState{SledSupport::Instance().isRunningState()};
+    int currentSledRunningStateVal{SledSupport::Instance().runningState()};
 
-     if(m_sledIsInRunningState != currentSledRunningState){
-         m_sledIsInRunningState = currentSledRunningState;
-         emit sledRunningStateChanged(m_sledIsInRunningState);
+     if(m_sledRunningStateVal != currentSledRunningStateVal){
+         m_sledRunningStateVal = currentSledRunningStateVal;
+         emit sledRunningStateChanged(m_sledRunningStateVal);
      }
 }
 
-void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
+void MainScreen::handleSledRunningStateChanged(int runningStateVal)
 {
 //    LOG1(isInRunningState);
 
-    if(isInRunningState){
+    if(runningStateVal == 1){
         ui->labelLive->setStyleSheet("color: green;");
+    } else if (runningStateVal == 3){
+        ui->labelLive->setStyleSheet("color: blue;");
     }else{
         ui->labelLive->setStyleSheet("color: grey;");
     }
