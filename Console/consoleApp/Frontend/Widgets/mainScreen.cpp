@@ -139,8 +139,12 @@ void MainScreen::setSpeed(int speed)
     LOG1(speed);
     const QString qSpeed(QString::number(speed));
     const QByteArray baSpeed(qSpeed.toStdString().c_str());
-    SledSupport::Instance().setSledSpeed(baSpeed);
-
+    auto& sled = SledSupport::Instance();
+    sled.setSledSpeed(baSpeed);
+    if(speed >= 600){
+        QThread::msleep(200);
+        sled.enableBidirectional();
+    }
 }
 
 void MainScreen::highlightSpeedButton(QPushButton *wid)
@@ -468,10 +472,7 @@ void MainScreen::updateSledRunningState()
 
 void MainScreen::handleSledRunningStateChanged(bool isInRunningState)
 {
-    LOG1(isInRunningState);
-
-//    auto& sled = SledSupport::Instance();
-//    sled.enableBidirectional();
+//    LOG1(isInRunningState);
 
     if(isInRunningState){
         ui->labelLive->setStyleSheet("color: green;");
