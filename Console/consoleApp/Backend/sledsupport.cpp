@@ -873,9 +873,9 @@ int SledSupport::runningState()
         QByteArray resp = getResponse();
         mutex.unlock();
         qDebug() << "get running state response:" << resp;
-        if( resp.toUpper().contains( "01" )) {
+        if( resp.toUpper().contains( "1" )) {
             running = 1;
-        } else if(resp.toUpper().contains( "11" )){
+        } else if(resp.toUpper().contains( "3" )){
             running = 3;
         }
         //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
