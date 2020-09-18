@@ -320,7 +320,7 @@ bool DAQ::startDaq()
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
          * 35 * 256 = 8960 A lines
          */
-        success = axSetTrigTimeout(session, framesUntilForceTrig);
+        success = axSetTrigTimeout(session, framesUntilForceTrig * 10);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
