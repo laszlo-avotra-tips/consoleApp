@@ -27,7 +27,7 @@ private:
   QProcess* m_theVideoRecorderProcess{nullptr};
   QString m_caseId;
   const QString m_programName{"VideoCapture.exe"};
-  const QString m_configFileName{"config.json"};
+  const QString m_configFileName{"\\Avinger_System\\config.json"};
   const QString m_commandFileName{"VideoCommand.txt"};
   const QString m_startRecording{"StartRec"};
   const QString m_stopRecording{"StopRec"};

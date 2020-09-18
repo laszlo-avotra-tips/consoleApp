@@ -65,6 +65,4 @@ void FullCaseRecorder::closeRecorder()
 {
     LOG1(m_theVideoRecorderProcess)
     stopRecording();
-    QThread::msleep(100);
-//    m_theVideoRecorderProcess->close();
 }
