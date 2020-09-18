@@ -1175,9 +1175,9 @@ void SledSupport::enableBidirectional()
     auto currentDev = device.current();
     const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
     if(isBiDirectionalEnabled){
-        writeSerial("sbm1");
+        writeSerial("sbm1\r");
     } else {
-         writeSerial("sbm0");
+         writeSerial("sbm0\r");
     }
 }
 
