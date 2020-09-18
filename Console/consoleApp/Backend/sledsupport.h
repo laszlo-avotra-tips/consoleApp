@@ -33,6 +33,8 @@ public:
     bool init( void );
     void setSledSpeed( QByteArray );
     bool isRunningState();
+    int runningState();
+    void enableBidirectional();
 
     struct DeviceClockingParams_T
     {
@@ -99,7 +101,6 @@ private:
     void setSledTimeLimit( QByteArray );
     void setSledLimitBlink( int );
     void handleClockingResponse( void );
-    void setSledDirection( QByteArray );
     void getFirmwareVersions( void );
     QByteArray qualifyVersion( QByteArray v );
 

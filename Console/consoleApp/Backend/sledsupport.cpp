@@ -447,19 +447,10 @@ void SledSupport::run()
             mutex.unlock();
             setSledSpeed( baParam );
         }
-        else if( newDir >= 0 )
-        {
-            mutex.lock();
-            baParam.setNum( newDir );
-            newDir = -1;
-            mutex.unlock();
-            setSledDirection( baParam );
-        }
         else if( newDevice >= 0 )
         {
             mutex.lock();
             deviceSettings &device = deviceSettings::Instance();
-//            qDebug() << "New Device Name: " << device.current()->getDeviceName();
             LOG( INFO, QString( "Sled Support Board new Device Name: %1" ).arg( device.current()->getDeviceName() ) );
             int isEnabled = device.current()->getClockingEnabled();
             QByteArray clockingGain = device.current()->getClockingGain();
@@ -468,10 +459,8 @@ void SledSupport::run()
             QByteArray torqueLimit = device.current()->getTorqueLimit();
             QByteArray timeLimit = device.current()->getTimeLimit();
             mutex.unlock();
-//            qDebug() << "* SledSupport - run new Device = " << newDevice << "ClockingEnabled:" << isEnabled;
             newDevice = -1;
 
-//            updateDeviceForSledSupport( isEnabled, clockingGain, clockingOffset, speed, torqueLimit, timeLimit );
             emit setSlider( speed );
             baParam.setNum( speed );
             setSledSpeed( baParam );
@@ -480,7 +469,8 @@ void SledSupport::run()
             setClockingGain( clockingGain );
             setSledTorqueLimit( torqueLimit );
             setSledTimeLimit( timeLimit );
-//            setVOA( 3750 );
+
+            enableBidirectional();
         }
         else if( pollingTimer > ClockingUpdateTimer_ms )
         {
@@ -578,7 +568,6 @@ void SledSupport::setClockingParams( DeviceClockingParams_T params )
         setSledSpeed( params.speed );
         setSledTorqueLimit( params.torque );
         setSledTimeLimit( params.time );
-        setSledDirection( params.dir );
         setSledLimitBlink( params.blinkEnabled );
 }
 
@@ -867,15 +856,11 @@ bool SledSupport::isRunningState()
     return running;
 }
 
-
-/*
- * setSledDirection
- */
-void SledSupport::setSledDirection( QByteArray dir )
+int SledSupport::runningState()
 {
+    int running = 0;
     if( ftHandle != NULL )
     {
-        bool running = false;
         // first get current run mode
         mutex.lock();
         ftStatus = FT_Purge( ftHandle, FT_PURGE_RX );   // flush input buffer
@@ -888,39 +873,18 @@ void SledSupport::setSledDirection( QByteArray dir )
         QByteArray resp = getResponse();
         mutex.unlock();
         qDebug() << "get running state response:" << resp;
-        if( resp.toUpper().contains( "1" )) running = true;
-
-        // remember direction in case Sled of off-line
-        sledParams.dir =  dir ;
-
-        QByteArray setDirSerialCmd = QByteArray( SetDirection ).append( dir ).append( "\r" );
-
-        mutex.lock();
-        qDebug() << "Tx:" << setDirSerialCmd;
-        writeSerial( setDirSerialCmd );
-        msleep( SledCommDelay_ms );                 // sleep to wait for a response
-        resp = getResponse();
-        mutex.unlock();
-        qDebug() << "set direction response:" << resp;
-
-        qDebug() << "Rx:" << resp;
-        if( resp.toUpper().contains( "NAK" ) )
-        {
-            qDebug() << "set direction returned NAK" << resp.toUpper();
-            //LOG( WARNING, QString( "Sled Support Board: set direction returned NAK. Response: %1" ).arg( QString( resp ) ) );
+        if( resp.toUpper().contains( "1" )) {
+            running = 1;
+        } else if(resp.toUpper().contains( "3" )){
+            running = 3;
         }
-        float fdegrees = (float) 0.0;
-        emit setDisplayAngle( fdegrees , dir.toInt() );
-
-        if( running )
-        {
-            msleep( 200 );                 // make sure the Sled is stopped
-            mutex.lock();
-            writeSerial( SetSledOn );
-            mutex.unlock();
-        }
+        //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
+        QString respAsString = QTextCodec::codecForMib(106)->toUnicode(resp);
+        LOG2(respAsString, running)
     }
+    return running;
 }
+
 
 /*
  * setSledTorque
@@ -1203,4 +1167,18 @@ QByteArray SledSupport::getResponse( void )
     }
     return data;
 }
+
+void SledSupport::enableBidirectional()
+{
+    deviceSettings &device = deviceSettings::Instance();
+
+    auto currentDev = device.current();
+    const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
+    if(isBiDirectionalEnabled){
+        writeSerial("sbm1\r");
+    } else {
+         writeSerial("sbm0\r");
+    }
+}
+
 
