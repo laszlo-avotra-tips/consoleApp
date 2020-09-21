@@ -858,7 +858,7 @@ bool SledSupport::isRunningState()
 
 int SledSupport::runningState()
 {
-    int running = 0;
+    int running = -1;
     if( ftHandle != NULL )
     {
         // first get current run mode

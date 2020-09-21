@@ -464,7 +464,8 @@ void MainScreen::updateSledRunningState()
 {
     int currentSledRunningStateVal{SledSupport::Instance().runningState()};
 
-     if(m_sledRunningStateVal != currentSledRunningStateVal){
+//     if(m_sledRunningStateVal != currentSledRunningStateVal)
+     {
          m_sledRunningStateVal = currentSledRunningStateVal;
          emit sledRunningStateChanged(m_sledRunningStateVal);
      }
@@ -472,7 +473,7 @@ void MainScreen::updateSledRunningState()
 
 void MainScreen::handleSledRunningStateChanged(int runningStateVal)
 {
-//    LOG1(isInRunningState);
+    LOG1(runningStateVal);
     auto&ds = deviceSettings::Instance();
     auto device = ds.current();
 
