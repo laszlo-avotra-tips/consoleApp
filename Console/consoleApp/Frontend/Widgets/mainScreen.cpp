@@ -483,7 +483,7 @@ void MainScreen::handleSledRunningStateChanged(int runningStateVal)
             m_scene->setActive();
         }
     } else if (runningStateVal == 3){
-        ui->labelLive->setStyleSheet("color: blue;");
+        ui->labelLive->setStyleSheet("color: green;");
         if(!isAth){
             m_scene->setPassive();
         }
