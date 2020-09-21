@@ -58,6 +58,9 @@ public:
     void hideAnnotations();
     void showAnnotations();
 
+    bool getIsRotationIndicatorOverlayItemEnabled() const;
+    void setIsRotationIndicatorOverlayItemEnabled(bool value);
+
 public slots:
     void addScanFrame( QSharedPointer<scanframe> &data );
     void captureDi( QImage decoratedImage, QString tagText );

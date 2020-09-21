@@ -232,6 +232,16 @@ void liveScene::refresh( void )
     }
 }
 
+bool liveScene::getIsRotationIndicatorOverlayItemEnabled() const
+{
+    return isRotationIndicatorOverlayItemEnabled;
+}
+
+void liveScene::setIsRotationIndicatorOverlayItemEnabled(bool value)
+{
+    isRotationIndicatorOverlayItemEnabled = value;
+}
+
 /*
  * showReview()
  *
