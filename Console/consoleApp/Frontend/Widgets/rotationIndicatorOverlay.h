@@ -10,7 +10,7 @@ public:
     RotationIndicatorOverlay(QGraphicsItem *parent = nullptr);
 
 private:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) override;
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 };
 
 #endif // ROTATIONINDICATOROVERLAY_H

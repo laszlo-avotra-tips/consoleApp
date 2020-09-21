@@ -23,6 +23,7 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
+#include "rotationIndicatorOverlay.h"
 
 
 QString timestampToString( unsigned long ts );
@@ -152,11 +153,6 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
-    annotateOverlayItem      = nullptr;
-    isAnnotateModeEnabled    = false;
-
-    areaOverlayItem          = nullptr;
-    isMeasurementEnabled = false;
 }
 
 /*
@@ -804,6 +800,11 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
         areaOverlayItem->setZValue( 6.0 );
         areaOverlayItem->setColor( color );
         areaOverlayItem->setCalibrationScale( cachedCalibrationScale );
+
+        rotationIndicatorOverlayItem = new RotationIndicatorOverlay();
+        this->addItem(rotationIndicatorOverlayItem);
+        rotationIndicatorOverlayItem->setZValue(60);
+        rotationIndicatorOverlayItem->show();
     }
     else
     {
@@ -812,6 +813,11 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
             this->removeItem( areaOverlayItem );
             delete areaOverlayItem;
             areaOverlayItem = nullptr;
+        }
+        if(rotationIndicatorOverlayItem){
+            this->removeItem( rotationIndicatorOverlayItem );
+            delete rotationIndicatorOverlayItem;
+            rotationIndicatorOverlayItem = nullptr;
         }
     }
 }
