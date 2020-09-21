@@ -178,6 +178,8 @@ liveScene::~liveScene()
     {
         delete areaOverlayItem;
     }
+
+    delete rotationIndicatorOverlayItem;
 }
 
 /*
@@ -240,6 +242,41 @@ bool liveScene::getIsRotationIndicatorOverlayItemEnabled() const
 void liveScene::setIsRotationIndicatorOverlayItemEnabled(bool value)
 {
     isRotationIndicatorOverlayItemEnabled = value;
+}
+
+void liveScene::setActive()
+{
+
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+        }
+        rotationIndicatorOverlayItem->addItem();
+        rotationIndicatorOverlayItem->setText(" ACTIVE");
+    }
+}
+
+void liveScene::setPassive()
+{
+
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+        }
+        rotationIndicatorOverlayItem->addItem();
+        rotationIndicatorOverlayItem->setText("PASSIVE");
+    }
+}
+
+void liveScene::setIdle()
+{
+
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+        }
+        rotationIndicatorOverlayItem->removeItem();
+    }
 }
 
 /*
@@ -811,10 +848,7 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
         areaOverlayItem->setColor( color );
         areaOverlayItem->setCalibrationScale( cachedCalibrationScale );
 
-        rotationIndicatorOverlayItem = new RotationIndicatorOverlay();
-        this->addItem(rotationIndicatorOverlayItem);
-        rotationIndicatorOverlayItem->setZValue(60);
-        rotationIndicatorOverlayItem->show();
+        rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
     }
     else
     {
@@ -825,9 +859,9 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
             areaOverlayItem = nullptr;
         }
         if(rotationIndicatorOverlayItem){
-            this->removeItem( rotationIndicatorOverlayItem );
+//            this->removeItem( rotationIndicatorOverlayItem );
             delete rotationIndicatorOverlayItem;
-            rotationIndicatorOverlayItem = nullptr;
+//            rotationIndicatorOverlayItem = nullptr;
         }
     }
 }

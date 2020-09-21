@@ -61,6 +61,10 @@ public:
     bool getIsRotationIndicatorOverlayItemEnabled() const;
     void setIsRotationIndicatorOverlayItemEnabled(bool value);
 
+    void setActive();
+    void setPassive();
+    void setIdle();
+
 public slots:
     void addScanFrame( QSharedPointer<scanframe> &data );
     void captureDi( QImage decoratedImage, QString tagText );
