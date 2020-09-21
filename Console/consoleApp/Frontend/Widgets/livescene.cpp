@@ -276,6 +276,7 @@ void liveScene::setIdle()
             rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
         }
         rotationIndicatorOverlayItem->removeItem();
+        update();
     }
 }
 
