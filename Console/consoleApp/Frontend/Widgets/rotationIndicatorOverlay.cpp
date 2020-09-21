@@ -7,13 +7,16 @@
 RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsItem *parent)
     : QGraphicsTextItem( parent )
 {
-    setDefaultTextColor(QColor("red"));
-    setFont(QFont("Helvetica Neue"));
+    setTextWidth(400);
+    auto font = QFont("Helvetica Neue");
+    setFont(font);
 }
 
 void RotationIndicatorOverlay::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget * /*widget*/)
 {
-//    setPlainText("Active");
+    QFont font = painter->font();
+    font.setPointSize(font.pointSize() * 4 );
+    painter->setFont(font);
     painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
-    painter->drawText(QPointF(512,512), "Active");
+    painter->drawText(QPointF(450,520), "Active");
 }
