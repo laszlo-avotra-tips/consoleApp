@@ -30,6 +30,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/opaqueScreen.h \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \
+    $$PWD/Frontend/Widgets/rotationIndicatorOverlay.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
@@ -94,6 +95,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
     $$PWD/Frontend/Widgets/opaqueScreen.cpp \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
+    $$PWD/Frontend/Widgets/rotationIndicatorOverlay.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
