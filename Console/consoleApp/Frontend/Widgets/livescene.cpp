@@ -23,6 +23,7 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
+#include "rotationIndicatorOverlay.h"
 
 
 QString timestampToString( unsigned long ts );
@@ -152,11 +153,6 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
-    annotateOverlayItem      = nullptr;
-    isAnnotateModeEnabled    = false;
-
-    areaOverlayItem          = nullptr;
-    isMeasurementEnabled = false;
 }
 
 /*
@@ -182,6 +178,8 @@ liveScene::~liveScene()
     {
         delete areaOverlayItem;
     }
+
+    delete rotationIndicatorOverlayItem;
 }
 
 /*
@@ -232,6 +230,52 @@ void liveScene::refresh( void )
         overlays->render();
     }
     if(deviceSettings::Instance().getIsSimulation()){
+        update();
+    }
+}
+
+bool liveScene::getIsRotationIndicatorOverlayItemEnabled() const
+{
+    return isRotationIndicatorOverlayItemEnabled;
+}
+
+void liveScene::setIsRotationIndicatorOverlayItemEnabled(bool value)
+{
+    isRotationIndicatorOverlayItemEnabled = value;
+}
+
+void liveScene::setActive()
+{
+
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+        }
+        rotationIndicatorOverlayItem->addItem();
+        rotationIndicatorOverlayItem->setText(" ACTIVE");
+    }
+}
+
+void liveScene::setPassive()
+{
+
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+        }
+        rotationIndicatorOverlayItem->addItem();
+        rotationIndicatorOverlayItem->setText("PASSIVE");
+    }
+}
+
+void liveScene::setIdle()
+{
+
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+        }
+        rotationIndicatorOverlayItem->removeItem();
         update();
     }
 }
@@ -804,6 +848,8 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
         areaOverlayItem->setZValue( 6.0 );
         areaOverlayItem->setColor( color );
         areaOverlayItem->setCalibrationScale( cachedCalibrationScale );
+
+        rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
     }
     else
     {
@@ -812,6 +858,11 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
             this->removeItem( areaOverlayItem );
             delete areaOverlayItem;
             areaOverlayItem = nullptr;
+        }
+        if(rotationIndicatorOverlayItem){
+//            this->removeItem( rotationIndicatorOverlayItem );
+            delete rotationIndicatorOverlayItem;
+//            rotationIndicatorOverlayItem = nullptr;
         }
     }
 }

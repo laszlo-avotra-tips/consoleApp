@@ -473,13 +473,25 @@ void MainScreen::updateSledRunningState()
 void MainScreen::handleSledRunningStateChanged(int runningStateVal)
 {
 //    LOG1(isInRunningState);
+    auto&ds = deviceSettings::Instance();
+    auto device = ds.current();
+    const bool isAth = device->isAth();
 
     if(runningStateVal == 1){
         ui->labelLive->setStyleSheet("color: green;");
+        if(!isAth){
+            m_scene->setActive();
+        }
     } else if (runningStateVal == 3){
-        ui->labelLive->setStyleSheet("color: blue;");
+        ui->labelLive->setStyleSheet("color: green;");
+        if(!isAth){
+            m_scene->setPassive();
+        }
     }else{
         ui->labelLive->setStyleSheet("color: grey;");
+        if(!isAth){
+            m_scene->setIdle();
+        }
     }
     //exit while in measure mode and the sled is started
     if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
