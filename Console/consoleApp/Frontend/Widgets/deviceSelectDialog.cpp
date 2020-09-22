@@ -147,6 +147,11 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
 
     dev.setCurrentDevice(selection);
 
+    auto selectedDevice = dev.current();
+    auto speed = selectedDevice->getRevolutionsPerMin1();
+
+    MainScreen::setSpeed(speed);
+
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
 }
