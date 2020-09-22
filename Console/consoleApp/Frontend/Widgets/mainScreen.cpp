@@ -475,7 +475,8 @@ void MainScreen::handleSledRunningStateChanged(int runningStateVal)
 {
     const bool sledIsInRunningState{(runningStateVal == 1) || (runningStateVal == 3)};
 
-    if(sledIsInRunningState != m_sledIsInRunningState){
+//    if(sledIsInRunningState != m_sledIsInRunningState)
+    {
         m_sledIsInRunningState = sledIsInRunningState;
         LOG2(runningStateVal, m_sledIsInRunningState);
         auto&ds = deviceSettings::Instance();
