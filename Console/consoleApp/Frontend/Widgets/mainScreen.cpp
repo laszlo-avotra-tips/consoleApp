@@ -54,7 +54,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonLow, &QPushButton::clicked, this, &MainScreen::udpateToSpeed1);
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
-    connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningStateChanged);
+    connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
 
     const double scaleUp = 2.1; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
@@ -471,42 +471,32 @@ void MainScreen::updateSledRunningState()
      }
 }
 
-void MainScreen::handleSledRunningStateChanged(int runningStateVal)
+void MainScreen::handleSledRunningState(int runningStateVal)
 {
-    const bool sledIsInRunningState{(runningStateVal == 1) || (runningStateVal == 3)};
+    m_sledIsInRunningState = (runningStateVal == 1) || (runningStateVal == 3);
 
-//    if(sledIsInRunningState != m_sledIsInRunningState)
-    {
-        m_sledIsInRunningState = sledIsInRunningState;
-//        LOG2(runningStateVal, m_sledIsInRunningState);
-        auto&ds = deviceSettings::Instance();
-        auto device = ds.current();
+    auto&ds = deviceSettings::Instance();
+    auto device = ds.current();
 
-        if(device){
-            const bool isAth = device->isAth();
+    if(device && m_scene){
+        const bool isAth = device->isAth();
 
-            if(runningStateVal == 1){
-                ui->labelLive->setStyleSheet("color: green;");
-                if(!isAth && m_scene){
-                    m_scene->setActive();
-                }
-            } else if (runningStateVal == 3){
-                ui->labelLive->setStyleSheet("color: green;");
-                if(!isAth && m_scene){
-                    m_scene->setPassive();
-                }
-            }else{
-                ui->labelLive->setStyleSheet("color: grey;");
-                if(!isAth && m_scene){
-                    m_scene->setIdle();
-                }
+        if(runningStateVal == 1){
+            ui->labelLive->setStyleSheet("color: green;");
+            if(!isAth){
+                m_scene->setActive();
+            }
+        } else if (runningStateVal == 3){
+            ui->labelLive->setStyleSheet("color: green;");
+            if(!isAth){
+                m_scene->setPassive();
+            }
+        }else{
+            ui->labelLive->setStyleSheet("color: grey;");
+            if(!isAth){
+                m_scene->setIdle();
             }
         }
-    //    //exit while in measure mode and the sled is started
-    //    if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-    //        ui->pushButtonMeasure->setChecked(false);
-    //    }
-
         if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
             on_pushButtonMeasure_clicked(false);
         }
