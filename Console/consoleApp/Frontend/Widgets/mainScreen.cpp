@@ -473,41 +473,45 @@ void MainScreen::updateSledRunningState()
 
 void MainScreen::handleSledRunningStateChanged(int runningStateVal)
 {
-    LOG1(runningStateVal);
-    auto&ds = deviceSettings::Instance();
-    auto device = ds.current();
+    const bool sledIsInRunningState{(runningStateVal == 1) || (runningStateVal == 3)};
 
-    if(device){
-        const bool isAth = device->isAth();
+    if(sledIsInRunningState != m_sledIsInRunningState){
+        m_sledIsInRunningState = sledIsInRunningState;
+        LOG2(runningStateVal, m_sledIsInRunningState);
+        auto&ds = deviceSettings::Instance();
+        auto device = ds.current();
 
-        if(runningStateVal == 1){
-            ui->labelLive->setStyleSheet("color: green;");
-            if(!isAth && m_scene){
-                m_scene->setActive();
-            }
-        } else if (runningStateVal == 3){
-            ui->labelLive->setStyleSheet("color: green;");
-            if(!isAth && m_scene){
-                m_scene->setPassive();
-            }
-        }else{
-            ui->labelLive->setStyleSheet("color: grey;");
-            if(!isAth && m_scene){
-                m_scene->setIdle();
+        if(device){
+            const bool isAth = device->isAth();
+
+            if(runningStateVal == 1){
+                ui->labelLive->setStyleSheet("color: green;");
+                if(!isAth && m_scene){
+                    m_scene->setActive();
+                }
+            } else if (runningStateVal == 3){
+                ui->labelLive->setStyleSheet("color: green;");
+                if(!isAth && m_scene){
+                    m_scene->setPassive();
+                }
+            }else{
+                ui->labelLive->setStyleSheet("color: grey;");
+                if(!isAth && m_scene){
+                    m_scene->setIdle();
+                }
             }
         }
-    }
-    //exit while in measure mode and the sled is started
-    if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-        ui->pushButtonMeasure->setChecked(false);
-    }
+    //    //exit while in measure mode and the sled is started
+    //    if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
+    //        ui->pushButtonMeasure->setChecked(false);
+    //    }
 
-    if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-//        emit measureImage(false);
-        setMeasurementMode(false);
-    }
+        if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
+            on_pushButtonMeasure_clicked(false);
+        }
 
-    ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
+        ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
+    }
 }
 
 void MainScreen::on_pushButtonRecord_clicked()
@@ -538,18 +542,16 @@ void MainScreen::setMeasurementMode(bool enable)
         m_scene->setMeasureModeArea( true, Qt::magenta );
         setSceneCursor( QCursor( Qt::CrossCursor ) );
         ui->graphicsView->setToolTip( "" );
-//        ui.measureModePushButton->setChecked( true );
+        ui->pushButtonMeasure->setChecked( true );
         LOG( INFO, "Measure Mode: start" )
     }
     else
     {
         m_scene->setMeasureModeArea( false, Qt::magenta );
         setSceneCursor( QCursor( Qt::OpenHandCursor ) );
-//        ui.measureModePushButton->setChecked( false );
+        ui->pushButtonMeasure->setChecked( false );
         LOG( INFO, "Measure Mode: stop" )
     }
-//    isMeasureModeActive = enable; // state variable for toggle action
-
 }
 
 void MainScreen::setSceneCursor( QCursor cursor )
