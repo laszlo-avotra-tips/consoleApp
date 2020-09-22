@@ -850,8 +850,6 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
         areaOverlayItem->setZValue( 6.0 );
         areaOverlayItem->setColor( color );
         areaOverlayItem->setCalibrationScale( cachedCalibrationScale );
-
-        rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
     }
     else
     {
@@ -860,11 +858,6 @@ void liveScene::setMeasureModeArea( bool state, QColor color )
             this->removeItem( areaOverlayItem );
             delete areaOverlayItem;
             areaOverlayItem = nullptr;
-        }
-        if(rotationIndicatorOverlayItem){
-//            this->removeItem( rotationIndicatorOverlayItem );
-            delete rotationIndicatorOverlayItem;
-//            rotationIndicatorOverlayItem = nullptr;
         }
     }
 }

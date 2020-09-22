@@ -338,6 +338,9 @@ void MainScreen::openDeviceSelectDialog()
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
 
+        int currentSledRunningStateVal{SledSupport::Instance().runningState()};
+        emit sledRunningStateChanged(currentSledRunningStateVal);
+
         auto model = std::make_unique<DisplayOptionsModel>();
         auto dialog = std::make_unique<DisplayOptionsDialog>();
         dialog->setModel(model.get());
@@ -484,11 +487,13 @@ void MainScreen::handleSledRunningState(int runningStateVal)
         if(runningStateVal == 1){
             ui->labelLive->setStyleSheet("color: green;");
             if(!isAth){
+//                setMeasurementMode(false);
                 m_scene->setActive();
             }
         } else if (runningStateVal == 3){
             ui->labelLive->setStyleSheet("color: green;");
             if(!isAth){
+//                setMeasurementMode(false);
                 m_scene->setPassive();
             }
         }else{
@@ -497,9 +502,12 @@ void MainScreen::handleSledRunningState(int runningStateVal)
                 m_scene->setIdle();
             }
         }
-//        if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-//            on_pushButtonMeasure_clicked(false);
-//        }
+        if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
+//            if(isAth)
+            {
+                on_pushButtonMeasure_clicked(false);
+            }
+        }
 
         ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
     }
@@ -532,7 +540,6 @@ void MainScreen::setMeasurementMode(bool enable)
     {
         m_scene->setMeasureModeArea( true, Qt::magenta );
         setSceneCursor( QCursor( Qt::CrossCursor ) );
-        ui->graphicsView->setToolTip( "" );
         ui->pushButtonMeasure->setChecked( true );
         LOG( INFO, "Measure Mode: start" )
     }
