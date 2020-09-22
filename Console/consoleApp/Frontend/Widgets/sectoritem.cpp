@@ -27,7 +27,6 @@
 #include "Utility/userSettings.h"
 #include <QTime>
 #include "depthsetting.h"
-#include "sledsupport.h"
 
 
 //const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish

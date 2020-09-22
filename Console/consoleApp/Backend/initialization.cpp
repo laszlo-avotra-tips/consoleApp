@@ -64,6 +64,11 @@ bool Initialization::init( )
         isReady = false;
     }
 
+    if(isReady){
+        ss.start();
+    }
+
+
     // Make sure the Data directory exists. If not, make it so.
     QDir dataDir( DataDir );
     if( !dataDir.exists() )
