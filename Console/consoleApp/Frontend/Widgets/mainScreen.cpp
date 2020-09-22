@@ -464,7 +464,7 @@ void MainScreen::updateSledRunningState()
 {
     int currentSledRunningStateVal{SledSupport::Instance().runningState()};
 
-//     if(m_sledRunningStateVal != currentSledRunningStateVal)
+     if(m_sledRunningStateVal != currentSledRunningStateVal)
      {
          m_sledRunningStateVal = currentSledRunningStateVal;
          emit sledRunningStateChanged(m_sledRunningStateVal);
@@ -482,32 +482,33 @@ void MainScreen::handleSledRunningStateChanged(int runningStateVal)
 
         if(runningStateVal == 1){
             ui->labelLive->setStyleSheet("color: green;");
+            ui->pushButtonMeasure->setEnabled(false);
             if(!isAth && m_scene){
                 m_scene->setActive();
             }
         } else if (runningStateVal == 3){
             ui->labelLive->setStyleSheet("color: green;");
+            ui->pushButtonMeasure->setEnabled(false);
             if(!isAth && m_scene){
                 m_scene->setPassive();
             }
         }else{
             ui->labelLive->setStyleSheet("color: grey;");
+            ui->pushButtonMeasure->setEnabled(true);
             if(!isAth && m_scene){
                 m_scene->setIdle();
             }
         }
     }
     //exit while in measure mode and the sled is started
-    if(!m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-        ui->pushButtonMeasure->setChecked(false);
+    if((runningStateVal != 0) && ui->pushButtonMeasure->isChecked()){
+        on_pushButtonMeasure_clicked(false);
     }
 
-    if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-//        emit measureImage(false);
-        setMeasurementMode(false);
+    if((runningStateVal == 0) && ui->pushButtonMeasure->isChecked()){
+        on_pushButtonMeasure_clicked(false);
     }
 
-    ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
 }
 
 void MainScreen::on_pushButtonRecord_clicked()
