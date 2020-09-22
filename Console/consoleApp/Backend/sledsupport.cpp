@@ -403,7 +403,7 @@ void SledSupport::handleClockingResponse( void )
 void SledSupport::run()
 
 {
-    qDebug() << "Start Sled polling";
+    LOG1( "Start Sled polling")
     newDevice = 0;                                  // get started with device 0
     int pollingTimer = 0;
     isRunning = true;
