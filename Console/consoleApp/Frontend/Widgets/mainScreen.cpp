@@ -497,9 +497,9 @@ void MainScreen::handleSledRunningState(int runningStateVal)
                 m_scene->setIdle();
             }
         }
-        if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-            on_pushButtonMeasure_clicked(false);
-        }
+//        if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
+//            on_pushButtonMeasure_clicked(false);
+//        }
 
         ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
     }
