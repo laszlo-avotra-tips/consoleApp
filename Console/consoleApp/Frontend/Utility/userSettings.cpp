@@ -63,21 +63,21 @@ void userSettings::loadVarSettings()
         m_isGray = false;
     }
 
-    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
+//    LOG3(brightnessVal,contrastVal,reticleBrightnessVal)
 
     QString date               = varSettings->value( "service/last_service_date",        "" ).toString();
     m_serviceDate = QDate::fromString(date, "MM.dd.yyyy");
-    LOG2(date,m_serviceDate.toString())
+//    LOG2(date,m_serviceDate.toString())
 
     m_physicians = varSettings->value( "caseSetup/physicians",        "" ).toStringList();
-    for(const auto& doctor : m_physicians){
-        LOG1(doctor)
-    }
+//    for(const auto& doctor : m_physicians){
+//        LOG1(doctor)
+//    }
 
     m_locations = varSettings->value( "caseSetup/locations",        "" ).toStringList();
-    for(const auto& location : m_locations){
-        LOG1(location)
-    }
+//    for(const auto& location : m_locations){
+//        LOG1(location)
+//    }
 }
 
 void userSettings::loadProfileSettings()
