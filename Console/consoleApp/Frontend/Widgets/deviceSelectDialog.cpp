@@ -155,9 +155,9 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
 
 void DeviceSelectDialog::initializeSelectedDevice()
 {
-//     deviceSettings &dev = deviceSettings::Instance();
+     deviceSettings &dev = deviceSettings::Instance();
 
-//     dev.setCurrentDevice(m_model->selectedDeviceIndex());
+     dev.setCurrentDevice(m_model->selectedDeviceIndex());
 //     auto selectedDevice = dev.current();
 //     auto speed = selectedDevice->getRevolutionsPerMin1();
 
