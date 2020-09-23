@@ -158,10 +158,6 @@ void DeviceSelectDialog::initializeSelectedDevice()
      deviceSettings &dev = deviceSettings::Instance();
 
      dev.setCurrentDevice(m_model->selectedDeviceIndex());
-//     auto selectedDevice = dev.current();
-//     auto speed = selectedDevice->getRevolutionsPerMin1();
-
-//     MainScreen::setSpeed(speed);
 }
 
 

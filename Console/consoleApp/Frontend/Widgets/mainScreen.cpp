@@ -350,21 +350,24 @@ void MainScreen::updateDeviceSettings()
     int speed{0};
     switch(speedIndex){
     case 1:
-        speed = selectedDevice->getRevolutionsPerMin1();
+//        speed = selectedDevice->getRevolutionsPerMin1();
+        emit ui->pushButtonLow->clicked();
         break;
     case 2:
-        speed = selectedDevice->getRevolutionsPerMin2();
+//        speed = selectedDevice->getRevolutionsPerMin2();
+        emit ui->pushButtonMedium->clicked();
         break;
 
     case 3:
-        speed = selectedDevice->getRevolutionsPerMin3();
+//        speed = selectedDevice->getRevolutionsPerMin3();
+        emit ui->pushButtonHigh->clicked();
         break;
     default:
         speed = 0;
     }
-    LOG1(speed)
+//    LOG1(speed)
 
-    setSpeed(speed);
+//    setSpeed(speed);
 }
 
 
@@ -377,9 +380,6 @@ void MainScreen::openDeviceSelectDialog()
         qDebug() << "Accepted";
 
         updateDeviceSettings();
-
-//        int currentSledRunningStateVal{SledSupport::Instance().runningState()};
-//        emit sledRunningStateChanged(currentSledRunningStateVal);
 
         auto model = std::make_unique<DisplayOptionsModel>();
         auto dialog = std::make_unique<DisplayOptionsDialog>();
