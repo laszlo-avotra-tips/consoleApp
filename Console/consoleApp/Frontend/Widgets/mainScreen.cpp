@@ -334,14 +334,18 @@ void MainScreen::updateDeviceSettings()
 {
     deviceSettings &dev = deviceSettings::Instance();
     auto selectedDevice = dev.current();
-    const bool isAth = selectedDevice->isAth();
     const bool isBidir = selectedDevice->isBiDirectional();
 
-    if(isAth){
+    int currentSledRunningStateVal{SledSupport::Instance().runningState()};
+    emit sledRunningStateChanged(currentSledRunningStateVal);
+
+    if(isBidir){
+        m_scene->setActive();
+    } else {
         m_scene->setIdle();
     }
     int speedIndex = selectedDevice->getDefaultSpeedIndex();
-    LOG3(isAth, isBidir, speedIndex)
+    LOG2(isBidir, speedIndex)
 
     int speed{0};
     switch(speedIndex){
@@ -374,8 +378,8 @@ void MainScreen::openDeviceSelectDialog()
 
         updateDeviceSettings();
 
-        int currentSledRunningStateVal{SledSupport::Instance().runningState()};
-        emit sledRunningStateChanged(currentSledRunningStateVal);
+//        int currentSledRunningStateVal{SledSupport::Instance().runningState()};
+//        emit sledRunningStateChanged(currentSledRunningStateVal);
 
         auto model = std::make_unique<DisplayOptionsModel>();
         auto dialog = std::make_unique<DisplayOptionsDialog>();
