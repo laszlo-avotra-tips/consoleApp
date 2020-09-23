@@ -487,13 +487,11 @@ void MainScreen::handleSledRunningState(int runningStateVal)
         if(runningStateVal == 1){
             ui->labelLive->setStyleSheet("color: green;");
             if(!isAth){
-//                setMeasurementMode(false);
                 m_scene->setActive();
             }
         } else if (runningStateVal == 3){
             ui->labelLive->setStyleSheet("color: green;");
             if(!isAth){
-//                setMeasurementMode(false);
                 m_scene->setPassive();
             }
         }else{
@@ -503,10 +501,7 @@ void MainScreen::handleSledRunningState(int runningStateVal)
             }
         }
         if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
-//            if(isAth)
-            {
-                on_pushButtonMeasure_clicked(false);
-            }
+            on_pushButtonMeasure_clicked(false);
         }
 
         ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
