@@ -344,30 +344,36 @@ void MainScreen::updateDeviceSettings()
     } else {
         m_scene->setIdle();
     }
+
     int speedIndex = selectedDevice->getDefaultSpeedIndex();
     LOG2(isBidir, speedIndex)
 
-    int speed{0};
-    switch(speedIndex){
-    case 1:
-//        speed = selectedDevice->getRevolutionsPerMin1();
-        emit ui->pushButtonLow->clicked();
-        break;
-    case 2:
-//        speed = selectedDevice->getRevolutionsPerMin2();
-        emit ui->pushButtonMedium->clicked();
-        break;
+    if(isBidir){
+        switch(speedIndex){
+        case 1:
+            emit ui->pushButtonLow->clicked();
+            break;
+        case 2:
+            emit ui->pushButtonMedium->clicked();
+            break;
 
-    case 3:
-//        speed = selectedDevice->getRevolutionsPerMin3();
-        emit ui->pushButtonHigh->clicked();
-        break;
-    default:
-        speed = 0;
+        case 3:
+            emit ui->pushButtonHigh->clicked();
+            break;
+        }
+    } else {
+         switch(speedIndex){
+         case 1:
+             setSpeed(selectedDevice->getRevolutionsPerMin1());
+             break;
+         case 2:
+             setSpeed(selectedDevice->getRevolutionsPerMin2());
+             break;
+         case 3:
+             setSpeed(selectedDevice->getRevolutionsPerMin3());
+             break;
+         }
     }
-//    LOG1(speed)
-
-//    setSpeed(speed);
 }
 
 
