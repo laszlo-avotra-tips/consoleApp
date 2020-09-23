@@ -36,14 +36,18 @@ public:
  */
   device( QString     inDeviceName,
           QByteArray  inCatheterType             = "ATH",
-          int         inCatheterLength           = 100,
-          int         inCatheterRadius_um        = 0,
-          int         inInternalImagingMask_px   = 0,
-          int         inBidirectional            = 1,
+          QByteArray  inDevicePropVersion        = "3.0",
+          QByteArray  inSledFwMinVersion         = "3.0",
+          QByteArray  inIfFwMinVersion           = "3.0",
+          int         inCatheterLength           = 140,
+          int         inInternalImagingMask_px   = 135,
+          int         inCatheterRadius_um        = 406,
+          int         inBidirectional            = 0,
           int         inNumberOfSpeeds           = 1,
           int         inRevolutionsPerMin1       = 600,
           int         inRevolutionsPerMin2       = 800,
           int         inRevolutionsPerMin3       = 1000,
+          int         inDefaultSpeedIndex        = 1,
           int         inClockingEnabled          = 1,
           QByteArray  inClockingGain             = "25",
           QByteArray  inClockingOffset           = "400",
@@ -51,19 +55,24 @@ public:
           QByteArray  inTimeLimit                = "1",
           int         inMeasurementVersion       = 0,
           QString     inDisclaimerText           = InvestigationalDeviceWarning,
+          QByteArray  inDeviceCRC                = "",
           QImage     *inIcon                     = NULL )
     {
         deviceName               = inDeviceName;
         splitDeviceName          = formatDeviceName(inDeviceName);
         catheterType             = inCatheterType;
+        devicePropVersion        = inDevicePropVersion;
+        sledFwMinVersion         = inSledFwMinVersion;
+        ifFwMinVersion           = inIfFwMinVersion;
         catheterLength           = inCatheterLength;
-        catheterRadius_um        = inCatheterRadius_um;
         internalImagingMask_px   = inInternalImagingMask_px;
+        catheterRadius_um        = inCatheterRadius_um;
         biDirectional            = inBidirectional;
         numberOfSpeeds           = inNumberOfSpeeds;
         revolutionsPerMin1       = inRevolutionsPerMin1;
         revolutionsPerMin2       = inRevolutionsPerMin2;
         revolutionsPerMin3       = inRevolutionsPerMin3;
+        defaultSpeedIndex        = inDefaultSpeedIndex;
         aLineLengthNormal_px     = 512;
         imagingDepthNormal_mm    = (float) 3.18;
         clockingEnabled          = inClockingEnabled;
@@ -71,8 +80,9 @@ public:
         clockingOffset           = inClockingOffset;
         torqueLimit              = inTorqueLimit;
         timeLimit                = inTimeLimit;
-        disclaimerText           = inDisclaimerText;
         measurementVersion       = inMeasurementVersion;
+        disclaimerText           = inDisclaimerText;
+        deviceCRC                = inDeviceCRC;
         icon                     = inIcon;
         pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
         pixelsPerUm              = pixelsPerMm / (float)1000;
@@ -119,11 +129,29 @@ void setImagingDepthNormal_mm(float value);
 
 void setALineLengthNormal_px(int value);
 
+QByteArray getDevicePropVersion() const;
+void setDevicePropVersion(const QByteArray &value);
+
+QByteArray getSledFwMinVersion() const;
+void setSledFwMinVersion(const QByteArray &value);
+
+QByteArray getIfFwMinVersion() const;
+void setIfFwMinVersion(const QByteArray &value);
+
+int getInDefaultSpeedIndex() const;
+void setInDefaultSpeedIndex(int value);
+
+QByteArray getDeviceCRC() const;
+void setDeviceCRC(const QByteArray &value);
+
 private:
 QString    deviceName;
 QString    splitDeviceName;
 
-    QByteArray catheterType;
+QByteArray catheterType;
+    QByteArray devicePropVersion{"3.0"};
+    QByteArray sledFwMinVersion{"3.0"};
+    QByteArray ifFwMinVersion{"3.0"};
     int        catheterLength;
     int        catheterRadius_um;
     int        internalImagingMask_px;
@@ -132,6 +160,7 @@ QString    splitDeviceName;
     int        revolutionsPerMin1;
     int        revolutionsPerMin2;
     int        revolutionsPerMin3;
+    int        defaultSpeedIndex;
     int        aLineLengthNormal_px;
     int        measurementVersion;
     int        clockingEnabled;
@@ -143,6 +172,7 @@ QString    splitDeviceName;
     float      pixelsPerMm;
     float      pixelsPerUm;
     QString    disclaimerText;
+    QByteArray deviceCRC;
     bool       m_isAth;
 };
 

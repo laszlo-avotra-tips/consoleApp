@@ -338,15 +338,6 @@ void MainScreen::openDeviceSelectDialog()
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
 
-        int currentSledRunningStateVal{SledSupport::Instance().runningState()};
-        emit sledRunningStateChanged(currentSledRunningStateVal);
-
-        auto model = std::make_unique<DisplayOptionsModel>();
-        auto dialog = std::make_unique<DisplayOptionsDialog>();
-        dialog->setModel(model.get());
-        dialog->setScene(m_scene);
-        model->persistModel();
-
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         const bool isAth = selectedDevice->isAth();
@@ -356,6 +347,16 @@ void MainScreen::openDeviceSelectDialog()
         }
         auto speed = selectedDevice->getRevolutionsPerMin1();
         setSpeed(speed);
+
+        int currentSledRunningStateVal{SledSupport::Instance().runningState()};
+        emit sledRunningStateChanged(currentSledRunningStateVal);
+
+        auto model = std::make_unique<DisplayOptionsModel>();
+        auto dialog = std::make_unique<DisplayOptionsDialog>();
+        dialog->setModel(model.get());
+        dialog->setScene(m_scene);
+        model->persistModel();
+
     } else {
         qDebug() << "Cancelled";
         openCaseInformationDialog();
