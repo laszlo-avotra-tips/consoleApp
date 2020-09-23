@@ -75,7 +75,7 @@ private slots:
     void on_pushButtonMeasure_clicked(bool checked);
 
     void updateSledRunningState();
-    void handleSledRunningStateChanged(int runningStateVal);
+    void handleSledRunningState(int runningStateVal);
 
     void on_pushButtonRecord_clicked();
     void onCaptureImage();

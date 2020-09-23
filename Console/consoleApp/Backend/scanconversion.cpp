@@ -36,7 +36,7 @@ bool ScanConversion::initOpenCL()
 
     int err = clGetPlatformIDs( 0, NULL, &numPlatforms );
     qDebug() << "numPlatforms =" << numPlatforms;
-//    LOG1(numPlatforms);
+    LOG1(numPlatforms);
 
     if( numPlatforms == 0 )
     {
@@ -68,7 +68,7 @@ bool ScanConversion::initOpenCL()
             return false;
         }
         qDebug() << "Platform (" << i << ") Vendor:" << vendor << " Name:" << name << " Version:" << version;
-//        LOG4(i, vendor, name, version);
+        LOG4(i, vendor, name, version);
 //Intel(R) OpenCL HD Graphics
         if( ( QString( vendor ) == "Intel(R) Corporation" &&    // Intel integrated GPU compatibility
               QString( name )   == "Intel(R) OpenCL" ) ||
@@ -80,7 +80,7 @@ bool ScanConversion::initOpenCL()
             amdIdx = i;
 
             qDebug() << "Compatible platform found. Platform ID: " << amdIdx;
-//            LOG2("Compatible platform found. Platform ID", amdIdx)
+            LOG2("Compatible platform found. Platform ID", amdIdx)
         }
     }
 
@@ -148,7 +148,7 @@ bool ScanConversion::initOpenCL()
     }
 
     qDebug() << "DSP: Found OpenCL Device " <<  QString( (char *)vendor_name ) + " " + QString( (char *)device_name );
-//    LOG3("DSP: Found OpenCL Device ", QString( (char *)vendor_name ), QString( (char *)device_name ))
+    LOG3("DSP: Found OpenCL Device ", QString( (char *)vendor_name ), QString( (char *)device_name ))
 
     if( QString( (char *)device_name ) == "Intel(R) HD Graphics 4600" )
     {
@@ -570,10 +570,10 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel, 14, sizeof(int),    smi->whiteLevel() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 15, sizeof(int),    smi->isInvertOctColors() );
 
-//    if(++count % 64 == 0){
-//        LOG4(internalImagingMask_px, catheterRadius_um, standardDepth_mm, standardDepth_S)
-//        LOG4(displayAngle, SectorWidth_px, SectorHeight_px, *(smi->getImagingDepth_S()))
-//    }
+    if(++count % 64 == 0){
+        LOG4(internalImagingMask_px, catheterRadius_um, standardDepth_mm, standardDepth_S)
+        LOG4(displayAngle, SectorWidth_px, SectorHeight_px, *(smi->getImagingDepth_S()))
+    }
 
     if( clStatus != CL_SUCCESS )
     {

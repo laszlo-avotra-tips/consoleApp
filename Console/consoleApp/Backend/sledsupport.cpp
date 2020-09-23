@@ -225,7 +225,7 @@ bool SledSupport::init( void )
             // This code is used to initialize the original L300 interface board (MS2816)
             QString msg = QString( "*** Prototype IF");
             qDebug() << msg;
-//            LOG1(msg);
+            LOG1(msg);
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );   // SSB 5V on
             if( ftStatus != FT_OK )
@@ -257,11 +257,11 @@ bool SledSupport::init( void )
             // This code is used to initialize the final L300IF board (MS2916)
             QString msg = QString( "*** Final IF");
             qDebug() << msg;
-//            LOG1(msg);
+            LOG1(msg);
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // First reset the board
             msg = QString("First reset the board");
-//            LOG3(ftStatus, FT_OK, msg);
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";
@@ -269,7 +269,7 @@ bool SledSupport::init( void )
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF2, 0x20 );   // Sled 24V on
             msg = QString("Sled 24V on");
-//            LOG3(ftStatus, FT_OK, msg);
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";
@@ -277,7 +277,7 @@ bool SledSupport::init( void )
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xF3, 0x20 );   // Sled 5V on
             msg = QString("Sled 5V on");
-//            LOG3(ftStatus, FT_OK, msg);
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";
@@ -285,7 +285,7 @@ bool SledSupport::init( void )
             Sleep(100);
             ftStatus = FT_SetBitMode( ftHandle, 0xFB, 0x20 );   // Laser on
             msg = QString("Laser on");
-//            LOG3(ftStatus, FT_OK, msg);
+            LOG3(ftStatus, FT_OK, msg);
             if( ftStatus != FT_OK )
             {
                 qDebug() << "Could not change bits";
@@ -294,34 +294,34 @@ bool SledSupport::init( void )
         }
 
         ftStatus = FT_SetBaudRate( ftHandle, 9600);
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set baud rate";
-            LOG1(ftStatus);
         }
         ftStatus = FT_SetDataCharacteristics( ftHandle, FT_BITS_8, FT_STOP_BITS_1, FT_PARITY_NONE);
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set data charecteristics";
-            LOG1(ftStatus);
         }
         ftStatus = FT_SetFlowControl( ftHandle, FT_FLOW_NONE, 0x11, 0x13 );
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set flow control";
-            LOG1(ftStatus);
         }
         ftStatus = FT_SetTimeouts( ftHandle, 50, 1000 );
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Could not set timeouts ";
-            LOG1(ftStatus);
         }
         ftStatus = FT_Purge( ftHandle, FT_PURGE_TX | FT_PURGE_RX );
+        LOG1(ftStatus);
         if( ftStatus != FT_OK )
         {
             qDebug() << "Purge failed";
-            LOG1(ftStatus);
         }
 //        start();            // get run thread going
     }
@@ -442,7 +442,6 @@ void SledSupport::run()
         else if( newSpeed > 0 )
         {
             mutex.lock();
-            LOG1(newSpeed)
             baParam.setNum( newSpeed );
             newSpeed = -1;
             mutex.unlock();
@@ -457,7 +456,6 @@ void SledSupport::run()
             QByteArray clockingGain = device.current()->getClockingGain();
             QByteArray clockingOffset = device.current()->getClockingOffset();
             int speed = device.current()->getRevolutionsPerMin();
-            LOG1(speed)
             QByteArray torqueLimit = device.current()->getTorqueLimit();
             QByteArray timeLimit = device.current()->getTimeLimit();
             mutex.unlock();
