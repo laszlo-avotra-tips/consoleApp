@@ -134,7 +134,7 @@ void MainScreen::setCurrentTime()
     ui->labelCurrentTime->setText(timeString);
 }
 
-void MainScreen::setSpeed(int speed)
+void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
 {
     if(speed >= 600){
         LOG1(speed);
@@ -143,7 +143,7 @@ void MainScreen::setSpeed(int speed)
         auto& sled = SledSupport::Instance();
         sled.setSledSpeed(baSpeed);
         QThread::msleep(200);
-        sled.enableBidirectional();
+        sled.enableDisableBidirectional();
     }
 }
 
@@ -337,7 +337,8 @@ void MainScreen::updateDeviceSettings()
     const bool isBidir = selectedDevice->isBiDirectional();
     const int numberOfSpeeds = selectedDevice->getNumberOfSpeeds();
 
-    int currentSledRunningStateVal{SledSupport::Instance().runningState()};
+    auto& sled = SledSupport::Instance();
+    int currentSledRunningStateVal{sled.runningState()};
     emit sledRunningStateChanged(currentSledRunningStateVal);
 
     if(isBidir){
@@ -363,17 +364,7 @@ void MainScreen::updateDeviceSettings()
             break;
         }
     } else {
-//         switch(speedIndex){
-//         case 1:
-             setSpeed(selectedDevice->getRevolutionsPerMin1());
-//             break;
-//         case 2:
-//             setSpeed(selectedDevice->getRevolutionsPerMin2());
-//             break;
-//         case 3:
-//             setSpeed(selectedDevice->getRevolutionsPerMin3());
-//             break;
-//         }
+         setSpeedAndEnableDisableBidirectional(selectedDevice->getRevolutionsPerMin1());
     }
 }
 
@@ -470,7 +461,7 @@ void MainScreen::udpateToSpeed1()
     auto* cd = ds.current();
     auto speed = cd->getRevolutionsPerMin1();
 
-    setSpeed(speed);
+    setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonLow);
 }
 
@@ -480,7 +471,7 @@ void MainScreen::udpateToSpeed2()
     auto* cd = ds.current();
     auto speed = cd->getRevolutionsPerMin2();
 
-    setSpeed(speed);
+    setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonMedium);
 }
 
@@ -490,7 +481,7 @@ void MainScreen::udpateToSpeed3()
     auto* cd = ds.current();
     auto speed = cd->getRevolutionsPerMin3();
 
-    setSpeed(speed);
+    setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonHigh);
 }
 

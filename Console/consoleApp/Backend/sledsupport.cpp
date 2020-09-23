@@ -470,7 +470,7 @@ void SledSupport::run()
             setSledTorqueLimit( torqueLimit );
             setSledTimeLimit( timeLimit );
 
-            enableBidirectional();
+            enableDisableBidirectional();
         }
         else if( pollingTimer > ClockingUpdateTimer_ms )
         {
@@ -1168,7 +1168,7 @@ QByteArray SledSupport::getResponse( void )
     return data;
 }
 
-void SledSupport::enableBidirectional()
+void SledSupport::enableDisableBidirectional()
 {
     deviceSettings &device = deviceSettings::Instance();
 

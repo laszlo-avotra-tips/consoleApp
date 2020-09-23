@@ -34,7 +34,7 @@ public:
 
     void setDeviceLabel();
     void showSpeed(bool isShown);
-    static void setSpeed(int speed);
+    static void setSpeedAndEnableDisableBidirectional(int speed);
 
 signals:
     void captureImage();
