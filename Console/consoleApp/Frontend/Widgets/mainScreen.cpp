@@ -372,35 +372,6 @@ void MainScreen::openDeviceSelectDialog()
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
 
-//        deviceSettings &dev = deviceSettings::Instance();
-//        auto selectedDevice = dev.current();
-//        const bool isAth = selectedDevice->isAth();
-//        const bool isBidir = selectedDevice->isBiDirectional();
-
-//        if(isAth){
-//            m_scene->setIdle();
-//        }
-//        int speedIndex = selectedDevice->getDefaultSpeedIndex();
-//        LOG3(isAth, isBidir, speedIndex)
-
-//        int speed{0};
-//        switch(speedIndex){
-//        case 1:
-//            speed = selectedDevice->getRevolutionsPerMin1();
-//            break;
-//        case 2:
-//            speed = selectedDevice->getRevolutionsPerMin2();
-//            break;
-
-//        case 3:
-//            speed = selectedDevice->getRevolutionsPerMin3();
-//            break;
-//        default:
-//            speed = 0;
-//        }
-//        LOG1(speed)
-
-//        setSpeed(speed);
         updateDeviceSettings();
 
         int currentSledRunningStateVal{SledSupport::Instance().runningState()};
