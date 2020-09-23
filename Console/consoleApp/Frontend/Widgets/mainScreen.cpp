@@ -335,6 +335,7 @@ void MainScreen::updateDeviceSettings()
     deviceSettings &dev = deviceSettings::Instance();
     auto selectedDevice = dev.current();
     const bool isBidir = selectedDevice->isBiDirectional();
+    const int numberOfSpeeds = selectedDevice->getNumberOfSpeeds();
 
     int currentSledRunningStateVal{SledSupport::Instance().runningState()};
     emit sledRunningStateChanged(currentSledRunningStateVal);
@@ -346,9 +347,9 @@ void MainScreen::updateDeviceSettings()
     }
 
     int speedIndex = selectedDevice->getDefaultSpeedIndex();
-    LOG2(isBidir, speedIndex)
+    LOG3(isBidir, numberOfSpeeds, speedIndex)
 
-    if(isBidir){
+    if(numberOfSpeeds == 3){
         switch(speedIndex){
         case 1:
             emit ui->pushButtonLow->clicked();
@@ -362,17 +363,17 @@ void MainScreen::updateDeviceSettings()
             break;
         }
     } else {
-         switch(speedIndex){
-         case 1:
+//         switch(speedIndex){
+//         case 1:
              setSpeed(selectedDevice->getRevolutionsPerMin1());
-             break;
-         case 2:
-             setSpeed(selectedDevice->getRevolutionsPerMin2());
-             break;
-         case 3:
-             setSpeed(selectedDevice->getRevolutionsPerMin3());
-             break;
-         }
+//             break;
+//         case 2:
+//             setSpeed(selectedDevice->getRevolutionsPerMin2());
+//             break;
+//         case 3:
+//             setSpeed(selectedDevice->getRevolutionsPerMin3());
+//             break;
+//         }
     }
 }
 

@@ -144,6 +144,9 @@ void setDefaultSpeedIndex(int value);
 QByteArray getDeviceCRC() const;
 void setDeviceCRC(const QByteArray &value);
 
+int getNumberOfSpeeds() const;
+void setNumberOfSpeeds(int value);
+
 private:
 QString    deviceName;
 QString    splitDeviceName;

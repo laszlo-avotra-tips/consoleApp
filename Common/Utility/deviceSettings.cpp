@@ -401,6 +401,16 @@ void device::setDeviceCRC(const QByteArray &value)
     deviceCRC = value;
 }
 
+int device::getNumberOfSpeeds() const
+{
+    return numberOfSpeeds;
+}
+
+void device::setNumberOfSpeeds(int value)
+{
+    numberOfSpeeds = value;
+}
+
 bool deviceSettings::getIsSimulation() const
 {
     return m_isSimulation;
