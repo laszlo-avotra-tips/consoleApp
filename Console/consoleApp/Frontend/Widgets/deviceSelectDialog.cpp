@@ -97,6 +97,8 @@ void DeviceSelectDialog::populateList()
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
+    initializeSelectedDevice();
+
     deviceSettings &devices = deviceSettings::Instance();
     const auto& dev = devices.deviceAt(devices.getCurrentDevice());
 
@@ -145,16 +147,31 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
         ++i;
     }
 
-    dev.setCurrentDevice(selection);
+    m_model->setSelectedDeviceIndex(selection);
 
-    auto selectedDevice = dev.current();
-    auto speed = selectedDevice->getRevolutionsPerMin1();
+//    dev.setCurrentDevice(selection);
 
-    MainScreen::setSpeed(speed);
+//    auto selectedDevice = dev.current();
+//    auto speed = selectedDevice->getRevolutionsPerMin1();
+
+//    MainScreen::setSpeed(speed);
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
 }
+
+void DeviceSelectDialog::initializeSelectedDevice()
+{
+     deviceSettings &dev = deviceSettings::Instance();
+
+     dev.setCurrentDevice(m_model->selectedDeviceIndex());
+     auto selectedDevice = dev.current();
+     auto speed = selectedDevice->getRevolutionsPerMin1();
+
+     MainScreen::setSpeed(speed);
+}
+
+
 
 void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
 {
@@ -172,7 +189,9 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
         }
         ++i;
     }
-    dev.setCurrentDevice(selection);
+    m_model->setSelectedDeviceIndex(selection);
+
+//    dev.setCurrentDevice(selection);
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
