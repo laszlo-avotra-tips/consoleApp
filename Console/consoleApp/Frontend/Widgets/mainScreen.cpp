@@ -347,6 +347,15 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
 
+        deviceSettings &dev = deviceSettings::Instance();
+        auto selectedDevice = dev.current();
+        const bool isAth = selectedDevice->isAth();
+
+        if(isAth){
+            m_scene->setIdle();
+        }
+        auto speed = selectedDevice->getRevolutionsPerMin1();
+        setSpeed(speed);
     } else {
         qDebug() << "Cancelled";
         openCaseInformationDialog();
