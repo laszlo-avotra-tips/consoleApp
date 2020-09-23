@@ -26,6 +26,7 @@ public:
 
 private:
     void populateList(void);
+    void initializeSelectedDevice();
 
 private slots:
     void on_pushButtonDone_clicked();

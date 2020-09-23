@@ -134,16 +134,16 @@ void MainScreen::setCurrentTime()
     ui->labelCurrentTime->setText(timeString);
 }
 
-void MainScreen::setSpeed(int speed)
+void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
 {
-    LOG1(speed);
-    const QString qSpeed(QString::number(speed));
-    const QByteArray baSpeed(qSpeed.toStdString().c_str());
-    auto& sled = SledSupport::Instance();
-    sled.setSledSpeed(baSpeed);
     if(speed >= 600){
+        LOG1(speed);
+        const QString qSpeed(QString::number(speed));
+        const QByteArray baSpeed(qSpeed.toStdString().c_str());
+        auto& sled = SledSupport::Instance();
+        sled.setSledSpeed(baSpeed);
         QThread::msleep(200);
-        sled.enableBidirectional();
+        sled.enableDisableBidirectional();
     }
 }
 
@@ -246,7 +246,6 @@ void MainScreen::setDeviceLabel()
     m_runTime.start();
     m_updatetimeTimer.start(500);
     updateTime();
-    udpateToSpeed2();
 }
 
 void MainScreen::showSpeed(bool isShown)
@@ -331,6 +330,46 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
     }
 }
 
+void MainScreen::updateDeviceSettings()
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    auto selectedDevice = dev.current();
+    const bool isBidir = selectedDevice->isBiDirectional();
+    const int numberOfSpeeds = selectedDevice->getNumberOfSpeeds();
+
+    auto& sled = SledSupport::Instance();
+    int currentSledRunningStateVal{sled.runningState()};
+    emit sledRunningStateChanged(currentSledRunningStateVal);
+
+    if(isBidir){
+        m_scene->setActive();
+    } else {
+        m_scene->setIdle();
+    }
+
+    int speedIndex = selectedDevice->getDefaultSpeedIndex();
+    LOG3(isBidir, numberOfSpeeds, speedIndex)
+
+    if(numberOfSpeeds == 3){
+        switch(speedIndex){
+        case 1:
+            emit ui->pushButtonLow->clicked();
+            break;
+        case 2:
+            emit ui->pushButtonMedium->clicked();
+            break;
+
+        case 3:
+            emit ui->pushButtonHigh->clicked();
+            break;
+        }
+    } else {
+         setSpeedAndEnableDisableBidirectional(selectedDevice->getRevolutionsPerMin1());
+    }
+}
+
+
+
 void MainScreen::openDeviceSelectDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
@@ -338,8 +377,7 @@ void MainScreen::openDeviceSelectDialog()
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
 
-        int currentSledRunningStateVal{SledSupport::Instance().runningState()};
-        emit sledRunningStateChanged(currentSledRunningStateVal);
+        updateDeviceSettings();
 
         auto model = std::make_unique<DisplayOptionsModel>();
         auto dialog = std::make_unique<DisplayOptionsDialog>();
@@ -360,6 +398,8 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
 
     if( result.second != QDialog::Accepted){
         on_pushButtonSettings_clicked();
+    } else {
+        updateDeviceSettings();
     }
 }
 
@@ -421,7 +461,7 @@ void MainScreen::udpateToSpeed1()
     auto* cd = ds.current();
     auto speed = cd->getRevolutionsPerMin1();
 
-    setSpeed(speed);
+    setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonLow);
 }
 
@@ -431,7 +471,7 @@ void MainScreen::udpateToSpeed2()
     auto* cd = ds.current();
     auto speed = cd->getRevolutionsPerMin2();
 
-    setSpeed(speed);
+    setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonMedium);
 }
 
@@ -441,7 +481,7 @@ void MainScreen::udpateToSpeed3()
     auto* cd = ds.current();
     auto speed = cd->getRevolutionsPerMin3();
 
-    setSpeed(speed);
+    setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonHigh);
 }
 

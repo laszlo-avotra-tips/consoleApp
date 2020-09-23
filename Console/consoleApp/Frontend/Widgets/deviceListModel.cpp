@@ -59,3 +59,13 @@ void DeviceListModel::populate(bool isCto)
     }
     endResetModel();
 }
+
+int DeviceListModel::selectedDeviceIndex() const
+{
+    return m_selectedDeviceIndex;
+}
+
+void DeviceListModel::setSelectedDeviceIndex(int selectedDeviceIndex)
+{
+    m_selectedDeviceIndex = selectedDeviceIndex;
+}

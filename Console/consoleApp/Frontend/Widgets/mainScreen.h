@@ -34,6 +34,7 @@ public:
 
     void setDeviceLabel();
     void showSpeed(bool isShown);
+    static void setSpeedAndEnableDisableBidirectional(int speed);
 
 signals:
     void captureImage();
@@ -89,10 +90,10 @@ private:
     void flipColumns();
     void toggleNavigationButtons(const std::vector<QWidget*>& buttons);
     void setCurrentTime();
-    void setSpeed(int speed);
     void highlightSpeedButton(QPushButton* wid);
     int getSledRuntime();
     void setSceneCursor( QCursor cursor );
+    void updateDeviceSettings();
 
 private:
     Ui::MainScreen *ui;

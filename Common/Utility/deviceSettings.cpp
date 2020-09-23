@@ -238,21 +238,26 @@ bool deviceSettings::loadDevice( QString deviceFile )
 
             device *d1 = new device( e.attribute( "deviceName", "" ),
                                      e.attribute( "type", "" ).toLatin1(),
+                                     e.attribute( "devicePropVersion","").toLatin1(),
+                                     e.attribute( "sledFwMinVersion","").toLatin1(),
+                                     e.attribute( "ifFwMinVersion", "").toLatin1(),
                                      e.attribute( "catheterLength", "" ).toInt(),
-                                     e.attribute( "catheterRadius_um", "" ).toInt(),
                                      e.attribute( "internalImagingMask_px", "" ).toInt(),
+                                     e.attribute( "catheterRadius_um", "" ).toInt(),
                                      e.attribute( "biDirectional", "0" ).toInt(),
                                      e.attribute( "numberOfSpeeds", "1" ).toInt(),
-                                     e.attribute( "revolutionsPerMin1", "0" ).toInt(),
-                                     e.attribute( "revolutionsPerMin2", "0" ).toInt(),
-                                     e.attribute( "revolutionsPerMin3", "0" ).toInt(),
+                                     e.attribute( "revolutionsPerMin1", "600" ).toInt(),
+                                     e.attribute( "revolutionsPerMin2", "800" ).toInt(),
+                                     e.attribute( "revolutionsPerMin3", "1000" ).toInt(),
+                                     e.attribute( "defaultSpeedIndex", "1").toInt(),
                                      e.attribute( "clockingEnabled", "1" ).toInt(),
                                      e.attribute( "clockingGain", "" ).toLatin1(),
                                      e.attribute( "clockingOffset", "" ).toLatin1(),
                                      e.attribute( "torqueLimit", "2.5" ).toLatin1(),
                                      e.attribute( "timeLimit", "1" ).toLatin1(),
-                                     e.attribute( "measurementVersion", "0" ).toInt(),
+                                     e.attribute( "measurementVersion", "1" ).toInt(),
                                      e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
+                                     e.attribute( "deviceCRC","").toLatin1(),
                                      d1Img );    // d1Img
             deviceList.append( d1 );
         }
@@ -344,6 +349,66 @@ void device::setImagingDepthNormal_mm(float value)
 void device::setALineLengthNormal_px(int value)
 {
     aLineLengthNormal_px = value;
+}
+
+QByteArray device::getDevicePropVersion() const
+{
+    return devicePropVersion;
+}
+
+void device::setDevicePropVersion(const QByteArray &value)
+{
+    devicePropVersion = value;
+}
+
+QByteArray device::getSledFwMinVersion() const
+{
+    return sledFwMinVersion;
+}
+
+void device::setSledFwMinVersion(const QByteArray &value)
+{
+    sledFwMinVersion = value;
+}
+
+QByteArray device::getIfFwMinVersion() const
+{
+    return ifFwMinVersion;
+}
+
+void device::setIfFwMinVersion(const QByteArray &value)
+{
+    ifFwMinVersion = value;
+}
+
+int device::getDefaultSpeedIndex() const
+{
+    return defaultSpeedIndex;
+}
+
+void device::setDefaultSpeedIndex(int value)
+{
+    defaultSpeedIndex = value;
+}
+
+QByteArray device::getDeviceCRC() const
+{
+    return deviceCRC;
+}
+
+void device::setDeviceCRC(const QByteArray &value)
+{
+    deviceCRC = value;
+}
+
+int device::getNumberOfSpeeds() const
+{
+    return numberOfSpeeds;
+}
+
+void device::setNumberOfSpeeds(int value)
+{
+    numberOfSpeeds = value;
 }
 
 bool deviceSettings::getIsSimulation() const
