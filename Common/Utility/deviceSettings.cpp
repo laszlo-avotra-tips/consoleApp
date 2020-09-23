@@ -381,12 +381,12 @@ void device::setIfFwMinVersion(const QByteArray &value)
     ifFwMinVersion = value;
 }
 
-int device::getInDefaultSpeedIndex() const
+int device::getDefaultSpeedIndex() const
 {
     return defaultSpeedIndex;
 }
 
-void device::setInDefaultSpeedIndex(int value)
+void device::setDefaultSpeedIndex(int value)
 {
     defaultSpeedIndex = value;
 }

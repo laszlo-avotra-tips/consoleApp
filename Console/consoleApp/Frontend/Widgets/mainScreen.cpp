@@ -136,12 +136,12 @@ void MainScreen::setCurrentTime()
 
 void MainScreen::setSpeed(int speed)
 {
-    LOG1(speed);
-    const QString qSpeed(QString::number(speed));
-    const QByteArray baSpeed(qSpeed.toStdString().c_str());
-    auto& sled = SledSupport::Instance();
-    sled.setSledSpeed(baSpeed);
     if(speed >= 600){
+        LOG1(speed);
+        const QString qSpeed(QString::number(speed));
+        const QByteArray baSpeed(qSpeed.toStdString().c_str());
+        auto& sled = SledSupport::Instance();
+        sled.setSledSpeed(baSpeed);
         QThread::msleep(200);
         sled.enableBidirectional();
     }
@@ -246,7 +246,6 @@ void MainScreen::setDeviceLabel()
     m_runTime.start();
     m_updatetimeTimer.start(500);
     updateTime();
-    udpateToSpeed2();
 }
 
 void MainScreen::showSpeed(bool isShown)
@@ -331,6 +330,41 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
     }
 }
 
+void MainScreen::updateDeviceSettings()
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    auto selectedDevice = dev.current();
+    const bool isAth = selectedDevice->isAth();
+    const bool isBidir = selectedDevice->isBiDirectional();
+
+    if(isAth){
+        m_scene->setIdle();
+    }
+    int speedIndex = selectedDevice->getDefaultSpeedIndex();
+    LOG3(isAth, isBidir, speedIndex)
+
+    int speed{0};
+    switch(speedIndex){
+    case 1:
+        speed = selectedDevice->getRevolutionsPerMin1();
+        break;
+    case 2:
+        speed = selectedDevice->getRevolutionsPerMin2();
+        break;
+
+    case 3:
+        speed = selectedDevice->getRevolutionsPerMin3();
+        break;
+    default:
+        speed = 0;
+    }
+    LOG1(speed)
+
+    setSpeed(speed);
+}
+
+
+
 void MainScreen::openDeviceSelectDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
@@ -338,15 +372,36 @@ void MainScreen::openDeviceSelectDialog()
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
 
-        deviceSettings &dev = deviceSettings::Instance();
-        auto selectedDevice = dev.current();
-        const bool isAth = selectedDevice->isAth();
+//        deviceSettings &dev = deviceSettings::Instance();
+//        auto selectedDevice = dev.current();
+//        const bool isAth = selectedDevice->isAth();
+//        const bool isBidir = selectedDevice->isBiDirectional();
 
-        if(isAth){
-            m_scene->setIdle();
-        }
-        auto speed = selectedDevice->getRevolutionsPerMin1();
-        setSpeed(speed);
+//        if(isAth){
+//            m_scene->setIdle();
+//        }
+//        int speedIndex = selectedDevice->getDefaultSpeedIndex();
+//        LOG3(isAth, isBidir, speedIndex)
+
+//        int speed{0};
+//        switch(speedIndex){
+//        case 1:
+//            speed = selectedDevice->getRevolutionsPerMin1();
+//            break;
+//        case 2:
+//            speed = selectedDevice->getRevolutionsPerMin2();
+//            break;
+
+//        case 3:
+//            speed = selectedDevice->getRevolutionsPerMin3();
+//            break;
+//        default:
+//            speed = 0;
+//        }
+//        LOG1(speed)
+
+//        setSpeed(speed);
+        updateDeviceSettings();
 
         int currentSledRunningStateVal{SledSupport::Instance().runningState()};
         emit sledRunningStateChanged(currentSledRunningStateVal);
@@ -370,6 +425,8 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
 
     if( result.second != QDialog::Accepted){
         on_pushButtonSettings_clicked();
+    } else {
+        updateDeviceSettings();
     }
 }
 

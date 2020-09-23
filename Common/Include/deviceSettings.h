@@ -138,8 +138,8 @@ void setSledFwMinVersion(const QByteArray &value);
 QByteArray getIfFwMinVersion() const;
 void setIfFwMinVersion(const QByteArray &value);
 
-int getInDefaultSpeedIndex() const;
-void setInDefaultSpeedIndex(int value);
+int getDefaultSpeedIndex() const;
+void setDefaultSpeedIndex(int value);
 
 QByteArray getDeviceCRC() const;
 void setDeviceCRC(const QByteArray &value);

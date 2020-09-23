@@ -93,6 +93,7 @@ private:
     void highlightSpeedButton(QPushButton* wid);
     int getSledRuntime();
     void setSceneCursor( QCursor cursor );
+    void updateDeviceSettings();
 
 private:
     Ui::MainScreen *ui;
