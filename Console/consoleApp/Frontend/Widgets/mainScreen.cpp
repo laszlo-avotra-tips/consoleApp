@@ -161,13 +161,13 @@ int MainScreen::getSledRuntime()
 
     updateSledRunningState();
 
-    if(m_runTime.isValid()){
+    if(m_runTime && m_runTime->isValid()){
         if(m_sledRunningStateVal){
-            auto delta = m_runTime.restart();
+            auto delta = m_runTime->restart();
             m_sledRuntime += delta;
 //            LOG2(delta, m_sledRuntime);
         } else {
-            m_runTime.start();
+            m_runTime->start();
         }
     } else {
         m_sledRuntime = 0;
@@ -215,7 +215,9 @@ void MainScreen::on_pushButtonEndCase_clicked()
 
     WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
 
-    m_runTime.invalidate();
+    delete m_runTime;
+    m_runTime = nullptr;
+
     m_updatetimeTimer.stop();
     ui->labelRunTime->setText(QString("Runtime: 00:00"));
     ui->frameSpeed->hide();
@@ -246,7 +248,10 @@ void MainScreen::setDeviceLabel()
     ui->labelDevice->setText(name);
     m_opacScreen->hide();
     m_graphicsView->show();
-    m_runTime.start();
+    if(!m_runTime){
+        m_runTime = new QElapsedTimer();
+        m_runTime->start();
+    }
     m_updatetimeTimer.start(500);
     updateTime();
 }
@@ -448,7 +453,7 @@ void MainScreen::updateTime()
         QTime dt(0,min,sec,0);
 
         QString elapsed = dt.toString("mm:ss");
-        if(elapsed.isEmpty() && !m_runTime.isValid()){
+        if(elapsed.isEmpty() && m_runTime && !m_runTime->isValid()){
              ui->labelRunTime->setText(QString("Runtime: 00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + elapsed);

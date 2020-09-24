@@ -107,7 +107,7 @@ private:
     std::vector<QWidget*> m_navigationButtons;
 
     QTime m_currentTime;
-    QElapsedTimer m_runTime;
+    QElapsedTimer* m_runTime{nullptr};
     QTimer m_updatetimeTimer;
     OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
