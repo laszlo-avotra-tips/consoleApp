@@ -169,6 +169,8 @@ int MainScreen::getSledRuntime()
         } else {
             m_runTime.start();
         }
+    } else {
+        m_sledRuntime = 0;
     }
     return m_sledRuntime;
 }
@@ -213,6 +215,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
 
     WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
 
+    m_runTime.invalidate();
     m_updatetimeTimer.stop();
     ui->labelRunTime->setText(QString("Runtime: 00:00"));
     ui->frameSpeed->hide();
