@@ -251,6 +251,7 @@ void MainScreen::setDeviceLabel()
     if(!m_runTime){
         m_runTime = new QElapsedTimer();
         m_runTime->start();
+        m_sledRuntime = 0;
     }
     m_updatetimeTimer.start(500);
     updateTime();
