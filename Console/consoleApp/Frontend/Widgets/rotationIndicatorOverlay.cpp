@@ -43,7 +43,7 @@ void RotationIndicatorOverlay::addItem()
 {
     if(m_scene && !m_itemIsAdded){
         m_scene->addItem(this);
-        setZValue(60);
+        setZValue(0);
         show();
         m_itemIsAdded = true;
     }
