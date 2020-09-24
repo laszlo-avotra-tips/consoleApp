@@ -213,6 +213,9 @@ void MainScreen::on_pushButtonEndCase_clicked()
 
     WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
 
+    m_sledRuntime = 0;
+    m_runTime.invalidate();
+
     m_updatetimeTimer.stop();
     ui->labelRunTime->setText(QString("Runtime: 00:00"));
     ui->frameSpeed->hide();
