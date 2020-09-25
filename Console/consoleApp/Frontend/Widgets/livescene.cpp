@@ -225,9 +225,10 @@ void liveScene::refresh( void )
     if( doPaint )
     {
         doPaint = false;
-        if(deviceSettings::Instance().getIsSimulation()){
+//        if(deviceSettings::Instance().getIsSimulation())
+        {
             sector->paintSector( force );
-            videoSector->paintSector( force );
+//            videoSector->paintSector( force );
         }
         overlays->render();
     }
@@ -248,38 +249,35 @@ void liveScene::setIsRotationIndicatorOverlayItemEnabled(bool value)
 
 void liveScene::setActive()
 {
-
-    if(isRotationIndicatorOverlayItemEnabled){
-        if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
-        }
-        rotationIndicatorOverlayItem->addItem();
-        rotationIndicatorOverlayItem->setText(" ACTIVE");
-    }
+//    if(isRotationIndicatorOverlayItemEnabled){
+//        if(!rotationIndicatorOverlayItem){
+//            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//        }
+//        rotationIndicatorOverlayItem->addItem();
+//        rotationIndicatorOverlayItem->setText(" ACTIVE");
+//    }
 }
 
 void liveScene::setPassive()
 {
-
-    if(isRotationIndicatorOverlayItemEnabled){
-        if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
-        }
-        rotationIndicatorOverlayItem->addItem();
-        rotationIndicatorOverlayItem->setText("PASSIVE");
-    }
+//    if(isRotationIndicatorOverlayItemEnabled){
+//        if(!rotationIndicatorOverlayItem){
+//            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//        }
+//        rotationIndicatorOverlayItem->addItem();
+//        rotationIndicatorOverlayItem->setText("PASSIVE");
+//    }
 }
 
 void liveScene::setIdle()
 {
-
-    if(isRotationIndicatorOverlayItemEnabled){
-        if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
-        }
-        rotationIndicatorOverlayItem->removeItem();
-        update();
-    }
+//    if(isRotationIndicatorOverlayItemEnabled){
+//        if(!rotationIndicatorOverlayItem){
+//            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//        }
+//        rotationIndicatorOverlayItem->removeItem();
+//        update();
+//    }
 }
 
 /*

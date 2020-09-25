@@ -451,6 +451,7 @@ void sectorItem::paintSector ( bool force )
     }
 
     sectorShouldPaint = false;
+    trigLookupTable &quickTrig = trigLookupTable::Instance();
 
     QPixmap tmpPixmap = QPixmap::fromImage( *(sectorImage) );
     painter->begin( &tmpPixmap );
@@ -474,6 +475,24 @@ void sectorItem::paintSector ( bool force )
     // Update our reference line position
     int x1 = sectorImage->width() / 2;
     int y1 = sectorImage->height() / 2;
+
+    // Draw the laser reference line for low speed devices
+    deviceSettings &devSettings = deviceSettings::Instance();
+    if( devSettings.current()->isBiDirectional() )
+    {
+        double tmpAngle_rad = degToRad * currentAngle_deg;
+        LOG1(tmpAngle_rad)
+
+        float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
+        float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
+
+        // calculate the endpoint of the marker line
+        int x = x1 + floor_int( ( cosTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
+        int y = y1 + floor_int( ( sinTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
+
+        // Draw the reference line
+        painter->drawLine( x1, y1, x, y );
+    }
 
     /*
      * Draw the catheter center mask circle.
@@ -511,6 +530,95 @@ void sectorItem::paintSector ( bool force )
         directionPen.setColor( AggressiveSpinColor );
         break;
     }
+
+    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
+    if( devSettings.current()->isBiDirectional() )
+    {
+        painter->setPen( directionPen );
+
+        // draw direction indicator
+        const int DirectionEdge = catheterEdgePosition / 2;
+
+        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
+                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
+    }
+
+    // Direction indicator for highspeed bidirectional devices (Ocelaris)
+    if(devSettings.current()->isBiDirectional() )
+    {
+		QString spin;
+		QFont font;
+		font.setPixelSize(catheterEdgePosition / 2);
+		font.setBold(true);
+		painter->setFont(font);
+
+        deviceSettings &dev = deviceSettings::Instance();
+        int curRotation = 1; //dev.current()->getRotation();
+//        if(curRotation == -1) curRotation = lastRotation;
+		painter->setBrush( Qt::black );
+        if(curRotation == 1)
+        {
+            painter->setBrush( PassiveSpinColor );
+            spin = "PAS";
+        }
+        else if(curRotation == 0)
+        {
+            painter->setBrush( AggressiveSpinColor );
+            spin = "ACT";
+        }
+//        lastRotation = curRotation;
+
+        // draw direction indicator
+        const int DirectionEdge = catheterEdgePosition;
+        QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
+                            QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
+		
+		painter->drawEllipse( center );
+		painter->setPen( Qt::black );
+		painter->drawText( center, Qt::AlignCenter, spin );
+    }
+
+#if ENABLE_ON_SCREEN_RULER
+    /*
+     * Draw a ruler for easy measurement of reticle line depths and catheter radius distances.
+     */
+    QPen tmpPen( QPen( Qt::white, 1, Qt::SolidLine, Qt::RoundCap) );
+    painter->setPen( tmpPen );
+
+    int lineSz = 20;
+    for( int kr = 0; kr < SectorWidth_px; kr++)
+    {
+        if( kr % 10 == 0 )
+        {
+            lineSz = 20;
+            if( kr % 50 == 0 )
+            {
+                lineSz = 30;
+            }
+            if( kr % 100 == 0 )
+            {
+                lineSz = 50;
+            }
+        }
+        else
+        {
+            lineSz = 1;
+        }
+        painter->drawLine( x1 + kr, y1, x1 + kr, y1-lineSz );
+    }
+
+    /*
+     * The sliding point set in the spinbox is offset from the catheter radius.
+     * This can be used to measure the internal imaging mask of a new device by
+     * setting the mask to zero, and moving the sliding point out to the visually
+     * confirmed point of the catheter outer edge. Use this value in the spinbox
+     * for the new internal imaging mask.
+     */
+    lineSz = 100;
+    QPen sliderPen( QPen( Qt::red, 1, Qt::SolidLine, Qt::RoundCap ) );
+    painter->setPen( sliderPen );
+    painter->drawLine( ( x1 + slidingPoint + catheterRadius_px ), y1, ( x1 + slidingPoint + catheterRadius_px ), ( y1 - lineSz ) );
+#endif
 
     setPixmap( tmpPixmap );
     painter->end();
