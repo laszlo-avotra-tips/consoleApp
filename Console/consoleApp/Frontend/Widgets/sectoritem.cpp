@@ -27,6 +27,7 @@
 #include "Utility/userSettings.h"
 #include <QTime>
 #include "depthsetting.h"
+#include "sledsupport.h"
 
 
 //const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish
@@ -552,22 +553,26 @@ void sectorItem::paintSector ( bool force )
 		font.setBold(true);
 		painter->setFont(font);
 
-        deviceSettings &dev = deviceSettings::Instance();
-        int curRotation = 1; //dev.current()->getRotation();
+        auto& sled = SledSupport::Instance();
+
+        int curRotation = sled.lastRunningState(); //dev.current()->getRotation();
 //        if(curRotation == -1)
 //        {
 //            curRotation = lastRotation;
 //        }
 //        painter->setBrush( Qt::black );
-        if(curRotation == 1)
+        if(curRotation == 3)
         {
             painter->setBrush( PassiveSpinColor );
             spin = "PASSIVE";
         }
-        else if(curRotation == 0)
+        else if(curRotation == 1)
         {
             painter->setBrush( AggressiveSpinColor );
-            spin = "ACT";
+            spin = "ACTIVE";
+        }
+        else{
+            painter->setBrush(Qt::black);
         }
 //        lastRotation = curRotation;
 
