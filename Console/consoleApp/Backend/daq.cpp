@@ -126,9 +126,23 @@ void DAQ::run( void )
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
 
+        AxErr retval;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         qDebug() << "***** Thread: DAQ::run()";
+        LOG1(axCountConnectedDevices())
+        retval = axNetworkInterfaceOpen(1);
+        if(retval != NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(retval, errorMsg);
+            LOG2(retval, errorMsg)
+        }
+        retval = axUSBInterfaceOpen(1);
+        if(retval != NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(retval, errorMsg);
+            LOG2(retval, errorMsg)
+        }
         while( isRunning )
         {
 
@@ -253,6 +267,7 @@ bool DAQ::getData( )
                     LOG3(errorCode, errorCount, errorMsg)
                 }
              }
+            LOG1(axCountConnectedDevices() )
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
@@ -386,7 +401,8 @@ void DAQ::setLaserDivider( int divider)
         success = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #endif
         LOG2(subsamplingFactor, divider)
-        success = axSetSubsamplingFactor(subsamplingFactor,0);
+//        success = axSetSubsamplingFactor(subsamplingFactor,0);
+        success =  axSetFPGARegister(60,1,0);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
