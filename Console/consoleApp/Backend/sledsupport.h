@@ -34,6 +34,7 @@ public:
     void setSledSpeed( QByteArray );
     bool isRunningState();
     int runningState();
+    int lastRunningState();
     void enableDisableBidirectional();
 
     struct DeviceClockingParams_T
@@ -132,6 +133,7 @@ private:
     bool isRunning;
     SledState_e currSledState;
     SledState_e prevSledState;
+    int m_lastRunningState{-1};
 
                                                     // prevent access to:
     SledSupport();                                  //   default constructor
