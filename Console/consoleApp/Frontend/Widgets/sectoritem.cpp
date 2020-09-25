@@ -457,20 +457,20 @@ void sectorItem::paintSector ( bool force )
     painter->begin( &tmpPixmap );
     painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
 
-    QPen laserReferencePen = QPen( QColor( 50, 50, 255, laserIndicatorBrightness ), 3, Qt::SolidLine, Qt::RoundCap );
+//    QPen laserReferencePen = QPen( QColor( 50, 50, 255, laserIndicatorBrightness ), 3, Qt::SolidLine, Qt::RoundCap );
 
-    if( !isUnwinding() )
-    {
-        painter->setPen( laserReferencePen );
-    }
-    else
-    {
-        overlayUnwrapIndicator( getRemainingUnwind() );
+//    if( !isUnwinding() )
+//    {
+//        painter->setPen( laserReferencePen );
+//    }
+//    else
+//    {
+//        overlayUnwrapIndicator( getRemainingUnwind() );
 
-        // fatten up the line to make it more visible
-        laserReferencePen.setWidth( 4 );
-        painter->setPen( laserReferencePen );
-    }
+//        // fatten up the line to make it more visible
+//        laserReferencePen.setWidth( 4 );
+//        painter->setPen( laserReferencePen );
+//    }
 
     // Update our reference line position
     int x1 = sectorImage->width() / 2;
@@ -554,8 +554,11 @@ void sectorItem::paintSector ( bool force )
 
         deviceSettings &dev = deviceSettings::Instance();
         int curRotation = 1; //dev.current()->getRotation();
-//        if(curRotation == -1) curRotation = lastRotation;
-		painter->setBrush( Qt::black );
+//        if(curRotation == -1)
+//        {
+//            curRotation = lastRotation;
+//        }
+//        painter->setBrush( Qt::black );
         if(curRotation == 1)
         {
             painter->setBrush( PassiveSpinColor );

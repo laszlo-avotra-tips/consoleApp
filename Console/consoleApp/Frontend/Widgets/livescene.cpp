@@ -153,7 +153,7 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
-    rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//    rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
 
 }
 
