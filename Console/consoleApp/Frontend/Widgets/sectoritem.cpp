@@ -548,7 +548,7 @@ void sectorItem::paintSector ( bool force )
     {
 		QString spin;
 		QFont font;
-		font.setPixelSize(catheterEdgePosition / 2);
+        font.setPixelSize(catheterEdgePosition / 3);
 		font.setBold(true);
 		painter->setFont(font);
 
@@ -562,7 +562,7 @@ void sectorItem::paintSector ( bool force )
         if(curRotation == 1)
         {
             painter->setBrush( PassiveSpinColor );
-            spin = "PAS";
+            spin = "PASSIVE";
         }
         else if(curRotation == 0)
         {
