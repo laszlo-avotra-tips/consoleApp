@@ -320,7 +320,6 @@ bool DAQ::getData( )
  */
 bool DAQ::startDaq()
 {
-    qDebug() << "***** DAQ::startDaq()";
     AxErr success = NO_AxERROR;
 
     try {
@@ -340,30 +339,20 @@ bool DAQ::startDaq()
             logAxErrorVerbose(__LINE__, success);
         }
 
-#if PCIE_MODE
-        success = axSelectInterface(session, AxInterface::PCI_EXPRESS);
-        success = axImagingCntrlPCIe(session, -1);
-        success = axPipelineMode(session, EIGHT_BIT);
-#else
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
-#endif
-
-#if USE_LVDS_TRIGGER
+        if(success != NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
+        }
         success = axGetMessage(session, axMessage );
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
         LOG1(axMessage)
-#else
-//        success = axWriteFPGAreg( session, 2, 0x0604 ); // Write FPGA register 2 to 0x0604.  Use LVCMOS trigger input
-        axGetMessage( session, axMessage );
-        qDebug() << "axWriteFPGAreg: " << retVal << " message:" << axMessage;
-#endif
+
         const int laserDivider{1};
         LOG1(laserDivider)
         setLaserDivider(laserDivider);
     } catch (...) {
-        qDebug() << "Axsun Error" ;
         LOG1("Axsun init Error")
     }
 
