@@ -374,10 +374,17 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider( int divider)
 {
+    msleep(100);
+
+    uint32_t connectedDevices =axCountConnectedDevices();
+    LOG1(connectedDevices)
+
     AxErr success = axOpenAxsunOCTControl(true);
+
     if(success != NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
     }
+
 
     const int subsamplingFactor = divider + 1;
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
