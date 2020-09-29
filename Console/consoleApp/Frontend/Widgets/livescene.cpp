@@ -60,8 +60,8 @@ liveScene::liveScene( QObject *parent )
     addItem( sector );
 
     // Background image rendering for movies
-    videoSector = new sectorItem();
-    videoSector->setVideoOnly();
+//    videoSector = new sectorItem();
+//    videoSector->setVideoOnly();
 
     doPaint = false;
 
@@ -334,7 +334,7 @@ void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
 {
     // Pass off to the sector
     sector->addFrame( data );
-    videoSector->addFrame( data );
+//    videoSector->addFrame( data );
 
     // Notify anyone interested if a full rotation has
     // taken place. Used, by the lag correction process
@@ -593,7 +593,7 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsScene::mouseReleaseEvent(event);
 
         // Update the video-only rendering for the current roation on the screen
-        videoSector->setDisplayAngle( sector->getDisplayAngle() );
+//        videoSector->setDisplayAngle( sector->getDisplayAngle() );
 
         emit sendDisplayAngle( float(sector->getDisplayAngle()) );
     }
