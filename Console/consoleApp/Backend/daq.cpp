@@ -128,7 +128,11 @@ void DAQ::run( void )
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()")
-        LOG1(axCountConnectedDevices())
+        retval = axOpenAxsunOCTControl(true);
+        if(retval != NO_AxERROR){
+            logAxErrorVerbose(__LINE__, retval);
+        }
+
         retval = axNetworkInterfaceOpen(1);
         if(retval != NO_AxERROR){
             char errorMsg[512];
@@ -141,6 +145,11 @@ void DAQ::run( void )
             axGetErrorString(retval, errorMsg);
             LOG2(retval, errorMsg)
         }
+        const int laserDivider{1};
+        msleep(2000);
+        LOG1(laserDivider)
+        setLaserDivider(laserDivider);
+
         while( isRunning )
         {
 
@@ -265,7 +274,6 @@ bool DAQ::getData( )
                     LOG3(errorCode, errorCount, errorMsg)
                 }
              }
-            LOG1(axCountConnectedDevices() )
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
@@ -349,11 +357,6 @@ bool DAQ::startDaq()
             logAxErrorVerbose(__LINE__, success);
         }
         LOG1(axMessage)
-
-        const int laserDivider{1};
-        msleep(100);
-        LOG1(laserDivider)
-        setLaserDivider(laserDivider);
     } catch (...) {
         LOG1("Axsun init Error")
     }
@@ -380,24 +383,14 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider( int divider)
 {
+    const auto numbrOfConnectedDevices = axCountConnectedDevices();
+    LOG1(numbrOfConnectedDevices)
 
-    AxErr success = axOpenAxsunOCTControl(true);
-    if(success != NO_AxERROR){
-        logAxErrorVerbose(__LINE__, success);
-    }
-    msleep(1000);
-    LOG1(axCountConnectedDevices())
-
-    msleep(100);
     const int subsamplingFactor = divider + 1;
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
-#if PCIE_MODE
-        success = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
-#endif
         LOG2(subsamplingFactor, divider)
-        success = axSetSubsamplingFactor(subsamplingFactor,0);
-//        success =  axSetFPGARegister(60,1,0);
+        AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
@@ -405,8 +398,7 @@ void DAQ::setLaserDivider( int divider)
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
-        LOG1(axMessage);
-    }
+     }
 }
 
 void DAQ::setDisplay(float angle, int direction)
