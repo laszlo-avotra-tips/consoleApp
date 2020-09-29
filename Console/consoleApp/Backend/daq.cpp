@@ -146,7 +146,14 @@ void DAQ::run( void )
             LOG2(retval, errorMsg)
         }
         const int laserDivider{1};
-        msleep(2000);
+        int numbrOfConnectedDevices {0};
+
+        while(numbrOfConnectedDevices != 2){
+            numbrOfConnectedDevices = axCountConnectedDevices();
+            LOG1(numbrOfConnectedDevices)
+
+            msleep(100);
+        }
         LOG1(laserDivider)
         setLaserDivider(laserDivider);
 
@@ -383,9 +390,6 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider( int divider)
 {
-    const auto numbrOfConnectedDevices = axCountConnectedDevices();
-    LOG1(numbrOfConnectedDevices)
-
     const int subsamplingFactor = divider + 1;
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
