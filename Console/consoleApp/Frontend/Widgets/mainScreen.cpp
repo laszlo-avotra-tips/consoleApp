@@ -162,13 +162,14 @@ int MainScreen::getSledRuntime()
     updateSledRunningState();
 
     if(m_runTime.isValid()){
-        if(m_sledRunningStateVal){
-            auto delta = m_runTime.restart();
+        int delta{0};
+        if((m_sledRunningStateVal == 1) || (m_sledRunningStateVal == 3)){
+            delta = m_runTime.restart();
             m_sledRuntime += delta;
-//            LOG2(delta, m_sledRuntime);
         } else {
             m_runTime.start();
         }
+//        LOG3(m_sledRunningStateVal,delta, m_sledRuntime);
     }
     return m_sledRuntime;
 }
@@ -212,6 +213,9 @@ void MainScreen::on_pushButtonEndCase_clicked()
     WidgetContainer::instance()->gotoScreen("startScreen");
 
     WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
+
+    m_sledRuntime = 0;
+    m_runTime.invalidate();
 
     m_updatetimeTimer.stop();
     ui->labelRunTime->setText(QString("Runtime: 00:00"));
