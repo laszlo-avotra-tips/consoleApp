@@ -458,21 +458,6 @@ void sectorItem::paintSector ( bool force )
     painter->begin( &tmpPixmap );
     painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
 
-//    QPen laserReferencePen = QPen( QColor( 50, 50, 255, laserIndicatorBrightness ), 3, Qt::SolidLine, Qt::RoundCap );
-
-//    if( !isUnwinding() )
-//    {
-//        painter->setPen( laserReferencePen );
-//    }
-//    else
-//    {
-//        overlayUnwrapIndicator( getRemainingUnwind() );
-
-//        // fatten up the line to make it more visible
-//        laserReferencePen.setWidth( 4 );
-//        painter->setPen( laserReferencePen );
-//    }
-
     // Update our reference line position
     int x1 = sectorImage->width() / 2;
     int y1 = sectorImage->height() / 2;
@@ -555,18 +540,13 @@ void sectorItem::paintSector ( bool force )
 
         auto& sled = SledSupport::Instance();
 
-        int curRotation = sled.lastRunningState(); //dev.current()->getRotation();
-//        if(curRotation == -1)
-//        {
-//            curRotation = lastRotation;
-//        }
-//        painter->setBrush( Qt::black );
-        if(curRotation == 3)
+        int lastRunningState = sled.lastRunningState(); //dev.current()->getRotation();
+        if(lastRunningState == 3)
         {
             painter->setBrush( PassiveSpinColor );
             spin = "PASSIVE";
         }
-        else if(curRotation == 1)
+        else if(lastRunningState == 1)
         {
             painter->setBrush( AggressiveSpinColor );
             spin = "ACTIVE";
@@ -574,8 +554,6 @@ void sectorItem::paintSector ( bool force )
         else{
             painter->setBrush(Qt::black);
         }
-//        lastRotation = curRotation;
-
         // draw direction indicator
         const int DirectionEdge = catheterEdgePosition;
         QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
@@ -585,48 +563,6 @@ void sectorItem::paintSector ( bool force )
 		painter->setPen( Qt::black );
 		painter->drawText( center, Qt::AlignCenter, spin );
     }
-
-#if ENABLE_ON_SCREEN_RULER
-    /*
-     * Draw a ruler for easy measurement of reticle line depths and catheter radius distances.
-     */
-    QPen tmpPen( QPen( Qt::white, 1, Qt::SolidLine, Qt::RoundCap) );
-    painter->setPen( tmpPen );
-
-    int lineSz = 20;
-    for( int kr = 0; kr < SectorWidth_px; kr++)
-    {
-        if( kr % 10 == 0 )
-        {
-            lineSz = 20;
-            if( kr % 50 == 0 )
-            {
-                lineSz = 30;
-            }
-            if( kr % 100 == 0 )
-            {
-                lineSz = 50;
-            }
-        }
-        else
-        {
-            lineSz = 1;
-        }
-        painter->drawLine( x1 + kr, y1, x1 + kr, y1-lineSz );
-    }
-
-    /*
-     * The sliding point set in the spinbox is offset from the catheter radius.
-     * This can be used to measure the internal imaging mask of a new device by
-     * setting the mask to zero, and moving the sliding point out to the visually
-     * confirmed point of the catheter outer edge. Use this value in the spinbox
-     * for the new internal imaging mask.
-     */
-    lineSz = 100;
-    QPen sliderPen( QPen( Qt::red, 1, Qt::SolidLine, Qt::RoundCap ) );
-    painter->setPen( sliderPen );
-    painter->drawLine( ( x1 + slidingPoint + catheterRadius_px ), y1, ( x1 + slidingPoint + catheterRadius_px ), ( y1 - lineSz ) );
-#endif
 
     setPixmap( tmpPixmap );
     painter->end();
