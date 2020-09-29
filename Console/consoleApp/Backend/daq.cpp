@@ -334,15 +334,18 @@ bool DAQ::startDaq()
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
          * 35 * 256 = 8960 A lines
          */
+        msleep(100);
         success = axSetTrigTimeout(session, framesUntilForceTrig * 2);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
 
+        msleep(100);
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
+        msleep(100);
         success = axGetMessage(session, axMessage );
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
@@ -350,6 +353,7 @@ bool DAQ::startDaq()
         LOG1(axMessage)
 
         const int laserDivider{1};
+        msleep(100);
         LOG1(laserDivider)
         setLaserDivider(laserDivider);
     } catch (...) {
@@ -378,11 +382,15 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider( int divider)
 {
+
     AxErr success = axOpenAxsunOCTControl(true);
     if(success != NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
     }
+    msleep(100);
+    LOG1(axCountConnectedDevices())
 
+    msleep(100);
     const int subsamplingFactor = divider + 1;
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
@@ -390,8 +398,8 @@ void DAQ::setLaserDivider( int divider)
         success = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
 #endif
         LOG2(subsamplingFactor, divider)
-//        success = axSetSubsamplingFactor(subsamplingFactor,0);
-        success =  axSetFPGARegister(60,1,0);
+        success = axSetSubsamplingFactor(subsamplingFactor,0);
+//        success =  axSetFPGARegister(60,1,0);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
