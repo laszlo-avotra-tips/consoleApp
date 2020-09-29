@@ -36,17 +36,14 @@ size_t gBufferLength;
 DAQ::DAQ()
 {
     isRunning    = false;
-    scanWorker   = new ScanConversion();
     lastImageIdx = 0;
     missedImgs   = 0;
     lapCounter   = 0;   // Ocelot lap counter
     gFrameNumber = NUM_OF_FRAME_BUFFERS - 1;
 
-    connect(this, SIGNAL(setDisplayAngle(float, int)), scanWorker, SLOT(handleDisplayAngle(float, int)) );
-
     if( !startDaq() )
     {
-        qDebug() << "DAQ: Failed to start DAQ";
+        LOG1( "DAQ: Failed to start DAQ")
     }
 
     logDecimation();
@@ -388,7 +385,7 @@ void DAQ::setLaserDivider( int divider)
     if(success != NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
     }
-    msleep(100);
+    msleep(1000);
     LOG1(axCountConnectedDevices())
 
     msleep(100);

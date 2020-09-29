@@ -56,7 +56,6 @@ private:
 
 private:
     AOChandle session = NULL;
-    ScanConversion *scanWorker;
     char axMessage[256];
     uint32_t lastImageIdx;
     int missedImgs;
