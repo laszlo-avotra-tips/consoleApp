@@ -596,7 +596,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+void MainScreen::handleUpdateSector(OCTFile::OctData_t *frameData)
 {
     static int count = -1;
     if(!m_scanWorker){

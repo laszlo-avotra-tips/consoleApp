@@ -67,7 +67,6 @@ public:
 public slots:
     void addScanFrame( QSharedPointer<scanframe> &data );
     void captureDi( QImage decoratedImage, QString tagText );
-    void captureClip( QString strIter );
     void generateClipInfo();
     void resetRotationCounter();
     void setWindOffset( bool enabled ) {

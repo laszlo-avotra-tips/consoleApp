@@ -594,24 +594,6 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 /*
- * captureClip
- *
- * Save the sector from the start of the clip
- */
-void liveScene::captureClip( QString strIter )
-{
-    /*
-     * Render the sector images,
-     * then pass of to the capturer to write to
-     * disk.
-     */
-    QImage secImage = sector->freeze();
-
-    // Perform the capture. Allow the capture text to be translated.
-    emit clipCapture( secImage, strIter, sector->getFrozenTimestamp() );
-}
-
-/*
  * dismissReviewImages
  *
  * Method to programmatically dismiss review images

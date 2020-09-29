@@ -122,11 +122,11 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
         return;
     }
     if(idaq){
-        if(idaq->getSignalSource()){
-            connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector);
-        }
         idaq->init();
         idaq->start();
+        if(idaq->getSignalSource()){
+            connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::handleUpdateSector);
+        }
     }
 }
 
