@@ -72,7 +72,7 @@ DAQ::~DAQ()
 
 void DAQ::init()
 {
-
+    LOG1("init")
 }
 
 void DAQ::stop()
@@ -102,6 +102,7 @@ long DAQ::getRecordLength() const
 
 bool DAQ::configure()
 {
+    LOG1("configure")
     return true;
 }
 
@@ -129,7 +130,7 @@ void DAQ::run( void )
         AxErr retval;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
-        qDebug() << "***** Thread: DAQ::run()";
+        LOG1("***** Thread: DAQ::run()")
         LOG1(axCountConnectedDevices())
         retval = axNetworkInterfaceOpen(1);
         if(retval != NO_AxERROR){
