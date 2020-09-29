@@ -36,17 +36,14 @@ size_t gBufferLength;
 DAQ::DAQ()
 {
     isRunning    = false;
-    scanWorker   = new ScanConversion();
     lastImageIdx = 0;
     missedImgs   = 0;
     lapCounter   = 0;   // Ocelot lap counter
     gFrameNumber = NUM_OF_FRAME_BUFFERS - 1;
 
-    connect(this, SIGNAL(setDisplayAngle(float, int)), scanWorker, SLOT(handleDisplayAngle(float, int)) );
-
     if( !startDaq() )
     {
-        qDebug() << "DAQ: Failed to start DAQ";
+        LOG1( "DAQ: Failed to start DAQ")
     }
 
     logDecimation();
@@ -72,7 +69,7 @@ DAQ::~DAQ()
 
 void DAQ::init()
 {
-
+    LOG1("init")
 }
 
 void DAQ::stop()
@@ -102,6 +99,7 @@ long DAQ::getRecordLength() const
 
 bool DAQ::configure()
 {
+    LOG1("configure")
     return true;
 }
 
@@ -129,8 +127,12 @@ void DAQ::run( void )
         AxErr retval;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
-        qDebug() << "***** Thread: DAQ::run()";
-        LOG1(axCountConnectedDevices())
+        LOG1("***** Thread: DAQ::run()")
+        retval = axOpenAxsunOCTControl(true);
+        if(retval != NO_AxERROR){
+            logAxErrorVerbose(__LINE__, retval);
+        }
+
         retval = axNetworkInterfaceOpen(1);
         if(retval != NO_AxERROR){
             char errorMsg[512];
@@ -143,6 +145,18 @@ void DAQ::run( void )
             axGetErrorString(retval, errorMsg);
             LOG2(retval, errorMsg)
         }
+        const int laserDivider{1};
+        int numbrOfConnectedDevices {0};
+
+        while(numbrOfConnectedDevices != 2){
+            numbrOfConnectedDevices = axCountConnectedDevices();
+            LOG1(numbrOfConnectedDevices)
+
+            msleep(100);
+        }
+        LOG1(laserDivider)
+        setLaserDivider(laserDivider);
+
         while( isRunning )
         {
 
@@ -267,7 +281,6 @@ bool DAQ::getData( )
                     LOG3(errorCode, errorCount, errorMsg)
                 }
              }
-            LOG1(axCountConnectedDevices() )
         }
         if( returned_image_number > (lastImageIdx + 1) ){
            lostImageCount += returned_image_number - lastImageIdx - 1;
@@ -334,24 +347,23 @@ bool DAQ::startDaq()
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
          * 35 * 256 = 8960 A lines
          */
+        msleep(100);
         success = axSetTrigTimeout(session, framesUntilForceTrig * 2);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
 
+        msleep(100);
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
+        msleep(100);
         success = axGetMessage(session, axMessage );
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
         LOG1(axMessage)
-
-        const int laserDivider{1};
-        LOG1(laserDivider)
-        setLaserDivider(laserDivider);
     } catch (...) {
         LOG1("Axsun init Error")
     }
@@ -378,20 +390,11 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider( int divider)
 {
-    AxErr success = axOpenAxsunOCTControl(true);
-    if(success != NO_AxERROR){
-        logAxErrorVerbose(__LINE__, success);
-    }
-
     const int subsamplingFactor = divider + 1;
     if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
     {
-#if PCIE_MODE
-        success = axWriteFPGAreg( session, 60, divider ); // Write FPGA register 6 ( Aline rate 100kHz / (parm +1) )
-#endif
         LOG2(subsamplingFactor, divider)
-//        success = axSetSubsamplingFactor(subsamplingFactor,0);
-        success =  axSetFPGARegister(60,1,0);
+        AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
@@ -399,8 +402,7 @@ void DAQ::setLaserDivider( int divider)
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
-        LOG1(axMessage);
-    }
+     }
 }
 
 void DAQ::setDisplay(float angle, int direction)
