@@ -10,7 +10,7 @@
 
 
 RotationIndicatorOverlay2::RotationIndicatorOverlay2(QGraphicsScene *scene)
-: QGraphicsItem( nullptr ), m_scene(scene)
+: QGraphicsPixmapItem( nullptr ), m_scene(scene)
 {
     addItem();
 }
@@ -41,6 +41,16 @@ void RotationIndicatorOverlay2::removeItem()
 void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget * /*widget*/)
 {
     trigLookupTable &quickTrig = trigLookupTable::Instance();
+
+    const QSize sectorSize {SectorHeight_px, SectorWidth_px };
+
+    /*
+     * Set up our drawing surface
+     */
+    QImage* sectorImage = new QImage( sectorSize, QImage::Format_Indexed8 );
+    QPixmap tmpPixmap = QPixmap::fromImage( *(sectorImage) );
+    painter->begin( &tmpPixmap );
+    painter->setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform );
 
     // Update our reference line position
     const int x1 = 1080;
@@ -120,7 +130,7 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
         painter->drawText( center, Qt::AlignCenter, spin );
     }
 
-//    setPixmap( tmpPixmap );
+    setPixmap( tmpPixmap );
     painter->end();
 
 }

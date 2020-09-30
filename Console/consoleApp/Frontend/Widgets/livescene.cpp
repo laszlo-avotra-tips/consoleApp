@@ -244,7 +244,6 @@ void liveScene::setActive()
             rotationIndicatorOverlayItem = new RotationIndicatorOverlay2(this);
         }
         rotationIndicatorOverlayItem->addItem();
-//        rotationIndicatorOverlayItem->setText(" ACTIVE");
     }
 }
 
@@ -255,7 +254,6 @@ void liveScene::setPassive()
             rotationIndicatorOverlayItem = new RotationIndicatorOverlay2(this);
         }
         rotationIndicatorOverlayItem->addItem();
-//        rotationIndicatorOverlayItem->setText("PASSIVE");
     }
 }
 

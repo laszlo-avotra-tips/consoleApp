@@ -1,11 +1,11 @@
 #ifndef ROTATIONINDICATOROVERLAY2_H
 #define ROTATIONINDICATOROVERLAY2_H
 
-#include <QGraphicsItem>
+#include <QGraphicsPixmapItem>
 
 class QGraphicsScene;
 
-class RotationIndicatorOverlay2 : QGraphicsItem
+class RotationIndicatorOverlay2 : QGraphicsPixmapItem
 {
 public:
     RotationIndicatorOverlay2(QGraphicsScene *scene);
