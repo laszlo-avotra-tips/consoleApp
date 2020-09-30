@@ -124,3 +124,8 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
     painter->end();
 
 }
+
+QRectF RotationIndicatorOverlay2::boundingRect() const
+{
+    return m_scene->sceneRect();
+}

@@ -16,6 +16,7 @@ public:
 
 private:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
+    QRectF boundingRect() const override;
 
     QGraphicsScene* m_scene{nullptr};
     QString m_text;

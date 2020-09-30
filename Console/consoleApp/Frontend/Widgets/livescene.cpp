@@ -23,7 +23,7 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
-#include "rotationIndicatorOverlay.h"
+#include "rotationIndicatorOverlay2.h"
 
 
 QString timestampToString( unsigned long ts );
@@ -147,7 +147,7 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
-//    rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+    rotationIndicatorOverlayItem = new RotationIndicatorOverlay2(this);
 
 }
 
@@ -239,35 +239,35 @@ void liveScene::setIsRotationIndicatorOverlayItemEnabled(bool value)
 
 void liveScene::setActive()
 {
-//    if(isRotationIndicatorOverlayItemEnabled){
-//        if(!rotationIndicatorOverlayItem){
-//            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
-//        }
-//        rotationIndicatorOverlayItem->addItem();
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay2(this);
+        }
+        rotationIndicatorOverlayItem->addItem();
 //        rotationIndicatorOverlayItem->setText(" ACTIVE");
-//    }
+    }
 }
 
 void liveScene::setPassive()
 {
-//    if(isRotationIndicatorOverlayItemEnabled){
-//        if(!rotationIndicatorOverlayItem){
-//            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
-//        }
-//        rotationIndicatorOverlayItem->addItem();
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay2(this);
+        }
+        rotationIndicatorOverlayItem->addItem();
 //        rotationIndicatorOverlayItem->setText("PASSIVE");
-//    }
+    }
 }
 
 void liveScene::setIdle()
 {
-//    if(isRotationIndicatorOverlayItemEnabled){
-//        if(!rotationIndicatorOverlayItem){
-//            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
-//        }
-//        rotationIndicatorOverlayItem->removeItem();
-//        update();
-//    }
+    if(isRotationIndicatorOverlayItemEnabled){
+        if(!rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem = new RotationIndicatorOverlay2(this);
+        }
+        rotationIndicatorOverlayItem->removeItem();
+        update();
+    }
 }
 
 /*

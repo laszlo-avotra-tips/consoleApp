@@ -446,7 +446,7 @@ void sectorItem::render( void )
 void sectorItem::paintSector ( bool force )
 {
     // no change in the data
-    if( !sectorShouldPaint && !force )
+//    if( !sectorShouldPaint && !force )
     {
         return;
     }
