@@ -38,36 +38,43 @@ void RotationIndicatorOverlay2::removeItem()
     }
 }
 
+void RotationIndicatorOverlay2::setText(const QString &text)
+{
+    m_text = text;
+}
+
 void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget * /*widget*/)
 {
-    trigLookupTable &quickTrig = trigLookupTable::Instance();
-
     // Update our reference line position
-    const int x1 = 1080;
-    const int y1 = 1080;
-    const double degToRad(3.1415/180.0);
+    const int x1 = 1024 / 2;
+    const int y1 = 1024 / 2;
 
-    double currentAngle_deg{0.0};
     deviceSettings &devSettings = deviceSettings::Instance();
-    auto currentAlineLength_px = devSettings.current()->getALineLengthNormal_px();
-    auto catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
+
+//    trigLookupTable &quickTrig = trigLookupTable::Instance();
+
+//    const double degToRad(3.1415/180.0);
+
+//    double currentAngle_deg{0.0};
+//    auto currentAlineLength_px = devSettings.current()->getALineLengthNormal_px();
+//    auto catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
 
     // Draw the laser reference line for low speed devices
-    if( devSettings.current()->isBiDirectional() )
-    {
-        double tmpAngle_rad = degToRad * currentAngle_deg;
-        LOG1(tmpAngle_rad)
+//    if( devSettings.current()->isBiDirectional() )
+//    {
+//        double tmpAngle_rad = degToRad * currentAngle_deg;
+//        LOG1(tmpAngle_rad)
 
-        float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
-        float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
+//        float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
+//        float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
 
-        // calculate the endpoint of the marker line
-        int x = x1 + floor_int( ( cosTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
-        int y = y1 + floor_int( ( sinTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
+//        // calculate the endpoint of the marker line
+//        int x = x1 + floor_int( ( cosTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
+//        int y = y1 + floor_int( ( sinTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
 
-        // Draw the reference line
-        painter->drawLine( x1, y1, x, y );
-    }
+//        // Draw the reference line
+//        painter->drawLine( x1, y1, x, y );
+//    }
     QPen directionPen = QPen( QColor( 0, 0, 0 ), 6, Qt::SolidLine, Qt::RoundCap );
 
     depthSetting &depth = depthSetting::Instance();

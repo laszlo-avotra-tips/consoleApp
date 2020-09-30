@@ -13,6 +13,7 @@ public:
 
     void addItem();
     void removeItem();
+    void setText(const QString &text);
 
 private:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
