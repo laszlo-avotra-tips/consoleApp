@@ -15,7 +15,6 @@ RotationIndicatorOverlay2::RotationIndicatorOverlay2(liveScene *scene)
 : QGraphicsItem( nullptr ), m_scene(scene)
 {
     addItem();
-    showItem(false);
 }
 
 RotationIndicatorOverlay2::~RotationIndicatorOverlay2()
@@ -28,7 +27,7 @@ void RotationIndicatorOverlay2::addItem()
     if(m_scene && !m_itemIsAdded){
         m_scene->addItem(this);
         setZValue(2);
-        show();
+        showItem(false);
         m_itemIsAdded = true;
     }
 }

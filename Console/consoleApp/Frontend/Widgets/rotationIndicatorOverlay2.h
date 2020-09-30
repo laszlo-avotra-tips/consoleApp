@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 
 class liveScene;
+class overlayItem;
 
 class RotationIndicatorOverlay2 : QGraphicsItem
 {
@@ -21,6 +22,7 @@ private:
     QRectF boundingRect() const override;
 
     liveScene* m_scene{nullptr};
+    overlayItem* m_reticles{nullptr};
     QString m_text;
     bool m_itemIsAdded{false};
 };

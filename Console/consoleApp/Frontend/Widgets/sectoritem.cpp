@@ -492,6 +492,8 @@ void sectorItem::paintSector ( bool force )
     painter->drawEllipse( QRect( QPoint( x1 - catheterEdgePosition, y1 - catheterEdgePosition ),
                                  QPoint( x1 + catheterEdgePosition, y1 + catheterEdgePosition ) ) );
 
+
+
     QPen directionPen = QPen( QColor( 0, 0, 0 ), 6, Qt::SolidLine, Qt::RoundCap );
 
     // Change the color of the direction indicators.  Hide them if stopped.

@@ -66,7 +66,7 @@ liveScene::liveScene( QObject *parent )
     overlays = new overlayItem( sector );
     this->addItem( overlays );
     overlays->setPos( 0, 0 );
-    overlays->setZValue( 100.0 );
+    overlays->setZValue( 10.0 );
     overlays->setVisible( true );
 
     infoMessageItem = nullptr;
@@ -235,6 +235,7 @@ void liveScene::setActive()
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("ACTIVE");
         update();
+        overlays->render();
     }
 }
 
@@ -247,6 +248,7 @@ void liveScene::setPassive()
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
         update();
+        overlays->render();
     }
 }
 
