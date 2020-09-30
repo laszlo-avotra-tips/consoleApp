@@ -209,7 +209,7 @@ void liveScene::refresh( void )
     {
         doPaint = false;
         sector->paintSector( force );
-        overlays->render();
+        showOverlay();
     }
     if(deviceSettings::Instance().getIsSimulation()){
         update();
@@ -259,6 +259,12 @@ void liveScene::setIdle()
         rotationIndicatorOverlayItem->removeItem();
         update();
     }
+}
+
+void liveScene::showOverlay()
+{
+    overlays->setVisible(true);
+    rotationIndicatorOverlayItem->showItem(true);
 }
 
 /*

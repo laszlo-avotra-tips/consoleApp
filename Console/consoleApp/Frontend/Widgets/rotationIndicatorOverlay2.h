@@ -14,6 +14,7 @@ public:
     void addItem();
     void removeItem();
     void setText(const QString &text);
+    void showItem(bool);
 
 private:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;

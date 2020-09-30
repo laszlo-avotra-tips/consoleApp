@@ -15,6 +15,7 @@ RotationIndicatorOverlay2::RotationIndicatorOverlay2(liveScene *scene)
 : QGraphicsItem( nullptr ), m_scene(scene)
 {
     addItem();
+    showItem(false);
 }
 
 RotationIndicatorOverlay2::~RotationIndicatorOverlay2()
@@ -44,6 +45,12 @@ void RotationIndicatorOverlay2::setText(const QString &text)
 {
     m_text = text;
 }
+
+void RotationIndicatorOverlay2::showItem(bool isShown)
+{
+    setVisible(isShown);
+}
+
 
 void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget * /*widget*/)
 {

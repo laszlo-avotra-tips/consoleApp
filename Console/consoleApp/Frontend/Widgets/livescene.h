@@ -63,6 +63,7 @@ public:
     void setActive();
     void setPassive();
     void setIdle();
+    void showOverlay();
 
 public slots:
     void captureDi( QImage decoratedImage, QString tagText );
