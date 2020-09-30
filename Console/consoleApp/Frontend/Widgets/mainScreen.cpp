@@ -596,7 +596,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+void MainScreen::handleUpdateSector(OCTFile::OctData_t *frameData)
 {
     static int count = -1;
     if(!m_scanWorker){
@@ -621,9 +621,10 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 if(pixmap){
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
+                    m_scene->setDoPaint();
                 }
 //lcv                if(++count % 2 == 0)
-                    m_scene->setDoPaint();
+//                m_scene->setDoPaint();
             }
         }
     }

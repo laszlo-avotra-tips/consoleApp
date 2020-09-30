@@ -59,12 +59,6 @@ liveScene::liveScene( QObject *parent )
     sector->setData( SectorItemKey, "sector" );
     addItem( sector );
 
-    // Background image rendering for movies
-    videoSector = new sectorItem();
-    videoSector->setVideoOnly();
-
-    doPaint = false;
-
     sector->setZValue( 1.0 );
     sector->setPos( 0, 0 );
     sector->clearRotationFlag();
@@ -225,10 +219,7 @@ void liveScene::refresh( void )
     if( doPaint )
     {
         doPaint = false;
-        if(deviceSettings::Instance().getIsSimulation()){
-            sector->paintSector( force );
-            videoSector->paintSector( force );
-        }
+        sector->paintSector( force );
         overlays->render();
     }
     if(deviceSettings::Instance().getIsSimulation()){
@@ -248,31 +239,26 @@ void liveScene::setIsRotationIndicatorOverlayItemEnabled(bool value)
 
 void liveScene::setActive()
 {
-
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
             rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
         }
         rotationIndicatorOverlayItem->addItem();
-        rotationIndicatorOverlayItem->setText(" ACTIVE");
     }
 }
 
 void liveScene::setPassive()
 {
-
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
             rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
         }
         rotationIndicatorOverlayItem->addItem();
-        rotationIndicatorOverlayItem->setText("PASSIVE");
     }
 }
 
 void liveScene::setIdle()
 {
-
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
             rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
@@ -324,30 +310,6 @@ void liveScene::handleReticleBrightnessChanged()
     auto value = userSettings::Instance().reticleBrightness();
     LOG1(value)
     sector->setReticleBrightness( value );
-}
-
-/*
- * addScanFrame
- * Given a shared pointer to an OCT frame,
- * hand it off to all interested display items
- * and schedule a display update at the next interval.
- */
-void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
-{
-    // Pass off to the sector
-    sector->addFrame( data );
-    videoSector->addFrame( data );
-
-    // Notify anyone interested if a full rotation has
-    // taken place. Used, by the lag correction process
-    // for example.
-    if( sector->fullRotationCompleted() )
-    {
-        emit fullRotation();
-        sector->clearRotationFlag();
-    }
-
-    doPaint = true;
 }
 
 // SLOTS
@@ -594,9 +556,6 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseReleaseEvent(event);
 
-        // Update the video-only rendering for the current roation on the screen
-        videoSector->setDisplayAngle( sector->getDisplayAngle() );
-
         emit sendDisplayAngle( float(sector->getDisplayAngle()) );
     }
     else if( isAnnotateMode )
@@ -605,24 +564,6 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsScene::mouseReleaseEvent(event);
     }
     update();
-}
-
-/*
- * captureClip
- *
- * Save the sector from the start of the clip
- */
-void liveScene::captureClip( QString strIter )
-{
-    /*
-     * Render the sector images,
-     * then pass of to the capturer to write to
-     * disk.
-     */
-    QImage secImage = sector->freeze();
-
-    // Perform the capture. Allow the capture text to be translated.
-    emit clipCapture( secImage, strIter, sector->getFrozenTimestamp() );
 }
 
 /*

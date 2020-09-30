@@ -82,7 +82,7 @@ private slots:
     void setMeasurementMode(bool enabled);
 
 public slots:
-    void updateSector(OCTFile::OctData_t* frameData);
+    void handleUpdateSector(OCTFile::OctData_t* frameData);
 
 private:
     void showEvent(QShowEvent* se) override;
