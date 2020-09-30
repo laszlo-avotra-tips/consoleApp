@@ -116,17 +116,6 @@ liveScene::liveScene( QObject *parent )
     infoRenderBuffer = nullptr;
     infoImage = nullptr;
 
-//    clipPlayer = new videoDecoderItem();
-//    addItem( clipPlayer );
-//    clipPlayer->setTickInterval( ClipUpdateRate_ms );
-//    clipPlayer->setZValue( 3.0 );
-//    clipPlayer->setPos( 0, 0 );
-//    clipPlayer->hide();
-
-//    connect( clipPlayer, SIGNAL( finished() ), this, SIGNAL( endOfFile() ) );
-//    connect( clipPlayer, SIGNAL( totalTimeChanged( qint64 ) ), this, SIGNAL( clipLengthChanged(qint64) ) );
-//    connect( clipPlayer, SIGNAL( tick( qint64 ) ), this, SIGNAL( videoTick( qint64 ) ) );
-
     /*
      * Load direction indicator images for both directions and stopped.
      */
@@ -222,8 +211,7 @@ void liveScene::refresh( void )
         sector->paintSector( force );
         overlays->render();
     }
-//    if(deviceSettings::Instance().getIsSimulation())
-    {
+    if(deviceSettings::Instance().getIsSimulation()){
         update();
     }
 }
@@ -246,6 +234,7 @@ void liveScene::setActive()
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("ACTIVE");
+        update();
     }
 }
 
@@ -257,6 +246,7 @@ void liveScene::setPassive()
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
+        update();
     }
 }
 

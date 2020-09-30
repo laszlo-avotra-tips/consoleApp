@@ -7,9 +7,11 @@
 #include "logger.h"
 #include "depthsetting.h"
 #include "sledsupport.h"
+#include "Utility/userSettings.h"
+#include "livescene.h"
 
 
-RotationIndicatorOverlay2::RotationIndicatorOverlay2(QGraphicsScene *scene)
+RotationIndicatorOverlay2::RotationIndicatorOverlay2(liveScene *scene)
 : QGraphicsItem( nullptr ), m_scene(scene)
 {
     addItem();
@@ -51,34 +53,18 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
 
     deviceSettings &devSettings = deviceSettings::Instance();
 
-//    trigLookupTable &quickTrig = trigLookupTable::Instance();
-
-//    const double degToRad(3.1415/180.0);
-
-//    double currentAngle_deg{0.0};
-//    auto currentAlineLength_px = devSettings.current()->getALineLengthNormal_px();
-//    auto catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
-
-    // Draw the laser reference line for low speed devices
-//    if( devSettings.current()->isBiDirectional() )
-//    {
-//        double tmpAngle_rad = degToRad * currentAngle_deg;
-//        LOG1(tmpAngle_rad)
-
-//        float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
-//        float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
-
-//        // calculate the endpoint of the marker line
-//        int x = x1 + floor_int( ( cosTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
-//        int y = y1 + floor_int( ( sinTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
-
-//        // Draw the reference line
-//        painter->drawLine( x1, y1, x, y );
-//    }
-    QPen directionPen = QPen( QColor( 0, 0, 0 ), 6, Qt::SolidLine, Qt::RoundCap );
-
     depthSetting &depth = depthSetting::Instance();
     int catheterEdgePosition = depth.getCatheterEdgePosition();
+    QBrush cathEdgeBrush( Qt::black, Qt::SolidPattern );
+    QColor reticleColor( 50, 50, 255, userSettings::Instance().reticleBrightness() );
+    QPen   reticlePen( QPen( reticleColor, 3, Qt::SolidLine, Qt::RoundCap) );
+    painter->setPen( reticlePen );
+    painter->setBrush( cathEdgeBrush );
+    painter->drawEllipse( QRect( QPoint( x1 - catheterEdgePosition, y1 - catheterEdgePosition ),
+                                 QPoint( x1 + catheterEdgePosition, y1 + catheterEdgePosition ) ) );
+
+    QPen directionPen = QPen( QColor( 0, 0, 0 ), 6, Qt::SolidLine, Qt::RoundCap );
+
 
     // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
     if( devSettings.current()->isBiDirectional() )

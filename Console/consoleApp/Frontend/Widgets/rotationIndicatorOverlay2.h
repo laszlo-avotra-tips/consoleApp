@@ -3,12 +3,12 @@
 
 #include <QGraphicsItem>
 
-class QGraphicsScene;
+class liveScene;
 
 class RotationIndicatorOverlay2 : QGraphicsItem
 {
 public:
-    RotationIndicatorOverlay2(QGraphicsScene *scene);
+    RotationIndicatorOverlay2(liveScene *scene);
     ~RotationIndicatorOverlay2();
 
     void addItem();
@@ -19,7 +19,7 @@ private:
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
     QRectF boundingRect() const override;
 
-    QGraphicsScene* m_scene{nullptr};
+    liveScene* m_scene{nullptr};
     QString m_text;
     bool m_itemIsAdded{false};
 };
