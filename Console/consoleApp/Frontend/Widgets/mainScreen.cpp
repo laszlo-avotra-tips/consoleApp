@@ -345,11 +345,11 @@ void MainScreen::updateDeviceSettings()
     int currentSledRunningStateVal{sled.runningState()};
     emit sledRunningStateChanged(currentSledRunningStateVal);
 
-    if(isBidir){
-        m_scene->setActive();
-    } else {
-        m_scene->setIdle();
-    }
+//    if(isBidir){
+//        m_scene->setActive();
+//    } else {
+//        m_scene->setIdle();
+//    }
 
     int speedIndex = selectedDevice->getDefaultSpeedIndex();
     LOG3(isBidir, numberOfSpeeds, speedIndex)

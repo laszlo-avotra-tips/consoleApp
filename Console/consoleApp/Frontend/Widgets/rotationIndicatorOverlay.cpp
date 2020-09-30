@@ -16,6 +16,7 @@ RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene)
     setFont(font);
 
     addItem();
+    hide();
 }
 
 RotationIndicatorOverlay* RotationIndicatorOverlay::instance(QGraphicsScene *scene)
