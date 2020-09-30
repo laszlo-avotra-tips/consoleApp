@@ -5,6 +5,9 @@
 #include <QPointF>
 #include <QGraphicsScene>
 
+RotationIndicatorOverlay* RotationIndicatorOverlay::m_instance{nullptr};
+
+
 RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene)
     : QGraphicsTextItem( nullptr ), m_scene(scene)
 {
@@ -13,6 +16,14 @@ RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene)
     setFont(font);
 
     addItem();
+}
+
+RotationIndicatorOverlay* RotationIndicatorOverlay::instance(QGraphicsScene *scene)
+{
+    if(!m_instance){
+        m_instance = new RotationIndicatorOverlay(scene);
+    }
+    return m_instance;
 }
 
 RotationIndicatorOverlay::~RotationIndicatorOverlay()

@@ -153,7 +153,7 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
-    rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
 
 }
 
@@ -251,7 +251,7 @@ void liveScene::setActive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText(" ACTIVE");
@@ -263,7 +263,7 @@ void liveScene::setPassive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
@@ -275,7 +275,7 @@ void liveScene::setIdle()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->removeItem();
         update();
