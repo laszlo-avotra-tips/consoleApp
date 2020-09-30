@@ -59,8 +59,6 @@ liveScene::liveScene( QObject *parent )
     sector->setData( SectorItemKey, "sector" );
     addItem( sector );
 
-    doPaint = false;
-
     sector->setZValue( 1.0 );
     sector->setPos( 0, 0 );
     sector->clearRotationFlag();
@@ -314,29 +312,6 @@ void liveScene::handleReticleBrightnessChanged()
     auto value = userSettings::Instance().reticleBrightness();
     LOG1(value)
     sector->setReticleBrightness( value );
-}
-
-/*
- * addScanFrame
- * Given a shared pointer to an OCT frame,
- * hand it off to all interested display items
- * and schedule a display update at the next interval.
- */
-void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
-{
-    // Pass off to the sector
-    sector->addFrame( data );
-
-    // Notify anyone interested if a full rotation has
-    // taken place. Used, by the lag correction process
-    // for example.
-    if( sector->fullRotationCompleted() )
-    {
-        emit fullRotation();
-        sector->clearRotationFlag();
-    }
-
-    doPaint = true;
 }
 
 // SLOTS

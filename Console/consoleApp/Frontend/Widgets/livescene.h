@@ -65,7 +65,6 @@ public:
     void setIdle();
 
 public slots:
-    void addScanFrame( QSharedPointer<scanframe> &data );
     void captureDi( QImage decoratedImage, QString tagText );
     void generateClipInfo();
     void resetRotationCounter();
@@ -110,13 +109,6 @@ public slots:
     
     void showReview(const QImage &);
 
-    void clearImages( void )
-    {
-        sector->clearImage();
-        doPaint = true;
-        refresh();
-    }
-
     void resetSector( void )
     {
         sector->reset();
@@ -146,7 +138,6 @@ public slots:
 	void setDoPaint()
 	{
 		doPaint = true;
-		force = true;
 	}
 
     void setClipForPlayback( QString name );
@@ -194,8 +185,8 @@ private:
     QGraphicsTextItem *infoMessageItem;
     QTimer *refreshTimer;
     QTimer *infoRenderTimer;
-    bool doPaint;
-	bool force;
+    bool doPaint{false};
+    const bool force{true};
     sectorItem *sector;
     overlayItem *overlays;
     float zoomFactor;
