@@ -184,9 +184,8 @@ void DAQ::setSubsampling(int speed)
         m_subsamplingFactor = 2;
         setLaserDivider();
     } else {
-        m_subsamplingFactor = 2;
+        m_subsamplingFactor = 1;
         setLaserDivider();
-
     }
 }
 
