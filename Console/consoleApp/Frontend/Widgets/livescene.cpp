@@ -145,7 +145,7 @@ liveScene::liveScene( QObject *parent )
 
 //    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
     rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-    setActive();
+//    setActive();
 
 }
 
@@ -240,6 +240,14 @@ void liveScene::setIsRotationIndicatorOverlayItemEnabled(bool value)
 
 void liveScene::setActive()
 {
+    deviceSettings &devices = deviceSettings::Instance();
+    const auto& dev = devices.deviceAt(devices.getCurrentDevice());
+
+    if(dev){
+        isRotationIndicatorOverlayItemEnabled = dev->isBiDirectional();
+    } else {
+        isRotationIndicatorOverlayItemEnabled = false;
+    }
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){

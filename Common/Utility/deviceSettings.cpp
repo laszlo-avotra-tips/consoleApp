@@ -93,7 +93,6 @@ void deviceSettings::setCurrentDevice( int devIndex )
     qDebug() << "* DeviceSettings - Current device changed";
     currentDevice = devIndex;
     deviceSettings::adjustMaskSize( 0 );
-//lcv    emit deviceChanged( devIndex );
     emit deviceChanged( );
 }
 

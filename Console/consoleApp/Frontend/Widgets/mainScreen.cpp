@@ -345,11 +345,11 @@ void MainScreen::updateDeviceSettings()
     int currentSledRunningStateVal{sled.runningState()};
     emit sledRunningStateChanged(currentSledRunningStateVal);
 
-//    if(isBidir){
-//        m_scene->setActive();
-//    } else {
-//        m_scene->setIdle();
-//    }
+    if(isBidir){
+        m_scene->setActive();
+    } else {
+        m_scene->setIdle();
+    }
 
     int speedIndex = selectedDevice->getDefaultSpeedIndex();
     LOG3(isBidir, numberOfSpeeds, speedIndex)
@@ -526,23 +526,21 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     auto device = ds.current();
 
     if(device && m_scene){
-        const bool isAth = device->isAth();
+        const bool isBd = device->isBiDirectional();
 
         if(runningStateVal == 1){
             ui->labelLive->setStyleSheet("color: green;");
-            if(!isAth){
+            if(isBd){
                 m_scene->setActive();
             }
         } else if (runningStateVal == 3){
             ui->labelLive->setStyleSheet("color: green;");
-            if(!isAth){
+            if(isBd){
                 m_scene->setPassive();
             }
         }else{
             ui->labelLive->setStyleSheet("color: grey;");
-            if(!isAth){
-                m_scene->setIdle();
-            }
+            m_scene->setIdle();
         }
         if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
             on_pushButtonMeasure_clicked(false);

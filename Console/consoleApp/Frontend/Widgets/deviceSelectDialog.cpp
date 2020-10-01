@@ -103,6 +103,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
     const auto& dev = devices.deviceAt(devices.getCurrentDevice());
 
     const bool isShowSpeed(!dev->isAth());
+
     QWidget* widget = WidgetContainer::instance()->getScreen("mainScreen");
     MainScreen* ms = dynamic_cast<MainScreen*>(widget);
     if(ms){
