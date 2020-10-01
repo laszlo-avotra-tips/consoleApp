@@ -72,6 +72,12 @@ liveScene::liveScene( QObject *parent )
     overlays->setZValue( 100.0 );
     overlays->setVisible( true );
 
+    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+//    addItem(rotationIndicatorOverlayItem);
+//    rotationIndicatorOverlayItem->setPos( 0, 0 );
+//    rotationIndicatorOverlayItem->setZValue( 200.0 );
+//    rotationIndicatorOverlayItem->setVisible( false );
+
     infoMessageItem = nullptr;
     refreshTimer = new QTimer();
     connect( refreshTimer, SIGNAL( timeout() ), this, SLOT( refresh() ) );
@@ -140,7 +146,7 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
 //    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+//    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
 //    setActive();
 
 }
