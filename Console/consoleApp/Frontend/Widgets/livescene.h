@@ -27,7 +27,8 @@
 #include "annotateoverlay.h"
 #include "Widgets/areameasurementoverlay.h"
 
-class RotationIndicatorOverlay;
+//class RotationIndicatorOverlay;
+class RotationIndicatorOverlay2;
 
 class liveScene : public QGraphicsScene
 {
@@ -260,7 +261,8 @@ private:
     AreaMeasurementOverlay *areaOverlayItem{nullptr};
     bool isMeasurementEnabled{false};
 
-    RotationIndicatorOverlay* rotationIndicatorOverlayItem{nullptr};
+//    RotationIndicatorOverlay* rotationIndicatorOverlayItem{nullptr};
+    RotationIndicatorOverlay2* rotationIndicatorOverlayItem{nullptr};
     bool isRotationIndicatorOverlayItemEnabled{true};
 
 protected:
