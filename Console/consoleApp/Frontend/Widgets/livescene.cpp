@@ -24,7 +24,7 @@
 #include <QApplication>
 #include "Utility/userSettings.h"
 //#include "rotationIndicatorOverlay.h"
-#include "rotationIndicatorOverlay2.h"
+#include "rotationIndicatorOverlay.h"
 
 
 QString timestampToString( unsigned long ts );
@@ -144,7 +144,7 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
 //    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-    rotationIndicatorOverlayItem = RotationIndicatorOverlay2::instance(this);
+    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
     setActive();
 
 }
@@ -244,7 +244,7 @@ void liveScene::setActive()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay2::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText(" ACTIVE");
@@ -257,7 +257,7 @@ void liveScene::setPassive()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay2::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
@@ -270,7 +270,7 @@ void liveScene::setIdle()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay2::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->removeItem();
         update();
