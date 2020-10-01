@@ -180,6 +180,15 @@ void DAQ::run( void )
     }
 }
 
+void DAQ::setSubsampling(int speed)
+{
+    if(speed < m_subsamplingThreshold){
+        setLaserDivider(1);
+    } else {
+        setLaserDivider(0);
+    }
+}
+
 /*
  * getData
  */

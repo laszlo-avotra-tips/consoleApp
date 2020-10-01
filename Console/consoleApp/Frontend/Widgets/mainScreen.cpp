@@ -15,6 +15,7 @@
 #include "scanconversion.h"
 #include "signalmodel.h"
 #include "daqfactory.h"
+#include "idaq.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -138,6 +139,12 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
 {
     if(speed >= 600){
         LOG1(speed);
+
+        auto idaq = daqfactory::instance()->getdaq();
+        if(idaq){
+            idaq->setSubsampling(speed);
+        }
+
         const QString qSpeed(QString::number(speed));
         const QByteArray baSpeed(qSpeed.toStdString().c_str());
         auto& sled = SledSupport::Instance();
