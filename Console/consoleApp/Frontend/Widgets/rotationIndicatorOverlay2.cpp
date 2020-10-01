@@ -8,12 +8,24 @@
 #include "depthsetting.h"
 #include "sledsupport.h"
 
+RotationIndicatorOverlay2* RotationIndicatorOverlay2::m_instance{nullptr};
+
 
 RotationIndicatorOverlay2::RotationIndicatorOverlay2(QGraphicsScene *scene)
 : QGraphicsItem( nullptr ), m_scene(scene)
 {
     addItem();
+    hide();
 }
+
+RotationIndicatorOverlay2* RotationIndicatorOverlay2::instance(QGraphicsScene *scene)
+{
+    if(!m_instance){
+        m_instance = new RotationIndicatorOverlay2(scene);
+    }
+    return m_instance;
+}
+
 
 RotationIndicatorOverlay2::~RotationIndicatorOverlay2()
 {

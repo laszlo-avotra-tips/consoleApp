@@ -8,7 +8,7 @@ class QGraphicsScene;
 class RotationIndicatorOverlay2 : QGraphicsItem
 {
 public:
-    RotationIndicatorOverlay2(QGraphicsScene *scene);
+    static RotationIndicatorOverlay2* instance(QGraphicsScene* scene);
     ~RotationIndicatorOverlay2();
 
     void addItem();
@@ -16,9 +16,11 @@ public:
     void setText(const QString &text);
 
 private:
+    RotationIndicatorOverlay2(QGraphicsScene *scene);
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
     QRectF boundingRect() const override;
 
+    static RotationIndicatorOverlay2* m_instance;
     QGraphicsScene* m_scene{nullptr};
     QString m_text;
     bool m_itemIsAdded{false};
