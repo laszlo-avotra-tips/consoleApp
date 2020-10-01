@@ -5,6 +5,7 @@
 #include <QPointF>
 #include <QGraphicsScene>
 #include "logger.h"
+#include <QGraphicsSceneMouseEvent>
 
 RotationIndicatorOverlay* RotationIndicatorOverlay::m_instance{nullptr};
 
@@ -60,15 +61,19 @@ void RotationIndicatorOverlay::addItem()
         m_scene->addItem(this);
         setPos(0,0);
         setZValue(200);
-        show();
         m_itemIsAdded = true;
+        show();
     }
 }
 
 void RotationIndicatorOverlay::removeItem()
 {
     if(m_scene && m_itemIsAdded){
-        m_scene->removeItem(this);
-        m_itemIsAdded = false;
+        hide();
     }
+}
+
+void RotationIndicatorOverlay::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    LOG1(event->type())
 }

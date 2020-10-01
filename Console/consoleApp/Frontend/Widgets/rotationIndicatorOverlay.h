@@ -16,6 +16,8 @@ public:
     void addItem();
     void removeItem();
 
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
 private:
     RotationIndicatorOverlay(QGraphicsScene *scene);
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;

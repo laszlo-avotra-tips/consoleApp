@@ -57,22 +57,24 @@ liveScene::liveScene( QObject *parent )
     LOG2(ClipStep_percent, ClipUpdateRate_ms)
     // Items for display
     sector = new sectorItem();
-    sector->setData( SectorItemKey, "sector" );
+    sector->setData( SectorItemKey, "axsun" );
     addItem( sector );
 
     doPaint = false;
 
-    sector->setZValue( 1.0 );
+//    sector->setZValue( 1.0 );
     sector->setPos( 0, 0 );
     sector->clearRotationFlag();
 
     overlays = new overlayItem( sector );
     addItem( overlays );
+    overlays->setData(2,"reticle");
     overlays->setPos( 0, 0 );
-    overlays->setZValue( 100.0 );
+    overlays->setZValue( 10.0 );
     overlays->setVisible( true );
 
     rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+    rotationIndicatorOverlayItem->setData(3,"rotation");
 //    addItem(rotationIndicatorOverlayItem);
 //    rotationIndicatorOverlayItem->setPos( 0, 0 );
 //    rotationIndicatorOverlayItem->setZValue( 200.0 );
@@ -493,40 +495,40 @@ void liveScene::rewindPlayback()
  *
  * Handle mouse button presses
  */
-void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    if( zoomFactor != 1.0f ) // no zoom
-    {
-        // capture the event; allows image review to pan and zoom
-    } 
-    else if( reviewing && !isMeasureMode )
-    {
-        dismissReviewImages();
-    }
-    else if( isMeasureMode )
-    {
-        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
-        QGraphicsScene::mousePressEvent(event);
-    }
-    else if( isAnnotateMode )
-    {
-        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
-        QGraphicsScene::mousePressEvent(event);
-    }
-    else
-    {
-        if( mouseRotationEnabled )
-        {
-            LOG( INFO, "Sector rotate" )
-            // Grab the sector
-            qApp->setOverrideCursor( Qt::ClosedHandCursor );
+//void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    if( zoomFactor != 1.0f ) // no zoom
+//    {
+//        // capture the event; allows image review to pan and zoom
+//    }
+//    else if( reviewing && !isMeasureMode )
+//    {
+//        dismissReviewImages();
+//    }
+//    else if( isMeasureMode )
+//    {
+//        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+//        QGraphicsScene::mousePressEvent(event);
+//    }
+//    else if( isAnnotateMode )
+//    {
+//        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+//        QGraphicsScene::mousePressEvent(event);
+//    }
+//    else
+//    {
+//        if( mouseRotationEnabled )
+//        {
+//            LOG( INFO, "Sector rotate" )
+//            // Grab the sector
+//            qApp->setOverrideCursor( Qt::ClosedHandCursor );
 
-            // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
-            QGraphicsScene::mousePressEvent(event);
-        }
-    }
-    update();
-}
+//            // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+//            QGraphicsScene::mousePressEvent(event);
+//        }
+//    }
+//    update();
+//}
 
 /*
  * mouseMoveEvent()
