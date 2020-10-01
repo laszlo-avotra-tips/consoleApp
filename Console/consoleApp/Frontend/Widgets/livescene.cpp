@@ -213,7 +213,7 @@ void liveScene::refresh( void )
     if( doPaint )
     {
         doPaint = false;
-        sector->paintSector( force );
+//        sector->paintSector( force );
         overlays->render();
     }
     update();
