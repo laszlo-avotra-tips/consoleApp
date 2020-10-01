@@ -28,6 +28,7 @@
 #include "Widgets/areameasurementoverlay.h"
 
 class RotationIndicatorOverlay;
+//class RotationIndicatorOverlay2;
 
 class liveScene : public QGraphicsScene
 {
@@ -261,6 +262,7 @@ private:
     bool isMeasurementEnabled{false};
 
     RotationIndicatorOverlay* rotationIndicatorOverlayItem{nullptr};
+//    RotationIndicatorOverlay2* rotationIndicatorOverlayItem{nullptr};
     bool isRotationIndicatorOverlayItemEnabled{true};
 
 protected:

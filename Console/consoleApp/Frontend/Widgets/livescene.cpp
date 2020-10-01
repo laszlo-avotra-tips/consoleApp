@@ -23,6 +23,7 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
+//#include "rotationIndicatorOverlay.h"
 #include "rotationIndicatorOverlay.h"
 
 
@@ -122,17 +123,6 @@ liveScene::liveScene( QObject *parent )
     infoRenderBuffer = nullptr;
     infoImage = nullptr;
 
-//    clipPlayer = new videoDecoderItem();
-//    addItem( clipPlayer );
-//    clipPlayer->setTickInterval( ClipUpdateRate_ms );
-//    clipPlayer->setZValue( 3.0 );
-//    clipPlayer->setPos( 0, 0 );
-//    clipPlayer->hide();
-
-//    connect( clipPlayer, SIGNAL( finished() ), this, SIGNAL( endOfFile() ) );
-//    connect( clipPlayer, SIGNAL( totalTimeChanged( qint64 ) ), this, SIGNAL( clipLengthChanged(qint64) ) );
-//    connect( clipPlayer, SIGNAL( tick( qint64 ) ), this, SIGNAL( videoTick( qint64 ) ) );
-
     /*
      * Load direction indicator images for both directions and stopped.
      */
@@ -153,7 +143,9 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
-    rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+    setActive();
 
 }
 
@@ -251,7 +243,8 @@ void liveScene::setActive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText(" ACTIVE");
@@ -263,7 +256,8 @@ void liveScene::setPassive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
@@ -275,7 +269,8 @@ void liveScene::setIdle()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = new RotationIndicatorOverlay(this);
+//            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
         }
         rotationIndicatorOverlayItem->removeItem();
         update();

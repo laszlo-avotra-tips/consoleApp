@@ -59,6 +59,8 @@ public:
     int newDir;
     QByteArray baParam;
 
+    int getLastRunningState() const;
+
 signals:
     void announceClockingMode( int );
     void announceFirmwareVersions( QByteArray, QByteArray );
@@ -132,6 +134,7 @@ private:
     bool isRunning;
     SledState_e currSledState;
     SledState_e prevSledState;
+    int m_lastRunningState;
 
                                                     // prevent access to:
     SledSupport();                                  //   default constructor

@@ -27,6 +27,7 @@
 #include "Utility/userSettings.h"
 #include <QTime>
 #include "depthsetting.h"
+#include "rotationIndicatorOverlay.h"
 
 
 //const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish
@@ -676,6 +677,10 @@ overlayItem::~overlayItem()
 void overlayItem::render( void )
 {
 //	qDebug() << ">>>>>> 19";
+
+    auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr);
+    rotationIndicatorOverlayItem->show();
+
     depthSetting &depth = depthSetting::Instance();
     int numReticles = depth.getNumReticles();
     int pixelsPerMm = depth.getPixelsPerMm();

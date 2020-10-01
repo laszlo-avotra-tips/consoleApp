@@ -858,7 +858,7 @@ bool SledSupport::isRunningState()
 
 int SledSupport::runningState()
 {
-    int running = -1;
+    int m_lastRunningState = 0;
     if( ftHandle != NULL )
     {
         // first get current run mode
@@ -874,15 +874,15 @@ int SledSupport::runningState()
         mutex.unlock();
         qDebug() << "get running state response:" << resp;
         if( resp.toUpper().contains( "1" )) {
-            running = 1;
+            m_lastRunningState = 1;
         } else if(resp.toUpper().contains( "3" )){
-            running = 3;
+            m_lastRunningState = 3;
         }
         //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
         QString respAsString = QTextCodec::codecForMib(106)->toUnicode(resp);
 //        LOG2(respAsString, running)
     }
-    return running;
+    return m_lastRunningState;
 }
 
 
@@ -1136,6 +1136,11 @@ QString SledSupport::commandToString(const QByteArray &ba)
         fcmd = QString("code: \"") + cmd + QString("\"");
     }
     return fcmd;
+}
+
+int SledSupport::getLastRunningState() const
+{
+    return m_lastRunningState;
 }
 
 /*
