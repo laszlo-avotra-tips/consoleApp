@@ -678,8 +678,13 @@ void overlayItem::render( void )
 {
 //	qDebug() << ">>>>>> 19";
 
-    auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr);
-    rotationIndicatorOverlayItem->show();
+    auto& ds = deviceSettings::Instance();
+    auto* dev = ds.current();
+
+    if(dev->isBiDirectional()){
+        auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr);
+        rotationIndicatorOverlayItem->show();
+    }
 
     depthSetting &depth = depthSetting::Instance();
     int numReticles = depth.getNumReticles();

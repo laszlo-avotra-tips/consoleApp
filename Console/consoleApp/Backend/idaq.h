@@ -16,6 +16,7 @@ public:
     virtual void pause() = 0;
     virtual void resume() = 0;
     virtual void init() = 0;
+    virtual void setSubsampling(int speed) = 0;
 
     virtual QString getDaqLevel() = 0;
 

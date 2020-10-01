@@ -263,7 +263,7 @@ private:
 
     RotationIndicatorOverlay* rotationIndicatorOverlayItem{nullptr};
 //    RotationIndicatorOverlay2* rotationIndicatorOverlayItem{nullptr};
-    bool isRotationIndicatorOverlayItemEnabled{true};
+    bool isRotationIndicatorOverlayItemEnabled{false};
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

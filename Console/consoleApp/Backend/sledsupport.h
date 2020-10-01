@@ -141,6 +141,7 @@ private:
     ~SledSupport();                                 //   default destructor
     SledSupport( SledSupport const & );             //   copy
     SledSupport & operator=( SledSupport const & ); //   assign
+
 };
 
 #endif // SLEDSUPPORT_H

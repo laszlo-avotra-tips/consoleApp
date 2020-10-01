@@ -20,6 +20,7 @@ public:
     ~DAQ();
     void init( void ) override;
     void run( void ) override;
+    void setSubsampling(int speed) override;
 
     void stop( void ) override;
     void pause( void ) override;
@@ -46,7 +47,7 @@ signals:
     void setDisplayAngle( float, int );
 
 public slots:
-    void setLaserDivider( int divider );
+    void setLaserDivider();
     void setDisplay( float, int );
 
 private:
@@ -65,6 +66,9 @@ private:
     uint16_t lastPolarLineIndexEntered;
     int m_decimation{0};
     int m_count{0};
+    const int m_subsamplingThreshold{1000};
+    int m_subsamplingFactor{2};
+    int m_numberOfConnectedDevices {0};
 
 };
 

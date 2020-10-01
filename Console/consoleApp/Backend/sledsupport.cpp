@@ -800,6 +800,7 @@ void SledSupport::setSledSpeed( QByteArray speed )
         {
             qDebug() << "setSledSpeed FAILED: " << QString( resp );
         }
+        LOG1(QString(resp))
     }
 }
 
