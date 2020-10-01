@@ -145,17 +145,15 @@ void DAQ::run( void )
             axGetErrorString(retval, errorMsg);
             LOG2(retval, errorMsg)
         }
-        const int laserDivider{1};
-        int numbrOfConnectedDevices {0};
 
-        while(numbrOfConnectedDevices != 2){
-            numbrOfConnectedDevices = axCountConnectedDevices();
-            LOG1(numbrOfConnectedDevices)
+
+        while(m_numberOfConnectedDevices != 2){
+            m_numberOfConnectedDevices = axCountConnectedDevices();
+            LOG1(m_numberOfConnectedDevices)
 
             msleep(100);
         }
-        LOG1(laserDivider)
-        setLaserDivider(laserDivider);
+        setLaserDivider();
 
         while( isRunning )
         {
@@ -183,9 +181,12 @@ void DAQ::run( void )
 void DAQ::setSubsampling(int speed)
 {
     if(speed < m_subsamplingThreshold){
-        setLaserDivider(1);
+        m_subsamplingFactor = 2;
+        setLaserDivider();
     } else {
-        setLaserDivider(0);
+        m_subsamplingFactor = 2;
+        setLaserDivider();
+
     }
 }
 
@@ -397,21 +398,23 @@ bool DAQ::shutdownDaq()
     return success == NO_AxERROR;
 }
 
-void DAQ::setLaserDivider( int divider)
+void DAQ::setLaserDivider()
 {
-    const int subsamplingFactor = divider + 1;
-    if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
-    {
-        LOG2(subsamplingFactor, divider)
-        AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
-        if(success != NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
+    if(m_numberOfConnectedDevices == 2){
+        const int subsamplingFactor = m_subsamplingFactor;
+        if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
+        {
+            LOG1(subsamplingFactor)
+            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
+            if(success != NO_AxERROR){
+                logAxErrorVerbose(__LINE__, success);
+            }
+            success = axGetMessage( session, axMessage );
+            if(success != NO_AxERROR){
+                logAxErrorVerbose(__LINE__, success);
+            }
         }
-        success = axGetMessage( session, axMessage );
-        if(success != NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
-        }
-     }
+    }
 }
 
 void DAQ::setDisplay(float angle, int direction)
