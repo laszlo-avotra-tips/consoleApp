@@ -35,7 +35,8 @@ RotationIndicatorOverlay::~RotationIndicatorOverlay()
 void RotationIndicatorOverlay::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget * /*widget*/)
 {
     QFont font = painter->font();
-    font.setPointSize(font.pointSize() * 2 );
+    int newSize = int(3.5 * font.pointSize() );
+    font.setPointSize(newSize);
     painter->setFont(font);
     painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
     painter->drawText(QPointF(430,530), m_text); // " Active"
