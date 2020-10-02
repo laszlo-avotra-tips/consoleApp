@@ -226,6 +226,14 @@ void liveScene::refresh( void )
     update();
 }
 
+bool liveScene::isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const
+{
+    auto x = abs(event->lastPos().x() - 512);
+    auto y = abs(event->lastPos().y() - 512);
+    const bool isInTheCenter = (x < 70) && (y < 70);
+    return isInTheCenter;
+}
+
 bool liveScene::getIsRotationIndicatorOverlayItemEnabled() const
 {
     return isRotationIndicatorOverlayItemEnabled;
@@ -516,7 +524,12 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-        if( mouseRotationEnabled )
+//        auto x = abs(event->lastPos().x() - 512);
+//        auto y = abs(event->lastPos().y() - 512);
+//        const bool isInTheCenter = (x < 70) && (y < 70);
+        const bool isInTheCenter = isTheMouseInTheCenter(event);
+        LOG1(isInTheCenter)
+        if( mouseRotationEnabled && !isInTheCenter)
         {
             LOG( INFO, "Sector rotate" )
             // Grab the sector
@@ -524,13 +537,13 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
             QGraphicsScene::mousePressEvent(event);
-            auto* grabber = mouseGrabberItem();
-            LOG1(grabber->data(0).toString());
+//            auto* grabber = mouseGrabberItem();
+//            LOG1(grabber->data(0).toString());
 //            grabber->ungrabMouse();
-            auto x = event->lastPos().x() - 512;
-            auto y = event->lastPos().y() - 512;
-            LOG2(x,y)
 
+        }
+        if(isInTheCenter){
+             qApp->setOverrideCursor( Qt::ArrowCursor );
         }
     }
     update();
@@ -554,7 +567,7 @@ void liveScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseMoveEvent( event );
     }
-    else if ( mouseRotationEnabled )
+    else if ( mouseRotationEnabled && !isTheMouseInTheCenter(event))
     {
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseMoveEvent( event );
@@ -572,7 +585,7 @@ void liveScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
  */
 void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if( mouseRotationEnabled )
+    if( mouseRotationEnabled && !isTheMouseInTheCenter(event))
     {
         qApp->restoreOverrideCursor();
 

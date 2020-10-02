@@ -244,6 +244,7 @@ private:
     RotationIndicatorOverlay* rotationIndicatorOverlayItem{nullptr};
 //    RotationIndicatorOverlay2* rotationIndicatorOverlayItem{nullptr};
     bool isRotationIndicatorOverlayItemEnabled{false};
+    bool isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
