@@ -228,8 +228,8 @@ void liveScene::refresh( void )
 
 bool liveScene::isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const
 {
-    auto x = abs(event->lastPos().x() - 512);
-    auto y = abs(event->lastPos().y() - 512);
+    auto x = abs(event->scenePos().x() - 512);
+    auto y = abs(event->scenePos().y() - 512);
     const bool isInTheCenter = (x < 70) && (y < 70);
     return isInTheCenter;
 }
@@ -524,10 +524,7 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-//        auto x = abs(event->lastPos().x() - 512);
-//        auto y = abs(event->lastPos().y() - 512);
-//        const bool isInTheCenter = (x < 70) && (y < 70);
-        const bool isInTheCenter = isTheMouseInTheCenter(event);
+         const bool isInTheCenter = isTheMouseInTheCenter(event);
         LOG1(isInTheCenter)
         if( mouseRotationEnabled && !isInTheCenter)
         {
@@ -567,7 +564,7 @@ void liveScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseMoveEvent( event );
     }
-    else if ( mouseRotationEnabled && !isTheMouseInTheCenter(event))
+    else if ( mouseRotationEnabled)
     {
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseMoveEvent( event );
@@ -585,7 +582,7 @@ void liveScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
  */
 void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if( mouseRotationEnabled && !isTheMouseInTheCenter(event))
+    if( mouseRotationEnabled)
     {
         qApp->restoreOverrideCursor();
 
