@@ -685,6 +685,7 @@ void overlayItem::render( void )
         auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr,nullptr);
         rotationIndicatorOverlayItem->show();
         rotationIndicatorOverlayItem->grabMouse();
+        LOG1(dev->getDeviceName())
     }
 
     depthSetting &depth = depthSetting::Instance();
