@@ -73,7 +73,7 @@ liveScene::liveScene( QObject *parent )
     overlays->setZValue( 10.0 );
     overlays->setVisible( true );
 
-    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this, nullptr);
     rotationIndicatorOverlayItem->setData(3,"rotation");
 //    addItem(rotationIndicatorOverlayItem);
 //    rotationIndicatorOverlayItem->setPos( 0, 0 );
@@ -251,7 +251,7 @@ void liveScene::setActive()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText(" ACTIVE");
@@ -264,7 +264,7 @@ void liveScene::setPassive()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
@@ -277,7 +277,7 @@ void liveScene::setIdle()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
         }
         rotationIndicatorOverlayItem->removeItem();
         update();

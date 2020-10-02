@@ -8,7 +8,7 @@ class QGraphicsScene;
 class RotationIndicatorOverlay : public QGraphicsTextItem
 {
 public:
-    static RotationIndicatorOverlay* instance(QGraphicsScene* scene);
+    static RotationIndicatorOverlay* instance(QGraphicsScene* scene, QGraphicsItem* parent);
     ~RotationIndicatorOverlay();
 
     QString text() const;
@@ -19,7 +19,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    RotationIndicatorOverlay(QGraphicsScene *scene);
+    RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent);
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
     static RotationIndicatorOverlay* m_instance;

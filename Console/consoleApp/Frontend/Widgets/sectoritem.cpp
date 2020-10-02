@@ -682,8 +682,9 @@ void overlayItem::render( void )
     auto* dev = ds.current();
 
     if(dev->isBiDirectional()){
-        auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr);
+        auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr,nullptr);
         rotationIndicatorOverlayItem->show();
+        rotationIndicatorOverlayItem->grabMouse();
     }
 
     depthSetting &depth = depthSetting::Instance();

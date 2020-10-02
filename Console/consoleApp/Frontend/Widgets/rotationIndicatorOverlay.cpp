@@ -10,8 +10,8 @@
 RotationIndicatorOverlay* RotationIndicatorOverlay::m_instance{nullptr};
 
 
-RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene)
-    : QGraphicsTextItem( nullptr ), m_scene(scene)
+RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent)
+    : QGraphicsTextItem( parent ), m_scene(scene)
 {
     setTextWidth(400);
     auto font = QFont("Helvetica Neue");
@@ -21,10 +21,10 @@ RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene)
     hide();
 }
 
-RotationIndicatorOverlay* RotationIndicatorOverlay::instance(QGraphicsScene *scene)
+RotationIndicatorOverlay* RotationIndicatorOverlay::instance(QGraphicsScene *scene, QGraphicsItem* parent)
 {
     if(!m_instance){
-        m_instance = new RotationIndicatorOverlay(scene);
+        m_instance = new RotationIndicatorOverlay(scene,parent);
     }
     return m_instance;
 }
@@ -75,5 +75,8 @@ void RotationIndicatorOverlay::removeItem()
 
 void RotationIndicatorOverlay::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    LOG1(event->type())
+    auto x = event->lastPos().x();
+    auto y = event->lastPos().y();
+    LOG2(x,y);
+    LOG2(event->lastScenePos().x(), event->lastScenePos().y());
 }
