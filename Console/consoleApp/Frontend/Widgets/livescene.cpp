@@ -57,7 +57,7 @@ liveScene::liveScene( QObject *parent )
     LOG2(ClipStep_percent, ClipUpdateRate_ms)
     // Items for display
     sector = new sectorItem();
-    sector->setData( SectorItemKey, "axsun" );
+    sector->setData( 0, "axsun" );
     addItem( sector );
 
     doPaint = false;
@@ -68,13 +68,13 @@ liveScene::liveScene( QObject *parent )
 
     overlays = new overlayItem( sector );
     addItem( overlays );
-    overlays->setData(2,"reticle");
+    overlays->setData(0,"reticle");
     overlays->setPos( 0, 0 );
     overlays->setZValue( 10.0 );
     overlays->setVisible( true );
 
     rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this, nullptr);
-    rotationIndicatorOverlayItem->setData(3,"rotation");
+    rotationIndicatorOverlayItem->setData(0,"rotation");
 //    addItem(rotationIndicatorOverlayItem);
 //    rotationIndicatorOverlayItem->setPos( 0, 0 );
 //    rotationIndicatorOverlayItem->setZValue( 200.0 );
@@ -221,7 +221,6 @@ void liveScene::refresh( void )
     if( doPaint )
     {
         doPaint = false;
-//        sector->paintSector( force );
         overlays->render();
     }
     update();
@@ -525,6 +524,13 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
             QGraphicsScene::mousePressEvent(event);
+            auto* grabber = mouseGrabberItem();
+            LOG1(grabber->data(0).toString());
+//            grabber->ungrabMouse();
+            auto x = event->lastPos().x() - 512;
+            auto y = event->lastPos().y() - 512;
+            LOG2(x,y)
+
         }
     }
     update();
