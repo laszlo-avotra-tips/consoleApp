@@ -246,7 +246,7 @@ private:
     bool isRotationIndicatorOverlayItemEnabled{false};
 
 protected:
-//    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };

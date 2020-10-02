@@ -495,40 +495,40 @@ void liveScene::rewindPlayback()
  *
  * Handle mouse button presses
  */
-//void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    if( zoomFactor != 1.0f ) // no zoom
-//    {
-//        // capture the event; allows image review to pan and zoom
-//    }
-//    else if( reviewing && !isMeasureMode )
-//    {
-//        dismissReviewImages();
-//    }
-//    else if( isMeasureMode )
-//    {
-//        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
-//        QGraphicsScene::mousePressEvent(event);
-//    }
-//    else if( isAnnotateMode )
-//    {
-//        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
-//        QGraphicsScene::mousePressEvent(event);
-//    }
-//    else
-//    {
-//        if( mouseRotationEnabled )
-//        {
-//            LOG( INFO, "Sector rotate" )
-//            // Grab the sector
-//            qApp->setOverrideCursor( Qt::ClosedHandCursor );
+void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if( zoomFactor != 1.0f ) // no zoom
+    {
+        // capture the event; allows image review to pan and zoom
+    }
+    else if( reviewing && !isMeasureMode )
+    {
+        dismissReviewImages();
+    }
+    else if( isMeasureMode )
+    {
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mousePressEvent(event);
+    }
+    else if( isAnnotateMode )
+    {
+        // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+        QGraphicsScene::mousePressEvent(event);
+    }
+    else
+    {
+        if( mouseRotationEnabled )
+        {
+            LOG( INFO, "Sector rotate" )
+            // Grab the sector
+            qApp->setOverrideCursor( Qt::ClosedHandCursor );
 
-//            // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
-//            QGraphicsScene::mousePressEvent(event);
-//        }
-//    }
-//    update();
-//}
+            // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
+            QGraphicsScene::mousePressEvent(event);
+        }
+    }
+    update();
+}
 
 /*
  * mouseMoveEvent()
