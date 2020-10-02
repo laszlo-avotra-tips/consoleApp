@@ -72,11 +72,3 @@ void RotationIndicatorOverlay::removeItem()
         hide();
     }
 }
-
-void RotationIndicatorOverlay::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    auto x = event->lastPos().x();
-    auto y = event->lastPos().y();
-    LOG2(x,y);
-    LOG2(event->lastScenePos().x(), event->lastScenePos().y());
-}

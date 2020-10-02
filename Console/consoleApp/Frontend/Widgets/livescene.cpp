@@ -25,6 +25,7 @@
 #include "Utility/userSettings.h"
 //#include "rotationIndicatorOverlay.h"
 #include "rotationIndicatorOverlay.h"
+#include "sledsupport.h"
 
 
 QString timestampToString( unsigned long ts );
@@ -541,6 +542,9 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
         if(isInTheCenter){
              qApp->setOverrideCursor( Qt::ArrowCursor );
+             if(RotationIndicatorOverlay::instance()->isVisible()){
+                SledSupport::Instance().setDirection(false);
+             }
         }
     }
     update();

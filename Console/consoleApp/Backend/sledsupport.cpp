@@ -1144,6 +1144,7 @@ int SledSupport::getLastRunningState() const
     return m_lastRunningState;
 }
 
+
 /*
  * Read available data from the serial port.
  */
@@ -1187,4 +1188,12 @@ void SledSupport::enableDisableBidirectional()
     }
 }
 
+void SledSupport::setDirection(bool isClockwise)
+{
+    if(isClockwise){
+        writeSerial("sd0\r");
+    } else {
+        writeSerial("sd1\r");
+    }
+}
 

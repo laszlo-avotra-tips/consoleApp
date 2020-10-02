@@ -8,15 +8,13 @@ class QGraphicsScene;
 class RotationIndicatorOverlay : public QGraphicsTextItem
 {
 public:
-    static RotationIndicatorOverlay* instance(QGraphicsScene* scene, QGraphicsItem* parent);
+    static RotationIndicatorOverlay* instance(QGraphicsScene* scene = nullptr, QGraphicsItem* parent = nullptr);
     ~RotationIndicatorOverlay();
 
     QString text() const;
     void setText(const QString &text);
     void addItem();
     void removeItem();
-
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
     RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent);

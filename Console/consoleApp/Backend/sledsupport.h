@@ -60,6 +60,7 @@ public:
     QByteArray baParam;
 
     int getLastRunningState() const;
+    void setDirection(bool isClockwise);
 
 signals:
     void announceClockingMode( int );
