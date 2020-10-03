@@ -62,6 +62,8 @@ public:
     int getLastRunningState() const;
     void toggleDirection();
 
+    bool getIsClockwise() const;
+
 signals:
     void announceClockingMode( int );
     void announceFirmwareVersions( QByteArray, QByteArray );
@@ -135,6 +137,7 @@ private:
     SledState_e currSledState;
     SledState_e prevSledState;
     int m_lastRunningState;
+    bool m_isClockwise{true};
 
                                                     // prevent access to:
     SledSupport();                                  //   default constructor
