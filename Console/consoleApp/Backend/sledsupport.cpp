@@ -531,11 +531,6 @@ void SledSupport::setDevice( int deviceIndex)
     newDevice = deviceIndex;
     //qDebug() << "* SledSupport - new device: " << newDevice;
 }
-void SledSupport::setDirection( int dir )
-{
-    newDir = dir;
-}
-
 
 /*
  * Stop the thread by turning off isRunning and waiting
@@ -1188,9 +1183,10 @@ void SledSupport::enableDisableBidirectional()
     }
 }
 
-void SledSupport::setDirection(bool isClockwise)
+void SledSupport::toggleDirection()
 {
-    if(isClockwise){
+
+    if(m_lastRunningState == 1){
         writeSerial("sd0\r");
     } else {
         writeSerial("sd1\r");

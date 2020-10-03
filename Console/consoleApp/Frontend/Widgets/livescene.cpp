@@ -543,7 +543,7 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if(isInTheCenter){
              qApp->setOverrideCursor( Qt::ArrowCursor );
              if(RotationIndicatorOverlay::instance()->isVisible()){
-                SledSupport::Instance().setDirection(false);
+                SledSupport::Instance().toggleDirection();
              }
         }
     }

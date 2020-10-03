@@ -125,12 +125,6 @@ public slots:
     void handleDisableMouseRotateSector() { mouseRotationEnabled = false; }
     void handleEnableMouseRotateSector() { mouseRotationEnabled = true; }
 
-    // Low Speed Device only
-    void updateDirectionOfRotation( directionTracker::Direction_T currDirection )
-    {
-        rotationDirection = currDirection;
-        sector->setDirection( currDirection );
-    }
 
     void stopPlayback()
     {

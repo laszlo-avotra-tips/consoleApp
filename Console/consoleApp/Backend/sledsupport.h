@@ -60,7 +60,7 @@ public:
     QByteArray baParam;
 
     int getLastRunningState() const;
-    void setDirection(bool isClockwise);
+    void toggleDirection();
 
 signals:
     void announceClockingMode( int );
@@ -80,7 +80,6 @@ public slots:
     void setGain( int );
     void setSpeed( int );
     void setDevice( int );
-    void setDirection( int );
     void setPower( int count );
 
 protected:
