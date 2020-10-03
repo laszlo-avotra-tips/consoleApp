@@ -132,10 +132,6 @@ public:
     {
         return status;
     }
-    void setDirection( directionTracker::Direction_T dir )
-    {
-        currDirection = dir;
-    }
     void setPlayback( bool state )
     {
         isPlayback = state;

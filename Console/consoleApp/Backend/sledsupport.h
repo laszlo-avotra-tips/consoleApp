@@ -60,6 +60,9 @@ public:
     QByteArray baParam;
 
     int getLastRunningState() const;
+    void toggleDirection();
+
+    bool getIsClockwise() const;
 
 signals:
     void announceClockingMode( int );
@@ -79,7 +82,6 @@ public slots:
     void setGain( int );
     void setSpeed( int );
     void setDevice( int );
-    void setDirection( int );
     void setPower( int count );
 
 protected:
@@ -135,6 +137,7 @@ private:
     SledState_e currSledState;
     SledState_e prevSledState;
     int m_lastRunningState;
+    bool m_isClockwise{true};
 
                                                     // prevent access to:
     SledSupport();                                  //   default constructor

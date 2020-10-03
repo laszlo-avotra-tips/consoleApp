@@ -45,9 +45,6 @@ public:
     void setAnnotateMode( bool state, QColor color );
     void applyClipInfoToBuffer( char *buffer );
 
-    // grab the sector data for the OCT Loop vdideo encoding
-    char *frameSample() { return( videoSector->frameData() ); }
-
     void lockFrame() {
         frameLock.lock();
     }
@@ -67,23 +64,19 @@ public:
     void setIdle();
 
 public slots:
-    void addScanFrame( QSharedPointer<scanframe> &data );
     void captureDi( QImage decoratedImage, QString tagText );
     void captureClip( QString strIter );
     void generateClipInfo();
     void resetRotationCounter();
     void setWindOffset( bool enabled ) {
         sector->setWindOffset( enabled );
-        videoSector->setWindOffset( enabled );
     }
     void setWindAngle( double angle ) {
         sector->setWindAngle( angle );
-        videoSector->setWindAngle( angle );
     }
     void setUnwind( bool enabled )
     {
         sector->setUnwind( enabled );
-        videoSector->setUnwind( enabled );
     }
 
     double getWindAngle( void ) {
@@ -92,7 +85,6 @@ public slots:
 
     void handleDeviceChange(void) {
         sector->deviceChanged();
-        videoSector->deviceChanged();
     }
 
     void handleReticleBrightnessChanged();
@@ -120,7 +112,6 @@ public slots:
     void clearImages( void )
     {
         sector->clearImage();
-        videoSector->clearImage();
         doPaint = true;
         refresh();
     }
@@ -128,19 +119,12 @@ public slots:
     void resetSector( void )
     {
         sector->reset();
-        videoSector->reset();
     }
 
     void dismissReviewImages( void );
     void handleDisableMouseRotateSector() { mouseRotationEnabled = false; }
     void handleEnableMouseRotateSector() { mouseRotationEnabled = true; }
 
-    // Low Speed Device only
-    void updateDirectionOfRotation( directionTracker::Direction_T currDirection )
-    {
-        rotationDirection = currDirection;
-        sector->setDirection( currDirection );
-    }
 
     void stopPlayback()
     {
@@ -157,15 +141,6 @@ public slots:
     void clearSector()
     {
         sector->clearImage();
-
-        // video export do not indicate orientation but clear the image to prevent possible streaking
-        videoSector->clearImage();
-    }
-
-    void resetIntegrationAngle( void )
-    {
-        sector->resetIntegrationAngle();
-        videoSector->resetIntegrationAngle();
     }
 	
 	void setDoPaint()
@@ -222,7 +197,6 @@ private:
     bool doPaint;
 	bool force;
     sectorItem *sector;
-    sectorItem *videoSector;
     overlayItem *overlays;
     float zoomFactor;
     bool reviewing;
@@ -264,6 +238,7 @@ private:
     RotationIndicatorOverlay* rotationIndicatorOverlayItem{nullptr};
 //    RotationIndicatorOverlay2* rotationIndicatorOverlayItem{nullptr};
     bool isRotationIndicatorOverlayItemEnabled{false};
+    bool isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

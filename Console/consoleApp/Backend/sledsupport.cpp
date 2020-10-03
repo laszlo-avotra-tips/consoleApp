@@ -531,11 +531,6 @@ void SledSupport::setDevice( int deviceIndex)
     newDevice = deviceIndex;
     //qDebug() << "* SledSupport - new device: " << newDevice;
 }
-void SledSupport::setDirection( int dir )
-{
-    newDir = dir;
-}
-
 
 /*
  * Stop the thread by turning off isRunning and waiting
@@ -876,8 +871,10 @@ int SledSupport::runningState()
         qDebug() << "get running state response:" << resp;
         if( resp.toUpper().contains( "1" )) {
             m_lastRunningState = 1;
+            m_isClockwise = true;
         } else if(resp.toUpper().contains( "3" )){
             m_lastRunningState = 3;
+            m_isClockwise = false;
         }
         //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
         QString respAsString = QTextCodec::codecForMib(106)->toUnicode(resp);
@@ -1139,10 +1136,16 @@ QString SledSupport::commandToString(const QByteArray &ba)
     return fcmd;
 }
 
+bool SledSupport::getIsClockwise() const
+{
+    return m_isClockwise;
+}
+
 int SledSupport::getLastRunningState() const
 {
     return m_lastRunningState;
 }
+
 
 /*
  * Read available data from the serial port.
@@ -1187,4 +1190,13 @@ void SledSupport::enableDisableBidirectional()
     }
 }
 
+void SledSupport::toggleDirection()
+{
+    LOG1(m_isClockwise)
+    if(m_isClockwise){
+        writeSerial("sd1\r");
+    } else {
+        writeSerial("sd0\r");
+    }
+}
 

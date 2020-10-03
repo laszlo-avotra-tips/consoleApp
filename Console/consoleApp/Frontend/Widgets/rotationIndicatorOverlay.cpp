@@ -5,12 +5,13 @@
 #include <QPointF>
 #include <QGraphicsScene>
 #include "logger.h"
+#include <QGraphicsSceneMouseEvent>
 
 RotationIndicatorOverlay* RotationIndicatorOverlay::m_instance{nullptr};
 
 
-RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene)
-    : QGraphicsTextItem( nullptr ), m_scene(scene)
+RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent)
+    : QGraphicsTextItem( parent ), m_scene(scene)
 {
     setTextWidth(400);
     auto font = QFont("Helvetica Neue");
@@ -20,10 +21,10 @@ RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene)
     hide();
 }
 
-RotationIndicatorOverlay* RotationIndicatorOverlay::instance(QGraphicsScene *scene)
+RotationIndicatorOverlay* RotationIndicatorOverlay::instance(QGraphicsScene *scene, QGraphicsItem* parent)
 {
     if(!m_instance){
-        m_instance = new RotationIndicatorOverlay(scene);
+        m_instance = new RotationIndicatorOverlay(scene,parent);
     }
     return m_instance;
 }
@@ -58,16 +59,16 @@ void RotationIndicatorOverlay::addItem()
 {
     if(m_scene && !m_itemIsAdded){
         m_scene->addItem(this);
-        setZValue(60);
-        show();
+        setPos(0,0);
+        setZValue(200);
         m_itemIsAdded = true;
+        show();
     }
 }
 
 void RotationIndicatorOverlay::removeItem()
 {
     if(m_scene && m_itemIsAdded){
-        m_scene->removeItem(this);
-        m_itemIsAdded = false;
+        hide();
     }
 }

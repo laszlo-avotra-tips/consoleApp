@@ -25,6 +25,7 @@
 #include "Utility/userSettings.h"
 //#include "rotationIndicatorOverlay.h"
 #include "rotationIndicatorOverlay.h"
+#include "sledsupport.h"
 
 
 QString timestampToString( unsigned long ts );
@@ -57,24 +58,28 @@ liveScene::liveScene( QObject *parent )
     LOG2(ClipStep_percent, ClipUpdateRate_ms)
     // Items for display
     sector = new sectorItem();
-    sector->setData( SectorItemKey, "sector" );
+    sector->setData( 0, "axsun" );
     addItem( sector );
-
-    // Background image rendering for movies
-    videoSector = new sectorItem();
-    videoSector->setVideoOnly();
 
     doPaint = false;
 
-    sector->setZValue( 1.0 );
+//    sector->setZValue( 1.0 );
     sector->setPos( 0, 0 );
     sector->clearRotationFlag();
 
     overlays = new overlayItem( sector );
-    this->addItem( overlays );
+    addItem( overlays );
+    overlays->setData(0,"reticle");
     overlays->setPos( 0, 0 );
-    overlays->setZValue( 100.0 );
+    overlays->setZValue( 10.0 );
     overlays->setVisible( true );
+
+    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this, nullptr);
+    rotationIndicatorOverlayItem->setData(0,"rotation");
+//    addItem(rotationIndicatorOverlayItem);
+//    rotationIndicatorOverlayItem->setPos( 0, 0 );
+//    rotationIndicatorOverlayItem->setZValue( 200.0 );
+//    rotationIndicatorOverlayItem->setVisible( false );
 
     infoMessageItem = nullptr;
     refreshTimer = new QTimer();
@@ -144,7 +149,7 @@ liveScene::liveScene( QObject *parent )
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
 
 //    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+//    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
 //    setActive();
 
 }
@@ -217,15 +222,17 @@ void liveScene::refresh( void )
     if( doPaint )
     {
         doPaint = false;
-        if(deviceSettings::Instance().getIsSimulation()){
-            sector->paintSector( force );
-            videoSector->paintSector( force );
-        }
         overlays->render();
     }
-    if(deviceSettings::Instance().getIsSimulation()){
-        update();
-    }
+    update();
+}
+
+bool liveScene::isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const
+{
+    auto x = abs(event->scenePos().x() - 512);
+    auto y = abs(event->scenePos().y() - 512);
+    const bool isInTheCenter = (x < 70) && (y < 70);
+    return isInTheCenter;
 }
 
 bool liveScene::getIsRotationIndicatorOverlayItemEnabled() const
@@ -252,7 +259,7 @@ void liveScene::setActive()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText(" ACTIVE");
@@ -265,7 +272,7 @@ void liveScene::setPassive()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
@@ -278,7 +285,7 @@ void liveScene::setIdle()
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
 //            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
         }
         rotationIndicatorOverlayItem->removeItem();
         update();
@@ -329,29 +336,6 @@ void liveScene::handleReticleBrightnessChanged()
     sector->setReticleBrightness( value );
 }
 
-/*
- * addScanFrame
- * Given a shared pointer to an OCT frame,
- * hand it off to all interested display items
- * and schedule a display update at the next interval.
- */
-void liveScene::addScanFrame( QSharedPointer<scanframe> &data )
-{
-    // Pass off to the sector
-    sector->addFrame( data );
-    videoSector->addFrame( data );
-
-    // Notify anyone interested if a full rotation has
-    // taken place. Used, by the lag correction process
-    // for example.
-    if( sector->fullRotationCompleted() )
-    {
-        emit fullRotation();
-        sector->clearRotationFlag();
-    }
-
-    doPaint = true;
-}
 
 // SLOTS
 
@@ -524,7 +508,7 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if( zoomFactor != 1.0f ) // no zoom
     {
         // capture the event; allows image review to pan and zoom
-    } 
+    }
     else if( reviewing && !isMeasureMode )
     {
         dismissReviewImages();
@@ -541,7 +525,9 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-        if( mouseRotationEnabled )
+         const bool isInTheCenter = isTheMouseInTheCenter(event);
+        LOG1(isInTheCenter)
+        if( mouseRotationEnabled && !isInTheCenter)
         {
             LOG( INFO, "Sector rotate" )
             // Grab the sector
@@ -549,6 +535,16 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
             QGraphicsScene::mousePressEvent(event);
+//            auto* grabber = mouseGrabberItem();
+//            LOG1(grabber->data(0).toString());
+//            grabber->ungrabMouse();
+
+        }
+        if(isInTheCenter){
+             qApp->setOverrideCursor( Qt::ArrowCursor );
+             if(RotationIndicatorOverlay::instance()->isVisible()){
+                SledSupport::Instance().toggleDirection();
+             }
         }
     }
     update();
@@ -572,7 +568,7 @@ void liveScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseMoveEvent( event );
     }
-    else if ( mouseRotationEnabled )
+    else if ( mouseRotationEnabled)
     {
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseMoveEvent( event );
@@ -590,15 +586,12 @@ void liveScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
  */
 void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if( mouseRotationEnabled )
+    if( mouseRotationEnabled)
     {
         qApp->restoreOverrideCursor();
 
         // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
         QGraphicsScene::mouseReleaseEvent(event);
-
-        // Update the video-only rendering for the current roation on the screen
-        videoSector->setDisplayAngle( sector->getDisplayAngle() );
 
         emit sendDisplayAngle( float(sector->getDisplayAngle()) );
     }
