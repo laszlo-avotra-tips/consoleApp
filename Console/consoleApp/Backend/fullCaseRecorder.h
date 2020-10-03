@@ -19,10 +19,15 @@ public:
   void stopRecording();
   void closeRecorder();
 
+public slots:
+  void keepAliveAction();
+
 private:
   FullCaseRecorder();
   void startTheVideoRecorderProcess();
   static  FullCaseRecorder* m_instance;
+  void startKeepAliveTimer();
+  void stopKeepAliveTimer();
 
   QProcess* m_theVideoRecorderProcess{nullptr};
   QString m_caseId;
@@ -31,6 +36,9 @@ private:
   const QString m_commandFileName{"VideoCommand.txt"};
   const QString m_startRecording{"StartRec"};
   const QString m_stopRecording{"StopRec"};
+  const QString m_keepAliveFrequencyCmd{"15"}; // in seconds
+  const int m_keepAliveTimerValue{5};
+  bool m_isRecording{false};
 };
 
 #endif // FULLCASERECORDER_H

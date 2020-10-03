@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QThread>
+#include <QTimer>
 
 
 FullCaseRecorder* FullCaseRecorder::m_instance{nullptr};
@@ -28,6 +29,16 @@ FullCaseRecorder::FullCaseRecorder()
 {
 }
 
+void FullCaseRecorder::startKeepAliveTimer()
+{
+    QTimer::singleShot(m_keepAliveTimerValue, this, &FullCaseRecorder::keepAliveAction);
+}
+
+void FullCaseRecorder::stopKeepAliveTimer()
+{
+
+}
+
 void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
 {
     if(m_caseId.isEmpty()){
@@ -35,11 +46,13 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
         m_theVideoRecorderProcess = new QProcess();
 
         const QString& outputDirectory = fullCaseDir;
-        QStringList arguments {m_configFileName, outputDirectory, m_commandFileName};
+        QStringList arguments {m_configFileName, outputDirectory, m_commandFileName, m_keepAliveFrequencyCmd};
         m_theVideoRecorderProcess->setArguments(arguments);
         m_theVideoRecorderProcess->setProgram(m_programName);
         m_theVideoRecorderProcess->start();
-        LOG3(m_configFileName, outputDirectory, m_commandFileName)
+        m_isRecording = true;
+        startKeepAliveTimer();
+        LOG4(m_configFileName, outputDirectory, m_commandFileName, m_keepAliveFrequencyCmd)
     }
 }
 
@@ -58,11 +71,21 @@ void FullCaseRecorder::stopRecording()
     cmd.open(QIODevice::WriteOnly | QIODevice::Text);
     cmd.write(m_stopRecording.toLatin1(), m_stopRecording.size());
     cmd.close();
+    m_isRecording = false;
     LOG2(m_commandFileName,m_stopRecording.toLatin1())
+    stopKeepAliveTimer();
 }
 
 void FullCaseRecorder::closeRecorder()
 {
     LOG1(m_theVideoRecorderProcess)
     stopRecording();
+}
+
+void FullCaseRecorder::keepAliveAction()
+{
+    QTimer::singleShot(m_keepAliveTimerValue, this, &FullCaseRecorder::keepAliveAction);
+    if(m_isRecording){
+        startRecording();
+    }
 }
