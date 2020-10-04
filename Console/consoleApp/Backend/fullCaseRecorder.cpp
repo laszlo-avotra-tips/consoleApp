@@ -51,8 +51,8 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
         m_theVideoRecorderProcess->setProgram(m_programName);
         m_theVideoRecorderProcess->start();
         m_isRecording = true;
-        startKeepAliveTimer();
-        LOG4(m_configFileName, outputDirectory, m_commandFileName, m_keepAliveFrequencyCmd)
+//        startKeepAliveTimer();
+        LOG3(m_configFileName, outputDirectory, m_commandFileName) LOG1( m_keepAliveFrequencyCmd)
     }
 }
 
