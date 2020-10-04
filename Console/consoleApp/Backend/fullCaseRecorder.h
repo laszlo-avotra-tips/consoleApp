@@ -36,7 +36,7 @@ private:
   const QString m_commandFileName{"VideoCommand.txt"};
   const QString m_startRecording{"StartRec"};
   const QString m_stopRecording{"StopRec"};
-  const QString m_keepAliveFrequencyCmd{"0"}; // in seconds
+  const QString m_keepAliveFrequencyCmd{"30"}; // in seconds
   const int m_keepAliveTimerValue{5000}; //in milliseconds
   bool m_isRecording{false};
 };
