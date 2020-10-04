@@ -37,7 +37,7 @@ private:
   const QString m_startRecording{"StartRec"};
   const QString m_stopRecording{"StopRec"};
   const QString m_keepAliveFrequencyCmd{"15"}; // in seconds
-  const int m_keepAliveTimerValue{5};
+  const int m_keepAliveTimerValue{5000}; //in milliseconds
   bool m_isRecording{false};
 };
 
