@@ -43,6 +43,7 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
 {
     if(m_caseId.isEmpty()){
         m_caseId = fullCaseDir;
+        startRecording();
         m_theVideoRecorderProcess = new QProcess();
 
         const QString& outputDirectory = fullCaseDir;
