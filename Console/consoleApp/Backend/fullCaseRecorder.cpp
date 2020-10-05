@@ -44,11 +44,11 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
     if(m_caseId.isEmpty()){
         m_caseId = fullCaseDir;
         const QString& outputDirectory = fullCaseDir;
-        m_commandFileName = outputDirectory + QString("\\") + m_commandFileName;
+//        m_commandFileName = outputDirectory + QString("/") + m_commandFileName;
         m_theVideoRecorderProcess = new QProcess();
-        LOG1(m_commandFileName)
 
         startRecording();
+        QThread::msleep(100);
 
         QStringList arguments {m_configFileName, outputDirectory, m_commandFileName, m_keepAliveFrequencyCmd};
         m_theVideoRecorderProcess->setArguments(arguments);
@@ -63,12 +63,11 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
 void FullCaseRecorder::startRecording()
 {
     if(!m_caseId.isEmpty()){
-        QFile cmd(m_commandFileName);
         LOG1(m_commandFileName)
+        QFile cmd(m_commandFileName);
         cmd.open(QIODevice::WriteOnly | QIODevice::Text);
         cmd.write(m_startRecording.toLatin1(), m_startRecording.size());
         cmd.close();
-        LOG2(m_commandFileName,m_startRecording.toLatin1())
     }
 }
 
@@ -93,8 +92,6 @@ void FullCaseRecorder::keepAliveAction()
 {
     QTimer::singleShot(m_keepAliveTimerValue, this, &FullCaseRecorder::keepAliveAction);
     if(m_isRecording){
-        LOG1(m_commandFileName)
-
         startRecording();
     }
 }
