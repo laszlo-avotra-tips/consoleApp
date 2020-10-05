@@ -139,8 +139,8 @@ void CaseInformationModel::validate()
     uuid.remove( "{" ).remove( "}" );
     info.setCaseID( uuid );
 
-    FullCaseRecorder::instance()->startRecording();
     FullCaseRecorder::instance()->setFullCaseDir(info.getFullCaseDir());
+//    FullCaseRecorder::instance()->startRecording();
 
     /*
      *  Create the case session directories.
