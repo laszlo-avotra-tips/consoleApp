@@ -62,12 +62,14 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
 
 void FullCaseRecorder::startRecording()
 {
-    QFile cmd(m_commandFileName);
-    LOG1(m_commandFileName)
-    cmd.open(QIODevice::WriteOnly | QIODevice::Text);
-    cmd.write(m_startRecording.toLatin1(), m_startRecording.size());
-    cmd.close();
-    LOG2(m_commandFileName,m_startRecording.toLatin1())
+    if(!m_caseId.isEmpty()){
+        QFile cmd(m_commandFileName);
+        LOG1(m_commandFileName)
+        cmd.open(QIODevice::WriteOnly | QIODevice::Text);
+        cmd.write(m_startRecording.toLatin1(), m_startRecording.size());
+        cmd.close();
+        LOG2(m_commandFileName,m_startRecording.toLatin1())
+    }
 }
 
 void FullCaseRecorder::stopRecording()
