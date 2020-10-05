@@ -47,6 +47,7 @@ void FullCaseRecorder::setFullCaseDir(const QString &fullCaseDir)
         m_theVideoRecorderProcess = new QProcess();
 
         const QString& outputDirectory = fullCaseDir;
+        m_commandFileName = outputDirectory + QString("\\") + m_commandFileName;
         QStringList arguments {m_configFileName, outputDirectory, m_commandFileName, m_keepAliveFrequencyCmd};
         m_theVideoRecorderProcess->setArguments(arguments);
         m_theVideoRecorderProcess->setProgram(m_programName);
