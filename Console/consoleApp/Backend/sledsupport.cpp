@@ -1194,9 +1194,11 @@ void SledSupport::toggleDirection()
 {
     LOG1(m_isClockwise)
     if(m_isClockwise){
-        writeSerial("sd1\r");
-    } else {
         writeSerial("sd0\r");
+    } else {
+        writeSerial("sd1\r");
     }
+    msleep(500);
+    writeSerial("sr1\r");
 }
 
