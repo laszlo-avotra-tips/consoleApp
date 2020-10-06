@@ -233,8 +233,8 @@ const QString CatheterPointedDownText = "Catheter Down";
 /*
  * Active and Passive colors
  */
-const QColor AggressiveSpinColor = QColor( 201, 156, 72 ).darker( 200 ); // yellow-ish
-const QColor PassiveSpinColor    = QColor( 45, 135, 134 ).darker( 200 );  // light blue-ish
+const QColor AggressiveSpinColor = QColor( 201, 156, 72 ); // yellow-ish
+const QColor PassiveSpinColor    = QColor( 45, 135, 134 );  // light blue-ish
 #define ActiveColor  8E8E4E        // yellowish
 #define PassiveColor 2A8C91        // bluish
 #endif // DEFAULTS_H
