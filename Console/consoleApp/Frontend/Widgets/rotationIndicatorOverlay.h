@@ -5,16 +5,24 @@
 
 class QGraphicsScene;
 
-class RotationIndicatorOverlay : public QGraphicsTextItem
+struct IRotationIndicator : public QGraphicsTextItem
+{
+    virtual void setText(const QString &text) = 0;
+    virtual void addItem() = 0;
+    virtual void removeItem() = 0;
+};
+
+class RotationIndicatorOverlay : public IRotationIndicator
+//        class RotationIndicatorOverlay : public QGraphicsTextItem
 {
 public:
     static RotationIndicatorOverlay* instance(QGraphicsScene* scene = nullptr, QGraphicsItem* parent = nullptr);
     ~RotationIndicatorOverlay();
 
     QString text() const;
-    void setText(const QString &text);
-    void addItem();
-    void removeItem();
+    void setText(const QString &text) override;
+    void addItem() override;
+    void removeItem() override;
 
 private:
     RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent);
