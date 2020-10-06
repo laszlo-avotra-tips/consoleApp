@@ -147,11 +147,6 @@ liveScene::liveScene( QObject *parent )
     activeIndicatorRingImage  = activeIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
     passiveIndicatorImage     = QImage( ":/octConsole/Frontend/Resources/passiveIndicator.png" );
     passiveIndicatorRingImage = passiveIndicatorImage.convertToFormat( QImage::Format_Indexed8, grayScalePalette );
-
-//    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-//    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-//    setActive();
-
 }
 
 /*
@@ -258,8 +253,7 @@ void liveScene::setActive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-//            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,nullptr);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText(" ACTIVE");
@@ -271,8 +265,7 @@ void liveScene::setPassive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-//            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,nullptr);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
@@ -284,8 +277,7 @@ void liveScene::setIdle()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-//            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this);
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,sector);
+            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,nullptr);
         }
         rotationIndicatorOverlayItem->removeItem();
         update();
