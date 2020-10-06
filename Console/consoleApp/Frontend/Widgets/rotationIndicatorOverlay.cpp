@@ -45,6 +45,11 @@ void RotationIndicatorOverlay::paint(QPainter* painter, const QStyleOptionGraphi
     painter->drawText(QPointF(440,530), m_text); // " Active"
 }
 
+QRectF RotationIndicatorOverlay::boundingRect() const
+{
+    return m_scene->sceneRect();
+}
+
 QString RotationIndicatorOverlay::text() const
 {
     return m_text;

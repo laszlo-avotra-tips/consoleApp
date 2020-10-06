@@ -19,6 +19,7 @@ public:
 private:
     RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent);
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
+    QRectF boundingRect() const override;
 
     static RotationIndicatorOverlay* m_instance;
     QGraphicsScene* m_scene{nullptr};
