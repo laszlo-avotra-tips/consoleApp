@@ -10,7 +10,7 @@ class RotationIndicatorFactory
 {
 public:
     RotationIndicatorFactory();
-    static IRotationIndicator* getRotationIndicator(QGraphicsScene* scene, QGraphicsItem* item);
+    static IRotationIndicator* getRotationIndicator(QGraphicsScene* scene = nullptr, QGraphicsItem* item = nullptr);
 private:
     static IRotationIndicator* m_rotationIndicator;
 };

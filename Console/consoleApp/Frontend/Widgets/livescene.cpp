@@ -23,8 +23,9 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
-#include "rotationIndicatorOverlay.h"
+//#include "rotationIndicatorOverlay.h"
 #include "sledsupport.h"
+#include "rotationIndicatorFactory.h"
 
 
 QString timestampToString( unsigned long ts );
@@ -73,7 +74,7 @@ liveScene::liveScene( QObject *parent )
     overlays->setZValue( 10.0 );
     overlays->setVisible( true );
 
-    rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this, nullptr);
+    rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator(this,nullptr);
     rotationIndicatorOverlayItem->setData(0,"rotation");
 
     infoMessageItem = nullptr;
@@ -166,8 +167,6 @@ liveScene::~liveScene()
     {
         delete areaOverlayItem;
     }
-
-    delete rotationIndicatorOverlayItem;
 }
 
 /*
@@ -247,7 +246,7 @@ void liveScene::setActive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,nullptr);
+            rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator(this,nullptr);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText(" ACTIVE");
@@ -259,7 +258,7 @@ void liveScene::setPassive()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,nullptr);
+            rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator(this,nullptr);
         }
         rotationIndicatorOverlayItem->addItem();
         rotationIndicatorOverlayItem->setText("PASSIVE");
@@ -271,7 +270,7 @@ void liveScene::setIdle()
 
     if(isRotationIndicatorOverlayItemEnabled){
         if(!rotationIndicatorOverlayItem){
-            rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this,nullptr);
+            rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator(this,nullptr);
         }
         rotationIndicatorOverlayItem->removeItem();
         update();
@@ -521,14 +520,10 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
             // Ignore the event at the scene level and pass it on to the QGraphicsItem under the mouse
             QGraphicsScene::mousePressEvent(event);
-//            auto* grabber = mouseGrabberItem();
-//            LOG1(grabber->data(0).toString());
-//            grabber->ungrabMouse();
-
         }
         if(isInTheCenter){
              qApp->setOverrideCursor( Qt::ArrowCursor );
-             if(RotationIndicatorOverlay::instance()->isVisible()){
+             if(RotationIndicatorFactory::getRotationIndicator()->isVisible()){
                 SledSupport::Instance().toggleDirection();
              }
         }
