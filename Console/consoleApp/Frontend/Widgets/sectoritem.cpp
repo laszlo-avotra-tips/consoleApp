@@ -686,9 +686,10 @@ void overlayItem::render( void )
         auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr,nullptr);
         if(SledSupport::Instance().getLastRunningState() != 0){
             rotationIndicatorOverlayItem->show();
-        } else {
-            rotationIndicatorOverlayItem->hide();
         }
+//        else {
+//            rotationIndicatorOverlayItem->hide();
+//        }
 //        rotationIndicatorOverlayItem->grabMouse();
 //        LOG1(dev->getDeviceName())
     }
