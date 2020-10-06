@@ -1,22 +1,23 @@
 #ifndef ROTATIONINDICATOROVERLAY2_H
 #define ROTATIONINDICATOROVERLAY2_H
 
-#include <QGraphicsItem>
+//#include <QGraphicsItem>
+#include "iRotationIndicator.h"
 
 class QGraphicsScene;
 
-class RotationIndicatorOverlay2 : QGraphicsItem
+class RotationIndicatorOverlay2 : public IRotationIndicator
 {
 public:
-    static RotationIndicatorOverlay2* instance(QGraphicsScene* scene);
+    static RotationIndicatorOverlay2* instance(QGraphicsScene* scene = nullptr, QGraphicsItem* parent = nullptr);
     ~RotationIndicatorOverlay2();
 
-    void addItem();
-    void removeItem();
-    void setText(const QString &text);
+    void addItem() override;
+    void removeItem() override;
+    void setText(const QString &text) override;
 
 private:
-    RotationIndicatorOverlay2(QGraphicsScene *scene);
+    RotationIndicatorOverlay2(QGraphicsScene *scene, QGraphicsItem*);
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
     QRectF boundingRect() const override;
 

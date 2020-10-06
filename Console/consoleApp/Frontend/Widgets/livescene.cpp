@@ -23,7 +23,6 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
-//#include "rotationIndicatorOverlay.h"
 #include "sledsupport.h"
 #include "rotationIndicatorFactory.h"
 
