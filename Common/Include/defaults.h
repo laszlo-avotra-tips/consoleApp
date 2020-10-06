@@ -206,11 +206,13 @@ const QString DaqServiceDateKey( "DAQ/Last Service Date" );
 const QString DefaultDaqServiceDate( "2008-12-03" );
 
 /*
+ * OCT Measurements constants
+ */
+const int SupportedMeasurementVersion = 1;
+
+/*
  * EVOA Settings
  */
-const double  EvoaDefault_v = 2.0; // required to have a default if the vaule doesn't exist in system.ini
-const double  EvoaMaxVoltage_v = 4.5;
-const double  EvoaMinVoltage_v = 2.0;
 const QString EvoaDefaultSetting( "EVOA/DefaultVoltage" );
 const QString EvoaStatusDefault = "Default";
 const QString EvoaStatusSet     = "Set";
@@ -223,17 +225,6 @@ const QString DefaultPortName        = "COM1";
 const QString DefaultLaserCommConfig = "9600,8,n,1";
 
 /*
- * OCT Loop recording constants
- */
-const int MinRecordingLength_s  = 1;
-const int MinRecordingLength_ms = MinRecordingLength_s * 1000;
-
-/*
- * OCT Measurements constants
- */
-const int SupportedMeasurementVersion = 1;
-
-/*
  * Strings
  */
 const QString CatheterPointedUpText   = "Catheter Up";
@@ -242,8 +233,8 @@ const QString CatheterPointedDownText = "Catheter Down";
 /*
  * Active and Passive colors
  */
-const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish
-const QColor PassiveSpinColor    = QColor( 70, 234, 242 ).darker( 200 );  // light blue-ish
+const QColor AggressiveSpinColor = QColor( 201, 156, 72 ).darker( 200 ); // yellow-ish
+const QColor PassiveSpinColor    = QColor( 45, 135, 134 ).darker( 200 );  // light blue-ish
 #define ActiveColor  8E8E4E        // yellowish
 #define PassiveColor 2A8C91        // bluish
 #endif // DEFAULTS_H

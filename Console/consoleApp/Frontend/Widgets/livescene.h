@@ -27,8 +27,7 @@
 #include "annotateoverlay.h"
 #include "Widgets/areameasurementoverlay.h"
 
-class RotationIndicatorOverlay;
-//class RotationIndicatorOverlay2;
+struct IRotationIndicator;
 
 class liveScene : public QGraphicsScene
 {
@@ -207,7 +206,6 @@ private:
 
     QGraphicsPixmapItem *reviewSector;
 
-//    videoDecoderItem *clipPlayer;
     QString           clipPath;
 
     QImage *infoImage;
@@ -235,8 +233,7 @@ private:
     AreaMeasurementOverlay *areaOverlayItem{nullptr};
     bool isMeasurementEnabled{false};
 
-    RotationIndicatorOverlay* rotationIndicatorOverlayItem{nullptr};
-//    RotationIndicatorOverlay2* rotationIndicatorOverlayItem{nullptr};
+    IRotationIndicator* rotationIndicatorOverlayItem{nullptr};
     bool isRotationIndicatorOverlayItemEnabled{false};
     bool isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const;
 

@@ -10,13 +10,9 @@
 RotationIndicatorOverlay* RotationIndicatorOverlay::m_instance{nullptr};
 
 
-RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent)
-    : QGraphicsTextItem( parent ), m_scene(scene)
+RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* )
+    : m_scene(scene)
 {
-    setTextWidth(400);
-    auto font = QFont("Helvetica Neue");
-    setFont(font);
-
     addItem();
     hide();
 }
@@ -43,6 +39,11 @@ void RotationIndicatorOverlay::paint(QPainter* painter, const QStyleOptionGraphi
     painter->setFont(font);
     painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
     painter->drawText(QPointF(440,530), m_text); // " Active"
+}
+
+QRectF RotationIndicatorOverlay::boundingRect() const
+{
+    return m_scene->sceneRect();
 }
 
 QString RotationIndicatorOverlay::text() const

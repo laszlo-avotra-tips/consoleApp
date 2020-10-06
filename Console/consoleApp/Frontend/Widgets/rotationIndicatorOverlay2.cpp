@@ -11,17 +11,17 @@
 RotationIndicatorOverlay2* RotationIndicatorOverlay2::m_instance{nullptr};
 
 
-RotationIndicatorOverlay2::RotationIndicatorOverlay2(QGraphicsScene *scene)
-: QGraphicsItem( nullptr ), m_scene(scene)
+RotationIndicatorOverlay2::RotationIndicatorOverlay2(QGraphicsScene *scene, QGraphicsItem *)
+    : m_scene(scene)
 {
     addItem();
     hide();
 }
 
-RotationIndicatorOverlay2* RotationIndicatorOverlay2::instance(QGraphicsScene *scene)
+RotationIndicatorOverlay2* RotationIndicatorOverlay2::instance(QGraphicsScene *scene, QGraphicsItem* parent)
 {
     if(!m_instance){
-        m_instance = new RotationIndicatorOverlay2(scene);
+        m_instance = new RotationIndicatorOverlay2(scene, parent);
     }
     return m_instance;
 }
@@ -36,17 +36,18 @@ void RotationIndicatorOverlay2::addItem()
 {
     if(m_scene && !m_itemIsAdded){
         m_scene->addItem(this);
-        setZValue(60);
-        show();
+        setZValue(200);
         m_itemIsAdded = true;
+        show();
     }
 }
 
 void RotationIndicatorOverlay2::removeItem()
 {
     if(m_scene && m_itemIsAdded){
-        m_scene->removeItem(this);
-        m_itemIsAdded = false;
+//        m_scene->removeItem(this);
+//        m_itemIsAdded = false;
+        hide();
     }
 }
 
@@ -60,8 +61,8 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
     trigLookupTable &quickTrig = trigLookupTable::Instance();
 
     // Update our reference line position
-    const int x1 = 1080;
-    const int y1 = 1080;
+    const int x1 = 512;
+    const int y1 = 512;
     const double degToRad(3.1415/180.0);
 
     double currentAngle_deg{0.0};

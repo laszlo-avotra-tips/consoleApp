@@ -27,9 +27,11 @@ HEADERS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
+    $$PWD/Frontend/Widgets/iRotationIndicator.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/opaqueScreen.h \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \
+    $$PWD/Frontend/Widgets/rotationIndicatorFactory.h \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.h \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
@@ -96,6 +98,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
     $$PWD/Frontend/Widgets/opaqueScreen.cpp \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
+    $$PWD/Frontend/Widgets/rotationIndicatorFactory.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
