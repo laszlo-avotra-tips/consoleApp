@@ -28,6 +28,7 @@
 #include <QTime>
 #include "depthsetting.h"
 #include "rotationIndicatorOverlay.h"
+#include "sledsupport.h"
 
 
 //const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish
@@ -683,7 +684,11 @@ void overlayItem::render( void )
 
     if(dev->isBiDirectional()){
         auto rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(nullptr,nullptr);
-        rotationIndicatorOverlayItem->show();
+        if(SledSupport::Instance().getLastRunningState() != 0){
+            rotationIndicatorOverlayItem->show();
+        } else {
+            rotationIndicatorOverlayItem->hide();
+        }
 //        rotationIndicatorOverlayItem->grabMouse();
 //        LOG1(dev->getDeviceName())
     }
