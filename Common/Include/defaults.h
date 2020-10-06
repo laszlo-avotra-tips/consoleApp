@@ -206,6 +206,11 @@ const QString DaqServiceDateKey( "DAQ/Last Service Date" );
 const QString DefaultDaqServiceDate( "2008-12-03" );
 
 /*
+ * OCT Measurements constants
+ */
+const int SupportedMeasurementVersion = 1;
+
+/*
  * EVOA Settings
  */
 const QString EvoaDefaultSetting( "EVOA/DefaultVoltage" );
@@ -229,7 +234,7 @@ const QString CatheterPointedDownText = "Catheter Down";
  * Active and Passive colors
  */
 const QColor AggressiveSpinColor = QColor( 201, 156, 72 ).darker( 200 ); // yellow-ish
-const QColor PassiveSpinColor    = QColor( 108, 108, 108 ).darker( 200 );  // light blue-ish
+const QColor PassiveSpinColor    = QColor( 45, 135, 134 ).darker( 200 );  // light blue-ish
 #define ActiveColor  8E8E4E        // yellowish
 #define PassiveColor 2A8C91        // bluish
 #endif // DEFAULTS_H
