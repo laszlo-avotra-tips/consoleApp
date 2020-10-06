@@ -677,8 +677,6 @@ overlayItem::~overlayItem()
  */
 void overlayItem::render( void )
 {
-//	qDebug() << ">>>>>> 19";
-
     auto& ds = deviceSettings::Instance();
     auto* dev = ds.current();
 
@@ -687,11 +685,6 @@ void overlayItem::render( void )
         if(SledSupport::Instance().getLastRunningState() != 0){
             rotationIndicatorOverlayItem->show();
         }
-//        else {
-//            rotationIndicatorOverlayItem->hide();
-//        }
-//        rotationIndicatorOverlayItem->grabMouse();
-//        LOG1(dev->getDeviceName())
     }
 
     depthSetting &depth = depthSetting::Instance();

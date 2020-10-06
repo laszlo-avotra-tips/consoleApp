@@ -23,7 +23,6 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
-//#include "rotationIndicatorOverlay.h"
 #include "rotationIndicatorOverlay.h"
 #include "sledsupport.h"
 
@@ -76,10 +75,6 @@ liveScene::liveScene( QObject *parent )
 
     rotationIndicatorOverlayItem = RotationIndicatorOverlay::instance(this, nullptr);
     rotationIndicatorOverlayItem->setData(0,"rotation");
-//    addItem(rotationIndicatorOverlayItem);
-//    rotationIndicatorOverlayItem->setPos( 0, 0 );
-//    rotationIndicatorOverlayItem->setZValue( 200.0 );
-//    rotationIndicatorOverlayItem->setVisible( false );
 
     infoMessageItem = nullptr;
     refreshTimer = new QTimer();
@@ -89,7 +84,6 @@ liveScene::liveScene( QObject *parent )
     infoRenderTimer = new QTimer();
     connect( infoRenderTimer, SIGNAL( timeout() ), this, SLOT( generateClipInfo() ) );
     infoRenderTimer->start( 100 );
-//lcv #pragma message("magic number here, fix")
 
     reviewing              = false;
     zoomFactor             = 1.0;
