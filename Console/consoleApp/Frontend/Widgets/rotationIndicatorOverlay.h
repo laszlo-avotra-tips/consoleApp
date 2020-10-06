@@ -1,16 +1,17 @@
 #ifndef ROTATIONINDICATOROVERLAY_H
 #define ROTATIONINDICATOROVERLAY_H
 
-#include <QGraphicsTextItem>
+//#include <QGraphicsItem>
+#include "iRotationIndicator.h"
 
 class QGraphicsScene;
 
-struct IRotationIndicator : public QGraphicsTextItem
-{
-    virtual void setText(const QString &text) = 0;
-    virtual void addItem() = 0;
-    virtual void removeItem() = 0;
-};
+//struct IRotationIndicator : public QGraphicsItem
+//{
+//    virtual void setText(const QString &text) = 0;
+//    virtual void addItem() = 0;
+//    virtual void removeItem() = 0;
+//};
 
 class RotationIndicatorOverlay : public IRotationIndicator
 //        class RotationIndicatorOverlay : public QGraphicsTextItem

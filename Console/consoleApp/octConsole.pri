@@ -27,6 +27,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
+    $$PWD/Frontend/Widgets/iRotationIndicator.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/opaqueScreen.h \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \

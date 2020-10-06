@@ -13,9 +13,9 @@ RotationIndicatorOverlay* RotationIndicatorOverlay::m_instance{nullptr};
 RotationIndicatorOverlay::RotationIndicatorOverlay(QGraphicsScene *scene, QGraphicsItem* parent)
     : m_scene(scene)
 {
-    setTextWidth(400);
-    auto font = QFont("Helvetica Neue");
-    setFont(font);
+//    setTextWidth(400);
+//    auto font = QFont("Helvetica Neue");
+//    setFont(font);
 
     addItem();
     hide();
