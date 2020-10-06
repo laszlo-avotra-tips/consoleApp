@@ -854,7 +854,6 @@ bool SledSupport::isRunningState()
 
 int SledSupport::runningState()
 {
-    int m_lastRunningState = 0;
     if( ftHandle != NULL )
     {
         // first get current run mode
@@ -875,6 +874,8 @@ int SledSupport::runningState()
         } else if(resp.toUpper().contains( "3" )){
             m_lastRunningState = 3;
             m_isClockwise = false;
+        } else {
+            m_lastRunningState = 0;
         }
         //1015 is UTF-16, 1014 UTF-16LE, 1013 UTF-16BE, 106 UTF-8
         QString respAsString = QTextCodec::codecForMib(106)->toUnicode(resp);
