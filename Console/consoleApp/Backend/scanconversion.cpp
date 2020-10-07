@@ -572,7 +572,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 
     if(++count % 64 == 0){
         LOG4(internalImagingMask_px, catheterRadius_um, standardDepth_mm, standardDepth_S)
-        LOG4(displayAngle, SectorWidth_px, SectorHeight_px, *(smi->getImagingDepth_S()))
+        LOG1(*(smi->getImagingDepth_S()))
     }
 
     if( clStatus != CL_SUCCESS )
