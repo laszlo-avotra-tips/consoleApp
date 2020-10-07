@@ -220,7 +220,6 @@ public:
     void setIsSimulation(bool isSimulation);
 
 signals:
-    void deviceChanged( );
     void sendWarning( QString );
     void sendFailure( QString ); // signal to consoleApp
     void displayMask( int );

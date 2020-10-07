@@ -547,7 +547,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
 //    int SectorWidth_px = SECTOR_HEIGHT_PX;
 //    int SectorHeight_px = SECTOR_HEIGHT_PX;
-//    depthSetting &depth = depthSetting::Instance();
+    depthSetting &depth = depthSetting::Instance();
 //    float fractionOfCanvas = depth.getFractionOfCanvas();
 
 //    float displayAngle = displayAngle_deg;
@@ -570,9 +570,10 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel, 14, sizeof(int),    smi->whiteLevel() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 15, sizeof(int),    smi->isInvertOctColors() );
 
-    if(++count % 64 == 0){
+    if(count++ % 64 == 0){
         LOG4(internalImagingMask_px, catheterRadius_um, standardDepth_mm, standardDepth_S)
-        LOG1(*(smi->getImagingDepth_S()))
+        LOG2(*(smi->getImagingDepth_S()), depth.getImagingDepth_S())
+        LOG2(standardDepth_S, *(smi->getALineLengthNormal_px()) )
     }
 
     if( clStatus != CL_SUCCESS )
