@@ -68,8 +68,8 @@ public: //functions
     const cl_mem* getBeAndCeImageBuffer() const;
     void setPostBandcImageBuffer(const cl_mem &value);
 
-    const cl_float* getCatheterRadius_um() const;
-    void setCatheterRadius_um(const cl_float &catheterRadius_um);
+//    const cl_float* getCatheterRadius_um() const;
+//    void setCatheterRadius_um(const cl_float &catheterRadius_um);
 
     const cl_float* getInternalImagingMask_px() const;
     void setInternalImagingMask_px(const cl_float &internalImagingMask_px);
