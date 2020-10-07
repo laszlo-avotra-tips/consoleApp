@@ -107,7 +107,7 @@ public:
     int getRevolutionsPerMin1(void)        { return revolutionsPerMin1; }
     int getRevolutionsPerMin2(void)        { return revolutionsPerMin2; }
     int getRevolutionsPerMin3(void)        { return revolutionsPerMin3; }
-    int getALineLengthNormal_px(void);
+    int getALineLengthNormal_px(void) const;
     int getMeaurementVersion(void)        { return measurementVersion; }
     int getClockingEnabled(void)          { return clockingEnabled; }
     QByteArray getClockingGain(void)      { return clockingGain; }

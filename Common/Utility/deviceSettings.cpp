@@ -23,6 +23,7 @@
 #include <QMessageBox>
 #include <logger.h>
 #include "Utility/userSettings.h"
+#include "signalmodel.h"
 
 
 #define MASK_STEP_SIZE 1
@@ -93,6 +94,12 @@ void deviceSettings::setCurrentDevice( int devIndex )
     qDebug() << "* DeviceSettings - Current device changed";
     currentDevice = devIndex;
     deviceSettings::adjustMaskSize( 0 );
+
+    auto* sm = SignalModel::instance();
+    const auto* dev = current();
+
+    sm->setALineLengthNormal_px(dev->getALineLengthNormal_px());
+
 }
 
 device *deviceSettings::current()
@@ -424,7 +431,7 @@ const QString &device::getSplitDeviceName() const
     return splitDeviceName;
 }
 
-int device::getALineLengthNormal_px()
+int device::getALineLengthNormal_px() const
 {
     return aLineLengthNormal_px;
 }
