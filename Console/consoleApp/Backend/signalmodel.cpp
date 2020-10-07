@@ -143,15 +143,6 @@ void SignalModel::setInternalImagingMask_px(const cl_float &internalImagingMask_
     m_internalImagingMask_px = internalImagingMask_px;
 }
 
-//const cl_float *SignalModel::getCatheterRadius_um() const
-//{
-//    return &m_catheterRadius_um;
-//}
-
-//void SignalModel::setCatheterRadius_um(const cl_float &catheterRadius_um)
-//{
-//    m_catheterRadius_um = catheterRadius_um;
-//}
 
 const cl_mem *SignalModel::getBeAndCeImageBuffer() const
 {
