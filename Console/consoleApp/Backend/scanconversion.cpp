@@ -550,7 +550,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 //    depthSetting &depth = depthSetting::Instance();
 //    float fractionOfCanvas = depth.getFractionOfCanvas();
 
-    float displayAngle = displayAngle_deg;
+//    float displayAngle = displayAngle_deg;
     const auto* smi = SignalModel::instance();
 
     clStatus  = clSetKernelArg( cl_WarpKernel,  0, sizeof(cl_mem), &warpInputImageMemObj );
@@ -560,7 +560,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel,  4, sizeof(float),  &internalImagingMask_px );
     clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  &standardDepth_mm );
     clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    &standardDepth_S );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  &displayAngle );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  smi->getDisplayAngle() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    smi->getIsDistalToProximalView() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    smi->getSectorWidth_px() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    smi->getSectorHeight_px() );
