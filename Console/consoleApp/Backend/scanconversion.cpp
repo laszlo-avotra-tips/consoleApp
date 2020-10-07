@@ -545,8 +545,8 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     float internalImagingMask_px = device.deviceAt(index)->getInternalImagingMask_px();
     float standardDepth_mm = device.deviceAt( index )->getImagingDepthNormal_mm();
     const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
-    int SectorWidth_px = SECTOR_HEIGHT_PX;
-    int SectorHeight_px = SECTOR_HEIGHT_PX;
+//    int SectorWidth_px = SECTOR_HEIGHT_PX;
+//    int SectorHeight_px = SECTOR_HEIGHT_PX;
 //    depthSetting &depth = depthSetting::Instance();
 //    float fractionOfCanvas = depth.getFractionOfCanvas();
 
@@ -562,8 +562,8 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    &standardDepth_S );
     clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  &displayAngle );
     clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    smi->getIsDistalToProximalView() );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    &SectorWidth_px );
-    clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    &SectorHeight_px );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    smi->getSectorWidth_px() );
+    clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    smi->getSectorHeight_px() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 11, sizeof(float),  smi->getFractionOfCanvas() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    smi->getImagingDepth_S());
     clStatus |= clSetKernelArg( cl_WarpKernel, 13, sizeof(int),    smi->blackLevel() );
