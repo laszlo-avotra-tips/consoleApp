@@ -83,7 +83,7 @@ int deviceSettings::init( void )
     LOG3(numDevicesLoaded, depth, aLineLength)
     for(auto device : deviceList){
         device->setImagingDepth_mm(depth);
-        device->setALineLengthNormal_px(aLineLength);
+        device->setALineLength_px(aLineLength);
     }
 
     return numDevicesLoaded;
@@ -98,7 +98,7 @@ void deviceSettings::setCurrentDevice( int devIndex )
     auto* sm = SignalModel::instance();
     const auto* dev = current();
 
-    sm->setALineLengthNormal_px(dev->getALineLengthNormal_px());
+    sm->setALineLength_px(dev->getALineLength_px());
     sm->setStandardDepth_mm(dev->getImagingDepth_mm());
     sm->setInternalImagingMask_px(dev->getInternalImagingMask_px());
     sm->setCatheterRadius_um(dev->getCatheterRadius_um());
@@ -353,9 +353,9 @@ void device::setImagingDepth_mm(float value)
     imagingDepth_mm = value;
 }
 
-void device::setALineLengthNormal_px(int value)
+void device::setALineLength_px(int value)
 {
-    aLineLengthNormal_px = value;
+    aLineLength_px = value;
 }
 
 QByteArray device::getDevicePropVersion() const
@@ -433,9 +433,9 @@ const QString &device::getSplitDeviceName() const
     return splitDeviceName;
 }
 
-int device::getALineLengthNormal_px() const
+int device::getALineLength_px() const
 {
-    return aLineLengthNormal_px;
+    return aLineLength_px;
 }
 
 float device::getImagingDepth_mm() const

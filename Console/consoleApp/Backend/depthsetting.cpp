@@ -126,7 +126,7 @@ void depthSetting::calculateReticles( void )
          *  - 1000.0 is umPerMm
          */
         const float percentageOfCanvasUsed = fractionOfCanvas / 0.5f; // because we reserve space for the cardinal marks, we don't use entire canvas.
-        const float StandardMmPerSample = float(dev.current()->getImagingDepth_mm()) / float(dev.current()->getALineLengthNormal_px());
+        const float StandardMmPerSample = float(dev.current()->getImagingDepth_mm()) / float(dev.current()->getALineLength_px());
         const float imagingDepthMm = float(imagingDepth_S) * float(StandardMmPerSample);
         const float catheterRadius_mm = float(dev.current()->getCatheterRadius_um()) / 1000.0f;
         const float distanceFromCenterInMm = float(catheterRadius_mm) + float(imagingDepth_S * StandardMmPerSample );

@@ -73,7 +73,7 @@ public:
         revolutionsPerMin2       = inRevolutionsPerMin2;
         revolutionsPerMin3       = inRevolutionsPerMin3;
         defaultSpeedIndex        = inDefaultSpeedIndex;
-        aLineLengthNormal_px     = 512;
+        aLineLength_px     = 512;
         imagingDepth_mm    = (float) 3.18;
         clockingEnabled          = inClockingEnabled;
         clockingGain             = inClockingGain;
@@ -84,7 +84,7 @@ public:
         disclaimerText           = inDisclaimerText;
         deviceCRC                = inDeviceCRC;
         icon                     = inIcon;
-        pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepth_mm;
+        pixelsPerMm              = (float)aLineLength_px / (float)imagingDepth_mm;
         pixelsPerUm              = pixelsPerMm / (float)1000;
         m_isAth = inCatheterType[0] == 'A';
     }
@@ -107,7 +107,7 @@ public:
     int getRevolutionsPerMin1(void)        { return revolutionsPerMin1; }
     int getRevolutionsPerMin2(void)        { return revolutionsPerMin2; }
     int getRevolutionsPerMin3(void)        { return revolutionsPerMin3; }
-    int getALineLengthNormal_px(void) const;
+    int getALineLength_px(void) const;
     int getMeaurementVersion(void)        { return measurementVersion; }
     int getClockingEnabled(void)          { return clockingEnabled; }
     QByteArray getClockingGain(void)      { return clockingGain; }
@@ -127,7 +127,7 @@ bool isAth() const {return m_isAth;}
 
 void setImagingDepth_mm(float value);
 
-void setALineLengthNormal_px(int value);
+void setALineLength_px(int value);
 
 QByteArray getDevicePropVersion() const;
 void setDevicePropVersion(const QByteArray &value);
@@ -164,7 +164,7 @@ QByteArray catheterType;
     int        revolutionsPerMin2;
     int        revolutionsPerMin3;
     int        defaultSpeedIndex;
-    int        aLineLengthNormal_px;
+    int        aLineLength_px;
     int        measurementVersion;
     int        clockingEnabled;
     QByteArray clockingGain;

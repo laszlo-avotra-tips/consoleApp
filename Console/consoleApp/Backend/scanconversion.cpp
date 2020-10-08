@@ -544,7 +544,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 //    float catheterRadius_um = device.deviceAt(index)->getCatheterRadius_um();
 //    float internalImagingMask_px = device.deviceAt(index)->getInternalImagingMask_px();
 //    float standardDepth_mm = device.deviceAt( index )->getImagingDepth_mm();
-//    const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
+//    const int standardDepth_S = device.deviceAt( index )->getALineLength_px();
 //    int SectorWidth_px = SECTOR_HEIGHT_PX;
 //    int SectorHeight_px = SECTOR_HEIGHT_PX;
 //    depthSetting &depth = depthSetting::Instance();
@@ -559,7 +559,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel,  3, sizeof(float),  smi->getCatheterRadius_um() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  4, sizeof(float),  smi->getInternalImagingMask_px() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  smi->getStandardDepth_mm() );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    smi->getALineLengthNormal_px() );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    smi->getALineLength_px() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  smi->getDisplayAngle() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    smi->getIsDistalToProximalView() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    smi->getSectorWidth_px() );
@@ -576,7 +576,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 //        LOG2(internalImagingMask_px, *(smi->getInternalImagingMask_px()))
 //        LOG2(*(smi->getStandardDepth_mm()), standardDepth_mm)
 //        LOG2(*(smi->getStandardDepth_mm()), standardDepth_mm)
-//        LOG2(standardDepth_S, *(smi->getALineLengthNormal_px()) )
+//        LOG2(standardDepth_S, *(smi->getALineLength_px()) )
     }
 
     if( clStatus != CL_SUCCESS )

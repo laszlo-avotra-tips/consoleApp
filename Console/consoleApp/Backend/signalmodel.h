@@ -71,8 +71,8 @@ public: //functions
     const cl_float* getInternalImagingMask_px() const;
     void setInternalImagingMask_px(const cl_float &internalImagingMask_px);
 
-    const cl_int* getALineLengthNormal_px() const;
-    void setALineLengthNormal_px(const cl_int &aLineLengthNormal_px);
+    const cl_int* getALineLength_px() const;
+    void setALineLength_px(const cl_int &aLineLength_px);
 
     const cl_float* getDisplayAngle() const;
     void setDisplayAngle(const cl_float &displayAngle);
@@ -142,7 +142,7 @@ private: //data
     cl_float m_catheterRadius_um{0.0f}; //3 catheterRadius_um
     cl_float m_internalImagingMask_px{0.0f}; //4 internalImagingMask_px
     cl_float m_standardDepth_mm{0.0f}; //5 standardDepth_mm
-    cl_int m_aLineLengthNormal_px{0}; //6 standardDepth_S
+    cl_int m_aLineLength_px{0}; //6 standardDepth_S
     cl_float m_displayAngle{0.0f}; //7 displayAngle_deg
     cl_int m_isDistalToProximalView{0}; //8 reverseDirection
     const cl_int& m_sectorWidth_px{SectorWidth_px}; //9

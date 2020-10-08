@@ -143,14 +143,14 @@ void SignalModel::setDisplayAngle(const cl_float &displayAngle)
     m_displayAngle = displayAngle;
 }
 
-const cl_int *SignalModel::getALineLengthNormal_px() const
+const cl_int *SignalModel::getALineLength_px() const
 {
-    return &m_aLineLengthNormal_px;
+    return &m_aLineLength_px;
 }
 
-void SignalModel::setALineLengthNormal_px(const cl_int &aLineLengthNormal_px)
+void SignalModel::setALineLength_px(const cl_int &aLineLength_px)
 {
-    m_aLineLengthNormal_px = aLineLengthNormal_px;
+    m_aLineLength_px = aLineLength_px;
 }
 
 const cl_float *SignalModel::getInternalImagingMask_px() const
