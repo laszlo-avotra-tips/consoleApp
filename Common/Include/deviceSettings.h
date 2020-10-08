@@ -100,7 +100,7 @@ public:
     const QString& getDeviceName(void)           { return deviceName; }
     const QString &getSplitDeviceName() const;
     QString getCatheterType(void)         { return catheterType; }
-    int getInternalImagingMask_px(void)   { return internalImagingMask_px; }
+    int getInternalImagingMask_px(void) const   { return internalImagingMask_px; }
     int getCatheterRadius_px(void)        { return ( catheterRadius_um * pixelsPerUm ); }
     int getCatheterRadius_um(void)        { return catheterRadius_um; }
     int getRevolutionsPerMin(void)        { return revolutionsPerMin1; }

@@ -100,6 +100,7 @@ void deviceSettings::setCurrentDevice( int devIndex )
 
     sm->setALineLengthNormal_px(dev->getALineLengthNormal_px());
     sm->setStandardDepth_mm(dev->getImagingDepthNormal_mm());
+    sm->setInternalImagingMask_px(dev->getInternalImagingMask_px());
 }
 
 device *deviceSettings::current()
