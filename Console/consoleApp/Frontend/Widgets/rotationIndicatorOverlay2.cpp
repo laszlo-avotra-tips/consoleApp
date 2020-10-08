@@ -93,19 +93,19 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
     depthSetting &depth = depthSetting::Instance();
     int catheterEdgePosition = depth.getCatheterEdgePosition();
 
-    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
-    if( devSettings.current()->isBiDirectional() )
-    {
-        painter->setPen( directionPen );
+//    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
+//    if( devSettings.current()->isBiDirectional() )
+//    {
+//        painter->setPen( directionPen );
 
-        // draw direction indicator
-        const int DirectionEdge = catheterEdgePosition / 2;
+//        // draw direction indicator
+//        const int DirectionEdge = catheterEdgePosition / 2;
 
-        LOG1(DirectionEdge)
+//        LOG1(DirectionEdge)
 
-        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
-                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
-    }
+//        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
+//                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
+//    }
 
     // Direction indicator for highspeed bidirectional devices (Ocelaris)
     if(devSettings.current()->isBiDirectional() )
