@@ -544,10 +544,10 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     float catheterRadius_um = device.deviceAt(index)->getCatheterRadius_um();
     float internalImagingMask_px = device.deviceAt(index)->getInternalImagingMask_px();
     float standardDepth_mm = device.deviceAt( index )->getImagingDepthNormal_mm();
-    const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
+//    const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
 //    int SectorWidth_px = SECTOR_HEIGHT_PX;
 //    int SectorHeight_px = SECTOR_HEIGHT_PX;
-    depthSetting &depth = depthSetting::Instance();
+//    depthSetting &depth = depthSetting::Instance();
 //    float fractionOfCanvas = depth.getFractionOfCanvas();
 
 //    float displayAngle = displayAngle_deg;
@@ -559,7 +559,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel,  3, sizeof(float),  &catheterRadius_um );
     clStatus |= clSetKernelArg( cl_WarpKernel,  4, sizeof(float),  &internalImagingMask_px );
     clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  &standardDepth_mm );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    &standardDepth_S );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    smi->getALineLengthNormal_px() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  smi->getDisplayAngle() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    smi->getIsDistalToProximalView() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    smi->getSectorWidth_px() );
@@ -571,9 +571,9 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel, 15, sizeof(int),    smi->isInvertOctColors() );
 
     if(count++ % 64 == 0){
-        LOG4(internalImagingMask_px, catheterRadius_um, standardDepth_mm, standardDepth_S)
-        LOG2(*(smi->getImagingDepth_S()), depth.getImagingDepth_S())
-        LOG2(standardDepth_S, *(smi->getALineLengthNormal_px()) )
+        LOG3(internalImagingMask_px, catheterRadius_um, standardDepth_mm)
+//        LOG2(*(smi->getImagingDepth_S()), depth.getImagingDepth_S())
+//        LOG2(standardDepth_S, *(smi->getALineLengthNormal_px()) )
     }
 
     if( clStatus != CL_SUCCESS )
