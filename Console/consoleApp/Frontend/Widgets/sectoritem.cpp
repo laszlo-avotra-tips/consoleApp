@@ -158,24 +158,28 @@ void sectorItem::deviceChanged(void)
 {
     auto* smi = SignalModel::instance();
     deviceSettings &devSettings = deviceSettings::Instance();
+
 //    internalImagingMask_px     = devSettings.current()->getInternalImagingMask_px();
-//    catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
     internalImagingMask_px     = *(smi->getInternalImagingMask_px());
+
     catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
-    LOG2(internalImagingMask_px, devSettings.current()->getInternalImagingMask_px())
-    LOG1(catheterRadius_px)
+
+    LOG1(devSettings.current()->getInternalImagingMask_px())
+    LOG1(devSettings.current()->getCatheterRadius_px())
+    LOG1(devSettings.current()->getCatheterRadius_um())
+    LOG1(devSettings.current()->getPixelsPerUm())
 
 //    linesPerRevolution    = devSettings.current()->getLinesPerRevolution();
     linesPerRevolution = 1024;
     LOG2(linesPerRevolution, smi->linesPerRevolution())
 
     // Deep View disabled when selecting a new device
-//    currentDepth_mm       = devSettings.current()->getImagingDepth_mm();
-//    currentAlineLength_px = devSettings.current()->getALineLength_px();
-    currentDepth_mm       = *(smi->getStandardDepth_mm());
-    currentAlineLength_px = *(smi->getALineLength_px());
-    LOG2(currentDepth_mm, devSettings.current()->getImagingDepth_mm())
-    LOG2(currentAlineLength_px, devSettings.current()->getCatheterRadius_px())
+    currentDepth_mm       = devSettings.current()->getImagingDepth_mm();
+    currentAlineLength_px = devSettings.current()->getALineLength_px();
+//    currentDepth_mm       = *(smi->getStandardDepth_mm());
+//    currentAlineLength_px = *(smi->getALineLength_px());
+    LOG1(devSettings.current()->getImagingDepth_mm())
+    LOG1(devSettings.current()->getALineLength_px())
 
     average.reset( RotaryAverageWidth, linesPerRevolution );
     unwinder.reset();

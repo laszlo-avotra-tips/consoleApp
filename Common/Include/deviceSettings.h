@@ -119,6 +119,7 @@ public:
     bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }
     void setInternalImagingMask_px(int mask)  { internalImagingMask_px = mask; }
+    float getPixelsPerUm() const {return pixelsPerUm;}
     QImage    *icon;
 
 public:
