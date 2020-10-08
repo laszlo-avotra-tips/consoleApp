@@ -69,7 +69,7 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
 
 //    double currentAngle_deg{0.0};
 //    auto currentAlineLength_px = devSettings.current()->getALineLength_px();
-//    auto catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
+//    catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
 
 //    // Draw the laser reference line for low speed devices
 //    if( devSettings.current()->isBiDirectional() )

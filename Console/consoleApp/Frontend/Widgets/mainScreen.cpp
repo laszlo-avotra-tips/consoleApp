@@ -395,6 +395,7 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setModel(model.get());
         dialog->setScene(m_scene);
         model->persistModel();
+        m_scene->handleDeviceChange();
 
     } else {
         qDebug() << "Cancelled";
@@ -439,6 +440,7 @@ void MainScreen::openDisplayOptionsDialog()
 
         if( result == QDialog::Accepted){
             model.persistModel();
+            m_scene->handleDeviceChange();
         } else {
             on_pushButtonSettings_clicked();
         }
