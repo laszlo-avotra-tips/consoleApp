@@ -571,7 +571,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
     clStatus |= clSetKernelArg( cl_WarpKernel, 15, sizeof(int),    smi->isInvertOctColors() );
 
     if(count++ % 64 == 0){
-        LOG3(internalImagingMask_px, catheterRadius_um, standardDepth_mm)
+        LOG4(internalImagingMask_px, catheterRadius_um, standardDepth_mm, *(smi->getImagingDepth_S()))
 //        LOG2(*(smi->getImagingDepth_S()), depth.getImagingDepth_S())
 //        LOG2(standardDepth_S, *(smi->getALineLengthNormal_px()) )
     }

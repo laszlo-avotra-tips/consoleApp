@@ -33,6 +33,16 @@ void SignalModel::allocateOctData()
 
 }
 
+const cl_float* SignalModel::getStandardDepth_mm() const
+{
+    return &m_standardDepth_mm;
+}
+
+void SignalModel::setStandardDepth_mm(const cl_float &standardDepth_mm)
+{
+    m_standardDepth_mm = standardDepth_mm;
+}
+
 size_t SignalModel::getBufferLength() const
 {
     return m_bufferLength;

@@ -102,6 +102,9 @@ public: //functions
     size_t getBufferLength() const;
     void setBufferLength(const size_t &bufferLength);
 
+    const cl_float *getStandardDepth_mm() const;
+    void setStandardDepth_mm(const cl_float &standardDepth_mm);
+
 private: //functions
     SignalModel();
     void allocateOctData();
@@ -135,6 +138,7 @@ private: //data
     //warp
     cl_float m_catheterRadius_um{0.0f}; //3 catheterRadius_um
     cl_float m_internalImagingMask_px{0.0f}; //4 internalImagingMask_px
+    cl_float m_standardDepth_mm{0.0f}; //5 standardDepth_mm
     cl_int m_aLineLengthNormal_px{0}; //6 standardDepth_S
     cl_float m_displayAngle{0.0f}; //7 displayAngle_deg
     cl_int m_isDistalToProximalView{0}; //8 reverseDirection
