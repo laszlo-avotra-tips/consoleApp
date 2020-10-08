@@ -105,6 +105,9 @@ public: //functions
     const cl_float *getStandardDepth_mm() const;
     void setStandardDepth_mm(const cl_float &standardDepth_mm);
 
+    const cl_float* getCatheterRadius_um() const;
+    void setCatheterRadius_um(const cl_float &catheterRadius_um);
+
 private: //functions
     SignalModel();
     void allocateOctData();

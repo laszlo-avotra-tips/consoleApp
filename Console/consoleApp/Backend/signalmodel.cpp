@@ -33,6 +33,16 @@ void SignalModel::allocateOctData()
 
 }
 
+const cl_float* SignalModel::getCatheterRadius_um() const
+{
+    return &m_catheterRadius_um;
+}
+
+void SignalModel::setCatheterRadius_um(const cl_float &catheterRadius_um)
+{
+    m_catheterRadius_um = catheterRadius_um;
+}
+
 const cl_float* SignalModel::getStandardDepth_mm() const
 {
     return &m_standardDepth_mm;
