@@ -82,9 +82,9 @@ public slots:
         return sector->getWindAngle();
     }
 
-    void handleDeviceChange(void) {
-        sector->deviceChanged();
-    }
+//    void handleDeviceChange(void) {
+//        sector->deviceChanged();
+//    }
 
     void handleReticleBrightnessChanged();
 
