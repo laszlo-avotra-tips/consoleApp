@@ -101,6 +101,8 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
         // draw direction indicator
         const int DirectionEdge = catheterEdgePosition / 2;
 
+        LOG1(DirectionEdge)
+
         painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
                                      QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
     }
