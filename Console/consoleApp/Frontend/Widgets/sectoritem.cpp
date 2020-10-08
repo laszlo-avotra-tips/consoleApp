@@ -22,13 +22,14 @@
 #include "sectoritem.h"
 #include "livescene.h"
 #include "profiler.h"
-#include "deviceSettings.h"
+//#include "deviceSettings.h"
 #include "trigLookupTable.h"
 #include "Utility/userSettings.h"
 #include <QTime>
 #include "depthsetting.h"
 #include "sledsupport.h"
 #include "rotationIndicatorFactory.h"
+#include "signalmodel.h"
 
 
 //const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish
@@ -155,16 +156,26 @@ void sectorItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
  */
 void sectorItem::deviceChanged(void)
 {
-//	qDebug() << ">>>>>> 4";
+    auto* smi = SignalModel::instance();
     deviceSettings &devSettings = deviceSettings::Instance();
-    internalImagingMask_px     = devSettings.current()->getInternalImagingMask_px();
+//    internalImagingMask_px     = devSettings.current()->getInternalImagingMask_px();
+//    catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
+    internalImagingMask_px     = *(smi->getInternalImagingMask_px());
     catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
+    LOG2(internalImagingMask_px, devSettings.current()->getInternalImagingMask_px())
+    LOG1(catheterRadius_px)
+
 //    linesPerRevolution    = devSettings.current()->getLinesPerRevolution();
     linesPerRevolution = 1024;
+    LOG2(linesPerRevolution, smi->linesPerRevolution())
 
     // Deep View disabled when selecting a new device
-    currentDepth_mm       = devSettings.current()->getImagingDepth_mm();
-    currentAlineLength_px = devSettings.current()->getALineLength_px();
+//    currentDepth_mm       = devSettings.current()->getImagingDepth_mm();
+//    currentAlineLength_px = devSettings.current()->getALineLength_px();
+    currentDepth_mm       = *(smi->getStandardDepth_mm());
+    currentAlineLength_px = *(smi->getALineLength_px());
+    LOG2(currentDepth_mm, devSettings.current()->getImagingDepth_mm())
+    LOG2(currentAlineLength_px, devSettings.current()->getCatheterRadius_px())
 
     average.reset( RotaryAverageWidth, linesPerRevolution );
     unwinder.reset();
