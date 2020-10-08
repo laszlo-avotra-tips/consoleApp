@@ -9,7 +9,7 @@ DisplayOptionsModel::DisplayOptionsModel()
     m_imageContrast = settings.contrast();
     m_imageBrightness = settings.brightness();
     m_reticleBrightness = settings.reticleBrightness();
-    LOG3(m_imageBrightness,m_imageContrast, m_reticleBrightness)
+//    LOG3(m_imageBrightness,m_imageContrast, m_reticleBrightness)
 
     m_isPointedDown = settings.isDistalToProximalView();
     m_isImageColorGray = settings.getIsGray();

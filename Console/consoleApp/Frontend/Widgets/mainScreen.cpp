@@ -386,7 +386,7 @@ void MainScreen::openDeviceSelectDialog()
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
 
     if( result.second == QDialog::Accepted){
-        qDebug() << "Accepted";
+        LOG1( "Accepted")
 
         updateDeviceSettings();
 
@@ -398,7 +398,7 @@ void MainScreen::openDeviceSelectDialog()
         m_scene->handleDeviceChange();
 
     } else {
-        qDebug() << "Cancelled";
+        LOG1( "Cancelled")
         openCaseInformationDialog();
     }
 }
