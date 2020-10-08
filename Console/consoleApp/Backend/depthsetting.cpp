@@ -103,6 +103,7 @@ void depthSetting::handleDeviceChange()
 {
     imagingDepth_S = 450;  // Set the initial value half-way between the min and max range.
     SignalModel::instance()->setImagingDepth_S(int(getImagingDepth_S()));
+    LOG3(imagingDepth_S, SignalModel::instance()->getStandardDepth_mm(), SignalModel::instance()->getImagingDepth_S())
     calculateReticles();
 }
 
