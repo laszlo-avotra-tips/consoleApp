@@ -78,8 +78,10 @@ int deviceSettings::init( void )
         }
     }
     auto& settings = userSettings::Instance();
-    const float depth = settings.getImagingDepth_mm() / 2.0f;
-    const int aLineLength = settings.getALineLength_px() / 2;
+//    const float depth = settings.getImagingDepth_mm() / 2.0f;
+//    const int aLineLength = settings.getALineLength_px() / 2;
+    const float depth = settings.getImagingDepth_mm();
+    const int aLineLength = settings.getALineLength_px();
     LOG3(numDevicesLoaded, depth, aLineLength)
     for(auto device : deviceList){
         device->setImagingDepth_mm(depth);
