@@ -114,7 +114,7 @@ public:
     QByteArray getClockingOffset(void)    { return clockingOffset; }
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
     QByteArray getTimeLimit(void)         { return timeLimit; }
-    float getImagingDepthNormal_mm(void);
+    float getImagingDepthNormal_mm(void) const;
     QImage getIcon(void)                  { return icon->copy(); }
     bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }

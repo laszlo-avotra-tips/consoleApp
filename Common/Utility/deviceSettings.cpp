@@ -99,7 +99,7 @@ void deviceSettings::setCurrentDevice( int devIndex )
     const auto* dev = current();
 
     sm->setALineLengthNormal_px(dev->getALineLengthNormal_px());
-
+    sm->setStandardDepth_mm(dev->getImagingDepthNormal_mm());
 }
 
 device *deviceSettings::current()
@@ -436,7 +436,7 @@ int device::getALineLengthNormal_px() const
     return aLineLengthNormal_px;
 }
 
-float device::getImagingDepthNormal_mm()
+float device::getImagingDepthNormal_mm() const
 {
     return imagingDepthNormal_mm;
 }
