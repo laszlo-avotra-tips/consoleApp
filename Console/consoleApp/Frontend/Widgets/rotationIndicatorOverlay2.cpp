@@ -133,7 +133,7 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
             painter->setBrush(Qt::black);
         }
         // draw direction indicator
-        const int DirectionEdge = catheterEdgePosition;
+        const int DirectionEdge = catheterEdgePosition / 2;
         QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
                             QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
 
