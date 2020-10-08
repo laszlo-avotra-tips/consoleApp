@@ -543,7 +543,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 //    int index = device.getCurrentDevice();
 //    float catheterRadius_um = device.deviceAt(index)->getCatheterRadius_um();
 //    float internalImagingMask_px = device.deviceAt(index)->getInternalImagingMask_px();
-//    float standardDepth_mm = device.deviceAt( index )->getImagingDepthNormal_mm();
+//    float standardDepth_mm = device.deviceAt( index )->getImagingDepth_mm();
 //    const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
 //    int SectorWidth_px = SECTOR_HEIGHT_PX;
 //    int SectorHeight_px = SECTOR_HEIGHT_PX;

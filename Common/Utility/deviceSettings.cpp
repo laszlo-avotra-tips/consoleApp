@@ -78,12 +78,12 @@ int deviceSettings::init( void )
         }
     }
     auto& settings = userSettings::Instance();
-    const float depthNormal = settings.getImagingDepth_mm() / 2.0f;
-    const int aLineLengthNormal = settings.getALineLength_px() / 2;
-    LOG3(numDevicesLoaded, depthNormal, aLineLengthNormal)
+    const float depth = settings.getImagingDepth_mm() / 2.0f;
+    const int aLineLength = settings.getALineLength_px() / 2;
+    LOG3(numDevicesLoaded, depth, aLineLength)
     for(auto device : deviceList){
-        device->setImagingDepthNormal_mm(depthNormal);
-        device->setALineLengthNormal_px(aLineLengthNormal);
+        device->setImagingDepth_mm(depth);
+        device->setALineLengthNormal_px(aLineLength);
     }
 
     return numDevicesLoaded;
@@ -99,7 +99,7 @@ void deviceSettings::setCurrentDevice( int devIndex )
     const auto* dev = current();
 
     sm->setALineLengthNormal_px(dev->getALineLengthNormal_px());
-    sm->setStandardDepth_mm(dev->getImagingDepthNormal_mm());
+    sm->setStandardDepth_mm(dev->getImagingDepth_mm());
     sm->setInternalImagingMask_px(dev->getInternalImagingMask_px());
     sm->setCatheterRadius_um(dev->getCatheterRadius_um());
 }
@@ -348,9 +348,9 @@ QString device::formatDeviceName(const QString &name)
     return retVal;
 }
 
-void device::setImagingDepthNormal_mm(float value)
+void device::setImagingDepth_mm(float value)
 {
-    imagingDepthNormal_mm = value;
+    imagingDepth_mm = value;
 }
 
 void device::setALineLengthNormal_px(int value)
@@ -438,7 +438,7 @@ int device::getALineLengthNormal_px() const
     return aLineLengthNormal_px;
 }
 
-float device::getImagingDepthNormal_mm() const
+float device::getImagingDepth_mm() const
 {
-    return imagingDepthNormal_mm;
+    return imagingDepth_mm;
 }

@@ -74,7 +74,7 @@ public:
         revolutionsPerMin3       = inRevolutionsPerMin3;
         defaultSpeedIndex        = inDefaultSpeedIndex;
         aLineLengthNormal_px     = 512;
-        imagingDepthNormal_mm    = (float) 3.18;
+        imagingDepth_mm    = (float) 3.18;
         clockingEnabled          = inClockingEnabled;
         clockingGain             = inClockingGain;
         clockingOffset           = inClockingOffset;
@@ -84,7 +84,7 @@ public:
         disclaimerText           = inDisclaimerText;
         deviceCRC                = inDeviceCRC;
         icon                     = inIcon;
-        pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
+        pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepth_mm;
         pixelsPerUm              = pixelsPerMm / (float)1000;
         m_isAth = inCatheterType[0] == 'A';
     }
@@ -114,7 +114,7 @@ public:
     QByteArray getClockingOffset(void)    { return clockingOffset; }
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
     QByteArray getTimeLimit(void)         { return timeLimit; }
-    float getImagingDepthNormal_mm(void) const;
+    float getImagingDepth_mm(void) const;
     QImage getIcon(void)                  { return icon->copy(); }
     bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }
@@ -125,7 +125,7 @@ public:
 static QString formatDeviceName(const QString& name);
 bool isAth() const {return m_isAth;}
 
-void setImagingDepthNormal_mm(float value);
+void setImagingDepth_mm(float value);
 
 void setALineLengthNormal_px(int value);
 
@@ -171,7 +171,7 @@ QByteArray catheterType;
     QByteArray clockingOffset;
     QByteArray torqueLimit;
     QByteArray timeLimit;
-    float      imagingDepthNormal_mm;
+    float      imagingDepth_mm;
     float      pixelsPerMm;
     float      pixelsPerUm;
     QString    disclaimerText;

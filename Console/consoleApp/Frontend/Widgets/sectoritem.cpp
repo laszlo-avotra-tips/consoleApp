@@ -163,7 +163,7 @@ void sectorItem::deviceChanged(void)
     linesPerRevolution = 1024;
 
     // Deep View disabled when selecting a new device
-    currentDepth_mm       = devSettings.current()->getImagingDepthNormal_mm();
+    currentDepth_mm       = devSettings.current()->getImagingDepth_mm();
     currentAlineLength_px = devSettings.current()->getALineLengthNormal_px();
 
     average.reset( RotaryAverageWidth, linesPerRevolution );
