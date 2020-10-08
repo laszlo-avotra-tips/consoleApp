@@ -1,6 +1,6 @@
 #include "scanconversion.h"
-#include "deviceSettings.h"
-#include "depthsetting.h"
+//#include "deviceSettings.h"
+//#include "depthsetting.h"
 #include "daq.h"
 #include "logger.h"
 #include "signalmodel.h"
@@ -539,9 +539,9 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 /*
  * Set up Catheter specific parameters
  */
-    deviceSettings &device = deviceSettings::Instance();
-    int index = device.getCurrentDevice();
-    float catheterRadius_um = device.deviceAt(index)->getCatheterRadius_um();
+//    deviceSettings &device = deviceSettings::Instance();
+//    int index = device.getCurrentDevice();
+//    float catheterRadius_um = device.deviceAt(index)->getCatheterRadius_um();
 //    float internalImagingMask_px = device.deviceAt(index)->getInternalImagingMask_px();
 //    float standardDepth_mm = device.deviceAt( index )->getImagingDepthNormal_mm();
 //    const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
@@ -572,7 +572,7 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 
     if(count++ % 64 == 0){
         LOG4(*(smi->getInternalImagingMask_px()), *(smi->getInternalImagingMask_px()), *(smi->getStandardDepth_mm()), *(smi->getImagingDepth_S()))
-        LOG2(catheterRadius_um, *(smi->getCatheterRadius_um()))
+//        LOG2(catheterRadius_um, *(smi->getCatheterRadius_um()))
 //        LOG2(internalImagingMask_px, *(smi->getInternalImagingMask_px()))
 //        LOG2(*(smi->getStandardDepth_mm()), standardDepth_mm)
 //        LOG2(*(smi->getStandardDepth_mm()), standardDepth_mm)
