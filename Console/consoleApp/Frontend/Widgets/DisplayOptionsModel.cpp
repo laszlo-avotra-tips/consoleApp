@@ -40,6 +40,8 @@ void DisplayOptionsModel::persistModel() const
     }
     settings.setIsGray(m_isImageColorGray);
     settings.setImageDepthIndex(m_depthIndex);
+    auto aLines = settings.getALineLength_px();
+    LOG1(aLines)
 }
 
 int DisplayOptionsModel::imageContrast() const
