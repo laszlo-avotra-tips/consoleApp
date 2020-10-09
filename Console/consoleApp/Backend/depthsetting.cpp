@@ -137,6 +137,7 @@ void depthSetting::calculateReticles( void )
         numReticles = int(imagingDepthMm);
         pixelsPerMm = int(pxPerMm);
         catheterEdgePosition = int( catheterRadius_mm * pxPerMm );
+        LOG3(catheterRadius_mm,pxPerMm,catheterEdgePosition)
     }
 }
 
