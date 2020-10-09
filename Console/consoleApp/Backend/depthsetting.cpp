@@ -117,6 +117,7 @@ void depthSetting::handleDeviceChange()
  */
 void depthSetting::calculateReticles( void )
 {
+    static int count = 0;
     deviceSettings &dev = deviceSettings::Instance();
 
     // Make sure a device exists before calling member functions.
@@ -134,17 +135,20 @@ void depthSetting::calculateReticles( void )
         const float distanceFromCenterInPx = float(SectorWidth_px / 2.0f ) * percentageOfCanvasUsed;
         const float pxPerMm = distanceFromCenterInPx / distanceFromCenterInMm;
 
-        LOG1(dev.current()->getDeviceName())
-        LOG1(catheterRadius_mm)
-        LOG1(StandardMmPerSample)
-        LOG1(imagingDepth_S)
-        LOG1(distanceFromCenterInMm)
-        LOG1(distanceFromCenterInPx)
-
         numReticles = int(imagingDepthMm);
         pixelsPerMm = int(pxPerMm);
         catheterEdgePosition = int( catheterRadius_mm * pxPerMm );
-        LOG2(pxPerMm,catheterEdgePosition)
+
+        if(count++ % 64 == 0){
+            LOG1(dev.current()->getDeviceName())
+            LOG1(catheterRadius_mm)
+            LOG1(StandardMmPerSample)
+            LOG1(imagingDepth_S)
+            LOG1(distanceFromCenterInMm)
+            LOG1(distanceFromCenterInPx)
+
+            LOG2(pxPerMm,catheterEdgePosition)
+        }
     }
 }
 
