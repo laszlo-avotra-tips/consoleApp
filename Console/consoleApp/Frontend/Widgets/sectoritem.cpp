@@ -165,6 +165,7 @@ void sectorItem::deviceChanged(void)
 
     catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
 
+    LOG1(devSettings.current()->getDeviceName())
     LOG1(devSettings.current()->getInternalImagingMask_px())
     LOG1(devSettings.current()->getCatheterRadius_px())
     LOG1(devSettings.current()->getCatheterRadius_um())
