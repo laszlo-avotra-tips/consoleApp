@@ -1,6 +1,6 @@
 #include "scanconversion.h"
-#include "deviceSettings.h"
-#include "depthsetting.h"
+//#include "deviceSettings.h"
+//#include "depthsetting.h"
 #include "daq.h"
 #include "logger.h"
 #include "signalmodel.h"
@@ -539,41 +539,45 @@ bool ScanConversion::warpData( OCTFile::OctData_t *dataFrame, size_t pBufferLeng
 /*
  * Set up Catheter specific parameters
  */
-    deviceSettings &device = deviceSettings::Instance();
-    int index = device.getCurrentDevice();
-    float catheterRadius_um = device.deviceAt(index)->getCatheterRadius_um();
-    float internalImagingMask_px = device.deviceAt(index)->getInternalImagingMask_px();
-    float standardDepth_mm = device.deviceAt( index )->getImagingDepthNormal_mm();
-    const int standardDepth_S = device.deviceAt( index )->getALineLengthNormal_px();
-    int SectorWidth_px = SECTOR_HEIGHT_PX;
-    int SectorHeight_px = SECTOR_HEIGHT_PX;
-    depthSetting &depth = depthSetting::Instance();
-    float fractionOfCanvas = depth.getFractionOfCanvas();
+//    deviceSettings &device = deviceSettings::Instance();
+//    int index = device.getCurrentDevice();
+//    float catheterRadius_um = device.deviceAt(index)->getCatheterRadius_um();
+//    float internalImagingMask_px = device.deviceAt(index)->getInternalImagingMask_px();
+//    float standardDepth_mm = device.deviceAt( index )->getImagingDepth_mm();
+//    const int standardDepth_S = device.deviceAt( index )->getALineLength_px();
+//    int SectorWidth_px = SECTOR_HEIGHT_PX;
+//    int SectorHeight_px = SECTOR_HEIGHT_PX;
+//    depthSetting &depth = depthSetting::Instance();
+//    float fractionOfCanvas = depth.getFractionOfCanvas();
 
-    float displayAngle = displayAngle_deg;
+//    float displayAngle = displayAngle_deg;
     const auto* smi = SignalModel::instance();
 
     clStatus  = clSetKernelArg( cl_WarpKernel,  0, sizeof(cl_mem), &warpInputImageMemObj );
     clStatus |= clSetKernelArg( cl_WarpKernel,  1, sizeof(cl_mem), &outputImageMemObj );
     clStatus |= clSetKernelArg( cl_WarpKernel,  2, sizeof(cl_mem), &outputVideoImageMemObj );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  3, sizeof(float),  &catheterRadius_um );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  4, sizeof(float),  &internalImagingMask_px );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  &standardDepth_mm );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    &standardDepth_S );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  &displayAngle );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  3, sizeof(float),  smi->getCatheterRadius_um() );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  4, sizeof(float),  smi->getInternalImagingMask_px() );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  5, sizeof(float),  smi->getStandardDepth_mm() );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  6, sizeof(int),    smi->getALineLength_px() );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  7, sizeof(float),  smi->getDisplayAngle() );
     clStatus |= clSetKernelArg( cl_WarpKernel,  8, sizeof(int),    smi->getIsDistalToProximalView() );
-    clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    &SectorWidth_px );
-    clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    &SectorHeight_px );
-    clStatus |= clSetKernelArg( cl_WarpKernel, 11, sizeof(float),  &fractionOfCanvas );
+    clStatus |= clSetKernelArg( cl_WarpKernel,  9, sizeof(int),    smi->getSectorWidth_px() );
+    clStatus |= clSetKernelArg( cl_WarpKernel, 10, sizeof(int),    smi->getSectorHeight_px() );
+    clStatus |= clSetKernelArg( cl_WarpKernel, 11, sizeof(float),  smi->getFractionOfCanvas() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 12, sizeof(int),    smi->getImagingDepth_S());
     clStatus |= clSetKernelArg( cl_WarpKernel, 13, sizeof(int),    smi->blackLevel() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 14, sizeof(int),    smi->whiteLevel() );
     clStatus |= clSetKernelArg( cl_WarpKernel, 15, sizeof(int),    smi->isInvertOctColors() );
 
-//    if(++count % 64 == 0){
-//        LOG4(internalImagingMask_px, catheterRadius_um, standardDepth_mm, standardDepth_S)
-//        LOG4(displayAngle, SectorWidth_px, SectorHeight_px, *(smi->getImagingDepth_S()))
-//    }
+    if(count++ % 64 == 0){
+        LOG4(*(smi->getCatheterRadius_um()), *(smi->getInternalImagingMask_px()), *(smi->getStandardDepth_mm()), *(smi->getImagingDepth_S()))
+//        LOG2(catheterRadius_um, *(smi->getCatheterRadius_um()))
+//        LOG2(internalImagingMask_px, *(smi->getInternalImagingMask_px()))
+//        LOG2(*(smi->getStandardDepth_mm()), standardDepth_mm)
+//        LOG2(*(smi->getStandardDepth_mm()), standardDepth_mm)
+//        LOG2(standardDepth_S, *(smi->getALineLength_px()) )
+    }
 
     if( clStatus != CL_SUCCESS )
     {

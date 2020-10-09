@@ -46,7 +46,7 @@ const int KB_per_MB = 1024;
 const Qt::WindowFlags KeyboardWindowFlags = Qt::Widget | Qt::Dialog | Qt::FramelessWindowHint;
 
 // TDB: Constants to be moved to device settings ( Refs #1062 )
-const int ALineLengthNormal_px  = 512;
+const int ALineLength_px  = 512;
 
 // Keep a maximum length that is independent of devices
 const int MaxALineLength = 1024;

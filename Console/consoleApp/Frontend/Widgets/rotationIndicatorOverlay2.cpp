@@ -69,8 +69,8 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
 //    const double degToRad(3.1415/180.0);
 
 //    double currentAngle_deg{0.0};
-//    auto currentAlineLength_px = devSettings.current()->getALineLengthNormal_px();
-//    auto catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
+//    auto currentAlineLength_px = devSettings.current()->getALineLength_px();
+//    catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
 
 //    // Draw the laser reference line for low speed devices
 //    if( devSettings.current()->isBiDirectional() )
@@ -94,23 +94,26 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
     depthSetting &depth = depthSetting::Instance();
     int catheterEdgePosition = depth.getCatheterEdgePosition();
 
-    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
-    if( devSettings.current()->isBiDirectional() )
-    {
-        painter->setPen( directionPen );
+//    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
+//    if( devSettings.current()->isBiDirectional() )
+//    {
+//        painter->setPen( directionPen );
 
-        // draw direction indicator
-        const int DirectionEdge = catheterEdgePosition / 2;
+//        // draw direction indicator
+//        const int DirectionEdge = catheterEdgePosition / 2;
 
-        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
-                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
-    }
+//        LOG1(DirectionEdge)
+
+//        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
+//                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
+//    }
 
     // Direction indicator for highspeed bidirectional devices (Ocelaris)
     if(devSettings.current()->isBiDirectional() )
     {
         QString spin;
         QFont font;
+        static int redrawCount = 0;
         font.setPixelSize(catheterEdgePosition / 3);
 //        font.setBold(true);
         painter->setFont(font);
@@ -139,6 +142,10 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
         painter->drawEllipse( center );
         painter->setPen( Qt::black );
         painter->drawText( center, Qt::AlignCenter, spin );
+
+        if(redrawCount++ % 64 == 0){
+            LOG1(DirectionEdge)
+        }
     }
 
     painter->end();

@@ -23,6 +23,7 @@
 #include <QMessageBox>
 #include <logger.h>
 #include "Utility/userSettings.h"
+#include "signalmodel.h"
 
 
 #define MASK_STEP_SIZE 1
@@ -77,12 +78,12 @@ int deviceSettings::init( void )
         }
     }
     auto& settings = userSettings::Instance();
-    const float depthNormal = settings.getImagingDepth_mm() / 2.0f;
-    const int aLineLengthNormal = settings.getALineLength_px() / 2;
-    LOG3(numDevicesLoaded, depthNormal, aLineLengthNormal)
+    const float depth = settings.getImagingDepth_mm() / 2.0f;
+    const int aLineLength = settings.getALineLength_px() / 2;
+    LOG3(numDevicesLoaded, depth, aLineLength)
     for(auto device : deviceList){
-        device->setImagingDepthNormal_mm(depthNormal);
-        device->setALineLengthNormal_px(aLineLengthNormal);
+        device->setImagingDepth_mm(depth);
+        device->setALineLength_px(aLineLength);
     }
 
     return numDevicesLoaded;
@@ -93,7 +94,14 @@ void deviceSettings::setCurrentDevice( int devIndex )
     qDebug() << "* DeviceSettings - Current device changed";
     currentDevice = devIndex;
     deviceSettings::adjustMaskSize( 0 );
-    emit deviceChanged( );
+
+    auto* sm = SignalModel::instance();
+    const auto* dev = current();
+
+    sm->setALineLength_px(dev->getALineLength_px());
+    sm->setStandardDepth_mm(dev->getImagingDepth_mm());
+    sm->setInternalImagingMask_px(dev->getInternalImagingMask_px());
+    sm->setCatheterRadius_um(dev->getCatheterRadius_um());
 }
 
 device *deviceSettings::current()
@@ -340,14 +348,14 @@ QString device::formatDeviceName(const QString &name)
     return retVal;
 }
 
-void device::setImagingDepthNormal_mm(float value)
+void device::setImagingDepth_mm(float value)
 {
-    imagingDepthNormal_mm = value;
+    imagingDepth_mm = value;
 }
 
-void device::setALineLengthNormal_px(int value)
+void device::setALineLength_px(int value)
 {
-    aLineLengthNormal_px = value;
+    aLineLength_px = value;
 }
 
 QByteArray device::getDevicePropVersion() const
@@ -425,12 +433,12 @@ const QString &device::getSplitDeviceName() const
     return splitDeviceName;
 }
 
-int device::getALineLengthNormal_px()
+int device::getALineLength_px() const
 {
-    return aLineLengthNormal_px;
+    return aLineLength_px;
 }
 
-float device::getImagingDepthNormal_mm()
+float device::getImagingDepth_mm() const
 {
-    return imagingDepthNormal_mm;
+    return imagingDepth_mm;
 }

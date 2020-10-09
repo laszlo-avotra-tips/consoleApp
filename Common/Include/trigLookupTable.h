@@ -33,7 +33,7 @@ public:
 private:
 
     // Hide ctor, dtor, copy and assign for singletons
-    trigLookupTable( float resolution = float(MININTERPOLATIONANGLE_RAD), int lineLength = ALineLengthNormal_px );
+    trigLookupTable( float resolution = float(MININTERPOLATIONANGLE_RAD), int lineLength = ALineLength_px );
     ~trigLookupTable( void );
     trigLookupTable( trigLookupTable const & );
     trigLookupTable & operator=( trigLookupTable const & );

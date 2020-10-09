@@ -73,8 +73,8 @@ public:
         revolutionsPerMin2       = inRevolutionsPerMin2;
         revolutionsPerMin3       = inRevolutionsPerMin3;
         defaultSpeedIndex        = inDefaultSpeedIndex;
-        aLineLengthNormal_px     = 512;
-        imagingDepthNormal_mm    = (float) 3.18;
+        aLineLength_px     = 512;
+        imagingDepth_mm    = (float) 3.18;
         clockingEnabled          = inClockingEnabled;
         clockingGain             = inClockingGain;
         clockingOffset           = inClockingOffset;
@@ -84,7 +84,7 @@ public:
         disclaimerText           = inDisclaimerText;
         deviceCRC                = inDeviceCRC;
         icon                     = inIcon;
-        pixelsPerMm              = (float)aLineLengthNormal_px / (float)imagingDepthNormal_mm;
+        pixelsPerMm              = (float)aLineLength_px / (float)imagingDepth_mm;
         pixelsPerUm              = pixelsPerMm / (float)1000;
         m_isAth = inCatheterType[0] == 'A';
     }
@@ -100,34 +100,35 @@ public:
     const QString& getDeviceName(void)           { return deviceName; }
     const QString &getSplitDeviceName() const;
     QString getCatheterType(void)         { return catheterType; }
-    int getInternalImagingMask_px(void)   { return internalImagingMask_px; }
-    int getCatheterRadius_px(void)        { return ( catheterRadius_um * pixelsPerUm ); }
-    int getCatheterRadius_um(void)        { return catheterRadius_um; }
+    int getInternalImagingMask_px(void) const   { return internalImagingMask_px; }
+    int getCatheterRadius_px(void) const       { return ( catheterRadius_um * pixelsPerUm ); }
+    int getCatheterRadius_um(void) const       { return catheterRadius_um; }
     int getRevolutionsPerMin(void)        { return revolutionsPerMin1; }
     int getRevolutionsPerMin1(void)        { return revolutionsPerMin1; }
     int getRevolutionsPerMin2(void)        { return revolutionsPerMin2; }
     int getRevolutionsPerMin3(void)        { return revolutionsPerMin3; }
-    int getALineLengthNormal_px(void);
+    int getALineLength_px(void) const;
     int getMeaurementVersion(void)        { return measurementVersion; }
     int getClockingEnabled(void)          { return clockingEnabled; }
     QByteArray getClockingGain(void)      { return clockingGain; }
     QByteArray getClockingOffset(void)    { return clockingOffset; }
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
     QByteArray getTimeLimit(void)         { return timeLimit; }
-    float getImagingDepthNormal_mm(void);
+    float getImagingDepth_mm(void) const;
     QImage getIcon(void)                  { return icon->copy(); }
     bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }
     void setInternalImagingMask_px(int mask)  { internalImagingMask_px = mask; }
+    float getPixelsPerUm() const {return pixelsPerUm;}
     QImage    *icon;
 
 public:
 static QString formatDeviceName(const QString& name);
 bool isAth() const {return m_isAth;}
 
-void setImagingDepthNormal_mm(float value);
+void setImagingDepth_mm(float value);
 
-void setALineLengthNormal_px(int value);
+void setALineLength_px(int value);
 
 QByteArray getDevicePropVersion() const;
 void setDevicePropVersion(const QByteArray &value);
@@ -164,14 +165,14 @@ QByteArray catheterType;
     int        revolutionsPerMin2;
     int        revolutionsPerMin3;
     int        defaultSpeedIndex;
-    int        aLineLengthNormal_px;
+    int        aLineLength_px;
     int        measurementVersion;
     int        clockingEnabled;
     QByteArray clockingGain;
     QByteArray clockingOffset;
     QByteArray torqueLimit;
     QByteArray timeLimit;
-    float      imagingDepthNormal_mm;
+    float      imagingDepth_mm;
     float      pixelsPerMm;
     float      pixelsPerUm;
     QString    disclaimerText;
@@ -220,7 +221,6 @@ public:
     void setIsSimulation(bool isSimulation);
 
 signals:
-    void deviceChanged( );
     void sendWarning( QString );
     void sendFailure( QString ); // signal to consoleApp
     void displayMask( int );

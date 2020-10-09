@@ -33,6 +33,26 @@ void SignalModel::allocateOctData()
 
 }
 
+const cl_float* SignalModel::getCatheterRadius_um() const
+{
+    return &m_catheterRadius_um;
+}
+
+void SignalModel::setCatheterRadius_um(const cl_float &catheterRadius_um)
+{
+    m_catheterRadius_um = catheterRadius_um;
+}
+
+const cl_float* SignalModel::getStandardDepth_mm() const
+{
+    return &m_standardDepth_mm;
+}
+
+void SignalModel::setStandardDepth_mm(const cl_float &standardDepth_mm)
+{
+    m_standardDepth_mm = standardDepth_mm;
+}
+
 size_t SignalModel::getBufferLength() const
 {
     return m_bufferLength;
@@ -123,14 +143,14 @@ void SignalModel::setDisplayAngle(const cl_float &displayAngle)
     m_displayAngle = displayAngle;
 }
 
-const cl_int *SignalModel::getALineLengthNormal_px() const
+const cl_int *SignalModel::getALineLength_px() const
 {
-    return &m_aLineLengthNormal_px;
+    return &m_aLineLength_px;
 }
 
-void SignalModel::setALineLengthNormal_px(const cl_int &aLineLengthNormal_px)
+void SignalModel::setALineLength_px(const cl_int &aLineLength_px)
 {
-    m_aLineLengthNormal_px = aLineLengthNormal_px;
+    m_aLineLength_px = aLineLength_px;
 }
 
 const cl_float *SignalModel::getInternalImagingMask_px() const
@@ -143,15 +163,6 @@ void SignalModel::setInternalImagingMask_px(const cl_float &internalImagingMask_
     m_internalImagingMask_px = internalImagingMask_px;
 }
 
-const cl_float *SignalModel::getCatheterRadius_um() const
-{
-    return &m_catheterRadius_um;
-}
-
-void SignalModel::setCatheterRadius_um(const cl_float &catheterRadius_um)
-{
-    m_catheterRadius_um = catheterRadius_um;
-}
 
 const cl_mem *SignalModel::getBeAndCeImageBuffer() const
 {

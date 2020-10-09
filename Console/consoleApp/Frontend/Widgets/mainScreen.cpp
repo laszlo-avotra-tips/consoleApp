@@ -386,7 +386,7 @@ void MainScreen::openDeviceSelectDialog()
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
 
     if( result.second == QDialog::Accepted){
-        qDebug() << "Accepted";
+        LOG1( "Accepted")
 
         updateDeviceSettings();
 
@@ -395,9 +395,10 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setModel(model.get());
         dialog->setScene(m_scene);
         model->persistModel();
+        m_scene->handleDeviceChange();
 
     } else {
-        qDebug() << "Cancelled";
+        LOG1( "Cancelled")
         openCaseInformationDialog();
     }
 }
@@ -439,6 +440,7 @@ void MainScreen::openDisplayOptionsDialog()
 
         if( result == QDialog::Accepted){
             model.persistModel();
+            m_scene->handleDeviceChange();
         } else {
             on_pushButtonSettings_clicked();
         }

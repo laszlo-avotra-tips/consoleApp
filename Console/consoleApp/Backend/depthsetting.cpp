@@ -103,6 +103,7 @@ void depthSetting::handleDeviceChange()
 {
     imagingDepth_S = 450;  // Set the initial value half-way between the min and max range.
     SignalModel::instance()->setImagingDepth_S(int(getImagingDepth_S()));
+    LOG3(imagingDepth_S, SignalModel::instance()->getStandardDepth_mm(), SignalModel::instance()->getImagingDepth_S())
     calculateReticles();
 }
 
@@ -116,6 +117,7 @@ void depthSetting::handleDeviceChange()
  */
 void depthSetting::calculateReticles( void )
 {
+    static int count = 0;
     deviceSettings &dev = deviceSettings::Instance();
 
     // Make sure a device exists before calling member functions.
@@ -126,7 +128,7 @@ void depthSetting::calculateReticles( void )
          *  - 1000.0 is umPerMm
          */
         const float percentageOfCanvasUsed = fractionOfCanvas / 0.5f; // because we reserve space for the cardinal marks, we don't use entire canvas.
-        const float StandardMmPerSample = float(dev.current()->getImagingDepthNormal_mm()) / float(dev.current()->getALineLengthNormal_px());
+        const float StandardMmPerSample = float(dev.current()->getImagingDepth_mm()) / float(dev.current()->getALineLength_px());
         const float imagingDepthMm = float(imagingDepth_S) * float(StandardMmPerSample);
         const float catheterRadius_mm = float(dev.current()->getCatheterRadius_um()) / 1000.0f;
         const float distanceFromCenterInMm = float(catheterRadius_mm) + float(imagingDepth_S * StandardMmPerSample );
@@ -136,6 +138,17 @@ void depthSetting::calculateReticles( void )
         numReticles = int(imagingDepthMm);
         pixelsPerMm = int(pxPerMm);
         catheterEdgePosition = int( catheterRadius_mm * pxPerMm );
+
+        if(count++ % 32 == 0){
+            LOG1(dev.current()->getDeviceName())
+            LOG1(catheterRadius_mm)
+            LOG1(StandardMmPerSample)
+            LOG1(imagingDepth_S)
+            LOG1(distanceFromCenterInMm)
+            LOG1(distanceFromCenterInPx)
+
+            LOG2(pxPerMm,catheterEdgePosition)
+        }
     }
 }
 

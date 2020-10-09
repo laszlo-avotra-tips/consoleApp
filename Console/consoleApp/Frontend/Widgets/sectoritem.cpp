@@ -22,13 +22,14 @@
 #include "sectoritem.h"
 #include "livescene.h"
 #include "profiler.h"
-#include "deviceSettings.h"
+//#include "deviceSettings.h"
 #include "trigLookupTable.h"
 #include "Utility/userSettings.h"
 #include <QTime>
 #include "depthsetting.h"
 #include "sledsupport.h"
 #include "rotationIndicatorFactory.h"
+#include "signalmodel.h"
 
 
 //const QColor AggressiveSpinColor = QColor( 237, 237, 130 ).darker( 200 ); // yellow-ish
@@ -155,16 +156,32 @@ void sectorItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
  */
 void sectorItem::deviceChanged(void)
 {
-//	qDebug() << ">>>>>> 4";
     deviceSettings &devSettings = deviceSettings::Instance();
-    internalImagingMask_px     = devSettings.current()->getInternalImagingMask_px();
+    auto* smi = SignalModel::instance();
+    depthSetting::Instance();
+
+//    internalImagingMask_px     = devSettings.current()->getInternalImagingMask_px();
+    internalImagingMask_px     = *(smi->getInternalImagingMask_px());
+
     catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
+
+    LOG1(devSettings.current()->getDeviceName())
+    LOG1(devSettings.current()->getInternalImagingMask_px())
+    LOG1(devSettings.current()->getCatheterRadius_px())
+    LOG1(devSettings.current()->getCatheterRadius_um())
+    LOG1(devSettings.current()->getPixelsPerUm())
+
 //    linesPerRevolution    = devSettings.current()->getLinesPerRevolution();
     linesPerRevolution = 1024;
+    LOG2(linesPerRevolution, smi->linesPerRevolution())
 
     // Deep View disabled when selecting a new device
-    currentDepth_mm       = devSettings.current()->getImagingDepthNormal_mm();
-    currentAlineLength_px = devSettings.current()->getALineLengthNormal_px();
+    currentDepth_mm       = devSettings.current()->getImagingDepth_mm();
+    currentAlineLength_px = devSettings.current()->getALineLength_px();
+//    currentDepth_mm       = *(smi->getStandardDepth_mm());
+//    currentAlineLength_px = *(smi->getALineLength_px());
+    LOG1(devSettings.current()->getImagingDepth_mm())
+    LOG1(devSettings.current()->getALineLength_px())
 
     average.reset( RotaryAverageWidth, linesPerRevolution );
     unwinder.reset();
