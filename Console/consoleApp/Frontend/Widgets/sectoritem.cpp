@@ -158,6 +158,7 @@ void sectorItem::deviceChanged(void)
 {
     auto* smi = SignalModel::instance();
     deviceSettings &devSettings = deviceSettings::Instance();
+    auto& depth = depthSetting::Instance();
 
 //    internalImagingMask_px     = devSettings.current()->getInternalImagingMask_px();
     internalImagingMask_px     = *(smi->getInternalImagingMask_px());
