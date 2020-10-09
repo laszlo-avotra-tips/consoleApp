@@ -134,6 +134,7 @@ void depthSetting::calculateReticles( void )
         const float distanceFromCenterInPx = float(SectorWidth_px / 2.0f ) * percentageOfCanvasUsed;
         const float pxPerMm = distanceFromCenterInPx / distanceFromCenterInMm;
 
+        LOG1(dev.current()->getDeviceName())
         LOG1(catheterRadius_mm)
         LOG1(StandardMmPerSample)
         LOG1(imagingDepth_S)
