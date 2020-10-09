@@ -134,10 +134,16 @@ void depthSetting::calculateReticles( void )
         const float distanceFromCenterInPx = float(SectorWidth_px / 2.0f ) * percentageOfCanvasUsed;
         const float pxPerMm = distanceFromCenterInPx / distanceFromCenterInMm;
 
+        LOG1(catheterRadius_mm)
+        LOG1(StandardMmPerSample)
+        LOG1(imagingDepth_S)
+        LOG1(distanceFromCenterInMm)
+        LOG1(distanceFromCenterInPx)
+
         numReticles = int(imagingDepthMm);
         pixelsPerMm = int(pxPerMm);
         catheterEdgePosition = int( catheterRadius_mm * pxPerMm );
-        LOG3(catheterRadius_mm,pxPerMm,catheterEdgePosition)
+        LOG2(pxPerMm,catheterEdgePosition)
     }
 }
 
