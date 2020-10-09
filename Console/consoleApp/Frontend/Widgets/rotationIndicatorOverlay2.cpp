@@ -93,54 +93,53 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
     depthSetting &depth = depthSetting::Instance();
     int catheterEdgePosition = depth.getCatheterEdgePosition();
 
-//    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
-//    if( devSettings.current()->isBiDirectional() )
-//    {
-//        painter->setPen( directionPen );
-
-//        // draw direction indicator
-//        const int DirectionEdge = catheterEdgePosition / 2;
-
-//        LOG1(DirectionEdge)
-
-//        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
-//                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
-//    }
-
-    // Direction indicator for highspeed bidirectional devices (Ocelaris)
-    if(devSettings.current()->isBiDirectional() )
+    // Direction indicator is only drawn when live.   TBD: the sector should not care about playback or not
+    if( devSettings.current()->isBiDirectional() )
     {
-        QString spin;
-        QFont font;
-        font.setPixelSize(catheterEdgePosition / 3);
-//        font.setBold(true);
-        painter->setFont(font);
+        painter->setPen( directionPen );
 
-        auto& sled = SledSupport::Instance();
-
-        int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
-        if(lastRunningState == 3)
-        {
-            painter->setBrush( PassiveSpinColor );
-            spin = "PASSIVE";
-        }
-        else if(lastRunningState == 1)
-        {
-            painter->setBrush( AggressiveSpinColor );
-            spin = "ACTIVE";
-        }
-        else{
-            painter->setBrush(Qt::black);
-        }
         // draw direction indicator
-        const int DirectionEdge = catheterEdgePosition;
-        QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
-                            QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
+        const int DirectionEdge = catheterEdgePosition / 2;
 
-        painter->drawEllipse( center );
-        painter->setPen( Qt::black );
-        painter->drawText( center, Qt::AlignCenter, spin );
+        LOG1(DirectionEdge)
+
+        painter->drawEllipse( QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
+                                     QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
     }
+
+//    // Direction indicator for highspeed bidirectional devices (Ocelaris)
+//    if(devSettings.current()->isBiDirectional() )
+//    {
+//        QString spin;
+//        QFont font;
+//        font.setPixelSize(catheterEdgePosition / 3);
+//        painter->setFont(font);
+
+//        auto& sled = SledSupport::Instance();
+
+//        int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
+//        if(lastRunningState == 3)
+//        {
+//            painter->setBrush( PassiveSpinColor );
+//            spin = "PASSIVE";
+//        }
+//        else if(lastRunningState == 1)
+//        {
+//            painter->setBrush( AggressiveSpinColor );
+//            spin = "ACTIVE";
+//        }
+//        else{
+//            painter->setBrush(Qt::black);
+//        }
+//        // draw direction indicator
+//        const int DirectionEdge = catheterEdgePosition;
+//        QRect center(QRect( QPoint( x1 - DirectionEdge, y1 - DirectionEdge ),
+//                            QPoint( x1 + DirectionEdge, y1 + DirectionEdge ) ) );
+
+//        painter->drawEllipse( center );
+//        painter->setPen( Qt::black );
+//        painter->drawText( center, Qt::AlignCenter, spin );
+//    }
 
     painter->end();
 }
