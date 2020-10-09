@@ -59,6 +59,7 @@ void RotationIndicatorOverlay2::setText(const QString &text)
 void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget * /*widget*/)
 {
     deviceSettings &devSettings = deviceSettings::Instance();
+    depthSetting::Instance().calculateReticles();
 
     // Update our reference line position
     const int x1 = 512;
