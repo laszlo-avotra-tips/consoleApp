@@ -309,7 +309,6 @@ QPolygon AreaMeasurementOverlay::polygonToPoints( QPolygon *list )
 void AreaMeasurementOverlay::setCalibrationScale( const int /*CalValMm*/ )
 {
     currPxPerMm = depthSetting::Instance().getPixelsPerMm();
-    //currPxPerMm = 136; //lcv CalValMm;
     LOG1(currPxPerMm)
 }
 
