@@ -30,6 +30,7 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
 
     // Position the box near the bottom right corner with space for text.
     box = new QRect( overlayPixmap->width() - int(380/decoratedImageScaleFactor), overlayPixmap->height() - int(280/decoratedImageScaleFactor), 1, 1 );
+    LOG3(decoratedImageScaleFactor,box->width(),box->height())
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
@@ -307,7 +308,9 @@ QPolygon AreaMeasurementOverlay::polygonToPoints( QPolygon *list )
  */
 void AreaMeasurementOverlay::setCalibrationScale( const int /*CalValMm*/ )
 {
-    currPxPerMm = 136; //lcv CalValMm;
+    currPxPerMm = depthSetting::Instance().getPixelsPerMm();
+    //currPxPerMm = 136; //lcv CalValMm;
+    LOG1(currPxPerMm)
 }
 
 /*
