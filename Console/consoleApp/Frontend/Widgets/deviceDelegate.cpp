@@ -16,11 +16,12 @@ DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if(false)
+    if(true)
     {
         QVariant vImage = index.data();
 
         painter->save();
+
 
         if(vImage.isValid()){
             if(vImage.toString().isEmpty()){
@@ -33,14 +34,17 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         painter->restore();
     } else {
+
         QStyleOptionViewItem itemOption(option);
         initStyleOption(&itemOption, index);
 
         LOG1(index.row())
 
-        if ((itemOption.state & QStyle::State_Selected) &&
-            (itemOption.state & QStyle::State_Active))
+//        if ((itemOption.state & QStyle::State_Selected) &&
+//            (itemOption.state & QStyle::State_Active))
+        {
             itemOption.palette.setColor(QPalette::Highlight, Qt::red);  // set your color here
+        }
 
         QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &itemOption, painter, nullptr);
 
