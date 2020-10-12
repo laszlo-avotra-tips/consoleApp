@@ -459,7 +459,7 @@ void MainScreen::updateTime()
 
         QString elapsed = dt.toString("mm:ss");
         if(elapsed.isEmpty() && !m_runTime.isValid()){
-             ui->labelRunTime->setText(QString("Runtime: 00:00"));
+             ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
         }
