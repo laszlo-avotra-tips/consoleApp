@@ -34,6 +34,17 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
         retVal.setValue(item.image());
         return retVal;
     }
+    if ( role == Qt::BackgroundRole)
+    {
+        int i = index.row();
+        const DeviceDisplayModel& item = m_data.at(i);
+
+        QVariant retVal;
+        retVal.setValue(item.name());
+        return retVal;
+    }
+
+
 
     return QVariant();
 }

@@ -4,29 +4,31 @@
 #include <QBrush>
 #include <QPalette>
 
-DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
+DeviceDelegate::DeviceDelegate(QObject *parent) : QItemDelegate(parent)
 {    
 
 }
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    painter->save();
     QStyleOptionViewItem myOption(option);
-    if (option.state & QStyle::State_Selected){
+//    if (option.state & QStyle::State_Selected){
 //        const auto& rect = option.rect;
 //        const auto& color = option.palette.highlight(); // QBrush(Qt::gray)
-        QPalette pal(option.palette);
-//        pal.setBrush(QPalette::ColorRole::Button,QBrush(Qt::gray));
-//        pal.setBrush(QPalette::ColorRole::ButtonText,QBrush(Qt::white));
-        myOption.palette = pal;
+        QPalette myPalette(option.palette);
+        myPalette.setBrush(QPalette::Highlight,QBrush(Qt::gray));
+        myPalette.setBrush(QPalette::HighlightedText,QBrush(Qt::yellow));
+        myOption.palette = myPalette;
 //        painter->fillRect(rect, color);
-    }
+//    }
 
-    QStyledItemDelegate::paint(painter, myOption, index);
+    QItemDelegate::paint(painter, myOption, index);
+    painter->restore();
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
 {
     return QSize(750,250);
-//    return QStyledItemDelegate::sizeHint(option, index); //rezults in packet items
+//    return QStyledItemDelegate::sizeHint(option, index); //results in packet items
 }
