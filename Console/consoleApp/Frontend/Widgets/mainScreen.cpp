@@ -454,7 +454,7 @@ void MainScreen::updateTime()
     if(sledRunTime){
         int durationInSec = sledRunTime / 1000;
         int sec = durationInSec % 60;
-        int min = durationInSec / 60 + 59;
+        int min = (durationInSec / 60 + 59) % 60;
         LOG3(durationInSec, sec , min)
         QTime dt(9,min,sec,0);
 
