@@ -1,7 +1,8 @@
 #include "widgetcontainer.h"
 #include "screenNavigator.h"
-#include "dialogFactory.h"
+#include "dialogfactory.h"
 #include "consoleKeyboard.h"
+#include "logger.h"
 
 #include <QStackedWidget>
 #include <QDebug>
@@ -81,6 +82,7 @@ QWidget *WidgetContainer::getScreen(const QString &name)
 
 QDialog *WidgetContainer::getDialog(const QString &name, QWidget* parent, const std::vector<QString> *param)
 {
+    LOG2(name,parent)
     return m_dialogFactory.createDialog(name,parent,param);
 }
 
@@ -90,7 +92,9 @@ std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QStr
     QDialog* dialog = getDialog(name,parent,param);
 
     if(dialog){
-        dialog->show();
+        dialog->hide();
+        dialog->setModal(true);
+        LOG1(dialog->isModal());
         result = dialog->exec();
     }
     return std::pair<QDialog*,int>{dialog, result};

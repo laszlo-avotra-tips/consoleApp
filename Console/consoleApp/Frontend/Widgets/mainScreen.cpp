@@ -266,7 +266,9 @@ void MainScreen::showSpeed(bool isShown)
 
 void MainScreen::on_pushButtonSettings_clicked()
 {
+    m_opacScreen->show();
     auto result = WidgetContainer::instance()->openDialog(this, "reviewAndSettingsDialog");//page. 58
+    m_opacScreen->hide();
     if(result.first){
         result.first->hide();
     }
@@ -278,13 +280,19 @@ void MainScreen::on_pushButtonSettings_clicked()
             openDisplayOptionsDialog();
         }
         if(reviewAndSettingsSelection.trimmed() == "CASE INFORMATION"){
+            m_opacScreen->show();
             openCaseInformationDialogFromReviewAndSettings();
+            m_opacScreen->hide();
         }
         if(reviewAndSettingsSelection.trimmed() == "DEVICE SELECT"){
+            m_opacScreen->show();
             openDeviceSelectDialogFromReviewAndSettings();
+            m_opacScreen->hide();
         }
         if(reviewAndSettingsSelection.trimmed() == "CASE REVIEW"){
-            openCaseReview();
+            m_opacScreen->show();
+//            openCaseReview();
+            m_opacScreen->hide();
         }
     }
     else {
