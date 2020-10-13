@@ -13,10 +13,11 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 {
     QStyleOptionViewItem myOption(option);
     if (option.state & QStyle::State_Selected){
-        const auto& rect = option.rect;
-        const auto& color = option.palette.highlight(); // QBrush(Qt::gray)
-        QPalette pal;
-        pal.setBrush(QPalette::ColorRole::Window,QBrush(Qt::gray));
+//        const auto& rect = option.rect;
+//        const auto& color = option.palette.highlight(); // QBrush(Qt::gray)
+        QPalette pal(option.palette);
+//        pal.setBrush(QPalette::ColorRole::Button,QBrush(Qt::gray));
+//        pal.setBrush(QPalette::ColorRole::ButtonText,QBrush(Qt::white));
         myOption.palette = pal;
 //        painter->fillRect(rect, color);
     }
