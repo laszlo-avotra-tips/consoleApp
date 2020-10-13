@@ -16,7 +16,7 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         const auto& rect = option.rect;
         const auto& color = option.palette.highlight(); // QBrush(Qt::gray)
         QPalette pal;
-        pal.setBrush(QPalette::ColorRole::Highlight,QBrush(Qt::gray));
+        pal.setBrush(QPalette::ColorRole::Window,QBrush(Qt::gray));
         myOption.palette = pal;
 //        painter->fillRect(rect, color);
     }
