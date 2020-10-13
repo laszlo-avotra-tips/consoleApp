@@ -8,10 +8,12 @@ DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if(option.checkState == Qt::Checked){
-        LOG1(option.text)
+    QStyleOptionViewItem* myOption = new QStyleOptionViewItem(option);
+    if(option.checkState == Qt::Checked)
+    {
+        LOG1(option.index.row())
     }
-    QStyledItemDelegate::paint(painter, option, index);
+    QStyledItemDelegate::paint(painter, *myOption, index);
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
