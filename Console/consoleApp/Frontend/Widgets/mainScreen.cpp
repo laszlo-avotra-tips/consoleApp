@@ -454,7 +454,7 @@ void MainScreen::updateTime()
     if(sledRunTime){
         int durationInSec = sledRunTime / 1000;
         int sec = durationInSec % 60;
-        int min = durationInSec / 60;
+        int min = durationInSec / 60 + 59;
         QTime dt(9,min,sec,0);
 
         QString elapsed = dt.toString("hh:mm:ss");
