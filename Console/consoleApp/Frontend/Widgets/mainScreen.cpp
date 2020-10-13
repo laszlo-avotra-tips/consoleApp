@@ -460,7 +460,7 @@ void MainScreen::updateTime()
 
         QString elapsed = dt.toString("hh:mm:ss");
         const auto runtimeDisplay = elapsed.remove(0,1);
-        LOG3(runtimeDisplay,elapsed.isEmpty(),m_runTime.isValid())
+        LOG3(runtimeDisplay,runtimeDisplay.isEmpty(),m_runTime.isValid())
 
         if(runtimeDisplay.isEmpty() || !m_runTime.isValid()){
              ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
