@@ -57,6 +57,8 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
 
     grabGesture(Qt::TapAndHoldGesture);
     QTapAndHoldGesture::setTimeout(2000);
+
+     ui->pushButtonDemoMode->hide();
 }
 
 StartScreen::~StartScreen()
