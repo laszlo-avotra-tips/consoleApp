@@ -14,9 +14,9 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 {
     painter->save();
     QStyleOptionViewItem myOption(option);
-    if (option.state & QStyle::State_Selected & QStyle::State_Active){
+    if (option.state & QStyle::State_Selected){
         QPalette myPalette(option.palette);
-        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(96,96,96)));
+        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(93,93,93)));
         myOption.palette = myPalette;
     }
 
