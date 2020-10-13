@@ -456,7 +456,7 @@ void MainScreen::updateTime()
         //to test rollover
         durationInSec += 3600 * 9 + 60 * 59;
         int sec = durationInSec % 60;
-        int min = durationInSec / 60;
+        int min = (durationInSec % 3600) / 60;
         int hour = durationInSec / 3600;
         LOG4(durationInSec, hour , min, sec)
         QTime dt(hour,min,sec,0);
