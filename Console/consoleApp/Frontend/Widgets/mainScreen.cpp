@@ -455,7 +455,7 @@ void MainScreen::updateTime()
         int durationInSec = sledRunTime / 1000;
         int sec = durationInSec % 60;
         int min = durationInSec / 60;
-        QTime dt(0,min,sec,0);
+        QTime dt(9,min,sec,0);
 
         QString elapsed = dt.toString("hh:mm:ss");
         const auto runtimeDisplay = elapsed.remove(0,1);
