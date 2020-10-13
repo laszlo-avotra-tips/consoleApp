@@ -266,9 +266,11 @@ void MainScreen::showSpeed(bool isShown)
 
 void MainScreen::on_pushButtonSettings_clicked()
 {
+    m_opacScreen->show();
     auto result = WidgetContainer::instance()->openDialog(this, "reviewAndSettingsDialog");//page. 58
     if(result.first){
         result.first->hide();
+        m_opacScreen->show();
     }
     if( result.second == QDialog::Accepted){
         auto * dialog = result.first;
