@@ -1,5 +1,7 @@
 #include "deviceDelegate.h"
 #include "logger.h"
+#include <QPainter>
+#include <QBrush>
 
 DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {    
@@ -8,12 +10,12 @@ DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem* myOption = new QStyleOptionViewItem(option);
-    if(option.checkState == Qt::Checked)
-    {
-        LOG1(option.index.row())
+    if (option.state & QStyle::State_Selected){
+        const auto& rect = option.rect;
+        painter->fillRect(rect, QBrush(Qt::gray));
     }
-    QStyledItemDelegate::paint(painter, *myOption, index);
+
+    QStyledItemDelegate::paint(painter, option, index);
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
