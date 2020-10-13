@@ -14,14 +14,10 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 {
     painter->save();
     QStyleOptionViewItem myOption(option);
-    if (option.state & QStyle::State_Selected){
-//        const auto& rect = option.rect;
-//        const auto& color = option.palette.highlight(); // QBrush(Qt::gray)
+    if (option.state & QStyle::State_Selected & QStyle::State_Active){
         QPalette myPalette(option.palette);
         myPalette.setBrush(QPalette::Highlight,QBrush(QColor(96,96,96)));
-//        myPalette.setBrush(QPalette::HighlightedText,QBrush(Qt::yellow));
         myOption.palette = myPalette;
-//        painter->fillRect(rect, color);
     }
 
     QItemDelegate::paint(painter, myOption, index);
@@ -31,5 +27,4 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
 {
     return QSize(750,250);
-//    return QStyledItemDelegate::sizeHint(option, index); //results in packet items
 }
