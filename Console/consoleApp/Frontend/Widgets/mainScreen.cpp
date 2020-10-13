@@ -225,7 +225,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
     m_runTime.invalidate();
 
     m_updatetimeTimer.stop();
-    ui->labelRunTime->setText(QString("Runtime: 00:00:00"));
+    ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
     ui->frameSpeed->hide();
 }
 
@@ -458,10 +458,12 @@ void MainScreen::updateTime()
         QTime dt(0,min,sec,0);
 
         QString elapsed = dt.toString("hh:mm:ss");
+        const auto runtimeDisplay = elapsed.remove(0,1);
+
         if(elapsed.isEmpty() && !m_runTime.isValid()){
-             ui->labelRunTime->setText(QString("Runtime: 00:00:00"));
+             ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
         }else {
-            ui->labelRunTime->setText(QString("Runtime: ") + elapsed);
+            ui->labelRunTime->setText(QString("Runtime: ") + runtimeDisplay);
         }
     }
 
