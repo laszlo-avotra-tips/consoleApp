@@ -454,7 +454,7 @@ void MainScreen::updateTime()
     if(sledRunTime){
         int durationInSec = sledRunTime / 1000;
         //to test rollover
-        durationInSec += 3600 * 9 + 60 * 59;
+        //durationInSec += 3600 * 9 + 60 * 59;
         int sec = durationInSec % 60;
         int min = (durationInSec % 3600) / 60;
         int hour = durationInSec / 3600;
