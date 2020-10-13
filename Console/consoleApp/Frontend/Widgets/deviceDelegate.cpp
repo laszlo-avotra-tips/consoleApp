@@ -18,7 +18,7 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         QPalette pal;
         pal.setBrush(QPalette::ColorRole::Highlight,QBrush(Qt::gray));
         myOption.palette = pal;
-        painter->fillRect(rect, color);
+//        painter->fillRect(rect, color);
     }
 
     QStyledItemDelegate::paint(painter, myOption, index);
