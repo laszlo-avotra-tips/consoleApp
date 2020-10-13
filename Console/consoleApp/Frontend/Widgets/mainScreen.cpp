@@ -453,10 +453,13 @@ void MainScreen::updateTime()
 
     if(sledRunTime){
         int durationInSec = sledRunTime / 1000;
+        //to test rollover
+        durationInSec += 3600 * 9 + 60 * 59;
         int sec = durationInSec % 60;
-        int min = (durationInSec / 60 + 59) % 60;
-        LOG3(durationInSec, sec , min)
-        QTime dt(9,min,sec,0);
+        int min = durationInSec / 60;
+        int hour = durationInSec / 3600;
+        LOG4(durationInSec, hour , min, sec)
+        QTime dt(hour,min,sec,0);
 
         QString elapsed = dt.toString("hh:mm:ss");
         const auto runtimeDisplay = elapsed.remove(0,1);
