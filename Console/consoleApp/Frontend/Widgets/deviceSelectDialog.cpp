@@ -90,9 +90,9 @@ void DeviceSelectDialog::populateList()
 
     ui->listViewAtherectomy->setModel(m_model);
     ui->listViewCto->setModel(m_ctoModel);
-    DeviceDelegate* delegate = new DeviceDelegate(this);
-    ui->listViewAtherectomy->setItemDelegate(delegate);
-    ui->listViewCto->setItemDelegate(delegate);
+    m_delegate = new DeviceDelegate(this);
+    ui->listViewAtherectomy->setItemDelegate(m_delegate);
+    ui->listViewCto->setItemDelegate(m_delegate);
 }
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
