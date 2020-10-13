@@ -455,12 +455,14 @@ void MainScreen::updateTime()
         int durationInSec = sledRunTime / 1000;
         int sec = durationInSec % 60;
         int min = durationInSec / 60 + 59;
+        LOG3(durationInSec, sec , min)
         QTime dt(9,min,sec,0);
 
         QString elapsed = dt.toString("hh:mm:ss");
         const auto runtimeDisplay = elapsed.remove(0,1);
+        LOG3(runtimeDisplay,elapsed.isEmpty(),m_runTime.isValid())
 
-        if(elapsed.isEmpty() && !m_runTime.isValid()){
+        if(runtimeDisplay.isEmpty() || !m_runTime.isValid()){
              ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + runtimeDisplay);
