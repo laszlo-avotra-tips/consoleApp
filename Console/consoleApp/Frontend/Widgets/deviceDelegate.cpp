@@ -2,6 +2,7 @@
 #include "logger.h"
 #include <QPainter>
 #include <QBrush>
+#include <QPalette>
 
 DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {    
@@ -10,12 +11,17 @@ DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    QStyleOptionViewItem myOption(option);
     if (option.state & QStyle::State_Selected){
         const auto& rect = option.rect;
-        painter->fillRect(rect, QBrush(Qt::gray));
+        const auto& color = option.palette.highlight(); // QBrush(Qt::gray)
+        QPalette pal;
+        pal.setBrush(QPalette::ColorRole::Highlight,QBrush(Qt::gray));
+        myOption.palette = pal;
+        painter->fillRect(rect, color);
     }
 
-    QStyledItemDelegate::paint(painter, option, index);
+    QStyledItemDelegate::paint(painter, myOption, index);
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
