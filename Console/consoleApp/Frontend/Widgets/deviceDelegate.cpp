@@ -16,7 +16,8 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     QStyleOptionViewItem myOption(option);
     if (option.state & QStyle::State_Selected){
         QPalette myPalette(option.palette);
-        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(93,93,93)));
+//        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(93,93,93)));
+        myPalette.setBrush(QPalette::Highlight,Qt::black);
         myOption.palette = myPalette;
     }
 
@@ -33,8 +34,7 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 {
     if (option.state & QStyle::State_Selected){
         QRect myRect(rect.bottomRight(),rect.bottomRight());
-//        QRect myRect(rect);
-        QItemDelegate::drawDisplay(painter,option,myRect,"Just Playing");
+        QItemDelegate::drawDisplay(painter,option,myRect,"");
     } else {
         QItemDelegate::drawDisplay(painter,option,rect,text);
     }
@@ -43,11 +43,13 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
 {
     if (option.state & QStyle::State_Selected){
-        QSize mySize(900,300);
-        QPixmap myPixmap(mySize);
-        myPixmap.fill(Qt::green);
+        QSize mySize(861,250);
+        QIcon myIcon(":/octConsole/measureYellow");
+        QPixmap myPixmap(myIcon.pixmap(mySize));
+
+//        myPixmap.fill(QColor(93,93,93));
         QPoint iconTopLeft = rect.topLeft();
-        QPoint origin(iconTopLeft.x()- 10, iconTopLeft.y() - 60);
+        QPoint origin(iconTopLeft.x()- 5, iconTopLeft.y() - 60);
         QRect myRect(origin,mySize);
         QItemDelegate::drawDecoration(painter,option,myRect,myPixmap);
     } else {
