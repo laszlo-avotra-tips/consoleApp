@@ -17,15 +17,15 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if ( role == Qt::DisplayRole)
-    {
-        int i = index.row();
-        const DeviceDisplayModel& item = m_data.at(i);
+//    if ( role == Qt::DisplayRole)
+//    {
+//        int i = index.row();
+//        const DeviceDisplayModel& item = m_data.at(i);
 
-        QVariant retVal;
-        retVal.setValue(item.name());
-        return retVal;
-    }
+//        QVariant retVal;
+//        retVal.setValue(item.name());
+//        return retVal;
+//    }
     if(role == Qt::DecorationRole){
         int i = index.row();
         const DeviceDisplayModel& item = m_data.at(i);
