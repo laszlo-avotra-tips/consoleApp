@@ -8,6 +8,7 @@
 #include "deviceListModel.h"
 
 class MainScreen;
+class DeviceDelegate;
 
 namespace Ui {
 class DeviceSelectDialog;
@@ -40,6 +41,7 @@ private:
     Ui::DeviceSelectDialog *ui;
     DeviceListModel* m_model{nullptr};
     DeviceListModel* m_ctoModel{nullptr};
+    DeviceDelegate* m_delegate{nullptr};
 };
 
 #endif // DEVICESELECTDIALOG_H

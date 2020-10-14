@@ -1,41 +1,30 @@
 #include "deviceDelegate.h"
-#include "deviceSettings.h"
-#include "deviceDisplayModel.h"
-#include "deviceListModel.h"
 #include "logger.h"
-
 #include <QPainter>
-#include <QImage>
-#include <QStringList>
+#include <QBrush>
+#include <QPalette>
+#include <QColor>
 
-DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
+DeviceDelegate::DeviceDelegate(QObject *parent) : QItemDelegate(parent)
 {    
 
 }
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-//    const int x0 = 85;
-//    const int y0 = 50;
-//    const int yImage = y0 + 250 * index.row();
-
-    QVariant vImage = index.data();
-
     painter->save();
-
-    if(vImage.isValid()){
-        if(vImage.toString().isEmpty()){
-            QImage image = vImage.value<QImage>();
-            QImage iHW = image.scaled(160,160);
-            painter->drawImage(0,0,iHW);
-        }
+    QStyleOptionViewItem myOption(option);
+    if (option.state & QStyle::State_Selected){
+        QPalette myPalette(option.palette);
+        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(93,93,93)));
+        myOption.palette = myPalette;
     }
-    QStyledItemDelegate::paint(painter, option, index);
 
+    QItemDelegate::paint(painter, myOption, index);
     painter->restore();
 }
 
-QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const
+QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
 {
-    return QSize(750,250); //QStyledItemDelegate::sizeHint(option, index);
+    return QSize(750,250);
 }
