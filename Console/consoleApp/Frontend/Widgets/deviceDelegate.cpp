@@ -31,10 +31,11 @@ QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QM
 
 void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QString &text) const
 {
-    if (!(option.state & QStyle::State_Selected)){
-//        QRect myRect(rect.bottomRight(),rect.bottomRight());
-//        QItemDelegate::drawDisplay(painter,option,myRect,"");
-//    } else {
+    if (option.state & QStyle::State_Selected){
+        QRect myRect(rect.bottomRight(),rect.bottomRight());
+//        QRect myRect(rect);
+        QItemDelegate::drawDisplay(painter,option,myRect,"Just Playing");
+    } else {
         QItemDelegate::drawDisplay(painter,option,rect,text);
     }
 }
