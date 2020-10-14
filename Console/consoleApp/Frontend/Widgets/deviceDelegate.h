@@ -2,9 +2,9 @@
 #define DEVICEDELEGATE_H
 
 #include <QObject>
-#include <QStyledItemDelegate>
+#include <QItemDelegate>
 
-class DeviceDelegate : public QStyledItemDelegate
+class DeviceDelegate : public QItemDelegate
 {
 public:
     DeviceDelegate(QObject * parent = 0);

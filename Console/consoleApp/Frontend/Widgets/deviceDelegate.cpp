@@ -5,7 +5,7 @@
 #include <QPalette>
 #include <QColor>
 
-DeviceDelegate::DeviceDelegate(QObject *parent) : QStyledItemDelegate(parent)
+DeviceDelegate::DeviceDelegate(QObject *parent) : QItemDelegate(parent)
 {    
 
 }
@@ -20,7 +20,7 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         myOption.palette = myPalette;
     }
 
-    QStyledItemDelegate::paint(painter, myOption, index);
+    QItemDelegate::paint(painter, myOption, index);
     painter->restore();
 }
 
