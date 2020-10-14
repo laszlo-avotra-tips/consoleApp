@@ -34,6 +34,11 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
         retVal.setValue(item.image());
         return retVal;
     }
+//    if(role == Qt::ForegroundRole){
+//        QVariant retVal;
+//        retVal.setValue(QBrush(Qt::white));
+//        return retVal;
+//    }
 
     return QVariant();
 }
