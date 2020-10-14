@@ -149,6 +149,8 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
     }
 
     m_model->setSelectedDeviceIndex(selection);
+    auto* selectionModel = ui->listViewCto->selectionModel();
+    selectionModel->clear();
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
@@ -180,6 +182,8 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
         ++i;
     }
     m_model->setSelectedDeviceIndex(selection);
+    auto* selectionModel = ui->listViewAtherectomy->selectionModel();
+    selectionModel->clear();
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
