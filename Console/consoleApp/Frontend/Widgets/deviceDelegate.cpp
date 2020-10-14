@@ -12,17 +12,18 @@ DeviceDelegate::DeviceDelegate(QObject *parent) : QItemDelegate(parent)
 
 void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    painter->save();
-    QStyleOptionViewItem myOption(option);
-    if (option.state & QStyle::State_Selected){
-        QPalette myPalette(option.palette);
-//        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(93,93,93)));
-        myPalette.setBrush(QPalette::Highlight,Qt::black);
-        myOption.palette = myPalette;
-    }
+//    painter->save();
+//    QStyleOptionViewItem myOption(option);
+//    if (option.state & QStyle::State_Selected){
+//        QPalette myPalette(option.palette);
+////        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(93,93,93)));
+//        myPalette.setBrush(QPalette::Highlight,Qt::black);
+//        myOption.palette = myPalette;
+//    }
 
-    QItemDelegate::paint(painter, myOption, index);
-    painter->restore();
+//    QItemDelegate::paint(painter, myOption, index);
+//    painter->restore();
+    QItemDelegate::paint(painter, option, index);
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
