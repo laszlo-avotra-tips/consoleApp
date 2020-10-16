@@ -110,6 +110,7 @@ private:
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
     OpaqueScreen* m_opacScreen{nullptr};
+    OpaqueScreen* m_opacScreen2{nullptr};
     bool m_sledIsInRunningState{false};
     int m_sledRunningStateVal{0};
     int m_sledRuntime{0}; //the time the Sled is on in milliseconds
