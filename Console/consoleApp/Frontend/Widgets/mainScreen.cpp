@@ -577,6 +577,7 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 void MainScreen::on_pushButtonRecord_clicked()
 {
     //lcv    hide(); only to integrating the L250 features
+    m_opacScreen2->show();
 }
 
 void MainScreen::onCaptureImage()
