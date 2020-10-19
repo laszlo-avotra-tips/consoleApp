@@ -279,7 +279,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                      e.attribute( "measurementVersion", "1" ).toInt(),
                                      e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
                                      e.attribute( "deviceCRC","").toLatin1(),
-                                     d1Img );    // d1Img
+                                     d2Img );    // d1Img
             deviceList.append( d1 );
         }
         // close the XML file
