@@ -236,6 +236,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
              * unknown device. This ensures that the device will be on the
              * selection list.
              */
+            LOG1(deviceFile)
             QImage *d1Img = new QImage;
             if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
             {
