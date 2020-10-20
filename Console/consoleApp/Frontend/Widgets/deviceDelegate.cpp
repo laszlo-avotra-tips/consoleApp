@@ -57,13 +57,17 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
     if (option.state & QStyle::State_Selected){
         deviceSettings &devices = deviceSettings::Instance();
         auto* dev = devices.current();
-        QImage* highlightImage = dev->getIcon()[1];
-        QPixmap qpm;
-        qpm.convertFromImage(*highlightImage);
+        if(dev){
+            QImage* highlightImage = dev->getIcon()[1];
+            QPixmap qpm;
+            if(highlightImage){
+                qpm.convertFromImage(*highlightImage);
+                QItemDelegate::drawDecoration(painter,option,rect,qpm);
+            }
+        }
 //        QIcon myIcon(":/octConsole/measureYellow");
 //        QPixmap myPixmap(myIcon.pixmap(rect.size()));
 //        QItemDelegate::drawDecoration(painter,option,rect,myPixmap);
-        QItemDelegate::drawDecoration(painter,option,rect,qpm);
     } else {
         QItemDelegate::drawDecoration(painter,option,rect,pixmap);
     }
