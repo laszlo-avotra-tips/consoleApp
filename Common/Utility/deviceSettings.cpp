@@ -52,6 +52,16 @@ deviceSettings::~deviceSettings()
     }
 }
 
+QImage *deviceSettings::getSelectedIcon() const
+{
+    return m_selectedIcon;
+}
+
+void deviceSettings::setSelectedIcon(QImage *selectedIcon)
+{
+    m_selectedIcon = selectedIcon;
+}
+
 /*
  * init
  *

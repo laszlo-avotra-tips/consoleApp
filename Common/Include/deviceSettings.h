@@ -223,6 +223,9 @@ public:
     bool getIsSimulation() const;
     void setIsSimulation(bool isSimulation);
 
+    QImage *getSelectedIcon() const;
+    void setSelectedIcon(QImage *selectedIcon);
+
 signals:
     void sendWarning( QString );
     void sendFailure( QString ); // signal to consoleApp
@@ -246,4 +249,5 @@ private:
 
     deviceSettings(deviceSettings const &); // hide copy
     deviceSettings & operator=(deviceSettings const &); // hide assign
+    QImage* m_selectedIcon{nullptr};
 };
