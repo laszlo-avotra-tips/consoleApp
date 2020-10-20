@@ -58,7 +58,7 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
         deviceSettings &devices = deviceSettings::Instance();
         auto* dev = devices.current();
         if(dev){
-            QImage* highlightImage = dev->getIcon()[1];
+            QImage* highlightImage = dev->getIcon()[0];
             QPixmap qpm;
             if(highlightImage){
                 qpm.convertFromImage(*highlightImage);
