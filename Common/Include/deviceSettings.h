@@ -18,6 +18,9 @@
 #include <QDebug>
 #include "defaults.h"
 
+#include <vector>
+
+using DeviceIconType = std::vector<QImage*>;
 /*
  * Device class
  */
@@ -56,7 +59,7 @@ public:
           int         inMeasurementVersion       = 0,
           QString     inDisclaimerText           = InvestigationalDeviceWarning,
           QByteArray  inDeviceCRC                = "",
-          QImage     *inIcon                     = NULL )
+          DeviceIconType      inIcon = std::vector<QImage*>())
     {
         deviceName               = inDeviceName;
         splitDeviceName          = formatDeviceName(inDeviceName);
@@ -91,9 +94,9 @@ public:
 
     ~device()
     {
-        if( icon != NULL )
+        for( auto ii : icon)
         {
-            delete icon;
+            delete ii;
         }
     }
 
@@ -115,12 +118,12 @@ public:
     QByteArray getTorqueLimit(void)       { return torqueLimit; }
     QByteArray getTimeLimit(void)         { return timeLimit; }
     float getImagingDepth_mm(void) const;
-    QImage getIcon(void)                  { return icon->copy(); }
+    DeviceIconType getIcon(void)              { return icon; }
     bool isBiDirectional(void)            { return biDirectional; }
     QString getDisclaimerText(void)       { return disclaimerText; }
     void setInternalImagingMask_px(int mask)  { internalImagingMask_px = mask; }
     float getPixelsPerUm() const {return pixelsPerUm;}
-    QImage    *icon;
+    DeviceIconType    icon;
 
 public:
 static QString formatDeviceName(const QString& name);

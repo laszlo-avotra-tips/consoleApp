@@ -257,6 +257,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
             if(d3Img->load(fn2)){
                 LOG1(fn2)
             }
+            DeviceIconType deviceIcon{d2Img,d3Img};
             device *d1 = new device( e.attribute( "deviceName", "" ),
                                      e.attribute( "type", "" ).toLatin1(),
                                      e.attribute( "devicePropVersion","").toLatin1(),
@@ -279,7 +280,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                      e.attribute( "measurementVersion", "1" ).toInt(),
                                      e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
                                      e.attribute( "deviceCRC","").toLatin1(),
-                                     d2Img );    // d1Img
+                                     deviceIcon );    // d1Img
             deviceList.append( d1 );
         }
         // close the XML file
