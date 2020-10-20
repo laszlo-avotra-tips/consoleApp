@@ -175,9 +175,7 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
     int selection{0};
     int i{0};
     for(auto d : dev.list()){
-        QString nameToCompare = name.toString();// + QString("_NoHighlight");
-        LOG1(nameToCompare)
-        if(d->getSplitDeviceName() == nameToCompare){
+        if(d->getSplitDeviceName() == name.toString()){
             selection = i;
             break;
         }
