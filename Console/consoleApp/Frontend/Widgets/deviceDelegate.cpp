@@ -55,20 +55,16 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
 //        QItemDelegate::drawDecoration(painter,option,myRect,myPixmap);
 //    } else {
     if (option.state & QStyle::State_Selected){
-//        deviceSettings &devices = deviceSettings::Instance();
-//        auto* dev = devices.current();
-//        LOG1(dev)
-//        if(dev){
-//            QImage* highlightImage = dev->getIcon()[0];
-//            QPixmap qpm;
-//            if(highlightImage){
-//                qpm.convertFromImage(*highlightImage);
-//                QItemDelegate::drawDecoration(painter,option,rect,qpm);
-//            }
-//        }
-        QIcon myIcon(":/octConsole/measureYellow");
-        QPixmap myPixmap(myIcon.pixmap(rect.size()));
-        QItemDelegate::drawDecoration(painter,option,rect,myPixmap);
+        deviceSettings &devices = deviceSettings::Instance();
+        auto* image = devices.getSelectedIcon();
+        if(image){
+            QPixmap qpm;
+            qpm.convertFromImage(*image);
+            QItemDelegate::drawDecoration(painter,option,rect,qpm);
+        }
+//        QIcon myIcon(":/octConsole/measureYellow");
+//        QPixmap myPixmap(myIcon.pixmap(rect.size()));
+//        QItemDelegate::drawDecoration(painter,option,rect,myPixmap);
     } else {
         QItemDelegate::drawDecoration(painter,option,rect,pixmap);
     }

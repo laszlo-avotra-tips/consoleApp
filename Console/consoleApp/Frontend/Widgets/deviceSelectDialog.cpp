@@ -148,6 +148,9 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
         ++i;
     }
 
+    auto* selectedDevice = dev.deviceAt(selection);
+    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
+
     m_model->setSelectedDeviceIndex(selection);
     auto* selectionModel = ui->listViewCto->selectionModel();
     selectionModel->clear();
@@ -181,6 +184,9 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
         }
         ++i;
     }
+    auto* selectedDevice = dev.deviceAt(selection);
+    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
+
     m_model->setSelectedDeviceIndex(selection);
     auto* selectionModel = ui->listViewAtherectomy->selectionModel();
     selectionModel->clear();
