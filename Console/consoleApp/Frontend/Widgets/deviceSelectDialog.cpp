@@ -136,7 +136,7 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
     deviceSettings &dev = deviceSettings::Instance();
 
     QVariant name = index.data();
-    LOG1(name.toString())
+    LOG2(name.toString(), index.row())
 
     int selection {0};
     int i{0};
@@ -148,12 +148,12 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
         ++i;
     }
 
-    auto* selectedDevice = dev.deviceAt(selection);
-    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
-
     m_model->setSelectedDeviceIndex(selection);
     auto* selectionModel = ui->listViewCto->selectionModel();
     selectionModel->clear();
+
+    auto* selectedDevice = dev.deviceAt(selection);
+    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
@@ -173,7 +173,34 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
     deviceSettings &dev = deviceSettings::Instance();
 
     QVariant name = index.data();
-    LOG1(name.toString())
+    LOG2(name.toString(), index.row())
+
+    int selection{0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getSplitDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
+    }
+
+    m_model->setSelectedDeviceIndex(selection);
+    auto* selectionModel = ui->listViewAtherectomy->selectionModel();
+    selectionModel->clear();
+
+    auto* selectedDevice = dev.deviceAt(selection);
+    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
+
+    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    ui->pushButtonDone->setEnabled(true);
+}
+
+void DeviceSelectDialog::on_listViewAtherectomy_pressed(const QModelIndex &index)
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    QVariant name = index.data();
+    LOG2(name.toString(), index.row())
 
     int selection{0};
     int i{0};
@@ -187,10 +214,24 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
     auto* selectedDevice = dev.deviceAt(selection);
     dev.setSelectedIcon(selectedDevice->getIcon()[1]);
 
-    m_model->setSelectedDeviceIndex(selection);
-    auto* selectionModel = ui->listViewAtherectomy->selectionModel();
-    selectionModel->clear();
+}
 
-    ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
-    ui->pushButtonDone->setEnabled(true);
+void DeviceSelectDialog::on_listViewCto_pressed(const QModelIndex &index)
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    QVariant name = index.data();
+    LOG2(name.toString(), index.row())
+
+    int selection{0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getSplitDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
+    }
+    auto* selectedDevice = dev.deviceAt(selection);
+    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
+
 }

@@ -17,14 +17,12 @@ void DeviceDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     QStyleOptionViewItem myOption(option);
     if (option.state & QStyle::State_Selected){
         QPalette myPalette(option.palette);
-//        myPalette.setBrush(QPalette::Highlight,QBrush(QColor(93,93,93)));
         myPalette.setBrush(QPalette::Highlight,Qt::black);
         myOption.palette = myPalette;
     }
 
     QItemDelegate::paint(painter, myOption, index);
     painter->restore();
-//    QItemDelegate::paint(painter, option, index);
 }
 
 QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const
@@ -40,7 +38,6 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 //    } else {
 //        QItemDelegate::drawDisplay(painter,option,rect,text);
 //    }
-    QItemDelegate::drawDisplay(painter,option,QRect(0,0,0,0),"");
 }
 
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
@@ -55,18 +52,21 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
 //        QRect myRect(origin,mySize);
 //        QItemDelegate::drawDecoration(painter,option,myRect,myPixmap);
 //    } else {
+    QRect myRect;
+    myRect.setRect(rect.x(), rect.y(), 500, 125);
     if (option.state & QStyle::State_Selected){
         deviceSettings &devices = deviceSettings::Instance();
         auto* image = devices.getSelectedIcon();
-        if(image){
+        if(image)
+        {
             QPixmap qpm;
             qpm.convertFromImage(*image);
-            QItemDelegate::drawDecoration(painter,option,rect,qpm);
+            QItemDelegate::drawDecoration(painter,option,myRect,qpm);
         }
 //        QIcon myIcon(":/octConsole/measureYellow");
 //        QPixmap myPixmap(myIcon.pixmap(rect.size()));
 //        QItemDelegate::drawDecoration(painter,option,rect,myPixmap);
     } else {
-        QItemDelegate::drawDecoration(painter,option,rect,pixmap);
+        QItemDelegate::drawDecoration(painter,option,myRect,pixmap);
     }
 }
