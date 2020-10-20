@@ -189,8 +189,8 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
     auto* selectionModel = ui->listViewAtherectomy->selectionModel();
     selectionModel->clear();
 
-    auto* selectedDevice = dev.deviceAt(selection);
-    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
+//    auto* selectedDevice = dev.deviceAt(selection);
+//    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
