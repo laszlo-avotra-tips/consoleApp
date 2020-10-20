@@ -40,6 +40,7 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 //    } else {
 //        QItemDelegate::drawDisplay(painter,option,rect,text);
 //    }
+    QItemDelegate::drawDisplay(painter,option,QRect(0,0,0,0),"");
 }
 
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
