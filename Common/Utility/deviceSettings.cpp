@@ -257,7 +257,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
             if(d3Img->load(fn2)){
                 LOG1(fn2)
             }
-            DeviceIconType deviceIcon{d2Img,d3Img};
+            DeviceIconType deviceIcon{d3Img,d2Img};
             device *d1 = new device( e.attribute( "deviceName", "" ),
                                      e.attribute( "type", "" ).toLatin1(),
                                      e.attribute( "devicePropVersion","").toLatin1(),
