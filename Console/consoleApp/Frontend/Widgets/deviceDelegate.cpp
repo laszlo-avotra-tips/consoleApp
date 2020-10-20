@@ -1,4 +1,5 @@
 #include "deviceDelegate.h"
+#include "deviceSettings.h"
 #include "logger.h"
 #include <QPainter>
 #include <QBrush>
@@ -54,9 +55,15 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
 //        QItemDelegate::drawDecoration(painter,option,myRect,myPixmap);
 //    } else {
     if (option.state & QStyle::State_Selected){
-        QIcon myIcon(":/octConsole/measureYellow");
-        QPixmap myPixmap(myIcon.pixmap(rect.size()));
-        QItemDelegate::drawDecoration(painter,option,rect,myPixmap);
+        deviceSettings &devices = deviceSettings::Instance();
+        auto* dev = devices.current();
+        QImage* highlightImage = dev->getIcon()[1];
+        QPixmap qpm;
+        qpm.convertFromImage(*highlightImage);
+//        QIcon myIcon(":/octConsole/measureYellow");
+//        QPixmap myPixmap(myIcon.pixmap(rect.size()));
+//        QItemDelegate::drawDecoration(painter,option,rect,myPixmap);
+        QItemDelegate::drawDecoration(painter,option,rect,qpm);
     } else {
         QItemDelegate::drawDecoration(painter,option,rect,pixmap);
     }
