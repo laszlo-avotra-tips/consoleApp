@@ -34,27 +34,26 @@ QVariant DeviceListModel::data(const QModelIndex &index, int role) const
         retVal.setValue(item.image());
         return retVal;
     }
-    if(role == Qt::BackgroundColorRole){
-        QVariant retVal;
-        int i = index.row();
-        if(i == 1){
-            retVal.setValue(QBrush(Qt::white));
-        } else {
-            retVal.setValue(QBrush(Qt::green));
-        }
-        return retVal;
-    }
-//    if(role == Qt::SizeHintRole){
+//    if(role == Qt::BackgroundColorRole){
 //        QVariant retVal;
 //        int i = index.row();
 //        if(i == 1){
-//            retVal.setValue(QSize(100,50));
+//            retVal.setValue(QBrush(Qt::white));
 //        } else {
-//            retVal.setValue(QSize(400,200));
+//            retVal.setValue(QBrush(Qt::green));
 //        }
 //        return retVal;
 //    }
-
+    if(role == Qt::SizeHintRole){
+        QVariant retVal;
+        int i = index.row();
+        if(i == 1){
+            retVal.setValue(QSize(100,50));
+        } else {
+            retVal.setValue(QSize(400,200));
+        }
+        return retVal;
+    }
 
     return QVariant();
 }
