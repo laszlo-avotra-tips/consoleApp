@@ -37,7 +37,7 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
 {
     QRect myRect;
-    myRect.setRect(rect.x(), rect.y(), 500, 125);
+    myRect.setRect(rect.x(), rect.y(), 600, 200);
 //    myRect.setRect(rect.x(), rect.y(), rect.width(), rect.height());
     if (option.state & QStyle::State_Selected){
         deviceSettings &devices = deviceSettings::Instance();
@@ -46,8 +46,8 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
         {
             QPixmap qpm;
             qpm.convertFromImage(*image);
-            qpm.scaled(500,125);
-            QItemDelegate::drawDecoration(painter,option,myRect,qpm);
+            auto spm = qpm.scaled(600,200);
+            QItemDelegate::drawDecoration(painter,option,myRect,spm);
         }
     } else {
         QItemDelegate::drawDecoration(painter,option,myRect,pixmap);
