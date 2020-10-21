@@ -151,7 +151,7 @@ void DAQ::run( void )
             m_numberOfConnectedDevices = axCountConnectedDevices();
             LOG1(m_numberOfConnectedDevices)
 
-            msleep(100);
+            msleep(500);
         }
         setLaserDivider();
 
