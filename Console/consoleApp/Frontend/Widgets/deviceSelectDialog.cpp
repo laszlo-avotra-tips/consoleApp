@@ -30,8 +30,8 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
 DeviceSelectDialog::~DeviceSelectDialog()
 {
     delete ui;
-    delete m_model;
-    delete m_ctoModel;
+    delete m_modelAtherectomy;
+    delete m_modelCto;
 }
 
 void DeviceSelectDialog::initDialog()
@@ -85,13 +85,13 @@ void DeviceSelectDialog::populateList()
     ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
     ui->listViewCto->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
 
-    m_model = new DeviceListModel(this);
-    m_ctoModel = new DeviceListModel(this);
-    m_model->populate(false);
-    m_ctoModel->populate(true);
+    m_modelAtherectomy = new DeviceListModel(this);
+    m_modelCto = new DeviceListModel(this);
+    m_modelAtherectomy->populate(false);
+    m_modelCto->populate(true);
 
-    ui->listViewAtherectomy->setModel(m_model);
-    ui->listViewCto->setModel(m_ctoModel);
+    ui->listViewAtherectomy->setModel(m_modelAtherectomy);
+    ui->listViewCto->setModel(m_modelCto);
 
     m_delegate = new DeviceDelegate(this);
     ui->listViewAtherectomy->setItemDelegate(m_delegate);
@@ -154,7 +154,7 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
         ++i;
     }
 
-    m_model->setSelectedDeviceIndex(selection);
+    m_modelAtherectomy->setSelectedDeviceIndex(selection);
     auto* selectionModel = ui->listViewCto->selectionModel();
     selectionModel->clear();
 
@@ -166,7 +166,7 @@ void DeviceSelectDialog::initializeSelectedDevice()
 {
      deviceSettings &dev = deviceSettings::Instance();
 
-     dev.setCurrentDevice(m_model->selectedDeviceIndex());
+     dev.setCurrentDevice(m_modelAtherectomy->selectedDeviceIndex());
 }
 
 
@@ -188,7 +188,7 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
         ++i;
     }
 
-    m_model->setSelectedDeviceIndex(selection);
+    m_modelAtherectomy->setSelectedDeviceIndex(selection);
     auto* selectionModel = ui->listViewAtherectomy->selectionModel();
     selectionModel->clear();
 
