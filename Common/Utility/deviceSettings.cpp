@@ -258,6 +258,9 @@ bool deviceSettings::loadDevice( QString deviceFile )
 
             QImage *d2Img = new QImage;
             QImage *d3Img = new QImage;
+            d2Img->load(fn1);
+            d3Img->load(fn2);
+
             DeviceIconType deviceIcon{d3Img,d2Img};
             device *d1 = new device( e.attribute( "deviceName", "" ),
                                      e.attribute( "type", "" ).toLatin1(),
