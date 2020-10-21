@@ -93,6 +93,8 @@ void DeviceSelectDialog::populateList()
     m_delegate = new DeviceDelegate(this);
     ui->listViewAtherectomy->setItemDelegate(m_delegate);
     ui->listViewCto->setItemDelegate(m_delegate);
+    ui->listViewAtherectomy->setViewMode(QListView::IconMode);
+    ui->listViewCto->setViewMode(QListView::IconMode);
 }
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
