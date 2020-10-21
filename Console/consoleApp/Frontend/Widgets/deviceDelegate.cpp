@@ -37,7 +37,8 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
 {
     QRect myRect;
-    myRect.setRect(rect.x(), rect.y(), 500, 125);
+//    myRect.setRect(rect.x(), rect.y(), 500, 125);
+    myRect.setRect(rect.x(), rect.y(), rect.width(), rect.height());
     if (option.state & QStyle::State_Selected){
         deviceSettings &devices = deviceSettings::Instance();
         auto* image = devices.getSelectedIcon();
