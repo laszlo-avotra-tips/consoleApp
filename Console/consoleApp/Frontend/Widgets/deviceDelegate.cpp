@@ -46,8 +46,7 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
         {
             QPixmap qpm;
             qpm.convertFromImage(*image);
-            qpm.scaledToWidth(500);
-            qpm.scaledToHeight(125);
+            qpm.scaled(500,125);
             QItemDelegate::drawDecoration(painter,option,myRect,qpm);
         }
     } else {
