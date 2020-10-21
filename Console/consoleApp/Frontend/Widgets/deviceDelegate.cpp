@@ -32,26 +32,10 @@ QSize DeviceDelegate::sizeHint(const QStyleOptionViewItem & /*option*/, const QM
 
 void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QString &text) const
 {
-//    if (option.state & QStyle::State_Selected){
-//        QRect myRect(rect.bottomRight(),rect.bottomRight());
-//        QItemDelegate::drawDisplay(painter,option,myRect,"");
-//    } else {
-//        QItemDelegate::drawDisplay(painter,option,rect,text);
-//    }
 }
 
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
 {
-//    if (option.state & QStyle::State_Selected){
-//        QSize mySize(861,250);
-//        QIcon myIcon(":/octConsole/measureYellow");
-//        QPixmap myPixmap(myIcon.pixmap(mySize));
-
-//        QPoint iconTopLeft = rect.topLeft();
-//        QPoint origin(iconTopLeft.x(), iconTopLeft.y() - 60);
-//        QRect myRect(origin,mySize);
-//        QItemDelegate::drawDecoration(painter,option,myRect,myPixmap);
-//    } else {
     QRect myRect;
     myRect.setRect(rect.x(), rect.y(), 500, 125);
     if (option.state & QStyle::State_Selected){
@@ -63,9 +47,6 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
             qpm.convertFromImage(*image);
             QItemDelegate::drawDecoration(painter,option,myRect,qpm);
         }
-//        QIcon myIcon(":/octConsole/measureYellow");
-//        QPixmap myPixmap(myIcon.pixmap(rect.size()));
-//        QItemDelegate::drawDecoration(painter,option,rect,myPixmap);
     } else {
         QItemDelegate::drawDecoration(painter,option,myRect,pixmap);
     }
