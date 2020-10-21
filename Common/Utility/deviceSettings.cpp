@@ -52,6 +52,16 @@ deviceSettings::~deviceSettings()
     }
 }
 
+QImage *deviceSettings::getSelectedIcon() const
+{
+    return m_selectedIcon;
+}
+
+void deviceSettings::setSelectedIcon(QImage *selectedIcon)
+{
+    m_selectedIcon = selectedIcon;
+}
+
 /*
  * init
  *
@@ -236,6 +246,9 @@ bool deviceSettings::loadDevice( QString deviceFile )
              * unknown device. This ensures that the device will be on the
              * selection list.
              */
+            QStringList fn = deviceFile.split(".");
+            QString fn1 = fn[0] + "_Highlight.png";
+            QString fn2 = fn[0] + "_Nohighlight.png";
             QImage *d1Img = new QImage;
             if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
             {
@@ -243,6 +256,12 @@ bool deviceSettings::loadDevice( QString deviceFile )
                 //d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
             }
 
+            QImage *d2Img = new QImage;
+            QImage *d3Img = new QImage;
+            d2Img->load(fn1);
+            d3Img->load(fn2);
+
+            DeviceIconType deviceIcon{d3Img,d2Img};
             device *d1 = new device( e.attribute( "deviceName", "" ),
                                      e.attribute( "type", "" ).toLatin1(),
                                      e.attribute( "devicePropVersion","").toLatin1(),
@@ -265,7 +284,7 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                      e.attribute( "measurementVersion", "1" ).toInt(),
                                      e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
                                      e.attribute( "deviceCRC","").toLatin1(),
-                                     d1Img );    // d1Img
+                                     deviceIcon );    // d1Img
             deviceList.append( d1 );
         }
         // close the XML file

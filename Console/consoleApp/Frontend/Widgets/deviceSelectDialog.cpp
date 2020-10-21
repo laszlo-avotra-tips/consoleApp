@@ -30,8 +30,8 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
 DeviceSelectDialog::~DeviceSelectDialog()
 {
     delete ui;
-    delete m_model;
-    delete m_ctoModel;
+    delete m_modelAtherectomy;
+    delete m_modelCto;
 }
 
 void DeviceSelectDialog::initDialog()
@@ -76,23 +76,29 @@ void DeviceSelectDialog::populateList()
     LOG1(devices.list().size())
     if(devices.list().size() <= 3){
         ui->listViewAtherectomy->setStyleSheet("QFrame{border: 0px;border-right: 2px solid #ffffff;}");
+        ui->listViewCto->setStyleSheet("QFrame{border: 0px;border-right: 2px solid #ffffff;}");
     } else {
         ui->listViewAtherectomy->setStyleSheet("QFrame{border: 0px;}");
+        ui->listViewCto->setStyleSheet("QFrame{border: 0px;}");
     }
 
     ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
     ui->listViewCto->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
 
-    m_model = new DeviceListModel(this);
-    m_ctoModel = new DeviceListModel(this);
-    m_model->populate(false);
-    m_ctoModel->populate(true);
+    m_modelAtherectomy = new DeviceListModel(this);
+    m_modelCto = new DeviceListModel(this);
+    m_modelAtherectomy->populate(false);
+    m_modelCto->populate(true);
 
-    ui->listViewAtherectomy->setModel(m_model);
-    ui->listViewCto->setModel(m_ctoModel);
+    ui->listViewAtherectomy->setModel(m_modelAtherectomy);
+    ui->listViewCto->setModel(m_modelCto);
+
     m_delegate = new DeviceDelegate(this);
     ui->listViewAtherectomy->setItemDelegate(m_delegate);
     ui->listViewCto->setItemDelegate(m_delegate);
+
+    ui->listViewAtherectomy->setViewMode(QListView::IconMode);
+    ui->listViewCto->setViewMode(QListView::IconMode);
 }
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
@@ -136,7 +142,7 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
     deviceSettings &dev = deviceSettings::Instance();
 
     QVariant name = index.data();
-    LOG1(name.toString())
+    LOG2(name.toString(), index.row())
 
     int selection {0};
     int i{0};
@@ -148,7 +154,7 @@ void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index
         ++i;
     }
 
-    m_model->setSelectedDeviceIndex(selection);
+    m_modelAtherectomy->setSelectedDeviceIndex(selection);
     auto* selectionModel = ui->listViewCto->selectionModel();
     selectionModel->clear();
 
@@ -160,7 +166,7 @@ void DeviceSelectDialog::initializeSelectedDevice()
 {
      deviceSettings &dev = deviceSettings::Instance();
 
-     dev.setCurrentDevice(m_model->selectedDeviceIndex());
+     dev.setCurrentDevice(m_modelAtherectomy->selectedDeviceIndex());
 }
 
 
@@ -170,7 +176,7 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
     deviceSettings &dev = deviceSettings::Instance();
 
     QVariant name = index.data();
-    LOG1(name.toString())
+    LOG2(name.toString(), index.row())
 
     int selection{0};
     int i{0};
@@ -181,10 +187,51 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
         }
         ++i;
     }
-    m_model->setSelectedDeviceIndex(selection);
+
+    m_modelAtherectomy->setSelectedDeviceIndex(selection);
     auto* selectionModel = ui->listViewAtherectomy->selectionModel();
     selectionModel->clear();
 
     ui->frameDone->setStyleSheet("background-color: rgb(245,196,0); color: black");
     ui->pushButtonDone->setEnabled(true);
+}
+
+void DeviceSelectDialog::on_listViewAtherectomy_pressed(const QModelIndex &index)
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    QVariant name = index.data();
+    LOG2(name.toString(), index.row())
+
+    int selection{0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getSplitDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
+    }
+    auto* selectedDevice = dev.deviceAt(selection);
+    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
+
+}
+
+void DeviceSelectDialog::on_listViewCto_pressed(const QModelIndex &index)
+{
+    deviceSettings &dev = deviceSettings::Instance();
+    QVariant name = index.data();
+    LOG2(name.toString(), index.row())
+
+    int selection{0};
+    int i{0};
+    for(auto d : dev.list()){
+        if(d->getSplitDeviceName() == name.toString()){
+            selection = i;
+            break;
+        }
+        ++i;
+    }
+    auto* selectedDevice = dev.deviceAt(selection);
+    dev.setSelectedIcon(selectedDevice->getIcon()[1]);
+
 }

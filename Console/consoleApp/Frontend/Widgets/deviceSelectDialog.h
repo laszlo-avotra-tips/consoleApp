@@ -37,10 +37,14 @@ private slots:
 
     void on_listViewCto_clicked(const QModelIndex &index);
 
+    void on_listViewAtherectomy_pressed(const QModelIndex &index);
+
+    void on_listViewCto_pressed(const QModelIndex &index);
+
 private:
     Ui::DeviceSelectDialog *ui;
-    DeviceListModel* m_model{nullptr};
-    DeviceListModel* m_ctoModel{nullptr};
+    DeviceListModel* m_modelAtherectomy{nullptr};
+    DeviceListModel* m_modelCto{nullptr};
     DeviceDelegate* m_delegate{nullptr};
 };
 

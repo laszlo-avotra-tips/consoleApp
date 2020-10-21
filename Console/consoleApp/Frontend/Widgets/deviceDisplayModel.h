@@ -11,7 +11,7 @@ public:
     ~DeviceDisplayModel() = default;
     DeviceDisplayModel(const DeviceDisplayModel &) = default;
 
-    DeviceDisplayModel(const QString& name, const QImage& image);
+    DeviceDisplayModel(const QString& name, const QImage* image);
 
     QString name() const;
 

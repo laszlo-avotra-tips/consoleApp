@@ -13,6 +13,9 @@
     <height>1314</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -235,6 +238,9 @@ QScrollBar:vertical {
      <height>750</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">QFrame{
 border: 0px;
@@ -275,8 +281,14 @@ border-right: 2px solid #ffffff;
      <height>750</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
-    <string notr="true">border: 0px;</string>
+    <string notr="true">QFrame{
+border: 0px;
+border-right: 2px solid #000000;
+}</string>
    </property>
    <property name="autoScroll">
     <bool>false</bool>
