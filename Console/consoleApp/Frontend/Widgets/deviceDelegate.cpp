@@ -37,7 +37,7 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
 {
     QPoint thisPoint(rect.x(), rect.y());
-    QSize thisSize(750,250);
+    QSize thisSize(700,210);
     QRect myRect(thisPoint, thisSize);
 //    myRect.setRect(rect.x(), rect.y(), 600, 200);
 //    myRect.setRect(rect.x(), rect.y(), rect.width(), rect.height());
