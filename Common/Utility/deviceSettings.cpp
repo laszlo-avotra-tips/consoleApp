@@ -249,9 +249,6 @@ bool deviceSettings::loadDevice( QString deviceFile )
             QStringList fn = deviceFile.split(".");
             QString fn1 = fn[0] + "_Highlight.png";
             QString fn2 = fn[0] + "_Nohighlight.png";
-            LOG1(deviceFile)
-            LOG1(fn1)
-            LOG1(fn2)
             QImage *d1Img = new QImage;
             if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
             {
@@ -261,12 +258,6 @@ bool deviceSettings::loadDevice( QString deviceFile )
 
             QImage *d2Img = new QImage;
             QImage *d3Img = new QImage;
-            if(d2Img->load(fn1)){
-                LOG1(fn1)
-            }
-            if(d3Img->load(fn2)){
-                LOG1(fn2)
-            }
             DeviceIconType deviceIcon{d3Img,d2Img};
             device *d1 = new device( e.attribute( "deviceName", "" ),
                                      e.attribute( "type", "" ).toLatin1(),
