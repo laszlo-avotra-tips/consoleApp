@@ -48,11 +48,11 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
         {
             QPixmap qpm;
             qpm.convertFromImage(*image);
-            auto highlight = qpm.scaled(thisSize);
+            auto highlight = qpm.scaled(thisSize, Qt::AspectRatioMode::KeepAspectRatio);
             QItemDelegate::drawDecoration(painter,option,myRect,highlight);
         }
     } else {
-        QPixmap noHighlight = pixmap.scaled(thisSize);
+        QPixmap noHighlight = pixmap.scaled(thisSize, Qt::AspectRatioMode::KeepAspectRatio);
         QItemDelegate::drawDecoration(painter,option,myRect,noHighlight);
     }
 }
