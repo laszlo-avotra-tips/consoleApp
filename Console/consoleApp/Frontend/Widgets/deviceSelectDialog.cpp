@@ -76,8 +76,10 @@ void DeviceSelectDialog::populateList()
     LOG1(devices.list().size())
     if(devices.list().size() <= 3){
         ui->listViewAtherectomy->setStyleSheet("QFrame{border: 0px;border-right: 2px solid #ffffff;}");
+        ui->listViewCto->setStyleSheet("QFrame{border: 0px;border-right: 2px solid #ffffff;}");
     } else {
         ui->listViewAtherectomy->setStyleSheet("QFrame{border: 0px;}");
+        ui->listViewCto->setStyleSheet("QFrame{border: 0px;}");
     }
 
     ui->listViewAtherectomy->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded );
@@ -90,9 +92,11 @@ void DeviceSelectDialog::populateList()
 
     ui->listViewAtherectomy->setModel(m_model);
     ui->listViewCto->setModel(m_ctoModel);
+
     m_delegate = new DeviceDelegate(this);
     ui->listViewAtherectomy->setItemDelegate(m_delegate);
     ui->listViewCto->setItemDelegate(m_delegate);
+
     ui->listViewAtherectomy->setViewMode(QListView::IconMode);
     ui->listViewCto->setViewMode(QListView::IconMode);
 }
