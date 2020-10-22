@@ -139,16 +139,16 @@ void depthSetting::calculateReticles( void )
         pixelsPerMm = int(pxPerMm);
         catheterEdgePosition = int( catheterRadius_mm * pxPerMm );
 
-        if(count++ % 32 == 0){
-            LOG1(dev.current()->getDeviceName())
-            LOG1(catheterRadius_mm)
-            LOG1(StandardMmPerSample)
-            LOG1(imagingDepth_S)
-            LOG1(distanceFromCenterInMm)
-            LOG1(distanceFromCenterInPx)
+//        if(count++ % 32 == 0){
+//            LOG1(dev.current()->getDeviceName())
+//            LOG1(catheterRadius_mm)
+//            LOG1(StandardMmPerSample)
+//            LOG1(imagingDepth_S)
+//            LOG1(distanceFromCenterInMm)
+//            LOG1(distanceFromCenterInPx)
 
-            LOG2(pxPerMm,catheterEdgePosition)
-        }
+//            LOG2(pxPerMm,catheterEdgePosition)
+//        }
     }
 }
 
