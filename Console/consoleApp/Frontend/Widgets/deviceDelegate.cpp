@@ -52,8 +52,8 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
             QItemDelegate::drawDecoration(painter,option,myRect,highlight);
         }
     } else {
-        QPixmap noHighlight = pixmap.scaled(thisSize, Qt::AspectRatioMode::KeepAspectRatio);
+        QPixmap noHighlight = pixmap.scaledToWidth(thisSize.height();
 //        QItemDelegate::drawDecoration(painter,option,myRect,noHighlight);
-        QItemDelegate::drawDecoration(painter,option,rect,pixmap);
+        QItemDelegate::drawDecoration(painter,option,rect,noHighlight);
     }
 }
