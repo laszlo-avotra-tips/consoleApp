@@ -5,6 +5,7 @@
 #include <QBrush>
 #include <QPalette>
 #include <QColor>
+#include <QPushButton>
 
 DeviceDelegate::DeviceDelegate(QObject *parent) : QItemDelegate(parent)
 {    
@@ -37,7 +38,7 @@ void DeviceDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const
 {
     QPoint thisPoint(rect.x(), rect.y());
-    QSize thisSize(600,200);
+    QSize thisSize(600,177);
     QRect myRect(thisPoint, thisSize);
 //    myRect.setRect(rect.x(), rect.y(), 600, 200);
 //    myRect.setRect(rect.x(), rect.y(), rect.width(), rect.height());
@@ -48,12 +49,14 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
         {
             QPixmap qpm;
             qpm.convertFromImage(*image);
-            auto highlight = qpm.scaled(thisSize, Qt::AspectRatioMode::KeepAspectRatio);
+            auto highlight = qpm.scaled(thisSize);
             QItemDelegate::drawDecoration(painter,option,myRect,highlight);
         }
     } else {
-        QPixmap noHighlight = pixmap.scaledToWidth(thisSize.height();
+        QPixmap noHighlight = pixmap.scaled( thisSize);
+
 //        QItemDelegate::drawDecoration(painter,option,myRect,noHighlight);
-        QItemDelegate::drawDecoration(painter,option,rect,noHighlight);
+//        QItemDelegate::drawDecoration(painter,option,rect,noHighlight);
+        QItemDelegate::drawDecoration(painter,option,myRect,noHighlight);
     }
 }
