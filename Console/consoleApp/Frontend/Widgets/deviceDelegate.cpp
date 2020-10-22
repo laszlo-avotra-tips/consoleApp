@@ -53,6 +53,7 @@ void DeviceDelegate::drawDecoration(QPainter *painter, const QStyleOptionViewIte
         }
     } else {
         QPixmap noHighlight = pixmap.scaled(thisSize, Qt::AspectRatioMode::KeepAspectRatio);
-        QItemDelegate::drawDecoration(painter,option,myRect,noHighlight);
+//        QItemDelegate::drawDecoration(painter,option,myRect,noHighlight);
+        QItemDelegate::drawDecoration(painter,option,rect,pixmap);
     }
 }
