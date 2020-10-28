@@ -6,6 +6,11 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
     ui(new Ui::CaseReviewDialog)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::SplashScreen);
+
+    setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
+    setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 }
 
 CaseReviewDialog::~CaseReviewDialog()

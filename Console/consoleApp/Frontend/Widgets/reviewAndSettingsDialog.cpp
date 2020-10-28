@@ -9,7 +9,8 @@
 
 ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ReviewAndSettingsDialog)
+    ui(new Ui::ReviewAndSettingsDialog),
+    m_parent(parent)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
@@ -71,7 +72,7 @@ void ReviewAndSettingsDialog::on_pushButtonCaseReview_clicked(bool checked)
 {
     showLastButtonSelected(ui->pushButtonCaseReview, checked);
 
-    auto result = WidgetContainer::instance()->openDialog(this, "caseReviewDialog");//page. 77
+    auto result = WidgetContainer::instance()->openDialog(m_parent, "caseReviewDialog");//page. 77
 
 }
 
