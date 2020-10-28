@@ -1,5 +1,6 @@
 #include "reviewAndSettingsDialog.h"
 #include "ui_reviewAndSettingsDialog.h"
+#include "Utility/widgetcontainer.h"
 
 #include <QTimer>
 #include <QGraphicsOpacityEffect>
@@ -69,6 +70,9 @@ void ReviewAndSettingsDialog::on_pushButtonDisplayOptions_clicked(bool checked)
 void ReviewAndSettingsDialog::on_pushButtonCaseReview_clicked(bool checked)
 {
     showLastButtonSelected(ui->pushButtonCaseReview, checked);
+
+    auto result = WidgetContainer::instance()->openDialog(this, "caseReviewDialog");//page. 77
+
 }
 
 void ReviewAndSettingsDialog::on_pushButtonDeviceSelect_clicked(bool checked)

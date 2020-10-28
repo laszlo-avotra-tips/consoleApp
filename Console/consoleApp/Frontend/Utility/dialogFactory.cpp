@@ -1,9 +1,11 @@
-#include "dialogFactory.h"
+#include "dialogfactory.h"
 
 #include "caseInformationDialog.h"
 #include "deviceSelectDialog.h"
 #include "emptyDialog.h"
 #include "reviewAndSettingsDialog.h"
+#include "caseReviewDialog.h"
+
 
 DialogFactory::DialogFactory()
 {
@@ -25,6 +27,9 @@ QDialog *DialogFactory::createDialog(const QString &name, QWidget *parent, const
     }
     if(name == "reviewAndSettingsDialog"){
         dialog = new ReviewAndSettingsDialog(parent);
+    }
+    if(name == "caseReviewDialog"){
+        dialog = new CaseReviewDialog(parent);
     }
     return dialog;
 }
