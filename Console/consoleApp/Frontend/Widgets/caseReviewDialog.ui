@@ -13,6 +13,46 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel#labelTitle{
+font:38pt &quot;Helvetica Neue&quot;;
+font-weight:600
+}
+QLabel{
+font:22pt &quot;Helvetica Neue&quot;;
+}
+QPushButton{
+font:19pt;
+color:white;
+border-radius: 10px;
+}
+ /* ---------- Sliders ------------*/
+
+QSlider::groove:horizontal {
+background: white;
+height: 45px;
+border-radius: 22px;
+}
+QSlider::sub-page:horizontal {
+background: rgb( 51, 51, 51 );
+border: 1px solid rgb( 51, 51, 51 );
+height: 45px;
+}
+QSlider::sub-page:horizontal {
+background:#F5C400;
+border: 1px solid #F5C400;
+height: 45px;
+border-radius: 22px;
+}
+QSlider::handle:horizontal {
+/* image: url(:images/handle_normal.png);*/
+width: 63px;
+margin: -36px 0;
+background: rgb( 67, 67, 67 );
+border-radius: 22px;
+}
+</string>
+  </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
@@ -64,6 +104,52 @@ border-radius: 22px;
    </property>
    <property name="text">
     <string>Exit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonBack">
+   <property name="geometry">
+    <rect>
+     <x>2564</x>
+     <y>2021</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>283</width>
+     <height>76</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#636363;
+border: 1px solid rgb( 128, 128, 128 );</string>
+   </property>
+   <property name="text">
+    <string>&lt; BACK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonDone">
+   <property name="geometry">
+    <rect>
+     <x>2870</x>
+     <y>2020</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#F5C400;
+color: black;</string>
+   </property>
+   <property name="text">
+    <string>DONE</string>
    </property>
   </widget>
  </widget>
