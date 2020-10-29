@@ -36,7 +36,6 @@ public slots:
 
 private:
     Ui::CaseReviewDialog *ui;
-    QVideoWidget* m_videoWidget{nullptr};
     QMediaPlayer* m_mediaPlayer{nullptr};
     QAbstractButton *m_playButton{nullptr};
     QSlider *m_positionSlider{nullptr};

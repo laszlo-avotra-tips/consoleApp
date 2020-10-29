@@ -99,19 +99,6 @@ color: black;</string>
     <string>DONE</string>
    </property>
   </widget>
-  <widget class="QVideoWidget" name="videoWidget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>770</x>
-     <y>340</y>
-     <width>2400</width>
-     <height>1600</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: gray</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButtonOpen">
    <property name="geometry">
     <rect>
@@ -174,23 +161,19 @@ border: 1px solid rgb( 128, 128, 128 );</string>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>219</x>
-     <y>1089</y>
-     <width>511</width>
-     <height>381</height>
+     <x>780</x>
+     <y>460</y>
+     <width>2391</width>
+     <height>1481</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout"/>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+   </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QVideoWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">qvideowidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

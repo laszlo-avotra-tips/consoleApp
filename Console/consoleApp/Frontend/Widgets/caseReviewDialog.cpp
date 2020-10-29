@@ -23,23 +23,37 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
     m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-    m_videoWidget = ui->videoWidget; //new QVideoWidget(this);
-    m_playButton = ui->pushButtonPlay;
-    m_playButton->setEnabled(false);
+    QVideoWidget *videoWidget = new QVideoWidget;
 
-    m_positionSlider = ui->horizontalSlider;
+    QAbstractButton *openButton = new QPushButton(tr("Open..."));
+    connect(openButton, &QAbstractButton::clicked, this, &CaseReviewDialog::openFile);
+
+    m_playButton = new QPushButton;
+    m_playButton->setEnabled(false);
+    m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+
+    connect(m_playButton, &QAbstractButton::clicked,
+            this, &CaseReviewDialog::play);
+
+    m_positionSlider = new QSlider(Qt::Horizontal);
     m_positionSlider->setRange(0, 0);
 
     connect(m_positionSlider, &QAbstractSlider::sliderMoved,
             this, &CaseReviewDialog::setPosition);
 
-    QVideoWidget *videoWidget = new QVideoWidget;
-    ui->verticalLayout->addWidget(videoWidget);
+    QBoxLayout *controlLayout = ui->verticalLayout; //new QHBoxLayout;
+    controlLayout->setContentsMargins(0, 0, 0, 0);
+    controlLayout->addWidget(openButton);
+    controlLayout->addWidget(m_playButton);
+    controlLayout->addWidget(m_positionSlider);
 
+    QBoxLayout *layout = ui->verticalLayout;//new QVBoxLayout;
+    layout->addWidget(videoWidget);
+    layout->addLayout(controlLayout);
+
+//    setLayout(layout);
 
     m_mediaPlayer->setVideoOutput(videoWidget);
-    LOG1(m_mediaPlayer->error())
-
     connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
             this, &CaseReviewDialog::mediaStateChanged);
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &CaseReviewDialog::positionChanged);
