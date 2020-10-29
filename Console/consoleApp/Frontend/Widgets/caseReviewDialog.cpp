@@ -20,7 +20,8 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
     m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-    m_videoWidget = new QVideoWidget(this);
+    m_videoWidget = ui->videoWidget; //new QVideoWidget(this);
+    m_playButton = ui->pushButtonPlay;
 
 }
 
