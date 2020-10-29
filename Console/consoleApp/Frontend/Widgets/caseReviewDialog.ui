@@ -99,6 +99,19 @@ color: black;</string>
     <string>DONE</string>
    </property>
   </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>370</y>
+     <width>2400</width>
+     <height>1600</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: gray</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
