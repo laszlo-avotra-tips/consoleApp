@@ -171,6 +171,17 @@ border: 1px solid rgb( 128, 128, 128 );</string>
     <string>Play</string>
    </property>
   </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>219</x>
+     <y>1089</y>
+     <width>511</width>
+     <height>381</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout"/>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

@@ -2,6 +2,7 @@
 #define CASEREVIEWDIALOG_H
 
 #include <QDialog>
+#include <QMediaPlayer>
 
 class QVideoWidget;
 class QMediaPlayer;
@@ -23,6 +24,11 @@ public:
 
 private slots:
     void on_pushButtonOpen_clicked();
+    void mediaStateChanged(QMediaPlayer::State state);
+    void positionChanged(qint64 position);
+    void durationChanged(qint64 duration);
+    void setPosition(int position);
+    void handleError();
 
 public slots:
     void openFile();

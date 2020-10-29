@@ -1,5 +1,6 @@
 #include "caseReviewDialog.h"
 #include "ui_caseReviewDialog.h"
+#include "logger.h"
 
 #include <QVideoWidget>
 #include <QMediaPlayer>
@@ -7,6 +8,8 @@
 #include <QAbstractButton>
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QStyle>
+
 
 CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
     QDialog(parent),
@@ -22,6 +25,27 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
     m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
     m_videoWidget = ui->videoWidget; //new QVideoWidget(this);
     m_playButton = ui->pushButtonPlay;
+    m_playButton->setEnabled(false);
+
+    m_positionSlider = ui->horizontalSlider;
+    m_positionSlider->setRange(0, 0);
+
+    connect(m_positionSlider, &QAbstractSlider::sliderMoved,
+            this, &CaseReviewDialog::setPosition);
+
+    QVideoWidget *videoWidget = new QVideoWidget;
+    ui->verticalLayout->addWidget(videoWidget);
+
+
+    m_mediaPlayer->setVideoOutput(videoWidget);
+    LOG1(m_mediaPlayer->error())
+
+    connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
+            this, &CaseReviewDialog::mediaStateChanged);
+    connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &CaseReviewDialog::positionChanged);
+    connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &CaseReviewDialog::durationChanged);
+    connect(m_mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+            this, &CaseReviewDialog::handleError);
 
 }
 
@@ -65,5 +89,45 @@ void CaseReviewDialog::play()
         m_mediaPlayer->play();
         break;
     }
+}
+
+void CaseReviewDialog::mediaStateChanged(QMediaPlayer::State state)
+{
+    switch(state) {
+    case QMediaPlayer::PlayingState:
+        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        break;
+    default:
+        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        break;
+    }
+}
+
+void CaseReviewDialog::positionChanged(qint64 position)
+{
+    m_positionSlider->setValue(position);
+}
+
+void CaseReviewDialog::durationChanged(qint64 duration)
+{
+    m_positionSlider->setRange(0, duration);
+}
+
+void CaseReviewDialog::setPosition(int position)
+{
+    m_mediaPlayer->setPosition(position);
+}
+
+void CaseReviewDialog::handleError()
+{
+    m_playButton->setEnabled(false);
+    const QString errorString = m_mediaPlayer->errorString();
+    QString message = "Error: ";
+    if (errorString.isEmpty())
+        message += " #" + QString::number(int(m_mediaPlayer->error()));
+    else
+        message += errorString;
+//    m_errorLabel->setText(message);
+    LOG1(message)
 }
 
