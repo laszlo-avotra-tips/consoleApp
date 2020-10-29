@@ -112,6 +112,29 @@ color: black;</string>
     <string notr="true">background-color: gray</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButtonOpen">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>2020</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>283</width>
+     <height>76</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#636363;
+border: 1px solid rgb( 128, 128, 128 );</string>
+   </property>
+   <property name="text">
+    <string>OPEN</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>

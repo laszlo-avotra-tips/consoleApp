@@ -17,3 +17,8 @@ CaseReviewDialog::~CaseReviewDialog()
 {
     delete ui;
 }
+
+void CaseReviewDialog::on_pushButtonOpen_clicked()
+{
+
+}
