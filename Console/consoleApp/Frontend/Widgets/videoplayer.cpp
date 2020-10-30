@@ -65,20 +65,20 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
 void VideoPlayer::init()
 {
-    m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-    m_videoWidget = new QVideoWidget(this);
+    m_mediaPlayer = new QMediaPlayer(this,QMediaPlayer::VideoSurface);
+    m_videoWidget = new QVideoWidget();
 
-    QAbstractButton *openButton = new QPushButton(tr("Open..."),this);
+    QAbstractButton *openButton = new QPushButton(tr("Open"));
     connect(openButton, &QAbstractButton::clicked, this, &VideoPlayer::openFile);
 
-    m_playButton = new QPushButton(this);
+    m_playButton = new QPushButton();
     m_playButton->setEnabled(false);
     m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
 
     connect(m_playButton, &QAbstractButton::clicked,
             this, &VideoPlayer::play);
 
-    m_positionSlider = new QSlider(Qt::Horizontal,this);
+    m_positionSlider = new QSlider(Qt::Horizontal);
     m_positionSlider->setRange(0, 0);
 
     connect(m_positionSlider, &QAbstractSlider::sliderMoved,
@@ -96,12 +96,12 @@ void VideoPlayer::init()
     bool addVideoContainer{false};
 
     if(!m_videoControlContainer){
-        m_videoControlContainer = new QHBoxLayout(this);
+        m_videoControlContainer = new QHBoxLayout();
         qDebug() << __LINE__ << "local m_videoControlContainer";
         LOG1(m_videoControlContainer);
         addVideoContainer = true;
     }
-    QHBoxLayout *controlLayout = m_videoControlContainer;//new QHBoxLayout;
+    QHBoxLayout *controlLayout = m_videoControlContainer;
     controlLayout->setContentsMargins(0, 0, 0, 0);
     controlLayout->addWidget(m_versionLabel);
     controlLayout->addWidget(openButton);
@@ -109,12 +109,12 @@ void VideoPlayer::init()
     controlLayout->addWidget(m_positionSlider);
 
     if(!m_videoWidgetContainer){
-        m_videoWidgetContainer = new QVBoxLayout(this);
+        m_videoWidgetContainer = new QVBoxLayout();
         setLayout(m_videoWidgetContainer);
         qDebug() << __LINE__ << "local m_videoWidgetContainer";
         LOG1(m_videoWidgetContainer);
     }
-    QVBoxLayout *layout = m_videoWidgetContainer;//new QVBoxLayout;
+    QVBoxLayout *layout = m_videoWidgetContainer;
     layout->addWidget(m_videoWidget);
     if(addVideoContainer){
         layout->addLayout(m_videoControlContainer);
@@ -159,6 +159,7 @@ void VideoPlayer::openFile()
         setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
         m_mediaPlayer->setMedia(url);
         m_playButton->setEnabled(true);
+        play();
     }
 
 }
