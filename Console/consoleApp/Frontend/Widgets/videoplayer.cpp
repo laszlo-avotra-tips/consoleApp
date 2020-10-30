@@ -60,15 +60,13 @@
 VideoPlayer::VideoPlayer(QWidget *parent)
     : QWidget(parent)
 {
-    LOG1("new VideoPlayer");
+    LOG1("");
 }
 
 void VideoPlayer::init()
 {
     m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
     m_videoWidget = new QVideoWidget(this);
-
-    LOG1("new m_mediaPlayer");
 
     QAbstractButton *openButton = new QPushButton(tr("Open..."),this);
     connect(openButton, &QAbstractButton::clicked, this, &VideoPlayer::openFile);
@@ -89,8 +87,11 @@ void VideoPlayer::init()
     m_errorLabel = new QLabel(this);
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
-    m_versionLabel = new QLabel("108",this);
+    m_versionLabel = new QLabel("109",this);
     m_versionLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+
+    m_message = new QLabel("message");
+    m_message->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
     bool addVideoContainer{false};
 
@@ -117,6 +118,7 @@ void VideoPlayer::init()
     layout->addWidget(m_videoWidget);
     if(addVideoContainer){
         layout->addLayout(m_videoControlContainer);
+        layout->addWidget(m_message);
         LOG1(addVideoContainer);
     }
     layout->addWidget(m_errorLabel);
@@ -134,23 +136,37 @@ VideoPlayer::~VideoPlayer()
 {
     LOG1("~VideoPlayer");
     LOG1("delete m_mediaPlayer");
+    LOG1("delete m_videoWidget");
     delete m_videoWidget;
     delete m_mediaPlayer;
 }
 
 void VideoPlayer::openFile()
 {
-    QFileDialog fileDialog(this);
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setWindowTitle(tr("Open Video"));
-    fileDialog.setDirectory("C:\\Avinger_Data7\\03df5cad-a401-4d99-a42c-0a79019423f4\\fullCase\\");
-    if (fileDialog.exec() == QDialog::Accepted)
-        setUrl(fileDialog.selectedUrls().constFirst());
+    bool useFileDialog(false);
+
+    if(useFileDialog){
+        QFileDialog fileDialog(this);
+        fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+        fileDialog.setWindowTitle(tr("Open Video"));
+        fileDialog.setDirectory("C:\\Avinger_Data7\\03df5cad-a401-4d99-a42c-0a79019423f4\\fullCase\\"); //fsequence7.ts
+        if (fileDialog.exec() == QDialog::Accepted)
+            setUrl(fileDialog.selectedUrls().constFirst());
+    } else {
+        const QUrl url(R"(file:///C:/Avinger_Data7/03df5cad-a401-4d99-a42c-0a79019423f4/fullCase/fsequence7.ts)");
+        m_errorLabel->setText(QString());
+        m_message->setText(url.toString());
+        setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
+        m_mediaPlayer->setMedia(url);
+        m_playButton->setEnabled(true);
+    }
+
 }
 
 void VideoPlayer::setUrl(const QUrl &url)
 {
     m_errorLabel->setText(QString());
+    m_message->setText(url.toString());
     setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
     m_mediaPlayer->setMedia(url);
     m_playButton->setEnabled(true);

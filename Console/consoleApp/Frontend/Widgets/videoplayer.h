@@ -93,6 +93,7 @@ private:
     QSlider *m_positionSlider;
     QLabel *m_errorLabel;
     QLabel *m_versionLabel;
+    QLabel *m_message;
     QVBoxLayout* m_videoWidgetContainer{nullptr};
     QHBoxLayout* m_videoControlContainer{nullptr};
 
