@@ -23,4 +23,5 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
 CaseReviewDialog::~CaseReviewDialog()
 {
     delete ui;
+    delete m_player;
 }
