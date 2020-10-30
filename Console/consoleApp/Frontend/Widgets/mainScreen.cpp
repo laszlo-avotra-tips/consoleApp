@@ -291,11 +291,12 @@ void MainScreen::on_pushButtonSettings_clicked()
             m_opacScreen->hide();
         }
         if(reviewAndSettingsSelection.trimmed() == "CASE REVIEW"){
+            LOG1("CASE REVIEW")
             openCaseReview();
         }
     }
     else {
-        qDebug() << "Cancelled";
+       LOG1 ("Cancelled");
     }
 }
 
