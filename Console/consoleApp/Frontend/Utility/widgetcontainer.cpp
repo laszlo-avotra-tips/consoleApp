@@ -92,9 +92,9 @@ std::pair<QDialog*, int> WidgetContainer::openDialog(QWidget *parent, const QStr
     QDialog* dialog = getDialog(name,parent,param);
 
     if(dialog){
-        dialog->hide();
-        dialog->setModal(true);
-        LOG1(dialog->isModal());
+//        dialog->hide();
+//        dialog->setModal(true);
+//        LOG1(dialog->isModal());
         result = dialog->exec();
     }
     return std::pair<QDialog*,int>{dialog, result};

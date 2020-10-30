@@ -53,45 +53,49 @@
 #include <QtWidgets>
 #include <QVideoWidget>
 #include <QDebug>
+#include "logger.h"
 
-#define LOG1(x_)  qDebug() << __LINE__ << ". " << #x_ << "=" << x_
+//#define LOG1(x_)  qDebug() << __LINE__ << ". " << #x_ << "=" << x_
 
 VideoPlayer::VideoPlayer(QWidget *parent)
     : QWidget(parent)
 {
+    LOG1("new VideoPlayer");
 }
 
 void VideoPlayer::init()
 {
     m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-    QVideoWidget *videoWidget = new QVideoWidget;
+    m_videoWidget = new QVideoWidget(this);
 
-    QAbstractButton *openButton = new QPushButton(tr("Open..."));
+    LOG1("new m_mediaPlayer");
+
+    QAbstractButton *openButton = new QPushButton(tr("Open..."),this);
     connect(openButton, &QAbstractButton::clicked, this, &VideoPlayer::openFile);
 
-    m_playButton = new QPushButton;
+    m_playButton = new QPushButton(this);
     m_playButton->setEnabled(false);
     m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
 
     connect(m_playButton, &QAbstractButton::clicked,
             this, &VideoPlayer::play);
 
-    m_positionSlider = new QSlider(Qt::Horizontal);
+    m_positionSlider = new QSlider(Qt::Horizontal,this);
     m_positionSlider->setRange(0, 0);
 
     connect(m_positionSlider, &QAbstractSlider::sliderMoved,
             this, &VideoPlayer::setPosition);
 
-    m_errorLabel = new QLabel;
+    m_errorLabel = new QLabel(this);
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
-    m_versionLabel = new QLabel("107");
+    m_versionLabel = new QLabel("108",this);
     m_versionLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
     bool addVideoContainer{false};
 
     if(!m_videoControlContainer){
-        m_videoControlContainer = new QHBoxLayout;
+        m_videoControlContainer = new QHBoxLayout(this);
         qDebug() << __LINE__ << "local m_videoControlContainer";
         LOG1(m_videoControlContainer);
         addVideoContainer = true;
@@ -104,20 +108,20 @@ void VideoPlayer::init()
     controlLayout->addWidget(m_positionSlider);
 
     if(!m_videoWidgetContainer){
-        m_videoWidgetContainer = new QVBoxLayout;
+        m_videoWidgetContainer = new QVBoxLayout(this);
         setLayout(m_videoWidgetContainer);
         qDebug() << __LINE__ << "local m_videoWidgetContainer";
         LOG1(m_videoWidgetContainer);
     }
     QVBoxLayout *layout = m_videoWidgetContainer;//new QVBoxLayout;
-    layout->addWidget(videoWidget);
+    layout->addWidget(m_videoWidget);
     if(addVideoContainer){
         layout->addLayout(m_videoControlContainer);
         LOG1(addVideoContainer);
     }
     layout->addWidget(m_errorLabel);
 
-//    m_mediaPlayer->setVideoOutput(videoWidget);
+    m_mediaPlayer->setVideoOutput(m_videoWidget);
     connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
             this, &VideoPlayer::mediaStateChanged);
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
@@ -128,7 +132,9 @@ void VideoPlayer::init()
 
 VideoPlayer::~VideoPlayer()
 {
-    LOG1(m_mediaPlayer);
+    LOG1("~VideoPlayer");
+    LOG1("delete m_mediaPlayer");
+    delete m_videoWidget;
     delete m_mediaPlayer;
 }
 

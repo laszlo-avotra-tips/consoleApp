@@ -87,13 +87,15 @@ private slots:
     void handleError();
 
 private:
-    QMediaPlayer* m_mediaPlayer;
+    QMediaPlayer* m_mediaPlayer{nullptr};
+    QVideoWidget *m_videoWidget{nullptr};
     QAbstractButton *m_playButton;
     QSlider *m_positionSlider;
     QLabel *m_errorLabel;
     QLabel *m_versionLabel;
     QVBoxLayout* m_videoWidgetContainer{nullptr};
     QHBoxLayout* m_videoControlContainer{nullptr};
+
 };
 
 #endif
