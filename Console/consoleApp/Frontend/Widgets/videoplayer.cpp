@@ -117,7 +117,7 @@ void VideoPlayer::init()
     }
     layout->addWidget(m_errorLabel);
 
-    m_mediaPlayer->setVideoOutput(videoWidget);
+//    m_mediaPlayer->setVideoOutput(videoWidget);
     connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
             this, &VideoPlayer::mediaStateChanged);
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
@@ -128,6 +128,8 @@ void VideoPlayer::init()
 
 VideoPlayer::~VideoPlayer()
 {
+    LOG1(m_mediaPlayer);
+    delete m_mediaPlayer;
 }
 
 void VideoPlayer::openFile()

@@ -9,19 +9,21 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    setWindowFlags(Qt::SplashScreen);
+    setWindowFlags(Qt::SplashScreen);
 
-//    setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
-//    setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
+    setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
+    setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
-//    m_player = new VideoPlayer(this);
-//    m_player->setVideoWidgetContainer(ui->verticalLayout);
-//    m_player->init();
+    m_player = new VideoPlayer(this);
+    m_player->setVideoWidgetContainer(ui->verticalLayout);
+    m_player->init();
 
 }
 
 CaseReviewDialog::~CaseReviewDialog()
 {
+    LOG1(m_player)
+    m_player->~VideoPlayer();
+
     delete ui;
-    delete m_player;
 }

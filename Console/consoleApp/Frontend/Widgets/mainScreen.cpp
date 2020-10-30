@@ -432,9 +432,11 @@ void MainScreen::openCaseReview()
         dialog->show();
         result = dialog->exec();
 
-//        if( result != QDialog::Accepted){
-//            on_pushButtonSettings_clicked();
-//        }
+        if( result != QDialog::Accepted){
+            on_pushButtonSettings_clicked();
+        }
+        LOG1("delete dialog")
+        delete dialog;
     }
 }
 
