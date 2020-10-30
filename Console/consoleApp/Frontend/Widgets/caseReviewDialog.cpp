@@ -14,6 +14,10 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
+    m_player = new VideoPlayer(this);
+    m_player->setVideoWidgetContainer(ui->verticalLayout);
+    m_player->init();
+
 }
 
 CaseReviewDialog::~CaseReviewDialog()
