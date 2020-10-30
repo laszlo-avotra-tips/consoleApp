@@ -424,9 +424,6 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
 
 void MainScreen::openCaseReview()
 {
-//    WidgetContainer::instance()->openDialog(this, "caseReviewDialog");
-//    on_pushButtonSettings_clicked();
-
     int result{-1};
     auto dialog = new CaseReviewDialog(this);
 
@@ -434,9 +431,9 @@ void MainScreen::openCaseReview()
         dialog->show();
         result = dialog->exec();
 
-        if( result != QDialog::Accepted){
-            on_pushButtonSettings_clicked();
-        }
+//        if( result != QDialog::Accepted){
+//            on_pushButtonSettings_clicked();
+//        }
     }
 }
 
