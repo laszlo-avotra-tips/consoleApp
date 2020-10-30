@@ -16,6 +16,7 @@
 #include "signalmodel.h"
 #include "daqfactory.h"
 #include "idaq.h"
+#include "caseReviewDialog.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -290,9 +291,7 @@ void MainScreen::on_pushButtonSettings_clicked()
             m_opacScreen->hide();
         }
         if(reviewAndSettingsSelection.trimmed() == "CASE REVIEW"){
-            m_opacScreen->show();
-//            openCaseReview();
-            m_opacScreen->hide();
+            openCaseReview();
         }
     }
     else {
@@ -425,8 +424,20 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
 
 void MainScreen::openCaseReview()
 {
-    WidgetContainer::instance()->openDialog(this, "emptyDialog");
-    on_pushButtonSettings_clicked();
+//    WidgetContainer::instance()->openDialog(this, "caseReviewDialog");
+//    on_pushButtonSettings_clicked();
+
+    int result{-1};
+    auto dialog = new CaseReviewDialog(this);
+
+    if(dialog){
+        dialog->show();
+        result = dialog->exec();
+
+        if( result != QDialog::Accepted){
+            on_pushButtonSettings_clicked();
+        }
+    }
 }
 
 void MainScreen::openDisplayOptionsDialog()

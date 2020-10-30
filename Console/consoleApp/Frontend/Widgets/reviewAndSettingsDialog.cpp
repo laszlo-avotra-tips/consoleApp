@@ -72,7 +72,7 @@ void ReviewAndSettingsDialog::on_pushButtonCaseReview_clicked(bool checked)
 {
     showLastButtonSelected(ui->pushButtonCaseReview, checked);
 
-    auto result = WidgetContainer::instance()->openDialog(m_parent, "caseReviewDialog");//page. 77
+//    auto result = WidgetContainer::instance()->openDialog(m_parent, "caseReviewDialog");//page. 77
 
 }
 
