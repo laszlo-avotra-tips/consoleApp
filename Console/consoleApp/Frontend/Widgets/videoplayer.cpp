@@ -122,7 +122,7 @@ void VideoPlayer::init()
         LOG1(addVideoContainer);
     }
     layout->addWidget(m_errorLabel);
-
+    m_videoWidget->autoFillBackground();
     m_mediaPlayer->setVideoOutput(m_videoWidget);
     connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
             this, &VideoPlayer::mediaStateChanged);
