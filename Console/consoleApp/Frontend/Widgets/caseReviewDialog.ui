@@ -176,7 +176,23 @@ border: 1px solid rgb( 128, 128, 128 );</string>
    <sender>pushButtonBack</sender>
    <signal>clicked()</signal>
    <receiver>CaseReviewDialog</receiver>
-   <slot>reject()</slot>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>2711</x>
+     <y>2047</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1619</x>
+     <y>1079</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonBack</sender>
+   <signal>clicked()</signal>
+   <receiver>CaseReviewDialog</receiver>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>2711</x>
