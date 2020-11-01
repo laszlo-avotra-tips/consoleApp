@@ -103,7 +103,7 @@ void VideoPlayer::init()
     }
     QHBoxLayout *controlLayout = m_videoControlContainer;
     controlLayout->setContentsMargins(0, 0, 0, 0);
-    controlLayout->addWidget(m_versionLabel);
+//    controlLayout->addWidget(m_versionLabel);
     controlLayout->addWidget(openButton);
     controlLayout->addWidget(m_playButton);
     controlLayout->addWidget(m_positionSlider);
@@ -118,7 +118,7 @@ void VideoPlayer::init()
     layout->addWidget(m_videoWidget);
     if(addVideoContainer){
         layout->addLayout(m_videoControlContainer);
-        layout->addWidget(m_message);
+//        layout->addWidget(m_message);
         LOG1(addVideoContainer);
     }
     layout->addWidget(m_errorLabel);
