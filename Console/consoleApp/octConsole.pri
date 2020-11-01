@@ -19,6 +19,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/caseInformationModel.h \
     $$PWD/Frontend/Widgets/caseReviewDialog.h \
+    $$PWD/Frontend/Widgets/caseReviewScreen.h \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
@@ -89,6 +90,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/caseInformationModel.cpp \
     $$PWD/Frontend/Widgets/caseReviewDialog.cpp \
+    $$PWD/Frontend/Widgets/caseReviewScreen.cpp \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
@@ -146,6 +148,7 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 FORMS += \
     $$PWD/Frontend/Widgets/caseInformationDialog.ui \
     $$PWD/Frontend/Widgets/caseReviewDialog.ui \
+    $$PWD/Frontend/Widgets/caseReviewScreen.ui \
     $$PWD/Frontend/Widgets/consoleKeyboard.ui \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
