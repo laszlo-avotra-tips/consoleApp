@@ -270,6 +270,7 @@ void MainScreen::on_pushButtonSettings_clicked()
     m_opacScreen->show();
     auto result = WidgetContainer::instance()->openDialog(this, "reviewAndSettingsDialog");//page. 58
     m_opacScreen->hide();
+    LOG1(result.first)
     if(result.first){
         result.first->hide();
     }
@@ -293,7 +294,7 @@ void MainScreen::on_pushButtonSettings_clicked()
         if(reviewAndSettingsSelection.trimmed() == "CASE REVIEW"){
             LOG1("CASE REVIEW")
 //            openCaseReview();
-            WidgetContainer::instance()->gotoScreen("caseReviewScreen");
+            WidgetContainer::instance()->gotoScreen("caseReviewScreen")
         }
     }
     else {
