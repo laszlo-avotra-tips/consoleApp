@@ -15,6 +15,9 @@ public:
     explicit CaseReviewScreen(QWidget *parent = nullptr);
     ~CaseReviewScreen();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::CaseReviewScreen *ui;
 };
