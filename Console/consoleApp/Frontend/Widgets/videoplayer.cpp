@@ -130,7 +130,9 @@ void VideoPlayer::init()
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
     connect(m_mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
             this, &VideoPlayer::handleError);
-    emit openButton->clicked();
+    openFile();
+    //play();
+    emit m_playButton->clicked();
 }
 
 VideoPlayer::~VideoPlayer()
@@ -159,13 +161,13 @@ void VideoPlayer::openFile()
         if (fileDialog.exec() == QDialog::Accepted)
             setUrl(fileDialog.selectedUrls().constFirst());
     } else {
-        const QUrl url(R"(file:///C:/Avinger_Data7/03df5cad-a401-4d99-a42c-0a79019423f4/fullCase/fsequence7.ts)");
+        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence1.ts)");
         m_errorLabel->setText(QString());
         m_message->setText(url.toString());
         setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
         m_mediaPlayer->setMedia(url);
         m_playButton->setEnabled(true);
-        play();
+//        play();
     }
 
 }
