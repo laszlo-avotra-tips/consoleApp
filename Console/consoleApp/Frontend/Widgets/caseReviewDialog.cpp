@@ -28,3 +28,9 @@ CaseReviewDialog::~CaseReviewDialog()
 
     delete ui;
 }
+
+void CaseReviewDialog::on_pushButtonBack_clicked()
+{
+    m_player->close();
+    reject();
+}

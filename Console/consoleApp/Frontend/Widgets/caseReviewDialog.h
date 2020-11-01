@@ -16,6 +16,9 @@ public:
     explicit CaseReviewDialog(QWidget *parent = nullptr);
     ~CaseReviewDialog();
 
+private slots:
+    void on_pushButtonBack_clicked();
+
 private:
     Ui::CaseReviewDialog *ui;
     VideoPlayer* m_player{nullptr};
