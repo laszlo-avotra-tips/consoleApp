@@ -7,10 +7,14 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     ui(new Ui::CaseReviewScreen)
 {
     ui->setupUi(this);
+    m_player = new VideoPlayer(this);
+    m_player->setVideoWidgetContainer(ui->verticalLayout);
+    m_player->init();
 }
 
 CaseReviewScreen::~CaseReviewScreen()
 {
+    delete m_player;
     delete ui;
 }
 

@@ -3,6 +3,9 @@
 
 #include <QWidget>
 
+#include "videoplayer.h"
+
+
 namespace Ui {
 class CaseReviewScreen;
 }
@@ -20,6 +23,7 @@ private slots:
 
 private:
     Ui::CaseReviewScreen *ui;
+    VideoPlayer* m_player{nullptr};
 };
 
 #endif // CASEREVIEWSCREEN_H
