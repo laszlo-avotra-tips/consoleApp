@@ -143,7 +143,7 @@ VideoPlayer::~VideoPlayer()
     delete m_positionSlider;
     delete m_errorLabel;
     delete m_message;
-    delete m_videoControlContainer;ß
+    delete m_videoControlContainer;
 }
 
 void VideoPlayer::openFile()
