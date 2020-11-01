@@ -139,6 +139,11 @@ VideoPlayer::~VideoPlayer()
     LOG1("delete m_videoWidget");
     delete m_videoWidget;
     delete m_mediaPlayer;
+    delete m_playButton;
+    delete m_positionSlider;
+    delete m_errorLabel;
+    delete m_message;
+    delete m_videoControlContainer;ß
 }
 
 void VideoPlayer::openFile()

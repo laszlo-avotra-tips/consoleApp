@@ -24,13 +24,11 @@ CaseReviewDialog::CaseReviewDialog(QWidget *parent) :
 CaseReviewDialog::~CaseReviewDialog()
 {
     LOG1("destruct case review")
-    delete m_player;
-
     delete ui;
 }
 
 void CaseReviewDialog::on_pushButtonBack_clicked()
 {
-    m_player->close();
-    reject();
+    delete m_player;
+    accept();
 }
