@@ -13,18 +13,62 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pushButtonDone">
    <property name="geometry">
     <rect>
-     <x>1050</x>
-     <y>570</y>
-     <width>321</width>
-     <height>131</height>
+     <x>2860</x>
+     <y>2020</y>
+     <width>283</width>
+     <height>76</height>
     </rect>
    </property>
-   <property name="text">
-    <string>BACK</string>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#F5C400;
+color: black;</string>
+   </property>
+   <property name="text">
+    <string>DONE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonBack">
+   <property name="geometry">
+    <rect>
+     <x>2550</x>
+     <y>2020</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>283</width>
+     <height>76</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#636363;
+border: 1px solid rgb( 128, 128, 128 );</string>
+   </property>
+   <property name="text">
+    <string>&lt; BACK</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>360</y>
+     <width>2391</width>
+     <height>1621</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
  </widget>
  <resources/>

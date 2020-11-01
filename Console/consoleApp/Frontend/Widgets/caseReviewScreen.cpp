@@ -14,7 +14,7 @@ CaseReviewScreen::~CaseReviewScreen()
     delete ui;
 }
 
-void CaseReviewScreen::on_pushButton_clicked()
+void CaseReviewScreen::on_pushButtonBack_clicked()
 {
     WidgetContainer::instance()->gotoScreen("mainScreen");
 }

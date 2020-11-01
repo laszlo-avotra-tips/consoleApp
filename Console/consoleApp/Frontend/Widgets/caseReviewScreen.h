@@ -16,7 +16,7 @@ public:
     ~CaseReviewScreen();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButtonBack_clicked();
 
 private:
     Ui::CaseReviewScreen *ui;
