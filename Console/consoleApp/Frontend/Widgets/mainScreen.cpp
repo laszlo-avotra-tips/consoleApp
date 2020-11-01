@@ -295,6 +295,10 @@ void MainScreen::on_pushButtonSettings_clicked()
             LOG1("CASE REVIEW")
 //            openCaseReview();
             WidgetContainer::instance()->gotoScreen("caseReviewScreen");
+            if(result.first){
+                delete result.first;
+            }
+
         }
     }
     else {
