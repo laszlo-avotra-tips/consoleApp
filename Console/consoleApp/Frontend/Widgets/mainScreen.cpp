@@ -294,7 +294,7 @@ void MainScreen::on_pushButtonSettings_clicked()
         if(reviewAndSettingsSelection.trimmed() == "CASE REVIEW"){
             LOG1("CASE REVIEW")
 //            openCaseReview();
-            WidgetContainer::instance()->gotoScreen("caseReviewScreen")
+            WidgetContainer::instance()->gotoScreen("caseReviewScreen");
         }
     }
     else {
