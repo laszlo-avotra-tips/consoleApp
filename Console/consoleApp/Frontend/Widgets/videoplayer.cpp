@@ -104,7 +104,7 @@ void VideoPlayer::init()
     QHBoxLayout *controlLayout = m_videoControlContainer;
     controlLayout->setContentsMargins(0, 0, 0, 0);
 //    controlLayout->addWidget(m_versionLabel);
-    controlLayout->addWidget(openButton);
+//    controlLayout->addWidget(openButton);
     controlLayout->addWidget(m_playButton);
     controlLayout->addWidget(m_positionSlider);
 
@@ -130,6 +130,7 @@ void VideoPlayer::init()
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
     connect(m_mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
             this, &VideoPlayer::handleError);
+    openFile();
 }
 
 VideoPlayer::~VideoPlayer()
