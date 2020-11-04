@@ -161,7 +161,7 @@ void VideoPlayer::openFile()
         if (fileDialog.exec() == QDialog::Accepted)
             setUrl(fileDialog.selectedUrls().constFirst());
     } else {
-        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence2.ts)");
+        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence1.ts)");
         m_errorLabel->setText(QString());
         m_message->setText(url.toString());
         setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
