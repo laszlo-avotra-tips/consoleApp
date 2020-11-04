@@ -68,8 +68,8 @@ void VideoPlayer::init()
     m_mediaPlayer = new QMediaPlayer(this,QMediaPlayer::VideoSurface);
     m_videoWidget = new QVideoWidget();
 
-    QAbstractButton *openButton = new QPushButton(tr("Open"));
-    connect(openButton, &QAbstractButton::clicked, this, &VideoPlayer::openFile);
+//    QAbstractButton *openButton = new QPushButton(tr("Open"));
+//    connect(openButton, &QAbstractButton::clicked, this, &VideoPlayer::openFile);
 
     m_playButton = new QPushButton();
     m_playButton->setEnabled(false);
@@ -87,8 +87,8 @@ void VideoPlayer::init()
     m_errorLabel = new QLabel(this);
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
-    m_versionLabel = new QLabel("109",this);
-    m_versionLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+//    m_versionLabel = new QLabel("109",this);
+//    m_versionLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
     m_message = new QLabel("message");
     m_message->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
