@@ -10,6 +10,12 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
     m_player->init();
+
+    auto* slider = ui->horizontalSlider;
+    connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);
+    connect(m_player, &VideoPlayer::updatePosition, this, &CaseReviewScreen::setSliderPosition);
+    connect(m_player, &VideoPlayer::updateDuration, this, &CaseReviewScreen::setSliderRange);
+
 }
 
 CaseReviewScreen::~CaseReviewScreen()
@@ -21,4 +27,15 @@ CaseReviewScreen::~CaseReviewScreen()
 void CaseReviewScreen::on_pushButtonBack_clicked()
 {
     WidgetContainer::instance()->gotoScreen("mainScreen");
+}
+
+void CaseReviewScreen::setSliderPosition(quint64 position)
+{
+     ui->horizontalSlider->setValue(position);
+}
+
+void CaseReviewScreen::setSliderRange(quint64 range)
+{
+    ui->horizontalSlider->setRange(0, range);
+
 }

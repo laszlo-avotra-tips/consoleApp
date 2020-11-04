@@ -332,13 +332,26 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>9</x>
-      <y>10</y>
+      <y>130</y>
       <width>1581</width>
-      <height>1581</height>
+      <height>1341</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout"/>
    </widget>
+  </widget>
+  <widget class="QSlider" name="horizontalSlider">
+   <property name="geometry">
+    <rect>
+     <x>1587</x>
+     <y>1878</y>
+     <width>950</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
   </widget>
  </widget>
  <resources>

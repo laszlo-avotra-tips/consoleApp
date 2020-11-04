@@ -208,11 +208,13 @@ void VideoPlayer::mediaStateChanged(QMediaPlayer::State state)
 void VideoPlayer::positionChanged(qint64 position)
 {
     m_positionSlider->setValue(position);
+    emit updatePosition(position);
 }
 
 void VideoPlayer::durationChanged(qint64 duration)
 {
     m_positionSlider->setRange(0, duration);
+    emit updateDuration(duration);
 }
 
 void VideoPlayer::setPosition(int position)
