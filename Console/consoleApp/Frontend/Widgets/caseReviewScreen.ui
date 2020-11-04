@@ -318,8 +318,7 @@ color: black;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:black;
-border: 3px solid #F5C400;</string>
+    <string notr="true">border: 3px solid #F5C400;</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -330,10 +329,10 @@ border: 3px solid #F5C400;</string>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>-1</x>
-      <y>0</y>
-      <width>1601</width>
-      <height>1601</height>
+      <x>39</x>
+      <y>40</y>
+      <width>1501</width>
+      <height>1491</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout"/>
