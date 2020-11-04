@@ -308,7 +308,7 @@ color: black;</string>
     <string>SAVE IMAGE</string>
    </property>
   </widget>
-  <widget class="QFrame" name="frame">
+  <widget class="QFrame" name="framePlayer">
    <property name="geometry">
     <rect>
      <x>1200</x>
@@ -318,7 +318,9 @@ color: black;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: 3px solid #F5C400;</string>
+    <string notr="true">QFrame#framePlayer{
+border: 3px solid #F5C400;
+}</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
