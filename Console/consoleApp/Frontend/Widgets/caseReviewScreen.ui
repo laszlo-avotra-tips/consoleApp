@@ -317,6 +317,10 @@ color: black;</string>
      <height>1600</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:black;
+border: 3px solid #F5C400;</string>
+   </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
    </property>
