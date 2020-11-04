@@ -311,8 +311,8 @@ color: black;</string>
   <widget class="QFrame" name="framePlayer">
    <property name="geometry">
     <rect>
-     <x>1200</x>
-     <y>380</y>
+     <x>1311</x>
+     <y>350</y>
      <width>1600</width>
      <height>1600</height>
     </rect>
