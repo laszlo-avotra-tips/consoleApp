@@ -132,7 +132,7 @@ void VideoPlayer::init()
             this, &VideoPlayer::handleError);
     openFile();
     //play();
-    emit m_playButton->clicked();
+//    emit m_playButton->clicked();
 }
 
 VideoPlayer::~VideoPlayer()
