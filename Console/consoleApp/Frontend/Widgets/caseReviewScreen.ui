@@ -260,6 +260,12 @@ border: 1px solid rgb( 128, 128, 128 );</string>
      <normaloff>:/octConsole/measure</normaloff>
      <normalon>:/octConsole/measureYellow</normalon>:/octConsole/measure</iconset>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>197</width>
+     <height>197</height>
+    </size>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButtonAnnotate">
    <property name="geometry">
@@ -306,9 +312,9 @@ border: 1px solid rgb( 128, 128, 128 );</string>
     <property name="geometry">
      <rect>
       <x>-1</x>
-      <y>380</y>
+      <y>240</y>
       <width>1601</width>
-      <height>831</height>
+      <height>1091</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout"/>
