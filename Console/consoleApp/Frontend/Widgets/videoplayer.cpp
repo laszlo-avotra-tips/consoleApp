@@ -131,6 +131,8 @@ void VideoPlayer::init()
     connect(m_mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
             this, &VideoPlayer::handleError);
     openFile();
+
+    emit playerInitialized();
     //play();
 //    emit m_playButton->clicked();
 }

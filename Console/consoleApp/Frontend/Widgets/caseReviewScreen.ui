@@ -39,8 +39,8 @@ border: 1px solid rgb( 51, 51, 51 );
 height: 45px;
 }
 QSlider::sub-page:horizontal {
-background:#F5C400;
-border: 1px solid #F5C400;
+background:#A9A9A9;
+border: 1px solid #A9A9A9;
 height: 45px;
 border-radius: 22px;
 }
@@ -339,6 +339,52 @@ border: 3px solid #F5C400;
     </property>
     <layout class="QVBoxLayout" name="verticalLayout"/>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1350</x>
+      <y>1510</y>
+      <width>80</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonPlay">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>1500</y>
+      <width>121</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../../octConsole.qrc">
+      <normaloff>:/octConsole/Frontend/Resources/pause_button.png</normaloff>
+      <normalon>:/octConsole/Frontend/Resources/play_button.png</normalon>:/octConsole/Frontend/Resources/pause_button.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>150</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
@@ -348,6 +394,12 @@ border: 3px solid #F5C400;
      <width>950</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="pageStep">
+    <number>10</number>
+   </property>
+   <property name="sliderPosition">
+    <number>30</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>

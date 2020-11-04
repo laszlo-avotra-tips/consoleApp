@@ -15,7 +15,7 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);
     connect(m_player, &VideoPlayer::updatePosition, this, &CaseReviewScreen::setSliderPosition);
     connect(m_player, &VideoPlayer::updateDuration, this, &CaseReviewScreen::setSliderRange);
-
+    connect(m_player, &VideoPlayer::playerInitialized, this, &CaseReviewScreen::clean);
 }
 
 CaseReviewScreen::~CaseReviewScreen()
@@ -37,5 +37,10 @@ void CaseReviewScreen::setSliderPosition(quint64 position)
 void CaseReviewScreen::setSliderRange(quint64 range)
 {
     ui->horizontalSlider->setRange(0, range);
+
+}
+
+void CaseReviewScreen::clean()
+{
 
 }

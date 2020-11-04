@@ -78,6 +78,7 @@ public:
 signals:
     void updatePosition(qint64 pos);
     void updateDuration(qint64 dur);
+    void playerInitialized();
 
 public slots:
     void openFile();
