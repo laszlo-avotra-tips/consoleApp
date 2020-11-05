@@ -30,26 +30,26 @@ border-radius: 10px;
 
 QSlider::groove:horizontal {
 background: white;
-height: 45px;
-border-radius: 22px;
+height: 22px;
+border-radius: 11px;
 }
 QSlider::sub-page:horizontal {
 background: rgb( 51, 51, 51 );
 border: 1px solid rgb( 51, 51, 51 );
-height: 45px;
+height: 22px;
 }
 QSlider::sub-page:horizontal {
 background:#A9A9A9;
 border: 1px solid #A9A9A9;
-height: 45px;
-border-radius: 22px;
+height: 22px;
+border-radius: 11px;
 }
 QSlider::handle:horizontal {
 /* image: url(:images/handle_normal.png);*/
-width: 63px;
-margin: -36px 0;
+width: 31px;
+margin: -20px 0;
 background: rgb( 67, 67, 67 );
-border-radius: 22px;
+border-radius: 15px;
 }</string>
   </property>
   <widget class="QPushButton" name="pushButtonDone">
@@ -339,26 +339,13 @@ border: 3px solid #F5C400;
     </property>
     <layout class="QVBoxLayout" name="verticalLayout"/>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>1350</x>
-      <y>1510</y>
-      <width>80</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButtonPlay">
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>1500</y>
+      <y>1510</y>
       <width>121</width>
-      <height>71</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
@@ -366,8 +353,8 @@ border: 3px solid #F5C400;
     </property>
     <property name="icon">
      <iconset resource="../../octConsole.qrc">
-      <normaloff>:/octConsole/Frontend/Resources/pause_button.png</normaloff>
-      <normalon>:/octConsole/Frontend/Resources/play_button.png</normalon>:/octConsole/Frontend/Resources/pause_button.png</iconset>
+      <normaloff>:/octConsole/Frontend/Resources/play_button.png</normaloff>
+      <normalon>:/octConsole/Frontend/Resources/pause_button.png</normalon>:/octConsole/Frontend/Resources/play_button.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -390,16 +377,16 @@ border: 3px solid #F5C400;
    <property name="geometry">
     <rect>
      <x>1587</x>
-     <y>1878</y>
+     <y>1860</y>
      <width>950</width>
-     <height>22</height>
+     <height>58</height>
     </rect>
    </property>
    <property name="pageStep">
     <number>10</number>
    </property>
    <property name="sliderPosition">
-    <number>30</number>
+    <number>60</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
