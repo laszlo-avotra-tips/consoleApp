@@ -2,6 +2,7 @@
 #include "ui_caseReviewScreen.h"
 #include "Utility/widgetcontainer.h"
 #include "caseInformationModel.h"
+#include "logger.h"
 
 CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     QWidget(parent),
@@ -21,13 +22,16 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
 
     const auto& physicianName = CaseInformationModel::instance()->selectedPhysicianName();
-    ui->labelPhysicianNameValue->setText(physicianName);
+    LOG1(physicianName)
+    ui->labelPhysicianNameValue->setText("physicianName");
 
     const auto& caseDateAndTime = CaseInformationModel::instance()->dateAndTime();
-    ui->labelDateAndTimeValue->setText(caseDateAndTime);
+    LOG1(caseDateAndTime)
+    ui->labelDateAndTimeValue->setText("caseDateAndTime");
 
     const auto& patientId = CaseInformationModel::instance()->patientId();
-    ui->labelPatientIdValue->setText(patientId);
+    LOG1(patientId)
+    ui->labelPatientIdValue->setText("patientId");
 }
 
 CaseReviewScreen::~CaseReviewScreen()
