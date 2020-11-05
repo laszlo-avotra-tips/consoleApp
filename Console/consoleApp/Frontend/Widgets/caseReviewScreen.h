@@ -22,7 +22,7 @@ private slots:
     void on_pushButtonBack_clicked();
     void setSliderPosition(quint64 position);
     void setSliderRange(quint64 range);
-    void clean();
+    void updateCaseInfo();
     void displayTimeLeft();
 
 private:

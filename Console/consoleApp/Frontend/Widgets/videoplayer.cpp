@@ -141,6 +141,7 @@ void VideoPlayer::play()
 
 void VideoPlayer::positionChanged(qint64 position)
 {
+    emit playerInitialized();
     emit updatePosition(position);
 }
 
