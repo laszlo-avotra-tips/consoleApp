@@ -68,45 +68,8 @@ void VideoPlayer::init()
     m_mediaPlayer = new QMediaPlayer(this,QMediaPlayer::VideoSurface);
     m_videoWidget = new QVideoWidget();
 
-//    QAbstractButton *openButton = new QPushButton(tr("Open"));
-//    connect(openButton, &QAbstractButton::clicked, this, &VideoPlayer::openFile);
-
-//    m_playButton = new QPushButton();
-//    m_playButton->setEnabled(false);
-//    m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-
-//    connect(m_playButton, &QAbstractButton::clicked,
-//            this, &VideoPlayer::play);
-
-//    m_positionSlider = new QSlider(Qt::Horizontal);
-//    m_positionSlider->setRange(0, 0);
-
-//    connect(m_positionSlider, &QAbstractSlider::sliderMoved,
-//            this, &VideoPlayer::setPosition);
-
     m_errorLabel = new QLabel(this);
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-
-//    m_versionLabel = new QLabel("109",this);
-//    m_versionLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-
-    m_message = new QLabel("message");
-    m_message->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-
-    bool addVideoContainer{false};
-
-    if(!m_videoControlContainer){
-        m_videoControlContainer = new QHBoxLayout();
-        qDebug() << __LINE__ << "local m_videoControlContainer";
-        LOG1(m_videoControlContainer);
-        addVideoContainer = true;
-    }
-    QHBoxLayout *controlLayout = m_videoControlContainer;
-    controlLayout->setContentsMargins(0, 0, 0, 0);
-//    controlLayout->addWidget(m_versionLabel);
-//    controlLayout->addWidget(openButton);
-//    controlLayout->addWidget(m_playButton);
-//    controlLayout->addWidget(m_positionSlider);
 
     if(!m_videoWidgetContainer){
         m_videoWidgetContainer = new QVBoxLayout();
@@ -116,16 +79,9 @@ void VideoPlayer::init()
     }
     QVBoxLayout *layout = m_videoWidgetContainer;
     layout->addWidget(m_videoWidget);
-    if(addVideoContainer){
-        layout->addLayout(m_videoControlContainer);
-//        layout->addWidget(m_message);
-        LOG1(addVideoContainer);
-    }
     layout->addWidget(m_errorLabel);
     m_videoWidget->autoFillBackground();
     m_mediaPlayer->setVideoOutput(m_videoWidget);
-//    connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
-//            this, &VideoPlayer::mediaStateChanged);
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
     connect(m_mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
@@ -133,43 +89,33 @@ void VideoPlayer::init()
     openFile();
 
     emit playerInitialized();
-    //play();
-//    emit m_playButton->clicked();
 }
 
 VideoPlayer::~VideoPlayer()
 {
     LOG1("~VideoPlayer");
-    LOG1("delete m_mediaPlayer");
-    LOG1("delete m_videoWidget");
     delete m_videoWidget;
     delete m_mediaPlayer;
-//    delete m_playButton;
-//    delete m_positionSlider;
     delete m_errorLabel;
-    delete m_message;
-    delete m_videoControlContainer;
 }
 
 void VideoPlayer::openFile()
 {
-    bool useFileDialog(false);
+//    bool useFileDialog(false);
 
-    if(useFileDialog){
-        QFileDialog fileDialog(this);
-        fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-        fileDialog.setWindowTitle(tr("Open Video"));
-        fileDialog.setDirectory("C:\\Avinger_Data7\\03df5cad-a401-4d99-a42c-0a79019423f4\\fullCase\\"); //fsequence7.ts
-        if (fileDialog.exec() == QDialog::Accepted)
-            setUrl(fileDialog.selectedUrls().constFirst());
-    } else {
+//    if(useFileDialog){
+//        QFileDialog fileDialog(this);
+//        fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+//        fileDialog.setWindowTitle(tr("Open Video"));
+//        fileDialog.setDirectory("C:\\Avinger_Data7\\03df5cad-a401-4d99-a42c-0a79019423f4\\fullCase\\"); //fsequence7.ts
+//        if (fileDialog.exec() == QDialog::Accepted)
+//            setUrl(fileDialog.selectedUrls().constFirst());
+//    } else
+    {
         const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
         m_errorLabel->setText(QString());
-        m_message->setText(url.toString());
         setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
         m_mediaPlayer->setMedia(url);
-//        m_playButton->setEnabled(true);
-//        play();
     }
 
 }
@@ -177,10 +123,8 @@ void VideoPlayer::openFile()
 void VideoPlayer::setUrl(const QUrl &url)
 {
     m_errorLabel->setText(QString());
-    m_message->setText(url.toString());
     setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
     m_mediaPlayer->setMedia(url);
-//    m_playButton->setEnabled(true);
 }
 
 void VideoPlayer::play()
@@ -195,27 +139,13 @@ void VideoPlayer::play()
     }
 }
 
-//void VideoPlayer::mediaStateChanged(QMediaPlayer::State state)
-//{
-//    switch(state) {
-//    case QMediaPlayer::PlayingState:
-//        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-//        break;
-//    default:
-//        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-//        break;
-//    }
-//}
-
 void VideoPlayer::positionChanged(qint64 position)
 {
-//    m_positionSlider->setValue(position);
     emit updatePosition(position);
 }
 
 void VideoPlayer::durationChanged(qint64 duration)
 {
-//    m_positionSlider->setRange(0, duration);
     emit updateDuration(duration);
 }
 
@@ -226,7 +156,6 @@ void VideoPlayer::setPosition(int position)
 
 void VideoPlayer::handleError()
 {
-//    m_playButton->setEnabled(false);
     const QString errorString = m_mediaPlayer->errorString();
     QString message = "Error: ";
     if (errorString.isEmpty())

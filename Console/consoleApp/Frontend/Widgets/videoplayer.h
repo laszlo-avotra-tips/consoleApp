@@ -86,7 +86,6 @@ public slots:
     void setPosition(int position);
 
 private slots:
-//    void mediaStateChanged(QMediaPlayer::State state);
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
     void handleError();
@@ -94,14 +93,8 @@ private slots:
 private:
     QMediaPlayer* m_mediaPlayer{nullptr};
     QVideoWidget *m_videoWidget{nullptr};
-//    QAbstractButton *m_playButton;
-//    QSlider *m_positionSlider;
     QLabel *m_errorLabel;
-//    QLabel *m_versionLabel;
-    QLabel *m_message;
     QVBoxLayout* m_videoWidgetContainer{nullptr};
-    QHBoxLayout* m_videoControlContainer{nullptr};
-
 };
 
 #endif
