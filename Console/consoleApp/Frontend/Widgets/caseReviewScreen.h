@@ -23,10 +23,14 @@ private slots:
     void setSliderPosition(quint64 position);
     void setSliderRange(quint64 range);
     void clean();
+    void displayTimeLeft();
 
 private:
     Ui::CaseReviewScreen *ui;
     VideoPlayer* m_player{nullptr};
+    quint64 m_duration{0};
+    quint64 m_position{0};
+
 };
 
 #endif // CASEREVIEWSCREEN_H

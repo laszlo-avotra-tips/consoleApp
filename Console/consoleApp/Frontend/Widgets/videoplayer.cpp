@@ -157,12 +157,13 @@ void VideoPlayer::setPosition(int position)
 void VideoPlayer::handleError()
 {
     const QString errorString = m_mediaPlayer->errorString();
-    QString message = "Error: ";
+    QString errorMessage = "Error: ";
     if (errorString.isEmpty())
-        message += " #" + QString::number(int(m_mediaPlayer->error()));
+        errorMessage += " #" + QString::number(int(m_mediaPlayer->error()));
     else
-        message += errorString;
-    m_errorLabel->setText(message);
+        errorMessage += errorString;
+    m_errorLabel->setText(errorMessage);
+    LOG1(errorMessage)
 }
 
 void VideoPlayer::setVideoWidgetContainer(QVBoxLayout *videoWidgetContainer)

@@ -34,16 +34,23 @@ void CaseReviewScreen::on_pushButtonBack_clicked()
 
 void CaseReviewScreen::setSliderPosition(quint64 position)
 {
+    m_position = position;
      ui->horizontalSlider->setValue(position);
 }
 
 void CaseReviewScreen::setSliderRange(quint64 range)
 {
+    m_duration = range;
     ui->horizontalSlider->setRange(0, range);
-
 }
 
 void CaseReviewScreen::clean()
 {
 
+}
+
+void CaseReviewScreen::displayTimeLeft()
+{
+    int timeLeft = m_duration - m_position;
+    ui->labelDuration->setNum(timeLeft);
 }
