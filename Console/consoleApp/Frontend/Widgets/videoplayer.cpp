@@ -141,12 +141,12 @@ void VideoPlayer::play()
 
 void VideoPlayer::positionChanged(qint64 position)
 {
-    emit playerInitialized();
     emit updatePosition(position);
 }
 
 void VideoPlayer::durationChanged(qint64 duration)
 {
+    emit playerInitialized();
     emit updateDuration(duration);
 }
 
