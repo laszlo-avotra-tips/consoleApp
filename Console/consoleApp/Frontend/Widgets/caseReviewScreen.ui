@@ -387,6 +387,9 @@ border: 3px solid #F5C400;
       <height>55</height>
      </size>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
+    </property>
     <property name="text">
      <string>12:30</string>
     </property>
@@ -408,6 +411,9 @@ border: 3px solid #F5C400;
       <width>178</width>
       <height>55</height>
      </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
     </property>
     <property name="text">
      <string>LOOP 0</string>

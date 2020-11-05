@@ -36,12 +36,14 @@ void CaseReviewScreen::setSliderPosition(quint64 position)
 {
     m_position = position;
      ui->horizontalSlider->setValue(position);
+     displayTimeLeft();
 }
 
 void CaseReviewScreen::setSliderRange(quint64 range)
 {
     m_duration = range;
     ui->horizontalSlider->setRange(0, range);
+    displayTimeLeft();
 }
 
 void CaseReviewScreen::clean()
