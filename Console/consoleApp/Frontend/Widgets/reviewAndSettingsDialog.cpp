@@ -71,9 +71,6 @@ void ReviewAndSettingsDialog::on_pushButtonDisplayOptions_clicked(bool checked)
 void ReviewAndSettingsDialog::on_pushButtonCaseReview_clicked(bool checked)
 {
     showLastButtonSelected(ui->pushButtonCaseReview, checked);
-
-//    auto result = WidgetContainer::instance()->openDialog(m_parent, "caseReviewDialog");//page. 77
-
 }
 
 void ReviewAndSettingsDialog::on_pushButtonDeviceSelect_clicked(bool checked)

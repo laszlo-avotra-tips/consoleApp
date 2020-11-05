@@ -16,7 +16,6 @@
 #include "signalmodel.h"
 #include "daqfactory.h"
 #include "idaq.h"
-#include "caseReviewDialog.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -293,7 +292,6 @@ void MainScreen::on_pushButtonSettings_clicked()
         }
         if(reviewAndSettingsSelection.trimmed() == "CASE REVIEW"){
             LOG1("CASE REVIEW")
-//            openCaseReview();
             WidgetContainer::instance()->gotoScreen("caseReviewScreen");
             if(result.first){
                 delete result.first;
@@ -426,24 +424,6 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
         on_pushButtonSettings_clicked();
     } else {
         updateDeviceSettings();
-    }
-}
-
-void MainScreen::openCaseReview()
-{
-    int result{-1};
-    auto dialog = new CaseReviewDialog(this);
-
-    if(dialog){
-        dialog->show();
-        result = dialog->exec();
-
-        LOG1("delete dialog")
-        delete dialog;
-
-//        if( result != QDialog::Accepted){
-//            on_pushButtonSettings_clicked();
-//        }
     }
 }
 
