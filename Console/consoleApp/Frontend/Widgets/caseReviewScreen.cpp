@@ -53,6 +53,10 @@ void CaseReviewScreen::clean()
 
 void CaseReviewScreen::displayTimeLeft()
 {
-    int timeLeft = m_duration - m_position;
-    ui->labelDuration->setNum(timeLeft);
+    int timeLeftInSeconds = (m_duration - m_position) / 1000;
+    short minutes = timeLeftInSeconds / 60;
+    short seconds = timeLeftInSeconds % 60;
+
+    const QString& timeLeft = QString("%1:%2").arg(minutes,2,10,QLatin1Char('0')).arg(seconds,2,10,QLatin1Char('0'));
+    ui->labelDuration->setText(timeLeft);
 }
