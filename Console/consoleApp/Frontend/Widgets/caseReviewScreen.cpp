@@ -21,17 +21,6 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
 
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
 
-    const auto& physicianName = CaseInformationModel::instance()->selectedPhysicianName();
-    LOG1(physicianName)
-    ui->labelPhysicianNameValue->setText("physicianName");
-
-    const auto& caseDateAndTime = CaseInformationModel::instance()->dateAndTime();
-    LOG1(caseDateAndTime)
-    ui->labelDateAndTimeValue->setText("caseDateAndTime");
-
-    const auto& patientId = CaseInformationModel::instance()->patientId();
-    LOG1(patientId)
-    ui->labelPatientIdValue->setText("patientId");
 }
 
 CaseReviewScreen::~CaseReviewScreen()
@@ -61,6 +50,17 @@ void CaseReviewScreen::setSliderRange(quint64 range)
 
 void CaseReviewScreen::clean()
 {
+    const auto& physicianName = CaseInformationModel::instance()->selectedPhysicianName();
+    LOG1(physicianName)
+    ui->labelPhysicianNameValue->setText("physicianName");
+
+    const auto& caseDateAndTime = CaseInformationModel::instance()->dateAndTime();
+    LOG1(caseDateAndTime)
+    ui->labelDateAndTimeValue->setText("caseDateAndTime");
+
+    const auto& patientId = CaseInformationModel::instance()->patientId();
+    LOG1(patientId)
+    ui->labelPatientIdValue->setText("patientId");
 
 }
 
