@@ -95,9 +95,9 @@ private:
     QMediaPlayer* m_mediaPlayer{nullptr};
     QVideoWidget *m_videoWidget{nullptr};
     QAbstractButton *m_playButton;
-    QSlider *m_positionSlider;
+//    QSlider *m_positionSlider;
     QLabel *m_errorLabel;
-    QLabel *m_versionLabel;
+//    QLabel *m_versionLabel;
     QLabel *m_message;
     QVBoxLayout* m_videoWidgetContainer{nullptr};
     QHBoxLayout* m_videoControlContainer{nullptr};

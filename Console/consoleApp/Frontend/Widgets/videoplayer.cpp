@@ -78,11 +78,11 @@ void VideoPlayer::init()
     connect(m_playButton, &QAbstractButton::clicked,
             this, &VideoPlayer::play);
 
-    m_positionSlider = new QSlider(Qt::Horizontal);
-    m_positionSlider->setRange(0, 0);
+//    m_positionSlider = new QSlider(Qt::Horizontal);
+//    m_positionSlider->setRange(0, 0);
 
-    connect(m_positionSlider, &QAbstractSlider::sliderMoved,
-            this, &VideoPlayer::setPosition);
+//    connect(m_positionSlider, &QAbstractSlider::sliderMoved,
+//            this, &VideoPlayer::setPosition);
 
     m_errorLabel = new QLabel(this);
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
@@ -106,7 +106,7 @@ void VideoPlayer::init()
 //    controlLayout->addWidget(m_versionLabel);
 //    controlLayout->addWidget(openButton);
     controlLayout->addWidget(m_playButton);
-    controlLayout->addWidget(m_positionSlider);
+//    controlLayout->addWidget(m_positionSlider);
 
     if(!m_videoWidgetContainer){
         m_videoWidgetContainer = new QVBoxLayout();
@@ -145,7 +145,7 @@ VideoPlayer::~VideoPlayer()
     delete m_videoWidget;
     delete m_mediaPlayer;
     delete m_playButton;
-    delete m_positionSlider;
+//    delete m_positionSlider;
     delete m_errorLabel;
     delete m_message;
     delete m_videoControlContainer;
@@ -209,13 +209,13 @@ void VideoPlayer::mediaStateChanged(QMediaPlayer::State state)
 
 void VideoPlayer::positionChanged(qint64 position)
 {
-    m_positionSlider->setValue(position);
+//    m_positionSlider->setValue(position);
     emit updatePosition(position);
 }
 
 void VideoPlayer::durationChanged(qint64 duration)
 {
-    m_positionSlider->setRange(0, duration);
+//    m_positionSlider->setRange(0, duration);
     emit updateDuration(duration);
 }
 
