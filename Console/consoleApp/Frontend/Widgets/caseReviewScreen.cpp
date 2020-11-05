@@ -17,7 +17,7 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);
     connect(m_player, &VideoPlayer::updatePosition, this, &CaseReviewScreen::setSliderPosition);
     connect(m_player, &VideoPlayer::updateDuration, this, &CaseReviewScreen::setSliderRange);
-    connect(m_player, &VideoPlayer::playerInitialized, this, &CaseReviewScreen::updateCaseInfo);
+//    connect(m_player, &VideoPlayer::playerInitialized, this, &CaseReviewScreen::updateCaseInfo);
 
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
 
@@ -27,6 +27,12 @@ CaseReviewScreen::~CaseReviewScreen()
 {
     delete m_player;
     delete ui;
+}
+
+void CaseReviewScreen::showEvent(QShowEvent * e)
+{
+    updateCaseInfo();
+    QWidget::showEvent(e);
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()

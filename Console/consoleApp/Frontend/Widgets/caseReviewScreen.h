@@ -17,6 +17,7 @@ class CaseReviewScreen : public QWidget
 public:
     explicit CaseReviewScreen(QWidget *parent = nullptr);
     ~CaseReviewScreen();
+    void showEvent(QShowEvent *) override;
 
 private slots:
     void on_pushButtonBack_clicked();
