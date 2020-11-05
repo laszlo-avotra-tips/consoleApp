@@ -71,12 +71,12 @@ void VideoPlayer::init()
 //    QAbstractButton *openButton = new QPushButton(tr("Open"));
 //    connect(openButton, &QAbstractButton::clicked, this, &VideoPlayer::openFile);
 
-    m_playButton = new QPushButton();
-    m_playButton->setEnabled(false);
-    m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+//    m_playButton = new QPushButton();
+//    m_playButton->setEnabled(false);
+//    m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
 
-    connect(m_playButton, &QAbstractButton::clicked,
-            this, &VideoPlayer::play);
+//    connect(m_playButton, &QAbstractButton::clicked,
+//            this, &VideoPlayer::play);
 
 //    m_positionSlider = new QSlider(Qt::Horizontal);
 //    m_positionSlider->setRange(0, 0);
@@ -105,7 +105,7 @@ void VideoPlayer::init()
     controlLayout->setContentsMargins(0, 0, 0, 0);
 //    controlLayout->addWidget(m_versionLabel);
 //    controlLayout->addWidget(openButton);
-    controlLayout->addWidget(m_playButton);
+//    controlLayout->addWidget(m_playButton);
 //    controlLayout->addWidget(m_positionSlider);
 
     if(!m_videoWidgetContainer){
@@ -124,8 +124,8 @@ void VideoPlayer::init()
     layout->addWidget(m_errorLabel);
     m_videoWidget->autoFillBackground();
     m_mediaPlayer->setVideoOutput(m_videoWidget);
-    connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
-            this, &VideoPlayer::mediaStateChanged);
+//    connect(m_mediaPlayer, &QMediaPlayer::stateChanged,
+//            this, &VideoPlayer::mediaStateChanged);
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
     connect(m_mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
@@ -144,7 +144,7 @@ VideoPlayer::~VideoPlayer()
     LOG1("delete m_videoWidget");
     delete m_videoWidget;
     delete m_mediaPlayer;
-    delete m_playButton;
+//    delete m_playButton;
 //    delete m_positionSlider;
     delete m_errorLabel;
     delete m_message;
@@ -168,7 +168,7 @@ void VideoPlayer::openFile()
         m_message->setText(url.toString());
         setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
         m_mediaPlayer->setMedia(url);
-        m_playButton->setEnabled(true);
+//        m_playButton->setEnabled(true);
 //        play();
     }
 
@@ -180,7 +180,7 @@ void VideoPlayer::setUrl(const QUrl &url)
     m_message->setText(url.toString());
     setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
     m_mediaPlayer->setMedia(url);
-    m_playButton->setEnabled(true);
+//    m_playButton->setEnabled(true);
 }
 
 void VideoPlayer::play()
@@ -195,17 +195,17 @@ void VideoPlayer::play()
     }
 }
 
-void VideoPlayer::mediaStateChanged(QMediaPlayer::State state)
-{
-    switch(state) {
-    case QMediaPlayer::PlayingState:
-        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-        break;
-    default:
-        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-        break;
-    }
-}
+//void VideoPlayer::mediaStateChanged(QMediaPlayer::State state)
+//{
+//    switch(state) {
+//    case QMediaPlayer::PlayingState:
+//        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+//        break;
+//    default:
+//        m_playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+//        break;
+//    }
+//}
 
 void VideoPlayer::positionChanged(qint64 position)
 {
@@ -226,7 +226,7 @@ void VideoPlayer::setPosition(int position)
 
 void VideoPlayer::handleError()
 {
-    m_playButton->setEnabled(false);
+//    m_playButton->setEnabled(false);
     const QString errorString = m_mediaPlayer->errorString();
     QString message = "Error: ";
     if (errorString.isEmpty())
