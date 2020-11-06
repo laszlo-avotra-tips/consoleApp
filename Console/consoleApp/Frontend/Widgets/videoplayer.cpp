@@ -53,6 +53,8 @@
 #include <QtWidgets>
 #include <QVideoWidget>
 #include <QDebug>
+#include <QMediaPlaylist>
+
 #include "logger.h"
 #include "caseReviewModel.h"
 
@@ -112,12 +114,16 @@ void VideoPlayer::openFile()
 //        if (fileDialog.exec() == QDialog::Accepted)
 //            setUrl(fileDialog.selectedUrls().constFirst());
 //    } else
+     bool useSingleSource(false);
+    if(useSingleSource)
     {
-//        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
-//        m_errorLabel->setText(QString());
-//        setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
         const QUrl& url = CaseReviewModel::instance()->getSingleSource();
         m_mediaPlayer->setMedia(url);
+    }
+    else
+    {
+        auto* mediaPlayList = CaseReviewModel::instance()->getPlaylist();
+        m_mediaPlayer->setPlaylist(mediaPlayList);
     }
 
 }
