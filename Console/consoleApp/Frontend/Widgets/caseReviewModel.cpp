@@ -22,6 +22,7 @@ CaseReviewModel::CaseReviewModel()
         );
 
     m_playlist = new QMediaPlaylist;
+    m_playlist->addMedia(QUrl(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence2.ts)"));
     m_playlist->addMedia(QUrl(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)"));
 }
 
