@@ -54,6 +54,7 @@
 #include <QVideoWidget>
 #include <QDebug>
 #include "logger.h"
+#include "caseReviewModel.h"
 
 //#define LOG1(x_)  qDebug() << __LINE__ << ". " << #x_ << "=" << x_
 
@@ -112,9 +113,10 @@ void VideoPlayer::openFile()
 //            setUrl(fileDialog.selectedUrls().constFirst());
 //    } else
     {
-        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
-        m_errorLabel->setText(QString());
-        setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
+//        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
+//        m_errorLabel->setText(QString());
+//        setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
+        const QUrl& url = CaseReviewModel::instance()->getSingleSource();
         m_mediaPlayer->setMedia(url);
     }
 
