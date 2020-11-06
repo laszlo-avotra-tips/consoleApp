@@ -61,6 +61,7 @@ class QAbstractButton;
 class QSlider;
 class QLabel;
 class QUrl;
+class QMediaPlaylist;
 QT_END_NAMESPACE
 
 class VideoPlayer : public QWidget
@@ -74,6 +75,7 @@ public:
 
     void setVideoWidgetContainer(QVBoxLayout *videoWidgetContainer);
     void init();
+    const QMediaPlaylist& getPlaylist() const;
 
 signals:
     void updatePosition(qint64 pos);

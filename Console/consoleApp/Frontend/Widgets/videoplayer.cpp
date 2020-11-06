@@ -94,6 +94,11 @@ void VideoPlayer::init()
     emit playerInitialized();
 }
 
+const QMediaPlaylist &VideoPlayer::getPlaylist() const
+{
+    return *(m_mediaPlayer->playlist());
+}
+
 VideoPlayer::~VideoPlayer()
 {
     LOG1("~VideoPlayer");

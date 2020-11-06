@@ -2,7 +2,10 @@
 #include "ui_caseReviewScreen.h"
 #include "Utility/widgetcontainer.h"
 #include "caseInformationModel.h"
+#include "caseReviewModel.h"
 #include "logger.h"
+
+#include <QMediaPlaylist>
 
 CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     QWidget(parent),
@@ -71,7 +74,10 @@ void CaseReviewScreen::updateCaseInfo()
 
 void CaseReviewScreen::updateSliderLabels()
 {
-    int durationInSeconds = m_duration / 1000;
+    auto* playlist = CaseReviewModel::instance()->getPlaylist();
+    int count = playlist->mediaCount();
+
+    int durationInSeconds = count * m_duration / 1000;
     short durationMinutes = durationInSeconds / 60;
     short durationSeconds = durationInSeconds % 60;
 
