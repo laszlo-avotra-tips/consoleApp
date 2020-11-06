@@ -85,7 +85,7 @@ void CaseReviewScreen::updateSliderLabels()
 //    int count = playlist.mediaCount();
 //    int index = playlist.currentIndex();
 
-    int durationInSeconds = count * m_duration / 1000;
+    int durationInSeconds = m_duration / 1000;
     short durationMinutes = durationInSeconds / 60;
     short durationSeconds = durationInSeconds % 60;
 
