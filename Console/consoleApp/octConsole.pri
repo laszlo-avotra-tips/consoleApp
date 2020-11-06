@@ -18,6 +18,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/caseInformationModel.h \
+    $$PWD/Frontend/Widgets/caseReviewScreen.h \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
@@ -37,6 +38,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
+    $$PWD/Frontend/Widgets/videoplayer.h \
     ../version.h \
     Backend/initialization.h \
     Include/dataPlotWidget.h \
@@ -86,6 +88,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/caseInformationModel.cpp \
+    $$PWD/Frontend/Widgets/caseReviewScreen.cpp \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
@@ -104,6 +107,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
+    $$PWD/Frontend/Widgets/videoplayer.cpp \
     $$PWD/main.cpp \
     Backend/initialization.cpp \
     Utility/octFile.cpp \
@@ -141,6 +145,7 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 # Forms
 FORMS += \
     $$PWD/Frontend/Widgets/caseInformationDialog.ui \
+    $$PWD/Frontend/Widgets/caseReviewScreen.ui \
     $$PWD/Frontend/Widgets/consoleKeyboard.ui \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \

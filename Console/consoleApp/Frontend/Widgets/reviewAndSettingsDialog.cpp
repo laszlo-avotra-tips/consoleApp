@@ -1,5 +1,6 @@
 #include "reviewAndSettingsDialog.h"
 #include "ui_reviewAndSettingsDialog.h"
+#include "Utility/widgetcontainer.h"
 
 #include <QTimer>
 #include <QGraphicsOpacityEffect>
@@ -8,7 +9,8 @@
 
 ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ReviewAndSettingsDialog)
+    ui(new Ui::ReviewAndSettingsDialog),
+    m_parent(parent)
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);

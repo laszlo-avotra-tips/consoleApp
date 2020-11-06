@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CaseReviewScreen</class>
+ <widget class="QWidget" name="CaseReviewScreen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>3240</width>
+    <height>2160</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel#labelTitle{
+font:38pt &quot;Helvetica Neue&quot;;
+font-weight:600
+}
+QLabel{
+font:22pt &quot;Helvetica Neue&quot;;
+}
+QPushButton{
+font:14pt;
+color:white;
+border-radius: 10px;
+}
+ /* ---------- Sliders ------------*/
+
+QSlider::groove:horizontal {
+background: white;
+height: 22px;
+border-radius: 11px;
+}
+QSlider::sub-page:horizontal {
+background: rgb( 51, 51, 51 );
+border: 1px solid rgb( 51, 51, 51 );
+height: 22px;
+}
+QSlider::sub-page:horizontal {
+background:#A9A9A9;
+border: 1px solid #A9A9A9;
+height: 22px;
+border-radius: 11px;
+}
+QSlider::handle:horizontal {
+/* image: url(:images/handle_normal.png);*/
+width: 31px;
+margin: -20px 0;
+background: rgb( 67, 67, 67 );
+border-radius: 15px;
+}</string>
+  </property>
+  <widget class="QPushButton" name="pushButtonDone">
+   <property name="geometry">
+    <rect>
+     <x>2630</x>
+     <y>2014</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#F5C400;
+color: black;</string>
+   </property>
+   <property name="text">
+    <string>DONE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonBack">
+   <property name="geometry">
+    <rect>
+     <x>2180</x>
+     <y>2011</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>283</width>
+     <height>76</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#636363;
+border: 1px solid rgb( 128, 128, 128 );</string>
+   </property>
+   <property name="text">
+    <string>&lt; BACK</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTitle">
+   <property name="geometry">
+    <rect>
+     <x>87</x>
+     <y>54</y>
+     <width>703</width>
+     <height>134</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>CASE REVIEW</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelViewTitle">
+   <property name="geometry">
+    <rect>
+     <x>1804</x>
+     <y>214</y>
+     <width>498</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>VIEW SELECTION</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelPhysicianName">
+   <property name="geometry">
+    <rect>
+     <x>99</x>
+     <y>191</y>
+     <width>458</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Physician Name:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelPatientID">
+   <property name="geometry">
+    <rect>
+     <x>99</x>
+     <y>275</y>
+     <width>288</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Patient ID:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelDateAndTime">
+   <property name="geometry">
+    <rect>
+     <x>99</x>
+     <y>356</y>
+     <width>354</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Date &amp; Time:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelPhysicianNameValue">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>191</y>
+     <width>511</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Dr. Patel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelPatientIdValue">
+   <property name="geometry">
+    <rect>
+     <x>406</x>
+     <y>275</y>
+     <width>309</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>00000</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelDateAndTimeValue">
+   <property name="geometry">
+    <rect>
+     <x>462</x>
+     <y>356</y>
+     <width>573</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>2020-11-04 12:34:56</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelImages">
+   <property name="geometry">
+    <rect>
+     <x>112</x>
+     <y>521</y>
+     <width>318</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>IMAGES(1)</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelLops">
+   <property name="geometry">
+    <rect>
+     <x>137</x>
+     <y>1061</y>
+     <width>298</width>
+     <height>78</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LOOPS(1)</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonMeasure">
+   <property name="geometry">
+    <rect>
+     <x>2990</x>
+     <y>660</y>
+     <width>197</width>
+     <height>197</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../octConsole.qrc">
+     <normaloff>:/octConsole/measure</normaloff>
+     <normalon>:/octConsole/measureYellow</normalon>:/octConsole/measure</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>197</width>
+     <height>197</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonAnnotate">
+   <property name="geometry">
+    <rect>
+     <x>2990</x>
+     <y>923</y>
+     <width>197</width>
+     <height>114</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#A9A9A9;
+border: 1px solid rgb( 128, 128, 128 );
+font:12pt;
+color: black;</string>
+   </property>
+   <property name="text">
+    <string>ANNOTATE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonSaveImage">
+   <property name="geometry">
+    <rect>
+     <x>2990</x>
+     <y>1135</y>
+     <width>197</width>
+     <height>114</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#A9A9A9;
+border: 1px solid rgb( 128, 128, 128 );
+font:12pt;
+color: black;</string>
+   </property>
+   <property name="text">
+    <string>SAVE IMAGE</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="framePlayer">
+   <property name="geometry">
+    <rect>
+     <x>1311</x>
+     <y>350</y>
+     <width>1600</width>
+     <height>1600</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QFrame#framePlayer{
+border: 3px solid #F5C400;
+}</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>130</y>
+      <width>1581</width>
+      <height>1341</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout"/>
+   </widget>
+   <widget class="QPushButton" name="pushButtonPlay">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>1510</y>
+      <width>121</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../../octConsole.qrc">
+      <normaloff>:/octConsole/Frontend/Resources/play_button.png</normaloff>
+      <normalon>:/octConsole/Frontend/Resources/pause_button.png</normalon>:/octConsole/Frontend/Resources/play_button.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>150</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelDuration">
+    <property name="geometry">
+     <rect>
+      <x>1226</x>
+      <y>1510</y>
+      <width>178</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>55</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
+    </property>
+    <property name="text">
+     <string>12:30</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelLoop">
+    <property name="geometry">
+     <rect>
+      <x>1404</x>
+      <y>1510</y>
+      <width>178</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>178</width>
+      <height>55</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
+    </property>
+    <property name="text">
+     <string>LOOP 1</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelTime">
+    <property name="geometry">
+     <rect>
+      <x>277</x>
+      <y>1510</y>
+      <width>178</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>55</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
+    </property>
+    <property name="text">
+     <string>12:30</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QSlider" name="horizontalSlider">
+   <property name="geometry">
+    <rect>
+     <x>1765</x>
+     <y>1860</y>
+     <width>772</width>
+     <height>58</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>58</height>
+    </size>
+   </property>
+   <property name="pageStep">
+    <number>10</number>
+   </property>
+   <property name="sliderPosition">
+    <number>60</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>2</width>
+     <height>2</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout"/>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../../octConsole.qrc"/>
+ </resources>
+ <connections/>
+</ui>
