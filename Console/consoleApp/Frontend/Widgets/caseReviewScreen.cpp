@@ -44,14 +44,18 @@ void CaseReviewScreen::on_pushButtonBack_clicked()
 
 void CaseReviewScreen::setSliderPosition(quint64 position)
 {
-    m_position = position;
-     ui->horizontalSlider->setValue(position);
-     updateSliderLabels();
+    const auto& playlist = m_player->getPlaylist(); //CaseReviewModel::instance()->getPlaylist();
+    int index = playlist.currentIndex();
+    m_position = position + index * 30;
+    ui->horizontalSlider->setValue(position);
+    updateSliderLabels();
 }
 
 void CaseReviewScreen::setSliderRange(quint64 range)
 {
-    m_duration = range;
+    const auto& playlist = m_player->getPlaylist(); //CaseReviewModel::instance()->getPlaylist();
+    int count = playlist.mediaCount();
+    m_duration = range * count;
     ui->horizontalSlider->setRange(0, range);
     updateSliderLabels();
 }
@@ -74,8 +78,9 @@ void CaseReviewScreen::updateCaseInfo()
 
 void CaseReviewScreen::updateSliderLabels()
 {
-    auto* playlist = CaseReviewModel::instance()->getPlaylist();
-    int count = playlist->mediaCount();
+    const auto& playlist = m_player->getPlaylist(); //CaseReviewModel::instance()->getPlaylist();
+    int count = playlist.mediaCount();
+    int index = playlist.currentIndex();
 
     int durationInSeconds = count * m_duration / 1000;
     short durationMinutes = durationInSeconds / 60;
@@ -84,7 +89,7 @@ void CaseReviewScreen::updateSliderLabels()
     const QString& duration = QString("%1:%2").arg(durationMinutes,2,10,QLatin1Char('0')).arg(durationSeconds,2,10,QLatin1Char('0'));
     ui->labelDuration->setText(duration);
 
-    int timeInSeconds = m_position / 1000;
+    int timeInSeconds = m_position / 1000 + index * 30;
     short timeMinutes = timeInSeconds / 60;
     short timeSeconds = timeInSeconds % 60;
 
