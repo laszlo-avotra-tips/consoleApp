@@ -24,7 +24,7 @@ private slots:
     void setSliderPosition(quint64 position);
     void setSliderRange(quint64 range);
     void updateCaseInfo();
-    void displayTimeLeft();
+    void updateSliderLabels();
 
 private:
     Ui::CaseReviewScreen *ui;

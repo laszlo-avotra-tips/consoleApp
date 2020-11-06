@@ -376,7 +376,7 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>1226</x>
-      <y>1506</y>
+      <y>1510</y>
       <width>178</width>
       <height>55</height>
      </rect>
@@ -416,7 +416,32 @@ border: 3px solid #F5C400;
      <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
     </property>
     <property name="text">
-     <string>LOOP 0</string>
+     <string>LOOP 1</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelTime">
+    <property name="geometry">
+     <rect>
+      <x>277</x>
+      <y>1510</y>
+      <width>178</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>55</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
+    </property>
+    <property name="text">
+     <string>12:30</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -426,9 +451,9 @@ border: 3px solid #F5C400;
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
-     <x>1587</x>
+     <x>1765</x>
      <y>1860</y>
-     <width>950</width>
+     <width>772</width>
      <height>58</height>
     </rect>
    </property>

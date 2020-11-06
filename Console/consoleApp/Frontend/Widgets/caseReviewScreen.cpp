@@ -17,7 +17,6 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);
     connect(m_player, &VideoPlayer::updatePosition, this, &CaseReviewScreen::setSliderPosition);
     connect(m_player, &VideoPlayer::updateDuration, this, &CaseReviewScreen::setSliderRange);
-//    connect(m_player, &VideoPlayer::playerInitialized, this, &CaseReviewScreen::updateCaseInfo);
 
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
 
@@ -44,14 +43,14 @@ void CaseReviewScreen::setSliderPosition(quint64 position)
 {
     m_position = position;
      ui->horizontalSlider->setValue(position);
-     displayTimeLeft();
+     updateSliderLabels();
 }
 
 void CaseReviewScreen::setSliderRange(quint64 range)
 {
     m_duration = range;
     ui->horizontalSlider->setRange(0, range);
-    displayTimeLeft();
+    updateSliderLabels();
 }
 
 void CaseReviewScreen::updateCaseInfo()
@@ -70,12 +69,19 @@ void CaseReviewScreen::updateCaseInfo()
 
 }
 
-void CaseReviewScreen::displayTimeLeft()
+void CaseReviewScreen::updateSliderLabels()
 {
-    int timeLeftInSeconds = (m_duration - m_position) / 1000;
-    short minutes = timeLeftInSeconds / 60;
-    short seconds = timeLeftInSeconds % 60;
+    int durationInSeconds = m_duration / 1000;
+    short durationMinutes = durationInSeconds / 60;
+    short durationSeconds = durationInSeconds % 60;
 
-    const QString& timeLeft = QString("%1:%2").arg(minutes,2,10,QLatin1Char('0')).arg(seconds,2,10,QLatin1Char('0'));
-    ui->labelDuration->setText(timeLeft);
+    const QString& duration = QString("%1:%2").arg(durationMinutes,2,10,QLatin1Char('0')).arg(durationSeconds,2,10,QLatin1Char('0'));
+    ui->labelDuration->setText(duration);
+
+    int timeInSeconds = m_position / 1000;
+    short timeMinutes = timeInSeconds / 60;
+    short timeSeconds = timeInSeconds % 60;
+
+    const QString& time = QString("%1:%2").arg(timeMinutes,2,10,QLatin1Char('0')).arg(timeSeconds,2,10,QLatin1Char('0'));
+    ui->labelTime->setText(time);
 }
