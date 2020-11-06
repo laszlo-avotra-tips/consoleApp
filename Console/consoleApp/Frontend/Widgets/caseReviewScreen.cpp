@@ -46,8 +46,8 @@ void CaseReviewScreen::setSliderPosition(quint64 position)
 {
     const auto& playlist = m_player->getPlaylist(); //CaseReviewModel::instance()->getPlaylist();
     int index = playlist.currentIndex();
-    m_position = position + index * 30;
-    ui->horizontalSlider->setValue(position);
+    m_position = position + index * 30000;
+    ui->horizontalSlider->setValue(m_position);
     updateSliderLabels();
     LOG2(index,m_position)
 }
