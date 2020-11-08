@@ -56,6 +56,8 @@ private slots:
     void handleImageContrast(int value);
 
 
+    void on_pushButtonSave_toggled(bool checked);
+
 private:
     void initBrightnessAndContrast();
     void initUpDown();

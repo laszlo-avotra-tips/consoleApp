@@ -634,6 +634,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         m_scanWorker->warpData( frameData, bufferLength);
 
         if(m_scanWorker->isReady){
+            LOG2(frameData->frameCount, frameData->dispData)
 
             if(image && frameData && frameData->dispData){
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();

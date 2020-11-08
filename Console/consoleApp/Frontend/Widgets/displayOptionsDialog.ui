@@ -912,6 +912,52 @@ color: black;</string>
     <string>DONE</string>
    </property>
   </widget>
+  <widget class="QLineEdit" name="lineEditFn">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>1770</y>
+     <width>811</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonSave">
+   <property name="geometry">
+    <rect>
+     <x>970</x>
+     <y>1760</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>283</width>
+     <height>76</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#636363;
+border: 1px solid rgb( 128, 128, 128 );</string>
+   </property>
+   <property name="text">
+    <string>SAVE</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEditCount">
+   <property name="geometry">
+    <rect>
+     <x>1290</x>
+     <y>1770</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
   <zorder>labelImageContrast</zorder>
   <zorder>labelTitle</zorder>
   <zorder>graphicsView</zorder>
@@ -946,6 +992,9 @@ color: black;</string>
   <zorder>pushButtonTechView</zorder>
   <zorder>pushButtonBack</zorder>
   <zorder>pushButtonDone</zorder>
+  <zorder>lineEditFn</zorder>
+  <zorder>pushButtonSave</zorder>
+  <zorder>lineEditCount</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -22,6 +22,8 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
+    ui->lineEditFn->setText(R"(c:/Avinger_System/recordedimages.dat)");
+    ui->lineEditCount->setText("1000");
 }
 
 void DisplayOptionsDialog::setScene(liveScene *scene)
@@ -311,4 +313,13 @@ void DisplayOptionsDialog::handleImageBrightness(int brightness)
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( brightness );
     LOG1(brightness)
+}
+
+void DisplayOptionsDialog::on_pushButtonSave_toggled(bool checked)
+{
+    const auto& fn = ui->lineEditFn->text();
+    m_model->setFileName(fn);
+    int count = ui->lineEditCount->text().toInt();
+    m_model->setBufferCount(count);
+    LOG2(fn,count);
 }

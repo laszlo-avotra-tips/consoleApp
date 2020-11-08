@@ -29,6 +29,12 @@ public:
 
     void persistModel() const;
 
+    QString fileName() const;
+    void setFileName(const QString &fileName);
+
+    int bufferCount() const;
+    void setBufferCount(int bufferCount);
+
 private:
     bool m_isPointedDown{true};
     bool m_isImageColorGray{true};
@@ -36,6 +42,8 @@ private:
     int  m_imageBrightness{0};
     int  m_imageContrast{1};
     uint8_t m_depthIndex{1};
+    QString m_fileName;
+    int     m_bufferCount{0};
 };
 
 #endif // DISPLAYOPTIONSMODEL_H

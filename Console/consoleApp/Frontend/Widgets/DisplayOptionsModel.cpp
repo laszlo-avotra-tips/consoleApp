@@ -42,6 +42,26 @@ void DisplayOptionsModel::persistModel() const
     settings.setImageDepthIndex(m_depthIndex);
 }
 
+QString DisplayOptionsModel::fileName() const
+{
+    return m_fileName;
+}
+
+void DisplayOptionsModel::setFileName(const QString &fileName)
+{
+    m_fileName = fileName;
+}
+
+int DisplayOptionsModel::bufferCount() const
+{
+    return m_bufferCount;
+}
+
+void DisplayOptionsModel::setBufferCount(int bufferCount)
+{
+    m_bufferCount = bufferCount;
+}
+
 int DisplayOptionsModel::imageContrast() const
 {
     return m_imageContrast;
