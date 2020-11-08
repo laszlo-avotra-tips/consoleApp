@@ -20,6 +20,7 @@ private:
     QString m_fn{(R"(c:/Avinger_System/recordedimages.dat)")};
     QFile* m_file;
     quint64 m_bytesWritten{0};
+    bool m_isFile{false};
 
 private:
     SaveFrame();

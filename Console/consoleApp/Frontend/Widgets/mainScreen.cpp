@@ -395,10 +395,9 @@ void MainScreen::updateDeviceSettings()
 void MainScreen::frameDataReady(const OCTFile::OctData_t *frameData)
 {
     static int count = 0;
-    const int countBegin = 200;
-    const int countEnd = 1200;
 
     LOG2(frameData->frameCount, frameData->dispData);
+    SaveFrame::instance()->saveBuffer(frameData->dispData, ++count);
 }
 
 

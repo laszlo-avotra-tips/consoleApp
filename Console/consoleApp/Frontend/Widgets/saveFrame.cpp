@@ -15,16 +15,19 @@ SaveFrame* SaveFrame::instance()
 
 void SaveFrame::saveBuffer(const uint8_t *buffer, int count)
 {
-    const char* buff = reinterpret_cast<const char*>(buffer);
-    if((count > m_countBegin) && count <= m_countEnd)
-    {
-        auto bw = m_file->write(buff, 1024*1024 );
-        if(bw != -1){
-            m_bytesWritten += bw;
-        } else {
-            LOG2("ERROR",bw)
+    if(m_isFile){
+        const char* buff = reinterpret_cast<const char*>(buffer);
+        if((count > m_countBegin) && count <= m_countEnd)
+        {
+            auto bw = m_file->write(buff, 1024*1024 );
+            if(bw != -1){
+                m_bytesWritten += bw;
+            } else {
+                LOG2("ERROR",bw)
+            }
         }
     }
+
 }
 
 quint64 SaveFrame::bytesWritten() const
@@ -35,5 +38,6 @@ quint64 SaveFrame::bytesWritten() const
 SaveFrame::SaveFrame()
 {
     m_file = new QFile(m_fn);
-    m_file->open(QIODevice::Append);
+    m_isFile = m_file->open(QIODevice::Append);
+    LOG1(m_isFile);
 }
