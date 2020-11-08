@@ -35,6 +35,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/rotationIndicatorFactory.h \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.h \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.h \
+    $$PWD/Frontend/Widgets/saveFrame.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
@@ -104,6 +105,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/rotationIndicatorFactory.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.cpp \
+    $$PWD/Frontend/Widgets/saveFrame.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \

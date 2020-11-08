@@ -40,7 +40,6 @@ signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
     void sledRunningStateChanged(int isInRunningState);
-    void frameDataReady(const OCTFile::OctData_t*);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -94,6 +93,7 @@ private:
     int getSledRuntime();
     void setSceneCursor( QCursor cursor );
     void updateDeviceSettings();
+    void frameDataReady(const OCTFile::OctData_t* oct);
 
 private:
     Ui::MainScreen *ui;
