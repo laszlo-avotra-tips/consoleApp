@@ -21,6 +21,9 @@
 #include <QPainter>
 #include "logger.h"
 
+namespace{
+const double decoratedImageScaleFactor{2.11};
+}
 /*
  * constructor
  */
@@ -75,8 +78,6 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
     // TBD: cannot be global to the class?
     const QImage LogoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
-    const double decoratedImageScaleFactor{2.11};
-
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     auto imageRect = sectorImage.rect();
@@ -95,7 +96,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX0{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
+    const int logoX0{50};//{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     const int logoY{50};
 
     /*
@@ -279,9 +280,9 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
 void captureMachine::addTimeStamp(QPainter& painter)
 {
-    const int nowX{100};
-    const int nowDateY{100};
-    const int nowTimeY{160};
+    const int nowX{50};
+    const int nowDateY{200};
+    const int nowTimeY{260};
 
     painter.setPen( QPen( Qt::white ) );
 
@@ -296,7 +297,7 @@ void captureMachine::addTimeStamp(QPainter& painter)
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn)
 {
-    const int fnX{100};
+    const int fnX{int(SectorWidth_px * decoratedImageScaleFactor) - 200};//{100};
     const int fnY{2100};
 
     painter.setPen( QPen( Qt::white ) );
