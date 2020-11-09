@@ -154,8 +154,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     addTimeStamp(painter);
     addFileName(painter,saveName);
 
-    const int logoX1{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
-    painter.drawImage( logoX1, logoY, LogoImage );
+//    const int logoX1{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
+    painter.drawImage( logoX0, logoY, LogoImage );
     painter.end();
     QImage dim = decoratedImage.copy(scaledRect);
 
