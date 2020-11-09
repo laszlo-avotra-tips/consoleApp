@@ -310,7 +310,7 @@ void captureMachine::addFileName(QPainter &painter, const QString &fn)
 
 void captureMachine::addCatheterName(QPainter &painter)
 {
-    const int catheterX{int(SectorWidth_px * decoratedImageScaleFactor) - 500};
+    const int catheterX{int(SectorWidth_px * decoratedImageScaleFactor) - 450};
     const int catheterY0{140};
     const int catheterY1{200};
     painter.setFont( QFont( "DinPro-regular", 20 ) );
@@ -322,7 +322,7 @@ void captureMachine::addCatheterName(QPainter &painter)
 
     LOG0(names.count());
     if(names.count() >= 2){
-        int delta = (names[0].length() - names[1].length()) * 10;
+        int delta = (names[0].length() - names[1].length()) * 22;
         LOG3(names[0].length(), names[1].length(), delta)
         painter.drawText(catheterX, catheterY0, names[0]);
         painter.drawText(catheterX + delta, catheterY1, names[1]);
