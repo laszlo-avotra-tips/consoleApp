@@ -107,6 +107,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     addTimeStamp(painter);
     addFileName(painter,saveName);
+    addCatheterName(painter);
 
     //    Upper Right -- Logo
     painter.drawImage( logoX0, logoY, LogoImage );
@@ -153,6 +154,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     addTimeStamp(painter);
     addFileName(painter,saveName);
+    addCatheterName(painter);
 
 //    const int logoX1{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     painter.drawImage( logoX0, logoY, LogoImage );
@@ -297,13 +299,34 @@ void captureMachine::addTimeStamp(QPainter& painter)
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn)
 {
-    const int fnX{int(SectorWidth_px * decoratedImageScaleFactor) - 200};//{100};
+    const int fnX{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
     const int fnY{2100};
 
     painter.setPen( QPen( Qt::white ) );
 
     painter.setFont( QFont( "DinPro-regular", 20 ) );
     painter.drawText( fnX, fnY, fn);
+}
+
+void captureMachine::addCatheterName(QPainter &painter)
+{
+    const int catheterX{int(SectorWidth_px * decoratedImageScaleFactor) - 500};
+    const int catheterY0{200};
+    const int catheterY1{260};
+    painter.setFont( QFont( "DinPro-regular", 20 ) );
+
+    auto device = deviceSettings::Instance().current();
+    auto name = device->getSplitDeviceName();
+
+    QStringList names = name.split("\n");
+
+    LOG0(names.count());
+    if(names.count() >= 2){
+        LOG2(names[0], names[1])
+        painter.drawText(catheterX, catheterY0, names[0]);
+        painter.drawText(catheterX, catheterY1, names[1]);
+    }
+
 }
 
 
