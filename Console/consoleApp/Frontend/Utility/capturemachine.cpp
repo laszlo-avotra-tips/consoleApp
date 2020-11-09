@@ -322,7 +322,7 @@ void captureMachine::addCatheterName(QPainter &painter)
 
     LOG0(names.count());
     if(names.count() >= 2){
-        int delta = (names[0].length() - names[1].length()) * 22;
+        int delta = (names[0].length() - names[1].length()) * 21;
         LOG3(names[0].length(), names[1].length(), delta)
         painter.drawText(catheterX, catheterY0, names[0]);
         painter.drawText(catheterX + delta, catheterY1, names[1]);
