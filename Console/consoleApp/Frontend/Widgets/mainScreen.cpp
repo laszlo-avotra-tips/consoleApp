@@ -580,9 +580,9 @@ void MainScreen::on_pushButtonRecord_clicked()
 void MainScreen::onCaptureImage()
 {
     static int currImgNumber = 0;
-    // tag the images as "img-001, img-002, ..."
+    // tag the images as "IMG 1, IMG 2, ..."
     currImgNumber++;
-    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
+    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber);
     LOG1(tag);
     QRect rectangle = ui->graphicsView->rect();
 //    rectangle.setWidth(1440);
