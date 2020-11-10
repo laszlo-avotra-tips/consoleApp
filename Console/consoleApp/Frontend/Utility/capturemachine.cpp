@@ -89,7 +89,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     // capture number is tracked here
     currCaptureNumber++;
-    QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber, 3, 10, QLatin1Char( '0' ) );
+    QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
 
     //
     caseInfo &info = caseInfo::Instance();
