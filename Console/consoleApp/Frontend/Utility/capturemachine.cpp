@@ -79,8 +79,10 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     // TBD: cannot be global to the class?
 // :/octConsole/Frontend/Resources/Avinger_Logo.png
 //    const QImage LogoImage( ":/octConsole/L300menuButton" );
-    const QImage LogoImage( ":/octConsole/Frontend/Resources/Avinger_Logo.png" );
+    const QImage logoImage( ":/octConsole/Frontend/Resources/Avinger_Logo.png" );
+    const QImage LogoImage = logoImage.scaledToWidth(300);
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    LOG2(LogoImage.height(), LogoImage.width())
 
     auto imageRect = sectorImage.rect();
     QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * decoratedImageScaleFactor, imageRect.height() * decoratedImageScaleFactor);
