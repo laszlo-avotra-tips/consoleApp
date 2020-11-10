@@ -516,10 +516,11 @@ void MainScreen::on_pushButtonCapture_released()
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    QString yellowBorder("border:5px solid rgb(245,196,0);");
-    ui->graphicsView->setStyleSheet(yellowBorder);
     //emit captureImage();
     onCaptureImage();
+
+    QString yellowBorder("border:5px solid rgb(245,196,0);");
+    ui->graphicsView->setStyleSheet(yellowBorder);
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
 }
 
