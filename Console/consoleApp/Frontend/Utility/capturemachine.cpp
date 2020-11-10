@@ -77,7 +77,9 @@ void captureMachine::imageCapture( QImage decoratedImage, QImage sector, QString
 void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
     // TBD: cannot be global to the class?
-    const QImage LogoImage( ":/octConsole/L300menuButton" );
+// :/octConsole/Frontend/Resources/Avinger_Logo.png
+//    const QImage LogoImage( ":/octConsole/L300menuButton" );
+    const QImage LogoImage( ":/octConsole/Frontend/Resources/Avinger_Logo.png" );
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     auto imageRect = sectorImage.rect();
