@@ -97,8 +97,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX0{0};
-    const int logoY{0};
+    const int logoX0{20};
+    const int logoY{20};
 
     /*
      * Paint the procedure data to the sector image.
