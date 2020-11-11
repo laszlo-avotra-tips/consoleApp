@@ -263,7 +263,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
 void captureMachine::addTimeStamp(QPainter& painter)
 {
-    const int nowX{0};
+    const int nowX{20};
     const int nowDateY{200};
     const int nowTimeY{260};
 
@@ -271,7 +271,7 @@ void captureMachine::addTimeStamp(QPainter& painter)
 
     const auto& now = QDateTime::currentDateTime().toUTC();
     QString timeStampDate = now.toString("yyyy-MM-dd" );
-    QString timeStampTime = now.toString("  hh:mm:ss");
+    QString timeStampTime = now.toString("hh:mm:ss");
 
     painter.setFont( QFont( "DinPro-regular", 20 ) );
     painter.drawText( nowX, nowDateY, timeStampDate);
@@ -280,7 +280,7 @@ void captureMachine::addTimeStamp(QPainter& painter)
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn)
 {
-    const int fnX{0}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
+    const int fnX{20}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
     const int fnY{2140};
 
     painter.setPen( QPen( Qt::white ) );
@@ -291,7 +291,10 @@ void captureMachine::addFileName(QPainter &painter, const QString &fn)
 
 void captureMachine::addCatheterName(QPainter &painter)
 {
-    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    QFont nameFont("DinPro-regular", 20 );
+    painter.setFont(nameFont);
+
+    LOG3(nameFont.pixelSize(),nameFont.pointSize(),nameFont.pointSizeF())
 
     auto device = deviceSettings::Instance().current();
     auto name = device->getSplitDeviceName();
