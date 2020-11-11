@@ -311,8 +311,8 @@ void captureMachine::addCatheterName(QPainter &painter)
     LOG2(rect1.width(), rect1.height())
 
     if(names.count() >= 2){
-        const int catheterX0{int(SectorWidth_px - rect0.width() - 20)};
-        const int catheterX1{int(SectorWidth_px - rect1.width() - 20)};
+        const int catheterX0{int(SectorWidth_px - rect0.width() / imageScaleFactor - 20)};
+        const int catheterX1{int(SectorWidth_px - rect1.width() /vimageScaleFactor - 20)};
         const int catheterY0{100};
         const int catheterY1{160};
         painter.drawText(catheterX0, catheterY0, names[0]);
