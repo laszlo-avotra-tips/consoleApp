@@ -266,8 +266,8 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 void captureMachine::addTimeStamp(QPainter& painter)
 {
     const int nowX{20};
-    const int nowDateY{200};
-    const int nowTimeY{260};
+    const int nowDateY{120};
+    const int nowTimeY{180};
 
     painter.setPen( QPen( Qt::white ) );
 
@@ -309,13 +309,13 @@ void captureMachine::addCatheterName(QPainter &painter)
     QRect rect1 = qfm.tightBoundingRect(names[1]);
     LOG2(rect0.width(), rect0.height())
     LOG2(rect1.width(), rect1.height())
-    const int catheterX0{int(SectorWidth_px * imageScaleFactor - rect0.width())};
-    const int catheterX1{int(SectorWidth_px * imageScaleFactor - rect1.width())};
+    const int catheterX0{int(SectorWidth_px * imageScaleFactor - rect0.width()) - 20 };
+    const int catheterX1{int(SectorWidth_px * imageScaleFactor - rect1.width()) - 20};
 
     LOG2(catheterX0, catheterX1)
     if(names.count() >= 2){
-        const int catheterY0{100};
-        const int catheterY1{160};
+        const int catheterY0{60};
+        const int catheterY1{120};
         painter.drawText(catheterX0, catheterY0, names[0]);
         painter.drawText(catheterX1, catheterY1, names[1]);
     }
