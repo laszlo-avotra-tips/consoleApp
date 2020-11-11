@@ -118,7 +118,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     // Store the capture
     const QString thumbName       = saveDirName + "/.thumb_" + saveName + ".png";
-    const QString DecoratedImageName = saveDirName + "/"        + saveName + DecoratedImageSuffix + ".png";
+    const QString imageName = saveDirName + "/"        + saveName + ".png";
 
     QMatrix m;
 //    m.rotate( 90 );
@@ -153,13 +153,13 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     painter.end();
     QImage dim = decoratedImage.copy(scaledRect);
 
-    if( !dim.save( DecoratedImageName, "PNG", 100 ) )
+    if( !dim.save( imageName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: decorated image capture failed" )
     }
     else
     {
-        emit sendFileToKey( DecoratedImageName );
+        emit sendFileToKey( imageName );
     }
 
     // update the model
