@@ -309,8 +309,8 @@ void captureMachine::addCatheterName(QPainter &painter)
     QRect rect1 = qfm.tightBoundingRect(names[1]);
     LOG2(rect0.width(), rect0.height())
     LOG2(rect1.width(), rect1.height())
-    const int catheterX0{int(SectorWidth_px - rect0.width())};
-    const int catheterX1{int(SectorWidth_px - rect1.width())};
+    const int catheterX0{int(SectorWidth_px * imageScaleFactor - rect0.width())};
+    const int catheterX1{int(SectorWidth_px * imageScaleFactor - rect1.width())};
 
     LOG2(catheterX0, catheterX1)
     if(names.count() >= 2){
