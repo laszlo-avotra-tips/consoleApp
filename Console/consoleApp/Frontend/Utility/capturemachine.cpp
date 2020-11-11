@@ -298,23 +298,25 @@ void captureMachine::addCatheterName(QPainter &painter)
 
     QFontMetrics qfm(nameFont);
 
-    LOG3(nameFont.pixelSize(),nameFont.pointSize(),nameFont.pointSizeF())
+    LOG2(nameFont.pointSize(),nameFont.pointSizeF())
     LOG2(qfm.maxWidth(), qfm.height())
 
     auto device = deviceSettings::Instance().current();
     auto name = device->getSplitDeviceName();
 
     QStringList names = name.split("\n");
+    QRect rect0 = qfm.tightBoundingRect(names[0]);
+    QRect rect1 = qfm.tightBoundingRect(names[1]);
+    LOG2(rect0.width(), rect0.height())
+    LOG2(rect1.width(), rect1.height())
 
-    LOG0(names.count());
     if(names.count() >= 2){
-        const int catheterX{int((SectorWidth_px - 200 ) * imageScaleFactor)};
+        const int catheterX0{int((SectorWidth_px - rect0.width()) * imageScaleFactor)};
+        const int catheterX1{int((SectorWidth_px - rect1.width()) * imageScaleFactor)};
         const int catheterY0{100};
         const int catheterY1{160};
-        int delta = (names[0].length() - names[1].length()) * 15;
-        LOG3(names[0].length(), names[1].length(), delta)
-        painter.drawText(catheterX, catheterY0, names[0]);
-        painter.drawText(catheterX + delta, catheterY1, names[1]);
+        painter.drawText(catheterX0, catheterY0, names[0]);
+        painter.drawText(catheterX1, catheterY1, names[1]);
     }
 }
 
