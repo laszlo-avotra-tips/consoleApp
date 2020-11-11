@@ -80,7 +80,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 // :/octConsole/Frontend/Resources/Avinger_Logo.png
 //    const QImage LogoImage( ":/octConsole/L300menuButton" );
 //    const QImage logoImage( ":/octConsole/Frontend/Resources/Avinger_Logo.png" );
-    const QImage logoImage( "captureLogo" );
+    const QImage logoImage( ":/captureLogo" );
     const QImage LogoImage = logoImage.scaledToWidth(300);
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     LOG2(LogoImage.height(), LogoImage.width())
