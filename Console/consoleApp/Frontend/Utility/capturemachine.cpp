@@ -81,7 +81,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    const QImage LogoImage( ":/octConsole/L300menuButton" );
 //    const QImage logoImage( ":/octConsole/Frontend/Resources/Avinger_Logo.png" );
     const QImage logoImage( ":/octConsole/captureLogo.png" );
-    const QImage LogoImage = logoImage.scaledToWidth(400);
+    const QImage LogoImage = logoImage.scaledToWidth(380);
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     LOG2(LogoImage.height(), LogoImage.width())
 
@@ -101,7 +101,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX0{40};//{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
+    const int logoX0{50};//{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     const int logoY{50};
 
     /*
