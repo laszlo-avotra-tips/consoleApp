@@ -266,8 +266,8 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 void captureMachine::addTimeStamp(QPainter& painter)
 {
     const int nowX{20};
-    const int nowDateY{120};
-    const int nowTimeY{180};
+    const int nowDateY{180};
+    const int nowTimeY{240};
 
     painter.setPen( QPen( Qt::white ) );
 
