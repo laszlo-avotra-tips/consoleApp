@@ -99,12 +99,6 @@ public:
         return zoomFactor;
     }
 
-    // XXX: do not like wildcarding based on the base name
-    QImage loadSector( QString sectorName ) { return( loadImage( sectorName + "*" + SectorImageSuffix + ".png" ) ); }
-    QImage loadSectorThumbnail( QString sectorThumbnailName ) { return( loadImage( ".thumb_" + sectorThumbnailName + "*" + SectorImageSuffix + ".png" ) ); }
-    QImage loadDecoratedImage( QString decoratedImageName ) { return( loadImage( decoratedImageName + "*" + DecoratedImageSuffix + ".png" ) ); }
-    void replaceDecoratedImage( QImage p );
-
 private:
     QImage loadImage(QString);
     void saveDecoratedImage(QImage,QString);

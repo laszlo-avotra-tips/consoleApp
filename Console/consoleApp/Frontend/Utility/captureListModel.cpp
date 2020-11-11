@@ -144,14 +144,6 @@ int captureListModel::getLastCaptureId( void )
 
 
 /*
- * class captureItem implementation
- */
-void captureItem::replaceDecoratedImage(QImage p)
-{
-    saveDecoratedImage( p, name + DecoratedImageSuffix + ".png" );
-}
-
-/*
  * loadImage()
  *
  * Give a type of image to load (specified in image filter as sector, etc.)

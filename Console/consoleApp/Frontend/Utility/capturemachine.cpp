@@ -76,10 +76,6 @@ void captureMachine::imageCapture( QImage decoratedImage, QImage sector, QString
  */
 void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
-    // TBD: cannot be global to the class?
-// :/octConsole/Frontend/Resources/Avinger_Logo.png
-//    const QImage LogoImage( ":/octConsole/L300menuButton" );
-//    const QImage logoImage( ":/octConsole/Frontend/Resources/Avinger_Logo.png" );
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
@@ -101,7 +97,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX0{50};//{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
+    const int logoX0{50};
     const int logoY{50};
 
     /*
@@ -121,30 +117,21 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
 
     // Store the capture
-    const QString SecName            = saveDirName + "/"        + saveName + SectorImageSuffix    + ".png";
-    const QString ThumbSecName       = saveDirName + "/.thumb_" + saveName + SectorImageSuffix    + ".png";
+    const QString thumbName       = saveDirName + "/.thumb_" + saveName + ".png";
     const QString DecoratedImageName = saveDirName + "/"        + saveName + DecoratedImageSuffix + ".png";
 
     QMatrix m;
 //    m.rotate( 90 );
-    LOG3(SecName,saveDirName,saveName)
-    if( !plainImage.save( SecName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Image Capture: sector capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( SecName );
-    }
+    LOG2(saveDirName,saveName)
 
     // save a thumbnail image for the UI to use
-    if( !plainImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
+    if( !plainImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
     }
     else
     {
-        emit sendFileToKey( ThumbSecName );
+        emit sendFileToKey( thumbName );
     }
 
     /*
@@ -253,30 +240,19 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     QString saveName =  QString( ClipName );
 
     // Store the capture
-    const QString SecName      = saveDirName + "/"        + saveName + SectorImageSuffix    + ".png";
-    const QString ThumbSecName = saveDirName + "/.thumb_" + saveName + SectorImageSuffix    + ".png";
+    const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
 
     QMatrix m;
     m.rotate( 90 );
 
-
-    if( !secRGB.save( SecName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Loop capture: sector capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( SecName );
-    }
-
     // save a thumbnail image for the UI to use
-    if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( ThumbSecName, "PNG", 100 ) )
+    if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Loop capture: sector thumbnail capture failed" )
     }
     else
     {
-        emit sendFileToKey( ThumbSecName );
+        emit sendFileToKey( thumbName );
     }
 
     emit updateClipCount();
