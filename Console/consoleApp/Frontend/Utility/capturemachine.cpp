@@ -101,7 +101,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX0{50};//{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
+    const int logoX0{40};//{int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     const int logoY{50};
 
     /*
