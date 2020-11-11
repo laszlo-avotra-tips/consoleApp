@@ -22,7 +22,7 @@
 #include "logger.h"
 
 namespace{
-const double decoratedImageScaleFactor{2.11};
+const double imageScaleFactor{2.11};
 }
 /*
  * constructor
@@ -82,7 +82,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     LOG2(LogoImage.height(), LogoImage.width())
 
     auto imageRect = sectorImage.rect();
-    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * decoratedImageScaleFactor, imageRect.height() * decoratedImageScaleFactor);
+    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Obtain the current timestamp
@@ -97,8 +97,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QString saveDirName = info.getCapturesDir();
     QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
 
-    const int logoX0{50};
-    const int logoY{50};
+    const int logoX0{0};
+    const int logoY{0};
 
     /*
      * Paint the procedure data to the sector image.
@@ -280,8 +280,8 @@ void captureMachine::addTimeStamp(QPainter& painter)
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn)
 {
-    const int fnX{150}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
-    const int fnY{2100};
+    const int fnX{0}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
+    const int fnY{2140};
 
     painter.setPen( QPen( Qt::white ) );
 
@@ -291,9 +291,6 @@ void captureMachine::addFileName(QPainter &painter, const QString &fn)
 
 void captureMachine::addCatheterName(QPainter &painter)
 {
-    const int catheterX{int(SectorWidth_px * decoratedImageScaleFactor) - 450};
-    const int catheterY0{140};
-    const int catheterY1{200};
     painter.setFont( QFont( "DinPro-regular", 20 ) );
 
     auto device = deviceSettings::Instance().current();
@@ -303,6 +300,9 @@ void captureMachine::addCatheterName(QPainter &painter)
 
     LOG0(names.count());
     if(names.count() >= 2){
+        const int catheterX{int((SectorWidth_px - 200 ) * imageScaleFactor)};
+        const int catheterY0{0};
+        const int catheterY1{60};
         int delta = (names[0].length() - names[1].length()) * 15;
         LOG3(names[0].length(), names[1].length(), delta)
         painter.drawText(catheterX, catheterY0, names[0]);
