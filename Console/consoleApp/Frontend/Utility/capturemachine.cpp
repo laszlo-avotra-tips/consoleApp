@@ -19,6 +19,8 @@
 #include <QDateTime>
 #include <QDir>
 #include <QPainter>
+#include <QFontMetrics>
+
 #include "logger.h"
 
 namespace{
@@ -294,7 +296,10 @@ void captureMachine::addCatheterName(QPainter &painter)
     QFont nameFont("DinPro-regular", 20 );
     painter.setFont(nameFont);
 
+    QFontMetrics qfm(nameFont);
+
     LOG3(nameFont.pixelSize(),nameFont.pointSize(),nameFont.pointSizeF())
+    LOG2(qfm.maxWidth(), qfm.height())
 
     auto device = deviceSettings::Instance().current();
     auto name = device->getSplitDeviceName();
