@@ -81,7 +81,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    const QImage LogoImage( ":/octConsole/L300menuButton" );
 //    const QImage logoImage( ":/octConsole/Frontend/Resources/Avinger_Logo.png" );
     const QImage logoImage( ":/octConsole/captureLogo.png" );
-    const QImage LogoImage = logoImage.scaledToWidth(300);
+    const QImage LogoImage = logoImage.scaledToWidth(400);
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     LOG2(LogoImage.height(), LogoImage.width())
 
@@ -287,7 +287,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
 void captureMachine::addTimeStamp(QPainter& painter)
 {
-    const int nowX{50};
+    const int nowX{150};
     const int nowDateY{200};
     const int nowTimeY{260};
 
@@ -304,7 +304,7 @@ void captureMachine::addTimeStamp(QPainter& painter)
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn)
 {
-    const int fnX{50}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
+    const int fnX{150}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
     const int fnY{2100};
 
     painter.setPen( QPen( Qt::white ) );
