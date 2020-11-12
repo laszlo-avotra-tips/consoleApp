@@ -29,7 +29,11 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    box = new QRect( overlayPixmap->width() - int(380/decoratedImageScaleFactor), overlayPixmap->height() - int(280/decoratedImageScaleFactor), 1, 1 );
+    int boxX = overlayPixmap->width() - int(380/decoratedImageScaleFactor);
+    int boxY = overlayPixmap->height() - int(280/decoratedImageScaleFactor);
+//    box = new QRect( overlayPixmap->width() - int(380/decoratedImageScaleFactor), overlayPixmap->height() - int(280/decoratedImageScaleFactor), 1, 1 );
+    box = new QRect( boxX, boxY, 1, 1 );
+    LOG2(boxX, boxY)
     LOG2(overlayPixmap->width(), overlayPixmap->height())
     LOG2(box->x(),box->y())
     setPixmap( *overlayPixmap );
