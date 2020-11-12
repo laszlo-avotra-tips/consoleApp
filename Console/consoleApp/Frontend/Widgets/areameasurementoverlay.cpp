@@ -587,9 +587,14 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             // Size the box according to the text drawn.
             QStaticText st( str );
             st.prepare( QTransform(), font );  // prepare text so we can determine the text size
-            box->setWidth( int(st.size().width() + ( 2 * xMargin ) ) );
-            box->setHeight( int(st.size().height() + ( 2 * yMargin ) ) );
+            int w = int(st.size().width() + ( 2 * xMargin ));
+            int h = int(st.size().height() + ( 2 * yMargin ) );
+            box->setWidth( w );
+            box->setHeight( h );
+            box->setX(1024 - w);
+            box->setY(1024 - h);
             painter->drawRect( *box );
+            LOG2(w,h)
             LOG2(box->top(), box->left())
             LOG2(box->width(), box->height())
         }
