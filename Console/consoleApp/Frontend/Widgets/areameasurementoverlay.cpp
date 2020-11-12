@@ -30,7 +30,8 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
 
     // Position the box near the bottom right corner with space for text.
     box = new QRect( overlayPixmap->width() - int(380/decoratedImageScaleFactor), overlayPixmap->height() - int(280/decoratedImageScaleFactor), 1, 1 );
-    LOG3(decoratedImageScaleFactor,box->width(),box->height())
+    LOG2(overlayPixmap->width(), overlayPixmap->height())
+    LOG2(box->x(),box->y())
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
