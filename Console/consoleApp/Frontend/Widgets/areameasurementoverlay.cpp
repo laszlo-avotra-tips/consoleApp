@@ -585,6 +585,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             box->setWidth( int(st.size().width() + ( 2 * xMargin ) ) );
             box->setHeight( int(st.size().height() + ( 2 * yMargin ) ) );
             painter->drawRect( *box );
+            LOG2(box->width(), box->height())
         }
     }
     else
