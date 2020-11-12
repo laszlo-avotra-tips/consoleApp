@@ -25,12 +25,17 @@ const int MeasurementPrecision = 1;
 AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     : QGraphicsPixmapItem()
 {
-    const double decoratedImageScaleFactor{2.11};
+    const double imageScaleFactor{2.11};
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    box = new QRect( overlayPixmap->width() - int(380/decoratedImageScaleFactor), overlayPixmap->height() - int(280/decoratedImageScaleFactor), 1, 1 );
-    LOG3(decoratedImageScaleFactor,box->width(),box->height())
+    int boxX = overlayPixmap->width() - int(380/imageScaleFactor);
+    int boxY = overlayPixmap->height() - int(280/imageScaleFactor);
+
+    box = new QRect( boxX, boxY, 1, 1 );
+//    LOG2(boxX, boxY)
+//    LOG2(overlayPixmap->width(), overlayPixmap->height())
+//    LOG2(box->x(),box->y())
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
@@ -582,9 +587,16 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             // Size the box according to the text drawn.
             QStaticText st( str );
             st.prepare( QTransform(), font );  // prepare text so we can determine the text size
-            box->setWidth( int(st.size().width() + ( 2 * xMargin ) ) );
-            box->setHeight( int(st.size().height() + ( 2 * yMargin ) ) );
+            int w = int(st.size().width() + ( 2 * xMargin ));
+            int h = int(st.size().height() + ( 2 * yMargin ) );
+            box->setWidth( w );
+            box->setHeight( h );
+            box->setX(1024 - w - 9);
+            box->setY(1024 - h - 9);
             painter->drawRect( *box );
+//            LOG2(w,h)
+//            LOG2(box->top(), box->left())
+//            LOG2(box->width(), box->height())
         }
     }
     else
@@ -623,9 +635,20 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 // Size the box according to the text drawn.
                 staticText.setText( QString( "Area: %1 mm^2" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
                 staticText.prepare( QTransform(), font );                               // prepare text so we can determine the text size
-                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
-                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
+//                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
+//                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
+
+                int w = int(staticText.size().width());
+                int h = int(( staticText.size().height() * 3 ) + ( 3 * yMargin ) );
+                box->setWidth( w );
+                box->setHeight( h );
+                box->setX(1024 - w - 9);
+                box->setY(1024 - h - 9);
+
                 painter->drawRect( *box );
+//                LOG2(w,h)
+//                LOG2(box->top(), box->left())
+//                LOG2(box->width(), box->height())
             }
         }
     }

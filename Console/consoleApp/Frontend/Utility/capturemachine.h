@@ -71,6 +71,8 @@ private:
     void processLoopRecording( ClipItem_t loop );
     void addTimeStamp(QPainter& painter);
     void addFileName(QPainter& painter, const QString& fn);
+    void addCatheterName(QPainter& painter);
+
 
     QMutex mutex;
 

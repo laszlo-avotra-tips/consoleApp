@@ -516,10 +516,11 @@ void MainScreen::on_pushButtonCapture_released()
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    QString yellowBorder("border:5px solid rgb(245,196,0);");
-    ui->graphicsView->setStyleSheet(yellowBorder);
     //emit captureImage();
     onCaptureImage();
+
+    QString yellowBorder("border:5px solid rgb(245,196,0);");
+    ui->graphicsView->setStyleSheet(yellowBorder);
     QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
 }
 
@@ -580,9 +581,9 @@ void MainScreen::on_pushButtonRecord_clicked()
 void MainScreen::onCaptureImage()
 {
     static int currImgNumber = 0;
-    // tag the images as "img-001, img-002, ..."
+    // tag the images as "IMG 1, IMG 2, ..."
     currImgNumber++;
-    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber, 3, 10, QLatin1Char( '0' ) );
+    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber);
     LOG1(tag);
     QRect rectangle = ui->graphicsView->rect();
 //    rectangle.setWidth(1440);
