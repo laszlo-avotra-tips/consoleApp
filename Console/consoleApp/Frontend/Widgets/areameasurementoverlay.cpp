@@ -25,17 +25,17 @@ const int MeasurementPrecision = 1;
 AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     : QGraphicsPixmapItem()
 {
-    const double decoratedImageScaleFactor{2.11};
+    const double imageScaleFactor{2.11};
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    int boxX = overlayPixmap->width() - int(380/decoratedImageScaleFactor);
-    int boxY = overlayPixmap->height() - int(280/decoratedImageScaleFactor);
-//    box = new QRect( overlayPixmap->width() - int(380/decoratedImageScaleFactor), overlayPixmap->height() - int(280/decoratedImageScaleFactor), 1, 1 );
+    int boxX = overlayPixmap->width() - int(380/imageScaleFactor);
+    int boxY = overlayPixmap->height() - int(280/imageScaleFactor);
+
     box = new QRect( boxX, boxY, 1, 1 );
-    LOG2(boxX, boxY)
-    LOG2(overlayPixmap->width(), overlayPixmap->height())
-    LOG2(box->x(),box->y())
+//    LOG2(boxX, boxY)
+//    LOG2(overlayPixmap->width(), overlayPixmap->height())
+//    LOG2(box->x(),box->y())
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
@@ -594,9 +594,9 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             box->setX(1024 - w - 9);
             box->setY(1024 - h - 9);
             painter->drawRect( *box );
-            LOG2(w,h)
-            LOG2(box->top(), box->left())
-            LOG2(box->width(), box->height())
+//            LOG2(w,h)
+//            LOG2(box->top(), box->left())
+//            LOG2(box->width(), box->height())
         }
     }
     else
@@ -646,9 +646,9 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 box->setY(1024 - h - 9);
 
                 painter->drawRect( *box );
-                LOG2(w,h)
-                LOG2(box->top(), box->left())
-                LOG2(box->width(), box->height())
+//                LOG2(w,h)
+//                LOG2(box->top(), box->left())
+//                LOG2(box->width(), box->height())
             }
         }
     }
