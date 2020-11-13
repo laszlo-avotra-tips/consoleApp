@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "videoplayer.h"
+#include "Utility/captureListModel.h"
 
 
 namespace Ui {
