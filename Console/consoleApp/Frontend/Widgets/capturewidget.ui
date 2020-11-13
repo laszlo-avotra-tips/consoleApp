@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>captureWidget</class>
+ <widget class="QWidget" name="captureWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>686</width>
+    <height>775</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QScrollBar::handle:vertical {
+    background: rgb( 52, 73, 94 );
+    min-height: 74px;
+    border-radius: 3px;
+    border: 1px solid #333333;
+}
+
+QScrollBar:vertical {
+    border: 2px solid #424242;
+    background: #424242;
+    border-radius: 5px;
+    max-width: 17px;
+ }
+
+ QScrollBar::add-line:vertical { width: 0; }
+ QScrollBar::sub-line:vertical { width: 0; }
+ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical 
+ { 
+     background: #424242; 
+ }
+
+QListView {
+	background: url(:/octConsole/Frontend/Resources/blank_texture.png);
+	border: none;
+}
+
+/* ---------- Group Boxes ---------- */
+
+ QGroupBox {
+    font: 20px DINPro-medium;
+    color: rgba(210, 210, 210, 255);
+    background-color: #909090;
+    border: 0px solid #909090;
+    border-radius: 5px;
+    margin-top: 1px; /* leave space at the top for the title */
+ }
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* position at the top center */
+    left: 5px;
+    padding-top:  0px;
+ }
+
+/* List views and edits boxes: */
+
+QLineEdit, QPlainTextEdit {
+    color: #808080;
+	font: 15px DinPro-medium;
+    selection-color: white;   
+    border: 2px groove white;
+    border-radius: 4px;
+}
+
+QLabel {
+	font: 20px &quot;DinPRO-medium&quot;;
+	color: rgba( 128,128,128, 255 );
+}
+
+
+
+
+/****************
+ *         v3.0            *
+ ****************/
+
+
+/* --------- General font and layout defaults ----------*/
+
+QDialog {
+ font: 18px &quot;DinPRO-regular&quot;;
+ color: white;
+ background-color: rgb( 147, 147, 147 );
+ border: 1px solid rgb( 147, 147, 147 );
+ border-radius: 5px;
+}
+
+QWidget {
+ font: 13px &quot;DinPRO-regular&quot;;
+}
+
+QLabel {
+ font: 18px &quot;DinPRO-regular&quot;;
+}
+
+QLabel#titlebarLabel {
+	background: rgb( 51, 51, 51 );
+}
+QLabel#titlebarTextLabel {
+    font: 24pt &quot;DINPro-Medium&quot;;
+    color: white;
+}
+
+QLabel#instructionsLabel
+{
+    background: rgb( 191, 191, 191 );
+}
+
+QLabel#instructionsTextLabel
+{
+    font: 12pt &quot;DINPro-Medium&quot;;
+}
+
+QLabel#wideDivideLabel
+{
+    background: rgb( 191, 191, 191 );
+}
+
+QLabel#wideDivideTextLabel
+{
+    font: 12pt &quot;DINPro-Medium&quot;;
+}
+
+/* ---------------- Pushbuttons ----------------*/
+
+QPushButton 
+{
+    background: rgb( 52, 73, 94 );
+    border: 1px solid rgb( 52, 73, 94 );
+    color: white;
+    font: 12pt &quot;DinPRO-Medium&quot;;
+    text-align: center;
+    border-radius: 10px;
+    border-width: 2px;
+}
+
+QPushButton::hover 
+{
+    background: rgb(52, 73, 94 );
+    border-color: rgb( 166, 166, 166 );
+    color: rgb( 214, 214, 214);
+    border-width: 1px;
+    border-radius: 10px;
+}
+
+ QPushButton:default 
+{
+     background: rgb( 51, 51, 51 );
+/*     border: 1px solid black; /* make the default button prominent */
+/*	 font: 17px &quot;DinPRO-bold&quot;;*/
+ }
+
+QPushButton:disabled 
+{
+     background:  rgb( 51, 51, 51 ); 
+     border: rgb( 51, 51, 51 ); 
+ }
+
+QPushButton:checked 
+{
+    background:  rgb(  191, 191, 191  ); 
+    border: rgb(  191, 191, 191  ); 
+    color: rgb( 52, 73, 94 );
+ }
+
+/* --------- Spin Boxes -----------*/
+
+QAbstractSpinBox {
+	font: 18px DinPRO-medium;
+	border: 0;
+    border-radius: 5px;
+}
+
+QAbstractSpinBox::up-button {
+	border: 0;
+   background: rgba(233,233,235,255);
+   border-top-right-radius: 8px;
+   margin-top: -2px;
+   margin-bottom: -1px;
+   padding-bottom: -5px;
+   width: 15px;
+}
+
+QAbstractSpinBox::up-arrow  {
+  image: url(:/images/arrow_up_normal.png);
+}
+
+QAbstractSpinBox::up-arrow:hover {
+  image: url(:images/arrow_up_rollover.png);
+}
+
+QAbstractSpinBox::down-button {
+   border: 0;
+   background: rgba(233,233,235,255);
+   border-bottom-right-radius: 8px;
+   padding-top: -5px;
+   margin-bottom: -2px;
+   margin-top: -1px;
+   width: 15px;
+}
+
+QAbstractSpinBox::down-arrow:hover {
+  image: url(:/images/arrow_down_rollover.png);
+}
+
+QAbstractSpinBox::down-arrow {
+  image: url(:/images/arrow_down_normal.png);
+}
+
+/* group boxes */
+
+
+/* ------------- Line edits and list views ---------------*/
+
+QLineEdit, QListView {
+    color: #808080;
+	font: 18px DinPro-medium;
+    selection-color: white;   
+    border: 2px groove white;
+    border-radius: 4px;
+}
+
+
+/* --------- Check Boxes ----------*/
+
+QCheckBox {
+	spacing: 5px;
+}
+
+QCheckBox::indicator {
+	border: #909090;
+    background: #909090;
+	width: 20px;
+	height: 20px;
+	margin-top: 4px;
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(:images/checkBox_normal.png);
+}
+
+QCheckBox::indicator:checked {
+	image: url(:images/checkBox_active.png);
+}
+
+QDialogButtonBox
+{
+   button-layout: 1;
+}
+
+
+/* ---------- Group Boxes ---------- */
+
+ QGroupBox {
+    font: 14.75pt DINPro-medium;
+    color: white;
+    background-color: rgb( 51, 51, 51 );
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 0px;
+}
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* position at the top center */
+     left: 10px;
+     padding: 1px;
+ }</string>
+  </property>
+  <widget class="QGroupBox" name="capturesGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>686</width>
+     <height>381</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Images</string>
+   </property>
+   <widget class="captureListView" name="capListView">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>30</y>
+      <width>672</width>
+      <height>346</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>80</red>
+          <green>80</green>
+          <blue>80</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="HighlightedText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>80</red>
+          <green>80</green>
+          <blue>80</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="HighlightedText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>236</red>
+          <green>233</green>
+          <blue>216</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="HighlightedText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOn</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>false</bool>
+    </property>
+    <property name="verticalScrollMode">
+     <enum>QAbstractItemView::ScrollPerPixel</enum>
+    </property>
+    <property name="movement">
+     <enum>QListView::Static</enum>
+    </property>
+    <property name="flow">
+     <enum>QListView::LeftToRight</enum>
+    </property>
+    <property name="isWrapping" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="viewMode">
+     <enum>QListView::IconMode</enum>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>341</x>
+      <y>2</y>
+      <width>96</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SELECTED:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="selectedCaptureLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>4</y>
+      <width>240</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Hit &lt;b&gt;Enter&lt;/b&gt; to save the selected item's new name.</string>
+    </property>
+    <property name="text">
+     <string>&lt;no item selected&gt;</string>
+    </property>
+    <property name="maxLength">
+     <number>20</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="showDecoratedPushButton">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>3</y>
+      <width>171</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Switch between the Raw and Decorated image captures.</string>
+    </property>
+    <property name="text">
+     <string>SHOW DECORATED</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="loopsGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>390</y>
+     <width>685</width>
+     <height>381</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Loops</string>
+   </property>
+   <widget class="clipListView" name="loopsListView">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>30</y>
+      <width>671</width>
+      <height>346</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>80</red>
+          <green>80</green>
+          <blue>80</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="HighlightedText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>80</red>
+          <green>80</green>
+          <blue>80</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="HighlightedText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>236</red>
+          <green>233</green>
+          <blue>216</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="HighlightedText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOn</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>false</bool>
+    </property>
+    <property name="verticalScrollMode">
+     <enum>QAbstractItemView::ScrollPerPixel</enum>
+    </property>
+    <property name="flow">
+     <enum>QListView::LeftToRight</enum>
+    </property>
+    <property name="isWrapping" stdset="0">
+     <bool>true</bool>
+    </property>
+    <property name="viewMode">
+     <enum>QListView::IconMode</enum>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>2</y>
+      <width>96</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SELECTED:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="selectedLoopLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>4</y>
+      <width>240</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Hit &lt;b&gt;Enter&lt;/b&gt; to save the selected item's new name.</string>
+    </property>
+    <property name="text">
+     <string>&lt;no item selected&gt;</string>
+    </property>
+    <property name="maxLength">
+     <number>20</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>captureListView</class>
+   <extends>QListView</extends>
+   <header>Widgets/capturelistview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>clipListView</class>
+   <extends>QListView</extends>
+   <header>Widgets/cliplistview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>false</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>false</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
+</ui>
