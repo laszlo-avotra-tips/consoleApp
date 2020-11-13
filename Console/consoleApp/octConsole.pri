@@ -17,6 +17,7 @@ HEADERS += \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
+    $$PWD/Frontend/Widgets/capturelistview.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/caseInformationModel.h \
     $$PWD/Frontend/Widgets/caseReviewScreen.h \
@@ -89,6 +90,7 @@ SOURCES += \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
+    $$PWD/Frontend/Widgets/capturelistview.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/caseInformationModel.cpp \
     $$PWD/Frontend/Widgets/caseReviewScreen.cpp \
