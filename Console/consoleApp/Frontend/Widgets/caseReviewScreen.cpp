@@ -1,8 +1,11 @@
 #include "caseReviewScreen.h"
 #include "ui_caseReviewScreen.h"
+
 #include "Utility/widgetcontainer.h"
 #include "caseInformationModel.h"
 #include "logger.h"
+
+#include "captureItemDelegate.h"
 
 CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     QWidget(parent),
@@ -28,6 +31,28 @@ void CaseReviewScreen::initPlayer()
 
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
 
+}
+
+/*
+ * Image Captures
+ */
+void CaseReviewScreen::initCapture()
+{
+    // set up the list for image captures
+    captureListModel &capList = captureListModel::Instance();
+
+    ui->captureView->setItemDelegate( new CaptureItemDelegate() );
+    ui->captureView->setModel( &capList );
+
+    connect( ui->captureView, SIGNAL( clicked( QModelIndex ) ), this, SLOT( captureSelected(QModelIndex) ) );
+    connect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
+
+    // Auto-scroll the list when items are added
+    connect( &capList, SIGNAL( rowsInserted( QModelIndex, int, int ) ), ui->captureView, SLOT( updateView( QModelIndex, int, int ) ) );
+
+    // keyboard keys change the selection
+    connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
+             this, SLOT(captureSelected(const QModelIndex &)) );
 }
 
 CaseReviewScreen::~CaseReviewScreen()

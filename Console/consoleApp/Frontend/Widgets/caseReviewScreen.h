@@ -30,6 +30,7 @@ private slots:
 
 private:
     void initPlayer();
+    void initCapture();
 
 private:
     Ui::CaseReviewScreen *ui;
@@ -38,10 +39,10 @@ private:
     quint64 m_position{0};
 
 private:
-    int  numCaptures{0};
-    bool isImageReviewInProgress{false};
+    int  m_numCaptures{0};
+    bool m_isImageReviewInProgress{false};
 
-    CaptureItem *selectedCaptureItem{nullptr};
+    CaptureItem *m_selectedCaptureItem{nullptr};
 
 
 };
