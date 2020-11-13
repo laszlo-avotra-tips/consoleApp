@@ -44,11 +44,14 @@ void CaseReviewScreen::initCapture()
     ui->captureView->setItemDelegate( new CaptureItemDelegate() );
     ui->captureView->setModel( &capList );
 
-    connect( ui->captureView, SIGNAL( clicked( QModelIndex ) ), this, SLOT( captureSelected(QModelIndex) ) );
-    connect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
+//    connect( ui->captureView, SIGNAL( clicked( QModelIndex ) ), this, SLOT( captureSelected(QModelIndex) ) );
+//    connect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
+    connect( ui->captureView, &captureListView::clicked, this, &CaseReviewScreen::captureSelected );
+    connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
 
     // Auto-scroll the list when items are added
-    connect( &capList, SIGNAL( rowsInserted( QModelIndex, int, int ) ), ui->captureView, SLOT( updateView( QModelIndex, int, int ) ) );
+//    connect( &capList, SIGNAL( rowsInserted( QModelIndex, int, int ) ), ui->captureView, SLOT( updateView( QModelIndex, int, int ) ) );
+    connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
 
     // keyboard keys change the selection
     connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
@@ -117,4 +120,54 @@ void CaseReviewScreen::updateSliderLabels()
 
     const QString& time = QString("%1:%2").arg(timeMinutes,2,10,QLatin1Char('0')).arg(timeSeconds,2,10,QLatin1Char('0'));
     ui->labelTime->setText(time);
+}
+
+/*
+ * captureSelected()
+ *
+ * One of the items in the preview list has been selected.
+ * Highlight it.
+ */
+void CaseReviewScreen::captureSelected( QModelIndex index )
+{
+    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
+
+//    ui->selectedCaptureLineEdit->setText( selectedCaptureItem->getTag() );
+    emit currentCaptureChanged( index );
+}
+
+/*
+ * displayCapture()
+ *
+ * Load and display the selected image on the Technician and Physican monitors.
+ */
+void CaseReviewScreen::displayCapture( QModelIndex index )
+{
+    captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
+
+    if( item )
+    {
+        emit showCapture( item->loadSector( item->getName() ), item->loadWaterfall( item->getName() ) );
+
+        QString str = QString( tr( "REVIEW: %1 (%2)" ) ).arg( item->getTag() ).arg( item->getIdNumber(), 3, 10, QLatin1Char( '0' ) );
+        emit sendStatusText( str );
+
+        // update the label to the review device
+        emit sendDeviceName( item->getDeviceName() );
+        emit displayingCapture();
+//        emit sendReviewImageCalibrationFactors( selectedCaptureItem->getPixelsPerMm(), zoomFactor );
+
+        if( !m_isImageReviewInProgress )
+        {
+            LOG( INFO, "Image Review started" );
+            disconnect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
+            connect(    ui->captureView, SIGNAL( clicked( QModelIndex ) ),       this, SLOT( displayCapture(QModelIndex) ) );
+
+            // keyboard keys change the selection
+            connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
+                     this, SLOT(displayCapture(const QModelIndex &)) );
+
+            m_isImageReviewInProgress = true;
+        }
+    }
 }

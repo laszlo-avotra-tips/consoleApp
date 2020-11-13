@@ -5,8 +5,8 @@
 
 #include "videoplayer.h"
 #include "Utility/captureListModel.h"
+#include "capturelistview.h"
 
-class CaptureItem;
 
 namespace Ui {
 class CaseReviewScreen;
@@ -20,6 +20,17 @@ public:
     explicit CaseReviewScreen(QWidget *parent = nullptr);
     ~CaseReviewScreen();
     void showEvent(QShowEvent *) override;
+
+signals:
+    void showCapture( const QImage &, const QImage &);
+    void currentCaptureChanged( QModelIndex );
+    void sendStatusText( QString );
+    void sendDeviceName( QString );
+    void displayingCapture();
+
+public slots:
+    void captureSelected(QModelIndex ix);
+    void displayCapture(QModelIndex index);
 
 private slots:
     void on_pushButtonBack_clicked();
@@ -42,7 +53,7 @@ private:
     int  m_numCaptures{0};
     bool m_isImageReviewInProgress{false};
 
-    CaptureItem *m_selectedCaptureItem{nullptr};
+    captureItem *m_selectedCaptureItem{nullptr};
 
 
 };
