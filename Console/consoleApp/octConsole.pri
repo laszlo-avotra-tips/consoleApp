@@ -17,7 +17,6 @@ HEADERS += \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
-    $$PWD/Frontend/Widgets/capturewidget.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/caseInformationModel.h \
     $$PWD/Frontend/Widgets/caseReviewScreen.h \
@@ -90,7 +89,6 @@ SOURCES += \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
-    $$PWD/Frontend/Widgets/capturewidget.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/caseInformationModel.cpp \
     $$PWD/Frontend/Widgets/caseReviewScreen.cpp \
@@ -150,7 +148,6 @@ unix:SOURCES += Utility/qtsingleapplication_x11.cpp
 
 # Forms
 FORMS += \
-    $$PWD/Frontend/Widgets/capturewidget.ui \
     $$PWD/Frontend/Widgets/caseInformationDialog.ui \
     $$PWD/Frontend/Widgets/caseReviewScreen.ui \
     $$PWD/Frontend/Widgets/consoleKeyboard.ui \
