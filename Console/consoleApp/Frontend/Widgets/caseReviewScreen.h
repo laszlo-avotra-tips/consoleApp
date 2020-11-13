@@ -31,6 +31,7 @@ signals:
 public slots:
     void captureSelected(QModelIndex ix);
     void displayCapture(QModelIndex index);
+    void updateCaptureCount( void );
 
 private slots:
     void on_pushButtonBack_clicked();

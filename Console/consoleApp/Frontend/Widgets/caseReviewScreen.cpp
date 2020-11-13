@@ -13,6 +13,7 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
 {
     ui->setupUi(this);
     initPlayer();
+    initCapture();
 }
 
 
@@ -54,8 +55,8 @@ void CaseReviewScreen::initCapture()
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
 
     // keyboard keys change the selection
-    connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-             this, SLOT(captureSelected(const QModelIndex &)) );
+//    connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
+//             this, SLOT(captureSelected(const QModelIndex &)) );
 }
 
 CaseReviewScreen::~CaseReviewScreen()
@@ -160,14 +161,27 @@ void CaseReviewScreen::displayCapture( QModelIndex index )
         if( !m_isImageReviewInProgress )
         {
             LOG( INFO, "Image Review started" );
-            disconnect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
-            connect(    ui->captureView, SIGNAL( clicked( QModelIndex ) ),       this, SLOT( displayCapture(QModelIndex) ) );
+//            disconnect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
+            disconnect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
+
+//            connect(    ui->captureView, SIGNAL( clicked( QModelIndex ) ),       this, SLOT( displayCapture(QModelIndex) ) );
+            connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
 
             // keyboard keys change the selection
-            connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-                     this, SLOT(displayCapture(const QModelIndex &)) );
+//            connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
+//                     this, SLOT(displayCapture(const QModelIndex &)) );
 
             m_isImageReviewInProgress = true;
         }
     }
 }
+
+/*
+ * updateCaptureCount
+ */
+void CaseReviewScreen::updateCaptureCount( void )
+{
+    m_numCaptures++;
+    ui->labelImages->setText( tr( "Images (%1)" ).arg( m_numCaptures ) );
+}
+

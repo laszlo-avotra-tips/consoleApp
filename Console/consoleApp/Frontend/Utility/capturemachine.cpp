@@ -173,6 +173,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
                             captureItem.pixelsPerMm,
                             captureItem.zoomFactor ) < 0 )
     {
+        LOG1("ERROR")
         return;   // Failure warnings generated in the call
     }
 
