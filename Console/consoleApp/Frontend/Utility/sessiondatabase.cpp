@@ -304,8 +304,8 @@ int sessionDatabase::addCapture( QString tag,
     q.prepare( QString("INSERT INTO captures (id, timestamp, tag, name, deviceName, pixelsPerMm)"
                "VALUES (?, ?, ?, ?, ?, ?)") );
     LOG2(maxID, timeStr)
-            LOG2(tag, name)
-            LOG2(deviceName,pixelsPerMm)
+    LOG2(tag, name)
+    LOG2(deviceName,pixelsPerMm)
     q.addBindValue( maxID );
     q.addBindValue( timeStr );
     q.addBindValue( tag) ;
