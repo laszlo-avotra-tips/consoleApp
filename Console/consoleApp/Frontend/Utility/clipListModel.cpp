@@ -87,8 +87,8 @@ int clipListModel::addClipCapture( QString name,
     QDateTime timeVal = QDateTime::fromTime_t(timestamp);
 
     // Find next available ID
-    sessionDatabase &db = sessionDatabase::Instance();
-    int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName, isHighSpeed );
+    sessionDatabase db;
+    int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName );
 
     if ( maxID < 0 ) {
         return -1;
@@ -125,7 +125,7 @@ int clipListModel::addClipCapture( QString name,
 void clipListModel::updateClipInfo( int clipLength_ms )
 {
     // update the database
-    sessionDatabase &db = sessionDatabase::Instance();
+    sessionDatabase db;
     db.updateClipCapture( lastClipID, clipLength_ms );
 
     // update the in-memory cache

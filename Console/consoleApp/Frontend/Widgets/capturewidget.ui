@@ -343,6 +343,15 @@ QGroupBox::title {
          </color>
         </brush>
        </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="NoBrush">
+         <color alpha="128">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
       </active>
       <inactive>
        <colorrole role="WindowText">
@@ -390,6 +399,15 @@ QGroupBox::title {
          </color>
         </brush>
        </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="NoBrush">
+         <color alpha="128">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
       </inactive>
       <disabled>
        <colorrole role="WindowText">
@@ -434,6 +452,15 @@ QGroupBox::title {
           <red>255</red>
           <green>255</green>
           <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="NoBrush">
+         <color alpha="128">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
          </color>
         </brush>
        </colorrole>
@@ -607,6 +634,15 @@ QGroupBox::title {
          </color>
         </brush>
        </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="NoBrush">
+         <color alpha="128">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
       </active>
       <inactive>
        <colorrole role="WindowText">
@@ -654,6 +690,15 @@ QGroupBox::title {
          </color>
         </brush>
        </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="NoBrush">
+         <color alpha="128">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
+         </color>
+        </brush>
+       </colorrole>
       </inactive>
       <disabled>
        <colorrole role="WindowText">
@@ -698,6 +743,15 @@ QGroupBox::title {
           <red>255</red>
           <green>255</green>
           <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="PlaceholderText">
+        <brush brushstyle="NoBrush">
+         <color alpha="128">
+          <red>128</red>
+          <green>128</green>
+          <blue>128</blue>
          </color>
         </brush>
        </colorrole>
@@ -779,12 +833,12 @@ QGroupBox::title {
   <customwidget>
    <class>captureListView</class>
    <extends>QListView</extends>
-   <header>Widgets/capturelistview.h</header>
+   <header location="global">Widgets/capturelistview.h</header>
   </customwidget>
   <customwidget>
    <class>clipListView</class>
    <extends>QListView</extends>
-   <header>Widgets/cliplistview.h</header>
+   <header location="global">Widgets/cliplistview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

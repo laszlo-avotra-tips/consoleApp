@@ -223,6 +223,12 @@ const QString DefaultPortName        = "COM1";
 const QString DefaultLaserCommConfig = "9600,8,n,1";
 
 /*
+ * OCT Loop recording constants
+ */
+const int MinRecordingLength_s  = 1;
+const int MinRecordingLength_ms = MinRecordingLength_s * 1000;
+
+/*
  * Strings
  */
 const QString CatheterPointedUpText   = "Catheter Up";

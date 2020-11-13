@@ -99,6 +99,13 @@ public:
         return zoomFactor;
     }
 
+    // XXX: do not like wildcarding based on the base name
+    QImage loadWaterfall( QString name ) { return( loadImage( name + "*waterfall.png" ) ); }
+    QImage loadSector( QString name ) { return( loadImage( name + "*" + ".png" ) ); }
+    QImage loadSectorThumbnail( QString name ) { return( loadImage( ".thumb_" + name + "*" + ".png" ) ); }
+    QImage loadDecoratedImage( QString name ) { return( loadImage( name + "*" + ".png" ) ); }
+    void replaceDecoratedImage( QImage p ) { saveDecoratedImage( p, name + ".png" ); }
+
 private:
     QImage loadImage(QString);
     void saveDecoratedImage(QImage,QString);

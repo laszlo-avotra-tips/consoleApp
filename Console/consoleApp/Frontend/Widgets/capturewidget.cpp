@@ -26,7 +26,6 @@
  * Copyright (c) 2010-2018 Avinger, Inc.
  */
 #include "capturewidget.h"
-#include "Screens/frontend.h"
 #include <QPainter>
 #include <QFontMetrics>
 #include "defaults.h"
@@ -429,7 +428,7 @@ void captureWidget::loadLoop( QModelIndex index )
     }
     else
     {
-        displayWarningMessage( tr( "OCT Loop is too short to be valid. It will not play." ) );
+//        displayWarningMessage( tr( "OCT Loop is too short to be valid. It will not play." ) );
     }
 }
 
@@ -530,7 +529,7 @@ void captureWidget::on_selectedCaptureLineEdit_editingFinished()
         selectedCaptureItem->setTag( ui->selectedCaptureLineEdit->text() );
 
         // Save the new tag name to the session database
-        sessionDatabase &db = sessionDatabase::Instance();
+        sessionDatabase db;
         captureItem *item = ui->capListView->currentIndex().data( Qt::DisplayRole ).value<captureItem *>();
         db.updateCaptureTag( item->getdbKey(), ui->selectedCaptureLineEdit->text() );
 
@@ -558,7 +557,7 @@ void captureWidget::on_selectedLoopLineEdit_editingFinished()
         selectedLoopItem->setTag( ui->selectedLoopLineEdit->text() );
 
         // Save the new tag name to the session database
-        sessionDatabase &db = sessionDatabase::Instance();
+        sessionDatabase db;
         clipItem *item = ui->loopsListView->currentIndex().data( Qt::DisplayRole ).value<clipItem *>();
         db.updateLoopTag( item->getdbKey(), ui->selectedLoopLineEdit->text() );
 
