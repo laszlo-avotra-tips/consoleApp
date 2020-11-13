@@ -6,6 +6,7 @@
 #include "videoplayer.h"
 #include "Utility/captureListModel.h"
 
+class CaptureItem;
 
 namespace Ui {
 class CaseReviewScreen;
@@ -28,10 +29,20 @@ private slots:
     void updateSliderLabels();
 
 private:
+    void initPlayer();
+
+private:
     Ui::CaseReviewScreen *ui;
     VideoPlayer* m_player{nullptr};
     quint64 m_duration{0};
     quint64 m_position{0};
+
+private:
+    int  numCaptures{0};
+    bool isImageReviewInProgress{false};
+
+    CaptureItem *selectedCaptureItem{nullptr};
+
 
 };
 
