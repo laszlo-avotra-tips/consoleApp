@@ -71,9 +71,9 @@ void CaseReviewScreen::showPlayer(bool isVisible)
 void CaseReviewScreen::showCapture(bool isVisible)
 {
     if(isVisible){
-        ui->widgetCapture->show();
+        ui->captureScene->show();
     } else {
-        ui->widgetCapture->hide();
+        ui->captureScene->hide();
     }
 
 }
@@ -160,7 +160,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     const auto& imageName{m_selectedCaptureItem->getName()};
     LOG1(imageName)
-    QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName);
+    QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
 
     LOG2(image.size().width(), image.size().height())
 }

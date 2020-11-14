@@ -494,7 +494,7 @@ border: 3px solid #F5C400;
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="widgetCapture" native="true">
+  <widget class="QGraphicsView" name="captureScene">
    <property name="geometry">
     <rect>
      <x>1311</x>
