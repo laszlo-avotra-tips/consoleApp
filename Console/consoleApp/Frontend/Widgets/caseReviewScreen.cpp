@@ -135,6 +135,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
 //    ui->selectedCaptureLineEdit->setText( selectedCaptureItem->getTag() );
     emit currentCaptureChanged( index );
+    LOG1(index.row())
 }
 
 /*
@@ -145,6 +146,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 void CaseReviewScreen::displayCapture( QModelIndex index )
 {
     captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
+    LOG1(index.row())
 
     if( item )
     {
