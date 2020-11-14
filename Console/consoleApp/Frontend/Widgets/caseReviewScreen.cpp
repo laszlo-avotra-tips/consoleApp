@@ -7,6 +7,9 @@
 
 #include "captureItemDelegate.h"
 
+#include <QGraphicsPixmapItem>
+
+
 CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CaseReviewScreen)
@@ -163,6 +166,14 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
     QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
 
     LOG2(image.size().width(), image.size().height())
+
+    QGraphicsScene *scene = new QGraphicsScene;
+
+    QGraphicsPixmapItem item(QPixmap::fromImage(image));
+
+    scene->addItem(&item);
+
+    ui->captureScene->setScene(scene);
 }
 
 /*
