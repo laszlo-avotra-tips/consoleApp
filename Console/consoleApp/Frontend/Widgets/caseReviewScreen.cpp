@@ -56,7 +56,23 @@ void CaseReviewScreen::initCapture()
 
     // keyboard keys change the selection
 //    connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-//             this, SLOT(captureSelected(const QModelIndex &)) );
+    //             this, SLOT(captureSelected(const QModelIndex &)) );
+}
+
+void CaseReviewScreen::showPlayer(bool isVisible)
+{
+    if(isVisible){
+        ui->framePlayer->show();
+        ui->horizontalSlider->show();
+    } else {
+        ui->framePlayer->hide();
+        ui->horizontalSlider->hide();
+    }
+}
+
+void CaseReviewScreen::showCapture(bool isVisible)
+{
+
 }
 
 CaseReviewScreen::~CaseReviewScreen()
@@ -136,7 +152,8 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 //    ui->selectedCaptureLineEdit->setText( selectedCaptureItem->getTag() );
     emit currentCaptureChanged( index );
     LOG1(index.row())
-    ui->framePlayer->hide();
+    showPlayer(false);
+    showCapture(true);
 }
 
 /*

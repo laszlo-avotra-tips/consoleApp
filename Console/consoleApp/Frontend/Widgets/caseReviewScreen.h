@@ -43,6 +43,8 @@ private slots:
 private:
     void initPlayer();
     void initCapture();
+    void showPlayer( bool isVisible);
+    void showCapture( bool isVisible);
 
 private:
     Ui::CaseReviewScreen *ui;
