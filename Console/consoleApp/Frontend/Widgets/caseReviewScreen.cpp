@@ -136,6 +136,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 //    ui->selectedCaptureLineEdit->setText( selectedCaptureItem->getTag() );
     emit currentCaptureChanged( index );
     LOG1(index.row())
+    ui->framePlayer->hide();
 }
 
 /*
