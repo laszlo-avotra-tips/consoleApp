@@ -14,6 +14,8 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     ui->setupUi(this);
     initPlayer();
     initCapture();
+    showPlayer(false);
+    showCapture(false);
 }
 
 
@@ -45,18 +47,14 @@ void CaseReviewScreen::initCapture()
     ui->captureView->setItemDelegate( new CaptureItemDelegate() );
     ui->captureView->setModel( &capList );
 
-//    connect( ui->captureView, SIGNAL( clicked( QModelIndex ) ), this, SLOT( captureSelected(QModelIndex) ) );
-//    connect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
     connect( ui->captureView, &captureListView::clicked, this, &CaseReviewScreen::captureSelected );
     connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
 
     // Auto-scroll the list when items are added
-//    connect( &capList, SIGNAL( rowsInserted( QModelIndex, int, int ) ), ui->captureView, SLOT( updateView( QModelIndex, int, int ) ) );
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
 
-    // keyboard keys change the selection
-//    connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-    //             this, SLOT(captureSelected(const QModelIndex &)) );
+    ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
+
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -72,6 +70,11 @@ void CaseReviewScreen::showPlayer(bool isVisible)
 
 void CaseReviewScreen::showCapture(bool isVisible)
 {
+    if(isVisible){
+        ui->widgetCapture->show();
+    } else {
+        ui->widgetCapture->hide();
+    }
 
 }
 
@@ -202,6 +205,6 @@ void CaseReviewScreen::displayCapture( QModelIndex index )
 void CaseReviewScreen::updateCaptureCount( void )
 {
     m_numCaptures++;
-    ui->labelImages->setText( tr( "Images (%1)" ).arg( m_numCaptures ) );
+    LOG1(m_numCaptures)
 }
 

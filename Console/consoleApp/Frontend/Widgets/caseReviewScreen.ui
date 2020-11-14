@@ -494,6 +494,16 @@ border: 3px solid #F5C400;
     </rect>
    </property>
   </widget>
+  <widget class="QWidget" name="widgetCapture" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1311</x>
+     <y>350</y>
+     <width>1600</width>
+     <height>1600</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
