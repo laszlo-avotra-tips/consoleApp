@@ -167,11 +167,11 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     LOG2(image.size().width(), image.size().height())
 
-    QGraphicsScene *scene = new QGraphicsScene;
+    QGraphicsScene *scene = new QGraphicsScene();
 
-    QGraphicsPixmapItem item(QPixmap::fromImage(image));
+    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 
-    scene->addItem(&item);
+    scene->addItem(item);
 
     ui->captureScene->setScene(scene);
 }
