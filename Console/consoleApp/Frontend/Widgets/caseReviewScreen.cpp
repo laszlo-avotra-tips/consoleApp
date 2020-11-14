@@ -157,6 +157,12 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
     LOG1(index.row())
     showPlayer(false);
     showCapture(true);
+
+    const auto& imageName{m_selectedCaptureItem->getName()};
+    LOG1(imageName)
+    QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName);
+
+    LOG2(image.size().width(), image.size().height())
 }
 
 /*
