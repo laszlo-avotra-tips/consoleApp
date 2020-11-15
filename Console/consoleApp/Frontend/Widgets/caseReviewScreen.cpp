@@ -19,8 +19,16 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     initCapture();
     showPlayer(false);
     showCapture(false);
+
+    hideUnemplementedButtons();
 }
 
+void CaseReviewScreen::hideUnemplementedButtons()
+{
+    ui->pushButtonAnnotate->hide();
+    ui->pushButtonMeasure->hide();
+    ui->pushButtonSaveImage->hide();
+}
 
 /* init player */
 void CaseReviewScreen::initPlayer()
@@ -80,6 +88,7 @@ void CaseReviewScreen::showCapture(bool isVisible)
     }
 
 }
+
 
 CaseReviewScreen::~CaseReviewScreen()
 {

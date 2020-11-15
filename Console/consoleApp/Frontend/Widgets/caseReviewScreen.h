@@ -45,6 +45,7 @@ private:
     void initCapture();
     void showPlayer( bool isVisible);
     void showCapture( bool isVisible);
+    void hideUnemplementedButtons();
 
 private:
     Ui::CaseReviewScreen *ui;
