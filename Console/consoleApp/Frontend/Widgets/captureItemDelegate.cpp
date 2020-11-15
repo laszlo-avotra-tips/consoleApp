@@ -60,8 +60,8 @@ void CaptureItemDelegate::paint( QPainter *painter,
 
    // Get the pixel width of each value so it is written on the image correctly
    QFontMetrics fm = painter->fontMetrics();
-   const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
-   const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
+//   const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
+//   const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
 
    if( doRotate )
    {
@@ -74,14 +74,14 @@ void CaptureItemDelegate::paint( QPainter *painter,
        painter->drawImage( 5, 5, item->loadSectorThumbnail( item->getName() ).scaled( option.rect.height() - 5, option.rect.height() - 5 ).transformed( m ) );
        painter->setPen( QPen( SelectedItemColor, 6 ) );
        painter->rotate( 90 );
-       painter->drawText( option.rect.width() - Offset_px, - 10, NumberLabel );
+//       painter->drawText( option.rect.width() - Offset_px, - 10, NumberLabel );
    }
    else
    {
        // Technician screen
        painter->drawImage( 5, 5, item->loadSectorThumbnail( item->getName() ) );
        painter->setPen( QPen( SelectedItemColor, 6 ) );
-       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 10, NumberLabel );
+//       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 10, NumberLabel );
    }
    painter->restore();
 
