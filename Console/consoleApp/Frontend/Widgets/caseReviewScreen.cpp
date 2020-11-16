@@ -85,6 +85,10 @@ void CaseReviewScreen::showCapture(bool isVisible)
 {
     if(isVisible){
         ui->captureScene->show();
+        captureListModel &capList = captureListModel::Instance();
+        m_numCaptures = capList.rowCount(QModelIndex());
+        ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
+
     } else {
         ui->captureScene->hide();
     }
