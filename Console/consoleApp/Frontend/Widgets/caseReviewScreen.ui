@@ -489,8 +489,8 @@ border: 3px solid #F5C400;
     <rect>
      <x>99</x>
      <y>610</y>
-     <width>1120</width>
-     <height>160</height>
+     <width>1000</width>
+     <height>200</height>
     </rect>
    </property>
   </widget>
