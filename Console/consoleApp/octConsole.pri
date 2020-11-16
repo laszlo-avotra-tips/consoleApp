@@ -12,13 +12,17 @@ HEADERS += \
     $$PWD/Backend/fullCaseRecorder.h \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/scanconversion.h \
+    $$PWD/Frontend/Utility/clipListModel.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
+    $$PWD/Frontend/Widgets/captureItemDelegate.h \
+    $$PWD/Frontend/Widgets/capturelistview.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/caseInformationModel.h \
     $$PWD/Frontend/Widgets/caseReviewScreen.h \
+    $$PWD/Frontend/Widgets/cliplistview.h \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
@@ -82,13 +86,17 @@ SOURCES += \
     $$PWD/Backend/fullCaseRecorder.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/scanconversion.cpp \
+    $$PWD/Frontend/Utility/clipListModel.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
+    $$PWD/Frontend/Widgets/captureItemDelegate.cpp \
+    $$PWD/Frontend/Widgets/capturelistview.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/caseInformationModel.cpp \
     $$PWD/Frontend/Widgets/caseReviewScreen.cpp \
+    $$PWD/Frontend/Widgets/cliplistview.cpp \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \

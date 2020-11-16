@@ -473,7 +473,7 @@ border: 3px solid #F5C400;
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -484,7 +484,34 @@ border: 3px solid #F5C400;
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
+  <widget class="captureListView" name="captureView">
+   <property name="geometry">
+    <rect>
+     <x>99</x>
+     <y>610</y>
+     <width>1120</width>
+     <height>160</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="captureScene">
+   <property name="geometry">
+    <rect>
+     <x>1311</x>
+     <y>350</y>
+     <width>1600</width>
+     <height>1600</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>captureListView</class>
+   <extends>QListView</extends>
+   <header location="global">Widgets/capturelistview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../octConsole.qrc"/>
  </resources>
