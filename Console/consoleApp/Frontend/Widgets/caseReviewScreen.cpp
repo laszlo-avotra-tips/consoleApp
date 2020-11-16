@@ -30,6 +30,16 @@ void CaseReviewScreen::hideUnemplementedButtons()
     ui->pushButtonSaveImage->hide();
 }
 
+void CaseReviewScreen::updateCaptureLabel()
+{
+    captureListModel &capList = captureListModel::Instance();
+
+    m_numCaptures = capList.rowCount(QModelIndex());
+
+    ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
+
+}
+
 /* init player */
 void CaseReviewScreen::initPlayer()
 {
@@ -64,10 +74,7 @@ void CaseReviewScreen::initCapture()
     // Auto-scroll the list when items are added
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
 
-    m_numCaptures = capList.rowCount(QModelIndex());
-
-    ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
-
+//    updateCaptureLabel();
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -85,10 +92,7 @@ void CaseReviewScreen::showCapture(bool isVisible)
 {
     if(isVisible){
         ui->captureScene->show();
-        captureListModel &capList = captureListModel::Instance();
-        m_numCaptures = capList.rowCount(QModelIndex());
-        ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
-
+//        updateCaptureLabel();
     } else {
         ui->captureScene->hide();
     }
@@ -200,6 +204,8 @@ void CaseReviewScreen::displayCapture( QModelIndex index )
 {
     captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
     LOG1(index.row())
+
+    updateCaptureLabel();
 
     if( item )
     {
