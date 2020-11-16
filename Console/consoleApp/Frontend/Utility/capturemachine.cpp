@@ -80,8 +80,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
+
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
-//    LOG2(LogoImage.height(), LogoImage.width())
+    QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
     LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
@@ -122,7 +123,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
 
     // Store the capture
-    const QString thumbName       = saveDirName + "/.thumb_" + saveName + ".png";
+    const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
     const QString imageName = saveDirName + "/"        + saveName + ".png";
 
     QMatrix m;
@@ -130,7 +131,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     LOG2(saveDirName,saveName)
 
     // save a thumbnail image for the UI to use
-    if( !plainImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
+    if( !decoratedImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
     }
