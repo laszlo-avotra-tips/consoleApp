@@ -356,7 +356,7 @@ void liveScene::captureDi( QImage decoratedImage, QString tagText )
      * Perform the capture. Allow the capture text to be translated.
      */
     {
-        emit captureAll( decoratedImage, decoratedImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
+        emit captureAll( decoratedImage, secImage, tr( tagText.toLocal8Bit().constData() ), sector->getFrozenTimestamp(), pixelsPerMm, zoomFactor );
     }
 }
 
