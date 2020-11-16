@@ -64,6 +64,8 @@ void CaseReviewScreen::initCapture()
     // Auto-scroll the list when items are added
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
 
+    m_numCaptures = capList.rowCount(QModelIndex());
+
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
 
 }
@@ -230,7 +232,7 @@ void CaseReviewScreen::displayCapture( QModelIndex index )
  */
 void CaseReviewScreen::updateCaptureCount( void )
 {
-    m_numCaptures++;
-    LOG1(m_numCaptures)
+//    m_numCaptures++;
+//    LOG1(m_numCaptures)
 }
 
