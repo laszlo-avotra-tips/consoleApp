@@ -4,7 +4,7 @@
 
 namespace{
 const QSize  ThumbSize( ThumbnailHeight_px + 10, ThumbnailHeight_px + 10 );
-const QColor SelectedItemColor( 143, 185, 224 );
+const QColor SelectedItemColor( 245, 196, 0 );
 const int    MinOffsetForNumberLabel_px = 10;
 }
 
