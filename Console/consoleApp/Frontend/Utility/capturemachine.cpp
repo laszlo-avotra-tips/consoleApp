@@ -80,7 +80,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
-    QImage sectorImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 //    LOG2(LogoImage.height(), LogoImage.width())
 
     auto imageRect = sectorImage.rect();
