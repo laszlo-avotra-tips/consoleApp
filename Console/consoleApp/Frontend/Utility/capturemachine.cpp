@@ -83,6 +83,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 //    LOG2(LogoImage.height(), LogoImage.width())
 
+    LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
+    LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
+
     auto imageRect = sectorImage.rect();
     QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
     deviceSettings &devSettings = deviceSettings::Instance();
