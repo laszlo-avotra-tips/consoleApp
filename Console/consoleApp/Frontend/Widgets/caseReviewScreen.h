@@ -22,7 +22,7 @@ public:
     void showEvent(QShowEvent *) override;
 
 signals:
-    void showCapture( const QImage &, const QImage &);
+//    void showCapture( const QImage &, const QImage &);
     void currentCaptureChanged( QModelIndex );
     void sendStatusText( QString );
     void sendDeviceName( QString );

@@ -221,11 +221,9 @@ void CaseReviewScreen::displayCapture( QModelIndex index )
     captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
     LOG1(index.row())
 
-//    updateCaptureLabel();
-
     if( item )
     {
-        emit showCapture( item->loadSector( item->getName() ), item->loadWaterfall( item->getName() ) );
+//        emit showCapture( item->loadSector( item->getName() ), item->loadWaterfall( item->getName() ) );
 
         QString str = QString( tr( "REVIEW: %1 (%2)" ) ).arg( item->getTag() ).arg( item->getIdNumber(), 3, 10, QLatin1Char( '0' ) );
         emit sendStatusText( str );
@@ -265,17 +263,6 @@ void CaseReviewScreen::updateCaptureCount( void )
 
 void CaseReviewScreen::on_pushButtonDone_clicked()
 {
-    static bool sledIsOn{false};
-
-    auto& sled = SledSupport::Instance();
-
-    if(sledIsOn){
-        sledIsOn = false;
-        sled.writeSerial("sr0\r");
-    } else {
-        sledIsOn = true;
-        sled.writeSerial("sr1\r");
-    }
 }
 
 void CaseReviewScreen::on_pushButtonRightArrow_clicked()
@@ -284,6 +271,5 @@ void CaseReviewScreen::on_pushButtonRightArrow_clicked()
     if(m_numCaptures > size + m_displayOffset){
         ++m_displayOffset;
         emit displayOffsetChanged(m_displayOffset);
-        ui->captureView->scroll(m_displayOffset,0);
     }
 }

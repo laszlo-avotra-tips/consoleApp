@@ -58,7 +58,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
 
 //   LOG2(option.rect.width(), option.rect.height())
 //   LOG2(baseRect.width(), baseRect.height())
-   LOG2(option.rect.x(), option.rect.y())
+//   LOG2(option.rect.x(), option.rect.y())
 
    painter->drawRect( baseRect );
 
