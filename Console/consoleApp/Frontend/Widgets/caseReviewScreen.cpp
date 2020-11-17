@@ -43,7 +43,7 @@ void CaseReviewScreen::updateCaptureLabel()
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
 
-    if(m_numCaptures < 5){
+    if(m_numCaptures <= 5){
         ui->pushButtonRightArrow->hide();
     } else {
         ui->pushButtonRightArrow->show();
@@ -283,5 +283,6 @@ void CaseReviewScreen::on_pushButtonRightArrow_clicked()
     if(m_numCaptures > size + m_displayOffset){
         ++m_displayOffset;
         emit displayOffsetChanged(m_displayOffset);
+        ui->captureView->scroll(m_displayOffset,0);
     }
 }

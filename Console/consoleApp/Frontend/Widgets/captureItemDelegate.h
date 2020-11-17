@@ -33,6 +33,7 @@ public slots:
 
 private:
     bool doRotate;
+    int m_itemOffset{0};
 };
 
 

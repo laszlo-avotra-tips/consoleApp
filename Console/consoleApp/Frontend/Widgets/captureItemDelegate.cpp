@@ -46,10 +46,9 @@ void CaptureItemDelegate::paint( QPainter *painter,
                                 const QStyleOptionViewItem &option,
                                 const QModelIndex &index ) const
 {
-   captureItem *item;
    painter->save();
    painter->setFont( QFont( "DinPRO-regular", 12 ) );
-   item = index.model()->data( index, Qt::DisplayRole ).value<captureItem *>();
+   captureItem * item = index.model()->data( index, Qt::DisplayRole ).value<captureItem *>();
 
    painter->setPen( QPen( Qt::black, 6 ) );
    QRect baseRect( option.rect.x() + 4,
@@ -57,8 +56,8 @@ void CaptureItemDelegate::paint( QPainter *painter,
                    option.rect.width() - 10,
                    option.rect.height() - 10 );
 
-   LOG2(option.rect.width(), option.rect.height())
-   LOG2(baseRect.width(), baseRect.height())
+//   LOG2(option.rect.width(), option.rect.height())
+//   LOG2(baseRect.width(), baseRect.height())
    LOG2(option.rect.x(), option.rect.y())
 
    painter->drawRect( baseRect );
@@ -69,7 +68,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
    QFontMetrics fm = painter->fontMetrics();
    const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
    const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
-   int offset_height = -10;
+//   int offset_height = -10;
 
 //   if( doRotate )
 //   {
@@ -86,8 +85,8 @@ void CaptureItemDelegate::paint( QPainter *painter,
 //   }
 //   else
    {
-       int offset_width = Offset_px;
-       LOG2(offset_width, offset_height)
+//       int offset_width = Offset_px;
+//       LOG2(offset_width, offset_height)
        // Technician screen
        QImage tmi = item->loadSectorThumbnail( item->getName());
        painter->drawImage( 5, 5, tmi.scaled(160,160));
@@ -114,5 +113,6 @@ void CaptureItemDelegate::paint( QPainter *painter,
 
 void CaptureItemDelegate::handleDisplayOffset(int dpo)
 {
+    m_itemOffset = dpo;
     LOG1(dpo)
 }
