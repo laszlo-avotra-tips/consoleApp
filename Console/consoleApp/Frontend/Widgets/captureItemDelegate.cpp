@@ -1,6 +1,7 @@
 #include "captureItemDelegate.h"
 #include "Utility/captureListModel.h"
 #include "defaults.h"
+#include "logger.h"
 
 namespace{
 const QSize  ThumbSize( ThumbnailHeight_px + 10, ThumbnailHeight_px + 10 );
@@ -79,10 +80,14 @@ void CaptureItemDelegate::paint( QPainter *painter,
    }
    else
    {
+       int offset_height = -10;
+       int offset_width = Offset_px;
+       LOG2(offset_width, offset_height)
        // Technician screen
        painter->drawImage( 5, 5, item->loadSectorThumbnail( item->getName() ) );
        painter->setPen( QPen( SelectedTextColor, 6 ) );
-       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 10, NumberLabel );
+//       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - offset_height, NumberLabel );
+       painter->drawText( option.rect.width(), option.rect.height(), NumberLabel );
    }
    painter->restore();
 
