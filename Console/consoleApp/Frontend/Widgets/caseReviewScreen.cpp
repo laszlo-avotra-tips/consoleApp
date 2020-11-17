@@ -20,6 +20,7 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     initCapture();
     showPlayer(false);
     showCapture(false);
+    updateCaptureLabel();
 
     hideUnimplementedButtons();
 
