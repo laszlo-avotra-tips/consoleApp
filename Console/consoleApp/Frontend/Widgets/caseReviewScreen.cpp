@@ -4,6 +4,7 @@
 #include "Utility/widgetcontainer.h"
 #include "caseInformationModel.h"
 #include "logger.h"
+#include "sledsupport.h"
 
 #include "captureItemDelegate.h"
 
@@ -251,3 +252,18 @@ void CaseReviewScreen::updateCaptureCount( void )
 //    LOG1(m_numCaptures)
 }
 
+
+void CaseReviewScreen::on_pushButtonDone_clicked()
+{
+    static bool sledIsOn{false};
+
+    auto& sled = SledSupport::Instance();
+
+    if(sledIsOn){
+        sledIsOn = false;
+        sled.writeSerial("sr0\r");
+    } else {
+        sledIsOn = true;
+        sled.writeSerial("sr1\r");
+    }
+}

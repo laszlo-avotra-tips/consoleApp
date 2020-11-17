@@ -40,6 +40,8 @@ private slots:
     void updateCaseInfo();
     void updateSliderLabels();
 
+    void on_pushButtonDone_clicked();
+
 private:
     void initPlayer();
     void initCapture();
