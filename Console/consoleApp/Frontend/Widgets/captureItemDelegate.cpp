@@ -5,6 +5,7 @@
 namespace{
 const QSize  ThumbSize( ThumbnailHeight_px + 10, ThumbnailHeight_px + 10 );
 const QColor SelectedItemColor( 245, 196, 0 );
+const QColor SelectedTextColor( 143, 185, 224 );
 const int    MinOffsetForNumberLabel_px = 10;
 }
 
@@ -46,10 +47,10 @@ void CaptureItemDelegate::paint( QPainter *painter,
 {
    captureItem *item;
    painter->save();
-   painter->setFont( QFont( "DinPRO-regular", 20 ) );
+   painter->setFont( QFont( "DinPRO-regular", 14 ) );
    item = index.model()->data( index, Qt::DisplayRole ).value<captureItem *>();
 
-   painter->setPen( QPen( Qt::black, 6 ) );
+   painter->setPen( QPen( Qt::green, 6 ) );
    QRect baseRect( option.rect.x() + 4,
                    option.rect.y() + 5,
                    option.rect.width() - 10,
@@ -72,7 +73,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
        // The physician preview size is larger than the operators view; scale
        // up the thumbnail to fit without concern for the quality of the preview image
        painter->drawImage( 5, 5, item->loadSectorThumbnail( item->getName() ).scaled( option.rect.height() - 5, option.rect.height() - 5 ).transformed( m ) );
-       painter->setPen( QPen( SelectedItemColor, 6 ) );
+       painter->setPen( QPen( SelectedTextColor, 6 ) );
        painter->rotate( 90 );
        painter->drawText( option.rect.width() - Offset_px, - 10, NumberLabel );
    }
@@ -80,7 +81,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
    {
        // Technician screen
        painter->drawImage( 5, 5, item->loadSectorThumbnail( item->getName() ) );
-       painter->setPen( QPen( SelectedItemColor, 6 ) );
+       painter->setPen( QPen( SelectedTextColor, 6 ) );
        painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 10, NumberLabel );
    }
    painter->restore();
