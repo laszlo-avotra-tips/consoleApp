@@ -649,3 +649,19 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         }
     }
 }
+
+void MainScreen::on_pushButton_clicked()
+{
+    static bool sledIsOn{false};
+
+    auto& sled = SledSupport::Instance();
+
+    if(sledIsOn){
+        sledIsOn = false;
+        sled.writeSerial("sr0\r");
+    } else {
+        sledIsOn = true;
+        sled.writeSerial("sr1\r");
+    }
+
+}

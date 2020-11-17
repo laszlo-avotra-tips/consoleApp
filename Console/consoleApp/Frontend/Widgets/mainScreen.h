@@ -80,6 +80,8 @@ private slots:
     void onCaptureImage();
     void setMeasurementMode(bool enabled);
 
+    void on_pushButton_clicked();
+
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
 
