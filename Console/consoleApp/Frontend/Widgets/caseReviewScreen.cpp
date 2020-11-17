@@ -185,10 +185,18 @@ void CaseReviewScreen::updateSliderLabels()
  */
 void CaseReviewScreen::captureSelected( QModelIndex index )
 {
-    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
+//    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
 
-    emit currentCaptureChanged( index );
-    LOG1(index.row())
+    const int rowNum = index.row() + m_displayOffset;
+
+    const captureListModel& capList = captureListModel::Instance();
+
+
+    auto itemList = capList.getAllItems();
+
+    m_selectedCaptureItem = itemList.at(rowNum);
+
+    LOG1(rowNum)
     showPlayer(false);
     showCapture(true);
 

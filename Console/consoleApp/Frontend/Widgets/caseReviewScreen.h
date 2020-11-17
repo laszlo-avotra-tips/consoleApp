@@ -22,7 +22,6 @@ public:
     void showEvent(QShowEvent *) override;
 
 signals:
-    void currentCaptureChanged( QModelIndex );
     void sendStatusText( QString );
     void sendDeviceName( QString );
     void displayOffsetChanged(int dpo);
