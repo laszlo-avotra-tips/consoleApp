@@ -100,7 +100,6 @@ public:
     }
 
     // XXX: do not like wildcarding based on the base name
-    QImage loadWaterfall( QString name ) { return( loadImage( name + "*waterfall.png" ) ); }
     QImage loadSector( QString name ) { return( loadImage( name + "*" + ".png" ) ); }
     QImage loadSectorThumbnail( QString name ) { return( loadImage( ".thumb_" + name + "*" + ".png" ) ); }
     QImage loadDecoratedImage( QString name ) { return( loadImage( name + "*" + ".png" ) ); }

@@ -26,12 +26,12 @@ signals:
     void currentCaptureChanged( QModelIndex );
     void sendStatusText( QString );
     void sendDeviceName( QString );
-    void displayingCapture();
+//    void displayingCapture();
     void displayOffsetChanged(int dpo);
 
 public slots:
     void captureSelected(QModelIndex ix);
-    void displayCapture(QModelIndex index);
+//    void displayCapture(QModelIndex index);
     void updateCaptureCount( void );
 
 private slots:

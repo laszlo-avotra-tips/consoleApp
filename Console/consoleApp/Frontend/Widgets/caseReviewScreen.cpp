@@ -49,8 +49,6 @@ void CaseReviewScreen::updateCaptureLabel()
     } else {
         ui->pushButtonRightArrow->show();
     }
-
-    LOG1(m_numCaptures)
 }
 
 /* init player */
@@ -83,7 +81,7 @@ void CaseReviewScreen::initCapture()
     ui->captureView->setModel( &capList );
 
     connect( ui->captureView, &captureListView::clicked, this, &CaseReviewScreen::captureSelected );
-    connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
+//    connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
 
     connect(crDelegate, &CaptureItemDelegate::updateLabel, this, &CaseReviewScreen::updateCaptureLabel);
 
@@ -216,40 +214,38 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
  *
  * Load and display the selected image on the Technician and Physican monitors.
  */
-void CaseReviewScreen::displayCapture( QModelIndex index )
-{
-    captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
-    LOG1(index.row())
+//void CaseReviewScreen::displayCapture( QModelIndex index )
+//{
+//    captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
+//    LOG1(index.row())
 
-    if( item )
-    {
-//        emit showCapture( item->loadSector( item->getName() ), item->loadWaterfall( item->getName() ) );
+//    if( item )
+//    {
+//        QString str = QString( tr( "REVIEW: %1 (%2)" ) ).arg( item->getTag() ).arg( item->getIdNumber(), 3, 10, QLatin1Char( '0' ) );
+//        emit sendStatusText( str );
 
-        QString str = QString( tr( "REVIEW: %1 (%2)" ) ).arg( item->getTag() ).arg( item->getIdNumber(), 3, 10, QLatin1Char( '0' ) );
-        emit sendStatusText( str );
+//        // update the label to the review device
+//        emit sendDeviceName( item->getDeviceName() );
+//        emit displayingCapture();
+////        emit sendReviewImageCalibrationFactors( selectedCaptureItem->getPixelsPerMm(), zoomFactor );
 
-        // update the label to the review device
-        emit sendDeviceName( item->getDeviceName() );
-        emit displayingCapture();
-//        emit sendReviewImageCalibrationFactors( selectedCaptureItem->getPixelsPerMm(), zoomFactor );
+//        if( !m_isImageReviewInProgress )
+//        {
+//            LOG( INFO, "Image Review started" );
+////            disconnect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
+//            disconnect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
 
-        if( !m_isImageReviewInProgress )
-        {
-            LOG( INFO, "Image Review started" );
-//            disconnect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
-            disconnect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
+////            connect(    ui->captureView, SIGNAL( clicked( QModelIndex ) ),       this, SLOT( displayCapture(QModelIndex) ) );
+//            connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
 
-//            connect(    ui->captureView, SIGNAL( clicked( QModelIndex ) ),       this, SLOT( displayCapture(QModelIndex) ) );
-            connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
+//            // keyboard keys change the selection
+////            connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
+////                     this, SLOT(displayCapture(const QModelIndex &)) );
 
-            // keyboard keys change the selection
-//            connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-//                     this, SLOT(displayCapture(const QModelIndex &)) );
-
-            m_isImageReviewInProgress = true;
-        }
-    }
-}
+//            m_isImageReviewInProgress = true;
+//        }
+//    }
+//}
 
 /*
  * updateCaptureCount
