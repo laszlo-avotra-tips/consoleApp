@@ -68,32 +68,11 @@ void CaptureItemDelegate::paint( QPainter *painter,
    QFontMetrics fm = painter->fontMetrics();
    const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
    const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
-//   int offset_height = -10;
+   QImage tmi = item->loadSectorThumbnail( item->getName());
+   painter->drawImage( 5, 5, tmi.scaled(160,160));
+   painter->setPen( QPen( SelectedTextColor, 6 ) );
 
-//   if( doRotate )
-//   {
-//       // Physician screen
-//       QMatrix m;
-//       m.rotate( 90 );
-
-//       // The physician preview size is larger than the operators view; scale
-//       // up the thumbnail to fit without concern for the quality of the preview image
-//       painter->drawImage( 5, 5, item->loadSectorThumbnail( item->getName() ).scaled( option.rect.height() - 5, option.rect.height() - 5 ).transformed( m ) );
-//       painter->setPen( QPen( SelectedTextColor, 6 ) );
-//       painter->rotate( 90 );
-//       painter->drawText( option.rect.width() - Offset_px, - 10, NumberLabel );
-//   }
-//   else
-   {
-//       int offset_width = Offset_px;
-//       LOG2(offset_width, offset_height)
-       // Technician screen
-       QImage tmi = item->loadSectorThumbnail( item->getName());
-       painter->drawImage( 5, 5, tmi.scaled(160,160));
-       painter->setPen( QPen( SelectedTextColor, 6 ) );
-
-       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
-   }
+   painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
    painter->restore();
 
    // Highlight the selected item
