@@ -156,7 +156,7 @@ public:
 
     QList<captureItem *> getItemsByTag(QString tag);
     QList<captureItem *> getItemsByDate(QString date);
-    QList<captureItem *> getAllItems(void)
+    QList<captureItem *> getAllItems(void) const
     {
         return itemMap.values();
     }
