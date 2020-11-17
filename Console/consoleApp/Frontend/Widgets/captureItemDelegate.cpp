@@ -90,10 +90,10 @@ void CaptureItemDelegate::paint( QPainter *painter,
        LOG2(offset_width, offset_height)
        // Technician screen
        QImage tmi = item->loadSectorThumbnail( item->getName());
-       painter->drawImage( 5, 5, tmi.scaled(180,180));
+       painter->drawImage( 5, 5, tmi.scaled(160,160));
        painter->setPen( QPen( SelectedTextColor, 6 ) );
 //       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - offset_height, NumberLabel );
-       painter->drawText( option.rect.width()-20, option.rect.height(), NumberLabel );
+       painter->drawText( option.rect.width() - 40, option.rect.height(), NumberLabel );
    }
    painter->restore();
 
