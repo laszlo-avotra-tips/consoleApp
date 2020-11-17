@@ -91,26 +91,23 @@ void CaptureItemDelegate::paint( QPainter *painter,
        // Technician screen
        QImage tmi = item->loadSectorThumbnail( item->getName());
        painter->drawImage( 5, 5, tmi.scaled(160,160));
-//       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - offset_height, NumberLabel );
+       painter->setPen( QPen( SelectedTextColor, 6 ) );
+
+       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
    }
    painter->restore();
 
    // Highlight the selected item
    if( option.state & QStyle::State_Selected )
    {
-       const int PenSize = 1;
+       const int PenSize = 2;
        painter->setPen( QPen( SelectedItemColor, PenSize ) );
        QRect borderRect( option.rect.x() + PenSize,
                          option.rect.y() + PenSize,
                          option.rect.width()  - 2 * PenSize,
                          option.rect.height() - 2 * PenSize );
        painter->drawRoundedRect( borderRect, 5, 5 );
-       painter->setPen( QPen( SelectedItemColor, 6 ) );
-   } else {
-       painter->setPen( QPen( SelectedTextColor, 6 ) );
    }
-
-   painter->drawText( option.rect.width() - Offset_px, option.rect.height(), NumberLabel );
 
    emit updateLabel();
 }
