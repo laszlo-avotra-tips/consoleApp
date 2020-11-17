@@ -21,10 +21,13 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     showPlayer(false);
     showCapture(false);
 
-    hideUnemplementedButtons();
+    hideUnimplementedButtons();
+
+    ui->captureView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->captureView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void CaseReviewScreen::hideUnemplementedButtons()
+void CaseReviewScreen::hideUnimplementedButtons()
 {
     ui->pushButtonAnnotate->hide();
     ui->pushButtonMeasure->hide();
@@ -38,6 +41,12 @@ void CaseReviewScreen::updateCaptureLabel()
     m_numCaptures = capList.rowCount(QModelIndex());
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
+
+    if(m_numCaptures < 5){
+        ui->pushButtonRightArrow->hide();
+    } else {
+        ui->pushButtonRightArrow->show();
+    }
 
     LOG1(m_numCaptures)
 }
@@ -78,8 +87,6 @@ void CaseReviewScreen::initCapture()
 
     // Auto-scroll the list when items are added
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
-
-//    updateCaptureLabel();
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -97,7 +104,6 @@ void CaseReviewScreen::showCapture(bool isVisible)
 {
     if(isVisible){
         ui->captureScene->show();
-//        updateCaptureLabel();
     } else {
         ui->captureScene->hide();
     }
@@ -179,12 +185,11 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 {
     m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
 
-//    ui->selectedCaptureLineEdit->setText( selectedCaptureItem->getTag() );
     emit currentCaptureChanged( index );
     LOG1(index.row())
     showPlayer(false);
     showCapture(true);
-    updateCaptureLabel();
+//    updateCaptureLabel();
 
     const auto& imageName{m_selectedCaptureItem->getName()};
     LOG1(imageName)
@@ -211,7 +216,7 @@ void CaseReviewScreen::displayCapture( QModelIndex index )
     captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
     LOG1(index.row())
 
-    updateCaptureLabel();
+//    updateCaptureLabel();
 
     if( item )
     {
