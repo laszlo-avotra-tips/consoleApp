@@ -69,6 +69,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
    QFontMetrics fm = painter->fontMetrics();
    const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
    const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
+   int offset_height = -10;
 
 //   if( doRotate )
 //   {
@@ -85,15 +86,12 @@ void CaptureItemDelegate::paint( QPainter *painter,
 //   }
 //   else
    {
-       int offset_height = -10;
        int offset_width = Offset_px;
        LOG2(offset_width, offset_height)
        // Technician screen
        QImage tmi = item->loadSectorThumbnail( item->getName());
        painter->drawImage( 5, 5, tmi.scaled(160,160));
-       painter->setPen( QPen( SelectedTextColor, 6 ) );
 //       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - offset_height, NumberLabel );
-       painter->drawText( option.rect.width() - Offset_px, option.rect.height(), NumberLabel );
    }
    painter->restore();
 
@@ -107,7 +105,12 @@ void CaptureItemDelegate::paint( QPainter *painter,
                          option.rect.width()  - 2 * PenSize,
                          option.rect.height() - 2 * PenSize );
        painter->drawRoundedRect( borderRect, 5, 5 );
+       painter->setPen( QPen( SelectedItemColor, 6 ) );
+   } else {
+       painter->setPen( QPen( SelectedTextColor, 6 ) );
    }
+
+   painter->drawText( option.rect.width() - Offset_px, option.rect.height(), NumberLabel );
 
    emit updateLabel();
 }
