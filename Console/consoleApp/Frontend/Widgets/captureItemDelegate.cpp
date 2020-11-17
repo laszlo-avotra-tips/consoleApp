@@ -111,3 +111,8 @@ void CaptureItemDelegate::paint( QPainter *painter,
 
    emit updateLabel();
 }
+
+void CaptureItemDelegate::handleDisplayOffset(int dpo)
+{
+    LOG1(dpo)
+}

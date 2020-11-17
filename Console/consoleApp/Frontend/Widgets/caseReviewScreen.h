@@ -27,6 +27,7 @@ signals:
     void sendStatusText( QString );
     void sendDeviceName( QString );
     void displayingCapture();
+    void displayOffsetChanged(int dpo);
 
 public slots:
     void captureSelected(QModelIndex ix);
@@ -41,6 +42,8 @@ private slots:
     void updateSliderLabels();
 
     void on_pushButtonDone_clicked();
+
+    void on_pushButtonRightArrow_clicked();
 
 private:
     void initPlayer();
@@ -61,7 +64,7 @@ private:
     bool m_isImageReviewInProgress{false};
 
     captureItem *m_selectedCaptureItem{nullptr};
-
+    int m_displayOffset{0};
 
 };
 

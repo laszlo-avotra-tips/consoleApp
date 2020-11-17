@@ -27,6 +27,10 @@ public:
                     const QModelIndex &index ) const;
     void paint( QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index ) const;
+
+public slots:
+    void handleDisplayOffset(int dpo);
+
 private:
     bool doRotate;
 };

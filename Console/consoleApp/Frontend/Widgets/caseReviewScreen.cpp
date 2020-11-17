@@ -25,6 +25,7 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
 
     ui->captureView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->captureView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->pushButtonRightArrow->hide();
 }
 
 void CaseReviewScreen::hideUnimplementedButtons()
@@ -87,6 +88,9 @@ void CaseReviewScreen::initCapture()
 
     // Auto-scroll the list when items are added
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
+
+    //scroll
+    connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -270,5 +274,14 @@ void CaseReviewScreen::on_pushButtonDone_clicked()
     } else {
         sledIsOn = true;
         sled.writeSerial("sr1\r");
+    }
+}
+
+void CaseReviewScreen::on_pushButtonRightArrow_clicked()
+{
+    const int size{5};
+    if(m_numCaptures > size + m_displayOffset){
+        ++m_displayOffset;
+        emit displayOffsetChanged(m_displayOffset);
     }
 }
