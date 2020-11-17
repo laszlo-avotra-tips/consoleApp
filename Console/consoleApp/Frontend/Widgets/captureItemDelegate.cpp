@@ -48,10 +48,10 @@ void CaptureItemDelegate::paint( QPainter *painter,
 {
    captureItem *item;
    painter->save();
-   painter->setFont( QFont( "DinPRO-regular", 14 ) );
+   painter->setFont( QFont( "DinPRO-regular", 12 ) );
    item = index.model()->data( index, Qt::DisplayRole ).value<captureItem *>();
 
-   painter->setPen( QPen( Qt::green, 6 ) );
+   painter->setPen( QPen( Qt::black, 6 ) );
    QRect baseRect( option.rect.x() + 4,
                    option.rect.y() + 5,
                    option.rect.width() - 10,
@@ -93,7 +93,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
        painter->drawImage( 5, 5, tmi.scaled(160,160));
        painter->setPen( QPen( SelectedTextColor, 6 ) );
 //       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - offset_height, NumberLabel );
-       painter->drawText( option.rect.width() - 40, option.rect.height(), NumberLabel );
+       painter->drawText( option.rect.width() - Offset_px, option.rect.height(), NumberLabel );
    }
    painter->restore();
 
