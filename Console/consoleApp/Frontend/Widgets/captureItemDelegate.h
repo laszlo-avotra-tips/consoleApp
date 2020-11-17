@@ -16,6 +16,12 @@ class CaptureItemDelegate : public QAbstractItemDelegate
     Q_OBJECT
 
 public:
+
+signals:
+    void updateLabel() const;
+
+
+public:
     CaptureItemDelegate(bool rotated = false, QObject *parent = 0);
     QSize sizeHint( const QStyleOptionViewItem &option,
                     const QModelIndex &index ) const;

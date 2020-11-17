@@ -38,6 +38,7 @@ void CaseReviewScreen::updateCaptureLabel()
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
 
+    LOG1(m_numCaptures)
 }
 
 /* init player */
@@ -65,11 +66,14 @@ void CaseReviewScreen::initCapture()
     // set up the list for image captures
     captureListModel &capList = captureListModel::Instance();
 
-    ui->captureView->setItemDelegate( new CaptureItemDelegate() );
+    CaptureItemDelegate* crDelegate = new CaptureItemDelegate();
+    ui->captureView->setItemDelegate( crDelegate );
     ui->captureView->setModel( &capList );
 
     connect( ui->captureView, &captureListView::clicked, this, &CaseReviewScreen::captureSelected );
     connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
+
+    connect(crDelegate, &CaptureItemDelegate::updateLabel, this, &CaseReviewScreen::updateCaptureLabel);
 
     // Auto-scroll the list when items are added
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
@@ -179,6 +183,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
     LOG1(index.row())
     showPlayer(false);
     showCapture(true);
+    updateCaptureLabel();
 
     const auto& imageName{m_selectedCaptureItem->getName()};
     LOG1(imageName)
