@@ -226,5 +226,7 @@ void CaseReviewScreen::on_pushButtonRightArrow_clicked()
     if(m_numCaptures > size + m_displayOffset){
         ++m_displayOffset;
         emit displayOffsetChanged(m_displayOffset);
+        initCapture();
+
     }
 }
