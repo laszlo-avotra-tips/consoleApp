@@ -130,7 +130,8 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
 
     auto& model = captureListModel::Instance();
 
-    if(model.getSelectedRow() <= 0){
+//    if(model.getSelectedRow() <= 0)
+    {
 
         QGraphicsScene *scene = new QGraphicsScene();
 
