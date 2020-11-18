@@ -27,6 +27,16 @@ captureListModel::captureListModel(void)
 {
 }
 
+int captureListModel::getSelectedRow() const
+{
+    return m_selectedRow;
+}
+
+void captureListModel::setSelectedRow(int selectedRow)
+{
+    m_selectedRow = selectedRow;
+}
+
 /*
  * destructor
  */

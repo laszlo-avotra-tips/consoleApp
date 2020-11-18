@@ -164,6 +164,9 @@ public:
     int getLastCaptureId(void);
     ~captureListModel();
 
+    int getSelectedRow() const;
+    void setSelectedRow(int selectedRow);
+
 signals:
 
     void warning( QString );
@@ -185,6 +188,8 @@ private:
     // of each result lookup in here to get the actual data item.
     // This needs to be rebuilt at load time for playback.
     QMap<int, captureItem *> itemMap;
+
+    int m_selectedRow;
 
     static captureListModel* theDB;
 };
