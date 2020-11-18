@@ -229,6 +229,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
 void CaseReviewScreen::on_pushButtonDone_clicked()
 {
+    WidgetContainer::instance()->gotoScreen("mainScreen");
 }
 
 void CaseReviewScreen::on_pushButtonRightArrow_clicked()
