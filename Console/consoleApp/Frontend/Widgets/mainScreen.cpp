@@ -663,9 +663,11 @@ void MainScreen::on_pushButton_clicked()
     if(sledIsOn){
         sledIsOn = false;
         sled.writeSerial("sr0\r");
+        ui->pushButton->setText("SledOn");
     } else {
         sledIsOn = true;
         sled.writeSerial("sr1\r");
+        ui->pushButton->setText("SledOff");
     }
 
 }

@@ -372,7 +372,7 @@ qproperty-flat: true;
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>SledOn/Off</string>
+         <string>SledOn</string>
         </property>
        </widget>
       </item>
