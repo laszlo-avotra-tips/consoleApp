@@ -189,7 +189,7 @@ private:
     // This needs to be rebuilt at load time for playback.
     QMap<int, captureItem *> itemMap;
 
-    int m_selectedRow;
+    int m_selectedRow{-1};
 
     static captureListModel* theDB;
 };
