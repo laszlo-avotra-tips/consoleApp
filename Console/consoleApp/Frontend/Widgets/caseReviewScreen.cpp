@@ -127,6 +127,10 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
 {
     updateCaseInfo();
     QWidget::showEvent(e);
+
+    QGraphicsScene *scene = new QGraphicsScene();
+
+    ui->captureScene->setScene(scene);
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()
