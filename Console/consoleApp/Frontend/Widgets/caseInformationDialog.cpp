@@ -11,7 +11,6 @@
 #include <QParallelAnimationGroup>
 #include "caseInformationModel.h"
 #include "logger.h"
-#include "Utility/captureListModel.h"
 
 
 CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<QString> *param) :
@@ -248,8 +247,6 @@ void CaseInformationDialog::handleNext()
      * Create the session directory
      */
     m_model.validate();
-
-    captureListModel::Instance().reset();
 
     accept();
 }

@@ -39,7 +39,8 @@ void captureListModel::setSelectedRow(int selectedRow)
 
 void captureListModel::reset()
 {
-    theDB = nullptr;
+    LOG1("reset")
+    delete this;
 }
 
 /*
@@ -54,6 +55,9 @@ captureListModel::~captureListModel()
         delete i.value();
         itemMap.remove( i.key() );
     }
+    delete theDB;
+    theDB = nullptr;
+    LOG1(theDB)
 }
 
 /*
@@ -94,6 +98,7 @@ QVariant captureListModel::data( const QModelIndex &index, int role ) const
 captureListModel &captureListModel::Instance()
 {
     if(!theDB){
+        LOG1(theDB)
         theDB = new captureListModel();
     }
     return *theDB;

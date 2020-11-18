@@ -41,6 +41,7 @@ void CaseReviewScreen::updateCaptureLabel()
     captureListModel &capList = captureListModel::Instance();
 
     m_numCaptures = capList.rowCount(QModelIndex());
+    LOG1(m_numCaptures)
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
 
@@ -75,6 +76,7 @@ void CaseReviewScreen::initPlayer()
  */
 void CaseReviewScreen::initCapture()
 {
+    LOG1("initCapture")
     // set up the list for image captures
     captureListModel &capList = captureListModel::Instance();
 
@@ -190,6 +192,8 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 //    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
 
     const int rowNum = index.row() + m_displayOffset;
+
+    LOG1(rowNum)
 
     captureListModel& capList = captureListModel::Instance();
     capList.setSelectedRow(rowNum);

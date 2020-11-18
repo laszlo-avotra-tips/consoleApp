@@ -5,9 +5,10 @@
 #include "deviceSettings.h"
 #include "logger.h"
 #include "opaqueScreen.h"
-#include "Frontend/Widgets/caseInformationDialog.h"
-#include "Frontend/Widgets/caseInformationModel.h"
-#include "Frontend/Widgets/reviewAndSettingsDialog.h"
+#include "Widgets/caseInformationDialog.h"
+#include "Widgets/caseInformationModel.h"
+#include "Widgets/reviewAndSettingsDialog.h"
+#include "Utility/captureListModel.h"
 #include "displayOptionsDialog.h"
 #include "DisplayOptionsModel.h"
 #include "sledsupport.h"
@@ -227,6 +228,9 @@ void MainScreen::on_pushButtonEndCase_clicked()
     m_updatetimeTimer.stop();
     ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
     ui->frameSpeed->hide();
+
+    captureListModel::Instance().reset();
+
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()

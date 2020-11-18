@@ -34,6 +34,7 @@ captureMachine::captureMachine()
     currCaptureNumber = 0;
 
     // Connect model signals
+    LOG1(currCaptureNumber)
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
     connect( &capList, SIGNAL( warning( QString ) ), this, SIGNAL( warning( QString ) ) );
 }
@@ -178,6 +179,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
         emit sendFileToKey( thumbName );
     }
     // update the model
+    LOG1(saveName)
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
     if( capList.addCapture( captureItem.tagText,
                             currTime.toTime_t(),
