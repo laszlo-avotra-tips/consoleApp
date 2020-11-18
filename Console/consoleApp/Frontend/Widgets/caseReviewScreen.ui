@@ -487,7 +487,7 @@ border: 3px solid #F5C400;
   <widget class="captureListView" name="captureView">
    <property name="geometry">
     <rect>
-     <x>99</x>
+     <x>174</x>
      <y>610</y>
      <width>1000</width>
      <height>200</height>
@@ -507,9 +507,9 @@ border: 3px solid #F5C400;
   <widget class="QPushButton" name="pushButtonRightArrow">
    <property name="geometry">
     <rect>
-     <x>1099</x>
+     <x>1174</x>
      <y>610</y>
-     <width>100</width>
+     <width>75</width>
      <height>200</height>
     </rect>
    </property>
@@ -523,6 +523,27 @@ border-radius: 0px;
    </property>
    <property name="text">
     <string>&gt;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonLeftArrow">
+   <property name="geometry">
+    <rect>
+     <x>99</x>
+     <y>610</y>
+     <width>75</width>
+     <height>200</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:black;
+color: white;
+font:38pt &quot;Helvetica Neue&quot;;
+font-weight:600;
+border-radius: 0px;
+</string>
+   </property>
+   <property name="text">
+    <string>&lt;</string>
    </property>
   </widget>
  </widget>

@@ -46,8 +46,10 @@ void CaseReviewScreen::updateCaptureLabel()
 
     if(m_numCaptures <= 5){
         ui->pushButtonRightArrow->hide();
+        ui->pushButtonLeftArrow->hide();
     } else {
         ui->pushButtonRightArrow->show();
+        ui->pushButtonLeftArrow->show();
     }
 }
 
@@ -226,5 +228,16 @@ void CaseReviewScreen::on_pushButtonRightArrow_clicked()
     if(m_numCaptures > size + m_displayOffset){
         ++m_displayOffset;
         emit displayOffsetChanged(m_displayOffset);
+        update();
+    }
+}
+
+void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
+{
+    const int size{5};
+    if(m_numCaptures > size + m_displayOffset){
+        --m_displayOffset;
+        emit displayOffsetChanged(m_displayOffset);
+        update();
     }
 }

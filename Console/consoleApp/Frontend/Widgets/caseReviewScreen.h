@@ -40,6 +40,8 @@ private slots:
 
     void on_pushButtonRightArrow_clicked();
 
+    void on_pushButtonLeftArrow_clicked();
+
 private:
     void initPlayer();
     void initCapture();
