@@ -126,6 +126,7 @@ CaseReviewScreen::~CaseReviewScreen()
 void CaseReviewScreen::showEvent(QShowEvent * e)
 {
     updateCaseInfo();
+    updateCaptureLabel();
     QWidget::showEvent(e);
 
     auto& model = captureListModel::Instance();
