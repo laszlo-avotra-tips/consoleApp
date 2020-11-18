@@ -193,6 +193,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     captureListModel& capList = captureListModel::Instance();
     capList.setSelectedRow(rowNum);
+    update();
 
     auto itemList = capList.getAllItems();
 
