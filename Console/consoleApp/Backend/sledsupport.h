@@ -35,6 +35,7 @@ public:
     bool isRunningState();
     int runningState();
     void enableDisableBidirectional();
+    bool writeSerial(QByteArray command);
 
     struct DeviceClockingParams_T
     {
@@ -92,7 +93,6 @@ private slots:
 private:
     void stop( void );
     void setClockingParams( DeviceClockingParams_T params );
-    bool writeSerial(QByteArray command);
 
     QMutex mutex;
 

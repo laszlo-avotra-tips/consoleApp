@@ -34,6 +34,7 @@ captureMachine::captureMachine()
     currCaptureNumber = 0;
 
     // Connect model signals
+    LOG1(currCaptureNumber)
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
     connect( &capList, SIGNAL( warning( QString ) ), this, SIGNAL( warning( QString ) ) );
 }
@@ -80,8 +81,12 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
+
     QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
-//    LOG2(LogoImage.height(), LogoImage.width())
+    QImage decorImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+
+    LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
+    LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
 
     auto imageRect = sectorImage.rect();
     QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
@@ -119,22 +124,22 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
 
     // Store the capture
-    const QString thumbName       = saveDirName + "/.thumb_" + saveName + ".png";
+    const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
     const QString imageName = saveDirName + "/"        + saveName + ".png";
 
     QMatrix m;
 //    m.rotate( 90 );
-    LOG2(saveDirName,saveName)
+//    LOG2(saveDirName,saveName)
 
-    // save a thumbnail image for the UI to use
-    if( !plainImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( thumbName );
-    }
+//    // save a thumbnail image for the UI to use
+//    if( !decorImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
+//    {
+//        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
+//    }
+//    else
+//    {
+//        emit sendFileToKey( thumbName );
+//    }
 
     /*
      * save the decorated image
@@ -164,7 +169,17 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
         emit sendFileToKey( imageName );
     }
 
+    // save a thumbnail image for the UI to use
+    if( !dim.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
+    {
+        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
+    }
+    else
+    {
+        emit sendFileToKey( thumbName );
+    }
     // update the model
+    LOG1(saveName)
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
     if( capList.addCapture( captureItem.tagText,
                             currTime.toTime_t(),

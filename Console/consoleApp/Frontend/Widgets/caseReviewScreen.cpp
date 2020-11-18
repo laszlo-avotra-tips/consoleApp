@@ -4,8 +4,9 @@
 #include "Utility/widgetcontainer.h"
 #include "caseInformationModel.h"
 #include "logger.h"
-
+#include "sledsupport.h"
 #include "captureItemDelegate.h"
+#include "Utility/captureListModel.h"
 
 #include <QGraphicsPixmapItem>
 
@@ -19,15 +20,38 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     initCapture();
     showPlayer(false);
     showCapture(false);
+    updateCaptureLabel();
 
-    hideUnemplementedButtons();
+    hideUnimplementedButtons();
+
+    ui->captureView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->captureView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->pushButtonRightArrow->hide();
 }
 
-void CaseReviewScreen::hideUnemplementedButtons()
+void CaseReviewScreen::hideUnimplementedButtons()
 {
     ui->pushButtonAnnotate->hide();
     ui->pushButtonMeasure->hide();
     ui->pushButtonSaveImage->hide();
+}
+
+void CaseReviewScreen::updateCaptureLabel()
+{
+    captureListModel &capList = captureListModel::Instance();
+
+    m_numCaptures = capList.rowCount(QModelIndex());
+    LOG1(m_numCaptures)
+
+    ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
+
+    if(m_numCaptures <= 5){
+        ui->pushButtonRightArrow->hide();
+        ui->pushButtonLeftArrow->hide();
+    } else {
+        ui->pushButtonRightArrow->show();
+        ui->pushButtonLeftArrow->show();
+    }
 }
 
 /* init player */
@@ -52,20 +76,23 @@ void CaseReviewScreen::initPlayer()
  */
 void CaseReviewScreen::initCapture()
 {
+    LOG1("initCapture")
     // set up the list for image captures
     captureListModel &capList = captureListModel::Instance();
 
-    ui->captureView->setItemDelegate( new CaptureItemDelegate() );
+    CaptureItemDelegate* crDelegate = new CaptureItemDelegate();
+    ui->captureView->setItemDelegate( crDelegate );
     ui->captureView->setModel( &capList );
 
     connect( ui->captureView, &captureListView::clicked, this, &CaseReviewScreen::captureSelected );
-    connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
+
+    connect(crDelegate, &CaptureItemDelegate::updateLabel, this, &CaseReviewScreen::updateCaptureLabel);
 
     // Auto-scroll the list when items are added
     connect( &capList, &captureListModel::rowsInserted, ui->captureView, &captureListView::updateView );
 
-    ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
-
+    //scroll
+    connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -100,6 +127,15 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
 {
     updateCaseInfo();
     QWidget::showEvent(e);
+
+    auto& model = captureListModel::Instance();
+
+    if(model.getSelectedRow() <= 0){
+
+        QGraphicsScene *scene = new QGraphicsScene();
+
+        ui->captureScene->setScene(scene);
+    }
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()
@@ -162,11 +198,21 @@ void CaseReviewScreen::updateSliderLabels()
  */
 void CaseReviewScreen::captureSelected( QModelIndex index )
 {
-    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
+//    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
 
-//    ui->selectedCaptureLineEdit->setText( selectedCaptureItem->getTag() );
-    emit currentCaptureChanged( index );
-    LOG1(index.row())
+    const int rowNum = index.row() + m_displayOffset;
+
+    LOG1(rowNum)
+
+    captureListModel& capList = captureListModel::Instance();
+    capList.setSelectedRow(rowNum);
+    update();
+
+    auto itemList = capList.getAllItems();
+
+    m_selectedCaptureItem = itemList.at(rowNum);
+
+    LOG1(rowNum)
     showPlayer(false);
     showCapture(true);
 
@@ -185,52 +231,27 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
     ui->captureScene->setScene(scene);
 }
 
-/*
- * displayCapture()
- *
- * Load and display the selected image on the Technician and Physican monitors.
- */
-void CaseReviewScreen::displayCapture( QModelIndex index )
+
+void CaseReviewScreen::on_pushButtonDone_clicked()
 {
-    captureItem *item = index.data( Qt::DisplayRole ).value<captureItem *>();
-    LOG1(index.row())
+    WidgetContainer::instance()->gotoScreen("mainScreen");
+}
 
-    if( item )
-    {
-        emit showCapture( item->loadSector( item->getName() ), item->loadWaterfall( item->getName() ) );
-
-        QString str = QString( tr( "REVIEW: %1 (%2)" ) ).arg( item->getTag() ).arg( item->getIdNumber(), 3, 10, QLatin1Char( '0' ) );
-        emit sendStatusText( str );
-
-        // update the label to the review device
-        emit sendDeviceName( item->getDeviceName() );
-        emit displayingCapture();
-//        emit sendReviewImageCalibrationFactors( selectedCaptureItem->getPixelsPerMm(), zoomFactor );
-
-        if( !m_isImageReviewInProgress )
-        {
-            LOG( INFO, "Image Review started" );
-//            disconnect( ui->captureView, SIGNAL( doubleClicked( QModelIndex ) ), this, SLOT( displayCapture(QModelIndex) ) );
-            disconnect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
-
-//            connect(    ui->captureView, SIGNAL( clicked( QModelIndex ) ),       this, SLOT( displayCapture(QModelIndex) ) );
-            connect( ui->captureView, &captureListView::doubleClicked, this, &CaseReviewScreen::displayCapture );
-
-            // keyboard keys change the selection
-//            connect( ui->captureView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-//                     this, SLOT(displayCapture(const QModelIndex &)) );
-
-            m_isImageReviewInProgress = true;
-        }
+void CaseReviewScreen::on_pushButtonRightArrow_clicked()
+{
+    const int size{5};
+    if(m_numCaptures > size + m_displayOffset){
+        ++m_displayOffset;
+        emit displayOffsetChanged(m_displayOffset);
+        update();
     }
 }
 
-/*
- * updateCaptureCount
- */
-void CaseReviewScreen::updateCaptureCount( void )
+void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
 {
-    m_numCaptures++;
-    LOG1(m_numCaptures)
+    if(m_displayOffset){
+        --m_displayOffset;
+        emit displayOffsetChanged(m_displayOffset);
+        update();
+    }
 }
-

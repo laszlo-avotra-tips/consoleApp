@@ -27,18 +27,34 @@ captureListModel::captureListModel(void)
 {
 }
 
-/*
- * destructor
- */
-captureListModel::~captureListModel()
+int captureListModel::getSelectedRow() const
 {
-    // walk the map and free memory
+    return m_selectedRow;
+}
+
+void captureListModel::setSelectedRow(int selectedRow)
+{
+    m_selectedRow = selectedRow;
+}
+
+void captureListModel::reset()
+{
     QMapIterator<int, captureItem *> i(itemMap);
     while (i.hasNext()) {
         i.next();
         delete i.value();
         itemMap.remove( i.key() );
     }
+}
+
+/*
+ * destructor
+ */
+captureListModel::~captureListModel()
+{
+    // walk the map and free memory
+    reset();
+    LOG1("~")
 }
 
 /*
@@ -79,6 +95,7 @@ QVariant captureListModel::data( const QModelIndex &index, int role ) const
 captureListModel &captureListModel::Instance()
 {
     if(!theDB){
+        LOG1(theDB)
         theDB = new captureListModel();
     }
     return *theDB;

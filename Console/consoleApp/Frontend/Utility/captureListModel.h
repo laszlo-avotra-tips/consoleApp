@@ -100,7 +100,6 @@ public:
     }
 
     // XXX: do not like wildcarding based on the base name
-    QImage loadWaterfall( QString name ) { return( loadImage( name + "*waterfall.png" ) ); }
     QImage loadSector( QString name ) { return( loadImage( name + "*" + ".png" ) ); }
     QImage loadSectorThumbnail( QString name ) { return( loadImage( ".thumb_" + name + "*" + ".png" ) ); }
     QImage loadDecoratedImage( QString name ) { return( loadImage( name + "*" + ".png" ) ); }
@@ -157,13 +156,17 @@ public:
 
     QList<captureItem *> getItemsByTag(QString tag);
     QList<captureItem *> getItemsByDate(QString date);
-    QList<captureItem *> getAllItems(void)
+    QList<captureItem *> getAllItems(void) const
     {
         return itemMap.values();
     }
 
     int getLastCaptureId(void);
     ~captureListModel();
+
+    int getSelectedRow() const;
+    void setSelectedRow(int selectedRow);
+    void reset();
 
 signals:
 
@@ -186,6 +189,8 @@ private:
     // of each result lookup in here to get the actual data item.
     // This needs to be rebuilt at load time for playback.
     QMap<int, captureItem *> itemMap;
+
+    int m_selectedRow{-1};
 
     static captureListModel* theDB;
 };

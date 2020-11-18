@@ -1,6 +1,6 @@
 #include "caseInformationDialog.h"
 #include "ui_caseInformationDialog.h"
-#include "Frontend/Utility/widgetcontainer.h"
+#include "Utility/widgetcontainer.h"
 #include "consoleLineEdit.h"
 #include "selectDialog.h"
 

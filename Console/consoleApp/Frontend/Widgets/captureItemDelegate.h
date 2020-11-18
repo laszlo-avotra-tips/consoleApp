@@ -16,13 +16,26 @@ class CaptureItemDelegate : public QAbstractItemDelegate
     Q_OBJECT
 
 public:
+
+signals:
+    void updateLabel() const;
+
+
+public:
     CaptureItemDelegate(bool rotated = false, QObject *parent = 0);
     QSize sizeHint( const QStyleOptionViewItem &option,
-                    const QModelIndex &index ) const;
-    void paint( QPainter *painter, const QStyleOptionViewItem &option,
+                    const QModelIndex &index ) const override;
+    void paint0( QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index ) const;
+
+    void paint( QPainter *painter, const QStyleOptionViewItem &option,
+               const QModelIndex &index ) const override;
+public slots:
+    void handleDisplayOffset(int dpo);
+
 private:
     bool doRotate;
+    int m_itemOffset{0};
 };
 
 
