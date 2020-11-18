@@ -55,8 +55,6 @@ captureListModel::~captureListModel()
         delete i.value();
         itemMap.remove( i.key() );
     }
-    delete theDB;
-    theDB = nullptr;
     LOG1(theDB)
 }
 
