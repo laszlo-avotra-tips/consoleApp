@@ -5,8 +5,8 @@
 #include "caseInformationModel.h"
 #include "logger.h"
 #include "sledsupport.h"
-
 #include "captureItemDelegate.h"
+#include "Utility/captureListModel.h"
 
 #include <QGraphicsPixmapItem>
 
@@ -128,9 +128,14 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     updateCaseInfo();
     QWidget::showEvent(e);
 
-    QGraphicsScene *scene = new QGraphicsScene();
+    auto& model = captureListModel::Instance();
 
-    ui->captureScene->setScene(scene);
+    if(model.getSelectedRow() <= 0){
+
+        QGraphicsScene *scene = new QGraphicsScene();
+
+        ui->captureScene->setScene(scene);
+    }
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()
