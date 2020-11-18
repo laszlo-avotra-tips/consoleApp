@@ -166,6 +166,7 @@ public:
 
     int getSelectedRow() const;
     void setSelectedRow(int selectedRow);
+    void reset();
 
 signals:
 

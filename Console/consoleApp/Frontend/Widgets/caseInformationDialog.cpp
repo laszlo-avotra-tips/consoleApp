@@ -1,6 +1,6 @@
 #include "caseInformationDialog.h"
 #include "ui_caseInformationDialog.h"
-#include "Frontend/Utility/widgetcontainer.h"
+#include "Utility/widgetcontainer.h"
 #include "consoleLineEdit.h"
 #include "selectDialog.h"
 
@@ -11,6 +11,7 @@
 #include <QParallelAnimationGroup>
 #include "caseInformationModel.h"
 #include "logger.h"
+#include "Utility/captureListModel.h"
 
 
 CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<QString> *param) :
@@ -247,6 +248,8 @@ void CaseInformationDialog::handleNext()
      * Create the session directory
      */
     m_model.validate();
+
+    captureListModel::Instance().reset();
 
     accept();
 }

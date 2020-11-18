@@ -37,6 +37,11 @@ void captureListModel::setSelectedRow(int selectedRow)
     m_selectedRow = selectedRow;
 }
 
+void captureListModel::reset()
+{
+    theDB = nullptr;
+}
+
 /*
  * destructor
  */
