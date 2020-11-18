@@ -191,7 +191,8 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     const int rowNum = index.row() + m_displayOffset;
 
-    const captureListModel& capList = captureListModel::Instance();
+    captureListModel& capList = captureListModel::Instance();
+    capList.setSelectedRow(rowNum);
 
     auto itemList = capList.getAllItems();
 

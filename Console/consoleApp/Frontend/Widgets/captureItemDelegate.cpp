@@ -133,7 +133,8 @@ void CaptureItemDelegate::paint( QPainter *painter,
    painter->restore();
 
    // Highlight the selected item
-   if( option.state & QStyle::State_Selected )
+//   if( option.state & QStyle::State_Selected )
+   if(rowNum == capList.getSelectedRow())
    {
        const int PenSize = 2;
        painter->setPen( QPen( SelectedItemColor, PenSize ) );
