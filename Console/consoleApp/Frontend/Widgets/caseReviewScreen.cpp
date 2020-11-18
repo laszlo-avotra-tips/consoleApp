@@ -40,7 +40,7 @@ void CaseReviewScreen::updateCaptureLabel()
 {
     captureListModel &capList = captureListModel::Instance();
 
-    m_numCaptures = capList.rowCount(QModelIndex());
+    m_numCaptures = capList.countOfCapuredItems(); //capList.rowCount(QModelIndex());
     LOG1(m_numCaptures)
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
