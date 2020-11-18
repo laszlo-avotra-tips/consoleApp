@@ -193,7 +193,6 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     const captureListModel& capList = captureListModel::Instance();
 
-
     auto itemList = capList.getAllItems();
 
     m_selectedCaptureItem = itemList.at(rowNum);
@@ -234,8 +233,7 @@ void CaseReviewScreen::on_pushButtonRightArrow_clicked()
 
 void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
 {
-    const int size{5};
-    if(m_numCaptures > size + m_displayOffset){
+    if(m_displayOffset){
         --m_displayOffset;
         emit displayOffsetChanged(m_displayOffset);
         update();
