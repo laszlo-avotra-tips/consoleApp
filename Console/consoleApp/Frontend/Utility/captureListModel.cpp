@@ -39,8 +39,12 @@ void captureListModel::setSelectedRow(int selectedRow)
 
 void captureListModel::reset()
 {
-    LOG1("reset")
-    delete this;
+    QMapIterator<int, captureItem *> i(itemMap);
+    while (i.hasNext()) {
+        i.next();
+        delete i.value();
+        itemMap.remove( i.key() );
+    }
 }
 
 /*
@@ -49,13 +53,8 @@ void captureListModel::reset()
 captureListModel::~captureListModel()
 {
     // walk the map and free memory
-    QMapIterator<int, captureItem *> i(itemMap);
-    while (i.hasNext()) {
-        i.next();
-        delete i.value();
-        itemMap.remove( i.key() );
-    }
-    LOG1(theDB)
+    reset();
+    LOG1("~")
 }
 
 /*
