@@ -229,7 +229,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
     ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
     ui->frameSpeed->hide();
 
-//    captureListModel::Instance().reset();
+    captureListModel::Instance().reset();
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
