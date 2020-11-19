@@ -161,6 +161,8 @@ public:
         return itemMap.values();
     }
 
+    int countOfCapuredItems() const;
+
     int getLastCaptureId(void);
     ~captureListModel();
 
@@ -192,5 +194,5 @@ private:
 
     int m_selectedRow{-1};
 
-    static captureListModel* theDB;
+    static captureListModel* m_instance;
 };
