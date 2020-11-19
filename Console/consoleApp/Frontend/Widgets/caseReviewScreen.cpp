@@ -204,7 +204,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     const int rowNum = index.row() + m_displayOffset;
 
-    LOG1(rowNum)
+    LOG3(rowNum,m_numCaptures,m_displayOffset)
 
     captureListModel& capList = captureListModel::Instance();
     capList.setSelectedRow(rowNum);
