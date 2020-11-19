@@ -214,23 +214,26 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     m_selectedCaptureItem = itemList.at(rowNum);
 
-    LOG1(rowNum)
+    LOG2(rowNum, m_selectedCaptureItem)
     showPlayer(false);
     showCapture(true);
 
-    const auto& imageName{m_selectedCaptureItem->getName()};
-    LOG1(imageName)
-    QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
+    if(m_selectedCaptureItem){
 
-    LOG2(image.size().width(), image.size().height())
+        const auto& imageName{m_selectedCaptureItem->getName()};
+        LOG1(imageName)
+        QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
 
-    QGraphicsScene *scene = new QGraphicsScene();
+        LOG2(image.size().width(), image.size().height())
 
-    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+        QGraphicsScene *scene = new QGraphicsScene();
 
-    scene->addItem(item);
+        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 
-    ui->captureScene->setScene(scene);
+        scene->addItem(item);
+
+        ui->captureScene->setScene(scene);
+    }
 }
 
 
