@@ -50,7 +50,7 @@ win32 {
     LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTCapture
     LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTControl_LW
     LIBS += -L$$PWD/../../lib/amd64/FTDI/ -lftd2xx
-    LIBS += -L$$PWD/../../lib/amd64/VideoRecorder/ -lAVideoRecorder
+    LIBS += -L$$PWD/../../lib/amd64/VideoRecorder/lib/ -lAVideoRecorder
 
 
     LIBS +=                                       \
