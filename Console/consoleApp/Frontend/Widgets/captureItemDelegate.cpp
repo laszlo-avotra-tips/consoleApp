@@ -107,6 +107,8 @@ void CaptureItemDelegate::paint( QPainter *painter,
 
    captureItem * item = itemList.at(rowNum);
 
+   if(item){
+
    painter->setPen( QPen( Qt::black, 6 ) );
    QRect baseRect( option.rect.x() + 4,
                    option.rect.y() + 5,
@@ -146,6 +148,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
    }
 
    emit updateLabel();
+   }
 }
 
 void CaptureItemDelegate::handleDisplayOffset(int dpo)
