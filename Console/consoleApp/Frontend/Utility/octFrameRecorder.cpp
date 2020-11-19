@@ -1,6 +1,7 @@
 #include "octFrameRecorder.h"
 #include <logger.h>
 
+
 OctFrameRecorder* OctFrameRecorder::m_instance{nullptr};
 
 OctFrameRecorder *OctFrameRecorder::instance()

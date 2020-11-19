@@ -12,6 +12,7 @@ HEADERS += \
     $$PWD/Backend/fullCaseRecorder.h \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/scanconversion.h \
+    $$PWD/Frontend/Utility/ScreenCapture.hpp \
     $$PWD/Frontend/Utility/clipListModel.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
     $$PWD/Frontend/Utility/octFrameRecorder.h \

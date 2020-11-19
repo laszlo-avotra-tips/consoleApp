@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "octFile.h"
+extern "C" {
+#include "Utility/ScreenCapture.hpp"
+}
 
 class OctFrameRecorder : public QObject
 {
@@ -25,6 +28,7 @@ private:
     static OctFrameRecorder* m_instance;
     int m_count{0};
     bool m_recorderIsOn{false};
+    CapUtils::ScreenCapture* m_screenCapture{nullptr};
 
 };
 
