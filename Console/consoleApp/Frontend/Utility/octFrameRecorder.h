@@ -11,6 +11,9 @@ class OctFrameRecorder : public QObject
 public:
     static OctFrameRecorder* instance();
 
+    bool recorderIsOn() const;
+    void setRecorderIsOn(bool recorderIsOn);
+
 signals:
 
 public slots:
@@ -21,6 +24,7 @@ private:
 
     static OctFrameRecorder* m_instance;
     int m_count{0};
+    bool m_recorderIsOn{false};
 
 };
 

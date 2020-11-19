@@ -95,6 +95,7 @@ private:
     int getSledRuntime();
     void setSceneCursor( QCursor cursor );
     void updateDeviceSettings();
+    void handleRecordingOnChange(bool recordingIsOn);
 
 private:
     Ui::MainScreen *ui;
@@ -116,6 +117,7 @@ private:
     int m_sledRuntime{0}; //the time the Sled is on in milliseconds
 
     ScanConversion *m_scanWorker{nullptr};
+    bool m_recordingIsOn{false};
 
 };
 #endif // MAINSCREEN_H

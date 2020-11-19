@@ -9,6 +9,7 @@
 #include "Widgets/caseInformationModel.h"
 #include "Widgets/reviewAndSettingsDialog.h"
 #include "Utility/captureListModel.h"
+#include "Utility/octFrameRecorder.h"
 #include "displayOptionsDialog.h"
 #include "DisplayOptionsModel.h"
 #include "sledsupport.h"
@@ -394,6 +395,19 @@ void MainScreen::updateDeviceSettings()
     }
 }
 
+void MainScreen::handleRecordingOnChange(bool recordingIsOn)
+{
+    LOG1(recordingIsOn)
+    OctFrameRecorder::instance()->setRecorderIsOn(recordingIsOn);
+    if(recordingIsOn){
+        QString yellowBorder("border:5px solid rgb(245,196,0);");
+        ui->frameM->setStyleSheet(yellowBorder);
+    } else {
+        QString noBorder("border:5px solid rgb(0,0,0);");
+        ui->frameM->setStyleSheet(noBorder);
+    }
+}
+
 
 
 void MainScreen::openDeviceSelectDialog()
@@ -578,7 +592,12 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-    //lcv    hide(); only to integrating the L250 features
+    if(m_recordingIsOn){
+        m_recordingIsOn = false;
+    } else {
+        m_recordingIsOn = true;
+    }
+    handleRecordingOnChange(m_recordingIsOn);
 }
 
 void MainScreen::onCaptureImage()
