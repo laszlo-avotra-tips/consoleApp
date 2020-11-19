@@ -10,6 +10,11 @@ OctFrameRecorder *OctFrameRecorder::instance()
     return m_instance;
 }
 
+void OctFrameRecorder::handleOctFrame(OCTFile::OctData_t *frame)
+{
+
+}
+
 OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 {
 

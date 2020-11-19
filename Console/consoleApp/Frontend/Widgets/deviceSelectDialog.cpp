@@ -17,6 +17,7 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+#include "Frontend/Utility/octFrameRecorder.h"
 
 DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -131,6 +132,7 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
     if(idaq){
         if(idaq->getSignalSource()){
             connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector);
+            connect( idaq->getSignalSource(), &IDAQ::updateSector, OctFrameRecorder::instance(), &OctFrameRecorder::handleOctFrame);
         }
         idaq->init();
         idaq->start();

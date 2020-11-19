@@ -2,6 +2,7 @@
 #define OCTFRAMERECORDER_H
 
 #include <QObject>
+#include "octFile.h"
 
 class OctFrameRecorder : public QObject
 {
@@ -11,6 +12,9 @@ public:
     static OctFrameRecorder* instance();
 
 signals:
+
+public slots:
+    void handleOctFrame(OCTFile::OctData_t *frame);
 
 private:
     explicit OctFrameRecorder(QObject *parent = nullptr);
