@@ -45,6 +45,7 @@ void captureListModel::reset()
         delete i.value();
         itemMap.remove( i.key() );
     }
+    m_selectedRow = -1;
 }
 
 /*
