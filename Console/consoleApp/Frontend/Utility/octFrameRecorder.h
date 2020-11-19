@@ -20,6 +20,7 @@ private:
     explicit OctFrameRecorder(QObject *parent = nullptr);
 
     static OctFrameRecorder* m_instance;
+    int m_count{0};
 
 };
 
