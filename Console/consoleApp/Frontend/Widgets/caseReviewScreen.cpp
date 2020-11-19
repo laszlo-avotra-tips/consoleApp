@@ -202,11 +202,11 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 {
 //    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
 
-    const int rowNum = index.row() + m_displayOffset;
-
-    LOG3(rowNum,m_numCaptures,m_displayOffset)
-
     captureListModel& capList = captureListModel::Instance();
+    const int rowNum = index.row() + capList.getRowOffset();
+
+    LOG2(rowNum,m_numCaptures)
+
     capList.setSelectedRow(rowNum);
     update();
 
