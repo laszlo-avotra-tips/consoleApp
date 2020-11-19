@@ -6,10 +6,16 @@
 class OctFrameRecorder : public QObject
 {
     Q_OBJECT
+
 public:
-    explicit OctFrameRecorder(QObject *parent = nullptr);
+    static OctFrameRecorder* instance();
 
 signals:
+
+private:
+    explicit OctFrameRecorder(QObject *parent = nullptr);
+
+    static OctFrameRecorder* m_instance;
 
 };
 
