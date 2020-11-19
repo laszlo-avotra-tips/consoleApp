@@ -226,7 +226,7 @@ qproperty-flat: true;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../octConsole.qrc">
+         <iconset>
           <normaloff>:/octConsole/capture</normaloff>
           <normalon>:/octConsole/cameraYellow</normalon>:/octConsole/capture</iconset>
         </property>
@@ -309,7 +309,7 @@ qproperty-flat: true;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../octConsole.qrc">
+         <iconset>
           <normaloff>:/octConsole/measureWhite</normaloff>
           <normalon>:/octConsole/measureYellow</normalon>
           <disabledoff>:/octConsole/measureGrey</disabledoff>
@@ -451,14 +451,14 @@ CASE</string>
     <widget class="QFrame" name="frameM">
      <property name="minimumSize">
       <size>
-       <width>2160</width>
+       <width>2159</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>2160</width>
-       <height>16777215</height>
+       <width>2159</width>
+       <height>2159</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -496,14 +496,14 @@ CASE</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>2160</width>
-          <height>2160</height>
+          <width>2158</width>
+          <height>2158</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>2160</width>
-          <height>2160</height>
+          <width>2158</width>
+          <height>2158</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -887,8 +887,6 @@ font: 20pt &quot;Helvetica Neue&quot;;
    </property>
   </action>
  </widget>
- <resources>
-  <include location="../../octConsole.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
