@@ -170,6 +170,9 @@ public:
     void setSelectedRow(int selectedRow);
     void reset();
 
+    int getRowOffset() const;
+    void setRowOffset(int rowOffset);
+
 signals:
 
     void warning( QString );
@@ -193,6 +196,7 @@ private:
     QMap<int, captureItem *> itemMap;
 
     int m_selectedRow{-1};
+    int m_rowOffset{0};
 
     static captureListModel* m_instance;
 };

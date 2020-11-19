@@ -27,6 +27,16 @@ captureListModel::captureListModel(void)
 {
 }
 
+int captureListModel::getRowOffset() const
+{
+    return m_rowOffset;
+}
+
+void captureListModel::setRowOffset(int rowOffset)
+{
+    m_rowOffset = rowOffset;
+}
+
 int captureListModel::getSelectedRow() const
 {
     return m_selectedRow;
@@ -46,6 +56,7 @@ void captureListModel::reset()
         itemMap.remove( i.key() );
     }
     m_selectedRow = -1;
+    setRowOffset(0);
 }
 
 /*

@@ -244,8 +244,10 @@ void CaseReviewScreen::on_pushButtonRightArrow_clicked()
     const int size{5};
     if(m_numCaptures > size + m_displayOffset){
         ++m_displayOffset;
-        emit displayOffsetChanged(m_displayOffset);
+//        emit displayOffsetChanged(m_displayOffset);
         update();
+        captureListModel& capList = captureListModel::Instance();
+        capList.setRowOffset(m_displayOffset);
     }
 }
 
@@ -253,7 +255,9 @@ void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
 {
     if(m_displayOffset){
         --m_displayOffset;
-        emit displayOffsetChanged(m_displayOffset);
+//        emit displayOffsetChanged(m_displayOffset);
         update();
+        captureListModel& capList = captureListModel::Instance();
+        capList.setRowOffset(m_displayOffset);
     }
 }
