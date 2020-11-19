@@ -18,7 +18,7 @@
 #include "Utility/sessiondatabase.h"
 #include "logger.h"
 
-captureListModel* captureListModel::theDB{nullptr};
+captureListModel* captureListModel::m_instance{nullptr};
 /*
  * constructor
  */
@@ -94,11 +94,11 @@ QVariant captureListModel::data( const QModelIndex &index, int role ) const
 
 captureListModel &captureListModel::Instance()
 {
-    if(!theDB){
-        LOG1(theDB)
-        theDB = new captureListModel();
+    if(!m_instance){
+        LOG1(m_instance)
+        m_instance = new captureListModel();
     }
-    return *theDB;
+    return *m_instance;
 }
 
 
@@ -143,6 +143,11 @@ int captureListModel::addCapture(QString tag,
     itemMap.insert( maxID, cap );
     endInsertRows();
     return maxID;
+}
+
+int captureListModel::countOfCapuredItems() const
+{
+    return itemMap.size();
 }
 
 

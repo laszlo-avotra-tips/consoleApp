@@ -230,7 +230,6 @@ void MainScreen::on_pushButtonEndCase_clicked()
     ui->frameSpeed->hide();
 
     captureListModel::Instance().reset();
-
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()

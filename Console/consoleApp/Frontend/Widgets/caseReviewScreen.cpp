@@ -40,7 +40,7 @@ void CaseReviewScreen::updateCaptureLabel()
 {
     captureListModel &capList = captureListModel::Instance();
 
-    m_numCaptures = capList.rowCount(QModelIndex());
+    m_numCaptures = capList.countOfCapuredItems(); //capList.rowCount(QModelIndex());
     LOG1(m_numCaptures)
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
@@ -126,11 +126,13 @@ CaseReviewScreen::~CaseReviewScreen()
 void CaseReviewScreen::showEvent(QShowEvent * e)
 {
     updateCaseInfo();
+    updateCaptureLabel();
     QWidget::showEvent(e);
 
     auto& model = captureListModel::Instance();
 
-    if(model.getSelectedRow() <= 0){
+//    if(model.getSelectedRow() <= 0)
+    {
 
         QGraphicsScene *scene = new QGraphicsScene();
 

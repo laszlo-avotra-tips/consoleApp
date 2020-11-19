@@ -96,6 +96,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     const QDateTime currTime = QDateTime().fromTime_t( captureItem.timestamp );
 
     // capture number is tracked here
+    currCaptureNumber = captureListModel::Instance().countOfCapuredItems();
     currCaptureNumber++;
     QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
 
