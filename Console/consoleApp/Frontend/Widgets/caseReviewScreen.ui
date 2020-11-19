@@ -522,7 +522,18 @@ border-radius: 0px;
 </string>
    </property>
    <property name="text">
-    <string>&gt;</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>:/octConsole/rightArrow</normalon>
+    </iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>64</width>
+     <height>64</height>
+    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonLeftArrow">
@@ -543,7 +554,18 @@ border-radius: 0px;
 </string>
    </property>
    <property name="text">
-    <string>&lt;</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>:/octConsole/leftArrow</normalon>
+    </iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>64</width>
+     <height>64</height>
+    </size>
    </property>
   </widget>
  </widget>
