@@ -61,7 +61,6 @@ private:
     bool m_isImageReviewInProgress{false};
 
     captureItem *m_selectedCaptureItem{nullptr};
-    int m_displayOffset{0};
 
 };
 

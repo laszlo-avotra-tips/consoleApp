@@ -245,22 +245,18 @@ void CaseReviewScreen::on_pushButtonDone_clicked()
 void CaseReviewScreen::on_pushButtonRightArrow_clicked()
 {
     const int size{5};
-    if(m_numCaptures > size + m_displayOffset){
-        ++m_displayOffset;
-//        emit displayOffsetChanged(m_displayOffset);
+    captureListModel& capList = captureListModel::Instance();
+    if(m_numCaptures > size + capList.getRowOffset()){
         update();
-        captureListModel& capList = captureListModel::Instance();
-        capList.setRowOffset(m_displayOffset);
+        capList.setRowOffset(capList.getRowOffset() + 1);
     }
 }
 
 void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
 {
-    if(m_displayOffset){
-        --m_displayOffset;
-//        emit displayOffsetChanged(m_displayOffset);
+    captureListModel& capList = captureListModel::Instance();
+    if(capList.getRowOffset()){
         update();
-        captureListModel& capList = captureListModel::Instance();
-        capList.setRowOffset(m_displayOffset);
+        capList.setRowOffset(capList.getRowOffset() - 1);
     }
 }
