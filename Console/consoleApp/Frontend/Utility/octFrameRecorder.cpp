@@ -14,13 +14,14 @@ OctFrameRecorder *OctFrameRecorder::instance()
 
 void OctFrameRecorder::handleOctFrame(OCTFile::OctData_t *frame)
 {
-    if(m_recorderIsOn){
-        if(m_count % 64 == 0){
-            LOG2(m_count, frame)
-        }
+    if(frame && m_recorderIsOn){
+//        if(m_count % 64 == 0){
+//            LOG2(m_count, frame)
+//        }
         ++m_count;
         if(!m_playlistFileName.isEmpty() && !m_outDirPath.isEmpty() && m_screenCapture){
-           m_screenCapture->encodeFrame(frame->acqData);
+            LOG2(m_count, frame->acqData)
+//           m_screenCapture->encodeFrame(frame->acqData);
         }
     }
 }
@@ -45,7 +46,10 @@ bool OctFrameRecorder::start()
 {
     bool success{false};
     if(!m_outDirPath.isEmpty() && !m_playlistFileName.isEmpty() && m_screenCapture){
-        m_screenCapture->start(m_outDirPath.toLatin1(), m_playlistFileName.toLatin1());
+        const char* directory {m_outDirPath.toLatin1()};
+        const char* fileName {m_playlistFileName.toLatin1()};
+        LOG2(directory,fileName)
+        m_screenCapture->start(directory, fileName);
         setRecorderIsOn(true);
         success = true;
     }
