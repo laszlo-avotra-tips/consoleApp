@@ -40,6 +40,7 @@ signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
     void sledRunningStateChanged(int isInRunningState);
+    void updateRecorder(const OCTFile::OctData_t * frame);
 
 private slots:
     void on_pushButtonFlip_clicked();

@@ -598,6 +598,8 @@ void MainScreen::on_pushButtonRecord_clicked()
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
+    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::handleOctFrame);
+
     if(m_recordingIsOn){
         m_recordingIsOn = false;
     } else {
@@ -682,6 +684,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         if(m_scanWorker->isReady){
 
             if(image && frameData && frameData->dispData){
+
+                emit updateRecorder(frameData);
+
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
                 if(pixmap){

@@ -29,7 +29,7 @@ public:
 signals:
 
 public slots:
-    void handleOctFrame(OCTFile::OctData_t *frame);
+    void handleOctFrame(const OCTFile::OctData_t *frame);
 
 private:
     explicit OctFrameRecorder(QObject *parent = nullptr);
