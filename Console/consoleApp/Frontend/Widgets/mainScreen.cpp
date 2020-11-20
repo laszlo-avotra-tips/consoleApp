@@ -399,7 +399,7 @@ void MainScreen::updateDeviceSettings()
     }
 }
 
-void MainScreen::handleRecordingOnChange(bool recordingIsOn)
+void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
 {
     LOG1(recordingIsOn)
     OctFrameRecorder::instance()->setRecorderIsOn(recordingIsOn);
@@ -537,7 +537,6 @@ void MainScreen::on_pushButtonCapture_released()
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    //emit captureImage();
     onCaptureImage();
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
@@ -596,28 +595,41 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
     if(m_recordingIsOn){
         m_recordingIsOn = false;
     } else {
         m_recordingIsOn = true;
     }
-    handleRecordingOnChange(m_recordingIsOn);
+    onRecordSector(m_recordingIsOn);
+    showYellowBorderForRecordingOn(m_recordingIsOn);
 }
 
 void MainScreen::onCaptureImage()
 {
-    static int currImgNumber = 0;
+    static int currentImageNumber = 0;
     // tag the images as "IMG 1, IMG 2, ..."
-    currImgNumber++;
-    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber);
+    currentImageNumber++;
+    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
     LOG1(tag);
     QRect rectangle = ui->graphicsView->rect();
-//    rectangle.setWidth(1440);
-//    rectangle.setHeight(1440);
     qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
     QImage p = ui->graphicsView->grab(rectangle).toImage();
     m_scene->captureDi( p, tag );
 
+}
+
+void MainScreen::onRecordSector(bool isRecording)
+{
+    if(isRecording){
+        static int currentLoopNumber = 0;
+        // tag the images as "IMG 1, IMG 2, ..."
+        currentLoopNumber++;
+        QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currentLoopNumber);
+        LOG1(tag);
+    }
 }
 
 void MainScreen::setMeasurementMode(bool enable)

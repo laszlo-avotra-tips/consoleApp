@@ -78,6 +78,7 @@ private slots:
 
     void on_pushButtonRecord_clicked();
     void onCaptureImage();
+    void onRecordSector(bool isRecording);
     void setMeasurementMode(bool enabled);
 
     void on_pushButton_clicked();
@@ -95,7 +96,7 @@ private:
     int getSledRuntime();
     void setSceneCursor( QCursor cursor );
     void updateDeviceSettings();
-    void handleRecordingOnChange(bool recordingIsOn);
+    void showYellowBorderForRecordingOn(bool recordingIsOn);
 
 private:
     Ui::MainScreen *ui;
