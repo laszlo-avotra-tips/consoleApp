@@ -22,7 +22,7 @@ void OctFrameRecorder::handleOctFrame(const OCTFile::OctData_t *frame)
 //        ++m_count;
         if(!m_playlistFileName.isEmpty() && !m_outDirPath.isEmpty() && m_screenCapture){
 //            LOG2(m_count, frame->acqData)
-            m_screenCapture->encodeFrame(frame->acqData);
+            m_screenCapture->encodeFrame(frame->dispData);
         }
     }
 }
