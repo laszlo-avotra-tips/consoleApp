@@ -1,5 +1,6 @@
 #include "octFrameRecorder.h"
 #include <logger.h>
+#include <string>
 
 
 OctFrameRecorder* OctFrameRecorder::m_instance{nullptr};
@@ -46,10 +47,10 @@ bool OctFrameRecorder::start()
 {
     bool success{false};
     if(!m_outDirPath.isEmpty() && !m_playlistFileName.isEmpty() && m_screenCapture){
-        const char* directory {m_outDirPath.toLatin1()};
-        const char* fileName {m_playlistFileName.toLatin1()};
-        LOG2(directory,fileName)
-        m_screenCapture->start(directory, fileName);
+        const std::string directoryName {m_outDirPath.toStdString()};
+        const std::string fileName {m_playlistFileName.toStdString()};
+        LOG2(directoryName.c_str(),fileName.c_str())
+        m_screenCapture->start(directoryName.c_str(), fileName.c_str());
         setRecorderIsOn(true);
         success = true;
     }
