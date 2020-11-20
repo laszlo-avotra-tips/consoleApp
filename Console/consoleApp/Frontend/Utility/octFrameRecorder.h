@@ -23,6 +23,9 @@ public:
     QString playlistFileName() const;
     void setPlaylistFileName(const QString &playlistFileName);
 
+    bool start();
+    bool stop();
+
 signals:
 
 public slots:

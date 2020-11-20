@@ -41,6 +41,28 @@ void OctFrameRecorder::setPlaylistFileName(const QString &playlistFileName)
     LOG1(m_playlistFileName)
 }
 
+bool OctFrameRecorder::start()
+{
+    bool success{false};
+    if(!m_outDirPath.isEmpty() && !m_playlistFileName.isEmpty() && m_screenCapture){
+        m_screenCapture->start(m_outDirPath.toLatin1(), m_playlistFileName.toLatin1());
+        setRecorderIsOn(true);
+        success = true;
+    }
+    return success;
+}
+
+bool OctFrameRecorder::stop()
+{
+    bool success{false};
+    if(m_screenCapture){
+        setRecorderIsOn(false);
+        m_screenCapture->stop();
+        success = true;
+    }
+    return success;
+}
+
 QString OctFrameRecorder::outDirPath() const
 {
     return m_outDirPath;

@@ -18,6 +18,7 @@
 #include "signalmodel.h"
 #include "daqfactory.h"
 #include "idaq.h"
+#include "Utility/userSettings.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -402,7 +403,6 @@ void MainScreen::updateDeviceSettings()
 void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
 {
     LOG1(recordingIsOn)
-    OctFrameRecorder::instance()->setRecorderIsOn(recordingIsOn);
     if(recordingIsOn){
         QString yellowBorder("border:1px solid rgb(245,196,0);");
         ui->frameM->setStyleSheet(yellowBorder);
@@ -625,10 +625,17 @@ void MainScreen::onRecordSector(bool isRecording)
 {
     if(isRecording){
         static int currentLoopNumber = 0;
-        // tag the images as "IMG 1, IMG 2, ..."
+        // tag the images as "LOOP 1, LOOP 2, ..."
         currentLoopNumber++;
-        QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currentLoopNumber);
+        QString tag = QString( "LOOP %1" ).arg( currentLoopNumber);
         LOG1(tag);
+        OctFrameRecorder::instance()->setPlaylistFileName(tag);
+        caseInfo &info = caseInfo::Instance();
+        QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
+        OctFrameRecorder::instance()->setOutDirPath(dirString);
+        OctFrameRecorder::instance()->start();
+    } else {
+        OctFrameRecorder::instance()->stop();
     }
 }
 
