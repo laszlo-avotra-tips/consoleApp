@@ -50,9 +50,12 @@ bool OctFrameRecorder::start()
         const std::string directoryName {m_outDirPath.toStdString()};
         const std::string fileName {m_playlistFileName.toStdString()};
         LOG2(directoryName.c_str(),fileName.c_str())
-        m_screenCapture->start(directoryName.c_str(), fileName.c_str());
-        setRecorderIsOn(true);
-        success = true;
+        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str());
+        LOG1(success)
+        if(success){
+            QThread::msleep(500);
+            setRecorderIsOn(true);
+        }
     }
     return success;
 }
