@@ -627,7 +627,7 @@ void MainScreen::onRecordSector(bool isRecording)
         static int currentLoopNumber = 0;
         // tag the images as "LOOP_1, LOOP_2, ..."
         currentLoopNumber++;
-        QString tag = QString( "LOOP_%1.ts" ).arg( currentLoopNumber);
+        QString tag = QString( "LOOP_%1.m3u8" ).arg( currentLoopNumber);
         LOG1(tag);
         OctFrameRecorder::instance()->setPlaylistFileName(tag);
         caseInfo &info = caseInfo::Instance();
