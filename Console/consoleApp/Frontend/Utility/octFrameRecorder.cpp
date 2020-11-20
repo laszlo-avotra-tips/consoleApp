@@ -13,16 +13,11 @@ OctFrameRecorder *OctFrameRecorder::instance()
     return m_instance;
 }
 
-void OctFrameRecorder::handleOctFrame(const OCTFile::OctData_t *frame)
+void OctFrameRecorder::recordData(uint8_t *dispData)
 {
-    if(frame && m_recorderIsOn){
-//        if(m_count % 64 == 0){
-//            LOG2(m_count, frame)
-//        }
-//        ++m_count;
+    if(dispData && m_recorderIsOn){
         if(!m_playlistFileName.isEmpty() && !m_outDirPath.isEmpty() && m_screenCapture){
-//            LOG2(m_count, frame->acqData)
-            m_screenCapture->encodeFrame(frame->dispData);
+            m_screenCapture->encodeFrame(dispData);
         }
     }
 }

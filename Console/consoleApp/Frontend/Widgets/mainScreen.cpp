@@ -598,7 +598,7 @@ void MainScreen::on_pushButtonRecord_clicked()
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::handleOctFrame);
+    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
 
     if(m_recordingIsOn){
         m_recordingIsOn = false;
@@ -627,9 +627,9 @@ void MainScreen::onRecordSector(bool isRecording)
 {
     if(isRecording){
         static int currentLoopNumber = 0;
-        // tag the images as "LOOP_1, LOOP_2, ..."
+        // tag the images as "LOOP 1, LOOP 2, ..."
         currentLoopNumber++;
-        QString tag = QString( "LOOP_%1.m3u8" ).arg( currentLoopNumber);
+        QString tag = QString( "LOOP %1.m3u8" ).arg( currentLoopNumber);
         LOG1(tag);
         OctFrameRecorder::instance()->setPlaylistFileName(tag);
         caseInfo &info = caseInfo::Instance();
@@ -685,7 +685,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
             if(image && frameData && frameData->dispData){
 
-                emit updateRecorder(frameData);
+                emit updateRecorder(frameData->dispData);
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
