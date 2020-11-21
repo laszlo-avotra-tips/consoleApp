@@ -37,6 +37,16 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
     m_outDirPath = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
 }
 
+void OctFrameRecorder::updateClipList(int loopNumber)
+{
+    caseInfo       &info        = caseInfo::Instance();
+    deviceSettings &dev = deviceSettings::Instance();
+
+    const QString ClipName = QString("clip-%1").arg(loopNumber);
+    QString clipFilename = info.getClipsDir() + "/" + ClipName;
+
+}
+
 QString OctFrameRecorder::playlistFileName() const
 {
     return m_playlistFileName;
@@ -102,6 +112,7 @@ void OctFrameRecorder::onRecordSector(bool isRecording)
     if(isRecording){
         m_currentLoopNumber++;
         updateOutputFileName(m_currentLoopNumber);
+        updateClipList(m_currentLoopNumber);
         OctFrameRecorder::instance()->start();
     } else {
         OctFrameRecorder::instance()->stop();
