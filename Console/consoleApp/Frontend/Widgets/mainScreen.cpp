@@ -604,6 +604,8 @@ void MainScreen::on_pushButtonRecord_clicked()
         m_recordingIsOn = false;
     } else {
         m_recordingIsOn = true;
+        ui->pushButtonRecord->setEnabled(false);
+        QTimer::singleShot(5000, this, &MainScreen::enableRecordButton);
     }
     OctFrameRecorder::instance()->onRecordSector(m_recordingIsOn);
     showYellowBorderForRecordingOn(m_recordingIsOn);
@@ -639,6 +641,11 @@ void MainScreen::setMeasurementMode(bool enable)
         ui->pushButtonMeasure->setChecked( false );
         LOG( INFO, "Measure Mode: stop" )
     }
+}
+
+void MainScreen::enableRecordButton()
+{
+    ui->pushButtonRecord->setEnabled(true);
 }
 
 void MainScreen::setSceneCursor( QCursor cursor )
