@@ -28,6 +28,15 @@ OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
     m_screenCapture = new CapUtils::ScreenCapture();
 }
 
+void OctFrameRecorder::updateOutputFileName(int loopNumber)
+{
+    // tag the images as "LOOP 1, LOOP 2, ..."
+    m_playlistFileName = QString( "LOOP %1.m3u8" ).arg( loopNumber);
+//    LOG1(m_playlistFileName)
+    caseInfo &info = caseInfo::Instance();
+    m_outDirPath = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
+}
+
 QString OctFrameRecorder::playlistFileName() const
 {
     return m_playlistFileName;
@@ -91,14 +100,8 @@ void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
 void OctFrameRecorder::onRecordSector(bool isRecording)
 {
     if(isRecording){
-        // tag the images as "LOOP 1, LOOP 2, ..."
         m_currentLoopNumber++;
-        QString tag = QString( "LOOP %1.m3u8" ).arg( m_currentLoopNumber);
-        LOG1(tag);
-        setPlaylistFileName(tag);
-        caseInfo &info = caseInfo::Instance();
-        QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
-        setOutDirPath(dirString);
+        updateOutputFileName(m_currentLoopNumber);
         OctFrameRecorder::instance()->start();
     } else {
         OctFrameRecorder::instance()->stop();

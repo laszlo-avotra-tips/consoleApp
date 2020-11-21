@@ -34,6 +34,7 @@ public slots:
 
 private:
     explicit OctFrameRecorder(QObject *parent = nullptr);
+    void updateOutputFileName(int loopNumber);
 
     static OctFrameRecorder* m_instance;
     int m_count{0};
