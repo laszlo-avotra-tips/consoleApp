@@ -79,7 +79,6 @@ private slots:
 
     void on_pushButtonRecord_clicked();
     void onCaptureImage();
-    void onRecordSector(bool isRecording);
     void setMeasurementMode(bool enabled);
 
     void on_pushButton_clicked();

@@ -14,6 +14,7 @@ class OctFrameRecorder : public QObject
 public:
     static OctFrameRecorder* instance();
 
+    void onRecordSector(bool isRecording);
     bool recorderIsOn() const;
     void setRecorderIsOn(bool recorderIsOn);
 
@@ -40,6 +41,7 @@ private:
     CapUtils::ScreenCapture* m_screenCapture{nullptr};
     QString m_outDirPath;
     QString m_playlistFileName;
+    int m_currentLoopNumber{0};
 
 };
 

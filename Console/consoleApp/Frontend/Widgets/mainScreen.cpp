@@ -605,7 +605,7 @@ void MainScreen::on_pushButtonRecord_clicked()
     } else {
         m_recordingIsOn = true;
     }
-    onRecordSector(m_recordingIsOn);
+    OctFrameRecorder::instance()->onRecordSector(m_recordingIsOn);
     showYellowBorderForRecordingOn(m_recordingIsOn);
 }
 
@@ -621,24 +621,6 @@ void MainScreen::onCaptureImage()
     QImage p = ui->graphicsView->grab(rectangle).toImage();
     m_scene->captureDi( p, tag );
 
-}
-
-void MainScreen::onRecordSector(bool isRecording)
-{
-    if(isRecording){
-        static int currentLoopNumber = 0;
-        // tag the images as "LOOP 1, LOOP 2, ..."
-        currentLoopNumber++;
-        QString tag = QString( "LOOP %1.m3u8" ).arg( currentLoopNumber);
-        LOG1(tag);
-        OctFrameRecorder::instance()->setPlaylistFileName(tag);
-        caseInfo &info = caseInfo::Instance();
-        QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
-        OctFrameRecorder::instance()->setOutDirPath(dirString);
-        OctFrameRecorder::instance()->start();
-    } else {
-        OctFrameRecorder::instance()->stop();
-    }
 }
 
 void MainScreen::setMeasurementMode(bool enable)

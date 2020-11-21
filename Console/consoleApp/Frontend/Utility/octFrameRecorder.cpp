@@ -1,6 +1,7 @@
 #include "octFrameRecorder.h"
 #include <logger.h>
 #include <string>
+#include "Utility/userSettings.h"
 
 
 OctFrameRecorder* OctFrameRecorder::m_instance{nullptr};
@@ -85,4 +86,21 @@ bool OctFrameRecorder::recorderIsOn() const
 void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
 {
     m_recorderIsOn = recorderIsOn;
+}
+
+void OctFrameRecorder::onRecordSector(bool isRecording)
+{
+    if(isRecording){
+        // tag the images as "LOOP 1, LOOP 2, ..."
+        m_currentLoopNumber++;
+        QString tag = QString( "LOOP %1.m3u8" ).arg( m_currentLoopNumber);
+        LOG1(tag);
+        setPlaylistFileName(tag);
+        caseInfo &info = caseInfo::Instance();
+        QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
+        setOutDirPath(dirString);
+        OctFrameRecorder::instance()->start();
+    } else {
+        OctFrameRecorder::instance()->stop();
+    }
 }
