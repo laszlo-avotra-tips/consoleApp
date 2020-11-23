@@ -616,12 +616,12 @@ void MainScreen::onCaptureImage()
     static int currentImageNumber = 0;
     // tag the images as "IMG 1, IMG 2, ..."
     currentImageNumber++;
-    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
-    LOG1(tag);
+    QString fileName = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
+    LOG1(fileName);
     QRect rectangle = ui->graphicsView->rect();
     qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
     QImage p = ui->graphicsView->grab(rectangle).toImage();
-    m_scene->captureDi( p, tag );
+    m_scene->captureDecoratedImage( p, fileName );
 
 }
 

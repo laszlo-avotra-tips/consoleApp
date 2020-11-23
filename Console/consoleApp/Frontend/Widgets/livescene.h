@@ -63,7 +63,7 @@ public:
     void setIdle();
 
 public slots:
-    void captureDi( QImage decoratedImage, QString tagText );
+    void captureDecoratedImage( QImage decoratedImage, QString tagText );
     void captureClip( QString strIter );
     void generateClipInfo();
     void resetRotationCounter();
