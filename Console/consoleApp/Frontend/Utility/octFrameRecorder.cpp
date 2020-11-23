@@ -35,13 +35,15 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
     m_playlistFileName = m_playlistThumbnail + QString( ".m3u8" );
 //    LOG1(m_playlistFileName)
     caseInfo &info = caseInfo::Instance();
-    QDir thisDir(info.getStorageDir());
-    thisDir.mkdir(m_playlistThumbnail);
+    QString dirName = info.getStorageDir() + "/clips";
+    QDir thisDir(dirName);
+    QString subDirName = m_playlistThumbnail;
+    thisDir.mkdir(subDirName);
 
 //    m_outDirPath = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
-    m_outDirPath = QString("%1/clips/%2/").arg(info.getStorageDir()).arg(m_playlistThumbnail); // Set up the absolute path based on the session data.
+    m_outDirPath = QString("%1/%2/").arg(dirName).arg(subDirName); // Set up the absolute path based on the session data.
 
-    LOG3(m_playlistThumbnail,m_outDirPath,m_playlistFileName)
+    LOG3(dirName, subDirName, m_playlistFileName)
 }
 
 void OctFrameRecorder::updateClipList(int loopNumber)
