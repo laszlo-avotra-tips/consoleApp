@@ -608,7 +608,7 @@ void MainScreen::on_pushButtonRecord_clicked()
         QTimer::singleShot(5000, this, &MainScreen::enableRecordButton);
     }
     auto* recorder = OctFrameRecorder::instance();
-    m_scene->captureClip(recorder->playlistFileName());
+    m_scene->captureClip(recorder->playlistThumbnail());
     recorder->onRecordSector(m_recordingIsOn);
 
     showYellowBorderForRecordingOn(m_recordingIsOn);

@@ -27,6 +27,9 @@ public:
     bool start();
     bool stop();
 
+    QString playlistThumbnail() const;
+    void setPlaylistThumbnail(const QString &playlistThumbnail);
+
 signals:
 
 public slots:
@@ -43,6 +46,7 @@ private:
     CapUtils::ScreenCapture* m_screenCapture{nullptr};
     QString m_outDirPath;
     QString m_playlistFileName;
+    QString m_playlistThumbnail;
     int m_currentLoopNumber{0};
 
 };

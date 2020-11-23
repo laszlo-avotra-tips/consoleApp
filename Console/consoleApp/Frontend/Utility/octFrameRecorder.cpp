@@ -31,7 +31,8 @@ OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 void OctFrameRecorder::updateOutputFileName(int loopNumber)
 {
     // tag the images as "LOOP 1, LOOP 2, ..."
-    m_playlistFileName = QString( "LOOP %1.m3u8" ).arg( loopNumber);
+    m_playlistThumbnail = QString("LOOP %1").arg(loopNumber);
+    m_playlistFileName = m_playlistThumbnail + QString( ".m3u8" );
 //    LOG1(m_playlistFileName)
     caseInfo &info = caseInfo::Instance();
     m_outDirPath = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
@@ -45,6 +46,16 @@ void OctFrameRecorder::updateClipList(int loopNumber)
     const QString ClipName = QString("clip-%1").arg(loopNumber);
     QString clipFilename = info.getClipsDir() + "/" + ClipName;
 
+}
+
+QString OctFrameRecorder::playlistThumbnail() const
+{
+    return m_playlistThumbnail;
+}
+
+void OctFrameRecorder::setPlaylistThumbnail(const QString &playlistThumbnail)
+{
+    m_playlistThumbnail = playlistThumbnail;
 }
 
 QString OctFrameRecorder::playlistFileName() const
