@@ -2,6 +2,7 @@
 #include <logger.h>
 #include <string>
 #include "Utility/userSettings.h"
+#include "Utility/concatenateVideo.h"
 
 
 OctFrameRecorder* OctFrameRecorder::m_instance{nullptr};
@@ -17,7 +18,7 @@ OctFrameRecorder *OctFrameRecorder::instance()
 void OctFrameRecorder::recordData(uint8_t *dispData)
 {
     if(dispData && m_recorderIsOn){
-        if(!m_playlistFileName.isEmpty() && !m_outDirPath.isEmpty() && m_screenCapture){
+        if(!playlistFileName().isEmpty() && !outDirPath().isEmpty() && m_screenCapture){
             m_screenCapture->encodeFrame(dispData);
         }
     }
@@ -26,24 +27,23 @@ void OctFrameRecorder::recordData(uint8_t *dispData)
 OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 {
     m_screenCapture = new CapUtils::ScreenCapture();
+    m_concatenateVideo = ConcatenateVideo::instance();
 }
 
 void OctFrameRecorder::updateOutputFileName(int loopNumber)
 {
     // tag the images as "LOOP 1, LOOP 2, ..."
-    m_playlistThumbnail = QString("LOOP %1").arg(loopNumber);
-    m_playlistFileName = m_playlistThumbnail + QString( ".m3u8" );
-//    LOG1(m_playlistFileName)
+    setPlaylistThumbnail( QString("LOOP %1").arg(loopNumber));
+    setPlaylistFileName( playlistThumbnail() + QString( ".m3u8" ));
     caseInfo &info = caseInfo::Instance();
     QString dirName = info.getStorageDir() + "/clips";
     QDir thisDir(dirName);
-    QString subDirName = m_playlistThumbnail;
+    QString subDirName = playlistThumbnail();
     thisDir.mkdir(subDirName);
 
-//    m_outDirPath = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
-    m_outDirPath = QString("%1/%2/").arg(dirName).arg(subDirName); // Set up the absolute path based on the session data.
+    setOutDirPath( QString("%1/%2/").arg(dirName).arg(subDirName)); // Set up the absolute path based on the session data.
 
-    LOG3(dirName, subDirName, m_playlistFileName)
+    LOG3(dirName, subDirName, playlistFileName())
 }
 
 void OctFrameRecorder::updateClipList(int loopNumber)
@@ -63,6 +63,7 @@ QString OctFrameRecorder::playlistThumbnail() const
 
 void OctFrameRecorder::setPlaylistThumbnail(const QString &playlistThumbnail)
 {
+    m_concatenateVideo->setOutputLoopFile(playlistFileName() + QString(".pm4"));
     m_playlistThumbnail = playlistThumbnail;
 }
 
@@ -74,15 +75,16 @@ QString OctFrameRecorder::playlistFileName() const
 void OctFrameRecorder::setPlaylistFileName(const QString &playlistFileName)
 {
     m_playlistFileName = playlistFileName;
-    LOG1(m_playlistFileName)
+    m_concatenateVideo->setInputPlaylistFile(playlistFileName);
+    LOG1(playlistFileName)
 }
 
 bool OctFrameRecorder::start()
 {
     bool success{false};
-    if(!m_outDirPath.isEmpty() && !m_playlistFileName.isEmpty() && m_screenCapture){
-        const std::string directoryName {m_outDirPath.toStdString()};
-        const std::string fileName {m_playlistFileName.toStdString()};
+    if(!outDirPath().isEmpty() && !playlistFileName().isEmpty() && m_screenCapture){
+        const std::string directoryName {outDirPath().toStdString()};
+        const std::string fileName {playlistFileName().toStdString()};
         LOG2(directoryName.c_str(),fileName.c_str())
         success = m_screenCapture->start(directoryName.c_str(), fileName.c_str());
         LOG1(success)
@@ -112,8 +114,9 @@ QString OctFrameRecorder::outDirPath() const
 
 void OctFrameRecorder::setOutDirPath(const QString &outDirPath)
 {
+    m_concatenateVideo->setOutputPath(outDirPath);
     m_outDirPath = outDirPath;
-    LOG1(m_outDirPath)
+    LOG1(outDirPath)
 }
 
 bool OctFrameRecorder::recorderIsOn() const
@@ -123,6 +126,9 @@ bool OctFrameRecorder::recorderIsOn() const
 
 void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
 {
+    if(m_recorderIsOn && !recorderIsOn){
+        m_concatenateVideo->execute();
+    }
     m_recorderIsOn = recorderIsOn;
 }
 

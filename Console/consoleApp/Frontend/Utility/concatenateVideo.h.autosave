@@ -29,7 +29,7 @@ signals:
 private:
     static ConcatenateVideo* m_instance;
     QString m_outputPath;           //All segment files should be located under this path
-    QString m_inputSegmentFilePath; //All segment files should be located under this path
+//    QString m_inputSegmentFilePath; //All segment files should be located under this path
     QString m_inputPlaylistFile;    //concat_streams will parse this playlist file under the output path to collect all segment information
     QString m_outputLoopFile;       //Output loop file will be generated under the output path
 
