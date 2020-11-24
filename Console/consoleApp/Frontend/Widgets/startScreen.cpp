@@ -85,7 +85,7 @@ void StartScreen::on_pushButtonPreferences_clicked()
 
 void StartScreen::on_pushButtonShutdown_clicked()
 {
-    FullCaseRecorder::instance()->closeRecorder();
+//    FullCaseRecorder::instance()->closeRecorder();
     WidgetContainer::instance()->close();
 }
 
