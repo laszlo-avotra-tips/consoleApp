@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "signalmodel.h"
 #include "Utility/userSettings.h"
+#include <exception>
 
 #ifdef WIN32
 //#include "stdafx.h"     // Axsun includes
@@ -217,8 +218,16 @@ bool DAQ::getData( )
 
     int64_t requestedImageNumber = -1;
 
-    success = axGetImageInfoAdv(session, requestedImageNumber, &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
-
+    try{
+        success = axGetImageInfoAdv(session, requestedImageNumber,
+                                    &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
+    }  catch (std::exception& e) {
+       LOG1(e.what())
+       LOG2(requestedImageNumber,returned_image_number)
+       LOG2(height, width)
+       LOG2(data_type, required_buffer_size)
+       LOG2(force_trig, trig_too_fast)
+    }
     isReturnedImageNumberChanged = (success == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
     sprevReturnedImageNumber = returned_image_number;
 
@@ -373,8 +382,8 @@ bool DAQ::startDaq()
             logAxErrorVerbose(__LINE__, success);
         }
         LOG1(axMessage)
-    } catch (...) {
-        LOG1("Axsun init Error")
+    }  catch (std::exception& e) {
+       LOG1(e.what())
     }
 
     return success == NO_AxERROR;
