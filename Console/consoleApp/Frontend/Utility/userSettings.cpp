@@ -85,6 +85,9 @@ void userSettings::loadProfileSettings()
     imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 0).toInt();
     LOG1(imageIndexDecimation)
 
+//            [recording]
+//            durationMin=1000
+
     recordingDurationMin = profileSettings->value( "recording/durationMin", 5000).toInt();
     LOG1(recordingDurationMin)
 
