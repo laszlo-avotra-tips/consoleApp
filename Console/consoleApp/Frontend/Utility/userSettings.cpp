@@ -88,7 +88,10 @@ void userSettings::loadProfileSettings()
 //            [recording]
 //            durationMin=1000
 
-    recordingDurationMin = profileSettings->value( "recording/durationMin", 5000).toInt();
+    recordingDurationMin = profileSettings->value( "log/durationMin", 2000).toInt();
+    LOG1(recordingDurationMin)
+
+    recordingDurationMin = profileSettings->value( "recording/durationMin", 3000).toInt();
     LOG1(recordingDurationMin)
 
     m_imagingDepth_mm =  profileSettings->value( "octLaser/imagingDepth_mm", 0.0f).toFloat();
