@@ -85,6 +85,9 @@ void userSettings::loadProfileSettings()
     imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 0).toInt();
     LOG1(imageIndexDecimation)
 
+    recordingDurationMin = profileSettings->value( "recording/durationMin", 5000).toInt();
+    LOG1(recordingDurationMin)
+
     m_imagingDepth_mm =  profileSettings->value( "octLaser/imagingDepth_mm", 0.0f).toFloat();
     m_aLineLength_px =  profileSettings->value( "octLaser/aLineLength_px", 0).toInt();
     LOG2(getImagingDepth_mm(), getALineLength_px())
@@ -94,6 +97,16 @@ void userSettings::loadProfileSettings()
     m_oct_firmware_version = profileSettings->value( "subSystemVersion/oct_firmware_version", "").toString();
     m_interface_hw_version = profileSettings->value( "subSystemVersion/interface_hw_version", "").toString();
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
+}
+
+int userSettings::getRecordingDurationMin() const
+{
+    return recordingDurationMin;
+}
+
+void userSettings::setRecordingDurationMin(int value)
+{
+    recordingDurationMin = value;
 }
 
 QString userSettings::getInterface_hw_version() const

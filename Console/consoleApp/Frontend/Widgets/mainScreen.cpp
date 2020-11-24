@@ -613,7 +613,9 @@ void MainScreen::on_pushButtonRecord_clicked()
     } else {
         m_recordingIsOn = true;
         ui->pushButtonRecord->setEnabled(false);
-        QTimer::singleShot(5000, this, &MainScreen::enableRecordButton);
+        int delay = userSettings::Instance().getRecordingDurationMin();
+        LOG1(delay)
+        QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
     }
     auto* recorder = OctFrameRecorder::instance();
     m_scene->captureClip(recorder->playlistThumbnail());
