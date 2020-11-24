@@ -7,6 +7,8 @@ extern "C" {
 #include "Utility/ScreenCapture.hpp"
 }
 
+class ConcatenateVideo;
+
 class OctFrameRecorder : public QObject
 {
     Q_OBJECT
@@ -48,6 +50,7 @@ private:
     QString m_playlistFileName;
     QString m_playlistThumbnail;
     int m_currentLoopNumber{0};
+    ConcatenateVideo* m_concatenateVideo{nullptr};
 
 };
 

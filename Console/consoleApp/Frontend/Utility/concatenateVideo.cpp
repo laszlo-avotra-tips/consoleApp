@@ -28,9 +28,9 @@ void ConcatenateVideo::setOutputLoopFile(const QString &outputLoopFile)
 
 void ConcatenateVideo::execute()
 {
+    LOG1(m_outputPath);
     LOG1(m_inputPlaylistFile);
-    LOG1(m_outputPath);
-    LOG1(m_outputPath);
+    LOG1(m_outputLoopFile);
 }
 
 QString ConcatenateVideo::inputPlaylistFile() const
