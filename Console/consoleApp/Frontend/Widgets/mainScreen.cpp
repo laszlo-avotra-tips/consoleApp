@@ -220,10 +220,11 @@ QSize MainScreen::getSceneSize()
 void MainScreen::on_pushButtonEndCase_clicked()
 {
     if(m_recordingIsOn){
+        LOG1(m_recordingIsOn)
         emit on_pushButtonRecord_clicked();
     }
 
-    QTimer::singleShot(2000, [this](){
+    QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
         m_graphicsView->hide();
 
@@ -241,6 +242,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         ui->frameSpeed->hide();
 
         captureListModel::Instance().reset();
+        LOG1(m_recordingIsOn)
     });
 }
 
