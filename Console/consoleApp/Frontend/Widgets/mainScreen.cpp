@@ -219,6 +219,9 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
+    if(m_recordingIsOn){
+        emit on_pushButtonRecord_clicked();
+    }
     m_opacScreen->show();
     m_graphicsView->hide();
 
