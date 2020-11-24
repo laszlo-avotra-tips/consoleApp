@@ -222,23 +222,26 @@ void MainScreen::on_pushButtonEndCase_clicked()
     if(m_recordingIsOn){
         emit on_pushButtonRecord_clicked();
     }
-    m_opacScreen->show();
-    m_graphicsView->hide();
 
-    CaseInformationDialog::reset();
+    QTimer::singleShot(2000, [this](){
+        m_opacScreen->show();
+        m_graphicsView->hide();
 
-    WidgetContainer::instance()->gotoScreen("startScreen");
+        CaseInformationDialog::reset();
 
-    WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
+        WidgetContainer::instance()->gotoScreen("startScreen");
 
-    m_sledRuntime = 0;
-    m_runTime.invalidate();
+        WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
 
-    m_updatetimeTimer.stop();
-    ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
-    ui->frameSpeed->hide();
+        m_sledRuntime = 0;
+        m_runTime.invalidate();
 
-    captureListModel::Instance().reset();
+        m_updatetimeTimer.stop();
+        ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
+        ui->frameSpeed->hide();
+
+        captureListModel::Instance().reset();
+    });
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
