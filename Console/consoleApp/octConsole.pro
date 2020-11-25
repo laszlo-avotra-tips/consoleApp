@@ -50,6 +50,8 @@ win32 {
     LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTCapture
     LIBS += -L$$PWD/../../lib/amd64/Axsun/lib/ -lAxsunOCTControl_LW
     LIBS += -L$$PWD/../../lib/amd64/FTDI/ -lftd2xx
+    LIBS += -L$$PWD/../../lib/amd64/VideoRecorder/lib/ -lAVideoRecorder
+
 
     LIBS +=                                       \
        -lglu32                                    \
@@ -89,6 +91,10 @@ DEPENDPATH += $$PWD/../../lib/amd64/Intel/OpenCL_SDK/7.0/include
 
 INCLUDEPATH += $$PWD/../../lib/amd64/FTDI
 DEPENDPATH += $$PWD/../../lib/amd64/FTDI
+
+INCLUDEPATH += $$PWD/../../lib/amd64/VideoRecorder
+DEPENDPATH += $$PWD/../../lib/amd64/VideoRecorder
+
 
 RESOURCES += \
     OpenClResources.qrc

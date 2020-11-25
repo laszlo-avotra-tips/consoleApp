@@ -330,7 +330,7 @@ void liveScene::handleReticleBrightnessChanged()
  * updating the capture database as necessary and notifying
  * interested parties that a new capture is loaded.
  */
-void liveScene::captureDi( QImage decoratedImage, QString tagText )
+void liveScene::captureDecoratedImage( QImage decoratedImage, QString tagText )
 {
     /*
      * Render the sector image,

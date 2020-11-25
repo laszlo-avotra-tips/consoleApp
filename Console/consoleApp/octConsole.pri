@@ -12,8 +12,11 @@ HEADERS += \
     $$PWD/Backend/fullCaseRecorder.h \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/scanconversion.h \
+    $$PWD/Frontend/Utility/ScreenCapture.hpp \
     $$PWD/Frontend/Utility/clipListModel.h \
+    $$PWD/Frontend/Utility/concatenateVideo.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
+    $$PWD/Frontend/Utility/octFrameRecorder.h \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
@@ -87,7 +90,9 @@ SOURCES += \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/scanconversion.cpp \
     $$PWD/Frontend/Utility/clipListModel.cpp \
+    $$PWD/Frontend/Utility/concatenateVideo.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
+    $$PWD/Frontend/Utility/octFrameRecorder.cpp \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \

@@ -182,6 +182,9 @@ public:
 
     QString getInterface_hw_version() const;
 
+    int getRecordingDurationMin() const;
+    void setRecordingDurationMin(int value);
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -196,6 +199,7 @@ private:
     bool noiseReductionEnabled;       //
     bool invertOctColorEnabled;       //
     int  imageIndexDecimation;        //
+    int  recordingDurationMin;
     QDate m_serviceDate;
     QStringList m_physicians;
     QStringList m_locations;

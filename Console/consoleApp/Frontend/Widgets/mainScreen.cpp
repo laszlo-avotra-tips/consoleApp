@@ -9,6 +9,7 @@
 #include "Widgets/caseInformationModel.h"
 #include "Widgets/reviewAndSettingsDialog.h"
 #include "Utility/captureListModel.h"
+#include "Utility/octFrameRecorder.h"
 #include "displayOptionsDialog.h"
 #include "DisplayOptionsModel.h"
 #include "sledsupport.h"
@@ -17,6 +18,7 @@
 #include "signalmodel.h"
 #include "daqfactory.h"
 #include "idaq.h"
+#include "Utility/userSettings.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -65,6 +67,10 @@ MainScreen::MainScreen(QWidget *parent)
     m_scene = new liveScene( this );
     m_graphicsView->setScene(m_scene);
     m_scene->handleReticleBrightnessChanged();
+
+    m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -213,23 +219,31 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
-    m_opacScreen->show();
-    m_graphicsView->hide();
+    if(m_recordingIsOn){
+        LOG1(m_recordingIsOn)
+        emit on_pushButtonRecord_clicked();
+    }
 
-    CaseInformationDialog::reset();
+    QTimer::singleShot(1000, [this](){
+        m_opacScreen->show();
+        m_graphicsView->hide();
 
-    WidgetContainer::instance()->gotoScreen("startScreen");
+        CaseInformationDialog::reset();
 
-    WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
+        WidgetContainer::instance()->gotoScreen("startScreen");
 
-    m_sledRuntime = 0;
-    m_runTime.invalidate();
+        WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
 
-    m_updatetimeTimer.stop();
-    ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
-    ui->frameSpeed->hide();
+        m_sledRuntime = 0;
+        m_runTime.invalidate();
 
-    captureListModel::Instance().reset();
+        m_updatetimeTimer.stop();
+        ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
+        ui->frameSpeed->hide();
+
+        captureListModel::Instance().reset();
+        LOG1(m_recordingIsOn)
+    });
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -394,6 +408,18 @@ void MainScreen::updateDeviceSettings()
     }
 }
 
+void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
+{
+    LOG1(recordingIsOn)
+    if(recordingIsOn){
+        QString yellowBorder("border:1px solid rgb(245,196,0);");
+        ui->frameM->setStyleSheet(yellowBorder);
+    } else {
+        QString noBorder("border:0px solid rgb(0,0,0);");
+        ui->frameM->setStyleSheet(noBorder);
+    }
+}
+
 
 
 void MainScreen::openDeviceSelectDialog()
@@ -519,7 +545,6 @@ void MainScreen::on_pushButtonCapture_released()
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    //emit captureImage();
     onCaptureImage();
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
@@ -578,22 +603,38 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-    //lcv    hide(); only to integrating the L250 features
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
+
+    if(m_recordingIsOn){
+        m_recordingIsOn = false;
+    } else {
+        m_recordingIsOn = true;
+        ui->pushButtonRecord->setEnabled(false);
+        int delay = userSettings::Instance().getRecordingDurationMin();
+        LOG1(delay)
+        QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
+    }
+    auto* recorder = OctFrameRecorder::instance();
+    m_scene->captureClip(recorder->playlistThumbnail());
+    recorder->onRecordSector(m_recordingIsOn);
+
+    showYellowBorderForRecordingOn(m_recordingIsOn);
 }
 
 void MainScreen::onCaptureImage()
 {
-    static int currImgNumber = 0;
+    static int currentImageNumber = 0;
     // tag the images as "IMG 1, IMG 2, ..."
-    currImgNumber++;
-    QString tag = QString( "%1%2" ).arg( ImagePrefix ).arg( currImgNumber);
-    LOG1(tag);
+    currentImageNumber++;
+    QString fileName = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
+    LOG1(fileName);
     QRect rectangle = ui->graphicsView->rect();
-//    rectangle.setWidth(1440);
-//    rectangle.setHeight(1440);
     qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
     QImage p = ui->graphicsView->grab(rectangle).toImage();
-    m_scene->captureDi( p, tag );
+    m_scene->captureDecoratedImage( p, fileName );
 
 }
 
@@ -613,6 +654,11 @@ void MainScreen::setMeasurementMode(bool enable)
         ui->pushButtonMeasure->setChecked( false );
         LOG( INFO, "Measure Mode: stop" )
     }
+}
+
+void MainScreen::enableRecordButton()
+{
+    ui->pushButtonRecord->setEnabled(true);
 }
 
 void MainScreen::setSceneCursor( QCursor cursor )
@@ -640,6 +686,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         if(m_scanWorker->isReady){
 
             if(image && frameData && frameData->dispData){
+
+                emit updateRecorder(frameData->dispData);
+
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
                 if(pixmap){

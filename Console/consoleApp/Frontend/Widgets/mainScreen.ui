@@ -266,15 +266,18 @@ qproperty-flat: true;
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normalon>:/octConsole/recordWhite</normalon>
-         </iconset>
+         <iconset resource="../../octConsole.qrc">
+          <normaloff>:/octConsole/recordWhite</normaloff>
+          <normalon>:/octConsole/recordRed</normalon>:/octConsole/recordWhite</iconset>
         </property>
         <property name="iconSize">
          <size>
           <width>150</width>
           <height>150</height>
          </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -454,14 +457,14 @@ CASE</string>
     <widget class="QFrame" name="frameM">
      <property name="minimumSize">
       <size>
-       <width>2160</width>
+       <width>2159</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>2160</width>
-       <height>16777215</height>
+       <width>2159</width>
+       <height>2159</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -499,14 +502,14 @@ CASE</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>2160</width>
-          <height>2160</height>
+          <width>2158</width>
+          <height>2158</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>2160</width>
-          <height>2160</height>
+          <width>2158</width>
+          <height>2158</height>
          </size>
         </property>
         <property name="styleSheet">

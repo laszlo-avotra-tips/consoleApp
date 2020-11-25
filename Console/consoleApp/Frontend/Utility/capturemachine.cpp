@@ -215,6 +215,8 @@ void captureMachine::clipCapture( QImage sector, QString strClipNumber, unsigned
     c.strClipNumber  = strClipNumber;
     c.timestamp      = timestamp;
 
+    LOG2(strClipNumber, timestamp)
+
     mutex.lock();
     clipQ.enqueue( c );
     runThreadQ.enqueue( true );

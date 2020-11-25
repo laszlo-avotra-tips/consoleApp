@@ -139,7 +139,7 @@ void CaseInformationModel::validate()
     uuid.remove( "{" ).remove( "}" );
     info.setCaseID( uuid );
 
-    FullCaseRecorder::instance()->setFullCaseDir(info.getFullCaseDir());
+//    FullCaseRecorder::instance()->setFullCaseDir(info.getFullCaseDir());
 //    FullCaseRecorder::instance()->startRecording();
 
     /*

@@ -40,6 +40,7 @@ signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
     void sledRunningStateChanged(int isInRunningState);
+    void updateRecorder(uint8_t* dispData);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -79,6 +80,7 @@ private slots:
     void on_pushButtonRecord_clicked();
     void onCaptureImage();
     void setMeasurementMode(bool enabled);
+    void enableRecordButton();
 
     void on_pushButton_clicked();
 
@@ -95,6 +97,7 @@ private:
     int getSledRuntime();
     void setSceneCursor( QCursor cursor );
     void updateDeviceSettings();
+    void showYellowBorderForRecordingOn(bool recordingIsOn);
 
 private:
     Ui::MainScreen *ui;
@@ -116,6 +119,7 @@ private:
     int m_sledRuntime{0}; //the time the Sled is on in milliseconds
 
     ScanConversion *m_scanWorker{nullptr};
+    bool m_recordingIsOn{false};
 
 };
 #endif // MAINSCREEN_H
