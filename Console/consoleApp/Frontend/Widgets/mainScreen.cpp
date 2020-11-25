@@ -70,7 +70,6 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -79,6 +78,7 @@ void MainScreen::setScene(liveScene *scene)
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
         daqfactory::instance()->getdaq();
+        initRecording();
     }
 }
 
@@ -420,8 +420,6 @@ void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
     }
 }
 
-
-
 void MainScreen::openDeviceSelectDialog()
 {
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog");
@@ -603,10 +601,10 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
+//    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
 
     auto* recorder = OctFrameRecorder::instance();
     if(m_recordingIsOn){
@@ -723,5 +721,15 @@ void MainScreen::on_pushButton_clicked()
 
 void MainScreen::on_pushButtonRecord_clicked(bool checked)
 {
-    LOG1(checked)
+    m_recordingIsOn = checked;
+    LOG1(m_recordingIsOn)
+}
+
+void MainScreen::initRecording()
+{
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
+
 }

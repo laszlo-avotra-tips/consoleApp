@@ -84,6 +84,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButtonRecord_clicked(bool checked);
+
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
 
@@ -98,6 +100,7 @@ private:
     void setSceneCursor( QCursor cursor );
     void updateDeviceSettings();
     void showYellowBorderForRecordingOn(bool recordingIsOn);
+    void initRecording();
 
 private:
     Ui::MainScreen *ui;
