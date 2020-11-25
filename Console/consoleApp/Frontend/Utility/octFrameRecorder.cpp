@@ -63,8 +63,8 @@ QString OctFrameRecorder::playlistThumbnail() const
 
 void OctFrameRecorder::setPlaylistThumbnail(const QString &playlistThumbnail)
 {
-    m_concatenateVideo->setOutputLoopFile(playlistFileName() + QString(".pm4"));
     m_playlistThumbnail = playlistThumbnail;
+    m_concatenateVideo->setOutputLoopFile(playlistThumbnail + QString(".pm4"));
 }
 
 QString OctFrameRecorder::playlistFileName() const
