@@ -93,7 +93,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Obtain the current timestamp
-    const QDateTime currTime = QDateTime().fromTime_t( captureItem.timestamp );
+    const QDateTime currTime = QDateTime::currentDateTime(); //QDateTime().fromTime_t( captureItem.timestamp );
 
     // capture number is tracked here
     currCaptureNumber = captureListModel::Instance().countOfCapuredItems();

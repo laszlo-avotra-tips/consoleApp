@@ -202,11 +202,11 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 {
 //    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
 
-    const int rowNum = index.row() + m_displayOffset;
-
-    LOG1(rowNum)
-
     captureListModel& capList = captureListModel::Instance();
+    const int rowNum = index.row() + capList.getRowOffset();
+
+    LOG2(rowNum,m_numCaptures)
+
     capList.setSelectedRow(rowNum);
     update();
 
@@ -214,23 +214,26 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
     m_selectedCaptureItem = itemList.at(rowNum);
 
-    LOG1(rowNum)
+    LOG2(rowNum, m_selectedCaptureItem)
     showPlayer(false);
     showCapture(true);
 
-    const auto& imageName{m_selectedCaptureItem->getName()};
-    LOG1(imageName)
-    QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
+    if(m_selectedCaptureItem){
 
-    LOG2(image.size().width(), image.size().height())
+        const auto& imageName{m_selectedCaptureItem->getName()};
+        LOG1(imageName)
+        QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
 
-    QGraphicsScene *scene = new QGraphicsScene();
+        LOG2(image.size().width(), image.size().height())
 
-    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+        QGraphicsScene *scene = new QGraphicsScene();
 
-    scene->addItem(item);
+        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 
-    ui->captureScene->setScene(scene);
+        scene->addItem(item);
+
+        ui->captureScene->setScene(scene);
+    }
 }
 
 
@@ -242,22 +245,18 @@ void CaseReviewScreen::on_pushButtonDone_clicked()
 void CaseReviewScreen::on_pushButtonRightArrow_clicked()
 {
     const int size{5};
-    if(m_numCaptures > size + m_displayOffset){
-        ++m_displayOffset;
-//        emit displayOffsetChanged(m_displayOffset);
+    captureListModel& capList = captureListModel::Instance();
+    if(m_numCaptures > size + capList.getRowOffset()){
         update();
-        captureListModel& capList = captureListModel::Instance();
-        capList.setRowOffset(m_displayOffset);
+        capList.setRowOffset(capList.getRowOffset() + 1);
     }
 }
 
 void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
 {
-    if(m_displayOffset){
-        --m_displayOffset;
-//        emit displayOffsetChanged(m_displayOffset);
+    captureListModel& capList = captureListModel::Instance();
+    if(capList.getRowOffset()){
         update();
-        captureListModel& capList = captureListModel::Instance();
-        capList.setRowOffset(m_displayOffset);
+        capList.setRowOffset(capList.getRowOffset() - 1);
     }
 }
