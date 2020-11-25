@@ -240,6 +240,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     caseInfo &info = caseInfo::Instance();
     const QString ClipName = "clip-" + loop.strClipNumber;
+    LOG1(ClipName)
 
     QImage secRGB( loop.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
@@ -263,8 +264,8 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     // Store the capture
     const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
 
-    QMatrix m;
-    m.rotate( 90 );
+//    QMatrix m;
+//    m.rotate( 90 );
 
     // save a thumbnail image for the UI to use
     if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
