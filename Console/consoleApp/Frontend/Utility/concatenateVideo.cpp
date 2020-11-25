@@ -17,9 +17,8 @@ ConcatenateVideo::ConcatenateVideo(QObject *parent) : QObject(parent)
 {
     m_concatenateProcess = std::make_unique<QProcess>();
 
-    QProcess* concatProcess = m_concatenateProcess.get();
-    QObject::connect(concatProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                     this, &ConcatenateVideo::programFinished);
+    connect(    m_concatenateProcess.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                this, &ConcatenateVideo::programFinished);
 }
 
 QString ConcatenateVideo::outputLoopFile() const
@@ -34,12 +33,13 @@ void ConcatenateVideo::setOutputLoopFile(const QString &outputLoopFile)
 
 void ConcatenateVideo::execute()
 {
+    //concat_streams -p <Output path> -i <Input playlist file> -o <Output loop file>
+    QStringList arguments { "-p", m_outputPath, "-i", m_inputPlaylistFile, "-o", m_outputLoopFile};
+
     LOG1(m_outputPath);
     LOG1(m_inputPlaylistFile);
     LOG1(m_outputLoopFile);
 
-    //concat_streams -p <Output path> -i <Input playlist file> -o <Output loop file>
-    QStringList arguments { "-p", m_outputPath, "-i", m_inputPlaylistFile, "-o", m_outputLoopFile};
     m_concatenateProcess->setArguments(arguments);
     m_concatenateProcess->setProgram(m_concatenateProgramName);
     m_concatenateProcess->start();
