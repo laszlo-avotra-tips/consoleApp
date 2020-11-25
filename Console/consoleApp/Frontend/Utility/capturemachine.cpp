@@ -273,10 +273,10 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     {
         LOG( DEBUG, "Loop capture: sector thumbnail capture failed" )
     }
-//    else
-//    {
-//        emit sendFileToKey( thumbName );
-//    }
+    else
+    {
+        emit sendFileToKey( thumbName );
+    }
 
     emit updateClipCount();
 

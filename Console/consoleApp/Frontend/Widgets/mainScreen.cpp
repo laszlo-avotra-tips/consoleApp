@@ -608,6 +608,7 @@ void MainScreen::on_pushButtonRecord_clicked()
 
     connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
 
+    auto* recorder = OctFrameRecorder::instance();
     if(m_recordingIsOn){
         m_recordingIsOn = false;
     } else {
@@ -616,9 +617,8 @@ void MainScreen::on_pushButtonRecord_clicked()
         int delay = userSettings::Instance().getRecordingDurationMin();
         LOG1(delay)
         QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
+        m_scene->captureClip(recorder->playlistThumbnail());
     }
-    auto* recorder = OctFrameRecorder::instance();
-    m_scene->captureClip(recorder->playlistThumbnail());
     recorder->onRecordSector(m_recordingIsOn);
 
     showYellowBorderForRecordingOn(m_recordingIsOn);
