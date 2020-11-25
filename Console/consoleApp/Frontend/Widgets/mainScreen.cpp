@@ -720,3 +720,8 @@ void MainScreen::on_pushButton_clicked()
     }
 
 }
+
+void MainScreen::on_pushButtonRecord_clicked(bool checked)
+{
+    LOG1(checked)
+}
