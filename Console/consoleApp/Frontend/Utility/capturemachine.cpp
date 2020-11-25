@@ -240,7 +240,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     caseInfo &info = caseInfo::Instance();
     const QString ClipName = "clip-" + loop.strClipNumber;
-    LOG1(ClipName)
+//    LOG1(ClipName)
 
     QImage secRGB( loop.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
@@ -262,8 +262,8 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     QString saveName =  QString( ClipName );
 
     // Store the capture
-    const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
-    LOG1(thumbName)
+    const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
+//    LOG1(thumbName)
 
 //    QMatrix m;
 //    m.rotate( 90 );
@@ -287,18 +287,18 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 void captureMachine::addTimeStamp(QPainter& painter)
 {
     const int nowX{20};
-    const int nowDateY{180};
-    const int nowTimeY{240};
+    const int firstRow{180};
+    const int secondRow{240};
 
     painter.setPen( QPen( Qt::white ) );
 
     const auto& now = QDateTime::currentDateTime().toUTC();
-    QString timeStampDate = now.toString("yyyy-MM-dd" );
+//    QString timeStampDate = now.toString("yyyy-MM-dd" );
     QString timeStampTime = now.toString("hh:mm:ss");
 
     painter.setFont( QFont( "DinPro-regular", 20 ) );
-    painter.drawText( nowX, nowDateY, timeStampDate);
-    painter.drawText( nowX, nowTimeY, timeStampTime);
+//    painter.drawText( nowX, firstRow, timeStampDate);
+    painter.drawText( nowX, firstRow, timeStampTime);
 }
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn)
