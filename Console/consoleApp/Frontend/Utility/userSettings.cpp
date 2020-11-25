@@ -85,7 +85,7 @@ void userSettings::loadProfileSettings()
     imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 0).toInt();
     LOG1(imageIndexDecimation)
 
-    recordingDurationMin = profileSettings->value( "recording/durationMinimun_ms", 3000).toInt();
+    recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
 
     m_imagingDepth_mm =  profileSettings->value( "octLaser/imagingDepth_mm", 0.0f).toFloat();
