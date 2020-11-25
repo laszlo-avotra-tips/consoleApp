@@ -263,6 +263,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     // Store the capture
     const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
+    LOG1(thumbName)
 
 //    QMatrix m;
 //    m.rotate( 90 );
@@ -272,10 +273,10 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     {
         LOG( DEBUG, "Loop capture: sector thumbnail capture failed" )
     }
-    else
-    {
-        emit sendFileToKey( thumbName );
-    }
+//    else
+//    {
+//        emit sendFileToKey( thumbName );
+//    }
 
     emit updateClipCount();
 
