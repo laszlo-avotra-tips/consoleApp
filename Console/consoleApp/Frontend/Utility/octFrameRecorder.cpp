@@ -89,7 +89,7 @@ bool OctFrameRecorder::start()
         success = m_screenCapture->start(directoryName.c_str(), fileName.c_str());
         LOG1(success)
         if(success){
-            QThread::msleep(500);
+//            QThread::msleep(500);
             setRecorderIsOn(true);
         }
     }
@@ -99,11 +99,12 @@ bool OctFrameRecorder::start()
 bool OctFrameRecorder::stop()
 {
     bool success{false};
-    if(m_screenCapture){
+    if(m_screenCapture && recorderIsOn()){
         setRecorderIsOn(false);
         m_screenCapture->stop();
         success = true;
     }
+    LOG1(success)
     return success;
 }
 
