@@ -255,9 +255,13 @@ void MainScreen::on_pushButtonCondensUp_clicked()
     on_pushButtonMenu_clicked();
 }
 
-void MainScreen::resetYellowBorder()
+void MainScreen::handleYellowBorder()
 {
-    ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
+    if(m_recordingIsOn){
+        ui->graphicsView->setStyleSheet("border:1px solid rgb(245,196,0);");
+    } else {
+        ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
+    }
 }
 
 void MainScreen::setDeviceLabel()
@@ -409,8 +413,9 @@ void MainScreen::updateDeviceSettings()
 
 void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
 {
-    LOG1(recordingIsOn)
-    if(recordingIsOn){
+    m_recordingIsOn = recordingIsOn;
+    LOG1(m_recordingIsOn)
+    if(m_recordingIsOn){
         QString yellowBorder("border:1px solid rgb(245,196,0);");
         ui->graphicsView->setStyleSheet(yellowBorder);
     } else {
@@ -546,7 +551,7 @@ void MainScreen::on_pushButtonCapture_released()
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
-    QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
+    QTimer::singleShot(500,this,&MainScreen::handleYellowBorder);
 }
 
 void MainScreen::on_pushButtonMeasure_clicked(bool checked)
