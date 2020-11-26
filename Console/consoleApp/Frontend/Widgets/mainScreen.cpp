@@ -78,7 +78,6 @@ void MainScreen::setScene(liveScene *scene)
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
         daqfactory::instance()->getdaq();
-        initRecording();
     }
 }
 
@@ -605,6 +604,11 @@ void MainScreen::on_pushButtonRecord_clicked()
 //    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
 //    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
+
+    if(!m_recordingIsInitialized){
+        m_recordingIsInitialized = true;
+        initRecording();
+    }
 
     auto* recorder = OctFrameRecorder::instance();
     if(m_recordingIsOn){

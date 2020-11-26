@@ -123,6 +123,7 @@ private:
 
     ScanConversion *m_scanWorker{nullptr};
     bool m_recordingIsOn{false};
+    bool m_recordingIsInitialized{false};
 
 };
 #endif // MAINSCREEN_H

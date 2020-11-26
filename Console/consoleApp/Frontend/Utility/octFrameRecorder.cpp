@@ -32,8 +32,8 @@ OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 
 void OctFrameRecorder::updateOutputFileName(int loopNumber)
 {
-    // tag the images as "LOOP 1, LOOP 2, ..."
-    setPlaylistThumbnail( QString("LOOP %1").arg(loopNumber));
+    // tag the images as "LOOP1, LOOP2, ..."
+    setPlaylistThumbnail( QString("LOOP%1").arg(loopNumber));
     setPlaylistFileName( playlistThumbnail() + QString( ".m3u8" ));
     caseInfo &info = caseInfo::Instance();
     QString dirName = info.getStorageDir() + "/clips";
