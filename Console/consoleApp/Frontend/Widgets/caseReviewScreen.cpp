@@ -45,7 +45,7 @@ void CaseReviewScreen::updateCaptureLabel()
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
 
-    if(m_numCaptures <= 5){
+    if( (m_numCaptures - capList.getRowOffset()) <= 5 ){
         ui->pushButtonRightArrow->hide();
     } else {
         ui->pushButtonRightArrow->show();
