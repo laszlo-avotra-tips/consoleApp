@@ -630,7 +630,7 @@ void MainScreen::on_pushButtonRecord_clicked()
 void MainScreen::onCaptureImage()
 {
     static int currentImageNumber = 0;
-    // tag the images as "IMG 1, IMG 2, ..."
+    // tag the images as "IMG1, IMG2, ..."
     currentImageNumber++;
     QString fileName = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
     LOG1(fileName);

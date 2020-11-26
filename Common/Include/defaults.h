@@ -116,7 +116,7 @@ const QString DeviceIconExtension        = ".png";
 const QString DeviceXmlSchemaVersion     = "3.0";
 
 // Image capture
-const QString ImagePrefix          = "IMG ";
+const QString ImagePrefix          = "IMG";
 const int ThumbnailHeight_px = 150;
 const int ThumbnailWidth_px  = 150;
 
