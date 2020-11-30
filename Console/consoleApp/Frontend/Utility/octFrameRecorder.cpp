@@ -38,6 +38,7 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
 
     clipListModel::Instance().setPlaylistThumbnail( playListThumbnail);
     setPlaylistFileName( clipListModel::Instance().getPlaylistThumbnail() + QString( ".m3u8" ));
+    m_concatenateVideo->setOutputLoopFile(playListThumbnail + QString(".mp4"));
 
     caseInfo &info = caseInfo::Instance();
     QString dirName = info.getStorageDir() + "/clips";
