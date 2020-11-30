@@ -153,6 +153,7 @@ public:
     QList<clipItem *> getAllItems(void) {
         return itemMap.values();
     }
+    int countOfClipItems() const;
 
     int getLastCaptureId( void );
 

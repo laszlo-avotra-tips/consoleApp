@@ -166,6 +166,11 @@ void clipListModel::updateClipInfo( int clipLength_ms )
     endInsertRows();
 }
 
+int clipListModel::countOfClipItems() const
+{
+    return itemMap.size();
+}
+
 /*
  * getLastCaptureId
  */

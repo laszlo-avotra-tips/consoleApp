@@ -67,7 +67,25 @@ void CaseReviewScreen::updateCaptureLabel()
 
 void CaseReviewScreen::updateClipLabel()
 {
+    clipListModel& clipList = clipListModel::Instance();
 
+    m_numClips = clipList.countOfClipItems();
+
+    LOG1(m_numClips)
+
+    ui->labelLoops->setText( tr( "LOOPS(%1)" ).arg( m_numClips ) );
+
+    if( (m_numClips - clipList.getRowOffset()) <= 5 ){
+        ui->pushButtonClipsRightArrow->hide();
+    } else {
+        ui->pushButtonClipsRightArrow->show();
+    }
+
+    if(clipList.getRowOffset() > 0){
+        ui->pushButtonClipsLeftArrow->show();
+    } else {
+        ui->pushButtonClipsLeftArrow->hide();
+    }
 }
 
 /* init player */
@@ -154,7 +172,7 @@ void CaseReviewScreen::showCapture(bool isVisible)
 
 void CaseReviewScreen::showClip(bool isVisible)
 {
-
+    showPlayer(isVisible);
 }
 
 
@@ -256,7 +274,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
     m_selectedCaptureItem = itemList.at(rowNum);
 
     LOG2(rowNum, m_selectedCaptureItem)
-    showPlayer(false);
+    showClip(false);
     showCapture(true);
 
     if(m_selectedCaptureItem){
@@ -277,8 +295,40 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
     }
 }
 
-void CaseReviewScreen::clipSelected(QModelIndex ix)
+void CaseReviewScreen::clipSelected(QModelIndex index)
 {
+    clipListModel& clipList = clipListModel::Instance();
+    const int rowNum = index.row() + clipList.getRowOffset();
+
+    LOG2(rowNum,m_numClips)
+
+    clipList.setSelectedRow(rowNum);
+    update();
+
+    auto itemList = clipList.getAllItems();
+
+    m_selectedClipItem = itemList.at(rowNum);
+
+    LOG2(rowNum, m_selectedClipItem)
+    showClip(true);
+    showCapture(false);
+
+    if(m_selectedClipItem){
+
+        const auto& loopName{m_selectedClipItem->getName()};
+        LOG1(loopName)
+//        QImage image = m_selectedCaptureItem->loadDecoratedImage(loopName).scaledToWidth(1600);
+
+//        LOG2(image.size().width(), image.size().height())
+
+//        QGraphicsScene *scene = new QGraphicsScene();
+
+//        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+
+//        scene->addItem(item);
+
+//        ui->captureScene->setScene(scene);
+    }
 
 }
 
