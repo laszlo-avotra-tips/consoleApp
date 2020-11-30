@@ -20,9 +20,14 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     ui->setupUi(this);
     initPlayer();
     initCapture();
+    initClips();
+
     showPlayer(false);
     showCapture(false);
+    showClip(false);
+
     updateCaptureLabel();
+    updateClipLabel();
 
     hideUnimplementedButtons();
 
@@ -58,6 +63,11 @@ void CaseReviewScreen::updateCaptureLabel()
     } else {
         ui->pushButtonLeftArrow->hide();
     }
+}
+
+void CaseReviewScreen::updateClipLabel()
+{
+
 }
 
 /* init player */
@@ -109,6 +119,16 @@ void CaseReviewScreen::initClips()
     ClipItemDelegate* clipItemDelegate = new ClipItemDelegate();
     ui->clipsView->setItemDelegate(clipItemDelegate);
     ui->clipsView->setModel(&clipList);
+
+    connect( ui->clipsView, &clipListView::clicked, this, &CaseReviewScreen::clipSelected );
+
+    connect(clipItemDelegate, &ClipItemDelegate::updateLabel, this, &CaseReviewScreen::updateClipLabel);
+
+    // Auto-scroll the list when items are added
+    connect( &clipList, &clipListModel::rowsInserted, ui->clipsView, &clipListView::updateView );
+
+    //scroll
+    connect(this, &CaseReviewScreen::displayOffsetChanged, clipItemDelegate, &ClipItemDelegate::handleDisplayOffset);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -129,6 +149,11 @@ void CaseReviewScreen::showCapture(bool isVisible)
     } else {
         ui->captureScene->hide();
     }
+
+}
+
+void CaseReviewScreen::showClip(bool isVisible)
+{
 
 }
 
@@ -250,6 +275,11 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
 
         ui->captureScene->setScene(scene);
     }
+}
+
+void CaseReviewScreen::clipSelected(QModelIndex ix)
+{
+
 }
 
 

@@ -600,7 +600,7 @@ border-radius: 0px;
     </size>
    </property>
   </widget>
-  <widget class="captureListView" name="clipsView">
+  <widget class="clipListView" name="clipsView">
    <property name="geometry">
     <rect>
      <x>194</x>
@@ -648,6 +648,11 @@ border-radius: 0px;
    <class>captureListView</class>
    <extends>QListView</extends>
    <header location="global">Widgets/capturelistview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>clipListView</class>
+   <extends>QListView</extends>
+   <header location="global">cliplistview.h</header>
   </customwidget>
  </customwidgets>
  <resources>
