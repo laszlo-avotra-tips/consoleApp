@@ -5,6 +5,7 @@
 
 #include "videoplayer.h"
 #include "Utility/captureListModel.h"
+#include "Utility/clipListModel.h"
 #include "capturelistview.h"
 
 
@@ -45,6 +46,7 @@ private slots:
 private:
     void initPlayer();
     void initCapture();
+    void initClips();
     void showPlayer( bool isVisible);
     void showCapture( bool isVisible);
     void hideUnimplementedButtons();
@@ -61,6 +63,7 @@ private:
     bool m_isImageReviewInProgress{false};
 
     captureItem *m_selectedCaptureItem{nullptr};
+    clipItem *m_selectedClipItem{nullptr};
 
 };
 

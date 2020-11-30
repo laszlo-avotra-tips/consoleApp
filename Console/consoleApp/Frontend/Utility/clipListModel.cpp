@@ -26,6 +26,31 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+int clipListModel::getSelectedRow() const
+{
+    return m_selectedRow;
+}
+
+void clipListModel::setSelectedRow(int selectedRow)
+{
+    m_selectedRow = selectedRow;
+}
+
+void clipListModel::reset()
+{
+
+}
+
+int clipListModel::getRowOffset() const
+{
+    return m_rowOffset;
+}
+
+void clipListModel::setRowOffset(int rowOffset)
+{
+    m_rowOffset = rowOffset;
+}
+
 /*
  * destructor
  */

@@ -25,6 +25,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
     $$PWD/Frontend/Widgets/caseInformationModel.h \
     $$PWD/Frontend/Widgets/caseReviewScreen.h \
+    $$PWD/Frontend/Widgets/clipItemDelegate.h \
     $$PWD/Frontend/Widgets/cliplistview.h \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/consoleLabel.h \
@@ -101,6 +102,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
     $$PWD/Frontend/Widgets/caseInformationModel.cpp \
     $$PWD/Frontend/Widgets/caseReviewScreen.cpp \
+    $$PWD/Frontend/Widgets/clipItemDelegate.cpp \
     $$PWD/Frontend/Widgets/cliplistview.cpp \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \

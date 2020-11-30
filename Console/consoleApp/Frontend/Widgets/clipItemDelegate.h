@@ -1,17 +1,10 @@
-#ifndef CAPTUREITEMDELEGATE_H
-#define CAPTUREITEMDELEGATE_H
+#ifndef CLIPITEMDELEGATE_H
+#define CLIPITEMDELEGATE_H
 
-#include <QObject>
 #include <QAbstractItemDelegate>
+#include <QObject>
 
-/*
- * CaptureItemDelegate
- *
- * The captureItemDelegate knows how to draw individual thumbnails
- * of captures, along with any tagging or shortcut markup, for inclusion
- * in the recent captures list.
- */
-class CaptureItemDelegate : public QAbstractItemDelegate
+class ClipItemDelegate : public QAbstractItemDelegate
 {
     Q_OBJECT
 
@@ -20,9 +13,8 @@ public:
 signals:
     void updateLabel() const;
 
-
 public:
-    CaptureItemDelegate(bool rotated = false, QObject *parent = nullptr);
+    ClipItemDelegate(bool rotated = false, QObject *parent = nullptr);
     QSize sizeHint( const QStyleOptionViewItem &option,
                     const QModelIndex &index ) const override;
 
@@ -36,5 +28,4 @@ private:
     int m_itemOffset{0};
 };
 
-
-#endif // CAPTUREITEMDELEGATE_H
+#endif // CLIPITEMDELEGATE_H

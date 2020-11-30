@@ -157,6 +157,13 @@ public:
     int getLastCaptureId( void );
 
 
+    int getRowOffset() const;
+    void setRowOffset(int rowOffset);
+
+    int getSelectedRow() const;
+    void setSelectedRow(int selectedRow);
+    void reset();
+
 signals:
 
     void warning( QString );
@@ -181,4 +188,8 @@ private:
     // of each result lookup in here to get the actual data item.
     // This needs to be rebuilt at load time for playback.
     QMap<int, clipItem *> itemMap;
+
+    int m_selectedRow; //{-1};
+    int m_rowOffset{0};
+
 };

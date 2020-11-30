@@ -1,5 +1,5 @@
-#include "captureItemDelegate.h"
-#include "Utility/captureListModel.h"
+#include "clipItemDelegate.h"
+#include "Utility/clipListModel.h"
 #include "defaults.h"
 #include "logger.h"
 
@@ -10,10 +10,9 @@ const QColor SelectedTextColor( 143, 185, 224 );
 const int    MinOffsetForNumberLabel_px = 10;
 }
 
-CaptureItemDelegate::CaptureItemDelegate(bool rotate, QObject *parent)
-    :QAbstractItemDelegate( parent )
+ClipItemDelegate::ClipItemDelegate(bool rotated, QObject *parent)
 {
-   doRotate = rotate;
+
 }
 
 /*
@@ -23,7 +22,7 @@ CaptureItemDelegate::CaptureItemDelegate(bool rotate, QObject *parent)
 * thumbnail. Handles both rotated and non-rotated
 * modes.
 */
-QSize CaptureItemDelegate::sizeHint( const QStyleOptionViewItem &option,
+QSize ClipItemDelegate::sizeHint( const QStyleOptionViewItem &option,
                                     const QModelIndex & ) const
 {
    if( !doRotate )
@@ -36,7 +35,7 @@ QSize CaptureItemDelegate::sizeHint( const QStyleOptionViewItem &option,
    }
 }
 
-void CaptureItemDelegate::paint( QPainter *painter,
+void ClipItemDelegate::paint( QPainter *painter,
                                 const QStyleOptionViewItem &option,
                                 const QModelIndex &index ) const
 {
@@ -44,14 +43,11 @@ void CaptureItemDelegate::paint( QPainter *painter,
    painter->setFont( QFont( "DinPRO-regular", 12 ) );
 //   captureItem * item = index.model()->data( index, Qt::DisplayRole ).value<captureItem *>();
 
-   const captureListModel& capList = captureListModel::Instance();
-   const int rowNum = index.row() + capList.getRowOffset();
+   clipListModel& clipList = clipListModel::Instance();
+   const int rowNum = index.row() + clipList.getRowOffset();
+  auto itemList = clipList.getAllItems();
 
-
-
-   auto itemList = capList.getAllItems();
-
-   captureItem * item = itemList.at(rowNum);
+   clipItem * item = itemList.at(rowNum);
 
    if(item){
 
@@ -82,7 +78,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
 
    // Highlight the selected item
 //   if( option.state & QStyle::State_Selected )
-   if(rowNum == capList.getSelectedRow())
+   if(rowNum == clipList.getSelectedRow())
    {
        const int PenSize = 2;
        painter->setPen( QPen( SelectedItemColor, PenSize ) );
@@ -97,7 +93,7 @@ void CaptureItemDelegate::paint( QPainter *painter,
    }
 }
 
-void CaptureItemDelegate::handleDisplayOffset(int dpo)
+void ClipItemDelegate::handleDisplayOffset(int dpo)
 {
     m_itemOffset = dpo;
     LOG1(dpo)

@@ -7,6 +7,8 @@
 #include "sledsupport.h"
 #include "captureItemDelegate.h"
 #include "Utility/captureListModel.h"
+#include "clipItemDelegate.h"
+#include "Utility/clipListModel.h"
 
 #include <QGraphicsPixmapItem>
 
@@ -97,6 +99,16 @@ void CaseReviewScreen::initCapture()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
+}
+
+void CaseReviewScreen::initClips()
+{
+    LOG1("initClips")
+    clipListModel& clipList = clipListModel::Instance();
+
+    ClipItemDelegate* clipItemDelegate = new ClipItemDelegate();
+    ui->clipsView->setItemDelegate(clipItemDelegate);
+    ui->clipsView->setModel(&clipList);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
