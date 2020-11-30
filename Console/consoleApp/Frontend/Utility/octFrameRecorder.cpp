@@ -48,6 +48,7 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
 
 void OctFrameRecorder::updateClipList(int loopNumber)
 {
+    LOG1(loopNumber)
     caseInfo       &info        = caseInfo::Instance();
     deviceSettings &dev = deviceSettings::Instance();
 

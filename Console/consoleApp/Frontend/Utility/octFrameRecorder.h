@@ -32,6 +32,8 @@ public:
     QString playlistThumbnail() const;
     void setPlaylistThumbnail(const QString &playlistThumbnail);
 
+    int currentLoopNumber() const;
+
 signals:
 
 public slots:
