@@ -32,8 +32,8 @@ OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 
 void OctFrameRecorder::updateOutputFileName(int loopNumber)
 {
-    // tag the images as "LOOP 1, LOOP 2, ..."
-    setPlaylistThumbnail( QString("LOOP %1").arg(loopNumber));
+    // tag the images as "LOOP1, LOOP2, ..."
+    setPlaylistThumbnail( QString("LOOP%1").arg(loopNumber));
     setPlaylistFileName( playlistThumbnail() + QString( ".m3u8" ));
     caseInfo &info = caseInfo::Instance();
     QString dirName = info.getStorageDir() + "/clips";
@@ -89,7 +89,7 @@ bool OctFrameRecorder::start()
         success = m_screenCapture->start(directoryName.c_str(), fileName.c_str());
         LOG1(success)
         if(success){
-            QThread::msleep(500);
+//            QThread::msleep(500);
             setRecorderIsOn(true);
         }
     }
@@ -99,11 +99,12 @@ bool OctFrameRecorder::start()
 bool OctFrameRecorder::stop()
 {
     bool success{false};
-    if(m_screenCapture){
+    if(m_screenCapture && recorderIsOn()){
         setRecorderIsOn(false);
         m_screenCapture->stop();
         success = true;
     }
+    LOG1(success)
     return success;
 }
 

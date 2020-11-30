@@ -68,7 +68,7 @@ private slots:
     void udpateToSpeed1();
     void udpateToSpeed2();
     void udpateToSpeed3();
-    void resetYellowBorder();
+    void handleYellowBorder();
 
     void on_pushButtonCapture_released();
 
@@ -84,6 +84,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButtonRecord_clicked(bool checked);
+
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
 
@@ -98,6 +100,7 @@ private:
     void setSceneCursor( QCursor cursor );
     void updateDeviceSettings();
     void showYellowBorderForRecordingOn(bool recordingIsOn);
+    void initRecording();
 
 private:
     Ui::MainScreen *ui;
@@ -120,6 +123,7 @@ private:
 
     ScanConversion *m_scanWorker{nullptr};
     bool m_recordingIsOn{false};
+    bool m_recordingIsInitialized{false};
 
 };
 #endif // MAINSCREEN_H

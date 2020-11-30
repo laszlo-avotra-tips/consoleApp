@@ -41,16 +41,20 @@ void CaseReviewScreen::updateCaptureLabel()
     captureListModel &capList = captureListModel::Instance();
 
     m_numCaptures = capList.countOfCapuredItems(); //capList.rowCount(QModelIndex());
-    LOG1(m_numCaptures)
+//    LOG1(m_numCaptures)
 
     ui->labelImages->setText( tr( "IMAGES(%1)" ).arg( m_numCaptures ) );
 
-    if(m_numCaptures <= 5){
+    if( (m_numCaptures - capList.getRowOffset()) <= 5 ){
         ui->pushButtonRightArrow->hide();
-        ui->pushButtonLeftArrow->hide();
     } else {
         ui->pushButtonRightArrow->show();
+    }
+
+    if(capList.getRowOffset() > 0){
         ui->pushButtonLeftArrow->show();
+    } else {
+        ui->pushButtonLeftArrow->hide();
     }
 }
 

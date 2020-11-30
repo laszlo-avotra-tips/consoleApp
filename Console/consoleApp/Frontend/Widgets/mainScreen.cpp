@@ -70,7 +70,6 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -256,9 +255,13 @@ void MainScreen::on_pushButtonCondensUp_clicked()
     on_pushButtonMenu_clicked();
 }
 
-void MainScreen::resetYellowBorder()
+void MainScreen::handleYellowBorder()
 {
-    ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
+    if(m_recordingIsOn){
+        ui->graphicsView->setStyleSheet("border:1px solid rgb(245,196,0);");
+    } else {
+        ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
+    }
 }
 
 void MainScreen::setDeviceLabel()
@@ -410,17 +413,16 @@ void MainScreen::updateDeviceSettings()
 
 void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
 {
-    LOG1(recordingIsOn)
-    if(recordingIsOn){
+    m_recordingIsOn = recordingIsOn;
+    LOG1(m_recordingIsOn)
+    if(m_recordingIsOn){
         QString yellowBorder("border:1px solid rgb(245,196,0);");
-        ui->frameM->setStyleSheet(yellowBorder);
+        ui->graphicsView->setStyleSheet(yellowBorder);
     } else {
         QString noBorder("border:0px solid rgb(0,0,0);");
-        ui->frameM->setStyleSheet(noBorder);
+        ui->graphicsView->setStyleSheet(noBorder);
     }
 }
-
-
 
 void MainScreen::openDeviceSelectDialog()
 {
@@ -549,7 +551,7 @@ void MainScreen::on_pushButtonCapture_released()
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
-    QTimer::singleShot(500,this,&MainScreen::resetYellowBorder);
+    QTimer::singleShot(500,this,&MainScreen::handleYellowBorder);
 }
 
 void MainScreen::on_pushButtonMeasure_clicked(bool checked)
@@ -603,23 +605,29 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked()
 {
-    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
+//    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
 
+    if(!m_recordingIsInitialized){
+        m_recordingIsInitialized = true;
+        initRecording();
+    }
+
+    auto* recorder = OctFrameRecorder::instance();
     if(m_recordingIsOn){
         m_recordingIsOn = false;
+        recorder->onRecordSector(m_recordingIsOn);
     } else {
         m_recordingIsOn = true;
+        recorder->onRecordSector(m_recordingIsOn);
         ui->pushButtonRecord->setEnabled(false);
         int delay = userSettings::Instance().getRecordingDurationMin();
-        LOG1(delay)
+        LOG1(recorder->playlistThumbnail())
         QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
+        m_scene->captureClip(recorder->playlistThumbnail());
     }
-    auto* recorder = OctFrameRecorder::instance();
-    m_scene->captureClip(recorder->playlistThumbnail());
-    recorder->onRecordSector(m_recordingIsOn);
 
     showYellowBorderForRecordingOn(m_recordingIsOn);
 }
@@ -627,7 +635,7 @@ void MainScreen::on_pushButtonRecord_clicked()
 void MainScreen::onCaptureImage()
 {
     static int currentImageNumber = 0;
-    // tag the images as "IMG 1, IMG 2, ..."
+    // tag the images as "IMG1, IMG2, ..."
     currentImageNumber++;
     QString fileName = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
     LOG1(fileName);
@@ -717,5 +725,20 @@ void MainScreen::on_pushButton_clicked()
         sled.writeSerial("sr1\r");
         ui->pushButton->setText("SledOff");
     }
+
+}
+
+void MainScreen::on_pushButtonRecord_clicked(bool checked)
+{
+    m_recordingIsOn = checked;
+    LOG1(m_recordingIsOn)
+}
+
+void MainScreen::initRecording()
+{
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
 
 }
