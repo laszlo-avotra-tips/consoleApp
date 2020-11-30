@@ -34,12 +34,15 @@ OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 void OctFrameRecorder::updateOutputFileName(int loopNumber)
 {
     // tag the images as "LOOP1, LOOP2, ..."
-    setPlaylistThumbnail( QString("LOOP%1").arg(loopNumber));
-    setPlaylistFileName( playlistThumbnail() + QString( ".m3u8" ));
+    const QString playListThumbnail(QString("LOOP%1").arg(loopNumber));
+
+    clipListModel::Instance().setPlaylistThumbnail( playListThumbnail);
+    setPlaylistFileName( clipListModel::Instance().getPlaylistThumbnail() + QString( ".m3u8" ));
+
     caseInfo &info = caseInfo::Instance();
     QString dirName = info.getStorageDir() + "/clips";
     QDir thisDir(dirName);
-    QString subDirName = playlistThumbnail();
+    QString subDirName = playListThumbnail;
     thisDir.mkdir(subDirName);
 
     const QString outDirPath(QString("%1/%2/").arg(dirName).arg(subDirName));
@@ -58,22 +61,6 @@ void OctFrameRecorder::updateClipList(int loopNumber)
     const QString ClipName = QString("clip-%1").arg(loopNumber);
     QString clipFilename = info.getClipsDir() + "/" + ClipName;
 
-}
-
-int OctFrameRecorder::currentLoopNumber() const
-{
-    return m_currentLoopNumber;
-}
-
-QString OctFrameRecorder::playlistThumbnail() const
-{
-    return m_playlistThumbnail;
-}
-
-void OctFrameRecorder::setPlaylistThumbnail(const QString &playlistThumbnail)
-{
-    m_playlistThumbnail = playlistThumbnail;
-    m_concatenateVideo->setOutputLoopFile(playlistThumbnail + QString(".mp4"));
 }
 
 QString OctFrameRecorder::playlistFileName() const
@@ -132,10 +119,12 @@ void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
 
 void OctFrameRecorder::onRecordSector(bool isRecording)
 {
+    clipListModel& clipList = clipListModel::Instance();
     if(isRecording){
-        m_currentLoopNumber++;
-        updateOutputFileName(m_currentLoopNumber);
-        updateClipList(m_currentLoopNumber);
+        const int currentLoopNumber = clipList.getCurrentLoopNumber() + 1;
+        clipList.setCurrentLoopNumber(currentLoopNumber);
+        updateOutputFileName(currentLoopNumber);
+        updateClipList(currentLoopNumber);
         OctFrameRecorder::instance()->start();
     } else {
         OctFrameRecorder::instance()->stop();

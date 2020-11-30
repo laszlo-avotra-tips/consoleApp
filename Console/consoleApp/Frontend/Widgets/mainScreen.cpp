@@ -19,6 +19,7 @@
 #include "daqfactory.h"
 #include "idaq.h"
 #include "Utility/userSettings.h"
+#include "Utility/clipListModel.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -624,9 +625,10 @@ void MainScreen::on_pushButtonRecord_clicked()
         recorder->onRecordSector(m_recordingIsOn);
         ui->pushButtonRecord->setEnabled(false);
         int delay = userSettings::Instance().getRecordingDurationMin();
-        LOG1(recorder->playlistThumbnail())
+        const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
+        LOG1(playListThumbnail)
         QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
-        m_scene->captureClip(recorder->playlistThumbnail());
+        m_scene->captureClip(playListThumbnail);
     }
 
     showYellowBorderForRecordingOn(m_recordingIsOn);

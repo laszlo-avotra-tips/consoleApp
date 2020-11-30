@@ -26,11 +26,6 @@ public:
     bool start();
     bool stop();
 
-    QString playlistThumbnail() const;
-    void setPlaylistThumbnail(const QString &playlistThumbnail);
-
-    int currentLoopNumber() const;
-
 signals:
 
 public slots:
@@ -42,12 +37,9 @@ private:
     void updateClipList(int loopNumber);
 
     static OctFrameRecorder* m_instance;
-    int m_count{0};
     bool m_recorderIsOn{false};
     CapUtils::ScreenCapture* m_screenCapture{nullptr};
     QString m_playlistFileName;
-    QString m_playlistThumbnail;
-    int m_currentLoopNumber{0};
     ConcatenateVideo* m_concatenateVideo{nullptr};
 
 };

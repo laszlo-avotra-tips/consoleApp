@@ -26,6 +26,26 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+int clipListModel::getCurrentLoopNumber() const
+{
+    return m_currentLoopNumber;
+}
+
+void clipListModel::setCurrentLoopNumber(int currentLoopNumber)
+{
+    m_currentLoopNumber = currentLoopNumber;
+}
+
+QString clipListModel::getPlaylistThumbnail() const
+{
+    return m_playlistThumbnail;
+}
+
+void clipListModel::setPlaylistThumbnail(const QString &playlistThumbnail)
+{
+    m_playlistThumbnail = playlistThumbnail;
+}
+
 QString clipListModel::getOutDirPath() const
 {
     return m_outDirPath;

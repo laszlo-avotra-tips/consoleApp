@@ -168,6 +168,12 @@ public:
     QString getOutDirPath() const;
     void setOutDirPath(const QString &outDirPath);
 
+    QString getPlaylistThumbnail() const;
+    void setPlaylistThumbnail(const QString &playlistThumbnail);
+
+    int getCurrentLoopNumber() const;
+    void setCurrentLoopNumber(int currentLoopNumber);
+
 signals:
 
     void warning( QString );
@@ -197,7 +203,6 @@ private:
     int m_rowOffset{0};
 
     QString m_outDirPath;
-    QString m_playlistFileName;
     QString m_playlistThumbnail;
     int m_currentLoopNumber{0};
 
