@@ -20,9 +20,6 @@ public:
     bool recorderIsOn() const;
     void setRecorderIsOn(bool recorderIsOn);
 
-    QString outDirPath() const;
-    void setOutDirPath(const QString &outDirPath);
-
     QString playlistFileName() const;
     void setPlaylistFileName(const QString &playlistFileName);
 
@@ -48,7 +45,6 @@ private:
     int m_count{0};
     bool m_recorderIsOn{false};
     CapUtils::ScreenCapture* m_screenCapture{nullptr};
-    QString m_outDirPath;
     QString m_playlistFileName;
     QString m_playlistThumbnail;
     int m_currentLoopNumber{0};

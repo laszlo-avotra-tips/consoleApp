@@ -3,6 +3,7 @@
 #include <string>
 #include "Utility/userSettings.h"
 #include "Utility/concatenateVideo.h"
+#include "clipListModel.h"
 
 
 OctFrameRecorder* OctFrameRecorder::m_instance{nullptr};
@@ -18,7 +19,7 @@ OctFrameRecorder *OctFrameRecorder::instance()
 void OctFrameRecorder::recordData(uint8_t *dispData)
 {
     if(dispData && m_recorderIsOn){
-        if(!playlistFileName().isEmpty() && !outDirPath().isEmpty() && m_screenCapture){
+        if(!playlistFileName().isEmpty() && !clipListModel::Instance().getOutDirPath().isEmpty() && m_screenCapture){
             m_screenCapture->encodeFrame(dispData);
         }
     }
@@ -41,7 +42,9 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
     QString subDirName = playlistThumbnail();
     thisDir.mkdir(subDirName);
 
-    setOutDirPath( QString("%1/%2/").arg(dirName).arg(subDirName)); // Set up the absolute path based on the session data.
+    const QString outDirPath(QString("%1/%2/").arg(dirName).arg(subDirName));
+    clipListModel::Instance().setOutDirPath( outDirPath); // Set up the absolute path based on the session data.
+    m_concatenateVideo->setOutputPath(outDirPath);
 
     LOG3(dirName, subDirName, playlistFileName())
 }
@@ -55,6 +58,11 @@ void OctFrameRecorder::updateClipList(int loopNumber)
     const QString ClipName = QString("clip-%1").arg(loopNumber);
     QString clipFilename = info.getClipsDir() + "/" + ClipName;
 
+}
+
+int OctFrameRecorder::currentLoopNumber() const
+{
+    return m_currentLoopNumber;
 }
 
 QString OctFrameRecorder::playlistThumbnail() const
@@ -83,8 +91,8 @@ void OctFrameRecorder::setPlaylistFileName(const QString &playlistFileName)
 bool OctFrameRecorder::start()
 {
     bool success{false};
-    if(!outDirPath().isEmpty() && !playlistFileName().isEmpty() && m_screenCapture){
-        const std::string directoryName {outDirPath().toStdString()};
+    if(!clipListModel::Instance().getOutDirPath().isEmpty() && !playlistFileName().isEmpty() && m_screenCapture){
+        const std::string directoryName {clipListModel::Instance().getOutDirPath().toStdString()};
         const std::string fileName {playlistFileName().toStdString()};
         LOG2(directoryName.c_str(),fileName.c_str())
         success = m_screenCapture->start(directoryName.c_str(), fileName.c_str());
@@ -107,18 +115,6 @@ bool OctFrameRecorder::stop()
     }
     LOG1(success)
     return success;
-}
-
-QString OctFrameRecorder::outDirPath() const
-{
-    return m_outDirPath;
-}
-
-void OctFrameRecorder::setOutDirPath(const QString &outDirPath)
-{
-    m_concatenateVideo->setOutputPath(outDirPath);
-    m_outDirPath = outDirPath;
-    LOG1(outDirPath)
 }
 
 bool OctFrameRecorder::recorderIsOn() const

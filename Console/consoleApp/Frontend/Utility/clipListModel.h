@@ -165,6 +165,9 @@ public:
     void setSelectedRow(int selectedRow);
     void reset();
 
+    QString getOutDirPath() const;
+    void setOutDirPath(const QString &outDirPath);
+
 signals:
 
     void warning( QString );
@@ -190,7 +193,12 @@ private:
     // This needs to be rebuilt at load time for playback.
     QMap<int, clipItem *> itemMap;
 
-    int m_selectedRow; //{-1};
+    int m_selectedRow{-1};
     int m_rowOffset{0};
+
+    QString m_outDirPath;
+    QString m_playlistFileName;
+    QString m_playlistThumbnail;
+    int m_currentLoopNumber{0};
 
 };

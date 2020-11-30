@@ -26,6 +26,16 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+QString clipListModel::getOutDirPath() const
+{
+    return m_outDirPath;
+}
+
+void clipListModel::setOutDirPath(const QString &outDirPath)
+{
+    m_outDirPath = outDirPath;
+}
+
 int clipListModel::getSelectedRow() const
 {
     return m_selectedRow;
