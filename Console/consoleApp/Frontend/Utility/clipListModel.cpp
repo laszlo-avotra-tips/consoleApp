@@ -143,7 +143,11 @@ int clipListModel::addClipCapture( QString name,
 
     // Find next available ID
     sessionDatabase db;
+    db.initDb();
+
     int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName );
+
+    LOG1(maxID)
 
     if ( maxID < 0 ) {
         return -1;
