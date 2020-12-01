@@ -99,7 +99,6 @@ liveScene::liveScene( QObject *parent )
 
     connect( &capturer, SIGNAL(warning( QString ) ),     this, SIGNAL(sendWarning( QString ) ) );
     connect( &capturer, SIGNAL(sendFileToKey(QString)),  this, SIGNAL(sendFileToKey(QString)));
-    connect( &capturer, SIGNAL(updateClipCount()),       this, SIGNAL(updateClipCount()) );
 
     /*
      * Default gray scale palette, linear transformation

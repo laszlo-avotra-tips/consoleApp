@@ -26,7 +26,6 @@ public:
 
 signals:
     void sendFileToKey( QString );
-    void updateClipCount();
     void warning( QString );
     void error( QString );
 

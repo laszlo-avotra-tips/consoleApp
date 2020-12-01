@@ -275,8 +275,6 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
         emit sendFileToKey( thumbName );
     }
 
-    emit updateClipCount();
-
     LOG( INFO, "Loop Capture: " + ClipName )
 }
 
