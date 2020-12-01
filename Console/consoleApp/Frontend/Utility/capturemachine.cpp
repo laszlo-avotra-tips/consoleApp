@@ -261,7 +261,6 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     // Store the capture
     const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
-    LOG1(thumbName)
 
 //    QMatrix m;
 //    m.rotate( 90 );
@@ -278,7 +277,8 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     clipListModel& clipModel = clipListModel::Instance();
     auto* item = clipModel.getAllItems()[clipModel.getCurrentLoopNumber()];
     if(item){
-        item->setTag(thumbName);
+        LOG1(item->getTag());
+        LOG1(thumbName)
     }
 
     LOG( INFO, "Loop Capture: " + ClipName )
