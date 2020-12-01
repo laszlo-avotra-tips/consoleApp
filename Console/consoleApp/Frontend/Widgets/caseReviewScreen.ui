@@ -493,6 +493,9 @@ border: 3px solid #F5C400;
      <height>200</height>
     </rect>
    </property>
+   <property name="flow">
+    <enum>QListView::LeftToRight</enum>
+   </property>
   </widget>
   <widget class="QGraphicsView" name="captureScene">
    <property name="geometry">
@@ -608,6 +611,9 @@ border-radius: 0px;
      <width>1000</width>
      <height>200</height>
     </rect>
+   </property>
+   <property name="flow">
+    <enum>QListView::LeftToRight</enum>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonClipsRightArrow">

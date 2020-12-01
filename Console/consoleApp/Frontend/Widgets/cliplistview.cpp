@@ -25,6 +25,7 @@ clipListView::clipListView(QWidget *parent) :
 
     QToolTip::setPalette( pal );
     QToolTip::setFont( QFont( "DINPro-Medium", 16 ) );
+    setFlow(QListView::Flow::LeftToRight);
 }
 
 /*
