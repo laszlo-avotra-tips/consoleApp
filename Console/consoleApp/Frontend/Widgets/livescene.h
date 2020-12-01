@@ -168,7 +168,6 @@ signals:
     void sendStatusText( QString );
     void captureAll( QImage, QImage, QString, unsigned int, int, float );
     void clipCapture( QImage , QString, unsigned int );
-    void updateCaptureCount();
     void updateClipCount();
     void sendWarning( QString );
     void sendError( QString );

@@ -193,8 +193,6 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
         return;   // Failure warnings generated in the call
     }
 
-    emit updateCaptureCount();
-
     emit sendCaptureTag( saveName );
     LOG( INFO, QString( "Capture - %1" ).arg( saveName ) )
 }
