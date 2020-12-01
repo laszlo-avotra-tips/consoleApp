@@ -629,6 +629,17 @@ void MainScreen::on_pushButtonRecord_clicked()
         LOG1(playListThumbnail)
         QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
         m_scene->captureClip(playListThumbnail);
+
+        // record the start time
+        auto clipTimestamp = QDateTime::currentDateTime().toUTC();
+        deviceSettings &dev = deviceSettings::Instance();
+        clipListModel &clipList = clipListModel::Instance();
+        clipList.addClipCapture( playListThumbnail,
+                                 clipTimestamp.toTime_t(),
+                                 "viewStr",
+                                 dev.current()->getDeviceName(),
+                                 true );
+
     }
 
     showYellowBorderForRecordingOn(m_recordingIsOn);
