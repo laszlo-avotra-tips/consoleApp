@@ -137,7 +137,7 @@ int clipListModel::addClipCapture( QString name,
                                    int timestamp,
                                    QString catheterView,
                                    QString deviceName,
-                                   bool isHighSpeed )
+                                   bool /*isHighSpeed*/ )
 {
     QDateTime timeVal = QDateTime::fromTime_t(timestamp);
 

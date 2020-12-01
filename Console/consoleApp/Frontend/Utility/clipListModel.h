@@ -140,11 +140,10 @@ public:
         return theDB;
     }
 
-    int addClipCapture( QString name,
+    int addClipCapture(QString name,
                         int timestamp,
                         QString catheterView,
-                        QString deviceName ,
-                        bool isHighSpeed );
+                        QString deviceName , bool);
 
     void updateClipInfo( int clipLength_ms );
 

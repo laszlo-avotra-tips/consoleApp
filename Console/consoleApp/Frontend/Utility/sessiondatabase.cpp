@@ -361,7 +361,7 @@ int sessionDatabase::addClipCapture(QString name,
     }
 
     q.prepare( "INSERT INTO octLoops (id, timestamp, tag, name, length_ms, catheterView, deviceName)"
-               "VALUES (?, ?, ?, ?, ? ,?, ?, ?)" );
+               "VALUES (?, ?, ?, ?, ? ,?, ?)" );
     q.addBindValue( maxID );
     q.addBindValue( timeStr );
     q.addBindValue( name );         // Duplicate the name in the tag column by default
