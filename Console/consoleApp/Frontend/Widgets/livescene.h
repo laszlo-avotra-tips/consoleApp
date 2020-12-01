@@ -164,7 +164,6 @@ public slots:
 signals:
     void fullRotation();
     void sendFileToKey( QString );
-    void sendCaptureTag( QString );
     void sendStatusText( QString );
     void captureAll( QImage, QImage, QString, unsigned int, int, float );
     void clipCapture( QImage , QString, unsigned int );

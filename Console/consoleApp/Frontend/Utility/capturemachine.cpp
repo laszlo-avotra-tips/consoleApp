@@ -193,7 +193,6 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
         return;   // Failure warnings generated in the call
     }
 
-    emit sendCaptureTag( saveName );
     LOG( INFO, QString( "Capture - %1" ).arg( saveName ) )
 }
 
@@ -278,7 +277,6 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     emit updateClipCount();
 
-    emit sendCaptureTag( ClipName );
     LOG( INFO, "Loop Capture: " + ClipName )
 }
 
