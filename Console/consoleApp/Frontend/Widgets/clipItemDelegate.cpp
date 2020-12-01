@@ -45,51 +45,52 @@ void ClipItemDelegate::paint( QPainter *painter,
 
    clipListModel& clipList = clipListModel::Instance();
    const int rowNum = index.row() + clipList.getRowOffset();
-  auto itemList = clipList.getAllItems();
+   auto itemList = clipList.getAllItems();
 
    clipItem * item = itemList.at(rowNum);
 
    if(item){
 
-   painter->setPen( QPen( Qt::black, 6 ) );
-   QRect baseRect( option.rect.x() + 4,
-                   option.rect.y() + 5,
-                   option.rect.width() - 10,
-                   option.rect.height() - 10 );
+       painter->setPen( QPen( Qt::black, 6 ) );
+       QRect baseRect( option.rect.x() + 4,
+                       option.rect.y() + 5,
+                       option.rect.width() - 10,
+                       option.rect.height() - 10 );
 
-//   LOG2(option.rect.width(), option.rect.height())
-//   LOG2(baseRect.width(), baseRect.height())
-//   LOG2(option.rect.x(), option.rect.y())
+    //   LOG2(option.rect.width(), option.rect.height())
+    //   LOG2(baseRect.width(), baseRect.height())
+    //   LOG2(option.rect.x(), option.rect.y())
 
-   painter->drawRect( baseRect );
+       painter->drawRect( baseRect );
 
-   painter->translate( option.rect.x(), option.rect.y() );
+       painter->translate( option.rect.x(), option.rect.y() );
 
-   // Get the pixel width of each value so it is written on the image correctly
-   QFontMetrics fm = painter->fontMetrics();
-   const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
-   const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
-   QImage tmi = item->loadSectorThumbnail( item->getName());
-   painter->drawImage( 5, 5, tmi.scaled(160,160));
-   painter->setPen( QPen( SelectedTextColor, 6 ) );
+       // Get the pixel width of each value so it is written on the image correctly
+       QFontMetrics fm = painter->fontMetrics();
+       const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
+       const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
+       QImage tmi = item->loadSectorThumbnail( item->getName());
+       LOG1(item->getName())
+       painter->drawImage( 5, 5, tmi.scaled(160,160));
+       painter->setPen( QPen( SelectedTextColor, 6 ) );
 
-   painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
-   painter->restore();
+       painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
+       painter->restore();
 
-   // Highlight the selected item
-//   if( option.state & QStyle::State_Selected )
-   if(rowNum == clipList.getSelectedRow())
-   {
-       const int PenSize = 2;
-       painter->setPen( QPen( SelectedItemColor, PenSize ) );
-       QRect borderRect( option.rect.x() + PenSize,
-                         option.rect.y() + PenSize,
-                         option.rect.width()  - 2 * PenSize,
-                         option.rect.height() - 2 * PenSize );
-       painter->drawRoundedRect( borderRect, 5, 5 );
-   }
+       // Highlight the selected item
+    //   if( option.state & QStyle::State_Selected )
+       if(rowNum == clipList.getSelectedRow())
+       {
+           const int PenSize = 2;
+           painter->setPen( QPen( SelectedItemColor, PenSize ) );
+           QRect borderRect( option.rect.x() + PenSize,
+                             option.rect.y() + PenSize,
+                             option.rect.width()  - 2 * PenSize,
+                             option.rect.height() - 2 * PenSize );
+           painter->drawRoundedRect( borderRect, 5, 5 );
+       }
 
-   emit updateLabel();
+       emit updateLabel();
    }
 }
 
