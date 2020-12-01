@@ -38,7 +38,7 @@ public:
     void setdbKey(int key) {
         dbKey = key;
     }
-    void setTag( QString tagStr )
+    void setTag( const QString& tagStr )
     {
         m_tag = tagStr;
     }
@@ -59,7 +59,7 @@ public:
         deviceName = devName;
     }
 
-    QString getTag()
+    QString getTag() const
     {
         return m_tag;
     }
