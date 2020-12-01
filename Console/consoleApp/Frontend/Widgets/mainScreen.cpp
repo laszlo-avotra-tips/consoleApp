@@ -629,6 +629,7 @@ void MainScreen::on_pushButtonRecord_clicked()
         LOG1(playListThumbnail)
         QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
         m_scene->captureClip(playListThumbnail);
+        LOG1(clipListModel::Instance().getOutDirPath())
 
         // record the start time
         auto clipTimestamp = QDateTime::currentDateTime().toUTC();
