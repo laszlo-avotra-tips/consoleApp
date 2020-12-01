@@ -20,6 +20,7 @@
 #include <QDir>
 #include <QPainter>
 #include <QFontMetrics>
+#include "Utility/clipListModel.h"
 
 #include "logger.h"
 
@@ -261,6 +262,9 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     // Store the capture
     const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
     LOG1(thumbName)
+    clipListModel& clipModel = clipListModel::Instance();
+    auto* item = clipModel.getAllItems()[clipModel.getSelectedRow()];
+    item->setName(thumbName);
 
 //    QMatrix m;
 //    m.rotate( 90 );
