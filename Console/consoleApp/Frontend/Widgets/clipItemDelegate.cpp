@@ -69,8 +69,8 @@ void ClipItemDelegate::paint( QPainter *painter,
        QFontMetrics fm = painter->fontMetrics();
        const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
        const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
-       QImage tmi = item->loadSectorThumbnail( item->getName());
-       LOG1(item->getName())
+       QImage tmi = item->loadSectorThumbnail( item->getTag());
+       LOG1(item->getTag())
        painter->drawImage( 5, 5, tmi.scaled(160,160));
        painter->setPen( QPen( SelectedTextColor, 6 ) );
 

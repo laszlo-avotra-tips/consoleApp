@@ -264,7 +264,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     LOG1(thumbName)
     clipListModel& clipModel = clipListModel::Instance();
     auto* item = clipModel.getAllItems()[clipModel.getSelectedRow()];
-    item->setName(thumbName);
+    item->setTag(thumbName);
 
 //    QMatrix m;
 //    m.rotate( 90 );

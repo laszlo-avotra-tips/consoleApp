@@ -93,7 +93,7 @@ public:
         return deviceName;
     }
     QImage loadSectorThumbnail( QString name ) {
-        return( loadImage( ".thumb_" + name + "*sector.png" ) );
+        return( loadImage( name ) );
     }
 
 private:
