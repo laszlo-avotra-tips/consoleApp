@@ -263,7 +263,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
     LOG1(thumbName)
     clipListModel& clipModel = clipListModel::Instance();
-    auto* item = clipModel.getAllItems()[clipModel.getSelectedRow()];
+    auto* item = clipModel.getAllItems()[clipModel.getCurrentLoopNumber()];
     item->setTag(thumbName);
 
 //    QMatrix m;
