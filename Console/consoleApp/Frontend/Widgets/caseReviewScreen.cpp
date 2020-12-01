@@ -33,6 +33,10 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
 
     ui->captureView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->captureView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->clipsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->clipsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     ui->pushButtonRightArrow->hide();
 }
 
