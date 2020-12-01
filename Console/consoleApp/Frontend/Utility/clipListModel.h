@@ -27,10 +27,6 @@ class clipItem
 public:
     clipItem(void) 
     {
-        deviceName      = QString();
-        tag             = QString();
-        timestamp       = QString();
-        name            = QString();
         dbKey           = -1;
         clipLength_s    = 0;
         catheterViewStr = "DistalToProximal";
@@ -44,7 +40,7 @@ public:
     }
     void setTag( QString tagStr )
     {
-        tag = tagStr;
+        m_tag = tagStr;
     }
     void setTimestamp( QString timeStampStr )
     {
@@ -65,7 +61,7 @@ public:
 
     QString getTag()
     {
-        return tag;
+        return m_tag;
     }
     QString getTimestamp()
     {
@@ -100,7 +96,7 @@ private:
     QImage loadImage(QString);
 
     QString deviceName;
-    QString tag;
+    QString m_tag;
     QString timestamp;
     QString name;
 
