@@ -26,6 +26,16 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+QString clipListModel::getThumbnailDir() const
+{
+    return m_thumbnailDir;
+}
+
+void clipListModel::setThumbnailDir(const QString &thumbnailDir)
+{
+    m_thumbnailDir = thumbnailDir;
+}
+
 int clipListModel::getCurrentLoopNumber() const
 {
     return m_currentLoopNumber;

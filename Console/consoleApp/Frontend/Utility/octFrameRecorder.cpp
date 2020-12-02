@@ -42,6 +42,7 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
 
     caseInfo &info = caseInfo::Instance();
     QString dirName = info.getStorageDir() + "/clips";
+    clipListModel::Instance().setThumbnailDir(dirName);
     QDir thisDir(dirName);
     QString subDirName = playListThumbnail;
     thisDir.mkdir(subDirName);

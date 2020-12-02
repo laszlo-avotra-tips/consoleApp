@@ -636,7 +636,7 @@ void MainScreen::on_pushButtonRecord_clicked()
         clipListModel &clipList = clipListModel::Instance();
         clipList.addClipCapture( playListThumbnail,
                                  clipTimestamp.toTime_t(),
-                                 "viewStr",
+                                 clipListModel::Instance().getThumbnailDir(),
                                  dev.current()->getDeviceName(),
                                  true );
 
