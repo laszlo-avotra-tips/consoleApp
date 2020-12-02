@@ -75,7 +75,7 @@ void CaseReviewScreen::updateClipLabel()
 
     m_numClips = clipList.countOfClipItems();
 
-    LOG1(m_numClips)
+//    LOG1(m_numClips)
 
     ui->labelLoops->setText( tr( "LOOPS(%1)" ).arg( m_numClips ) );
 

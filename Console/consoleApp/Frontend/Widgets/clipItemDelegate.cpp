@@ -41,7 +41,6 @@ void ClipItemDelegate::paint( QPainter *painter,
 {
    painter->save();
    painter->setFont( QFont( "DinPRO-regular", 12 ) );
-//   captureItem * item = index.model()->data( index, Qt::DisplayRole ).value<captureItem *>();
 
    clipListModel& clipList = clipListModel::Instance();
    const int rowNum = index.row() + clipList.getRowOffset();
@@ -69,14 +68,13 @@ void ClipItemDelegate::paint( QPainter *painter,
        QFontMetrics fm = painter->fontMetrics();
        const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
        const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
-//       QImage tmi = item->loadSectorThumbnail( item->getName());
 //       LOG1(item->getName())
 //       LOG1(item->getTag())
 //       LOG1(item->getdbKey())
 //       LOG1(item->getDeviceName())
 //       LOG1(item->getCatheterView())
        const QString thumbNailFile(item->clipThumbnailFile(item->getCatheterView(), item->getName()));
-       LOG1(thumbNailFile)
+//       LOG1(thumbNailFile)
        QImage tmi(thumbNailFile);
        painter->drawImage( 5, 5, tmi.scaled(160,160));
        painter->setPen( QPen( SelectedTextColor, 6 ) );
