@@ -70,14 +70,15 @@ void ClipItemDelegate::paint( QPainter *painter,
        const QString NumberLabel = QString( "%1" ).arg( item->getdbKey() );
        const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
 //       QImage tmi = item->loadSectorThumbnail( item->getName());
-       LOG1(item->getName())
-       LOG1(item->getTag())
-       LOG1(item->getdbKey())
-       LOG1(item->getDeviceName())
-       LOG1(item->getCatheterView())
+//       LOG1(item->getName())
+//       LOG1(item->getTag())
+//       LOG1(item->getdbKey())
+//       LOG1(item->getDeviceName())
+//       LOG1(item->getCatheterView())
        const QString thumbNailFile(item->clipThumbnailFile(item->getCatheterView(), item->getName()));
        LOG1(thumbNailFile)
-//       painter->drawImage( 5, 5, tmi.scaled(160,160));
+       QImage tmi(thumbNailFile);
+       painter->drawImage( 5, 5, tmi.scaled(160,160));
        painter->setPen( QPen( SelectedTextColor, 6 ) );
 
        painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
