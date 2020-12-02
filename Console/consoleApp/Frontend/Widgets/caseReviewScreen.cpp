@@ -221,9 +221,9 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     updateCaptureLabel();
     QWidget::showEvent(e);
 
-//    initCapture();
-//    initClips();
-//    initPlayer();
+    showCapture(false);
+    showClip(false);
+    showPlayer(false);
 
     auto& model = captureListModel::Instance();
 

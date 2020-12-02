@@ -36,21 +36,7 @@ captureListView::captureListView(QWidget *parent) :
  */
 bool captureListView::viewportEvent( QEvent *event )
 {
-//    if (event->type() == QEvent::ToolTip) {
-
-
-//        /*
-//         * Determine the index of the hovered item
-//         */
-//        QHelpEvent *he = (QHelpEvent *)event;
-//        QModelIndex index = indexAt( he->pos() );
-//        QVariant tip = index.data( Qt::ToolTipRole );
-
-//        QToolTip::showText( he->globalPos(), tip.toString() );
-//        return( true );
-//    }
     return( QListView::viewportEvent(event) );
-
 }
 
 /*
