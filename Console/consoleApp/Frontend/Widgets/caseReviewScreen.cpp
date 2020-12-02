@@ -99,7 +99,12 @@ void CaseReviewScreen::initPlayer()
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
     m_player->init();
-    const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
+
+    //file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4
+    const QUrl url0(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
+    const QUrl url(R"(file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4)");
+    LOG1(url0.toString())
+    LOG1(url.toString())
     m_player->setUrl(url);
 
     auto* slider = ui->horizontalSlider;
