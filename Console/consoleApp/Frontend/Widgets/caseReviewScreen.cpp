@@ -139,7 +139,7 @@ void CaseReviewScreen::initCapture()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
-    showCapture(false);
+//    showCapture(false);
 
 }
 
@@ -161,7 +161,7 @@ void CaseReviewScreen::initClips()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, clipItemDelegate, &ClipItemDelegate::handleDisplayOffset);
-    showClip(false);
+//    showClip(false);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -221,9 +221,9 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     updateCaptureLabel();
     QWidget::showEvent(e);
 
-    initCapture();
-    initClips();
-    initPlayer();
+//    initCapture();
+//    initClips();
+//    initPlayer();
 
     auto& model = captureListModel::Instance();
 
