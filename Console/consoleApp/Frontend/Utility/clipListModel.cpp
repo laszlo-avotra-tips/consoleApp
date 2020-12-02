@@ -26,6 +26,16 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+bool clipListModel::getIsSelected() const
+{
+    return m_isSelected;
+}
+
+void clipListModel::setIsSelected(bool isSelected)
+{
+    m_isSelected = isSelected;
+}
+
 QString clipListModel::getThumbnailDir() const
 {
     return m_thumbnailDir;

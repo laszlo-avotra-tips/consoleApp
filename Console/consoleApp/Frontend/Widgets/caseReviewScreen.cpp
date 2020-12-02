@@ -187,6 +187,8 @@ void CaseReviewScreen::showPlayer(bool isVisible)
 
 void CaseReviewScreen::showCapture(bool isVisible)
 {
+    captureListModel &capList = captureListModel::Instance();
+    capList.setIsSelected(isVisible);
     if(isVisible){
         ui->captureScene->show();
     } else {
@@ -197,6 +199,8 @@ void CaseReviewScreen::showCapture(bool isVisible)
 
 void CaseReviewScreen::showClip(bool isVisible)
 {
+    clipListModel& clipList = clipListModel::Instance();
+    clipList.setIsSelected(isVisible);
     showPlayer(isVisible);
 }
 
