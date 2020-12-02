@@ -43,7 +43,7 @@ public:
     {
         timestamp = timeStampStr;
     }
-    void setCatheterView( const QString& str )
+    void setThumbnailDir( const QString& str )
     {
         m_thumbnailDir = str;
     }
@@ -136,7 +136,7 @@ public:
 
     int addClipCapture(QString name,
                         int timestamp,
-                        QString catheterView,
+                        QString thumbnailDir,
                         QString deviceName , bool);
 
     void updateClipInfo( int clipLength_ms );

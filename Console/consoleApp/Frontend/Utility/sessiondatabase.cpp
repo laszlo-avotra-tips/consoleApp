@@ -329,7 +329,7 @@ int sessionDatabase::addCapture( QString tag,
  */
 int sessionDatabase::addClipCapture(QString name,
                                      uint    timestamp,
-                                     QString catheterView,
+                                     QString thumbnailDir,
                                      QString deviceName)
 {
     QSqlQuery q;
@@ -367,7 +367,7 @@ int sessionDatabase::addClipCapture(QString name,
     q.addBindValue( name );         // Duplicate the name in the tag column by default
     q.addBindValue( name );         // file name without extension
     q.addBindValue( 0 );            // placeholder until the loop recording stops
-    q.addBindValue( catheterView );
+    q.addBindValue( thumbnailDir );
     q.addBindValue( deviceName );
     q.exec();
 

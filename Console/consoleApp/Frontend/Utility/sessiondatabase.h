@@ -35,7 +35,7 @@ public:
 
     int addClipCapture(QString name,
                         uint timestamp,
-                        QString catheterView,
+                        QString thumbnailDir,
                         QString deviceName);
 
     void updateClipCapture( int lastClipID, int clipLength_ms );

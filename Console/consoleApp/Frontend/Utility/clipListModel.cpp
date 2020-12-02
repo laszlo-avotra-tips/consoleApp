@@ -143,9 +143,9 @@ QVariant clipListModel::data(const QModelIndex &index, int role) const
  * Add a new capture to the database, including
  * all associated data and file reference location.
  */
-int clipListModel::addClipCapture( QString name,
+int clipListModel::addClipCapture(QString name,
                                    int timestamp,
-                                   QString catheterView,
+                                   QString thumbnailDir,
                                    QString deviceName,
                                    bool /*isHighSpeed*/ )
 {
@@ -155,7 +155,7 @@ int clipListModel::addClipCapture( QString name,
     sessionDatabase db;
     db.initDb();
 
-    int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName );
+    int maxID = db.addClipCapture( name, timestamp, thumbnailDir, deviceName );
 
     LOG1(maxID)
 
@@ -176,7 +176,7 @@ int clipListModel::addClipCapture( QString name,
     clip->setName( name );
     clip->setTimestamp( timeVal.toString("yyyy-MM-dd HH:mm:ss") ); // use local time in tool tips
     clip->setLength( 0 ); // length is set after the recording is finished
-    clip->setCatheterView( catheterView );
+    clip->setThumbnailDir( thumbnailDir );
     clip->setDeviceName( deviceName );
     itemMap.insert( maxID, clip );
 
