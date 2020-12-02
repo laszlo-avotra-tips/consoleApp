@@ -332,9 +332,9 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>9</x>
-      <y>0</y>
+      <y>130</y>
       <width>1581</width>
-      <height>1601</height>
+      <height>1341</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout"/>
@@ -447,11 +447,6 @@ border: 3px solid #F5C400;
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <zorder>verticalLayoutWidget</zorder>
-   <zorder>pushButtonPlay</zorder>
-   <zorder>labelTime</zorder>
-   <zorder>labelLoop</zorder>
-   <zorder>labelDuration</zorder>
   </widget>
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
