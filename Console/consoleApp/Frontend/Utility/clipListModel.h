@@ -25,15 +25,8 @@
 class clipItem
 {
 public:
-    clipItem(void) 
+    clipItem(void):dbKey(-1),clipLength_s(0)
     {
-        deviceName      = QString();
-        tag             = QString();
-        timestamp       = QString();
-        name            = QString();
-        dbKey           = -1;
-        clipLength_s    = 0;
-        catheterViewStr = "DistalToProximal";
     }
     ~clipItem() {}
     int getdbKey(void) {
@@ -42,32 +35,32 @@ public:
     void setdbKey(int key) {
         dbKey = key;
     }
-    void setTag( QString tagStr )
+    void setTag( const QString& tagStr )
     {
         tag = tagStr;
     }
-    void setTimestamp( QString timeStampStr )
+    void setTimestamp( const QString& timeStampStr )
     {
         timestamp = timeStampStr;
     }
-    void setCatheterView( QString str )
+    void setCatheterView( const QString& str )
     {
         catheterViewStr = str;
     }
-    void setName( QString capName )
+    void setName( const QString& capName )
     {
         name = capName;
     }
-    void setDeviceName( QString devName )
+    void setDeviceName( const QString& devName )
     {
         deviceName = devName;
     }
 
-    QString getTag()
+    QString getTag() const
     {
         return tag;
     }
-    QString getTimestamp()
+    QString getTimestamp() const
     {
         return timestamp;
     }
@@ -76,28 +69,28 @@ public:
         // Add 500 ms and integer divide to round the result to the nearest second
         clipLength_s = ( length_ms + 500 ) / 1000;
     }
-    QString getName()
+    QString getName() const
     {
         return name;
     }
-    int getLength( void )
+    int getLength( void ) const
     {
         return clipLength_s;
     }
-    QString getCatheterView( void )
+    QString getCatheterView( void ) const
     {
         return catheterViewStr;
     }
-    QString getDeviceName()
+    QString getDeviceName() const
     {
         return deviceName;
     }
-    QImage loadSectorThumbnail( QString name ) {
-        return( loadImage( ".thumb_" + name + "*sector.png" ) );
-    }
+//    QImage loadSectorThumbnail( QString name ) {
+//        return( loadImage( ".thumb_" + name + "*sector.png" ) );
+//    }
 
 private:
-    QImage loadImage(QString);
+//    QImage loadImage(QString);
 
     QString deviceName;
     QString tag;

@@ -220,32 +220,32 @@ int clipListModel::getLastCaptureId( void )
 
 
 
-/*
- * class clipItem implementation
- */
+///*
+// * class clipItem implementation
+// */
 
-/*
- * loadImage()
- *
- * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
- * load it from disk and return a QImage representing it.
- */
-QImage clipItem::loadImage( QString imageFilter )
-{
-    QStringList filters;
-    caseInfo &info = caseInfo::Instance();
-    filters << imageFilter;
-    QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
-    QDir thisDir( dirString );
-    thisDir.setNameFilters( filters );
+///*
+// * loadImage()
+// *
+// * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
+// * load it from disk and return a QImage representing it.
+// */
+//QImage clipItem::loadImage( QString imageFilter )
+//{
+//    QStringList filters;
+//    caseInfo &info = caseInfo::Instance();
+//    filters << imageFilter;
+//    QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
+//    QDir thisDir( dirString );
+//    thisDir.setNameFilters( filters );
     
-    // TBD: we filter to close to the exact name and grab the first thing we find
-    if( thisDir.entryList().empty() )
-    {
-        return QImage();
-    }
-    else
-    {
-        return( QImage( thisDir.absoluteFilePath( thisDir.entryList().first() ) ) );
-    }
-}
+//    // TBD: we filter to close to the exact name and grab the first thing we find
+//    if( thisDir.entryList().empty() )
+//    {
+//        return QImage();
+//    }
+//    else
+//    {
+//        return( QImage( thisDir.absoluteFilePath( thisDir.entryList().first() ) ) );
+//    }
+//}
