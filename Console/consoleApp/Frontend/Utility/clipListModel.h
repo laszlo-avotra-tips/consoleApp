@@ -45,7 +45,7 @@ public:
     }
     void setCatheterView( const QString& str )
     {
-        catheterViewStr = str;
+        m_thumbnailDir = str;
     }
     void setName( const QString& capName )
     {
@@ -77,9 +77,9 @@ public:
     {
         return clipLength_s;
     }
-    QString getCatheterView( void ) const
+    QString getThumbnailDir( void ) const
     {
-        return catheterViewStr;
+        return m_thumbnailDir;
     }
     QString getDeviceName() const
     {
@@ -88,10 +88,6 @@ public:
 
     QString clipThumbnailFile( const QString& dir, const QString& name ) const {
         return QString("%1/thumb_clip-%2.png").arg(dir).arg(name);
-    }
-    QImage loadSectorThumbnail( const QString& dir, const QString& name ) {
-        //thumb_clip-LOOP1.png
-//        return( loadImage( ".thumb_" + name + "*sector.png" ) );
     }
 
 private:
@@ -104,7 +100,7 @@ private:
 
     int dbKey;
     int clipLength_s;
-    QString catheterViewStr;
+    QString m_thumbnailDir;
 };
 
 // Notify Qt the clipItem is going to be used as a custom variant

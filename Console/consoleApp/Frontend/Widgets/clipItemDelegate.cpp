@@ -73,7 +73,7 @@ void ClipItemDelegate::paint( QPainter *painter,
 //       LOG1(item->getdbKey())
 //       LOG1(item->getDeviceName())
 //       LOG1(item->getCatheterView())
-       const QString thumbNailFile(item->clipThumbnailFile(item->getCatheterView(), item->getName()));
+       const QString thumbNailFile(item->clipThumbnailFile(item->getThumbnailDir(), item->getName()));
 //       LOG1(thumbNailFile)
        QImage tmi(thumbNailFile);
        painter->drawImage( 5, 5, tmi.scaled(160,160));
