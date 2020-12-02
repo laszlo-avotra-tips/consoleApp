@@ -99,6 +99,8 @@ void CaseReviewScreen::initPlayer()
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
     m_player->init();
+    const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
+    m_player->setUrl(url);
 
     auto* slider = ui->horizontalSlider;
     connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);

@@ -95,6 +95,7 @@ private:
     QVideoWidget *m_videoWidget{nullptr};
     QLabel *m_errorLabel;
     QVBoxLayout* m_videoWidgetContainer{nullptr};
+    QUrl m_url;
 };
 
 #endif
