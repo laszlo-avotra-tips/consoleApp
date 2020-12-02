@@ -172,7 +172,10 @@ void CaseReviewScreen::showPlayer(bool isVisible)
             const auto& loopName{m_selectedClipItem->getName()};
             LOG1(loopName)
             LOG1(fn)
-//            m_player->setUrl("");
+            const QString videoFileName = QString("file:///%1/%2/%3.mp4").arg(fn).arg(loopName).arg(loopName);
+            const QUrl url(videoFileName);
+            LOG1(url.toString());
+            m_player->setUrl(url);
         }
     } else {
         ui->framePlayer->hide();
