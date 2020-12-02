@@ -360,3 +360,23 @@ void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
         capList.setRowOffset(capList.getRowOffset() - 1);
     }
 }
+
+void CaseReviewScreen::on_pushButtonClipsRightArrow_clicked()
+{
+    const int size{5};
+    clipListModel& clipList = clipListModel::Instance();
+    if(m_numClips > size + clipList.getRowOffset()){
+        update();
+        clipList.setRowOffset(clipList.getRowOffset() + 1);
+    }
+
+}
+
+void CaseReviewScreen::on_pushButtonClipsLeftArrow_clicked()
+{
+    clipListModel& clipList = clipListModel::Instance();
+    if(clipList.getRowOffset()){
+        update();
+        clipList.setRowOffset(clipList.getRowOffset() - 1);
+    }
+}
