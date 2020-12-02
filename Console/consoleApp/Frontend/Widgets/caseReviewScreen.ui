@@ -317,12 +317,6 @@ color: black;</string>
      <height>1600</height>
     </rect>
    </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
    <property name="styleSheet">
     <string notr="true">QFrame#framePlayer{
 border: 3px solid #F5C400;
@@ -338,19 +332,12 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>9</x>
-      <y>10</y>
+      <y>0</y>
       <width>1581</width>
-      <height>1581</height>
+      <height>1601</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
-     </property>
-    </layout>
+    <layout class="QVBoxLayout" name="verticalLayout"/>
    </widget>
    <widget class="QPushButton" name="pushButtonPlay">
     <property name="geometry">
@@ -666,31 +653,6 @@ border-radius: 0px;
     </size>
    </property>
   </widget>
-  <zorder>pushButtonDone</zorder>
-  <zorder>pushButtonBack</zorder>
-  <zorder>labelTitle</zorder>
-  <zorder>labelViewTitle</zorder>
-  <zorder>labelPhysicianName</zorder>
-  <zorder>labelPatientID</zorder>
-  <zorder>labelDateAndTime</zorder>
-  <zorder>labelPhysicianNameValue</zorder>
-  <zorder>labelPatientIdValue</zorder>
-  <zorder>labelDateAndTimeValue</zorder>
-  <zorder>labelImages</zorder>
-  <zorder>labelLoops</zorder>
-  <zorder>pushButtonMeasure</zorder>
-  <zorder>pushButtonAnnotate</zorder>
-  <zorder>pushButtonSaveImage</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>captureView</zorder>
-  <zorder>captureScene</zorder>
-  <zorder>pushButtonRightArrow</zorder>
-  <zorder>pushButtonLeftArrow</zorder>
-  <zorder>pushButtonClipsLeftArrow</zorder>
-  <zorder>clipsView</zorder>
-  <zorder>pushButtonClipsRightArrow</zorder>
-  <zorder>framePlayer</zorder>
-  <zorder>horizontalSlider</zorder>
  </widget>
  <customwidgets>
   <customwidget>
