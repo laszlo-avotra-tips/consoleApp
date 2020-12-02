@@ -155,6 +155,7 @@ void CaseReviewScreen::initClips()
 
 void CaseReviewScreen::showPlayer(bool isVisible)
 {
+    LOG1(isVisible)
     if(isVisible){
         ui->framePlayer->show();
         ui->horizontalSlider->show();
@@ -333,7 +334,6 @@ void CaseReviewScreen::clipSelected(QModelIndex index)
 
 //        ui->captureScene->setScene(scene);
     }
-
 }
 
 
@@ -369,7 +369,6 @@ void CaseReviewScreen::on_pushButtonClipsRightArrow_clicked()
         update();
         clipList.setRowOffset(clipList.getRowOffset() + 1);
     }
-
 }
 
 void CaseReviewScreen::on_pushButtonClipsLeftArrow_clicked()
