@@ -114,6 +114,8 @@ void CaseReviewScreen::initPlayer()
 
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
 
+    showPlayer(false);
+
 }
 
 /*
@@ -138,6 +140,8 @@ void CaseReviewScreen::initCapture()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
+    showCapture(false);
+
 }
 
 void CaseReviewScreen::initClips()
@@ -158,6 +162,7 @@ void CaseReviewScreen::initClips()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, clipItemDelegate, &ClipItemDelegate::handleDisplayOffset);
+    showClip(false);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -216,6 +221,10 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     updateCaseInfo();
     updateCaptureLabel();
     QWidget::showEvent(e);
+
+    initCapture();
+    initClips();
+    initPlayer();
 
     auto& model = captureListModel::Instance();
 
