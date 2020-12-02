@@ -71,6 +71,10 @@ void ClipItemDelegate::paint( QPainter *painter,
        const int Offset_px = MinOffsetForNumberLabel_px + fm.width( NumberLabel );
 //       QImage tmi = item->loadSectorThumbnail( item->getName());
        LOG1(item->getName())
+       LOG1(item->getTag())
+       LOG1(item->getdbKey())
+       LOG1(item->getDeviceName())
+       LOG1(item->getCatheterView())
 //       painter->drawImage( 5, 5, tmi.scaled(160,160));
        painter->setPen( QPen( SelectedTextColor, 6 ) );
 
