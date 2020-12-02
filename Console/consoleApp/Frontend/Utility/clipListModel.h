@@ -85,9 +85,14 @@ public:
     {
         return deviceName;
     }
-//    QImage loadSectorThumbnail( QString name ) {
+
+    QString clipThumbnailFile( const QString& dir, const QString& name ) const {
+        return QString("%1thumb_clip-%2.png").arg(dir).arg(name);
+    }
+    QImage loadSectorThumbnail( const QString& dir, const QString& name ) {
+        //thumb_clip-LOOP1.png
 //        return( loadImage( ".thumb_" + name + "*sector.png" ) );
-//    }
+    }
 
 private:
 //    QImage loadImage(QString);
