@@ -166,6 +166,14 @@ void CaseReviewScreen::showPlayer(bool isVisible)
     if(isVisible){
         ui->framePlayer->show();
         ui->horizontalSlider->show();
+        clipListModel& clipList = clipListModel::Instance();
+        QString fn = clipList.getThumbnailDir();
+        if(m_selectedClipItem){
+            const auto& loopName{m_selectedClipItem->getName()};
+            LOG1(loopName)
+            LOG1(fn)
+//            m_player->setUrl("");
+        }
     } else {
         ui->framePlayer->hide();
         ui->horizontalSlider->hide();
