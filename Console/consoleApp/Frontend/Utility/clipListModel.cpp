@@ -26,6 +26,16 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+bool clipListModel::getIsSelected() const
+{
+    return m_isSelected;
+}
+
+void clipListModel::setIsSelected(bool isSelected)
+{
+    m_isSelected = isSelected;
+}
+
 QString clipListModel::getThumbnailDir() const
 {
     return m_thumbnailDir;
@@ -125,13 +135,13 @@ QVariant clipListModel::data(const QModelIndex &index, int role) const
     if ( role == Qt::DisplayRole ) {
         return(QVariant::fromValue(itemMap[row]));
     }
-    if ( role == Qt::ToolTipRole ) {
-        QString tipString( QString( "Time: %1\n" ).arg( itemMap[row]->getTimestamp() ) );
-        tipString.append( QString( "Tag: %1\n" ).arg( itemMap[row]->getTag() ) );
-        tipString.append( QString( "Length: %1 s\n" ).arg( itemMap[ row ]->getLength() ) );
-        tipString.append( QString( "Device: %1" ).arg( itemMap[row]->getDeviceName() ) );
-        return( tipString );
-    }
+//    if ( role == Qt::ToolTipRole ) {
+//        QString tipString( QString( "Time: %1\n" ).arg( itemMap[row]->getTimestamp() ) );
+//        tipString.append( QString( "Tag: %1\n" ).arg( itemMap[row]->getTag() ) );
+//        tipString.append( QString( "Length: %1 s\n" ).arg( itemMap[ row ]->getLength() ) );
+//        tipString.append( QString( "Device: %1" ).arg( itemMap[row]->getDeviceName() ) );
+//        return( tipString );
+//    }
     else return ( QVariant() );
 
 }

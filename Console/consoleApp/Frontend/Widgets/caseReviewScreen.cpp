@@ -100,12 +100,12 @@ void CaseReviewScreen::initPlayer()
     m_player->setVideoWidgetContainer(ui->verticalLayout);
     m_player->init();
 
-    //file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4
-    const QUrl url0(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
-    const QUrl url(R"(file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4)");
-    LOG1(url0.toString())
-    LOG1(url.toString())
-    m_player->setUrl(url);
+//    //file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4
+//    const QUrl url0(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
+//    const QUrl url(R"(file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4)");
+//    LOG1(url0.toString())
+//    LOG1(url.toString())
+//    m_player->setUrl(url);
 
     auto* slider = ui->horizontalSlider;
     connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);
@@ -114,6 +114,7 @@ void CaseReviewScreen::initPlayer()
 
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
 
+//    showPlayer(false);
 }
 
 /*
@@ -138,6 +139,8 @@ void CaseReviewScreen::initCapture()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
+//    showCapture(false);
+
 }
 
 void CaseReviewScreen::initClips()
@@ -158,6 +161,7 @@ void CaseReviewScreen::initClips()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, clipItemDelegate, &ClipItemDelegate::handleDisplayOffset);
+//    showClip(false);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -187,6 +191,8 @@ void CaseReviewScreen::showPlayer(bool isVisible)
 
 void CaseReviewScreen::showCapture(bool isVisible)
 {
+    captureListModel &capList = captureListModel::Instance();
+    capList.setIsSelected(isVisible);
     if(isVisible){
         ui->captureScene->show();
     } else {
@@ -197,6 +203,8 @@ void CaseReviewScreen::showCapture(bool isVisible)
 
 void CaseReviewScreen::showClip(bool isVisible)
 {
+    clipListModel& clipList = clipListModel::Instance();
+    clipList.setIsSelected(isVisible);
     showPlayer(isVisible);
 }
 
@@ -212,6 +220,10 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     updateCaseInfo();
     updateCaptureLabel();
     QWidget::showEvent(e);
+
+    showCapture(false);
+    showClip(false);
+    showPlayer(false);
 
     auto& model = captureListModel::Instance();
 

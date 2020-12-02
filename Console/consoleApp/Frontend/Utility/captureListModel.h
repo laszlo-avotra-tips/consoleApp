@@ -173,6 +173,9 @@ public:
     int getRowOffset() const;
     void setRowOffset(int rowOffset);
 
+    bool getIsSelected() const;
+    void setIsSelected(bool isSelected);
+
 signals:
 
     void warning( QString );
@@ -197,6 +200,7 @@ private:
 
     int m_selectedRow{-1};
     int m_rowOffset{0};
+    bool m_isSelected{false};
 
     static captureListModel* m_instance;
 };

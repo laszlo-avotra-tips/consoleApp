@@ -27,6 +27,16 @@ captureListModel::captureListModel(void)
 {
 }
 
+bool captureListModel::getIsSelected() const
+{
+    return m_isSelected;
+}
+
+void captureListModel::setIsSelected(bool isSelected)
+{
+    m_isSelected = isSelected;
+}
+
 int captureListModel::getRowOffset() const
 {
     return m_rowOffset;

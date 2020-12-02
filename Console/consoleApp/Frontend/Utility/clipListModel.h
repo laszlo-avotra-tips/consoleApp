@@ -170,6 +170,9 @@ public:
     QString getThumbnailDir() const;
     void setThumbnailDir(const QString &thumbnailDir);
 
+    bool getIsSelected() const;
+    void setIsSelected(bool isSelected);
+
 signals:
 
     void warning( QString );
@@ -202,5 +205,6 @@ private:
     QString m_thumbnailDir;
     QString m_playlistThumbnail;
     int m_currentLoopNumber{0};
+    bool m_isSelected{false};
 
 };

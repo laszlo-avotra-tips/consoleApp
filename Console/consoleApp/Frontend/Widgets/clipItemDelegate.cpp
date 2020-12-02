@@ -84,7 +84,7 @@ void ClipItemDelegate::paint( QPainter *painter,
 
        // Highlight the selected item
     //   if( option.state & QStyle::State_Selected )
-       if(rowNum == clipList.getSelectedRow())
+       if(clipList.getIsSelected() && rowNum == clipList.getSelectedRow())
        {
            const int PenSize = 2;
            painter->setPen( QPen( SelectedItemColor, PenSize ) );
