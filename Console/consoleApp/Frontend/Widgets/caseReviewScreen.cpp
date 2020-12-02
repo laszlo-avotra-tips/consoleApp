@@ -7,6 +7,8 @@
 #include "sledsupport.h"
 #include "captureItemDelegate.h"
 #include "Utility/captureListModel.h"
+#include "clipItemDelegate.h"
+#include "Utility/clipListModel.h"
 
 #include <QGraphicsPixmapItem>
 
@@ -18,14 +20,23 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     ui->setupUi(this);
     initPlayer();
     initCapture();
+    initClips();
+
     showPlayer(false);
     showCapture(false);
+    showClip(false);
+
     updateCaptureLabel();
+    updateClipLabel();
 
     hideUnimplementedButtons();
 
     ui->captureView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->captureView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->clipsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->clipsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     ui->pushButtonRightArrow->hide();
 }
 
@@ -58,6 +69,29 @@ void CaseReviewScreen::updateCaptureLabel()
     }
 }
 
+void CaseReviewScreen::updateClipLabel()
+{
+    clipListModel& clipList = clipListModel::Instance();
+
+    m_numClips = clipList.countOfClipItems();
+
+//    LOG1(m_numClips)
+
+    ui->labelLoops->setText( tr( "LOOPS(%1)" ).arg( m_numClips ) );
+
+    if( (m_numClips - clipList.getRowOffset()) <= 5 ){
+        ui->pushButtonClipsRightArrow->hide();
+    } else {
+        ui->pushButtonClipsRightArrow->show();
+    }
+
+    if(clipList.getRowOffset() > 0){
+        ui->pushButtonClipsLeftArrow->show();
+    } else {
+        ui->pushButtonClipsLeftArrow->hide();
+    }
+}
+
 /* init player */
 void CaseReviewScreen::initPlayer()
 {
@@ -65,6 +99,13 @@ void CaseReviewScreen::initPlayer()
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
     m_player->init();
+
+    //file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4
+    const QUrl url0(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
+    const QUrl url(R"(file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4)");
+    LOG1(url0.toString())
+    LOG1(url.toString())
+    m_player->setUrl(url);
 
     auto* slider = ui->horizontalSlider;
     connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);
@@ -99,11 +140,45 @@ void CaseReviewScreen::initCapture()
     connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
 }
 
+void CaseReviewScreen::initClips()
+{
+    LOG1("initClips")
+    clipListModel& clipList = clipListModel::Instance();
+
+    ClipItemDelegate* clipItemDelegate = new ClipItemDelegate();
+    ui->clipsView->setItemDelegate(clipItemDelegate);
+    ui->clipsView->setModel(&clipList);
+
+    connect( ui->clipsView, &clipListView::clicked, this, &CaseReviewScreen::clipSelected );
+
+    connect(clipItemDelegate, &ClipItemDelegate::updateLabel, this, &CaseReviewScreen::updateClipLabel);
+
+    // Auto-scroll the list when items are added
+    connect( &clipList, &clipListModel::rowsInserted, ui->clipsView, &clipListView::updateView );
+
+    //scroll
+    connect(this, &CaseReviewScreen::displayOffsetChanged, clipItemDelegate, &ClipItemDelegate::handleDisplayOffset);
+}
+
 void CaseReviewScreen::showPlayer(bool isVisible)
 {
+    LOG1(isVisible)
     if(isVisible){
         ui->framePlayer->show();
         ui->horizontalSlider->show();
+        clipListModel& clipList = clipListModel::Instance();
+        QString fn = clipList.getThumbnailDir();
+        if(m_selectedClipItem){
+            const auto& loopName{m_selectedClipItem->getName()};
+            LOG1(loopName)
+            LOG1(fn)
+            const QString videoFileName = QString("file:///%1/%2/%3.mp4").arg(fn).arg(loopName).arg(loopName);
+            const QUrl url(videoFileName);
+            LOG1(url.toString());
+            m_player->setUrl(url);
+            m_player->play();
+            ui->labelLoop->setText(loopName);
+        }
     } else {
         ui->framePlayer->hide();
         ui->horizontalSlider->hide();
@@ -118,6 +193,11 @@ void CaseReviewScreen::showCapture(bool isVisible)
         ui->captureScene->hide();
     }
 
+}
+
+void CaseReviewScreen::showClip(bool isVisible)
+{
+    showPlayer(isVisible);
 }
 
 
@@ -219,7 +299,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
     m_selectedCaptureItem = itemList.at(rowNum);
 
     LOG2(rowNum, m_selectedCaptureItem)
-    showPlayer(false);
+    showClip(false);
     showCapture(true);
 
     if(m_selectedCaptureItem){
@@ -237,6 +317,42 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
         scene->addItem(item);
 
         ui->captureScene->setScene(scene);
+    }
+}
+
+void CaseReviewScreen::clipSelected(QModelIndex index)
+{
+    clipListModel& clipList = clipListModel::Instance();
+    const int rowNum = index.row() + clipList.getRowOffset();
+
+    LOG2(rowNum,m_numClips)
+
+    clipList.setSelectedRow(rowNum);
+    update();
+
+    auto itemList = clipList.getAllItems();
+
+    m_selectedClipItem = itemList.at(rowNum);
+
+    LOG2(rowNum, m_selectedClipItem)
+    showClip(true);
+    showCapture(false);
+
+    if(m_selectedClipItem){
+
+        const auto& loopName{m_selectedClipItem->getName()};
+        LOG1(loopName)
+//        QImage image = m_selectedCaptureItem->loadDecoratedImage(loopName).scaledToWidth(1600);
+
+//        LOG2(image.size().width(), image.size().height())
+
+//        QGraphicsScene *scene = new QGraphicsScene();
+
+//        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+
+//        scene->addItem(item);
+
+//        ui->captureScene->setScene(scene);
     }
 }
 
@@ -262,5 +378,24 @@ void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
     if(capList.getRowOffset()){
         update();
         capList.setRowOffset(capList.getRowOffset() - 1);
+    }
+}
+
+void CaseReviewScreen::on_pushButtonClipsRightArrow_clicked()
+{
+    const int size{5};
+    clipListModel& clipList = clipListModel::Instance();
+    if(m_numClips > size + clipList.getRowOffset()){
+        update();
+        clipList.setRowOffset(clipList.getRowOffset() + 1);
+    }
+}
+
+void CaseReviewScreen::on_pushButtonClipsLeftArrow_clicked()
+{
+    clipListModel& clipList = clipListModel::Instance();
+    if(clipList.getRowOffset()){
+        update();
+        clipList.setRowOffset(clipList.getRowOffset() - 1);
     }
 }

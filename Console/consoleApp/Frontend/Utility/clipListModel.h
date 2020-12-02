@@ -25,15 +25,8 @@
 class clipItem
 {
 public:
-    clipItem(void) 
+    clipItem(void):dbKey(-1),clipLength_s(0)
     {
-        deviceName      = QString();
-        tag             = QString();
-        timestamp       = QString();
-        name            = QString();
-        dbKey           = -1;
-        clipLength_s    = 0;
-        catheterViewStr = "DistalToProximal";
     }
     ~clipItem() {}
     int getdbKey(void) {
@@ -42,32 +35,32 @@ public:
     void setdbKey(int key) {
         dbKey = key;
     }
-    void setTag( QString tagStr )
+    void setTag( const QString& tagStr )
     {
         tag = tagStr;
     }
-    void setTimestamp( QString timeStampStr )
+    void setTimestamp( const QString& timeStampStr )
     {
         timestamp = timeStampStr;
     }
-    void setCatheterView( QString str )
+    void setThumbnailDir( const QString& str )
     {
-        catheterViewStr = str;
+        m_thumbnailDir = str;
     }
-    void setName( QString capName )
+    void setName( const QString& capName )
     {
         name = capName;
     }
-    void setDeviceName( QString devName )
+    void setDeviceName( const QString& devName )
     {
         deviceName = devName;
     }
 
-    QString getTag()
+    QString getTag() const
     {
         return tag;
     }
-    QString getTimestamp()
+    QString getTimestamp() const
     {
         return timestamp;
     }
@@ -76,28 +69,29 @@ public:
         // Add 500 ms and integer divide to round the result to the nearest second
         clipLength_s = ( length_ms + 500 ) / 1000;
     }
-    QString getName()
+    QString getName() const
     {
         return name;
     }
-    int getLength( void )
+    int getLength( void ) const
     {
         return clipLength_s;
     }
-    QString getCatheterView( void )
+    QString getThumbnailDir( void ) const
     {
-        return catheterViewStr;
+        return m_thumbnailDir;
     }
-    QString getDeviceName()
+    QString getDeviceName() const
     {
         return deviceName;
     }
-    QImage loadSectorThumbnail( QString name ) {
-        return( loadImage( ".thumb_" + name + "*sector.png" ) );
+
+    QString clipThumbnailFile( const QString& dir, const QString& name ) const {
+        return QString("%1/thumb_clip-%2.png").arg(dir).arg(name);
     }
 
 private:
-    QImage loadImage(QString);
+//    QImage loadImage(QString);
 
     QString deviceName;
     QString tag;
@@ -106,7 +100,7 @@ private:
 
     int dbKey;
     int clipLength_s;
-    QString catheterViewStr;
+    QString m_thumbnailDir;
 };
 
 // Notify Qt the clipItem is going to be used as a custom variant
@@ -140,11 +134,10 @@ public:
         return theDB;
     }
 
-    int addClipCapture( QString name,
+    int addClipCapture(QString name,
                         int timestamp,
-                        QString catheterView,
-                        QString deviceName ,
-                        bool isHighSpeed );
+                        QString thumbnailDir,
+                        QString deviceName , bool);
 
     void updateClipInfo( int clipLength_ms );
 
@@ -153,9 +146,29 @@ public:
     QList<clipItem *> getAllItems(void) {
         return itemMap.values();
     }
+    int countOfClipItems() const;
 
     int getLastCaptureId( void );
 
+
+    int getRowOffset() const;
+    void setRowOffset(int rowOffset);
+
+    int getSelectedRow() const;
+    void setSelectedRow(int selectedRow);
+    void reset();
+
+    QString getOutDirPath() const;
+    void setOutDirPath(const QString &outDirPath);
+
+    QString getPlaylistThumbnail() const;
+    void setPlaylistThumbnail(const QString &playlistThumbnail);
+
+    int getCurrentLoopNumber() const;
+    void setCurrentLoopNumber(int currentLoopNumber);
+
+    QString getThumbnailDir() const;
+    void setThumbnailDir(const QString &thumbnailDir);
 
 signals:
 
@@ -181,4 +194,13 @@ private:
     // of each result lookup in here to get the actual data item.
     // This needs to be rebuilt at load time for playback.
     QMap<int, clipItem *> itemMap;
+
+    int m_selectedRow{-1};
+    int m_rowOffset{0};
+
+    QString m_outDirPath;
+    QString m_thumbnailDir;
+    QString m_playlistThumbnail;
+    int m_currentLoopNumber{0};
+
 };

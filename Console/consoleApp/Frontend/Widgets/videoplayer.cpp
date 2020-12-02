@@ -112,10 +112,10 @@ void VideoPlayer::openFile()
 //            setUrl(fileDialog.selectedUrls().constFirst());
 //    } else
     {
-        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
-        m_errorLabel->setText(QString());
-        setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
-        m_mediaPlayer->setMedia(url);
+//        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
+        m_errorLabel->setText(m_url.toString());
+        setWindowFilePath(m_url.isLocalFile() ? m_url.toLocalFile() : QString());
+        m_mediaPlayer->setMedia(m_url);
     }
 
 }

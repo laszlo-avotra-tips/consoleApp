@@ -5,6 +5,7 @@
 
 #include "videoplayer.h"
 #include "Utility/captureListModel.h"
+#include "Utility/clipListModel.h"
 #include "capturelistview.h"
 
 
@@ -28,6 +29,7 @@ signals:
 
 public slots:
     void captureSelected(QModelIndex ix);
+    void clipSelected(QModelIndex ix);
 
 private slots:
     void on_pushButtonBack_clicked();
@@ -42,13 +44,20 @@ private slots:
 
     void on_pushButtonLeftArrow_clicked();
 
+    void on_pushButtonClipsLeftArrow_clicked();
+
+    void on_pushButtonClipsRightArrow_clicked();
+
 private:
     void initPlayer();
     void initCapture();
+    void initClips();
     void showPlayer( bool isVisible);
     void showCapture( bool isVisible);
+    void showClip( bool isVisible);
     void hideUnimplementedButtons();
     void updateCaptureLabel();
+    void updateClipLabel();
 
 private:
     Ui::CaseReviewScreen *ui;
@@ -58,9 +67,11 @@ private:
 
 private:
     int  m_numCaptures{0};
+    int  m_numClips{0};
     bool m_isImageReviewInProgress{false};
 
     captureItem *m_selectedCaptureItem{nullptr};
+    clipItem *m_selectedClipItem{nullptr};
 
 };
 

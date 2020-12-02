@@ -193,9 +193,6 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
         return;   // Failure warnings generated in the call
     }
 
-    emit updateCaptureCount();
-
-    emit sendCaptureTag( saveName );
     LOG( INFO, QString( "Capture - %1" ).arg( saveName ) )
 }
 
@@ -240,7 +237,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     caseInfo &info = caseInfo::Instance();
     const QString ClipName = "clip-" + loop.strClipNumber;
-//    LOG1(ClipName)
+    LOG1(ClipName)
 
     QImage secRGB( loop.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
@@ -263,7 +260,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
 
     // Store the capture
     const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
-//    LOG1(thumbName)
+    LOG1(thumbName)
 
 //    QMatrix m;
 //    m.rotate( 90 );
@@ -278,9 +275,6 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
         emit sendFileToKey( thumbName );
     }
 
-    emit updateClipCount();
-
-    emit sendCaptureTag( ClipName );
     LOG( INFO, "Loop Capture: " + ClipName )
 }
 

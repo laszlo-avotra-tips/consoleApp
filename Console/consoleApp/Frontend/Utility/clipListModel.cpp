@@ -26,6 +26,71 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+QString clipListModel::getThumbnailDir() const
+{
+    return m_thumbnailDir;
+}
+
+void clipListModel::setThumbnailDir(const QString &thumbnailDir)
+{
+    m_thumbnailDir = thumbnailDir;
+}
+
+int clipListModel::getCurrentLoopNumber() const
+{
+    return m_currentLoopNumber;
+}
+
+void clipListModel::setCurrentLoopNumber(int currentLoopNumber)
+{
+    m_currentLoopNumber = currentLoopNumber;
+}
+
+QString clipListModel::getPlaylistThumbnail() const
+{
+    return m_playlistThumbnail;
+}
+
+void clipListModel::setPlaylistThumbnail(const QString &playlistThumbnail)
+{
+    m_playlistThumbnail = playlistThumbnail;
+}
+
+QString clipListModel::getOutDirPath() const
+{
+    return m_outDirPath;
+}
+
+void clipListModel::setOutDirPath(const QString &outDirPath)
+{
+    m_outDirPath = outDirPath;
+}
+
+int clipListModel::getSelectedRow() const
+{
+    return m_selectedRow;
+}
+
+void clipListModel::setSelectedRow(int selectedRow)
+{
+    m_selectedRow = selectedRow;
+}
+
+void clipListModel::reset()
+{
+
+}
+
+int clipListModel::getRowOffset() const
+{
+    return m_rowOffset;
+}
+
+void clipListModel::setRowOffset(int rowOffset)
+{
+    m_rowOffset = rowOffset;
+}
+
 /*
  * destructor
  */
@@ -78,17 +143,21 @@ QVariant clipListModel::data(const QModelIndex &index, int role) const
  * Add a new capture to the database, including
  * all associated data and file reference location.
  */
-int clipListModel::addClipCapture( QString name,
+int clipListModel::addClipCapture(QString name,
                                    int timestamp,
-                                   QString catheterView,
+                                   QString thumbnailDir,
                                    QString deviceName,
-                                   bool isHighSpeed )
+                                   bool /*isHighSpeed*/ )
 {
     QDateTime timeVal = QDateTime::fromTime_t(timestamp);
 
     // Find next available ID
     sessionDatabase db;
-    int maxID = db.addClipCapture( name, timestamp, catheterView, deviceName );
+    db.initDb();
+
+    int maxID = db.addClipCapture( name, timestamp, thumbnailDir, deviceName );
+
+    LOG1(maxID)
 
     if ( maxID < 0 ) {
         return -1;
@@ -107,7 +176,7 @@ int clipListModel::addClipCapture( QString name,
     clip->setName( name );
     clip->setTimestamp( timeVal.toString("yyyy-MM-dd HH:mm:ss") ); // use local time in tool tips
     clip->setLength( 0 ); // length is set after the recording is finished
-    clip->setCatheterView( catheterView );
+    clip->setThumbnailDir( thumbnailDir );
     clip->setDeviceName( deviceName );
     itemMap.insert( maxID, clip );
 
@@ -141,6 +210,11 @@ void clipListModel::updateClipInfo( int clipLength_ms )
     endInsertRows();
 }
 
+int clipListModel::countOfClipItems() const
+{
+    return itemMap.size();
+}
+
 /*
  * getLastCaptureId
  */
@@ -156,32 +230,32 @@ int clipListModel::getLastCaptureId( void )
 
 
 
-/*
- * class clipItem implementation
- */
+///*
+// * class clipItem implementation
+// */
 
-/*
- * loadImage()
- *
- * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
- * load it from disk and return a QImage representing it.
- */
-QImage clipItem::loadImage( QString imageFilter )
-{
-    QStringList filters;
-    caseInfo &info = caseInfo::Instance();
-    filters << imageFilter;
-    QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
-    QDir thisDir( dirString );
-    thisDir.setNameFilters( filters );
+///*
+// * loadImage()
+// *
+// * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
+// * load it from disk and return a QImage representing it.
+// */
+//QImage clipItem::loadImage( QString imageFilter )
+//{
+//    QStringList filters;
+//    caseInfo &info = caseInfo::Instance();
+//    filters << imageFilter;
+//    QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
+//    QDir thisDir( dirString );
+//    thisDir.setNameFilters( filters );
     
-    // TBD: we filter to close to the exact name and grab the first thing we find
-    if( thisDir.entryList().empty() )
-    {
-        return QImage();
-    }
-    else
-    {
-        return( QImage( thisDir.absoluteFilePath( thisDir.entryList().first() ) ) );
-    }
-}
+//    // TBD: we filter to close to the exact name and grab the first thing we find
+//    if( thisDir.entryList().empty() )
+//    {
+//        return QImage();
+//    }
+//    else
+//    {
+//        return( QImage( thisDir.absoluteFilePath( thisDir.entryList().first() ) ) );
+//    }
+//}
