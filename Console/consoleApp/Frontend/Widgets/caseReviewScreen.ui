@@ -311,10 +311,10 @@ color: black;</string>
   <widget class="QFrame" name="framePlayer">
    <property name="geometry">
     <rect>
-     <x>1311</x>
-     <y>350</y>
-     <width>1600</width>
-     <height>1600</height>
+     <x>1301</x>
+     <y>340</y>
+     <width>1620</width>
+     <height>1620</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -332,18 +332,25 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>9</x>
-      <y>130</y>
-      <width>1581</width>
-      <height>1341</height>
+      <y>10</y>
+      <width>1601</width>
+      <height>1601</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout"/>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinimumSize</enum>
+     </property>
+    </layout>
    </widget>
    <widget class="QPushButton" name="pushButtonPlay">
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>1510</y>
+      <y>1530</y>
       <width>121</width>
       <height>61</height>
      </rect>
@@ -376,7 +383,7 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>1226</x>
-      <y>1510</y>
+      <y>1530</y>
       <width>178</width>
       <height>55</height>
      </rect>
@@ -401,7 +408,7 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>1404</x>
-      <y>1510</y>
+      <y>1530</y>
       <width>178</width>
       <height>55</height>
      </rect>
@@ -426,7 +433,7 @@ border: 3px solid #F5C400;
     <property name="geometry">
      <rect>
       <x>277</x>
-      <y>1510</y>
+      <y>1530</y>
       <width>178</width>
       <height>55</height>
      </rect>
@@ -447,12 +454,17 @@ border: 3px solid #F5C400;
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <zorder>verticalLayoutWidget</zorder>
+   <zorder>labelDuration</zorder>
+   <zorder>labelLoop</zorder>
+   <zorder>labelTime</zorder>
+   <zorder>pushButtonPlay</zorder>
   </widget>
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
      <x>1765</x>
-     <y>1860</y>
+     <y>1880</y>
      <width>772</width>
      <height>58</height>
     </rect>
@@ -648,6 +660,31 @@ border-radius: 0px;
     </size>
    </property>
   </widget>
+  <zorder>framePlayer</zorder>
+  <zorder>pushButtonDone</zorder>
+  <zorder>pushButtonBack</zorder>
+  <zorder>labelTitle</zorder>
+  <zorder>labelViewTitle</zorder>
+  <zorder>labelPhysicianName</zorder>
+  <zorder>labelPatientID</zorder>
+  <zorder>labelPhysicianNameValue</zorder>
+  <zorder>labelPatientIdValue</zorder>
+  <zorder>labelDateAndTimeValue</zorder>
+  <zorder>labelLoops</zorder>
+  <zorder>pushButtonMeasure</zorder>
+  <zorder>pushButtonAnnotate</zorder>
+  <zorder>pushButtonSaveImage</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>pushButtonRightArrow</zorder>
+  <zorder>pushButtonLeftArrow</zorder>
+  <zorder>pushButtonClipsLeftArrow</zorder>
+  <zorder>clipsView</zorder>
+  <zorder>pushButtonClipsRightArrow</zorder>
+  <zorder>labelDateAndTime</zorder>
+  <zorder>labelImages</zorder>
+  <zorder>captureView</zorder>
+  <zorder>captureScene</zorder>
+  <zorder>horizontalSlider</zorder>
  </widget>
  <customwidgets>
   <customwidget>
