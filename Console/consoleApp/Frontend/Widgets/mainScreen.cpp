@@ -606,6 +606,14 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     }
 }
 
+void MainScreen::on_pushButtonRecord_pressed()
+{
+    LOG1(m_recordingIsOn)
+    if(!m_recordingIsOn){
+        ui->pushButtonRecord->setEnabled(false);
+    }
+}
+
 void MainScreen::on_pushButtonRecord_clicked(bool checked)
 {
     if(checked != m_recordingIsOn){
@@ -787,3 +795,4 @@ void MainScreen::initRecording()
     connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
 
 }
+
