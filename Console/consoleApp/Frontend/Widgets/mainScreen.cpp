@@ -71,6 +71,8 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->pushButton->setEnabled(false);
 }
 
 void MainScreen::setScene(liveScene *scene)
