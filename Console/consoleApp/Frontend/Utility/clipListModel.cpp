@@ -89,6 +89,16 @@ void clipListModel::setSelectedRow(int selectedRow)
 void clipListModel::reset()
 {
 
+    // walk the map and free memory
+    QMapIterator<int, clipItem *> i( itemMap );
+    while( i.hasNext() )
+    {
+        i.next();
+        delete i.value();
+        itemMap.remove( i.key() );
+    }
+    m_selectedRow = -1;
+    setRowOffset(0);
 }
 
 int clipListModel::getRowOffset() const
@@ -106,14 +116,8 @@ void clipListModel::setRowOffset(int rowOffset)
  */
 clipListModel::~clipListModel()
 {
-    // walk the map and free memory
-    QMapIterator<int, clipItem *> i( itemMap );
-    while( i.hasNext() )
-    {
-        i.next();
-        delete i.value();
-        itemMap.remove( i.key() );
-    }
+    reset();
+    LOG1("~")
 }
 
 /*

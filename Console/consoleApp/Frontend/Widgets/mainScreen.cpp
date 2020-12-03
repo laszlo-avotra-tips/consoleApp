@@ -71,6 +71,8 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->pushButton->setEnabled(false);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -221,7 +223,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
 {
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
-        emit on_pushButtonRecord_clicked();
+        emit on_pushButtonRecord_clicked(false);
     }
 
     QTimer::singleShot(1000, [this](){
@@ -242,6 +244,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         ui->frameSpeed->hide();
 
         captureListModel::Instance().reset();
+        clipListModel::Instance().reset();
         LOG1(m_recordingIsOn)
     });
 }
@@ -547,6 +550,8 @@ void MainScreen::on_pushButtonCapture_released()
 {
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    QString blackBorder("border:5px solid rgb(0,0,0);");
+    ui->graphicsView->setStyleSheet(blackBorder);
 
     onCaptureImage();
 
@@ -604,45 +609,89 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     }
 }
 
+void MainScreen::on_pushButtonRecord_pressed()
+{
+//    LOG1(m_recordingIsOn)
+//    if(!m_recordingIsOn){
+//        ui->pushButtonRecord->setEnabled(false);
+//    }
+}
+
+void MainScreen::on_pushButtonRecord_clicked(bool checked)
+{
+    if(checked != m_recordingIsOn){
+        m_recordingIsOn = checked;
+        LOG1(m_recordingIsOn)
+
+        if(m_recordingIsOn){
+            ui->pushButtonRecord->setEnabled(false);
+        }
+
+        if(!m_recordingIsInitialized){
+            m_recordingIsInitialized = true;
+            initRecording();
+        }
+
+        auto* recorder = OctFrameRecorder::instance();
+        recorder->onRecordSector(m_recordingIsOn);
+        if(m_recordingIsOn){
+            int delay = userSettings::Instance().getRecordingDurationMin();
+            const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
+            LOG1(playListThumbnail)
+            QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
+            m_scene->captureClip(playListThumbnail);
+
+            // record the start time
+            auto clipTimestamp = QDateTime::currentDateTime().toUTC();
+            deviceSettings &dev = deviceSettings::Instance();
+            clipListModel &clipList = clipListModel::Instance();
+            clipList.addClipCapture( playListThumbnail,
+                                     clipTimestamp.toTime_t(),
+                                     clipListModel::Instance().getThumbnailDir(),
+                                     dev.current()->getDeviceName(),
+                                     true );
+
+        }
+
+        showYellowBorderForRecordingOn(m_recordingIsOn);
+    }
+}
+
+
 void MainScreen::on_pushButtonRecord_clicked()
 {
-//    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-//    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//    if(!m_recordingIsInitialized){
+//        m_recordingIsInitialized = true;
+//        initRecording();
+//    }
 
-//    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
+//    auto* recorder = OctFrameRecorder::instance();
+//    if(m_recordingIsOn){
+//        m_recordingIsOn = false;
+//        recorder->onRecordSector(m_recordingIsOn);
+//    } else {
+//        m_recordingIsOn = true;
+//        recorder->onRecordSector(m_recordingIsOn);
+//        ui->pushButtonRecord->setEnabled(false);
+//        int delay = userSettings::Instance().getRecordingDurationMin();
+//        const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
+//        LOG1(playListThumbnail)
+//        QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
+//        m_scene->captureClip(playListThumbnail);
 
-    if(!m_recordingIsInitialized){
-        m_recordingIsInitialized = true;
-        initRecording();
-    }
+//        // record the start time
+//        auto clipTimestamp = QDateTime::currentDateTime().toUTC();
+//        deviceSettings &dev = deviceSettings::Instance();
+//        clipListModel &clipList = clipListModel::Instance();
+//        clipList.addClipCapture( playListThumbnail,
+//                                 clipTimestamp.toTime_t(),
+//                                 clipListModel::Instance().getThumbnailDir(),
+//                                 dev.current()->getDeviceName(),
+//                                 true );
 
-    auto* recorder = OctFrameRecorder::instance();
-    if(m_recordingIsOn){
-        m_recordingIsOn = false;
-        recorder->onRecordSector(m_recordingIsOn);
-    } else {
-        m_recordingIsOn = true;
-        recorder->onRecordSector(m_recordingIsOn);
-        ui->pushButtonRecord->setEnabled(false);
-        int delay = userSettings::Instance().getRecordingDurationMin();
-        const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
-        LOG1(playListThumbnail)
-        QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
-        m_scene->captureClip(playListThumbnail);
+//    }
 
-        // record the start time
-        auto clipTimestamp = QDateTime::currentDateTime().toUTC();
-        deviceSettings &dev = deviceSettings::Instance();
-        clipListModel &clipList = clipListModel::Instance();
-        clipList.addClipCapture( playListThumbnail,
-                                 clipTimestamp.toTime_t(),
-                                 clipListModel::Instance().getThumbnailDir(),
-                                 dev.current()->getDeviceName(),
-                                 true );
-
-    }
-
-    showYellowBorderForRecordingOn(m_recordingIsOn);
+//    showYellowBorderForRecordingOn(m_recordingIsOn);
 }
 
 void MainScreen::onCaptureImage()
@@ -741,12 +790,6 @@ void MainScreen::on_pushButton_clicked()
 
 }
 
-void MainScreen::on_pushButtonRecord_clicked(bool checked)
-{
-    m_recordingIsOn = checked;
-    LOG1(m_recordingIsOn)
-}
-
 void MainScreen::initRecording()
 {
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
@@ -755,3 +798,4 @@ void MainScreen::initRecording()
     connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
 
 }
+
