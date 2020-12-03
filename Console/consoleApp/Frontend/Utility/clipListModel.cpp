@@ -233,3 +233,13 @@ int clipListModel::getLastCaptureId( void )
     --i;
     return i.key();
 }
+
+bool clipItem::getIsReady() const
+{
+    return m_isReady;
+}
+
+void clipItem::setIsReady(bool isReady)
+{
+    m_isReady = isReady;
+}

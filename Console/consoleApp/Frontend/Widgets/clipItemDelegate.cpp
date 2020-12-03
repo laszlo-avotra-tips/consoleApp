@@ -48,6 +48,8 @@ void ClipItemDelegate::paint( QPainter *painter,
 
    clipItem * item = itemList.at(rowNum);
 
+   LOG1(item->getIsReady())
+
    if(item){
 
        painter->setPen( QPen( Qt::black, 6 ) );
