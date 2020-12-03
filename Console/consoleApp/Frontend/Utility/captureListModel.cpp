@@ -100,18 +100,10 @@ QVariant captureListModel::data( const QModelIndex &index, int role ) const
     {
         return( QVariant::fromValue( itemMap[ row ] ) );
     }
-//    if( role == Qt::ToolTipRole )
-//    {
-//        QString tipString( QString( "Time: %1\n" ).arg( itemMap[ row ]->getTimestamp() ) );
-//        tipString.append(  QString( "Tag: %1\n" ).arg(  itemMap[ row ]->getTag() ) );
-//        tipString.append(  QString( "Device: %1" ).arg( itemMap[ row ]->getDeviceName() ) );
-//        return( tipString );
-//    }
     else
     {
         return ( QVariant() );
     }
-
 }
 
 captureListModel &captureListModel::Instance()
