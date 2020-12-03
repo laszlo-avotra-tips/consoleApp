@@ -119,12 +119,11 @@ void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
         m_concatenateVideo->execute();
         //record is ready
         clipListModel& clipList = clipListModel::Instance();
-        auto itemList = clipList.getAllItems();
-        if(itemList.size() >= clipList.getLastClipID()){
-            clipItem * item = itemList.at(clipList.getLastClipID());
-            if(item) {
-                item->setIsReady(true);
-            }
+        const auto& itemList = clipList.getAllItems();
+        clipItem * item = itemList.last();
+        if(item) {
+//            item->setIsReady(true);
+            LOG1(item->getIsReady())
         }
     }
     m_recorderIsOn = recorderIsOn;
