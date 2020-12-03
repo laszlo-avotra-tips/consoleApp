@@ -373,7 +373,7 @@ border: 3px solid #F5C400;
      <bool>true</bool>
     </property>
     <property name="checked">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="flat">
      <bool>true</bool>

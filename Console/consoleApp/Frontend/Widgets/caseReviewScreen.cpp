@@ -181,7 +181,8 @@ void CaseReviewScreen::showPlayer(bool isVisible)
             LOG1(url.toString());
             m_player->setUrl(url);
 //            m_player->play();
-            emit ui->pushButtonPlay->clicked();
+            ui->pushButtonPlay->setChecked(true);
+            ui->pushButtonPlay->clicked();
         }
     } else {
         ui->framePlayer->hide();
