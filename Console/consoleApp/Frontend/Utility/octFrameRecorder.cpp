@@ -122,8 +122,7 @@ void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
         const auto& itemList = clipList.getAllItems();
         clipItem * item = itemList.last();
         if(item) {
-//            item->setIsReady(true);
-            LOG1(item->getIsReady())
+            item->setIsReady(true);
         }
     }
     m_recorderIsOn = recorderIsOn;
