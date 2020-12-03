@@ -221,7 +221,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
 {
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
-        emit on_pushButtonRecord_clicked();
+        emit on_pushButtonRecord_clicked(false);
     }
 
     QTimer::singleShot(1000, [this](){
@@ -608,38 +608,40 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked(bool checked)
 {
-    m_recordingIsOn = checked;
-    LOG1(m_recordingIsOn)
+    if(checked != m_recordingIsOn){
+        m_recordingIsOn = checked;
+        LOG1(m_recordingIsOn)
 
-    if(!m_recordingIsInitialized){
-        m_recordingIsInitialized = true;
-        initRecording();
-    }
+        if(!m_recordingIsInitialized){
+            m_recordingIsInitialized = true;
+            initRecording();
+        }
 
-    auto* recorder = OctFrameRecorder::instance();
-    recorder->onRecordSector(m_recordingIsOn);
-    if(m_recordingIsOn){
+        auto* recorder = OctFrameRecorder::instance();
         recorder->onRecordSector(m_recordingIsOn);
-        ui->pushButtonRecord->setEnabled(false);
-        int delay = userSettings::Instance().getRecordingDurationMin();
-        const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
-        LOG1(playListThumbnail)
-        QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
-        m_scene->captureClip(playListThumbnail);
+        if(m_recordingIsOn){
+            recorder->onRecordSector(m_recordingIsOn);
+            ui->pushButtonRecord->setEnabled(false);
+            int delay = userSettings::Instance().getRecordingDurationMin();
+            const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
+            LOG1(playListThumbnail)
+            QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
+            m_scene->captureClip(playListThumbnail);
 
-        // record the start time
-        auto clipTimestamp = QDateTime::currentDateTime().toUTC();
-        deviceSettings &dev = deviceSettings::Instance();
-        clipListModel &clipList = clipListModel::Instance();
-        clipList.addClipCapture( playListThumbnail,
-                                 clipTimestamp.toTime_t(),
-                                 clipListModel::Instance().getThumbnailDir(),
-                                 dev.current()->getDeviceName(),
-                                 true );
+            // record the start time
+            auto clipTimestamp = QDateTime::currentDateTime().toUTC();
+            deviceSettings &dev = deviceSettings::Instance();
+            clipListModel &clipList = clipListModel::Instance();
+            clipList.addClipCapture( playListThumbnail,
+                                     clipTimestamp.toTime_t(),
+                                     clipListModel::Instance().getThumbnailDir(),
+                                     dev.current()->getDeviceName(),
+                                     true );
 
+        }
+
+        showYellowBorderForRecordingOn(m_recordingIsOn);
     }
-
-    showYellowBorderForRecordingOn(m_recordingIsOn);
 }
 
 
