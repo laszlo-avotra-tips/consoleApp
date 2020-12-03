@@ -606,12 +606,10 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     }
 }
 
-void MainScreen::on_pushButtonRecord_clicked()
+void MainScreen::on_pushButtonRecord_clicked(bool checked)
 {
-//    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-//    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-
-//    connect( this, &MainScreen::updateRecorder, OctFrameRecorder::instance(), &OctFrameRecorder::recordData);
+    m_recordingIsOn = checked;
+    LOG1(m_recordingIsOn)
 
     if(!m_recordingIsInitialized){
         m_recordingIsInitialized = true;
@@ -619,11 +617,8 @@ void MainScreen::on_pushButtonRecord_clicked()
     }
 
     auto* recorder = OctFrameRecorder::instance();
+    recorder->onRecordSector(m_recordingIsOn);
     if(m_recordingIsOn){
-        m_recordingIsOn = false;
-        recorder->onRecordSector(m_recordingIsOn);
-    } else {
-        m_recordingIsOn = true;
         recorder->onRecordSector(m_recordingIsOn);
         ui->pushButtonRecord->setEnabled(false);
         int delay = userSettings::Instance().getRecordingDurationMin();
@@ -645,6 +640,43 @@ void MainScreen::on_pushButtonRecord_clicked()
     }
 
     showYellowBorderForRecordingOn(m_recordingIsOn);
+}
+
+
+void MainScreen::on_pushButtonRecord_clicked()
+{
+//    if(!m_recordingIsInitialized){
+//        m_recordingIsInitialized = true;
+//        initRecording();
+//    }
+
+//    auto* recorder = OctFrameRecorder::instance();
+//    if(m_recordingIsOn){
+//        m_recordingIsOn = false;
+//        recorder->onRecordSector(m_recordingIsOn);
+//    } else {
+//        m_recordingIsOn = true;
+//        recorder->onRecordSector(m_recordingIsOn);
+//        ui->pushButtonRecord->setEnabled(false);
+//        int delay = userSettings::Instance().getRecordingDurationMin();
+//        const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
+//        LOG1(playListThumbnail)
+//        QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
+//        m_scene->captureClip(playListThumbnail);
+
+//        // record the start time
+//        auto clipTimestamp = QDateTime::currentDateTime().toUTC();
+//        deviceSettings &dev = deviceSettings::Instance();
+//        clipListModel &clipList = clipListModel::Instance();
+//        clipList.addClipCapture( playListThumbnail,
+//                                 clipTimestamp.toTime_t(),
+//                                 clipListModel::Instance().getThumbnailDir(),
+//                                 dev.current()->getDeviceName(),
+//                                 true );
+
+//    }
+
+//    showYellowBorderForRecordingOn(m_recordingIsOn);
 }
 
 void MainScreen::onCaptureImage()
@@ -741,12 +773,6 @@ void MainScreen::on_pushButton_clicked()
         ui->pushButton->setText("SledOff");
     }
 
-}
-
-void MainScreen::on_pushButtonRecord_clicked(bool checked)
-{
-    m_recordingIsOn = checked;
-    LOG1(m_recordingIsOn)
 }
 
 void MainScreen::initRecording()
