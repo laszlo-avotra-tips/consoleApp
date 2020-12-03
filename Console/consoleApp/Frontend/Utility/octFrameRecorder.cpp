@@ -53,11 +53,6 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
     clipListModel::Instance().setOutDirPath( outDirPath); // Set up the absolute path based on the session data.
     m_concatenateVideo->setOutputPath(outDirPath);
 
-    //record is ready
-    auto itemList = clipList.getAllItems();
-    clipItem * item = itemList.at(loopNumber);
-    item->setIsReady(true);
-
     LOG3(dirName, subDirName, playlistFileName())
 }
 
@@ -122,6 +117,15 @@ void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
 {
     if(m_recorderIsOn && !recorderIsOn){
         m_concatenateVideo->execute();
+        //record is ready
+        clipListModel& clipList = clipListModel::Instance();
+        auto itemList = clipList.getAllItems();
+        if(itemList.size() >= clipList.getLastClipID()){
+            clipItem * item = itemList.at(clipList.getLastClipID());
+            if(item) {
+                item->setIsReady(true);
+            }
+        }
     }
     m_recorderIsOn = recorderIsOn;
 }

@@ -26,6 +26,11 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+int clipListModel::getLastClipID() const
+{
+    return lastClipID;
+}
+
 bool clipListModel::getIsSelected() const
 {
     return m_isSelected;

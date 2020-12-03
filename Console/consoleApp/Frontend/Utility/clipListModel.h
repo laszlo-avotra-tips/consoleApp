@@ -178,6 +178,8 @@ public:
     bool getIsSelected() const;
     void setIsSelected(bool isSelected);
 
+    int getLastClipID() const;
+
 signals:
 
     void warning( QString );
