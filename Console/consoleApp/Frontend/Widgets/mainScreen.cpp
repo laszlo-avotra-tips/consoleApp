@@ -242,6 +242,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         ui->frameSpeed->hide();
 
         captureListModel::Instance().reset();
+        clipListModel::Instance().reset();
         LOG1(m_recordingIsOn)
     });
 }

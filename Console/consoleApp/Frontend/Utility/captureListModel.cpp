@@ -59,6 +59,7 @@ void captureListModel::setSelectedRow(int selectedRow)
 
 void captureListModel::reset()
 {
+    // walk the map and free memory
     QMapIterator<int, captureItem *> i(itemMap);
     while (i.hasNext()) {
         i.next();
@@ -74,7 +75,6 @@ void captureListModel::reset()
  */
 captureListModel::~captureListModel()
 {
-    // walk the map and free memory
     reset();
     LOG1("~")
 }
