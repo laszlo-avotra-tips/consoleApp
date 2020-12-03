@@ -612,6 +612,10 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
         m_recordingIsOn = checked;
         LOG1(m_recordingIsOn)
 
+        if(m_recordingIsOn){
+            ui->pushButtonRecord->setEnabled(false);
+        }
+
         if(!m_recordingIsInitialized){
             m_recordingIsInitialized = true;
             initRecording();
@@ -620,8 +624,6 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
         auto* recorder = OctFrameRecorder::instance();
         recorder->onRecordSector(m_recordingIsOn);
         if(m_recordingIsOn){
-//            recorder->onRecordSector(m_recordingIsOn);
-            ui->pushButtonRecord->setEnabled(false);
             int delay = userSettings::Instance().getRecordingDurationMin();
             const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
             LOG1(playListThumbnail)
