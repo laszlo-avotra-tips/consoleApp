@@ -80,13 +80,14 @@ void VideoPlayer::init()
     QVBoxLayout *layout = m_videoWidgetContainer;
     layout->addWidget(m_videoWidget);
     layout->addWidget(m_errorLabel);
+
     m_videoWidget->autoFillBackground();
     m_mediaPlayer->setVideoOutput(m_videoWidget);
+
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
     connect(m_mediaPlayer, QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
             this, &VideoPlayer::handleError);
-//    openFile();
 
     emit playerInitialized();
 }
@@ -99,26 +100,6 @@ VideoPlayer::~VideoPlayer()
     delete m_errorLabel;
 }
 
-void VideoPlayer::openFile()
-{
-//    bool useFileDialog(false);
-
-//    if(useFileDialog){
-//        QFileDialog fileDialog(this);
-//        fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-//        fileDialog.setWindowTitle(tr("Open Video"));
-//        fileDialog.setDirectory("C:\\Avinger_Data7\\03df5cad-a401-4d99-a42c-0a79019423f4\\fullCase\\"); //fsequence7.ts
-//        if (fileDialog.exec() == QDialog::Accepted)
-//            setUrl(fileDialog.selectedUrls().constFirst());
-//    } else
-    {
-//        const QUrl url(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
-        m_errorLabel->setText(m_url.toString());
-        setWindowFilePath(m_url.isLocalFile() ? m_url.toLocalFile() : QString());
-        m_mediaPlayer->setMedia(m_url);
-    }
-
-}
 
 void VideoPlayer::setUrl(const QUrl &url)
 {

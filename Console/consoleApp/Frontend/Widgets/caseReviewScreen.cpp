@@ -180,8 +180,8 @@ void CaseReviewScreen::showPlayer(bool isVisible)
             const QUrl url(videoFileName);
             LOG1(url.toString());
             m_player->setUrl(url);
-            m_player->play();
-            ui->labelLoop->setText(loopName);
+//            m_player->play();
+            emit ui->pushButtonPlay->clicked();
         }
     } else {
         ui->framePlayer->hide();
