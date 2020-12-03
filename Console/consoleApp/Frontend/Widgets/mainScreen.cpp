@@ -616,10 +616,7 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
         initRecording();
     }
 
-    auto* recorder = OctFrameRecorder::instance();
-    recorder->onRecordSector(m_recordingIsOn);
     if(m_recordingIsOn){
-        recorder->onRecordSector(m_recordingIsOn);
         ui->pushButtonRecord->setEnabled(false);
         int delay = userSettings::Instance().getRecordingDurationMin();
         const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
@@ -638,6 +635,8 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
                                  true );
 
     }
+    auto* recorder = OctFrameRecorder::instance();
+    recorder->onRecordSector(m_recordingIsOn);
 
     showYellowBorderForRecordingOn(m_recordingIsOn);
 }
