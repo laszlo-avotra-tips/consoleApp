@@ -547,6 +547,8 @@ void MainScreen::on_pushButtonCapture_released()
 {
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    QString blackBorder("border:5px solid rgb(0,0,0);");
+    ui->graphicsView->setStyleSheet(blackBorder);
 
     onCaptureImage();
 
