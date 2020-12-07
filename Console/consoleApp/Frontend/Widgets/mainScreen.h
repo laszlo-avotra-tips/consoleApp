@@ -78,6 +78,8 @@ private slots:
     void handleSledRunningState(int runningStateVal);
 
     void onCaptureImage();
+    void grabImage();
+
     void setMeasurementMode(bool enabled);
     void enableRecordButton();
 
@@ -105,6 +107,7 @@ private:
     Ui::MainScreen *ui;
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
+    QImage m_sectorImage;
 
     const std::pair<int,int> m_widthHeight{3,2};
     const int m_sceneWidth{2160};
