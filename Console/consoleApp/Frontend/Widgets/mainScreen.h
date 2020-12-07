@@ -40,7 +40,7 @@ signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
     void sledRunningStateChanged(int isInRunningState);
-    void updateRecorder(uint8_t* dispData);
+    void updateRecorder(uint8_t* dispData, int width, int height);
 
 private slots:
     void on_pushButtonFlip_clicked();
