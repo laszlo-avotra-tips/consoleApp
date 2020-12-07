@@ -18,9 +18,8 @@ OctFrameRecorder *OctFrameRecorder::instance()
 
 void OctFrameRecorder::recordData(uint8_t *dispData, int width, int height)
 {
-    m_width = width;
-    m_height = height;
-    if(dispData && m_recorderIsOn){
+    bool isOk {m_width == width && m_height == height};
+    if(dispData && m_recorderIsOn && isOk){
         if(!playlistFileName().isEmpty() && !clipListModel::Instance().getOutDirPath().isEmpty() && m_screenCapture){
             m_screenCapture->encodeFrame(dispData);
         }

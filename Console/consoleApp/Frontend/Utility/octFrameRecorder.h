@@ -41,8 +41,8 @@ private:
     CapUtils::ScreenCapture* m_screenCapture{nullptr};
     QString m_playlistFileName;
     ConcatenateVideo* m_concatenateVideo{nullptr};
-    int m_width{-1};
-    int m_height{-1};
+    const int m_width{1024};
+    const int m_height{1024};
 
 };
 
