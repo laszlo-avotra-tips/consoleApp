@@ -721,8 +721,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                 if(pixmap){
                     grabImage();
-                    QImage sectorImage( m_sectorImage.convertToFormat( QImage::Format_Mono ) ); // Can't paint on 8-bit
-                    emit updateRecorder(sectorImage.bits());
+                    m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Mono );
+                    //emit updateRecorder(sectorImage.bits());
+                    LOG1(m_grayImage.bitPlaneCount());
+                    LOG1(m_grayImage.format());
+                    LOG2(m_grayImage.height(),m_sectorImage.width());
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
 

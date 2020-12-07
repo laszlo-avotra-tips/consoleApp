@@ -108,6 +108,7 @@ private:
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
     QImage m_sectorImage;
+    QImage m_grayImage;
 
     const std::pair<int,int> m_widthHeight{3,2};
     const int m_sceneWidth{2160};
