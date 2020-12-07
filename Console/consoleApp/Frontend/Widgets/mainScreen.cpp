@@ -721,9 +721,10 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                 if(pixmap){
                     grabImage();
+
+                    emit updateRecorder(m_sectorImage.bits());
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
-                    emit updateRecorder(m_sectorImage.bits());
 
                 }
 //lcv                if(++count % 2 == 0)

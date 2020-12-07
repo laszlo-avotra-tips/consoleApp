@@ -334,10 +334,10 @@ void liveScene::captureDecoratedImage( QImage decoratedImage, QString tagText )
      * then pass of to the capturer to write to
      * disk.
      */
-    QImage secImage;
-    {
-        secImage = sector->freeze();
-    }
+//    QImage secImage;
+//    {
+//        secImage = sector->freeze();
+//    }
 
     depthSetting &ds = depthSetting::Instance();
     int pixelsPerMm = ds.getPixelsPerMm();
