@@ -77,7 +77,6 @@ private slots:
     void updateSledRunningState();
     void handleSledRunningState(int runningStateVal);
 
-    void on_pushButtonRecord_clicked();
     void onCaptureImage();
     void setMeasurementMode(bool enabled);
     void enableRecordButton();

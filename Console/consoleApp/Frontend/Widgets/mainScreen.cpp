@@ -657,43 +657,6 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
     }
 }
 
-
-void MainScreen::on_pushButtonRecord_clicked()
-{
-//    if(!m_recordingIsInitialized){
-//        m_recordingIsInitialized = true;
-//        initRecording();
-//    }
-
-//    auto* recorder = OctFrameRecorder::instance();
-//    if(m_recordingIsOn){
-//        m_recordingIsOn = false;
-//        recorder->onRecordSector(m_recordingIsOn);
-//    } else {
-//        m_recordingIsOn = true;
-//        recorder->onRecordSector(m_recordingIsOn);
-//        ui->pushButtonRecord->setEnabled(false);
-//        int delay = userSettings::Instance().getRecordingDurationMin();
-//        const QString playListThumbnail(clipListModel::Instance().getPlaylistThumbnail());
-//        LOG1(playListThumbnail)
-//        QTimer::singleShot(delay, this, &MainScreen::enableRecordButton);
-//        m_scene->captureClip(playListThumbnail);
-
-//        // record the start time
-//        auto clipTimestamp = QDateTime::currentDateTime().toUTC();
-//        deviceSettings &dev = deviceSettings::Instance();
-//        clipListModel &clipList = clipListModel::Instance();
-//        clipList.addClipCapture( playListThumbnail,
-//                                 clipTimestamp.toTime_t(),
-//                                 clipListModel::Instance().getThumbnailDir(),
-//                                 dev.current()->getDeviceName(),
-//                                 true );
-
-//    }
-
-//    showYellowBorderForRecordingOn(m_recordingIsOn);
-}
-
 void MainScreen::onCaptureImage()
 {
     static int currentImageNumber = 0;
@@ -701,9 +664,9 @@ void MainScreen::onCaptureImage()
     currentImageNumber++;
     QString fileName = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
     LOG1(fileName);
-    QRect rectangle = ui->graphicsView->rect();
-    qDebug() << __FUNCTION__ << ": width=" << rectangle.width() << ", height=" << rectangle.height();
-    QImage p = ui->graphicsView->grab(rectangle).toImage();
+    QRect rectangle = m_graphicsView->rect();
+    LOG2( rectangle.width(),  rectangle.height())
+    QImage p = m_graphicsView->grab(rectangle).toImage();
     m_scene->captureDecoratedImage( p, fileName );
 
 }
