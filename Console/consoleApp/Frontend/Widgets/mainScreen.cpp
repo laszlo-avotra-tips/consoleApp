@@ -706,9 +706,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         QImage* image = m_scene->sectorImage();
 
-        LOG2(image->bitPlaneCount(), image->format());
-        LOG2(image->width(),image->height());
-        LOG2(image->sizeInBytes(), image->bytesPerLine());
+//        LOG2(image->bitPlaneCount(), image->format());
+//        LOG2(image->width(),image->height());
+//        LOG2(image->sizeInBytes(), image->bytesPerLine());
 
 
         frameData->dispData = image->bits();
@@ -720,19 +720,17 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
             if(image && frameData && frameData->dispData){
 
-                emit updateRecorder(frameData->dispData, 1024, 1024);
 
                 sectorItem* pixmap = m_scene->sectorHandle();
 
                 if(pixmap){
                     grabImage();
-                    if(++count % 4 == 0){
+                    if(++count % 8 == 0){
+//                        emit updateRecorder(frameData->dispData, 1024, 1024);
                         m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Indexed8 );
-                        LOG2(m_grayImage.bitPlaneCount(), m_sectorImage.bitPlaneCount());
-                        LOG2(m_grayImage.format(), m_sectorImage.format());
-                        LOG2(m_grayImage.height(),m_grayImage.width());
-                        LOG2(m_grayImage.sizeInBytes(),m_sectorImage.sizeInBytes());
-                        LOG2(m_grayImage.bytesPerLine(),m_sectorImage.bytesPerLine());
+                        LOG2(m_grayImage.bitPlaneCount(), m_grayImage.format());
+                        LOG2(m_grayImage.sizeInBytes(),m_grayImage.bytesPerLine());
+                        emit updateRecorder(m_grayImage.bits(), 2160, 2159);
                     }
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
