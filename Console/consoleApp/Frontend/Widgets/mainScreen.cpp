@@ -719,7 +719,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-                if(pixmap){
+                if(pixmap && ++count % 2 == 0){
                     grabImage();
                     m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Mono );
                     LOG2(m_grayImage.bitPlaneCount(), m_sectorImage.bitPlaneCount());
@@ -730,10 +730,10 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
 //                    emit updateRecorder(m_sectorImage.bits());
+                    m_scene->setDoPaint();
 
                 }
 //lcv                if(++count % 2 == 0)
-                    m_scene->setDoPaint();
             }
         }
     }
