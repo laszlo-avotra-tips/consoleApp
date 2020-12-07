@@ -54,7 +54,7 @@ void captureMachine::imageCapture( QImage decoratedImage, QImage sector, QString
     CaptureItem_t c;
 
     c.decoratedImage = decoratedImage;
-    c.sectorImage    = sector;
+//    c.sectorImage    = sector;
     c.tagText        = tagText;
     c.timestamp      = timestamp;
     c.pixelsPerMm    = pixelsPerMm;
@@ -82,14 +82,14 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
 
-    QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+//    QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     QImage decorImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
-    LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
+//    LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
 
-    auto imageRect = sectorImage.rect();
-    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
+//    auto imageRect = sectorImage.rect();
+//    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Obtain the current timestamp
@@ -111,17 +111,17 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     /*
      * Paint the procedure data to the sector image.
      */
-    QImage plainImage = sectorImage.scaled(scaledRect.width(), scaledRect.height());
-    QPainter painter(&plainImage);
+//    QImage plainImage = sectorImage.scaled(scaledRect.width(), scaledRect.height());
+//    QPainter painter(&plainImage);
 
-    addTimeStamp(painter);
-    addFileName(painter,saveName);
-    addCatheterName(painter);
+//    addTimeStamp(painter);
+//    addFileName(painter,saveName);
+//    addCatheterName(painter);
 
-    //    Upper Right -- Logo
-    painter.drawImage( logoX0, logoY, LogoImage );
+//    //    Upper Right -- Logo
+//    painter.drawImage( logoX0, logoY, LogoImage );
 
-    painter.end();
+//    painter.end();
 
 
     // Store the capture
