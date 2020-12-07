@@ -715,9 +715,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
             if(image && frameData && frameData->dispData){
 
-//                emit updateRecorder(frameData->dispData);
+                emit updateRecorder(frameData->dispData);
 
-                QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+                sectorItem* pixmap = m_scene->sectorHandle();
 
                 if(pixmap && ++count % 2 == 0){
                     grabImage();
