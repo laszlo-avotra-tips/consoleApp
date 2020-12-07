@@ -85,8 +85,6 @@ private slots:
 
     void on_pushButtonRecord_clicked(bool checked);
 
-    void on_pushButtonRecord_pressed();
-
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
 
