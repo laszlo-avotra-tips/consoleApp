@@ -723,9 +723,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                     grabImage();
                     m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Mono );
                     LOG2(m_grayImage.bitPlaneCount(), m_sectorImage.bitPlaneCount());
-                    LOG2(m_grayImage.format(), m_sectorImage.bitPlaneCount());
+                    LOG2(m_grayImage.format(), m_sectorImage.format());
                     LOG2(m_grayImage.height(),m_sectorImage.width());
-                    LOG2(m_grayImage.byteCount(),m_sectorImage.byteCount());
+                    LOG2(m_grayImage.sizeInBytes(),m_sectorImage.sizeInBytes());
                     LOG2(m_grayImage.bytesPerLine(),m_sectorImage.bytesPerLine());
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
