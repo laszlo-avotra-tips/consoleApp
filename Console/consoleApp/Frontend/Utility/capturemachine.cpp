@@ -88,8 +88,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
 //    LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
 
-//    auto imageRect = sectorImage.rect();
-//    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
+    auto imageRect = decorImage.rect();
+    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Obtain the current timestamp
@@ -111,7 +111,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     /*
      * Paint the procedure data to the sector image.
      */
-//    QImage plainImage = sectorImage.scaled(scaledRect.width(), scaledRect.height());
+    QImage plainImage = decorImage.scaled(scaledRect.width(), scaledRect.height());
 //    QPainter painter(&plainImage);
 
 //    addTimeStamp(painter);
