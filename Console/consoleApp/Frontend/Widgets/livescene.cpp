@@ -334,7 +334,7 @@ void liveScene::captureDecoratedImage( QImage decoratedImage, QString tagText )
      * then pass of to the capturer to write to
      * disk.
      */
-//    QImage secImage;
+    QImage secImage;
 //    {
 //        secImage = sector->freeze();
 //    }
