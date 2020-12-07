@@ -706,6 +706,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         QImage* image = m_scene->sectorImage();
 
+        LOG2(image->bitPlaneCount(), image->format());
+        LOG2(image->width(),image->height());
+        LOG2(image->sizeInBytes(), image->bytesPerLine());
+
+
         frameData->dispData = image->bits();
         auto bufferLength = sm->getBufferLength();
 
@@ -719,10 +724,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                 sectorItem* pixmap = m_scene->sectorHandle();
 
-                if(pixmap && ++count % 2 == 0){
+                if(pixmap){
                     grabImage();
-                    m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Mono );
-                    LOG1(bufferLength);
+                    m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Indexed8 );
                     LOG2(m_grayImage.bitPlaneCount(), m_sectorImage.bitPlaneCount());
                     LOG2(m_grayImage.format(), m_sectorImage.format());
                     LOG2(m_grayImage.height(),m_sectorImage.width());
