@@ -722,12 +722,14 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 if(pixmap){
                     grabImage();
                     m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Mono );
-                    //emit updateRecorder(sectorImage.bits());
-                    LOG1(m_grayImage.bitPlaneCount());
-                    LOG1(m_grayImage.format());
+                    LOG2(m_grayImage.bitPlaneCount(), m_sectorImage.bitPlaneCount());
+                    LOG2(m_grayImage.format(), m_sectorImage.bitPlaneCount());
                     LOG2(m_grayImage.height(),m_sectorImage.width());
+                    LOG2(m_grayImage.byteCount(),m_sectorImage.byteCount());
+                    LOG2(m_grayImage.bytesPerLine(),m_sectorImage.bytesPerLine());
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
+//                    emit updateRecorder(m_sectorImage.bits());
 
                 }
 //lcv                if(++count % 2 == 0)

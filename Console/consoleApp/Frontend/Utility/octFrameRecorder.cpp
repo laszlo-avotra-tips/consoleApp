@@ -86,7 +86,7 @@ bool OctFrameRecorder::start()
         const std::string directoryName {clipListModel::Instance().getOutDirPath().toStdString()};
         const std::string fileName {playlistFileName().toStdString()};
         LOG2(directoryName.c_str(),fileName.c_str())
-        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str());
+        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str(), 2159, 2159);
         LOG1(success)
         if(success){
 //            QThread::msleep(500);
