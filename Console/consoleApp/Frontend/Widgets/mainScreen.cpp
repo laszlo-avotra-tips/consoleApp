@@ -655,7 +655,7 @@ void MainScreen::onCaptureImage()
     // tag the images as "IMG1, IMG2, ..."
     currentImageNumber++;
     QString fileName = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
-    grabImage();
+//    grabImage();
     m_scene->captureDecoratedImage(m_sectorImage, fileName);
 }
 
@@ -720,10 +720,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
                 if(pixmap){
+                    grabImage();
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
-//                    m_graphicsView->
-                    grabImage();
                 }
 //lcv                if(++count % 2 == 0)
                     m_scene->setDoPaint();
