@@ -722,6 +722,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 if(pixmap && ++count % 2 == 0){
                     grabImage();
                     m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Mono );
+                    LOG1(bufferLength);
                     LOG2(m_grayImage.bitPlaneCount(), m_sectorImage.bitPlaneCount());
                     LOG2(m_grayImage.format(), m_sectorImage.format());
                     LOG2(m_grayImage.height(),m_sectorImage.width());
