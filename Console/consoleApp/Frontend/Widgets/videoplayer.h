@@ -81,7 +81,6 @@ signals:
     void playerInitialized();
 
 public slots:
-    void openFile();
     void play();
     void setPosition(int position);
 

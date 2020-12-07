@@ -90,13 +90,18 @@ public:
         return QString("%1/thumb_clip-%2.png").arg(dir).arg(name);
     }
 
+
+    bool getIsReady() const;
+    void setIsReady(bool isReady);
+
 private:
-//    QImage loadImage(QString);
+    //    QImage loadImage(QString);
 
     QString deviceName;
     QString tag;
     QString timestamp;
     QString name;
+    bool m_isReady{false};
 
     int dbKey;
     int clipLength_s;
@@ -172,6 +177,8 @@ public:
 
     bool getIsSelected() const;
     void setIsSelected(bool isSelected);
+
+    int getLastClipID() const;
 
 signals:
 

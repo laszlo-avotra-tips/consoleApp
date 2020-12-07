@@ -42,7 +42,6 @@ void CaptureItemDelegate::paint( QPainter *painter,
 {
    painter->save();
    painter->setFont( QFont( "DinPRO-regular", 12 ) );
-//   captureItem * item = index.model()->data( index, Qt::DisplayRole ).value<captureItem *>();
 
    const captureListModel& capList = captureListModel::Instance();
    const int rowNum = index.row() + capList.getRowOffset();

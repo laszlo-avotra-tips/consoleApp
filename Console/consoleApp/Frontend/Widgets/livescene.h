@@ -108,39 +108,9 @@ public slots:
     
     void showReview(const QImage &);
 
-    void clearImages( void )
-    {
-        sector->clearImage();
-        doPaint = true;
-        refresh();
-    }
-
-    void resetSector( void )
-    {
-        sector->reset();
-    }
-
     void dismissReviewImages( void );
     void handleDisableMouseRotateSector() { mouseRotationEnabled = false; }
     void handleEnableMouseRotateSector() { mouseRotationEnabled = true; }
-
-
-    void stopPlayback()
-    {
-//        clipPlayer->pause();
-//        clipPlayer->hide();
-    }
-
-    void restartLoop()
-    {
-//        clipPlayer->seek( 0 );
-//        clipPlayer->play();
-    }
-
-    void clearSector()
-    {
-        sector->clearImage();
-    }
 	
 	void setDoPaint()
 	{

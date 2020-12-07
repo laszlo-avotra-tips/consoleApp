@@ -100,21 +100,12 @@ void CaseReviewScreen::initPlayer()
     m_player->setVideoWidgetContainer(ui->verticalLayout);
     m_player->init();
 
-//    //file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4
-//    const QUrl url0(R"(file:///C:/Avinger_Data/7e71b349-a6ae-4c94-8d14-a1c9fe95d201/fullCase/fsequence3.ts)");
-//    const QUrl url(R"(file:///C:/Avinger_Data/63fc13fa-ca7c-4eb3-a91f-685a088fe73c/clips/LOOP1/LOOP1.mp4)");
-//    LOG1(url0.toString())
-//    LOG1(url.toString())
-//    m_player->setUrl(url);
-
     auto* slider = ui->horizontalSlider;
     connect(slider, &QAbstractSlider::sliderMoved, m_player, &VideoPlayer::setPosition);
     connect(m_player, &VideoPlayer::updatePosition, this, &CaseReviewScreen::setSliderPosition);
     connect(m_player, &VideoPlayer::updateDuration, this, &CaseReviewScreen::setSliderRange);
 
     connect(ui->pushButtonPlay, &QAbstractButton::clicked, m_player, &VideoPlayer::play);
-
-//    showPlayer(false);
 }
 
 /*
@@ -139,8 +130,6 @@ void CaseReviewScreen::initCapture()
 
     //scroll
     connect(this, &CaseReviewScreen::displayOffsetChanged, crDelegate, &CaptureItemDelegate::handleDisplayOffset);
-//    showCapture(false);
-
 }
 
 void CaseReviewScreen::initClips()
@@ -160,8 +149,7 @@ void CaseReviewScreen::initClips()
     connect( &clipList, &clipListModel::rowsInserted, ui->clipsView, &clipListView::updateView );
 
     //scroll
-    connect(this, &CaseReviewScreen::displayOffsetChanged, clipItemDelegate, &ClipItemDelegate::handleDisplayOffset);
-//    showClip(false);
+    connect(this, &CaseReviewScreen::displayOffsetChanged, clipItemDelegate, &ClipItemDelegate::handleDisplayOffset);//    showClip(false);
 }
 
 void CaseReviewScreen::showPlayer(bool isVisible)
@@ -180,8 +168,8 @@ void CaseReviewScreen::showPlayer(bool isVisible)
             const QUrl url(videoFileName);
             LOG1(url.toString());
             m_player->setUrl(url);
-            m_player->play();
-            ui->labelLoop->setText(loopName);
+            ui->pushButtonPlay->setChecked(true);
+            ui->pushButtonPlay->clicked();
         }
     } else {
         ui->framePlayer->hide();
@@ -225,15 +213,9 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     showClip(false);
     showPlayer(false);
 
-    auto& model = captureListModel::Instance();
+    QGraphicsScene *scene = new QGraphicsScene();
 
-//    if(model.getSelectedRow() <= 0)
-    {
-
-        QGraphicsScene *scene = new QGraphicsScene();
-
-        ui->captureScene->setScene(scene);
-    }
+    ui->captureScene->setScene(scene);
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()
@@ -296,8 +278,6 @@ void CaseReviewScreen::updateSliderLabels()
  */
 void CaseReviewScreen::captureSelected( QModelIndex index )
 {
-//    m_selectedCaptureItem = index.data( Qt::DisplayRole ).value<captureItem *>();
-
     captureListModel& capList = captureListModel::Instance();
     const int rowNum = index.row() + capList.getRowOffset();
 
@@ -354,17 +334,6 @@ void CaseReviewScreen::clipSelected(QModelIndex index)
 
         const auto& loopName{m_selectedClipItem->getName()};
         LOG1(loopName)
-//        QImage image = m_selectedCaptureItem->loadDecoratedImage(loopName).scaledToWidth(1600);
-
-//        LOG2(image.size().width(), image.size().height())
-
-//        QGraphicsScene *scene = new QGraphicsScene();
-
-//        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-
-//        scene->addItem(item);
-
-//        ui->captureScene->setScene(scene);
     }
 }
 

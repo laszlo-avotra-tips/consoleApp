@@ -48,7 +48,10 @@ void ClipItemDelegate::paint( QPainter *painter,
 
    clipItem * item = itemList.at(rowNum);
 
-   if(item){
+   LOG1(item->getIsReady())
+
+
+   if(item && item->getIsReady()){
 
        painter->setPen( QPen( Qt::black, 6 ) );
        QRect baseRect( option.rect.x() + 4,

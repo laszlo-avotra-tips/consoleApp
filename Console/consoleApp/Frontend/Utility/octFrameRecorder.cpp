@@ -36,13 +36,15 @@ void OctFrameRecorder::updateOutputFileName(int loopNumber)
     // tag the images as "LOOP1, LOOP2, ..."
     const QString playListThumbnail(QString("LOOP%1").arg(loopNumber));
 
-    clipListModel::Instance().setPlaylistThumbnail( playListThumbnail);
+    auto& clipList = clipListModel::Instance();
+
+    clipList.setPlaylistThumbnail( playListThumbnail);
     setPlaylistFileName( clipListModel::Instance().getPlaylistThumbnail() + QString( ".m3u8" ));
     m_concatenateVideo->setOutputLoopFile(playListThumbnail + QString(".mp4"));
 
     caseInfo &info = caseInfo::Instance();
     QString dirName = info.getStorageDir() + "/clips";
-    clipListModel::Instance().setThumbnailDir(dirName);
+    clipList.setThumbnailDir(dirName);
     QDir thisDir(dirName);
     QString subDirName = playListThumbnail;
     thisDir.mkdir(subDirName);
@@ -115,6 +117,13 @@ void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
 {
     if(m_recorderIsOn && !recorderIsOn){
         m_concatenateVideo->execute();
+        //record is ready
+        clipListModel& clipList = clipListModel::Instance();
+        const auto& itemList = clipList.getAllItems();
+        clipItem * item = itemList.last();
+        if(item) {
+            item->setIsReady(true);
+        }
     }
     m_recorderIsOn = recorderIsOn;
 }

@@ -26,6 +26,11 @@ clipListModel::clipListModel(void)
     lastClipID = -1;
 }
 
+int clipListModel::getLastClipID() const
+{
+    return lastClipID;
+}
+
 bool clipListModel::getIsSelected() const
 {
     return m_isSelected;
@@ -139,15 +144,7 @@ QVariant clipListModel::data(const QModelIndex &index, int role) const
     if ( role == Qt::DisplayRole ) {
         return(QVariant::fromValue(itemMap[row]));
     }
-//    if ( role == Qt::ToolTipRole ) {
-//        QString tipString( QString( "Time: %1\n" ).arg( itemMap[row]->getTimestamp() ) );
-//        tipString.append( QString( "Tag: %1\n" ).arg( itemMap[row]->getTag() ) );
-//        tipString.append( QString( "Length: %1 s\n" ).arg( itemMap[ row ]->getLength() ) );
-//        tipString.append( QString( "Device: %1" ).arg( itemMap[row]->getDeviceName() ) );
-//        return( tipString );
-//    }
     else return ( QVariant() );
-
 }
 
 
@@ -242,34 +239,12 @@ int clipListModel::getLastCaptureId( void )
     return i.key();
 }
 
+bool clipItem::getIsReady() const
+{
+    return m_isReady;
+}
 
-
-///*
-// * class clipItem implementation
-// */
-
-///*
-// * loadImage()
-// *
-// * Give a type of image to load (specified in image filter as waterfall, sector, etc.)
-// * load it from disk and return a QImage representing it.
-// */
-//QImage clipItem::loadImage( QString imageFilter )
-//{
-//    QStringList filters;
-//    caseInfo &info = caseInfo::Instance();
-//    filters << imageFilter;
-//    QString dirString = info.getStorageDir() + "/clips/"; // Set up the absolute path based on the session data.
-//    QDir thisDir( dirString );
-//    thisDir.setNameFilters( filters );
-    
-//    // TBD: we filter to close to the exact name and grab the first thing we find
-//    if( thisDir.entryList().empty() )
-//    {
-//        return QImage();
-//    }
-//    else
-//    {
-//        return( QImage( thisDir.absoluteFilePath( thisDir.entryList().first() ) ) );
-//    }
-//}
+void clipItem::setIsReady(bool isReady)
+{
+    m_isReady = isReady;
+}

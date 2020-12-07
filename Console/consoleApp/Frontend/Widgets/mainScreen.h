@@ -77,7 +77,6 @@ private slots:
     void updateSledRunningState();
     void handleSledRunningState(int runningStateVal);
 
-    void on_pushButtonRecord_clicked();
     void onCaptureImage();
     void setMeasurementMode(bool enabled);
     void enableRecordButton();
@@ -85,8 +84,6 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButtonRecord_clicked(bool checked);
-
-    void on_pushButtonRecord_pressed();
 
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
