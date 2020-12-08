@@ -261,9 +261,12 @@ void MainScreen::on_pushButtonCondensUp_clicked()
 
 void MainScreen::handleYellowBorder()
 {
-    if(m_recordingIsOn){
-        ui->graphicsView->setStyleSheet("border:1px solid rgb(245,196,0);");
-    } else {
+//    if(m_recordingIsOn)
+//    {
+//        ui->graphicsView->setStyleSheet("border:1px solid rgb(245,196,0);");
+//    }
+//    else
+    {
         ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
     }
 }
