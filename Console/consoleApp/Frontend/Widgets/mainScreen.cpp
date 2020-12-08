@@ -729,7 +729,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 sectorItem* pixmap = m_scene->sectorHandle();
 
                 if(pixmap){
-                    if(++count % 6 == 0){
+                    if(++count % 2 == 0){
                         grabImage();
 //                        emit updateRecorder(frameData->dispData, 1024, 1024);
                         m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Indexed8 );
