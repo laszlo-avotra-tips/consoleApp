@@ -422,10 +422,12 @@ void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
 {
     m_recordingIsOn = recordingIsOn;
     LOG1(m_recordingIsOn)
-    if(m_recordingIsOn){
-        QString yellowBorder("border:1px solid rgb(245,196,0);");
-        ui->graphicsView->setStyleSheet(yellowBorder);
-    } else {
+//    if(m_recordingIsOn){
+//        QString yellowBorder("border:1px solid rgb(245,196,0);");
+//        ui->graphicsView->setStyleSheet(yellowBorder);
+//    }
+    else
+    {
         QString noBorder("border:0px solid rgb(0,0,0);");
         ui->graphicsView->setStyleSheet(noBorder);
     }
