@@ -22,6 +22,8 @@ DisplayOptionsDialog::DisplayOptionsDialog(QWidget *parent) :
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
 
+    move(0,0);
+
 }
 
 void DisplayOptionsDialog::setScene(liveScene *scene)
