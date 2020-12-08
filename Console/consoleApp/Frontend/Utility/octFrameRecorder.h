@@ -42,7 +42,7 @@ private:
     QString m_playlistFileName;
     ConcatenateVideo* m_concatenateVideo{nullptr};
     const int m_width{2160};
-    const int m_height{2159};
+    const int m_height{2160};
 
 };
 
