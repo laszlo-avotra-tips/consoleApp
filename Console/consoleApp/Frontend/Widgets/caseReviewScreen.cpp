@@ -226,8 +226,8 @@ void CaseReviewScreen::on_pushButtonBack_clicked()
 void CaseReviewScreen::setSliderPosition(quint64 position)
 {
     m_position = position;
-     ui->horizontalSlider->setValue(position);
-     updateSliderLabels();
+    ui->horizontalSlider->setValue(position);
+    updateSliderLabels();
 }
 
 void CaseReviewScreen::setSliderRange(quint64 range)
@@ -268,6 +268,8 @@ void CaseReviewScreen::updateSliderLabels()
 
     const QString& time = QString("%1:%2").arg(timeMinutes,2,10,QLatin1Char('0')).arg(timeSeconds,2,10,QLatin1Char('0'));
     ui->labelTime->setText(time);
+
+    ui->pushButtonPlay->setEnabled(m_player->isPlaying());
 }
 
 /*
