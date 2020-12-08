@@ -729,8 +729,8 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 sectorItem* pixmap = m_scene->sectorHandle();
 
                 if(pixmap){
-                    grabImage();
                     if(++count % 8 == 0){
+                        grabImage();
 //                        emit updateRecorder(frameData->dispData, 1024, 1024);
                         m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Indexed8 );
 //                        LOG2(m_grayImage.bitPlaneCount(), m_grayImage.format());
