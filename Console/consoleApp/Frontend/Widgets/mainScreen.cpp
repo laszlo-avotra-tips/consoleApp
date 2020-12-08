@@ -728,8 +728,8 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                     if(++count % 8 == 0){
 //                        emit updateRecorder(frameData->dispData, 1024, 1024);
                         m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Indexed8 );
-                        LOG2(m_grayImage.bitPlaneCount(), m_grayImage.format());
-                        LOG2(m_grayImage.sizeInBytes(),m_grayImage.bytesPerLine());
+//                        LOG2(m_grayImage.bitPlaneCount(), m_grayImage.format());
+//                        LOG2(m_grayImage.sizeInBytes(),m_grayImage.bytesPerLine());
                         emit updateRecorder(m_grayImage.bits(), 2159, 2159);
                     }
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
