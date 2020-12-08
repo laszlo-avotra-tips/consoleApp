@@ -29,7 +29,7 @@ public:
 signals:
 
 public slots:
-    void recordData(uint8_t *frame);
+    void recordData(uint8_t *frame, int width, int height);
 
 private:
     explicit OctFrameRecorder(QObject *parent = nullptr);
@@ -41,6 +41,8 @@ private:
     CapUtils::ScreenCapture* m_screenCapture{nullptr};
     QString m_playlistFileName;
     ConcatenateVideo* m_concatenateVideo{nullptr};
+    const int m_width{1024};
+    const int m_height{1024};
 
 };
 

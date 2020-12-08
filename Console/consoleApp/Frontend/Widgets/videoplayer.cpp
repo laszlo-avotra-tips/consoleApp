@@ -92,6 +92,11 @@ void VideoPlayer::init()
     emit playerInitialized();
 }
 
+bool VideoPlayer::isPlaying() const
+{
+    return m_mediaPlayer->state() == QMediaPlayer::PlayingState;
+}
+
 VideoPlayer::~VideoPlayer()
 {
     LOG1("~VideoPlayer");

@@ -40,7 +40,7 @@ signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
     void sledRunningStateChanged(int isInRunningState);
-    void updateRecorder(uint8_t* dispData);
+    void updateRecorder(uint8_t* dispData, int width, int height);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -78,6 +78,8 @@ private slots:
     void handleSledRunningState(int runningStateVal);
 
     void onCaptureImage();
+    void grabImage();
+
     void setMeasurementMode(bool enabled);
     void enableRecordButton();
 
@@ -105,6 +107,8 @@ private:
     Ui::MainScreen *ui;
     QGraphicsView* m_graphicsView{nullptr};
     liveScene* m_scene{nullptr};
+    QImage m_sectorImage;
+    QImage m_grayImage;
 
     const std::pair<int,int> m_widthHeight{3,2};
     const int m_sceneWidth{2160};

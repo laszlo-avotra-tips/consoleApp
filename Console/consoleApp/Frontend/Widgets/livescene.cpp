@@ -335,9 +335,9 @@ void liveScene::captureDecoratedImage( QImage decoratedImage, QString tagText )
      * disk.
      */
     QImage secImage;
-    {
-        secImage = sector->freeze();
-    }
+//    {
+//        secImage = sector->freeze();
+//    }
 
     depthSetting &ds = depthSetting::Instance();
     int pixelsPerMm = ds.getPixelsPerMm();

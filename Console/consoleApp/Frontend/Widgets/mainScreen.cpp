@@ -655,12 +655,15 @@ void MainScreen::onCaptureImage()
     // tag the images as "IMG1, IMG2, ..."
     currentImageNumber++;
     QString fileName = QString( "%1%2" ).arg( ImagePrefix ).arg( currentImageNumber);
-    LOG1(fileName);
-    QRect rectangle = m_graphicsView->rect();
-    LOG2( rectangle.width(),  rectangle.height())
-    QImage p = m_graphicsView->grab(rectangle).toImage();
-    m_scene->captureDecoratedImage( p, fileName );
+    grabImage();
+    m_scene->captureDecoratedImage(m_sectorImage, fileName);
+}
 
+void MainScreen::grabImage()
+{
+    QRect rectangle = m_graphicsView->rect();
+//    LOG2( rectangle.width(),  rectangle.height())
+    m_sectorImage = m_graphicsView->grab(rectangle).toImage();
 }
 
 void MainScreen::setMeasurementMode(bool enable)
@@ -703,6 +706,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         QImage* image = m_scene->sectorImage();
 
+//        LOG2(image->bitPlaneCount(), image->format());
+//        LOG2(image->width(),image->height());
+//        LOG2(image->sizeInBytes(), image->bytesPerLine());
+
+
         frameData->dispData = image->bits();
         auto bufferLength = sm->getBufferLength();
 
@@ -712,7 +720,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
             if(image && frameData && frameData->dispData){
 
-                emit updateRecorder(frameData->dispData);
+                emit updateRecorder(frameData->dispData,1024,1024);
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 

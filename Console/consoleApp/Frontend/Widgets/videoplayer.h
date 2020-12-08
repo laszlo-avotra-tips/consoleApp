@@ -74,6 +74,7 @@ public:
 
     void setVideoWidgetContainer(QVBoxLayout *videoWidgetContainer);
     void init();
+    bool isPlaying() const;
 
 signals:
     void updatePosition(qint64 pos);
