@@ -662,7 +662,7 @@ void MainScreen::onCaptureImage()
 void MainScreen::grabImage()
 {
     QRect rectangle = m_graphicsView->rect();
-    LOG2( rectangle.width(),  rectangle.height())
+//    LOG2( rectangle.width(),  rectangle.height())
     m_sectorImage = m_graphicsView->grab(rectangle).toImage();
 }
 
@@ -730,7 +730,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                         m_grayImage = m_sectorImage.convertToFormat( QImage::Format_Indexed8 );
                         LOG2(m_grayImage.bitPlaneCount(), m_grayImage.format());
                         LOG2(m_grayImage.sizeInBytes(),m_grayImage.bytesPerLine());
-                        emit updateRecorder(m_grayImage.bits(), 2160, 2159);
+                        emit updateRecorder(m_grayImage.bits(), 2159, 2159);
                     }
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
