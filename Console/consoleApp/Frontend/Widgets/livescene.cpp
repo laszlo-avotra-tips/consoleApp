@@ -571,6 +571,8 @@ void liveScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsScene::mouseReleaseEvent(event);
 
         emit sendDisplayAngle( float(sector->getDisplayAngle()) );
+
+        LOG1(sector->getDisplayAngle())
     }
     else if( isAnnotateMode )
     {
