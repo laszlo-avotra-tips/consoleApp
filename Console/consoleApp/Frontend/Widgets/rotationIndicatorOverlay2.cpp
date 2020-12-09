@@ -65,29 +65,29 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
     const int x1 = 512;
     const int y1 = 512;
 
-//    trigLookupTable &quickTrig = trigLookupTable::Instance();
-//    const double degToRad(3.1415/180.0);
+    trigLookupTable &quickTrig = trigLookupTable::Instance();
+    const double degToRad(3.1415/180.0);
 
-//    double currentAngle_deg{0.0};
-//    auto currentAlineLength_px = devSettings.current()->getALineLength_px();
-//    catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
+    double currentAngle_deg{0.0};
+    auto currentAlineLength_px = devSettings.current()->getALineLength_px();
+    int catheterRadius_px     = devSettings.current()->getCatheterRadius_px();
 
-//    // Draw the laser reference line for low speed devices
-//    if( devSettings.current()->isBiDirectional() )
-//    {
-//        double tmpAngle_rad = degToRad * currentAngle_deg;
-//        LOG1(tmpAngle_rad)
+    // Draw the laser reference line for low speed devices
+    if( devSettings.current()->isBiDirectional() )
+    {
+        double tmpAngle_rad = degToRad * currentAngle_deg;
+        LOG1(tmpAngle_rad)
 
-//        float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
-//        float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
+        float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
+        float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
 
-//        // calculate the endpoint of the marker line
-//        int x = x1 + floor_int( ( cosTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
-//        int y = y1 + floor_int( ( sinTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
+        // calculate the endpoint of the marker line
+        int x = x1 + floor_int( ( cosTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
+        int y = y1 + floor_int( ( sinTheta * (double)( currentAlineLength_px + catheterRadius_px ) + 0.5 ) );
 
-//        // Draw the reference line
-//        painter->drawLine( x1, y1, x, y );
-//    }
+        // Draw the reference line
+        painter->drawLine( x1, y1, x, y );
+    }
 
     QPen directionPen = QPen( QColor( 0, 0, 0 ), 6, Qt::SolidLine, Qt::RoundCap );
 
