@@ -76,7 +76,7 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
 //    if( devSettings.current()->isBiDirectional() )
     {
         double tmpAngle_rad = degToRad * currentAngle_deg;
-        LOG1(tmpAngle_rad)
+//        LOG1(tmpAngle_rad)
 
         float cosTheta = quickTrig.lookupCos( (double)tmpAngle_rad );
         float sinTheta = quickTrig.lookupSin( (double)tmpAngle_rad );
