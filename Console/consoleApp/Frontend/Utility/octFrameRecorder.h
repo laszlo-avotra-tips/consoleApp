@@ -30,6 +30,7 @@ signals:
 
 public slots:
     void recordData(uint8_t *frame, int width, int height);
+    void handleExecutionDone(int exitCode, QString msg);
 
 private:
     explicit OctFrameRecorder(QObject *parent = nullptr);

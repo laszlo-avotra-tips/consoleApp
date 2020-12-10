@@ -30,6 +30,8 @@ OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 {
     m_screenCapture = new CapUtils::ScreenCapture();
     m_concatenateVideo = ConcatenateVideo::instance();
+
+    connect(m_concatenateVideo, &ConcatenateVideo::executionDone, this, )
 }
 
 void OctFrameRecorder::updateOutputFileName(int loopNumber)
@@ -114,10 +116,9 @@ bool OctFrameRecorder::recorderIsOn() const
     return m_recorderIsOn;
 }
 
-void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
+void OctFrameRecorder::handleExecutionDone(int exitCode, QString msg)
 {
-    if(m_recorderIsOn && !recorderIsOn){
-        m_concatenateVideo->execute();
+    if(exitCode == 0){
         //record is ready
         clipListModel& clipList = clipListModel::Instance();
         const auto& itemList = clipList.getAllItems();
@@ -125,6 +126,22 @@ void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
         if(item) {
             item->setIsReady(true);
         }
+    } else {
+        LOG1(msg)
+    }
+}
+
+void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
+{
+    if(m_recorderIsOn && !recorderIsOn){
+        m_concatenateVideo->execute();
+//        //record is ready
+//        clipListModel& clipList = clipListModel::Instance();
+//        const auto& itemList = clipList.getAllItems();
+//        clipItem * item = itemList.last();
+//        if(item) {
+//            item->setIsReady(true);
+//        }
     }
     m_recorderIsOn = recorderIsOn;
 }

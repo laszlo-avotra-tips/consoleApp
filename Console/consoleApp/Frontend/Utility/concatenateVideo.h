@@ -24,13 +24,15 @@ public:
 
     void execute();
 
+signals:
+    void executionDone(int exitCode, QString msg);
+
 private slots:
     void programFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
     explicit ConcatenateVideo(QObject *parent = nullptr);
 
-signals:
 
 private:
     static ConcatenateVideo* m_instance;

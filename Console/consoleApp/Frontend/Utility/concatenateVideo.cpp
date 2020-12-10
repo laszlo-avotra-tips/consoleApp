@@ -61,6 +61,8 @@ void ConcatenateVideo::programFinished(int exitCode, QProcess::ExitStatus exitSt
         message = QString::number(int(exitStatus));
     }
 
+    emit executionDone(exitCode, message);
+
     LOG2(exitCode, message)
 }
 
