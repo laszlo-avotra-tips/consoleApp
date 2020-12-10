@@ -124,7 +124,9 @@ void OctFrameRecorder::handleExecutionDone(int exitCode, QString msg)
         const auto& itemList = clipList.getAllItems();
         clipItem * item = itemList.last();
         if(item) {
+            LOG1(item->getIsReady())
             item->setIsReady(true);
+            LOG1(item->getIsReady())
         }
     } else {
         LOG1(msg)
@@ -134,6 +136,7 @@ void OctFrameRecorder::handleExecutionDone(int exitCode, QString msg)
 void OctFrameRecorder::setRecorderIsOn(bool recorderIsOn)
 {
     if(m_recorderIsOn && !recorderIsOn){
+        LOG2(m_recorderIsOn, recorderIsOn)
         m_concatenateVideo->execute();
 //        //record is ready
 //        clipListModel& clipList = clipListModel::Instance();
