@@ -31,7 +31,7 @@ OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
     m_screenCapture = new CapUtils::ScreenCapture();
     m_concatenateVideo = ConcatenateVideo::instance();
 
-    connect(m_concatenateVideo, &ConcatenateVideo::executionDone, this, )
+    connect(m_concatenateVideo, &ConcatenateVideo::executionDone, this, &OctFrameRecorder::handleExecutionDone);
 }
 
 void OctFrameRecorder::updateOutputFileName(int loopNumber)
