@@ -44,7 +44,6 @@ signals:
     void fpsCount( int );
     void linesPerFrameCount( int );
     void missedImagesCount( int );
-//    void setDisplayAngle( float, int );
 
 public slots:
     void setLaserDivider();
