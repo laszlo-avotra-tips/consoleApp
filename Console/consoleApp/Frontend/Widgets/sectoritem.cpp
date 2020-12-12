@@ -246,8 +246,8 @@ void sectorItem::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
         {
             newRotation_deg = int(newRotation_deg) % 360;
         }
-
-        rotateSector( newRotation_deg );
+        LOG1(newRotation_deg);
+//        rotateSector( newRotation_deg );
     }
 }
 
