@@ -49,14 +49,14 @@ public:
     {
         return currentAngle_deg;
     }
-    double getDisplayAngle(void)
-    {
-        return displayRotationAngle_deg;
-    }
-    void setDisplayAngle( double angle )
-    {
-        displayRotationAngle_deg = angle;
-    }
+//    double getDisplayAngle(void)
+//    {
+//        return displayRotationAngle_deg;
+//    }
+//    void setDisplayAngle( double angle )
+//    {
+//        displayRotationAngle_deg = angle;
+//    }
     void setWindOffset( bool enabled )
     {
         unwinder.enableLargeUnwind( enabled );

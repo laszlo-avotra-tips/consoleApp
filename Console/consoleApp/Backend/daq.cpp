@@ -428,7 +428,7 @@ void DAQ::setLaserDivider()
 void DAQ::setDisplay(float angle, int direction)
 {
     qDebug() << "got to setDisplay" << angle << direction;
-    emit setDisplayAngle( angle, direction );
+//    emit setDisplayAngle( angle, direction );
 }
 
 void DAQ::sendToAdvacedView(const OCTFile::OctData_t &od, int frameNumber)

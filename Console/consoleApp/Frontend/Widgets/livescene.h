@@ -143,7 +143,7 @@ signals:
     void clipLengthChanged( qint64 );
     void videoTick( qint64 );
     void showCurrentDeviceLabel();
-    void sendDisplayAngle( float );
+//    void sendDisplayAngle( float );
     void reviewImageDismissed();
 
     void measurementArea( int );
