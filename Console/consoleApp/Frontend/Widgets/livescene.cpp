@@ -25,7 +25,7 @@
 #include "Utility/userSettings.h"
 #include "sledsupport.h"
 #include "rotationIndicatorFactory.h"
-
+#include <QGestureEvent>
 
 QString timestampToString( unsigned long ts );
 
@@ -271,6 +271,34 @@ void liveScene::setIdle()
         rotationIndicatorOverlayItem->removeItem();
         update();
     }
+}
+
+bool liveScene::event(QEvent *event)
+{
+    if(event->type() == QEvent::Gesture){
+        LOG1(event->type());
+
+        QGestureEvent* ge = dynamic_cast<QGestureEvent*>(event);
+        if(ge){
+            return gestureEvent(ge);
+        }
+    }
+    return QGraphicsScene::event(event);
+}
+
+bool liveScene::gestureEvent(QGestureEvent *ge)
+{
+    bool isHandled{false};
+    LOG1(ge->type());
+
+    if (QGesture *tg = ge->gesture(Qt::TapGesture))  {
+        QTapGesture* tap = dynamic_cast<QTapGesture*>(tg);
+        if(tap){
+            isHandled = true;
+            LOG2(tap->position().x(), tap->position().y())
+        }
+    }
+    return isHandled;
 }
 
 /*

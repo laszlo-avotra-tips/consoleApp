@@ -28,6 +28,7 @@
 #include "Widgets/areameasurementoverlay.h"
 
 struct IRotationIndicator;
+class QGestureEvent;
 
 class liveScene : public QGraphicsScene
 {
@@ -61,6 +62,8 @@ public:
     void setActive();
     void setPassive();
     void setIdle();
+    bool event(QEvent* event) override;
+    bool gestureEvent(QGestureEvent* ge);
 
 public slots:
     void captureDecoratedImage( QImage decoratedImage, QString tagText );
