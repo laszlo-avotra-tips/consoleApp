@@ -74,7 +74,6 @@ signals:
     void setOffsetSlider( int );
     void setGainSlider( int );
     void setCorrection( int );
-    void setDisplayAngle( float, int );
 
 public slots:
 //    void updateDeviceForSledSupport( bool, QByteArray, QByteArray, int, QByteArray, QByteArray );
