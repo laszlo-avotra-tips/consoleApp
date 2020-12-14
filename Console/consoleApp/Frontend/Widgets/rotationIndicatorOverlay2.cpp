@@ -117,6 +117,9 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
         font.setPixelSize(catheterEdgePosition / 3);
 //        font.setBold(true);
         painter->setFont(font);
+        LOG1(font.pointSize())
+                LOG1(font.family())
+                LOG1(font.key())
 
         auto& sled = SledSupport::Instance();
 
