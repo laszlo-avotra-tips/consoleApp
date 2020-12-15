@@ -77,8 +77,13 @@ void CaseReviewScreen::updateClipLabel()
     m_numClips = clipList.countOfClipItems();
 
 //    LOG1(m_numClips)
+    const bool recorderIsOn{OctFrameRecorder::instance()->recorderIsOn()};
+    QString labelLoopsText = QString( tr("LOOPS(%1)").arg(m_numClips));
 
-    ui->labelLoops->setText( tr( "LOOPS(%1)" ).arg( m_numClips ) );
+    if(recorderIsOn){
+        labelLoopsText += QString( tr(" - Recording in progress"));
+    }
+    ui->labelLoops->setText( labelLoopsText );
 
     if( (m_numClips - clipList.getRowOffset()) <= 5 ){
         ui->pushButtonClipsRightArrow->hide();
