@@ -223,7 +223,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
 {
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
-        emit on_pushButtonRecord_clicked(false);
+        emit ui->pushButtonRecord->clicked(false);
     }
 
     QTimer::singleShot(1000, [this](){
