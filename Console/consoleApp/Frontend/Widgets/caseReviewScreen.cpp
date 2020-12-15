@@ -9,6 +9,7 @@
 #include "Utility/captureListModel.h"
 #include "clipItemDelegate.h"
 #include "Utility/clipListModel.h"
+#include "Utility/octFrameRecorder.h"
 
 #include <QGraphicsPixmapItem>
 
@@ -155,6 +156,13 @@ void CaseReviewScreen::initClips()
 void CaseReviewScreen::showPlayer(bool isVisible)
 {
     LOG1(isVisible)
+    const bool recorderIsOn{OctFrameRecorder::instance()->recorderIsOn()};
+    ui->clipsView->setEnabled(!recorderIsOn);
+    if(recorderIsOn){
+        ui->labelLoops->setStyleSheet("color:gray");
+    }else{
+        ui->labelLoops->setStyleSheet("color:white");
+    }
     if(isVisible){
         ui->framePlayer->show();
         ui->horizontalSlider->show();
@@ -162,15 +170,19 @@ void CaseReviewScreen::showPlayer(bool isVisible)
         QString fn = clipList.getThumbnailDir();
         if(m_selectedClipItem){
             const auto& loopName{m_selectedClipItem->getName()};
-            LOG1(loopName)
-            LOG1(fn)
             const QString videoFileName = QString("file:///%1/%2/%3.mp4").arg(fn).arg(loopName).arg(loopName);
-            const QUrl url(videoFileName);
-            LOG1(url.toString());
-            m_player->setUrl(url);
-            ui->pushButtonPlay->setChecked(true);
-            ui->pushButtonPlay->clicked();
+            if(m_selectedClipItem->getIsReady()){
+                const QUrl url(videoFileName);
+                m_player->setUrl(url);
+                LOG1(url.toString());
+                ui->pushButtonPlay->setChecked(true);
+                ui->pushButtonPlay->show();
+                ui->pushButtonPlay->clicked();
+            } else {
+                ui->pushButtonPlay->hide();
+            }
         }
+
     } else {
         ui->framePlayer->hide();
         ui->horizontalSlider->hide();

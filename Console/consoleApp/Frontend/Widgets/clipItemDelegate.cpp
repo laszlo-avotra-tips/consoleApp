@@ -2,6 +2,7 @@
 #include "Utility/clipListModel.h"
 #include "defaults.h"
 #include "logger.h"
+#include "Utility/octFrameRecorder.h"
 
 namespace{
 const QSize  ThumbSize( ThumbnailHeight_px + 10, ThumbnailHeight_px + 10 );
@@ -48,10 +49,21 @@ void ClipItemDelegate::paint( QPainter *painter,
 
    clipItem * item = itemList.at(rowNum);
 
-   LOG1(item->getIsReady())
+   const bool recorderIsOn{OctFrameRecorder::instance()->recorderIsOn()};
+
+//   LOG1(item->getIsReady())
+
+   QColor indexColor;
+
+   if(recorderIsOn){
+       indexColor = SelectedTextColor;
+   } else {
+       indexColor = QColor("gray");
+   }
 
 
-   if(item && item->getIsReady()){
+//   if(item && item->getIsReady()){
+   if(item){
 
        painter->setPen( QPen( Qt::black, 6 ) );
        QRect baseRect( option.rect.x() + 4,
@@ -80,14 +92,14 @@ void ClipItemDelegate::paint( QPainter *painter,
 //       LOG1(thumbNailFile)
        QImage tmi(thumbNailFile);
        painter->drawImage( 5, 5, tmi.scaled(160,160));
-       painter->setPen( QPen( SelectedTextColor, 6 ) );
+       painter->setPen( QPen( indexColor, 6 ) );
 
        painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
        painter->restore();
 
        // Highlight the selected item
     //   if( option.state & QStyle::State_Selected )
-       if(clipList.getIsSelected() && rowNum == clipList.getSelectedRow())
+       if(clipList.getIsSelected() && rowNum == clipList.getSelectedRow() && !recorderIsOn)
        {
            const int PenSize = 2;
            painter->setPen( QPen( SelectedItemColor, PenSize ) );
