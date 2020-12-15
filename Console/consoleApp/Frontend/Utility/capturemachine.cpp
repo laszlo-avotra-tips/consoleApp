@@ -166,6 +166,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     painter.drawImage( logoX0, logoY, LogoImage );
     painter.end();
     QImage dim = decoratedImage.copy(scaledRect);
+    LOG2(dim.width(), dim.height())
 
     if( !dim.save( imageName, "PNG", 100 ) )
     {
@@ -177,6 +178,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     }
 
     // save a thumbnail image for the UI to use
+    QImage thumbNail = dim.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
+    LOG2(thumbNail.width(), thumbNail.height())
     if( !dim.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
