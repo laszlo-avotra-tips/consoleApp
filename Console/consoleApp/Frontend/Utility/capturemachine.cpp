@@ -88,9 +88,14 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
     LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
 
+    LOG2(decorImage.width(), decorImage.height());
+    LOG2(sectorImage.width(), sectorImage.height());
+
     auto imageRect = sectorImage.rect();
-    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
+    QRect scaledRect(imageRect.x(), imageRect.y(), imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
     deviceSettings &devSettings = deviceSettings::Instance();
+
+    LOG2(scaledRect.width(), scaledRect.height())
 
     // Obtain the current timestamp
     const QDateTime currTime = QDateTime::currentDateTime(); //QDateTime().fromTime_t( captureItem.timestamp );
@@ -113,6 +118,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
      */
     QImage plainImage = sectorImage.scaled(scaledRect.width(), scaledRect.height());
     QPainter painter(&plainImage);
+    LOG2(plainImage.width(), plainImage.height())
 
     addTimeStamp(painter);
     addFileName(painter,saveName);
