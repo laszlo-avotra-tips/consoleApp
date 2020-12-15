@@ -95,8 +95,8 @@ void ClipItemDelegate::paint( QPainter *painter,
            for (int ii = 0; ii < image.width(); ii++) {
                for (int jj = 0; jj < image.height(); jj++) {
                    int gray = qGray(image.pixel(ii, jj));
-                   if(gray < 5)
-                        image.setPixel(ii, jj, QColor(50, 50, 50).rgb());
+                   if(gray == 255)
+                        image.setPixel(ii, jj, QColor(150, 150, 150).rgb());
                }
            }
        }
