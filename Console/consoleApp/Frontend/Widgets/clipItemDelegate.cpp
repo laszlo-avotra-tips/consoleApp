@@ -91,6 +91,14 @@ void ClipItemDelegate::paint( QPainter *painter,
        const QString thumbNailFile(item->clipThumbnailFile(item->getThumbnailDir(), item->getName()));
 //       LOG1(thumbNailFile)
        QImage tmi(thumbNailFile);
+       if(recorderIsOn && tmi.isGrayscale()){
+           for (int ii = 0; ii < tmi.width(); ii++) {
+               for (int jj = 0; jj < tmi.height(); jj++) {
+                   QColor gray = tmi.pixelColor(ii, jj).darker(100);
+                   tmi.setPixelColor(ii, jj, gray);
+               }
+           }
+       }
        painter->drawImage( 5, 5, tmi.scaled(160,160));
        painter->setPen( QPen( indexColor, 6 ) );
 
