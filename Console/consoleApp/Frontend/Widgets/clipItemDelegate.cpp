@@ -90,10 +90,17 @@ void ClipItemDelegate::paint( QPainter *painter,
 //       LOG1(item->getCatheterView())
        const QString thumbNailFile(item->clipThumbnailFile(item->getThumbnailDir(), item->getName()));
        LOG1(thumbNailFile)
-       QImage tmi(thumbNailFile);
-       if(!recorderIsOn){
-           painter->drawImage( 5, 5, tmi.scaled(160,160));
+       QImage image(thumbNailFile);
+       if(recorderIsOn){
+           for (int ii = 0; ii < image.width(); ii++) {
+               for (int jj = 0; jj < image.height(); jj++) {
+                   int gray = qGray(image.pixel(ii, jj));
+                   if(gray < 5)
+                        image.setPixel(ii, jj, QColor(50, 50, 50).rgb());
+               }
+           }
        }
+       painter->drawImage( 5, 5, image.scaled(160,160));
        painter->setPen( QPen( indexColor, 6 ) );
 
        painter->drawText( option.rect.width() - Offset_px, option.rect.height() - 4, NumberLabel );
