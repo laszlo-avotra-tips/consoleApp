@@ -56,9 +56,9 @@ void ClipItemDelegate::paint( QPainter *painter,
    QColor indexColor;
 
    if(recorderIsOn){
-       indexColor = SelectedTextColor;
-   } else {
        indexColor = QColor("gray");
+   } else {
+       indexColor = SelectedTextColor;
    }
 
 
