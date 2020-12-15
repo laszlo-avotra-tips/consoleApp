@@ -224,7 +224,7 @@ border: 1px solid rgb( 128, 128, 128 );</string>
     <string>IMAGES(0)</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelLoops">
@@ -232,15 +232,15 @@ border: 1px solid rgb( 128, 128, 128 );</string>
     <rect>
      <x>137</x>
      <y>1061</y>
-     <width>298</width>
+     <width>1100</width>
      <height>78</height>
     </rect>
    </property>
    <property name="text">
-    <string>LOOPS(1)</string>
+    <string>LOOPS(0)</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonMeasure">

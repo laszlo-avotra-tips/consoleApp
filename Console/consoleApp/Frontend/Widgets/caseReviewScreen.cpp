@@ -81,7 +81,7 @@ void CaseReviewScreen::updateClipLabel()
     QString labelLoopsText = QString( tr("LOOPS(%1)").arg(m_numClips));
 
     if(recorderIsOn){
-        labelLoopsText += QString( tr(" - Recording in progress"));
+        labelLoopsText = labelLoopsText + QString( tr(" - Recording in progress"));
     }
     ui->labelLoops->setText( labelLoopsText );
 
