@@ -233,7 +233,10 @@ void captureMachine::clipCapture( QImage sector, QString strClipNumber, unsigned
  */
 void captureMachine::processLoopRecording( ClipItem_t loop )
 {
-    const QImage LogoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
+    const QImage logoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
+//    const QImage logoImage( ":/octConsole/captureLogo.png" );
+    const QImage LogoImage = logoImage.scaledToWidth(360);
+
 
     caseInfo &info = caseInfo::Instance();
     const QString ClipName = "clip-" + loop.strClipNumber;
@@ -250,7 +253,7 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     QPainter painter( &secRGB );
 
     //    Upper Right -- Logo
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
+    painter.drawImage( SectorWidth_px - LogoImage.width() - 50, 20, LogoImage );
 
     painter.end();
 
