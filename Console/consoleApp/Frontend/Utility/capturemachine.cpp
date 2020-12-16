@@ -84,14 +84,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     currCaptureNumber++;
     QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
 
-    // Store the capture
-    caseInfo &info = caseInfo::Instance();
-    QString saveDirName = info.getCapturesDir();
     QString imageName =  QString( ImagePrefix ) + strCaptureNumber;
-    const QString thumbFileName = saveDirName + "/.thumb_" + imageName + ".png";
-    const QString imageFileName = saveDirName + "/"        + imageName + ".png";
 
-    // Paint the logo on the decorated image in the upper right corner
+    // Paint the decorated image
     QPainter painter;
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
@@ -101,13 +96,13 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     addCatheterName(painter);
     addLogo(painter);
 
-//    const int logoX0{20};
-//    const int logoY{20};
-//    const QImage logoImage( ":/octConsole/captureLogo.png" );
-//    const QImage LogoImage = logoImage.scaledToWidth(360);
-//    painter.drawImage( logoX0, logoY, LogoImage );
     painter.end();
 
+    // Store the capture
+    caseInfo &info = caseInfo::Instance();
+    QString saveDirName = info.getCapturesDir();
+    const QString thumbFileName = saveDirName + "/.thumb_" + imageName + ".png";
+    const QString imageFileName = saveDirName + "/"        + imageName + ".png";
     if( !decoratedImage.save( imageFileName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: decorated image capture failed" )
@@ -298,6 +293,15 @@ void captureMachine::addLogo(QPainter &painter)
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
     painter.drawImage( logoX0, logoY, LogoImage );
+}
+
+QString captureMachine::imageName()
+{
+    currCaptureNumber = captureListModel::Instance().countOfCapuredItems();
+    currCaptureNumber++;
+    QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
+
+    return QString( ImagePrefix ) + strCaptureNumber;
 }
 
 
