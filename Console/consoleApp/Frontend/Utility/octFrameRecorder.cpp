@@ -20,10 +20,6 @@ void OctFrameRecorder::recordData(uint8_t *dispData, const char* catheterName, c
                                   const char* activePassive, const char* timeStamp, int width, int height)
 {
     bool isOk {m_width == width && m_height == height};
-//    const char* catheterName{"catheterName"};
-//    const char* cathalogName{"cathalogName"};
-//    const char* activePassiveValue{"ACTIVE"};
-//    const char* timeLabel{"timeLabel"};
 
     if(dispData && m_recorderIsOn && isOk)
     {

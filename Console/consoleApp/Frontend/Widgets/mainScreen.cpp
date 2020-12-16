@@ -721,6 +721,17 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
             if(image && frameData && frameData->dispData){
 
                 QString activePassiveValue{"ACTIVE"};
+                auto& sled = SledSupport::Instance();
+
+                int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
+                if(lastRunningState == 3)
+                {
+                    activePassiveValue = "PASSIVE";
+                }
+                else if(lastRunningState == 1)
+                {
+                    activePassiveValue = "ACTIVE";
+                }
 
                 const QDateTime currentTime = QDateTime::currentDateTime();
                 const QString timeLabel{currentTime.toString("hh:mm:ss")};
