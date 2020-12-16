@@ -141,12 +141,8 @@ void captureMachine::clipCapture( QImage sector, QString strClipNumber, unsigned
  */
 void captureMachine::processLoopRecording(ClipItem_t clipItem )
 {
-//    const QImage logoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
-//    const QImage LogoImage = logoImage.scaledToWidth(360);
-
-
-    const QString ClipName = generateClipName(clipItem);
-    LOG1(ClipName)
+    const QString clipName = generateClipName(clipItem);
+    LOG1(clipName)
 
     QImage secRGB( clipItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
@@ -158,16 +154,17 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
      */
     QPainter painter( &secRGB );
 
-    //    Upper Right -- Logo
-//    painter.drawImage( SectorWidth_px - LogoImage.width() - 50, 20, LogoImage );
     addLogo(painter, true);
+    addTimeStamp(painter,true);
+//    addFileName(painter,clipName, true);
+//    addCatheterName(painter,true);
 
     painter.end();
 
     // Build the location directory
     caseInfo &info = caseInfo::Instance();
     QString saveDirName = info.getClipsDir();
-    QString saveName =  QString( ClipName );
+    QString saveName =  QString( clipName );
 
     // Store the capture
     const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
@@ -183,40 +180,54 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
         emit sendFileToKey( thumbName );
     }
 
-    LOG( INFO, "Loop Capture: " + ClipName )
+    LOG( INFO, "Loop Capture: " + clipName )
 }
 
-void captureMachine::addTimeStamp(QPainter& painter)
+void captureMachine::addTimeStamp(QPainter& painter, bool isClip)
 {
-    const int nowX{20};
-    const int firstRow{180};
-    const int secondRow{240};
+    int nowX{20};
+    int firstRow{180};
 
     painter.setPen( QPen( Qt::white ) );
 
     const auto& now = QDateTime::currentDateTime().toUTC();
-//    QString timeStampDate = now.toString("yyyy-MM-dd" );
     QString timeStampTime = now.toString("hh:mm:ss");
 
-    painter.setFont( QFont( "DinPro-regular", 20 ) );
-//    painter.drawText( nowX, firstRow, timeStampDate);
+    if(isClip){
+        painter.setFont( QFont( "DinPro-regular", 10 ) );
+        nowX = 10;
+        firstRow = 90;
+    } else {
+        painter.setFont( QFont( "DinPro-regular", 20 ) );
+    }
     painter.drawText( nowX, firstRow, timeStampTime);
 }
 
-void captureMachine::addFileName(QPainter &painter, const QString &fn)
+void captureMachine::addFileName(QPainter &painter, const QString &fn, bool isClip)
 {
     const int fnX{20}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
     const int fnY{2140};
 
     painter.setPen( QPen( Qt::white ) );
 
-    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    if(isClip){
+        painter.setFont( QFont( "DinPro-regular", 10 ) );
+    } else {
+        painter.setFont( QFont( "DinPro-regular", 20 ) );
+    }
     painter.drawText( fnX, fnY, fn);
 }
 
-void captureMachine::addCatheterName(QPainter &painter)
+void captureMachine::addCatheterName(QPainter &painter, bool isClip)
 {
-    QFont nameFont("DinPro-regular", 20 );
+    QFont nameFont;
+
+    if(isClip){
+        nameFont = QFont("DinPro-regular", 10 );
+    } else {
+        nameFont = QFont("DinPro-regular", 20 );
+    }
+
     painter.setFont(nameFont);
 
     QFontMetrics qfm(nameFont);

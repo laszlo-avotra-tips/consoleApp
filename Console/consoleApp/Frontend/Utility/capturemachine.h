@@ -66,9 +66,9 @@ private:
 
     void processImageCapture(CaptureItem_t captureItem );
     void processLoopRecording( ClipItem_t clipItem );
-    void addTimeStamp(QPainter& painter);
-    void addFileName(QPainter& painter, const QString& fn);
-    void addCatheterName(QPainter& painter);
+    void addTimeStamp(QPainter& painter, bool isClip = false);
+    void addFileName(QPainter& painter, const QString& fn, bool isClip = false);
+    void addCatheterName(QPainter& painter, bool isClip = false);
     void addLogo(QPainter& painter, bool isClip = false);
     QString generateImageName();
     void saveImage(const QImage &decoratedImage, const QString& imageName);
