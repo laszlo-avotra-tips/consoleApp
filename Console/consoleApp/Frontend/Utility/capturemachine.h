@@ -72,6 +72,7 @@ private:
     void addLogo(QPainter& painter);
     QString generateImageName();
     void saveImage(const QImage &decoratedImage, const QString& imageName);
+    void saveThumbnail(const QImage &decoratedImage, const QString& imageName);
 
 
     QMutex mutex;

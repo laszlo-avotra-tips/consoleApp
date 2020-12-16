@@ -96,24 +96,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 
     // Store the capture
     saveImage(decoratedImage, imageName);
+    saveThumbnail(decoratedImage, imageName);
 
-    caseInfo &info = caseInfo::Instance();
-    // save a thumbnail image for the UI to use
-    QImage thumbNail = decoratedImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
-    QString saveDirName = info.getCapturesDir();
-    LOG2(thumbNail.width(), thumbNail.height())
-    const QString thumbFileName = saveDirName + "/.thumb_" + imageName + ".png";
-
-    if( !thumbNail.save( thumbFileName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( thumbFileName );
-    }
-
-    // update the model
+    // database
     const QDateTime currTime = QDateTime::currentDateTime();
     captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
     deviceSettings &devSettings = deviceSettings::Instance();
@@ -305,6 +290,26 @@ void captureMachine::saveImage(const QImage&decoratedImage, const QString &image
     else
     {
         emit sendFileToKey( imageFileName );
+    }
+}
+
+void captureMachine::saveThumbnail(const QImage &decoratedImage, const QString &imageName)
+{
+
+    caseInfo &info = caseInfo::Instance();
+    // save a thumbnail image for the UI to use
+    QImage thumbNail = decoratedImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
+    QString saveDirName = info.getCapturesDir();
+    LOG2(thumbNail.width(), thumbNail.height())
+    const QString thumbFileName = saveDirName + "/.thumb_" + imageName + ".png";
+
+    if( !thumbNail.save( thumbFileName, "PNG", 100 ) )
+    {
+        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
+    }
+    else
+    {
+        emit sendFileToKey( thumbFileName );
     }
 }
 
