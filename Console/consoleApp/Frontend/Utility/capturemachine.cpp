@@ -317,7 +317,6 @@ void captureMachine::addCaptureToTheModel(const captureMachine::CaptureItem_t& c
 
 QString captureMachine::generateClipName(const ClipItem_t& clipItem)
 {
-    caseInfo &info = caseInfo::Instance();
     return QString ("clip-") + clipItem.strClipNumber;
 }
 
