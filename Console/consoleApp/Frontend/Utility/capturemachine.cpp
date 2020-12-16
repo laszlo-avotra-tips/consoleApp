@@ -244,12 +244,17 @@ void captureMachine::addCatheterName(QPainter &painter)
     }
 }
 
-void captureMachine::addLogo(QPainter &painter)
+void captureMachine::addLogo(QPainter &painter, bool isClip)
 {
     const int logoX0{20};
     const int logoY{20};
     const QImage logoImage( ":/octConsole/captureLogo.png" );
-    const QImage LogoImage = logoImage.scaledToWidth(360);
+    int scale{360};
+
+    if(isClip){
+        scale = double(scale) * 1600 / 2160;
+    }
+    const QImage LogoImage = logoImage.scaledToWidth(scale);
     painter.drawImage( logoX0, logoY, LogoImage );
 }
 

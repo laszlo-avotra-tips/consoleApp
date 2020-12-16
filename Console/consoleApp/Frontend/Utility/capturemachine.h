@@ -69,7 +69,7 @@ private:
     void addTimeStamp(QPainter& painter);
     void addFileName(QPainter& painter, const QString& fn);
     void addCatheterName(QPainter& painter);
-    void addLogo(QPainter& painter);
+    void addLogo(QPainter& painter, bool isClip = false);
     QString generateImageName();
     void saveImage(const QImage &decoratedImage, const QString& imageName);
     void saveThumbnail(const QImage &decoratedImage, const QString& imageName);
