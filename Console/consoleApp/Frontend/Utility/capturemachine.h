@@ -70,6 +70,8 @@ private:
     void addFileName(QPainter& painter, const QString& fn);
     void addCatheterName(QPainter& painter);
     void addLogo(QPainter& painter);
+    QString generateImageName();
+    void saveImage(const QImage &decoratedImage, const QString& imageName);
 
 
     QMutex mutex;

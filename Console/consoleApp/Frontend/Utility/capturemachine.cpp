@@ -79,12 +79,8 @@ void captureMachine::imageCapture( QImage decoratedImage, QImage sector, QString
  */
 void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
-    // capture number is tracked here
-    currCaptureNumber = captureListModel::Instance().countOfCapuredItems();
-    currCaptureNumber++;
-    QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
 
-    QString imageName =  QString( ImagePrefix ) + strCaptureNumber;
+    QString imageName = generateImageName();
 
     // Paint the decorated image
     QPainter painter;
@@ -99,22 +95,15 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     painter.end();
 
     // Store the capture
-    caseInfo &info = caseInfo::Instance();
-    QString saveDirName = info.getCapturesDir();
-    const QString thumbFileName = saveDirName + "/.thumb_" + imageName + ".png";
-    const QString imageFileName = saveDirName + "/"        + imageName + ".png";
-    if( !decoratedImage.save( imageFileName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Image Capture: decorated image capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( imageFileName );
-    }
+    saveImage(decoratedImage, imageName);
 
+    caseInfo &info = caseInfo::Instance();
     // save a thumbnail image for the UI to use
     QImage thumbNail = decoratedImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
+    QString saveDirName = info.getCapturesDir();
     LOG2(thumbNail.width(), thumbNail.height())
+    const QString thumbFileName = saveDirName + "/.thumb_" + imageName + ".png";
+
     if( !thumbNail.save( thumbFileName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
@@ -295,13 +284,28 @@ void captureMachine::addLogo(QPainter &painter)
     painter.drawImage( logoX0, logoY, LogoImage );
 }
 
-QString captureMachine::imageName()
+QString captureMachine::generateImageName()
 {
     currCaptureNumber = captureListModel::Instance().countOfCapuredItems();
     currCaptureNumber++;
     QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
 
     return QString( ImagePrefix ) + strCaptureNumber;
+}
+
+void captureMachine::saveImage(const QImage&decoratedImage, const QString &imageName)
+{
+    caseInfo &info = caseInfo::Instance();
+    QString saveDirName = info.getCapturesDir();
+    const QString imageFileName = saveDirName + "/"        + imageName + ".png";
+    if( !decoratedImage.save( imageFileName, "PNG", 100 ) )
+    {
+        LOG( DEBUG, "Image Capture: decorated image capture failed" )
+    }
+    else
+    {
+        emit sendFileToKey( imageFileName );
+    }
 }
 
 
