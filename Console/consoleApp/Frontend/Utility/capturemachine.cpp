@@ -258,8 +258,8 @@ void captureMachine::addCatheterName(QPainter &painter, bool isClip)
 
     if(names.count() >= 2){
         if(isClip){
-            catheterX0 = int(SectorWidth_px - rect0.width() / imageScaleFactor) - 20;
-            catheterX1 = int(SectorWidth_px - rect1.width() / imageScaleFactor) - 20;
+            catheterX0 = int(SectorWidth_px - rect0.width() ) - 10;
+            catheterX1 = int(SectorWidth_px - rect1.width() ) - 10;
             catheterY0 = 30;
             catheterY1 = 60;
         }
