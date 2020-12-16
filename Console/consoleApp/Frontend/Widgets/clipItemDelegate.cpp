@@ -89,7 +89,7 @@ void ClipItemDelegate::paint( QPainter *painter,
 //       LOG1(item->getDeviceName())
 //       LOG1(item->getCatheterView())
        const QString thumbNailFile(item->clipThumbnailFile(item->getThumbnailDir(), item->getName()));
-       LOG1(thumbNailFile)
+//       LOG1(thumbNailFile)
        QImage image(thumbNailFile);
        if(recorderIsOn){
            for (int ii = 0; ii < image.width(); ii++) {
