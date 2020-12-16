@@ -69,6 +69,7 @@ private:
     void addTimeStamp(QPainter& painter);
     void addFileName(QPainter& painter, const QString& fn);
     void addCatheterName(QPainter& painter);
+    void addLogo(QPainter& painter);
 
 
     QMutex mutex;
