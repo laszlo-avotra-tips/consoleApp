@@ -720,13 +720,26 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
             if(image && frameData && frameData->dispData){
 
-                const char* catheterName{"catheterName"};
-                const char* cathalogName{"cathalogName"};
-                const char* activePassiveValue{"ACTIVE"};
+                QString activePassiveValue{"ACTIVE"};
+
                 const QDateTime currentTime = QDateTime::currentDateTime();
                 const QString timeLabel{currentTime.toString("hh:mm:ss")};
+                const auto& dev = deviceSettings::Instance().current();
 
-                emit updateRecorder(frameData->dispData,catheterName,cathalogName,activePassiveValue,timeLabel.toLatin1(),1024,1024);
+                if(!dev->isBiDirectional()){
+                    activePassiveValue = QString("");
+                }
+
+                auto devName = dev->getSplitDeviceName();
+                QStringList names = devName.split("\n");
+                const QString catheterName{names[0]};
+                const QString cathalogName{names[1]};
+
+                emit updateRecorder(frameData->dispData,
+                                    catheterName.toLatin1(),cathalogName.toLatin1(),
+                                    activePassiveValue.toLatin1(),
+                                    timeLabel.toLatin1(),
+                                    1024,1024);
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
