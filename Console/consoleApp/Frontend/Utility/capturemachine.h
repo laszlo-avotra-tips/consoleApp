@@ -73,6 +73,7 @@ private:
     QString generateImageName();
     void saveImage(const QImage &decoratedImage, const QString& imageName);
     void saveThumbnail(const QImage &decoratedImage, const QString& imageName);
+    void addCaptureToTheModel(const CaptureItem_t &captureItem, const QString& imageName);
 
 
     QMutex mutex;

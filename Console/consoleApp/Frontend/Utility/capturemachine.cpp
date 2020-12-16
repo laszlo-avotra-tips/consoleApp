@@ -98,21 +98,8 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     saveImage(decoratedImage, imageName);
     saveThumbnail(decoratedImage, imageName);
 
-    // database
-    const QDateTime currTime = QDateTime::currentDateTime();
-    captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
-    deviceSettings &devSettings = deviceSettings::Instance();
-
-    if( capList.addCapture( captureItem.tagText,
-                            currTime.toTime_t(),
-                            imageName,
-                            devSettings.current()->getDeviceName(),
-                            captureItem.pixelsPerMm,
-                            captureItem.zoomFactor ) < 0 )
-    {
-        LOG1("ERROR")
-        return;   // Failure warnings generated in the call
-    }
+    // add to the model
+    addCaptureToTheModel(captureItem, imageName);
 
     LOG( INFO, QString( "Capture - %1" ).arg( imageName ) )
 }
@@ -310,6 +297,24 @@ void captureMachine::saveThumbnail(const QImage &decoratedImage, const QString &
     else
     {
         emit sendFileToKey( thumbFileName );
+    }
+}
+
+void captureMachine::addCaptureToTheModel(const captureMachine::CaptureItem_t& captureItem, const QString &imageName)
+{
+    const QDateTime currTime = QDateTime::currentDateTime();
+    captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
+    deviceSettings &devSettings = deviceSettings::Instance();
+
+    if( capList.addCapture( captureItem.tagText,
+                            currTime.toTime_t(),
+                            imageName,
+                            devSettings.current()->getDeviceName(),
+                            captureItem.pixelsPerMm,
+                            captureItem.zoomFactor ) < 0 )
+    {
+        LOG1("ERROR")
+        return;   // Failure warnings generated in the call
     }
 }
 
