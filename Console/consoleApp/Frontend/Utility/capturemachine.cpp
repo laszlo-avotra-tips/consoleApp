@@ -167,17 +167,26 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
     QString saveName =  QString( clipName );
 
     // Store the capture
-    const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
-    LOG1(thumbName)
+    const QString clipThumbNailFileName = saveDirName + "/thumb_" + saveName + ".png";
+    LOG1(clipThumbNailFileName)
+
+    QImage clipThumbNail = secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
+
+    for (int ii = 0; ii < clipThumbNail.width(); ii++) {
+        for (int jj = 0; jj < clipThumbNail.height(); jj++) {
+            int gray = qGray(clipThumbNail.pixel(ii, jj));
+            clipThumbNail.setPixel(ii, jj, QColor(gray, gray, gray).rgb());
+        }
+    }
 
     // save a thumbnail image for the UI to use
-    if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
+    if( !clipThumbNail.save( clipThumbNailFileName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Loop capture: sector thumbnail capture failed" )
     }
     else
     {
-        emit sendFileToKey( thumbName );
+        emit sendFileToKey( clipThumbNailFileName );
     }
 
     LOG( INFO, "Loop Capture: " + clipName )
