@@ -150,7 +150,7 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
 
     // Obtain the current timestamp
     const QDateTime currTime = QDateTime().fromTime_t( clipItem.timestamp );
-
+    recorder->setTimeStamp(currTime.toString("hh:mm:ss"));
     /*
      * Paint information on the sector image that needs to be visible when reviewed during a case
      */

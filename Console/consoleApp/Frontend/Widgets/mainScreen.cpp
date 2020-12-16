@@ -720,7 +720,13 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
             if(image && frameData && frameData->dispData){
 
-                emit updateRecorder(frameData->dispData,1024,1024);
+                const char* catheterName{"catheterName"};
+                const char* cathalogName{"cathalogName"};
+                const char* activePassiveValue{"ACTIVE"};
+                const QDateTime currentTime = QDateTime::currentDateTime();
+                const QString timeLabel{currentTime.toString("hh:mm:ss")};
+
+                emit updateRecorder(frameData->dispData,catheterName,cathalogName,activePassiveValue,timeLabel.toLatin1(),1024,1024);
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 

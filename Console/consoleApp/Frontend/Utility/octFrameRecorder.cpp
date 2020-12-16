@@ -16,13 +16,14 @@ OctFrameRecorder *OctFrameRecorder::instance()
     return m_instance;
 }
 
-void OctFrameRecorder::recordData(uint8_t *dispData, int width, int height)
+void OctFrameRecorder::recordData(uint8_t *dispData, const char* catheterName, const char* cathalogName,
+                                  const char* activePassive, const char* timeStamp, int width, int height)
 {
     bool isOk {m_width == width && m_height == height};
-    const char* catheterName{"catheterName"};
-    const char* cathalogName{"cathalogName"};
-    const char* activePassiveValue{"ACTIVE"};
-    const char* timeLabel{"timeLabel"};
+//    const char* catheterName{"catheterName"};
+//    const char* cathalogName{"cathalogName"};
+//    const char* activePassiveValue{"ACTIVE"};
+//    const char* timeLabel{"timeLabel"};
 
     if(dispData && m_recorderIsOn && isOk)
     {
@@ -33,8 +34,8 @@ void OctFrameRecorder::recordData(uint8_t *dispData, int width, int height)
                         dispData,
                         catheterName,
                         cathalogName,
-                        activePassiveValue,
-                        timeLabel
+                        activePassive,
+                        timeStamp
                         );
         }
     }
@@ -80,6 +81,16 @@ void OctFrameRecorder::updateClipList(int loopNumber)
     const QString ClipName = QString("clip-%1").arg(loopNumber);
     QString clipFilename = info.getClipsDir() + "/" + ClipName;
 
+}
+
+QString OctFrameRecorder::timeStamp() const
+{
+    return m_timeStamp;
+}
+
+void OctFrameRecorder::setTimeStamp(const QString &timeStamp)
+{
+    m_timeStamp = timeStamp;
 }
 
 void OctFrameRecorder::setClipName(const QString &clipName)
@@ -162,7 +173,6 @@ void OctFrameRecorder::onRecordSector(bool isRecording)
         clipList.setCurrentLoopNumber(currentLoopNumber);
         updateOutputFileName(currentLoopNumber);
         updateClipList(currentLoopNumber);
-//        OctFrameRecorder::instance()->start();
     } else {
         OctFrameRecorder::instance()->stop();
     }

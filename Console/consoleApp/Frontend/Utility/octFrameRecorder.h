@@ -30,10 +30,14 @@ public:
 
     void setClipName(const QString &clipName);
 
+    QString timeStamp() const;
+    void setTimeStamp(const QString &timeStamp);
+
 signals:
 
 public slots:
-    void recordData(uint8_t *frame, int width, int height);
+    void recordData(uint8_t *frame, const char *catheterName, const char *cathalogName,
+                    const char *activePassive, const char* timestamp, int width, int height);
 
 private:
     explicit OctFrameRecorder(QObject *parent = nullptr);
