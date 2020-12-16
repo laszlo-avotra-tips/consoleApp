@@ -156,7 +156,7 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
 
     addLogo(painter, true);
     addTimeStamp(painter,true);
-    addFileName(painter,clipName, true);
+    addFileName(painter,clipItem.strClipNumber, true);
 //    addCatheterName(painter,true);
 
     painter.end();
@@ -213,11 +213,12 @@ void captureMachine::addFileName(QPainter &painter, const QString &fn, bool isCl
     if(isClip){
         painter.setFont( QFont( "DinPro-regular", 10 ) );
         fnX = 10;
-        fnY = 1580;
+        fnY = 100;
     } else {
         painter.setFont( QFont( "DinPro-regular", 20 ) );
     }
     painter.drawText( fnX, fnY, fn);
+    LOG1(fn)
 }
 
 void captureMachine::addCatheterName(QPainter &painter, bool isClip)
