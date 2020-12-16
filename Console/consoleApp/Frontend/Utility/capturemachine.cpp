@@ -79,121 +79,29 @@ void captureMachine::imageCapture( QImage decoratedImage, QImage sector, QString
  */
 void captureMachine::processImageCapture( CaptureItem_t captureItem )
 {
-    const QImage logoImage( ":/octConsole/captureLogo.png" );
-    const QImage LogoImage = logoImage.scaledToWidth(360);
 
-    QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
-    QImage decorImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    QString imageName = generateImageName();
 
-    LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
-    LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
-
-    auto imageRect = sectorImage.rect();
-    QRect scaledRect(imageRect.x(), imageRect.y(),imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
-    deviceSettings &devSettings = deviceSettings::Instance();
-
-    // Obtain the current timestamp
-    const QDateTime currTime = QDateTime::currentDateTime(); //QDateTime().fromTime_t( captureItem.timestamp );
-
-    // capture number is tracked here
-    currCaptureNumber = captureListModel::Instance().countOfCapuredItems();
-    currCaptureNumber++;
-    QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
-
-    //
-    caseInfo &info = caseInfo::Instance();
-    QString saveDirName = info.getCapturesDir();
-    QString saveName =  QString( ImagePrefix ) + strCaptureNumber;
-
-    const int logoX0{20};
-    const int logoY{20};
-
-    /*
-     * Paint the procedure data to the sector image.
-     */
-    QImage plainImage = sectorImage.scaled(scaledRect.width(), scaledRect.height());
-    QPainter painter(&plainImage);
-
-    addTimeStamp(painter);
-    addFileName(painter,saveName);
-    addCatheterName(painter);
-
-    //    Upper Right -- Logo
-    painter.drawImage( logoX0, logoY, LogoImage );
-
-    painter.end();
-
-
-    // Store the capture
-    const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
-    const QString imageName = saveDirName + "/"        + saveName + ".png";
-
-    QMatrix m;
-//    m.rotate( 90 );
-//    LOG2(saveDirName,saveName)
-
-//    // save a thumbnail image for the UI to use
-//    if( !decorImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
-//    {
-//        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
-//    }
-//    else
-//    {
-//        emit sendFileToKey( thumbName );
-//    }
-
-    /*
-     * save the decorated image
-     */
-    // rotate the decorated image to match the display
-//    m.rotate( 90 );
-
-    // Paint the logo on the decorated image in the upper right corner
+    // Paint the decorated image
+    QPainter painter;
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     painter.begin( &decoratedImage );
 
     addTimeStamp(painter);
-    addFileName(painter,saveName);
+    addFileName(painter,imageName);
     addCatheterName(painter);
+    addLogo(painter);
 
-//    const int logoX1{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
-    painter.drawImage( logoX0, logoY, LogoImage );
     painter.end();
-    QImage dim = decoratedImage.copy(scaledRect);
 
-    if( !dim.save( imageName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Image Capture: decorated image capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( imageName );
-    }
+    // Store the capture
+    saveImage(decoratedImage, imageName);
+    saveThumbnail(decoratedImage, imageName);
 
-    // save a thumbnail image for the UI to use
-    if( !dim.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
-    {
-        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
-    }
-    else
-    {
-        emit sendFileToKey( thumbName );
-    }
-    // update the model
-    LOG1(saveName)
-    captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
-    if( capList.addCapture( captureItem.tagText,
-                            currTime.toTime_t(),
-                            saveName,
-                            devSettings.current()->getDeviceName(),
-                            captureItem.pixelsPerMm,
-                            captureItem.zoomFactor ) < 0 )
-    {
-        LOG1("ERROR")
-        return;   // Failure warnings generated in the call
-    }
+    // add to the model
+    addCaptureToTheModel(captureItem, imageName);
 
-    LOG( INFO, QString( "Capture - %1" ).arg( saveName ) )
+    LOG( INFO, QString( "Capture - %1" ).arg( imageName ) )
 }
 
 
@@ -231,90 +139,114 @@ void captureMachine::clipCapture( QImage sector, QString strClipNumber, unsigned
  *
  * Paint session data on the image and store it to disk.
  */
-void captureMachine::processLoopRecording( ClipItem_t loop )
+void captureMachine::processLoopRecording(ClipItem_t clipItem )
 {
-    const QImage LogoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
+    const QString clipName = generateClipName(clipItem);
+    LOG1(clipName)
 
-    caseInfo &info = caseInfo::Instance();
-    const QString ClipName = "clip-" + loop.strClipNumber;
-    LOG1(ClipName)
-
-    QImage secRGB( loop.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    QImage secRGB( clipItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     // Obtain the current timestamp
-    const QDateTime currTime = QDateTime().fromTime_t( loop.timestamp );
+    const QDateTime currTime = QDateTime().fromTime_t( clipItem.timestamp );
 
     /*
      * Paint information on the sector image that needs to be visible when reviewed during a case
      */
     QPainter painter( &secRGB );
 
-    //    Upper Right -- Logo
-    painter.drawImage( SectorWidth_px - LogoImage.width() - 100, 50, LogoImage );
+    addLogo(painter, true);
+    addTimeStamp(painter,true);
+    addFileName(painter,clipItem.strClipNumber, true);
+    addCatheterName(painter,true);
 
     painter.end();
 
     // Build the location directory
+    caseInfo &info = caseInfo::Instance();
     QString saveDirName = info.getClipsDir();
-    QString saveName =  QString( ClipName );
+    QString saveName =  QString( clipName );
 
     // Store the capture
-    const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
-    LOG1(thumbName)
+    const QString clipThumbNailFileName = saveDirName + "/thumb_" + saveName + ".png";
+    LOG1(clipThumbNailFileName)
 
-//    QMatrix m;
-//    m.rotate( 90 );
+    QImage clipThumbNail = secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
+
+    for (int ii = 0; ii < clipThumbNail.width(); ii++) {
+        for (int jj = 0; jj < clipThumbNail.height(); jj++) {
+            int gray = qGray(clipThumbNail.pixel(ii, jj));
+            clipThumbNail.setPixel(ii, jj, QColor(gray, gray, gray).rgb());
+        }
+    }
 
     // save a thumbnail image for the UI to use
-    if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
+    if( !clipThumbNail.save( clipThumbNailFileName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Loop capture: sector thumbnail capture failed" )
     }
     else
     {
-        emit sendFileToKey( thumbName );
+        emit sendFileToKey( clipThumbNailFileName );
     }
 
-    LOG( INFO, "Loop Capture: " + ClipName )
+    LOG( INFO, "Loop Capture: " + clipName )
 }
 
-void captureMachine::addTimeStamp(QPainter& painter)
+void captureMachine::addTimeStamp(QPainter& painter, bool isClip)
 {
-    const int nowX{20};
-    const int firstRow{180};
-    const int secondRow{240};
+    int nowX{20};
+    int firstRow{180};
 
     painter.setPen( QPen( Qt::white ) );
 
     const auto& now = QDateTime::currentDateTime().toUTC();
-//    QString timeStampDate = now.toString("yyyy-MM-dd" );
     QString timeStampTime = now.toString("hh:mm:ss");
 
-    painter.setFont( QFont( "DinPro-regular", 20 ) );
-//    painter.drawText( nowX, firstRow, timeStampDate);
+    if(isClip){
+        painter.setFont( QFont( "DinPro-regular", 8 ) );
+        nowX = 10;
+        firstRow = 90;
+    } else {
+        painter.setFont( QFont( "DinPro-regular", 20 ) );
+    }
     painter.drawText( nowX, firstRow, timeStampTime);
 }
 
-void captureMachine::addFileName(QPainter &painter, const QString &fn)
+void captureMachine::addFileName(QPainter &painter, const QString &fn, bool isClip)
 {
-    const int fnX{20}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
-    const int fnY{2140};
+    int fnX{20};
+    int fnY{2140};
 
     painter.setPen( QPen( Qt::white ) );
 
-    painter.setFont( QFont( "DinPro-regular", 20 ) );
+    if(isClip){
+        painter.setFont( QFont( "DinPro-regular", 8 ) );
+        fnX = 10;
+        fnY = 1000;
+    } else {
+        painter.setFont( QFont( "DinPro-regular", 20 ) );
+    }
     painter.drawText( fnX, fnY, fn);
+    LOG1(fn)
+    LOG2(fnX,fnY)
 }
 
-void captureMachine::addCatheterName(QPainter &painter)
+void captureMachine::addCatheterName(QPainter &painter, bool isClip)
 {
-    QFont nameFont("DinPro-regular", 20 );
+    QFont nameFont;
+
+    if(isClip){
+        nameFont = QFont("DinPro-regular", 8 );
+    } else {
+        nameFont = QFont("DinPro-regular", 20 );
+    }
+
     painter.setFont(nameFont);
 
     QFontMetrics qfm(nameFont);
 
-//    LOG2(nameFont.pointSize(),nameFont.pointSizeF())
-//    LOG2(qfm.maxWidth(), qfm.height())
+    LOG2(nameFont.pointSize(),nameFont.pointSizeF())
+    LOG2(qfm.maxWidth(), qfm.height())
 
     auto device = deviceSettings::Instance().current();
     auto name = device->getSplitDeviceName();
@@ -322,18 +254,108 @@ void captureMachine::addCatheterName(QPainter &painter)
     QStringList names = name.split("\n");
     QRect rect0 = qfm.tightBoundingRect(names[0]);
     QRect rect1 = qfm.tightBoundingRect(names[1]);
-//    LOG2(rect0.width(), rect0.height())
-//    LOG2(rect1.width(), rect1.height())
-    const int catheterX0{ int(SectorWidth_px * imageScaleFactor - rect0.width()) - 20 };
-    const int catheterX1{ int(SectorWidth_px * imageScaleFactor - rect1.width()) - 20 };
 
-//    LOG2(catheterX0, catheterX1)
+    LOG2(rect0.width(), rect0.height())
+    LOG2(rect1.width(), rect1.height())
+
+    int catheterX0{ int(SectorWidth_px * imageScaleFactor - rect0.width()) - 20 };
+    int catheterX1{ int(SectorWidth_px * imageScaleFactor - rect1.width()) - 20 };
+    int catheterY0{60};
+    int catheterY1{120};
+
+    LOG2(catheterX0, catheterX1)
+
     if(names.count() >= 2){
-        const int catheterY0{60};
-        const int catheterY1{120};
+        if(isClip){
+            catheterX0 = int(SectorWidth_px - rect0.width() ) - 10;
+            catheterX1 = int(SectorWidth_px - rect1.width() ) - 10;
+            catheterY0 = 30;
+            catheterY1 = 60;
+        }
         painter.drawText(catheterX0, catheterY0, names[0]);
         painter.drawText(catheterX1, catheterY1, names[1]);
     }
+}
+
+void captureMachine::addLogo(QPainter &painter, bool isClip)
+{
+    const int logoX0{20};
+    const int logoY{20};
+    const QImage logoImage( ":/octConsole/captureLogo.png" );
+    int scale{360};
+
+    if(isClip){
+        scale = double(scale) / imageScaleFactor;
+    }
+    const QImage LogoImage = logoImage.scaledToWidth(scale);
+    painter.drawImage( logoX0, logoY, LogoImage );
+}
+
+QString captureMachine::generateImageName()
+{
+    currCaptureNumber = captureListModel::Instance().countOfCapuredItems();
+    currCaptureNumber++;
+    QString strCaptureNumber = QString( "%1" ).arg( currCaptureNumber);
+
+    return QString( ImagePrefix ) + strCaptureNumber;
+}
+
+void captureMachine::saveImage(const QImage&decoratedImage, const QString &imageName)
+{
+    caseInfo &info = caseInfo::Instance();
+    QString saveDirName = info.getCapturesDir();
+    const QString imageFileName = saveDirName + "/"        + imageName + ".png";
+    if( !decoratedImage.save( imageFileName, "PNG", 100 ) )
+    {
+        LOG( DEBUG, "Image Capture: decorated image capture failed" )
+    }
+    else
+    {
+        emit sendFileToKey( imageFileName );
+    }
+}
+
+void captureMachine::saveThumbnail(const QImage &decoratedImage, const QString &imageName)
+{
+
+    caseInfo &info = caseInfo::Instance();
+    // save a thumbnail image for the UI to use
+    QImage thumbNail = decoratedImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
+    QString saveDirName = info.getCapturesDir();
+    LOG2(thumbNail.width(), thumbNail.height())
+    const QString thumbFileName = saveDirName + "/.thumb_" + imageName + ".png";
+
+    if( !thumbNail.save( thumbFileName, "PNG", 100 ) )
+    {
+        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
+    }
+    else
+    {
+        emit sendFileToKey( thumbFileName );
+    }
+}
+
+void captureMachine::addCaptureToTheModel(const captureMachine::CaptureItem_t& captureItem, const QString &imageName)
+{
+    const QDateTime currTime = QDateTime::currentDateTime();
+    captureListModel &capList = captureListModel::Instance(); // Should have valid caseinfo
+    deviceSettings &devSettings = deviceSettings::Instance();
+
+    if( capList.addCapture( captureItem.tagText,
+                            currTime.toTime_t(),
+                            imageName,
+                            devSettings.current()->getDeviceName(),
+                            captureItem.pixelsPerMm,
+                            captureItem.zoomFactor ) < 0 )
+    {
+        LOG1("ERROR")
+        return;   // Failure warnings generated in the call
+    }
+}
+
+QString captureMachine::generateClipName(const ClipItem_t& clipItem)
+{
+    return QString ("clip-") + clipItem.strClipNumber;
 }
 
 

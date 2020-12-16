@@ -224,7 +224,7 @@ border: 1px solid rgb( 128, 128, 128 );</string>
     <string>IMAGES(0)</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelLoops">
@@ -232,15 +232,15 @@ border: 1px solid rgb( 128, 128, 128 );</string>
     <rect>
      <x>137</x>
      <y>1061</y>
-     <width>298</width>
+     <width>1100</width>
      <height>78</height>
     </rect>
    </property>
    <property name="text">
-    <string>LOOPS(1)</string>
+    <string>LOOPS(0)</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonMeasure">
@@ -404,31 +404,6 @@ border: 3px solid #F5C400;
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="labelLoop">
-    <property name="geometry">
-     <rect>
-      <x>1404</x>
-      <y>1530</y>
-      <width>178</width>
-      <height>55</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>178</width>
-      <height>55</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
-    </property>
-    <property name="text">
-     <string>LOOP 1</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="labelTime">
     <property name="geometry">
      <rect>
@@ -456,7 +431,6 @@ border: 3px solid #F5C400;
    </widget>
    <zorder>verticalLayoutWidget</zorder>
    <zorder>labelDuration</zorder>
-   <zorder>labelLoop</zorder>
    <zorder>labelTime</zorder>
    <zorder>pushButtonPlay</zorder>
   </widget>

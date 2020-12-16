@@ -65,10 +65,16 @@ private:
     int currCaptureNumber;
 
     void processImageCapture(CaptureItem_t captureItem );
-    void processLoopRecording( ClipItem_t loop );
-    void addTimeStamp(QPainter& painter);
-    void addFileName(QPainter& painter, const QString& fn);
-    void addCatheterName(QPainter& painter);
+    void processLoopRecording( ClipItem_t clipItem );
+    void addTimeStamp(QPainter& painter, bool isClip = false);
+    void addFileName(QPainter& painter, const QString& fn, bool isClip = false);
+    void addCatheterName(QPainter& painter, bool isClip = false);
+    void addLogo(QPainter& painter, bool isClip = false);
+    QString generateImageName();
+    void saveImage(const QImage &decoratedImage, const QString& imageName);
+    void saveThumbnail(const QImage &decoratedImage, const QString& imageName);
+    void addCaptureToTheModel(const CaptureItem_t &captureItem, const QString& imageName);
+    QString generateClipName(const ClipItem_t& clipItem);
 
 
     QMutex mutex;
