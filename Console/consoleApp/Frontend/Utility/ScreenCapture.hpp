@@ -41,6 +41,9 @@ namespace CapUtils {
          * @param playlistFileName
          *          Name of master playback file to play the whole capture session.
          *
+         * @param fileNameLabel
+         *          Label for loop file name to be displayed in the video.
+         *
          * @param width
          *          Video output width resolution in pixels.
          *
@@ -64,19 +67,32 @@ namespace CapUtils {
          *
          * @return  True if capture session can be started after successfully initializing FFMPEG session.
          */
-        virtual bool start(const char* outDirPath, const char* playlistFileName, 
-                             int width, int height, int fps, int crf,
-                             int outputBitrateInMB, int segmentDurationInSeconds) = 0;
-
+        virtual bool start(const char* outDirPath, const char* playlistFileName,
+                           const char* fileNameLabel, int width, int height,
+                           int fps, int crf, int outputBitrateInMB,
+                           int segmentDurationInSeconds) = 0;
         /**
          * Encode input frame data to a segmented video transport stream through FFMPEG session
          *
          * @param data
          *     Screen pixel data captured from desktop.
          *
-         * @return  True if frame is successully encoded.
+         * @param catheterName
+         *     Name of catheter to be embedded into the video frame.
+         *
+         * @param catalogueName
+         *     Catalogue name to be embedded into the video frame.
+         *
+         * @param activePassiveValue
+         *     Active passive label indicating direction of rotation.
+         *
+         * @param timeLabel
+         *     Current frame time to be embedded into the video.
+         *
+         * @return  True if the input is successfully encoded using FFMPEG session.
          */
-        virtual bool encodeFrame(uint8_t* data) = 0;
+        virtual bool encodeFrame(uint8_t* data, const char* catheterName, const char* catalogueName,
+                                 const char* activePassiveValue, const char* timeLabel) = 0;
 
         /*
         * Stop capture module. Should stop any screen capture session that was already started
@@ -84,20 +100,13 @@ namespace CapUtils {
         virtual void stop() = 0;
 
         /*
-        * Stop capture module. Should stop any screen capture session that was already started
+        * Set path for logo file. Contents from logo file will be embedded into image frame data
          *
-         * @param outDirPath
-         *          Output file path where concatenated media file should be placed.
+         * @param logoFilePath
+         *     Logo file path to fetch logo data
          *
-         * @param loopFileName
-         *          Name of concatenated media file 
-         *
-         * @param playlistFileName
-         *          Name of playlist file where segmented file information will be read.
-         *
-         * @return  True if concatenation of segmented videos was successful.
         */
-        virtual bool concatenateSegmentedVideos(const char* outDirPath, const char* loopFileName, const char* playlistFileName) = 0;
+        virtual void setLogoPath(const char* logoFilePath) = 0;
 
     protected:
         ScreenCaptureInterface() = default;
@@ -140,12 +149,13 @@ namespace CapUtils {
         /*
         * Capture interface overrides
         */
-        bool start(const char* outDirPath, const char* playlistFileName, 
-                    int width = 1024, int height = 1024, int fps = 16, int crf = 23,
-                    int outputBitrateInMB = 0, int segmentDurationInSeconds = 5) override;
+        bool start(const char* outDirPath, const char* playlistFileName, const char* fileNameLabel,
+                   int width = 1024, int height = 1024, int fps = 16, int crf = 23,
+                   int outputBitrateInMB = 0, int segmentDurationInSeconds = 5) override;
         void stop() override;
-        bool encodeFrame(uint8_t* data) override;
-        bool concatenateSegmentedVideos(const char* outDirPath, const char* loopFileName, const char* playlistFileName) override;
+        bool encodeFrame(uint8_t* data, const char* catheterName, const char* catalogueName, 
+                         const char* activePassiveValue, const char* timeLabel) override;
+        void setLogoPath(const char* logoFilePath) override;
 
     private:
 

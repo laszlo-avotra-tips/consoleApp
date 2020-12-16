@@ -19,9 +19,23 @@ OctFrameRecorder *OctFrameRecorder::instance()
 void OctFrameRecorder::recordData(uint8_t *dispData, int width, int height)
 {
     bool isOk {m_width == width && m_height == height};
-    if(dispData && m_recorderIsOn && isOk){
-        if(!playlistFileName().isEmpty() && !clipListModel::Instance().getOutDirPath().isEmpty() && m_screenCapture){
-            m_screenCapture->encodeFrame(dispData);
+    const char* catheterName{"catheterName"};
+    const char* cathalogName{"cathalogName"};
+    const char* activePassiveValue{"ACTIVE"};
+    const char* timeLabel{"timeLabel"};
+
+    if(dispData && m_recorderIsOn && isOk)
+    {
+        if(!playlistFileName().isEmpty() && !clipListModel::Instance().getOutDirPath().isEmpty() && m_screenCapture)
+        {
+            m_screenCapture->encodeFrame
+                    (
+                        dispData,
+                        catheterName,
+                        cathalogName,
+                        activePassiveValue,
+                        timeLabel
+                        );
         }
     }
 }
@@ -86,8 +100,9 @@ bool OctFrameRecorder::start()
     if(!clipListModel::Instance().getOutDirPath().isEmpty() && !playlistFileName().isEmpty() && m_screenCapture && m_width > 0 && m_height >0){
         const std::string directoryName {clipListModel::Instance().getOutDirPath().toStdString()};
         const std::string fileName {playlistFileName().toStdString()};
+        const char* fileNameLabel{"LOOP1"};
         LOG2(directoryName.c_str(),fileName.c_str())
-        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str(), m_width, m_height);
+        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str(), fileNameLabel, m_width, m_height);
         LOG1(success)
         if(success){
 //            QThread::msleep(500);
