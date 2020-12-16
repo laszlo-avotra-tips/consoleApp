@@ -390,10 +390,11 @@ void captureMachine::run( void )
         while( !clipQ.empty() )
         {
             mutex.lock();
-            ClipItem_t f = clipQ.dequeue();
+            ClipItem_t clipItem = clipQ.dequeue();
+            LOG1(clipItem.strClipNumber)
             mutex.unlock();
 
-            processLoopRecording( f );
+            processLoopRecording( clipItem );
         }
 
         // dequeue and toss the element

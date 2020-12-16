@@ -104,6 +104,7 @@ void clipListModel::reset()
     }
     m_selectedRow = -1;
     setRowOffset(0);
+    m_currentLoopNumber = 0;
 }
 
 int clipListModel::getRowOffset() const

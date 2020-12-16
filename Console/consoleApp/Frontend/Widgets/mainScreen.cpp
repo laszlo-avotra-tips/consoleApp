@@ -643,8 +643,8 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
                                      dev.current()->getDeviceName(),
                                      true );
 
+            recorder->start();
         }
-
         showYellowBorderForRecordingOn(m_recordingIsOn);
     }
 }
