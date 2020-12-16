@@ -139,21 +139,20 @@ void captureMachine::clipCapture( QImage sector, QString strClipNumber, unsigned
  *
  * Paint session data on the image and store it to disk.
  */
-void captureMachine::processLoopRecording( ClipItem_t loop )
+void captureMachine::processLoopRecording(ClipItem_t clipItem )
 {
     const QImage logoImage( ":/octConsole/Frontend/Resources/logo-top.png" );
 //    const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
 
 
-    caseInfo &info = caseInfo::Instance();
-    const QString ClipName = "clip-" + loop.strClipNumber;
+    const QString ClipName = generateClipName(clipItem);
     LOG1(ClipName)
 
-    QImage secRGB( loop.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    QImage secRGB( clipItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
     // Obtain the current timestamp
-    const QDateTime currTime = QDateTime().fromTime_t( loop.timestamp );
+    const QDateTime currTime = QDateTime().fromTime_t( clipItem.timestamp );
 
     /*
      * Paint information on the sector image that needs to be visible when reviewed during a case
@@ -166,15 +165,13 @@ void captureMachine::processLoopRecording( ClipItem_t loop )
     painter.end();
 
     // Build the location directory
+    caseInfo &info = caseInfo::Instance();
     QString saveDirName = info.getClipsDir();
     QString saveName =  QString( ClipName );
 
     // Store the capture
     const QString thumbName = saveDirName + "/thumb_" + saveName + ".png";
     LOG1(thumbName)
-
-//    QMatrix m;
-//    m.rotate( 90 );
 
     // save a thumbnail image for the UI to use
     if( !secRGB.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
@@ -316,6 +313,12 @@ void captureMachine::addCaptureToTheModel(const captureMachine::CaptureItem_t& c
         LOG1("ERROR")
         return;   // Failure warnings generated in the call
     }
+}
+
+QString captureMachine::generateClipName(const ClipItem_t& clipItem)
+{
+    caseInfo &info = caseInfo::Instance();
+    return QString ("clip-") + clipItem.strClipNumber;
 }
 
 
