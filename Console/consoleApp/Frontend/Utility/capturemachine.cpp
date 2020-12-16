@@ -82,9 +82,9 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
 
-    QImage decorImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+//    QImage decorImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
-    LOG2(decorImage.width(), decorImage.height());
+//    LOG2(decorImage.width(), decorImage.height());
     deviceSettings &devSettings = deviceSettings::Instance();
 
     // Obtain the current timestamp
@@ -132,10 +132,10 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    const int logoX1{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     painter.drawImage( logoX0, logoY, LogoImage );
     painter.end();
-    QImage dim = decoratedImage.copy();
-    LOG2(dim.width(), dim.height())
+//    QImage dim = decoratedImage.copy();
+//    LOG2(dim.width(), dim.height())
 
-    if( !dim.save( imageName, "PNG", 100 ) )
+    if( !decoratedImage.save( imageName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: decorated image capture failed" )
     }
@@ -145,7 +145,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     }
 
     // save a thumbnail image for the UI to use
-    QImage thumbNail = dim.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
+    QImage thumbNail = decoratedImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
     LOG2(thumbNail.width(), thumbNail.height())
     if( !thumbNail.save( thumbName, "PNG", 100 ) )
     {
