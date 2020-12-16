@@ -82,20 +82,10 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     const QImage logoImage( ":/octConsole/captureLogo.png" );
     const QImage LogoImage = logoImage.scaledToWidth(360);
 
-    QImage sectorImage( captureItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     QImage decorImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
 
-    LOG2(captureItem.decoratedImage.width(), captureItem.decoratedImage.height());
-    LOG2(captureItem.sectorImage.width(), captureItem.sectorImage.height());
-
     LOG2(decorImage.width(), decorImage.height());
-    LOG2(sectorImage.width(), sectorImage.height());
-
-    auto imageRect = sectorImage.rect();
-    QRect scaledRect(imageRect.x(), imageRect.y(), imageRect.width() * imageScaleFactor, imageRect.height() * imageScaleFactor);
     deviceSettings &devSettings = deviceSettings::Instance();
-
-    LOG2(scaledRect.width(), scaledRect.height())
 
     // Obtain the current timestamp
     const QDateTime currTime = QDateTime::currentDateTime(); //QDateTime().fromTime_t( captureItem.timestamp );
@@ -116,43 +106,20 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     /*
      * Paint the procedure data to the sector image.
      */
-    QImage plainImage = sectorImage.scaled(scaledRect.width(), scaledRect.height());
-    QPainter painter(&plainImage);
-    LOG2(plainImage.width(), plainImage.height())
+    QPainter painter;
 
-    addTimeStamp(painter);
-    addFileName(painter,saveName);
-    addCatheterName(painter);
+//    addTimeStamp(painter);
+//    addFileName(painter,saveName);
+//    addCatheterName(painter);
 
-    //    Upper Right -- Logo
-    painter.drawImage( logoX0, logoY, LogoImage );
+//    //    Upper Right -- Logo
+//    painter.drawImage( logoX0, logoY, LogoImage );
 
-    painter.end();
-
+//    painter.end();
 
     // Store the capture
     const QString thumbName = saveDirName + "/.thumb_" + saveName + ".png";
     const QString imageName = saveDirName + "/"        + saveName + ".png";
-
-    QMatrix m;
-//    m.rotate( 90 );
-//    LOG2(saveDirName,saveName)
-
-//    // save a thumbnail image for the UI to use
-//    if( !decorImage.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
-//    {
-//        LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
-//    }
-//    else
-//    {
-//        emit sendFileToKey( thumbName );
-//    }
-
-    /*
-     * save the decorated image
-     */
-    // rotate the decorated image to match the display
-//    m.rotate( 90 );
 
     // Paint the logo on the decorated image in the upper right corner
     QImage decoratedImage( captureItem.decoratedImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
@@ -165,7 +132,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
 //    const int logoX1{ int(SectorWidth_px * decoratedImageScaleFactor) - LogoImage.width() - 100};
     painter.drawImage( logoX0, logoY, LogoImage );
     painter.end();
-    QImage dim = decoratedImage.copy(scaledRect);
+    QImage dim = decoratedImage.copy();
     LOG2(dim.width(), dim.height())
 
     if( !dim.save( imageName, "PNG", 100 ) )
@@ -180,7 +147,7 @@ void captureMachine::processImageCapture( CaptureItem_t captureItem )
     // save a thumbnail image for the UI to use
     QImage thumbNail = dim.scaled( ThumbnailHeight_px, ThumbnailWidth_px );
     LOG2(thumbNail.width(), thumbNail.height())
-    if( !dim.scaled( ThumbnailHeight_px, ThumbnailWidth_px ).save( thumbName, "PNG", 100 ) )
+    if( !thumbNail.save( thumbName, "PNG", 100 ) )
     {
         LOG( DEBUG, "Image Capture: sector thumbnail capture failed" )
     }
