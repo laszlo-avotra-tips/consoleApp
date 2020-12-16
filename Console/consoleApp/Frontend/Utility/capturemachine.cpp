@@ -155,9 +155,9 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
     QPainter painter( &secRGB );
 
     addLogo(painter, true);
-//    addTimeStamp(painter,true);
+    addTimeStamp(painter,true);
     addFileName(painter,clipItem.strClipNumber, true);
-//    addCatheterName(painter,true);
+    addCatheterName(painter,true);
 
     painter.end();
 
@@ -194,7 +194,7 @@ void captureMachine::addTimeStamp(QPainter& painter, bool isClip)
     QString timeStampTime = now.toString("hh:mm:ss");
 
     if(isClip){
-        painter.setFont( QFont( "DinPro-regular", 10 ) );
+        painter.setFont( QFont( "DinPro-regular", 8 ) );
         nowX = 10;
         firstRow = 90;
     } else {
@@ -211,9 +211,9 @@ void captureMachine::addFileName(QPainter &painter, const QString &fn, bool isCl
     painter.setPen( QPen( Qt::white ) );
 
     if(isClip){
-        painter.setFont( QFont( "DinPro-regular", 10 ) );
+        painter.setFont( QFont( "DinPro-regular", 8 ) );
         fnX = 10;
-        fnY = 90;
+        fnY = 1000;
     } else {
         painter.setFont( QFont( "DinPro-regular", 20 ) );
     }
@@ -227,7 +227,7 @@ void captureMachine::addCatheterName(QPainter &painter, bool isClip)
     QFont nameFont;
 
     if(isClip){
-        nameFont = QFont("DinPro-regular", 10 );
+        nameFont = QFont("DinPro-regular", 8 );
     } else {
         nameFont = QFont("DinPro-regular", 20 );
     }
@@ -236,8 +236,8 @@ void captureMachine::addCatheterName(QPainter &painter, bool isClip)
 
     QFontMetrics qfm(nameFont);
 
-//    LOG2(nameFont.pointSize(),nameFont.pointSizeF())
-//    LOG2(qfm.maxWidth(), qfm.height())
+    LOG2(nameFont.pointSize(),nameFont.pointSizeF())
+    LOG2(qfm.maxWidth(), qfm.height())
 
     auto device = deviceSettings::Instance().current();
     auto name = device->getSplitDeviceName();
@@ -245,15 +245,24 @@ void captureMachine::addCatheterName(QPainter &painter, bool isClip)
     QStringList names = name.split("\n");
     QRect rect0 = qfm.tightBoundingRect(names[0]);
     QRect rect1 = qfm.tightBoundingRect(names[1]);
-//    LOG2(rect0.width(), rect0.height())
-//    LOG2(rect1.width(), rect1.height())
-    const int catheterX0{ int(SectorWidth_px * imageScaleFactor - rect0.width()) - 20 };
-    const int catheterX1{ int(SectorWidth_px * imageScaleFactor - rect1.width()) - 20 };
 
-//    LOG2(catheterX0, catheterX1)
+    LOG2(rect0.width(), rect0.height())
+    LOG2(rect1.width(), rect1.height())
+
+    int catheterX0{ int(SectorWidth_px * imageScaleFactor - rect0.width()) - 20 };
+    int catheterX1{ int(SectorWidth_px * imageScaleFactor - rect1.width()) - 20 };
+    int catheterY0{60};
+    int catheterY1{120};
+
+    LOG2(catheterX0, catheterX1)
+
     if(names.count() >= 2){
-        const int catheterY0{60};
-        const int catheterY1{120};
+        if(isClip){
+            catheterX0 = int(SectorWidth_px - rect0.width() / imageScaleFactor) - 20;
+            catheterX1 = int(SectorWidth_px - rect1.width() / imageScaleFactor) - 20;
+            catheterY0 = 30;
+            catheterY1 = 60;
+        }
         painter.drawText(catheterX0, catheterY0, names[0]);
         painter.drawText(catheterX1, catheterY1, names[1]);
     }
