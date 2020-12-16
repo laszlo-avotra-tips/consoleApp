@@ -160,7 +160,7 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
 
     //    Upper Right -- Logo
 //    painter.drawImage( SectorWidth_px - LogoImage.width() - 50, 20, LogoImage );
-    addLogo(painter);
+    addLogo(painter, true);
 
     painter.end();
 
