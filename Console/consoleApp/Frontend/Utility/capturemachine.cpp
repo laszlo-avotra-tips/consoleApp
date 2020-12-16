@@ -156,7 +156,7 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
 
     addLogo(painter, true);
     addTimeStamp(painter,true);
-//    addFileName(painter,clipName, true);
+    addFileName(painter,clipName, true);
 //    addCatheterName(painter,true);
 
     painter.end();
@@ -205,13 +205,15 @@ void captureMachine::addTimeStamp(QPainter& painter, bool isClip)
 
 void captureMachine::addFileName(QPainter &painter, const QString &fn, bool isClip)
 {
-    const int fnX{20}; //{int(SectorWidth_px * decoratedImageScaleFactor) - 200};
-    const int fnY{2140};
+    int fnX{20};
+    int fnY{2140};
 
     painter.setPen( QPen( Qt::white ) );
 
     if(isClip){
         painter.setFont( QFont( "DinPro-regular", 10 ) );
+        fnX = 10;
+        fnY = 1580;
     } else {
         painter.setFont( QFont( "DinPro-regular", 20 ) );
     }
