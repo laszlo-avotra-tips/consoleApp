@@ -22,6 +22,7 @@
 #include <QFontMetrics>
 
 #include "logger.h"
+#include "Utility/octFrameRecorder.h"
 
 namespace{
 const double imageScaleFactor{2.11};
@@ -141,10 +142,11 @@ void captureMachine::clipCapture( QImage sector, QString strClipNumber, unsigned
  */
 void captureMachine::processLoopRecording(ClipItem_t clipItem )
 {
-    const QString clipName = generateClipName(clipItem);
-    LOG1(clipName)
+    const QString clipFileName = generateClipFileName(clipItem);
 
-    QImage secRGB( clipItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
+    const QString clipName{clipItem.strClipNumber};
+    auto* recorder = OctFrameRecorder::instance();
+    recorder->setClipName(clipName);
 
     // Obtain the current timestamp
     const QDateTime currTime = QDateTime().fromTime_t( clipItem.timestamp );
@@ -152,11 +154,12 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
     /*
      * Paint information on the sector image that needs to be visible when reviewed during a case
      */
+    QImage secRGB( clipItem.sectorImage.convertToFormat( QImage::Format_RGB32 ) ); // Can't paint on 8-bit
     QPainter painter( &secRGB );
 
     addLogo(painter, true);
     addTimeStamp(painter,true);
-    addFileName(painter,clipItem.strClipNumber, true);
+    addFileName(painter,clipName, true);
     addCatheterName(painter,true);
 
     painter.end();
@@ -164,7 +167,7 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
     // Build the location directory
     caseInfo &info = caseInfo::Instance();
     QString saveDirName = info.getClipsDir();
-    QString saveName =  QString( clipName );
+    QString saveName =  QString( clipFileName );
 
     // Store the capture
     const QString clipThumbNailFileName = saveDirName + "/thumb_" + saveName + ".png";
@@ -189,7 +192,7 @@ void captureMachine::processLoopRecording(ClipItem_t clipItem )
         emit sendFileToKey( clipThumbNailFileName );
     }
 
-    LOG( INFO, "Loop Capture: " + clipName )
+    LOG( INFO, "Loop Capture: " + clipFileName )
 }
 
 void captureMachine::addTimeStamp(QPainter& painter, bool isClip)
@@ -353,7 +356,7 @@ void captureMachine::addCaptureToTheModel(const captureMachine::CaptureItem_t& c
     }
 }
 
-QString captureMachine::generateClipName(const ClipItem_t& clipItem)
+QString captureMachine::generateClipFileName(const ClipItem_t& clipItem)
 {
     return QString ("clip-") + clipItem.strClipNumber;
 }

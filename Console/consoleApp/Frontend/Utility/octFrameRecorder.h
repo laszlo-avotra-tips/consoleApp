@@ -26,6 +26,10 @@ public:
     bool start();
     bool stop();
 
+    QString clipName() const;
+
+    void setClipName(const QString &clipName);
+
 signals:
 
 public slots:
@@ -43,6 +47,9 @@ private:
     ConcatenateVideo* m_concatenateVideo{nullptr};
     const int m_width{1024};
     const int m_height{1024};
+
+    QString m_clipName;
+    QString m_timeStamp;
 
 };
 

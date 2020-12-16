@@ -82,6 +82,16 @@ void OctFrameRecorder::updateClipList(int loopNumber)
 
 }
 
+void OctFrameRecorder::setClipName(const QString &clipName)
+{
+    m_clipName = clipName;
+}
+
+QString OctFrameRecorder::clipName() const
+{
+    return m_clipName;
+}
+
 QString OctFrameRecorder::playlistFileName() const
 {
     return m_playlistFileName;
@@ -100,9 +110,9 @@ bool OctFrameRecorder::start()
     if(!clipListModel::Instance().getOutDirPath().isEmpty() && !playlistFileName().isEmpty() && m_screenCapture && m_width > 0 && m_height >0){
         const std::string directoryName {clipListModel::Instance().getOutDirPath().toStdString()};
         const std::string fileName {playlistFileName().toStdString()};
-        const char* fileNameLabel{"LOOP1"};
+//        const char* fileNameLabel{"LOOP1"};
         LOG2(directoryName.c_str(),fileName.c_str())
-        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str(), fileNameLabel, m_width, m_height);
+        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str(), clipName().toLatin1(), m_width, m_height);
         LOG1(success)
         if(success){
 //            QThread::msleep(500);
