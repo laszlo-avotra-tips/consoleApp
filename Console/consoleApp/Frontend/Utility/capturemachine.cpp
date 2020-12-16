@@ -252,7 +252,7 @@ void captureMachine::addLogo(QPainter &painter, bool isClip)
     int scale{360};
 
     if(isClip){
-        scale = double(scale) * 1600 / 2160;
+        scale = double(scale) * 1024 / 2160;
     }
     const QImage LogoImage = logoImage.scaledToWidth(scale);
     painter.drawImage( logoX0, logoY, LogoImage );
