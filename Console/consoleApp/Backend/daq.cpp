@@ -165,6 +165,7 @@ void DAQ::run( void )
                 gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
                 auto* sm =  SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
+//                LOG2(gFrameNumber, axsunData)
                 sm->setBufferLength(gBufferLength);
 
                 emit updateSector(axsunData);
@@ -227,7 +228,10 @@ bool DAQ::getData( )
        LOG2(height, width)
        LOG2(data_type, required_buffer_size)
        LOG2(force_trig, trig_too_fast)
+    } catch(...){
+        LOG1(__FUNCTION__)
     }
+
     isReturnedImageNumberChanged = (success == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
     sprevReturnedImageNumber = returned_image_number;
 
@@ -384,6 +388,8 @@ bool DAQ::startDaq()
         LOG1(axMessage)
     }  catch (std::exception& e) {
        LOG1(e.what())
+    } catch(...){
+        LOG1(__FUNCTION__)
     }
 
     return success == NO_AxERROR;

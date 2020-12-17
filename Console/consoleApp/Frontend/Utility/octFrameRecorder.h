@@ -26,10 +26,18 @@ public:
     bool start();
     bool stop();
 
+    QString clipName() const;
+
+    void setClipName(const QString &clipName);
+
+    QString timeStamp() const;
+    void setTimeStamp(const QString &timeStamp);
+
 signals:
 
 public slots:
-    void recordData(uint8_t *frame, int width, int height);
+    void recordData(uint8_t *frame, const char *catheterName, const char *cathalogName,
+                    const char *activePassive, const char* timestamp, int width, int height);
 
 private:
     explicit OctFrameRecorder(QObject *parent = nullptr);
@@ -43,6 +51,9 @@ private:
     ConcatenateVideo* m_concatenateVideo{nullptr};
     const int m_width{1024};
     const int m_height{1024};
+
+    QString m_clipName;
+    QString m_timeStamp;
 
 };
 

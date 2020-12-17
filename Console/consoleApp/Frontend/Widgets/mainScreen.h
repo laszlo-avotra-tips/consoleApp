@@ -40,7 +40,8 @@ signals:
     void captureImage();
     void measureImage(bool isMeasureMode);
     void sledRunningStateChanged(int isInRunningState);
-    void updateRecorder(uint8_t* dispData, int width, int height);
+    void updateRecorder(uint8_t *frame, const char *catheterName, const char *cathalogName,
+                    const char *activePassive, const char* timestamp, int width, int height);
 
 private slots:
     void on_pushButtonFlip_clicked();
@@ -127,6 +128,7 @@ private:
     ScanConversion *m_scanWorker{nullptr};
     bool m_recordingIsOn{false};
     bool m_recordingIsInitialized{false};
+    uint8_t* m_clipBuffer{nullptr};
 
 };
 #endif // MAINSCREEN_H

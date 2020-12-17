@@ -16,12 +16,23 @@ OctFrameRecorder *OctFrameRecorder::instance()
     return m_instance;
 }
 
-void OctFrameRecorder::recordData(uint8_t *dispData, int width, int height)
+void OctFrameRecorder::recordData(uint8_t *dispData, const char* catheterName, const char* cathalogName,
+                                  const char* activePassive, const char* timeStamp, int width, int height)
 {
     bool isOk {m_width == width && m_height == height};
-    if(dispData && m_recorderIsOn && isOk){
-        if(!playlistFileName().isEmpty() && !clipListModel::Instance().getOutDirPath().isEmpty() && m_screenCapture){
-            m_screenCapture->encodeFrame(dispData);
+
+    if(dispData && m_recorderIsOn && isOk)
+    {
+        if(!playlistFileName().isEmpty() && !clipListModel::Instance().getOutDirPath().isEmpty() && m_screenCapture)
+        {
+            m_screenCapture->encodeFrame
+                    (
+                        dispData,
+                        catheterName,
+                        cathalogName,
+                        activePassive,
+                        timeStamp
+                        );
         }
     }
 }
@@ -68,6 +79,26 @@ void OctFrameRecorder::updateClipList(int loopNumber)
 
 }
 
+QString OctFrameRecorder::timeStamp() const
+{
+    return m_timeStamp;
+}
+
+void OctFrameRecorder::setTimeStamp(const QString &timeStamp)
+{
+    m_timeStamp = timeStamp;
+}
+
+void OctFrameRecorder::setClipName(const QString &clipName)
+{
+    m_clipName = clipName;
+}
+
+QString OctFrameRecorder::clipName() const
+{
+    return m_clipName;
+}
+
 QString OctFrameRecorder::playlistFileName() const
 {
     return m_playlistFileName;
@@ -85,12 +116,13 @@ bool OctFrameRecorder::start()
     bool success{false};
     if(!clipListModel::Instance().getOutDirPath().isEmpty() && !playlistFileName().isEmpty() && m_screenCapture && m_width > 0 && m_height >0){
         const std::string directoryName {clipListModel::Instance().getOutDirPath().toStdString()};
-        const std::string fileName {playlistFileName().toStdString()};
-        LOG2(directoryName.c_str(),fileName.c_str())
-        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str(), m_width, m_height);
+        const std::string fileName {playlistFileName().toStdString()};        
+        LOG2(directoryName.c_str(),fileName.c_str());
+        LOG1(clipName())
+        success = m_screenCapture->start(directoryName.c_str(), fileName.c_str(), clipName().toLatin1(), m_width, m_height);
         LOG1(success)
         if(success){
-//            QThread::msleep(500);
+            QThread::msleep(50);
             setRecorderIsOn(true);
         }
     }
@@ -137,7 +169,6 @@ void OctFrameRecorder::onRecordSector(bool isRecording)
         clipList.setCurrentLoopNumber(currentLoopNumber);
         updateOutputFileName(currentLoopNumber);
         updateClipList(currentLoopNumber);
-        OctFrameRecorder::instance()->start();
     } else {
         OctFrameRecorder::instance()->stop();
     }

@@ -72,6 +72,7 @@ MainScreen::MainScreen(QWidget *parent)
     m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    m_clipBuffer = new uint8_t[1024 * 1024];
 //    ui->pushButton->setEnabled(false);
 }
 
@@ -86,6 +87,7 @@ void MainScreen::setScene(liveScene *scene)
 
 MainScreen::~MainScreen()
 {
+    delete[] m_clipBuffer;
     delete ui;
 }
 
@@ -643,8 +645,8 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
                                      dev.current()->getDeviceName(),
                                      true );
 
+            recorder->start();
         }
-
         showYellowBorderForRecordingOn(m_recordingIsOn);
     }
 }
@@ -710,17 +712,51 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 //        LOG2(image->width(),image->height());
 //        LOG2(image->sizeInBytes(), image->bytesPerLine());
 
-
         frameData->dispData = image->bits();
         auto bufferLength = sm->getBufferLength();
 
+//        LOG2(image->width(),image->height())
         m_scanWorker->warpData( frameData, bufferLength);
+
+        OCTFile::OctData_t clipData(*frameData);
+        clipData.dispData = m_clipBuffer;
+        m_scanWorker->warpData( &clipData, bufferLength);
 
         if(m_scanWorker->isReady){
 
             if(image && frameData && frameData->dispData){
 
-                emit updateRecorder(frameData->dispData,1024,1024);
+                QString activePassiveValue{"ACTIVE"};
+                auto& sled = SledSupport::Instance();
+
+                int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
+                if(lastRunningState == 3)
+                {
+                    activePassiveValue = "PASSIVE";
+                }
+                else if(lastRunningState == 1)
+                {
+                    activePassiveValue = "ACTIVE";
+                }
+
+                const QDateTime currentTime = QDateTime::currentDateTime();
+                const QString timeLabel{currentTime.toString("hh:mm:ss")};
+                const auto& dev = deviceSettings::Instance().current();
+
+                if(!dev->isBiDirectional()){
+                    activePassiveValue = QString("");
+                }
+
+                auto devName = dev->getSplitDeviceName();
+                QStringList names = devName.split("\n");
+                const QString catheterName{names[0]};
+                const QString cathalogName{names[1]};
+
+                emit updateRecorder(clipData.dispData,
+                                    catheterName.toLatin1(),cathalogName.toLatin1(),
+                                    activePassiveValue.toLatin1(),
+                                    timeLabel.toLatin1(),
+                                    1024,1024);
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
