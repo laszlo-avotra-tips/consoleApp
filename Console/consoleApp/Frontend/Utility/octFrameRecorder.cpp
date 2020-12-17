@@ -40,6 +40,9 @@ void OctFrameRecorder::recordData(uint8_t *dispData, const char* catheterName, c
 OctFrameRecorder::OctFrameRecorder(QObject *parent) : QObject(parent)
 {
     m_screenCapture = new CapUtils::ScreenCapture();
+    const QString logo{"C:/Avinger_System/logo_video.png"};
+    LOG1(logo)
+    m_screenCapture->setLogoPath(logo.toLatin1());
     m_concatenateVideo = ConcatenateVideo::instance();
 }
 
