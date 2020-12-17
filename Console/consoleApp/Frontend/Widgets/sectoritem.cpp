@@ -246,7 +246,7 @@ void sectorItem::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
         {
             newRotation_deg = int(newRotation_deg) % 360;
         }
-        LOG1(newRotation_deg);
+//        LOG1(newRotation_deg);
         SignalModel::instance()->setDisplayAngle(float(newRotation_deg));
 //        rotateSector( newRotation_deg );
     }
