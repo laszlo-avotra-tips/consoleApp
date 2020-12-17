@@ -359,9 +359,9 @@ border: 3px solid #F5C400;
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="../../octConsole.qrc">
-      <normaloff>:/octConsole/Frontend/Resources/play_button.png</normaloff>
-      <normalon>:/octConsole/Frontend/Resources/pause_button.png</normalon>:/octConsole/Frontend/Resources/play_button.png</iconset>
+     <iconset>
+      <normaloff>../Resources/Play-Button-black-white.png</normaloff>
+      <normalon>../Resources/Pause-Button-black-white.png</normalon>../Resources/Play-Button-black-white.png</iconset>
     </property>
     <property name="iconSize">
      <size>

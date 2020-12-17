@@ -57,5 +57,7 @@
         <file alias="captureLogo.png">Frontend/Resources/avinger_logo_horizontal_black-white.png</file>
         <file alias="rightArrow">Frontend/Resources/arrow-right-200.png</file>
         <file alias="leftArrow">Frontend/Resources/arrow-left-200.png</file>
+        <file alias="pause-black-white">Frontend/Resources/Pause-Button-black-white.png</file>
+        <file alias="play-black-white">Frontend/Resources/Play-Button-black-white.png</file>
     </qresource>
 </RCC>
