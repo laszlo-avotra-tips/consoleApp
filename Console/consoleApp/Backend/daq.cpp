@@ -165,6 +165,7 @@ void DAQ::run( void )
                 gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
                 auto* sm =  SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
+//                LOG2(gFrameNumber, axsunData)
                 sm->setBufferLength(gBufferLength);
 
                 emit updateSector(axsunData);

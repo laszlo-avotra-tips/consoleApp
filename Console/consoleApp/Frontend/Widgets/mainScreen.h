@@ -128,6 +128,7 @@ private:
     ScanConversion *m_scanWorker{nullptr};
     bool m_recordingIsOn{false};
     bool m_recordingIsInitialized{false};
+    uint8_t* m_clipBuffer{nullptr};
 
 };
 #endif // MAINSCREEN_H
