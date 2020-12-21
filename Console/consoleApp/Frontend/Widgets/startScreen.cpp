@@ -124,9 +124,6 @@ bool StartScreen::event(QEvent *event)
             return gestureEvent(ge);
         }
     }
-    if(event->type() == QEvent::WindowActivate){
-        LOG1(event->type())
-    }
     return QWidget::event(event);
 }
 
