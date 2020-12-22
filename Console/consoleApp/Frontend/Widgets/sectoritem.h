@@ -164,7 +164,6 @@ public:
 
 private:
     int status;
-    void render(void);
     void overlayUnwrapIndicator( double angle );
 
     double computeAngleForPosition(QPointF position);
