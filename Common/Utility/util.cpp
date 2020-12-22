@@ -220,7 +220,7 @@ void updateSessionCookieFile( QString caseID )
 
     if( !sessionCookieFile.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) )
     {
-        displayWarningMessage( QObject::tr( "Failed to create session cookie. You will need to manually refresh the case database." ) );
+        displayWarningMessage( QObject::tr( "Failed to create session cookie. You will need to manually update the case database." ) );
     }
     else
     {

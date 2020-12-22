@@ -129,7 +129,6 @@ public slots:
     void loadColorModeGray();
     void loadColorModeSepia();
     void setCalibrationScale( int pixelsPerMm, float zoomFactor );
-	void refresh();
 	
 signals:
     void fullRotation();
@@ -149,7 +148,7 @@ signals:
     void measurementLength( int );
 
 private slots:
-//    void refresh();
+    void refresh();
 
 private:
     QVector<QRgb> grayScalePalette;

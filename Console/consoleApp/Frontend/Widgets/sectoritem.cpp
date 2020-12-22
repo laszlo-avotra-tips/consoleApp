@@ -690,7 +690,7 @@ overlayItem::~overlayItem()
 /*
  * render()
  *
- * Called to draw the overlays. This is called in liveScene::refresh(), but it only needs to be called at device
+ * Called to draw the overlays. It only needs to be called at device
  * selection.
  */
 void overlayItem::render( void )
