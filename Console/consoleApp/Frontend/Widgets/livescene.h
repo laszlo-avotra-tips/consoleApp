@@ -115,7 +115,6 @@ public slots:
 	void setDoPaint()
 	{
 		doPaint = true;
-		force = true;
 	}
 
     void setClipForPlayback( QString name );
@@ -159,7 +158,6 @@ private:
     QTimer *refreshTimer;
     QTimer *infoRenderTimer;
     bool doPaint;
-	bool force;
     sectorItem *sector;
     overlayItem *overlays;
     float zoomFactor;

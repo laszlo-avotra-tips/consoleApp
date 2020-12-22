@@ -464,7 +464,7 @@ QImage sectorItem::freeze ( void )
     // Copy the sector image to a local image that can be manipulated
     QImage tmp = sectorImage->copy();
 
-    // Rotate about the center of the image; use +0.5 to force rounding
+    // Rotate about the center of the image; use +0.5 for rounding
     float yTranslation = ( float( tmp.height() ) / 2.0f ) + 0.5f;
     float xTranslation = ( float( tmp.width() )  / 2.0f ) + 0.5f;
 
