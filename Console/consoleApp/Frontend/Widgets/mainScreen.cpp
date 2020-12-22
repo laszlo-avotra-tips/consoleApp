@@ -338,7 +338,9 @@ void MainScreen::showEvent(QShowEvent *se)
         QTimer::singleShot(100,this, &MainScreen::openCaseInformationDialog);
         //clear sector
     }
+    m_scene->clearOverlay();
     QImage* image = m_scene->sectorImage();
+
     LOG1(image)
     if(image){
         memset(image->bits(), 0, 1024*1024);

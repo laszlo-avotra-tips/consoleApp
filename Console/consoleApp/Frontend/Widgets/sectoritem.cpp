@@ -543,10 +543,16 @@ overlayItem::overlayItem( sectorItem *parent )
     reticleBrightness = parentSector->getReticleBrightness();
     overlayPainter = new QPainter();
     overlayImage = new QImage( sectorSize, QImage::Format_ARGB32 );
-
-    // Transparent background
-    overlayImage->fill( qRgba( 0, 0, 0, 0 ) );
+    clearOverlay();
 }
+
+void overlayItem::clearOverlay()
+{
+    // Transparent background
+    LOG1("0")
+    overlayImage->fill( 0 );
+}
+
 
 /*
  * destructor
@@ -568,6 +574,8 @@ void overlayItem::render( void )
 {
     auto& ds = deviceSettings::Instance();
     auto* dev = ds.current();
+    static int overlayCount{0};
+    LOG1(overlayCount) overlayCount++;
 
     if(dev->isBiDirectional()){
         auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();

@@ -77,7 +77,7 @@ liveScene::liveScene( QObject *parent )
     infoMessageItem = nullptr;
     refreshTimer = new QTimer();
     connect( refreshTimer, SIGNAL( timeout() ), this, SLOT( refresh() ) );
-    refreshTimer->start( ScreenRefreshRate_ms);//lcv
+    refreshTimer->start( ScreenRefreshRate_ms);
 
     infoRenderTimer = new QTimer();
     connect( infoRenderTimer, SIGNAL( timeout() ), this, SLOT( generateClipInfo() ) );
@@ -207,6 +207,11 @@ void liveScene::refresh( void )
 void liveScene::paintOverlay()
 {
     overlays->render();
+}
+
+void liveScene::clearOverlay()
+{
+    overlays->clearOverlay();
 }
 
 bool liveScene::isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const

@@ -257,6 +257,8 @@ public:
     overlayItem( sectorItem *parent = nullptr );
     ~overlayItem();
     void render( void );
+    void clearOverlay();
+
 private:
     bool overlaysShouldPaint;
     QPainter   *overlayPainter;
