@@ -336,6 +336,11 @@ void MainScreen::showEvent(QShowEvent *se)
     qDebug() << __FUNCTION__;
     if(WidgetContainer::instance()->getIsNewCase()){
         QTimer::singleShot(100,this, &MainScreen::openCaseInformationDialog);
+        //clear sector
+        QImage* image = m_scene->sectorImage();
+        if(image){
+            memset(image->bits(), 0, 1024*1024);
+        }
     }
 }
 
