@@ -61,6 +61,7 @@ public:
     void setActive();
     void setPassive();
     void setIdle();
+    void paintOverlay();
 
 public slots:
     void captureDecoratedImage( QImage decoratedImage, QString tagText );
@@ -112,11 +113,6 @@ public slots:
     void handleDisableMouseRotateSector() { mouseRotationEnabled = false; }
     void handleEnableMouseRotateSector() { mouseRotationEnabled = true; }
 	
-	void setDoPaint()
-	{
-		doPaint = true;
-	}
-
     void setClipForPlayback( QString name );
     void startPlayback( void );
     void pausePlayback(  );
@@ -157,7 +153,6 @@ private:
     QGraphicsTextItem *infoMessageItem;
     QTimer *refreshTimer;
     QTimer *infoRenderTimer;
-    bool doPaint;
     sectorItem *sector;
     overlayItem *overlays;
     float zoomFactor;

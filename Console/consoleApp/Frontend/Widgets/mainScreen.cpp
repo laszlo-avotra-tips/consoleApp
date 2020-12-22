@@ -778,8 +778,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
                 }
-//lcv                if(++count % 2 == 0)
-                    m_scene->setDoPaint();
+                m_scene->paintOverlay();
             }
         }
     }

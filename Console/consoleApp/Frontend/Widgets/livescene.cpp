@@ -60,8 +60,6 @@ liveScene::liveScene( QObject *parent )
     sector->setData( 0, "axsun" );
     addItem( sector );
 
-    doPaint = false;
-
 //    sector->setZValue( 1.0 );
     sector->setPos( 0, 0 );
     sector->clearRotationFlag();
@@ -203,12 +201,12 @@ void liveScene::setAnnotateMode( bool state, QColor color )
  */
 void liveScene::refresh( void )
 {
-    if( doPaint )
-    {
-        doPaint = false;
-        overlays->render();
-    }
     update();
+}
+
+void liveScene::paintOverlay()
+{
+    overlays->render();
 }
 
 bool liveScene::isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const
