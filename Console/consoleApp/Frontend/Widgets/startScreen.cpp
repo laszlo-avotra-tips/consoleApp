@@ -92,8 +92,10 @@ void StartScreen::on_pushButtonShutdown_clicked()
 void StartScreen::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
-    qDebug() << __FUNCTION__;
-    WidgetContainer::instance()->setIsNewCase(true);
+    if(se->type() == QEvent::Show){
+        LOG1(se->type());
+        WidgetContainer::instance()->setIsNewCase(true);
+    }
 }
 
 void StartScreen::hideEvent(QHideEvent *he)

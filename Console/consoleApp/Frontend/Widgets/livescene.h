@@ -61,6 +61,8 @@ public:
     void setActive();
     void setPassive();
     void setIdle();
+    void paintOverlay();
+    void clearOverlay();
 
 public slots:
     void captureDecoratedImage( QImage decoratedImage, QString tagText );
@@ -112,12 +114,6 @@ public slots:
     void handleDisableMouseRotateSector() { mouseRotationEnabled = false; }
     void handleEnableMouseRotateSector() { mouseRotationEnabled = true; }
 	
-	void setDoPaint()
-	{
-		doPaint = true;
-		force = true;
-	}
-
     void setClipForPlayback( QString name );
     void startPlayback( void );
     void pausePlayback(  );
@@ -129,7 +125,6 @@ public slots:
     void loadColorModeGray();
     void loadColorModeSepia();
     void setCalibrationScale( int pixelsPerMm, float zoomFactor );
-	void refresh();
 	
 signals:
     void fullRotation();
@@ -149,7 +144,7 @@ signals:
     void measurementLength( int );
 
 private slots:
-//    void refresh();
+    void refresh();
 
 private:
     QVector<QRgb> grayScalePalette;
@@ -159,8 +154,6 @@ private:
     QGraphicsTextItem *infoMessageItem;
     QTimer *refreshTimer;
     QTimer *infoRenderTimer;
-    bool doPaint;
-	bool force;
     sectorItem *sector;
     overlayItem *overlays;
     float zoomFactor;

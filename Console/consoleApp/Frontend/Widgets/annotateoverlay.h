@@ -6,7 +6,7 @@
  * annotations can be added to the image.
  *
  * Each drawing is stored as a list of segments in drawingsList; this
- * QList is traversed in the paint() event to render each drawing.
+ * QList is traversed in the paint() event for each drawing.
  *
  * This simple implementation only allows freehand drawing in one color and pen
  * width.  It can be enhanced as needed in the future.

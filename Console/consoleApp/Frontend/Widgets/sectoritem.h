@@ -164,7 +164,6 @@ public:
 
 private:
     int status;
-    void render(void);
     void overlayUnwrapIndicator( double angle );
 
     double computeAngleForPosition(QPointF position);
@@ -258,6 +257,8 @@ public:
     overlayItem( sectorItem *parent = nullptr );
     ~overlayItem();
     void render( void );
+    void clearOverlay();
+
 private:
     bool overlaysShouldPaint;
     QPainter   *overlayPainter;

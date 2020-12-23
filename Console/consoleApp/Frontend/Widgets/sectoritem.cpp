@@ -317,142 +317,13 @@ void sectorItem::setSectorImage(QImage *value)
  * addFrame
  *
  * Main client call. Adds a frame of OCT data to the image buffer, using
- * the provided angle to transform and render appropriately.
+ * the provided angle to transform
  */
 void sectorItem::addFrame( QSharedPointer<scanframe> &data )
 {
     // Copy the image into the display buffer
     memcpy( sectorImage->bits(), data->dispData->data(), SectorWidth_px * SectorHeight_px );
     sectorShouldPaint = true;
-}
-
-/*
- * render()
- *
- * Draw the new portion of the sector image using the latest two lines.
- * Interpolate between the lines if there is enough angle displacement
- * to warrant it. Draws directly to a QImage which is later converted
- * to a QPixmap for display. QImage is the only Qt primitive that allows
- * direct access to the pixel data. This function is heavily optimized.
- */
-void sectorItem::render( void )
-{
-    float angle_rad     = float(currentAngle_deg * degToRad);
-    float lastAngle_rad = float(lastAngle_deg * degToRad);
-    float interpAngle_rad;
-    uchar *rawPixels = sectorImage->bits();
-
-    trigLookupTable &quickTrig = trigLookupTable::Instance();
-
-    if( twoLinesValid )
-    {
-        /*
-        * Determine the direction of rotation, this determines which
-        * line to start interpolating from.
-        */
-        if( lastAngle_rad < angle_rad )
-        {
-            interpDirection =  1;
-        }
-        else
-        {
-            interpDirection = -1;
-        }
-
-        // How far did we rotate
-        float deltaTheta_rad = fabs( lastAngle_rad - angle_rad );
-
-        // Crossed over 0/360 degrees? Promote the lesser angle and swap direction.
-        // This is not the greatest heuristic for crossing 2*pi: it can be fooled
-        // by any motion greater than 270, not just crossing 270. Also, crossing
-        // 360 must not exceed 90 degrees, this seems like a workable tradeoff, since
-        // we cannot deterministically know the direction of travel when crossing 360.
-        if( deltaTheta_rad > ( CrossOverAngleChange_rad ) )
-        {
-            if( lastAngle_rad > angle_rad ) 
-            {
-                angle_rad += 2.0f * float(pi);
-            } 
-            else 
-            {
-                lastAngle_rad += 2.0f * float(pi);
-            }
-            deltaTheta_rad = float( 2.0 * pi ) - deltaTheta_rad;
-            interpDirection *= -1;
-        }
-
-        // Interpolation: figure out the number of lines we need to fill in.
-        int numberOfLinesToFill = int( double(deltaTheta_rad) / MinInterpolationAngle_rad );
-
-        float  v1, v2;
-        QPoint drawPoint;
-        uchar  singleChannel;
-        float  deltaTheta1;
-        float  deltaTheta2;
-        float  correctedRho;
-        int    skipCount;
-        float  interpMultiplier = float(interpDirection * MinInterpolationAngle_rad);
-
-        /*
-         * For each line that we need to create, interpolate between the points
-         * on the previous line and the new line.
-         */
-        float rhoCorrectionFactor = 1.0;
-
-        int i;
-
-        // Draw the full sector from the internal imaging mask out to the last pixel
-        for( int j = internalImagingMask_px; j < currentAlineLength_px; j++ )
-        {
-            correctedRho = rhoCorrectionFactor * ( j + catheterRadius_px - internalImagingMask_px );
-            v1 = float( oldLine.at( j ) );
-            v2 = float( newLine.at( j ) );
-
-            // As rho gets larger, we need to fill more points, but we can compute
-            // how many we can safely skip at each rho to speed things up. It's
-            // not necessary to fill at the same resolution close to the origin as
-            // it is far away.
-            skipCount = floor_int( ( 1.0f / ( float(MinInterpolationAngle_rad) * ( ( correctedRho * 2.5f ) + 1.0f ) ) ) + 0.5f );
-            if( skipCount == 0 )
-            {
-                skipCount++;
-            }
-
-            for( i = 0; i < numberOfLinesToFill; i += skipCount )
-            {
-                interpAngle_rad = lastAngle_rad + i * interpMultiplier;
-                drawPoint = quickTrig.lookupPosition( int(correctedRho), double(interpAngle_rad) );
-
-                // The interpolation formula has to account for which
-                // direction we are progressing, otherwise the change in
-                // theta will end up negative.
-                if( interpDirection > 0 ) 
-                {
-                    deltaTheta1 = 1 - ( interpAngle_rad - lastAngle_rad ) / deltaTheta_rad;
-                } else {
-                    deltaTheta1 = 1 - ( lastAngle_rad - interpAngle_rad ) / deltaTheta_rad;
-                }
-                deltaTheta2 = 1 - deltaTheta1;
-
-                // We aren't really interpolating in rho: we don't really need to we since are
-                // 1:1 on radial resolution. If zooming or shrinking, let qt handle it.
-                singleChannel = uchar( float( v1 * deltaTheta1 + v2 * deltaTheta2 ) + 0.5f );
-
-                int xPos = drawPoint.x();
-                int yPos = drawPoint.y();
-
-//#if ENABLE_GRIN_LENS
-//                xPos /= 2;
-//                yPos /= 2;
-//#endif
-                *(rawPixels + ( ( xPos + centerX )     + ( yPos + centerY ) * secWidth ) ) = singleChannel;
-
-                // Eliminate missed pixels due to rounding by copying the line one pixel over
-                *(rawPixels + ( ( xPos + centerX + 1 ) + ( yPos + centerY ) * secWidth ) ) = singleChannel;
-
-            } // for( numberOfLinesToFill )
-        } //for( internalImagingMask_px )
-     } // if( twoLinesValid )
 }
 
 /*
@@ -593,7 +464,7 @@ QImage sectorItem::freeze ( void )
     // Copy the sector image to a local image that can be manipulated
     QImage tmp = sectorImage->copy();
 
-    // Rotate about the center of the image; use +0.5 to force rounding
+    // Rotate about the center of the image; use +0.5 for rounding
     float yTranslation = ( float( tmp.height() ) / 2.0f ) + 0.5f;
     float xTranslation = ( float( tmp.width() )  / 2.0f ) + 0.5f;
 
@@ -672,10 +543,16 @@ overlayItem::overlayItem( sectorItem *parent )
     reticleBrightness = parentSector->getReticleBrightness();
     overlayPainter = new QPainter();
     overlayImage = new QImage( sectorSize, QImage::Format_ARGB32 );
-
-    // Transparent background
-    overlayImage->fill( qRgba( 0, 0, 0, 0 ) );
+    clearOverlay();
 }
+
+void overlayItem::clearOverlay()
+{
+    // Transparent background
+    LOG1("0")
+    overlayImage->fill( 0 );
+}
+
 
 /*
  * destructor
@@ -690,13 +567,15 @@ overlayItem::~overlayItem()
 /*
  * render()
  *
- * Called to draw the overlays. This is called in liveScene::refresh(), but it only needs to be called at device
+ * Called to draw the overlays. It only needs to be called at device
  * selection.
  */
 void overlayItem::render( void )
 {
     auto& ds = deviceSettings::Instance();
     auto* dev = ds.current();
+    static int overlayCount{0};
+    LOG1(overlayCount) overlayCount++;
 
     if(dev->isBiDirectional()){
         auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();

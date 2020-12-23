@@ -336,6 +336,21 @@ void MainScreen::showEvent(QShowEvent *se)
     qDebug() << __FUNCTION__;
     if(WidgetContainer::instance()->getIsNewCase()){
         QTimer::singleShot(100,this, &MainScreen::openCaseInformationDialog);
+        //clear sector
+    }
+    m_scene->clearOverlay();
+    QImage* image = m_scene->sectorImage();
+
+    LOG1(image)
+    if(image){
+        memset(image->bits(), 0, 1024*1024);
+        QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+        if(pixmap){
+            QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+            pixmap->setPixmap(tmpPixmap);
+        }
+
     }
 }
 
@@ -765,8 +780,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
                 }
-//lcv                if(++count % 2 == 0)
-                    m_scene->setDoPaint();
+                m_scene->paintOverlay();
             }
         }
     }

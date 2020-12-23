@@ -60,8 +60,6 @@ liveScene::liveScene( QObject *parent )
     sector->setData( 0, "axsun" );
     addItem( sector );
 
-    doPaint = false;
-
 //    sector->setZValue( 1.0 );
     sector->setPos( 0, 0 );
     sector->clearRotationFlag();
@@ -79,7 +77,7 @@ liveScene::liveScene( QObject *parent )
     infoMessageItem = nullptr;
     refreshTimer = new QTimer();
     connect( refreshTimer, SIGNAL( timeout() ), this, SLOT( refresh() ) );
-    refreshTimer->start( ScreenRefreshRate_ms);//lcv
+    refreshTimer->start( ScreenRefreshRate_ms);
 
     infoRenderTimer = new QTimer();
     connect( infoRenderTimer, SIGNAL( timeout() ), this, SLOT( generateClipInfo() ) );
@@ -203,12 +201,17 @@ void liveScene::setAnnotateMode( bool state, QColor color )
  */
 void liveScene::refresh( void )
 {
-    if( doPaint )
-    {
-        doPaint = false;
-        overlays->render();
-    }
     update();
+}
+
+void liveScene::paintOverlay()
+{
+    overlays->render();
+}
+
+void liveScene::clearOverlay()
+{
+    overlays->clearOverlay();
 }
 
 bool liveScene::isTheMouseInTheCenter(QGraphicsSceneMouseEvent *event) const
