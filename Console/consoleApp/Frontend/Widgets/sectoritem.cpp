@@ -549,7 +549,7 @@ overlayItem::overlayItem( sectorItem *parent )
 void overlayItem::clearOverlay()
 {
     // Transparent background
-    LOG1("0")
+//    LOG1("0")
     overlayImage->fill( 0 );
 }
 
@@ -575,7 +575,7 @@ void overlayItem::render( void )
     auto& ds = deviceSettings::Instance();
     auto* dev = ds.current();
     static int overlayCount{0};
-    LOG1(overlayCount) overlayCount++;
+//    LOG1(overlayCount) overlayCount++;
 
     if(dev->isBiDirectional()){
         auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
