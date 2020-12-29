@@ -13,5 +13,9 @@ DisplayManager *DisplayManager::instance()
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
+    m_diplaySettingsMonitor = new QProcess();
 
+    m_diplaySettingsMonitor->setArguments(m_programArguments);
+    m_diplaySettingsMonitor->setProgram(m_programName);
+    m_diplaySettingsMonitor->start();
 }
