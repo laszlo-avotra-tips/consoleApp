@@ -14,6 +14,7 @@ class DisplayManager : public QObject
     Q_OBJECT
 public:
     static DisplayManager* instance();
+    void killDisplayMonitor();
 
 private:
     static DisplayManager* m_instance;

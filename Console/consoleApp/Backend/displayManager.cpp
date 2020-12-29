@@ -11,6 +11,11 @@ DisplayManager *DisplayManager::instance()
     return m_instance;
 }
 
+void DisplayManager::killDisplayMonitor()
+{
+    m_diplaySettingsMonitor->kill();
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_diplaySettingsMonitor = new QProcess();

@@ -66,6 +66,7 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
 
 StartScreen::~StartScreen()
 {
+    DisplayManager::instance()->killDisplayMonitor();
     delete ui;
 }
 
