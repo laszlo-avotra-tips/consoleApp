@@ -36,6 +36,7 @@ void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
         m_secondMonitor->show();
+        m_secondMonitor->move(3240,0);
     } else {
         m_secondMonitor->hide();
     }
