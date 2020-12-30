@@ -179,11 +179,6 @@ void DAQ::run( void )
                 if(success != NO_AxERROR){
                     logAxErrorVerbose(__LINE__, success);
                 }
-
-                success = axClearBuffer(session);
-                if(success != NO_AxERROR){
-                    logAxErrorVerbose(__LINE__, success);
-                }
                 success = axStartSession(&session, 5);
                 if(success != NO_AxERROR){
                     logAxErrorVerbose(__LINE__, success);
