@@ -121,6 +121,7 @@ void DAQ::run( void )
 {
     if( !isRunning )
     {
+        int clearBufferCount{0};
         isRunning = true;
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
@@ -169,8 +170,16 @@ void DAQ::run( void )
                 sm->setBufferLength(gBufferLength);
 
                 emit updateSector(axsunData);
+                ++clearBufferCount;
             }
             yieldCurrentThread();
+
+            if(clearBufferCount % 16 == 0){
+                auto success = axClearBuffer(session);
+                if(success != NO_AxERROR){
+                    logAxErrorVerbose(__LINE__, success);
+                }
+            }
         }
     }
     if(shutdownDaq()){
@@ -339,12 +348,11 @@ bool DAQ::getData( )
         axsunData->timeStamp = fileTimer.elapsed();;
         axsunData->milliseconds = 30;
 
-//        AxErr axClearBuffer(AOChandle session);
-        success = axClearBuffer(session);
-        if(success != NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
-            return false;
-        }
+//        success = axClearBuffer(session);
+//        if(success != NO_AxERROR){
+//            logAxErrorVerbose(__LINE__, success);
+//            return false;
+//        }
 
         gDaqCounter++;
 
