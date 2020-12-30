@@ -18,6 +18,9 @@ DisplayManager *DisplayManager::instance()
 void DisplayManager::killDisplayMonitor()
 {
     m_diplaySettingsMonitor->kill();
+    QThread::msleep(1000);
+    delete m_diplaySettingsMonitor;
+    delete m_secondMonitor;
 }
 
 QString DisplayManager::eventFileName() const
