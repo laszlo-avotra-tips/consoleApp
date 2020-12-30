@@ -5,6 +5,8 @@
 #include <QString>
 #include <QStringList>
 #include <QFileSystemWatcher>
+#include <QFile>
+#include <QTextStream>
 
 
 class QProcess;
@@ -33,8 +35,9 @@ private:
     const QString m_logFileName{R"(C:\Avinger_System\MonitorEvent.log)"};
     const QStringList m_programArguments{"-w", "1280", "-h", "1024", "-e", m_eventFileName, "-l", m_logFileName};
 
+private:
     DisplayManager(QObject *parent = nullptr);
-
+    void parseEventFile(const QString& eventFileName);
 
 signals:
 
