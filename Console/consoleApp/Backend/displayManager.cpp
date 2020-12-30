@@ -37,6 +37,7 @@ void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
         m_secondMonitor->show();
         m_secondMonitor->move(3240,0);
+        m_secondMonitor->showFullScreen();
     } else {
         m_secondMonitor->hide();
     }
@@ -70,6 +71,8 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_secondMonitor = new FormSecondMonitor();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
+
+    m_secondMonitor->hide();
 
 }
 
