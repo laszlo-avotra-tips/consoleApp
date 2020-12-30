@@ -359,7 +359,7 @@ bool DAQ::startDaq()
 
     try {
 
-        success = axStartSession(&session, 15);    // Start Axsun engine session
+        success = axStartSession(&session, 5);    // Start Axsun engine session
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
