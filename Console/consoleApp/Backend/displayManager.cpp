@@ -30,9 +30,19 @@ void DisplayManager::monitorEvent(const QString &fileName)
     parseEventFile(fileName);
 }
 
+bool DisplayManager::isNonPrimaryMonitorPresent() const
+{
+    return m_isNonPrimaryMonitorPresent;
+}
+
+void DisplayManager::setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent)
+{
+    m_isNonPrimaryMonitorPresent = isNonPrimaryMonitorPresent;
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
-//    m_eventFileWatcher = new QFileSystemWatcher(QStringList(R"(C:\Avinger_System)"));
+    //    m_eventFileWatcher = new QFileSystemWatcher(QStringList(R"(C:\Avinger_System)"));
     m_eventFileWatcher = new QFileSystemWatcher();
     m_eventFileWatcher->addPath(m_eventFileName);
 
@@ -48,6 +58,8 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 
 void DisplayManager::parseEventFile(const QString &eventFileName)
 {
+    const bool wasNonPrimaryPresent = m_isNonPrimaryMonitorPresent;
+    m_isNonPrimaryMonitorPresent = false;
     QFile eventFile(eventFileName);
     eventFile.open(QFile::ReadOnly);
     QTextStream eventText(&eventFile);
@@ -57,10 +69,21 @@ void DisplayManager::parseEventFile(const QString &eventFileName)
         QString line = eventText.readLine();
         if(!line.isEmpty()){
             ++lines;
-            LOG1(line)
+            parse(line);
         }
     }
     eventFile.close();
-    LOG1(lines)
+    LOG2(wasNonPrimaryPresent, m_isNonPrimaryMonitorPresent)
+    if(isNonPrimaryMonitorPresent() != wasNonPrimaryPresent){
+        emit nonPrimaryMonitorIsPresent(isNonPrimaryMonitorPresent());
+    }
+}
 
+void DisplayManager::parse(const QString &line)
+{
+    if(line.startsWith("Primary monitor:")){
+       if(line.endsWith("No")){
+           m_isNonPrimaryMonitorPresent = true;
+       }
+    }
 }

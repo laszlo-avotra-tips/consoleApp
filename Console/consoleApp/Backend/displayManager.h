@@ -22,6 +22,12 @@ public:
 
     QString eventFileName() const;
 
+    bool isNonPrimaryMonitorPresent() const;
+    void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
+
+signals:
+    void nonPrimaryMonitorIsPresent(bool isPresent);
+
 public slots:
     void monitorEvent(const QString& fileName);
 
@@ -34,12 +40,13 @@ private:
     const QString m_eventFileName{R"(C:\Avinger_System\MonitorEvent.txt)"};
     const QString m_logFileName{R"(C:\Avinger_System\MonitorEvent.log)"};
     const QStringList m_programArguments{"-w", "1280", "-h", "1024", "-e", m_eventFileName, "-l", m_logFileName};
+    bool m_isNonPrimaryMonitorPresent{false};
 
 private:
     DisplayManager(QObject *parent = nullptr);
     void parseEventFile(const QString& eventFileName);
+    void parse(const QString& line);
 
-signals:
 
 };
 
