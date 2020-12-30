@@ -31,13 +31,16 @@ void DisplayManager::monitorEvent(const QString &fileName)
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
+//    m_eventFileWatcher = new QFileSystemWatcher(QStringList(R"(C:\Avinger_System)"));
+    m_eventFileWatcher = new QFileSystemWatcher();
+    m_eventFileWatcher->addPath(m_eventFileName);
+
+    connect(m_eventFileWatcher, &QFileSystemWatcher::fileChanged, this, &DisplayManager::monitorEvent);
+
     m_diplaySettingsMonitor = new QProcess();
 
     m_diplaySettingsMonitor->setArguments(m_programArguments);
     m_diplaySettingsMonitor->setProgram(m_programName);
     m_diplaySettingsMonitor->start();
 
-    m_eventFileWatcher = new QFileSystemWatcher(QStringList(R"(C:\Avinger_System\)"));
-
-    connect(m_eventFileWatcher, &QFileSystemWatcher::fileChanged, this, &DisplayManager::monitorEvent);
 }
