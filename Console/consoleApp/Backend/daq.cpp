@@ -174,15 +174,16 @@ void DAQ::run( void )
             }
             yieldCurrentThread();
 
-            if(clearBufferCount % 256 == 0){
+            if(clearBufferCount % 1024 == 0){
                 auto success = axStopSession(session);
                 if(success != NO_AxERROR){
                     logAxErrorVerbose(__LINE__, success);
                 }
-                success = axStartSession(&session, 5);
-                if(success != NO_AxERROR){
-                    logAxErrorVerbose(__LINE__, success);
-                }
+//                success = axStartSession(&session, 5);
+//                if(success != NO_AxERROR){
+//                    logAxErrorVerbose(__LINE__, success);
+//                }
+                startDaq();
             }
         }
     }
@@ -388,18 +389,18 @@ bool DAQ::startDaq()
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
          * 35 * 256 = 8960 A lines
          */
-        msleep(100);
+//        msleep(100);
         success = axSetTrigTimeout(session, framesUntilForceTrig * 2);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
 
-        msleep(100);
+//        msleep(100);
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
-        msleep(100);
+//        msleep(100);
         success = axGetMessage(session, axMessage );
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
