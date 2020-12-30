@@ -733,10 +733,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 //        LOG2(image->width(),image->height())
         m_scanWorker->warpData( frameData, bufferLength);
 
-        OCTFile::OctData_t clipData(*frameData);
-        clipData.dispData = m_clipBuffer;
-//        m_scanWorker->warpData( &clipData, bufferLength);
-        memcpy(m_clipBuffer,frameData->dispData,1024*1024);
+//        OCTFile::OctData_t clipData(*frameData);
+//        clipData.dispData = m_clipBuffer;
+//        memcpy(m_clipBuffer,frameData->dispData,1024*1024);
 
         if(m_scanWorker->isReady){
 
@@ -768,7 +767,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 const QString catheterName{names[0]};
                 const QString cathalogName{names[1]};
 
-                emit updateRecorder(clipData.dispData,
+                emit updateRecorder(frameData->dispData,
                                     catheterName.toLatin1(),cathalogName.toLatin1(),
                                     activePassiveValue.toLatin1(),
                                     timeLabel.toLatin1(),
