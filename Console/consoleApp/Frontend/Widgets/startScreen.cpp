@@ -8,6 +8,7 @@
 #include "util.h"
 #include "idaq.h"
 #include "fullCaseRecorder.h"
+#include "displayManager.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -59,10 +60,13 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     QTapAndHoldGesture::setTimeout(2000);
 
      ui->pushButtonDemoMode->hide();
+
+     DisplayManager::instance();
 }
 
 StartScreen::~StartScreen()
 {
+    DisplayManager::instance()->killDisplayMonitor();
     delete ui;
 }
 

@@ -9,6 +9,7 @@ HEADERS += \
     $$PWD/Backend/AxsunOCTControl_LW_C.h \
     $$PWD/Backend/backend.h \
     $$PWD/Backend/daq.h \
+    $$PWD/Backend/displayManager.h \
     $$PWD/Backend/fullCaseRecorder.h \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/scanconversion.h \
@@ -87,6 +88,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/Backend/backend.cpp \
     $$PWD/Backend/daq.cpp \
+    $$PWD/Backend/displayManager.cpp \
     $$PWD/Backend/fullCaseRecorder.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/scanconversion.cpp \
