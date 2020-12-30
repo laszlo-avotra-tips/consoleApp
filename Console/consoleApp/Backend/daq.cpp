@@ -174,8 +174,17 @@ void DAQ::run( void )
             }
             yieldCurrentThread();
 
-            if(clearBufferCount % 16 == 0){
-                auto success = axClearBuffer(session);
+            if(clearBufferCount % 256 == 0){
+                auto success = axStopSession(session);
+                if(success != NO_AxERROR){
+                    logAxErrorVerbose(__LINE__, success);
+                }
+
+                success = axClearBuffer(session);
+                if(success != NO_AxERROR){
+                    logAxErrorVerbose(__LINE__, success);
+                }
+                success = axStartSession(&session, 5);
                 if(success != NO_AxERROR){
                     logAxErrorVerbose(__LINE__, success);
                 }
