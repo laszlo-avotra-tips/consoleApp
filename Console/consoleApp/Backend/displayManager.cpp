@@ -1,5 +1,6 @@
 #include "displayManager.h"
 #include "logger.h"
+#include "formSecondMonitor.h"
 
 #include <QFileSystemWatcher>
 #include <QProcess>
@@ -27,7 +28,18 @@ QString DisplayManager::eventFileName() const
 void DisplayManager::monitorEvent(const QString &fileName)
 {
     LOG1(fileName)
-    parseEventFile(fileName);
+            parseEventFile(fileName);
+}
+
+void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
+{
+    LOG1(isNonPrimaryMonitorPresent)
+    if(isNonPrimaryMonitorPresent){
+        m_secondMonitor->show();
+    } else {
+        m_secondMonitor->hide();
+    }
+
 }
 
 bool DisplayManager::isNonPrimaryMonitorPresent() const
@@ -53,6 +65,10 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_diplaySettingsMonitor->setArguments(m_programArguments);
     m_diplaySettingsMonitor->setProgram(m_programName);
     m_diplaySettingsMonitor->start();
+
+    m_secondMonitor = new FormSecondMonitor();
+
+    connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
 
 }
 

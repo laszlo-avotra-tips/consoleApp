@@ -11,6 +11,8 @@
 
 class QProcess;
 class QFileSystemWatcher;
+class FormSecondMonitor;
+
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
 class DisplayManager : public QObject
@@ -30,6 +32,7 @@ signals:
 
 public slots:
     void monitorEvent(const QString& fileName);
+    void showSecondMonitor(bool isNonPrimaryMonitorPresent);
 
 private:
     static DisplayManager* m_instance;
@@ -41,6 +44,7 @@ private:
     const QString m_logFileName{R"(C:\Avinger_System\MonitorEvent.log)"};
     const QStringList m_programArguments{"-w", "1280", "-h", "1024", "-e", m_eventFileName, "-l", m_logFileName};
     bool m_isNonPrimaryMonitorPresent{false};
+    FormSecondMonitor* m_secondMonitor{nullptr};
 
 private:
     DisplayManager(QObject *parent = nullptr);
