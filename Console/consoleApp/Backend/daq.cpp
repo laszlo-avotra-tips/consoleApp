@@ -339,6 +339,13 @@ bool DAQ::getData( )
         axsunData->timeStamp = fileTimer.elapsed();;
         axsunData->milliseconds = 30;
 
+//        AxErr axClearBuffer(AOChandle session);
+        success = axClearBuffer(session);
+        if(success != NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
+            return false;
+        }
+
         gDaqCounter++;
 
         yieldCurrentThread();
