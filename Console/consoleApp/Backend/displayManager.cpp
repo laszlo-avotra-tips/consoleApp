@@ -18,9 +18,9 @@ DisplayManager *DisplayManager::instance()
 void DisplayManager::killDisplayMonitor()
 {
     m_diplaySettingsMonitor->kill();
-    QThread::msleep(1000);
-    delete m_diplaySettingsMonitor;
-    delete m_secondMonitor;
+//    QThread::msleep(1000);
+//    delete m_diplaySettingsMonitor;
+//    delete m_secondMonitor;
 }
 
 QString DisplayManager::eventFileName() const
@@ -37,13 +37,13 @@ void DisplayManager::monitorEvent(const QString &fileName)
 void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
 {
     LOG1(isNonPrimaryMonitorPresent)
-    if(isNonPrimaryMonitorPresent){
-        m_secondMonitor->show();
-        m_secondMonitor->move(3240,0);
-        m_secondMonitor->showFullScreen();
-    } else {
-        m_secondMonitor->hide();
-    }
+//    if(isNonPrimaryMonitorPresent){
+//        m_secondMonitor->show();
+//        m_secondMonitor->move(3240,0);
+//        m_secondMonitor->showFullScreen();
+//    } else {
+//        m_secondMonitor->hide();
+//    }
 
 }
 
