@@ -49,6 +49,7 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 void DisplayManager::parseEventFile(const QString &eventFileName)
 {
     QFile eventFile(eventFileName);
+    eventFile.open(QFile::ReadOnly);
     QTextStream eventText(&eventFile);
     int lines{0};
 
@@ -59,6 +60,7 @@ void DisplayManager::parseEventFile(const QString &eventFileName)
             LOG1(line)
         }
     }
+    eventFile.close();
     LOG1(lines)
 
 }
