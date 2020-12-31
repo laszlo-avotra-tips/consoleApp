@@ -121,7 +121,6 @@ void DAQ::run( void )
 {
     if( !isRunning )
     {
-        int clearBufferCount{0};
         isRunning = true;
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
@@ -170,21 +169,8 @@ void DAQ::run( void )
                 sm->setBufferLength(gBufferLength);
 
                 emit updateSector(axsunData);
-                ++clearBufferCount;
             }
             yieldCurrentThread();
-
-            if(clearBufferCount % 1024 == 1000){
-                auto success = axStopSession(session);
-                if(success != NO_AxERROR){
-                    logAxErrorVerbose(__LINE__, success);
-                }
-//                success = axStartSession(&session, 5);
-//                if(success != NO_AxERROR){
-//                    logAxErrorVerbose(__LINE__, success);
-//                }
-                startDaq();
-            }
         }
     }
     if(shutdownDaq()){
@@ -230,6 +216,7 @@ bool DAQ::getData( )
     AxErr success{NO_AxERROR};
     static AxErr sRetVal{NO_AxERROR};
     bool isReturnedImageNumberChanged{false};
+    static int requestImageErrorCount = 0;
 
     int64_t requestedImageNumber = -1;
 
@@ -342,6 +329,8 @@ bool DAQ::getData( )
                                    MAX_ACQ_IMAGE_SIZE );
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
+            ++requestImageErrorCount;
+            LOG3(returned_image_number, returned_image, requestImageErrorCount)
             return false;
         }
         lastImageIdx = returned_image;
