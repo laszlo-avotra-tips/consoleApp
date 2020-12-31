@@ -234,6 +234,9 @@ bool DAQ::getData( )
     }
 
     isReturnedImageNumberChanged = (success == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
+    if(!isReturnedImageNumberChanged){
+        return false;
+    }
     sprevReturnedImageNumber = returned_image_number;
 
     bool isReturn = false;
