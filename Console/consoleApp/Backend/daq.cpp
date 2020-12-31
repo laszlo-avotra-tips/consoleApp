@@ -213,112 +213,107 @@ bool DAQ::getData( )
     static std::map<AxErr,int> errorTable;
     static int64_t force_trigCount = 0;
     static int64_t trig_too_fastCount = 0;
-    static AxErr sRetVal{NO_AxERROR};
     bool isReturnedImageNumberChanged{false};
     static int requestImageErrorCount = 0;
 
-    int64_t requestedImageNumber = -1;
+//    int64_t requestedImageNumber = -1;
 
-    AxErr success = axGetImageInfoAdv(session, requestedImageNumber,
-                                &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
+//    AxErr success = axGetImageInfoAdv(session, requestedImageNumber,
+//                                &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
 
-    isReturnedImageNumberChanged = (success == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
+//    isReturnedImageNumberChanged = (success == NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
 
-    if(!isReturnedImageNumberChanged){
-        return false;
-    }
-    sprevReturnedImageNumber = returned_image_number;
+//    if(!isReturnedImageNumberChanged){
+//        return false;
+//    }
+//    sprevReturnedImageNumber = returned_image_number;
 
-    bool isReturn = false;
+//    bool isReturn = false;
 
+//    if(success != NO_AxERROR){
+//        isReturn = true;
+//    }
+
+//    if(isReturnedImageNumberChanged){
+//        if( force_trig == 1){
+//            ++force_trigCount;
+//        }
+//        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
+//            QString errorMsg("required_buffer_size >= myBufferSize");
+//            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
+//            isReturn = true;
+//        }
+//    }
+
+//    if( force_trig == 1){
+//        isReturn = true;
+//    }
+
+//    if(isReturn){
+//        return false;
+//    }
+
+//    //initialize logging
+//    if(!isLoggingInitialized){
+//        lastImageIdx = returned_image_number - 1;
+//        force_trigCount = 0;
+//        axErrorCount = 0;
+//        isLoggingInitialized = true;
+//        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+//        LOG4(axErrorCount,required_buffer_size,height, width)
+//        LOG2(force_trigCount, trig_too_fastCount)
+//    }
+
+//    if(isReturnedImageNumberChanged ){
+//        ++m_count;
+//        ++imageCount;
+
+//        if(m_decimation && (m_count % m_decimation == 0)){
+//            lostImagesInPercent =  100.0f * lostImageCount / imageCount;
+//            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
+//            LOG4(axErrorCount,required_buffer_size,height, width)
+//            LOG2(force_trigCount, trig_too_fastCount)
+//        }
+//        if( returned_image_number > (lastImageIdx + 1) ){
+//           lostImageCount += returned_image_number - lastImageIdx - 1;
+//        }
+
+//        if( returned_image_number <= lastImageIdx )
+//        {
+//            LOG2(returned_image_number, lastImageIdx)
+//            return false;
+//        }
+
+////        lastImageIdx = returned_image_number;
+
+    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+
+    auto success = axRequestImage( session,
+                               -1,//returned_image_number,
+                               &returned_image,
+                               &height,
+                               &width,
+                               &data_type,
+                               axsunData->acqData,
+                               MAX_ACQ_IMAGE_SIZE );
     if(success != NO_AxERROR){
-        isReturn = true;
-    }
-
-    if(isReturnedImageNumberChanged){
-        if( force_trig == 1){
-            ++force_trigCount;
-        }
-        if(required_buffer_size >= MAX_ACQ_IMAGE_SIZE){
-            QString errorMsg("required_buffer_size >= myBufferSize");
-            LOG3(errorMsg,required_buffer_size, MAX_ACQ_IMAGE_SIZE);
-            isReturn = true;
-        }
-    }
-
-    if( force_trig == 1){
-        isReturn = true;
-    }
-
-    if(isReturn){
         return false;
     }
+    LOG3(returned_image_number, returned_image, requestImageErrorCount)
+    lastImageIdx = returned_image;
 
-    //initialize logging
-    if(!isLoggingInitialized){
-        lastImageIdx = returned_image_number - 1;
-        force_trigCount = 0;
-        axErrorCount = 0;
-        isLoggingInitialized = true;
-        LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-        LOG4(axErrorCount,required_buffer_size,height, width)
-        LOG2(force_trigCount, trig_too_fastCount)
-    }
+    gBufferLength = width;
 
-    if(isReturnedImageNumberChanged ){
-        ++m_count;
-        ++imageCount;
+    // write in frame information for recording/playback
+    axsunData->frameCount = gDaqCounter;
+    axsunData->timeStamp = fileTimer.elapsed();;
+    axsunData->milliseconds = 30;
 
-        if(m_decimation && (m_count % m_decimation == 0)){
-            lostImagesInPercent =  100.0f * lostImageCount / imageCount;
-            LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
-            LOG4(axErrorCount,required_buffer_size,height, width)
-            LOG2(force_trigCount, trig_too_fastCount)
-        }
-        if( returned_image_number > (lastImageIdx + 1) ){
-           lostImageCount += returned_image_number - lastImageIdx - 1;
-        }
+    gDaqCounter++;
 
-        if( returned_image_number <= lastImageIdx )
-        {
-            LOG2(returned_image_number, lastImageIdx)
-            return false;
-        }
+    yieldCurrentThread();
 
-//        lastImageIdx = returned_image_number;
-
-        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-
-        success = axRequestImage( session,
-                                   -1,//returned_image_number,
-                                   &returned_image,
-                                   &height,
-                                   &width,
-                                   &data_type,
-                                   axsunData->acqData,
-                                   MAX_ACQ_IMAGE_SIZE );
-        if(success != NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
-            ++requestImageErrorCount;
-            LOG3(returned_image_number, returned_image, requestImageErrorCount)
-            return false;
-        }
-        lastImageIdx = returned_image;
-
-        gBufferLength = width;
-
-        // write in frame information for recording/playback
-        axsunData->frameCount = gDaqCounter;
-        axsunData->timeStamp = fileTimer.elapsed();;
-        axsunData->milliseconds = 30;
-
-        gDaqCounter++;
-
-        yieldCurrentThread();
-
-        return true;
-    }
-    return false;
+    return true;
 }
 
 /*
