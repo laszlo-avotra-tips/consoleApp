@@ -320,7 +320,7 @@ bool DAQ::getData( )
         OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
         success = axRequestImage( session,
-                                   returned_image_number,
+                                   -1,//returned_image_number,
                                    &returned_image,
                                    &height,
                                    &width,
