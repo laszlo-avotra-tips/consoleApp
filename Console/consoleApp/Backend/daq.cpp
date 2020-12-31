@@ -299,8 +299,8 @@ bool DAQ::getData( )
     if(success != NO_AxERROR){
         return false;
     }
-    LOG3(returned_image_number, returned_image, requestImageErrorCount)
-    lastImageIdx = returned_image;
+//    LOG3(returned_image_number, returned_image, requestImageErrorCount)
+//    lastImageIdx = returned_image;
 
     gBufferLength = width;
 
