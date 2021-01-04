@@ -220,6 +220,12 @@ bool DAQ::getData( )
 
     int64_t requestedImageNumber = -1;
 
+    if(session != session0){
+        LOG2(session, session0)
+                return false;
+    }
+
+
     try{
         success = axGetImageInfoAdv(session, requestedImageNumber,
                                     &returned_image_number, &height, &width, &data_type, &required_buffer_size, &force_trig, &trig_too_fast );
@@ -374,6 +380,8 @@ bool DAQ::startDaq()
         success = axStartSession(&session, 4);    // Start Axsun engine session
         if(success != NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
+        } else {
+            session0 = session;
         }
         const int framesUntilForceTrig {35};
         /*

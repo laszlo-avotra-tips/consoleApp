@@ -55,7 +55,8 @@ private:
     void logAxErrorVerbose(int line, AxErr e);
 
 private:
-    AOChandle session = NULL;
+    AOChandle session{nullptr_t};
+    AOChandle session0{nullptr_t};
     char axMessage[256];
     uint32_t lastImageIdx;
     int missedImgs;
