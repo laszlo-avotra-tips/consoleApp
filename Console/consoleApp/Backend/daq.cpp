@@ -296,7 +296,7 @@ bool DAQ::getData( )
             lostImagesInPercent =  100.0f * lostImageCount / imageCount;
             LOG4(m_count, returned_image_number, lostImageCount, lostImagesInPercent)
             LOG4(axErrorCount,required_buffer_size,height, width)
-            LOG2(force_trigCount, trig_too_fastCount)
+            LOG3(session, force_trigCount, trig_too_fastCount)
             if(errorTable.size() >= 1){
                 for(auto it = errorTable.begin(); it != errorTable.end(); ++it ){
                     AxErr error = it->first;
