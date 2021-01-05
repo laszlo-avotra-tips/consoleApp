@@ -7,9 +7,9 @@
 #include <QFileSystemWatcher>
 #include <QFile>
 #include <QTextStream>
+#include <QProcess>
+#include <memory>
 
-
-class QProcess;
 class QFileSystemWatcher;
 class FormSecondMonitor;
 
@@ -34,17 +34,21 @@ public slots:
     void monitorEvent(const QString& fileName);
     void showSecondMonitor(bool isNonPrimaryMonitorPresent);
 
+private slots:
+    void programFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
 private:
     static DisplayManager* m_instance;
-    QString m_cmdLine{R"(MonWMIServer.exe -w 1280 -h 1024 -e C:\Avinger_System\MonitorEvent.txt -l C:\Avinger_System\MonitorEvent.log)"};
-    QProcess* m_diplaySettingsMonitor{nullptr};
-    QFileSystemWatcher* m_eventFileWatcher{nullptr};
+    std::unique_ptr<QProcess> m_diplaySettingsMonitor{nullptr};
+    std::unique_ptr<QFileSystemWatcher> m_eventFileWatcher{nullptr};
+    std::unique_ptr<FormSecondMonitor> m_secondMonitor{nullptr};
+
     const QString m_programName{R"(MonWMIServer.exe)"};
     const QString m_eventFileName{R"(C:\Avinger_System\MonitorEvent.txt)"};
     const QString m_logFileName{R"(C:\Avinger_System\MonitorEvent.log)"};
     const QStringList m_programArguments{"-w", "1280", "-h", "1024", "-e", m_eventFileName, "-l", m_logFileName};
+
     bool m_isNonPrimaryMonitorPresent{false};
-    FormSecondMonitor* m_secondMonitor{nullptr};
 
 private:
     DisplayManager(QObject *parent = nullptr);
