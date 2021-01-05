@@ -20,6 +20,7 @@
 #include "idaq.h"
 #include "Utility/userSettings.h"
 #include "Utility/clipListModel.h"
+#include "displayManager.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -82,6 +83,7 @@ void MainScreen::setScene(liveScene *scene)
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
         daqfactory::instance()->getdaq();
+        DisplayManager::instance()->getGraphicsView()->setScene(m_scene);
     }
 }
 

@@ -57,6 +57,11 @@ void DisplayManager::setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPrese
     m_isNonPrimaryMonitorPresent = isNonPrimaryMonitorPresent;
 }
 
+QGraphicsView *DisplayManager::getGraphicsView()
+{
+    return m_secondMonitor->getGraphicsView();
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

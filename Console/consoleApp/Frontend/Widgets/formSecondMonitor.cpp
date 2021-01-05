@@ -12,3 +12,8 @@ FormSecondMonitor::~FormSecondMonitor()
 {
     delete ui;
 }
+
+QGraphicsView *FormSecondMonitor::getGraphicsView()
+{
+    return ui->graphicsView;
+}
