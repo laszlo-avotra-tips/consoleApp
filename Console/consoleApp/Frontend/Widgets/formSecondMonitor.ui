@@ -23,25 +23,10 @@
 background-color: dark-gray;
 color: white;
 }
-QWidget{
-background-color: dark-gray;
-color: white;
-}
-QLabel{
-font: 21pt &quot;Helvetica Neue&quot;;
-}
-QLabel#labelLive{
-font: 16pt &quot;Helvetica Neue&quot;;
-font-weight: 600;
-color: #262626;
-}
 QFrame{
 border: 0px;
 }
-QPushButton{
-font: bold 12pt;
-qproperty-flat: true;
-}</string>
+</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -54,6 +39,9 @@ qproperty-flat: true;
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 21pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>The second monitor</string>
@@ -69,6 +57,8 @@ qproperty-flat: true;
     </rect>
    </property>
   </widget>
+  <zorder>graphicsView</zorder>
+  <zorder>label</zorder>
  </widget>
  <resources/>
  <connections/>
