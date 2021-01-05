@@ -18,6 +18,31 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+background-color: dark-gray;
+color: white;
+}
+QWidget{
+background-color: dark-gray;
+color: white;
+}
+QLabel{
+font: 21pt &quot;Helvetica Neue&quot;;
+}
+QLabel#labelLive{
+font: 16pt &quot;Helvetica Neue&quot;;
+font-weight: 600;
+color: #262626;
+}
+QFrame{
+border: 0px;
+}
+QPushButton{
+font: bold 12pt;
+qproperty-flat: true;
+}</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -28,7 +53,7 @@
     </rect>
    </property>
    <property name="autoFillBackground">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>The second monitor</string>
