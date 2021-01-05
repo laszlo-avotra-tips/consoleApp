@@ -66,8 +66,6 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
 
 StartScreen::~StartScreen()
 {
-    LOG0
-    DisplayManager::instance()->killDisplayMonitor();
     delete ui;
 }
 
@@ -92,6 +90,8 @@ void StartScreen::on_pushButtonShutdown_clicked()
 {
 //    FullCaseRecorder::instance()->closeRecorder();
     WidgetContainer::instance()->close();
+    LOG0
+    DisplayManager::instance()->killDisplayMonitor();
 }
 
 void StartScreen::showEvent(QShowEvent *se)
