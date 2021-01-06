@@ -407,7 +407,7 @@ bool DAQ::getData()
     request_prefs_t prefs{ };
     image_info_t info{ };
     static int32_t counter = 0;
-    char message[256] = {};
+    char message[512] = {};
 
     if (auto retval = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync); retval != AxErr::NO_AxERROR) throw retval;
 
