@@ -31,7 +31,7 @@ QString DisplayManager::eventFileName() const
 void DisplayManager::monitorEvent(const QString &fileName)
 {
     LOG1(fileName)
-            parseEventFile(fileName);
+       parseEventFile(fileName);
 }
 
 void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
