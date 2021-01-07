@@ -160,8 +160,8 @@ void DAQ::run( void )
 
 //            msleep(500);
 //        }
-        sleep(5);
         setLaserDivider();
+        sleep(15);
 
         while( isRunning )
         {
@@ -383,7 +383,10 @@ bool DAQ::getData()
     bool success{false};
 
     try {
-        if (auto retval = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync); retval != AxErr::NO_AxERROR) throw retval;
+        auto retval = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+        if(retval != AxErr::NO_AxERROR) {
+            throw retval;
+        }
 
         if (imaging) {
             // get image info on most recent image enqueued in the buffer
@@ -484,8 +487,11 @@ bool DAQ::startDaq()
     } catch(...){
         LOG0
     }
+    const bool isSuccess(success == AxErr::NO_AxERROR);
 
-    return success == AxErr::NO_AxERROR;
+    LOG1(isSuccess);
+
+    return isSuccess;
 }
 
 /*
@@ -516,10 +522,10 @@ void DAQ::setLaserDivider()
 //            if(success != AxErr::NO_AxERROR){
 //                logAxErrorVerbose(__LINE__, success);
 //            }
-//            success = axGetMessage( session, axMessage );
-//            if(success != AxErr::NO_AxERROR){
-//                logAxErrorVerbose(__LINE__, success);
-//            }
+            auto success = axGetMessage( session, axMessage );
+            if(success != AxErr::NO_AxERROR){
+                logAxErrorVerbose(__LINE__, success);
+            }
         }
     }
 }
