@@ -178,7 +178,7 @@ void DAQ::run( void )
                 emit updateSector(axsunData);
             }
             yieldCurrentThread();
-            msleep(33); //loop timer for approximately 16 fps update rate
+            msleep(100); //loop timer 66 for approximately 16 fps update rate
         }
     }
     if(shutdownDaq()){
