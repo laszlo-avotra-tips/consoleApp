@@ -141,9 +141,9 @@ void DAQ::run( void )
         char message[512];
 
         try{
-
-//openGl            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 1024, 0); retval != AxErr::NO_AxERROR) throw retval;
-//            if (auto retval = axAdjustBrightnessContrast(session, 1, 0, 1); retval != AxErr::NO_AxERROR) throw retval;
+//openGl
+            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 1024, 0); retval != AxErr::NO_AxERROR) throw retval;
+            if (auto retval = axAdjustBrightnessContrast(session, 1, 0, 1); retval != AxErr::NO_AxERROR) throw retval;
 
         }     catch (const AxErr& e) {
             axGetErrorString(e, message);
@@ -455,7 +455,7 @@ bool DAQ::startDaq()
 //        } else {
 //            session0 = session;
 //        }
-        AxsunOCTCapture AOC(1000);
+        AxsunOCTCapture AOC(500);
 
         session = AOC();
 
