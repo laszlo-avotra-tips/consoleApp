@@ -160,6 +160,7 @@ void DAQ::run( void )
 
 //            msleep(500);
 //        }
+        sleep(5);
         setLaserDivider();
 
         while( isRunning )
@@ -177,7 +178,7 @@ void DAQ::run( void )
                 emit updateSector(axsunData);
             }
             yieldCurrentThread();
-            QThread::msleep(33); //loop timer for approximately 16 fps update rate
+            msleep(33); //loop timer for approximately 16 fps update rate
         }
     }
     if(shutdownDaq()){
