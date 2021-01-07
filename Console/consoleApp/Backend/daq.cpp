@@ -52,10 +52,10 @@ DAQ::DAQ()
     lapCounter   = 0;   // Ocelot lap counter
     gFrameNumber = NUM_OF_FRAME_BUFFERS - 1;
 
-//    if( !startDaq() )
-//    {
-//        LOG1( "DAQ: Failed to start DAQ")
-//    }
+    if( !startDaq() )
+    {
+        LOG1( "DAQ: Failed to start DAQ")
+    }
 
     logDecimation();
 }
@@ -132,50 +132,19 @@ void DAQ::run( void )
     if( !isRunning )
     {
         isRunning = true;
-//        frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
-        const int framesUntilForceTrig {35};
 
-//        AxErr retval;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()");
-//        retval = axOpenAxsunOCTControl(true);
 
         char message[512];
 
         try{
-//        // create a capture session with 500 MB main image buffer
-            AxsunOCTCapture AOC(500);
-
-            session = AOC();
-
-//        if(retval != AxErr::NO_AxERROR){
-//            logAxErrorVerbose(__LINE__, retval);
-//        }
-
-//            retval = axNetworkInterfaceOpen(1);
-//            if(retval != NO_AxERROR){
-//                char errorMsg[512];
-//                axGetErrorString(retval, errorMsg);
-//                LOG2(retval, errorMsg)
-//            }
-
-            if (auto retval = axSetTrigTimeout(session, framesUntilForceTrig * 2); retval != AxErr::NO_AxERROR) throw retval;
-
-            if (auto retval = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET); retval != AxErr::NO_AxERROR) throw retval;
-
-            if (auto retval = axGetMessage(session, message); retval != AxErr::NO_AxERROR) throw retval;
 
 //openGl            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 1024, 0); retval != AxErr::NO_AxERROR) throw retval;
 //            if (auto retval = axAdjustBrightnessContrast(session, 1, 0, 1); retval != AxErr::NO_AxERROR) throw retval;
 
-//            retval = axUSBInterfaceOpen(1);
-//            if(retval != NO_AxERROR){
-//                char errorMsg[512];
-//                axGetErrorString(retval, errorMsg);
-//                LOG2(retval, errorMsg)
-//            }
         }     catch (const AxErr& e) {
             axGetErrorString(e, message);
             LOG1 (message);
@@ -202,12 +171,13 @@ void DAQ::run( void )
                 gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
                 auto* sm =  SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-//                LOG2(gFrameNumber, axsunData)
+                LOG2(gFrameNumber, axsunData)
                 sm->setBufferLength(gBufferLength);
 
                 emit updateSector(axsunData);
             }
             yieldCurrentThread();
+            QThread::msleep(33); //loop timer for approximately 16 fps update rate
         }
     }
     if(shutdownDaq()){
@@ -409,52 +379,60 @@ bool DAQ::getData()
     static int32_t counter = 0;
     char message[512] = {};
 
-    if (auto retval = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync); retval != AxErr::NO_AxERROR) throw retval;
+    bool success{false};
 
-    if (imaging) {
-        // get image info on most recent image enqueued in the buffer
-        if (auto retval = axGetImageInfo(session, 0, &info); retval != AxErr::NO_AxERROR) {
-            // print error details
-            axGetErrorString(retval, message);
-//            std::cout << "axGetImageInfo() returned " << static_cast<int32_t>(retval) << " " << message << '\n';
-            LOG2(int(retval), message)
-        }
-        else {
-            // if no errors, configure the request preferences and then request the image for display
-            prefs.request_mode = AxRequestMode::RETRIEVE_AND_DISPLAY;
-            prefs.which_window = 1;
+    try {
+        if (auto retval = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync); retval != AxErr::NO_AxERROR) throw retval;
 
-            OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+        if (imaging) {
+            // get image info on most recent image enqueued in the buffer
+            if (auto retval = axGetImageInfo(session, 0, &info); retval != AxErr::NO_AxERROR) {
+                // print error details
+                axGetErrorString(retval, message);
+                LOG2(int(retval), message);
+                success = true;
+            }
+            else {
+                // if no errors, configure the request preferences and then request the image for display
+                prefs.request_mode = AxRequestMode::RETRIEVE_AND_DISPLAY;
+                prefs.which_window = 1;
 
-            retval = axRequestImage(session, info.image_number, prefs, 0, axsunData->acqData, &info);
+                OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-            // and print some statistics to the console (every 25th iteration)
-            if (!(counter % 25)) {
-                //std::cout << "Image number: " << info.image_number << ", Width: " << info.width <<", Dropped Packets: " << dropped_packets;
-                LOG3(info.image_number, info.width, dropped_packets);
-                //if (info.force_trig) std::cout << " *** TRIGGER TOO SLOW, FORCE TRIGGERED ***";
-                //if (info.trig_too_fast) std::cout << " *** TRIGGER TOO FAST ***";
-                //std::cout << '\n';
-                LOG2(info.force_trig, info.trig_too_fast);
+                retval = axRequestImage(session, info.image_number, prefs, 0, axsunData->acqData, &info);
+
+                // and print some statistics to the console (every 25th iteration)
+                if (!(counter % 25)) {
+                    //std::cout << "Image number: " << info.image_number << ", Width: " << info.width <<", Dropped Packets: " << dropped_packets;
+                    LOG3(info.image_number, info.width, dropped_packets);
+                    //if (info.force_trig) std::cout << " *** TRIGGER TOO SLOW, FORCE TRIGGERED ***";
+                    //if (info.trig_too_fast) std::cout << " *** TRIGGER TOO FAST ***";
+                    //std::cout << '\n';
+                    LOG2(info.force_trig, info.trig_too_fast);
+                }
             }
         }
-    }
-    else {
-        if (!(counter % 50)) {  // print every 50th iteration
-            //std::cout << "Imaging is off. Turn on laser emission and set DAQ to Imaging On mode.\n";
-            QString errorMessage("Imaging is off. Turn on laser emission and set DAQ to Imaging On mode.");
-            LOG1(errorMessage);
+        else {
+            if (!(counter % 50)) {  // print every 50th iteration
+                //std::cout << "Imaging is off. Turn on laser emission and set DAQ to Imaging On mode.\n";
+                QString errorMessage("Imaging is off. Turn on laser emission and set DAQ to Imaging On mode.");
+                LOG2(counter, errorMessage);
+            }
         }
+
+        // increment loop counter
+        counter++;
+
+    }  catch (const AxErr& e) {
+        axGetErrorString(e, message);
+        LOG1(message);
+    }
+    catch (...) {
+        const QString errorMessage("***** UNKNOWN ERROR. Program terminating.");
+        LOG1(errorMessage);
     }
 
-    // increment loop counter
-    counter++;
-
-    // loop timer for approximately 50 fps update rate
-//    std::this_thread::sleep_for(20ms);
-    QThread::msleep(66); //loop timer for approximately 16 fps update rate
-
-    return false;
+    return success;
 }
 /*
  * startDaq
@@ -467,12 +445,16 @@ bool DAQ::startDaq()
 
     try {
 
-        success = axStartSession(&session, 4);    // Start Axsun engine session
-        if(success != AxErr::NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
-        } else {
-            session0 = session;
-        }
+//        success = axStartSession(&session, 4);    // Start Axsun engine session
+//        if(success != AxErr::NO_AxERROR){
+//            logAxErrorVerbose(__LINE__, success);
+//        } else {
+//            session0 = session;
+//        }
+        AxsunOCTCapture AOC(1000);
+
+        session = AOC();
+
         const int framesUntilForceTrig {35};
         /*
          * The number of frames for which the driver will wait for a Image_sync signal before timing out and entering Force Trigger mode.
@@ -499,7 +481,7 @@ bool DAQ::startDaq()
     }  catch (std::exception& e) {
        LOG1(e.what())
     } catch(...){
-        LOG1(__FUNCTION__)
+        LOG0
     }
 
     return success == AxErr::NO_AxERROR;
