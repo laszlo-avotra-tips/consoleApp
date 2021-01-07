@@ -142,7 +142,7 @@ void DAQ::run( void )
 
         try{
 //openGl
-            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 1024, 0); retval != AxErr::NO_AxERROR) throw retval;
+            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 512, 0); retval != AxErr::NO_AxERROR) throw retval;
             if (auto retval = axAdjustBrightnessContrast(session, 1, 0, 1); retval != AxErr::NO_AxERROR) throw retval;
 
         }     catch (const AxErr& e) {
