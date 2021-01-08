@@ -418,7 +418,7 @@ bool DAQ::getData()
             if (!(counter % 50)) {  // print every 50th iteration
                 //std::cout << "Imaging is off. Turn on laser emission and set DAQ to Imaging On mode.\n";
                 QString errorMessage("Imaging is off. Turn on laser emission and set DAQ to Imaging On mode.");
-                LOG2(counter, errorMessage);
+                LOG3(imaging, counter, errorMessage);
             }
         }
 
