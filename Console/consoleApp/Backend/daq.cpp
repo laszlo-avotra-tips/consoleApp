@@ -138,21 +138,19 @@ void DAQ::run( void )
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()");
 
-        char message[512];
+//        char message[512];
 
-        try{
-//openGl
-            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 512, 0); retval != AxErr::NO_AxERROR) throw retval;
-            if (auto retval = axAdjustBrightnessContrast(session, 1, 0, 1); retval != AxErr::NO_AxERROR) throw retval;
-
-        }     catch (const AxErr& e) {
-            axGetErrorString(e, message);
-            LOG1 (message);
-        }
-        catch (...) {
-            QString errorMessage("***** UNKNOWN ERROR. Program terminating.");
-            LOG1(errorMessage);
-        }
+//        try{
+//            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 512, 0); retval != AxErr::NO_AxERROR) throw retval;
+//            if (auto retval = axAdjustBrightnessContrast(session, 1, 0, 1); retval != AxErr::NO_AxERROR) throw retval;
+//        }     catch (const AxErr& e) {
+//            axGetErrorString(e, message);
+//            LOG1 (message);
+//        }
+//        catch (...) {
+//            QString errorMessage("***** UNKNOWN ERROR. Program terminating.");
+//            LOG1(errorMessage);
+//        }
 
 //        while(m_numberOfConnectedDevices != 2){
 //            m_numberOfConnectedDevices = axCountConnectedDevices();
@@ -160,8 +158,8 @@ void DAQ::run( void )
 
 //            msleep(500);
 //        }
+        sleep(5);
         setLaserDivider();
-        sleep(15);
 
         while( isRunning )
         {
@@ -450,7 +448,7 @@ bool DAQ::startDaq()
 
     try {
 
-        success = axStartSession(&session, 4);    // Start Axsun engine session
+        success = axStartSession(&session, 50);    // Start Axsun engine session
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
             throw success;
@@ -528,7 +526,8 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider()
 {
-    if(m_numberOfConnectedDevices == 2){
+//    if(m_numberOfConnectedDevices == 2)
+    {
         const int subsamplingFactor = m_subsamplingFactor;
         if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
         {
