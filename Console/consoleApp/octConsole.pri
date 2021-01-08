@@ -6,6 +6,7 @@
 HEADERS += \
     $$PWD/Backend/AxsunCommonEnums.h \
     $$PWD/Backend/AxsunOCTCapture.h \
+    $$PWD/Backend/AxsunOCTControl_LW_C.h \
     $$PWD/Backend/backend.h \
     $$PWD/Backend/daq.h \
     $$PWD/Backend/displayManager.h \

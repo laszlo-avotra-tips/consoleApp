@@ -12,6 +12,7 @@
 //#include "stdafx.h"     // Axsun includes
 extern "C" {
 #include "AxsunOCTCapture.h"
+#include "AxsunOCTControl_LW_C.h"
 }
 #endif
 
@@ -137,6 +138,7 @@ void DAQ::run( void )
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()");
+        auto retval = axOpenAxsunOCTControl(true);
 
 //        char message[512];
 
