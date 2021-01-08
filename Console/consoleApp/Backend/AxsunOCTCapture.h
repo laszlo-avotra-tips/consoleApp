@@ -90,7 +90,9 @@ Version 3.5.0.0
 - added callback functionality for arrival of new images into Main Image Buffer; see AxRegisterNewImageCallback()
 - axScanCmd() support for NI USB-6001 and USB-6008 DAQ cards (Digital out and DC analog out only)
 - fixed error impacting estimated data rate calculation for PCIe interface
--
+
+Version 3.5.1.0
+- improved thread safety when calling axRequestImage() or axGetStatus() from a registered New Image callback function
 
 */
 
@@ -101,7 +103,11 @@ Version 3.5.0.0
 #include "AxsunCommonEnums.h"
 
 // defines
-constexpr auto MOST_RECENT_IMAGE = uint32_t{ 0 };	 // safer than a #define preprocessor macro
+#ifdef __cplusplus
+constexpr auto MOST_RECENT_IMAGE = uint32_t{ 0 };
+#else
+#define MOST_RECENT_IMAGE 0
+#endif  // __cplusplus
 
 /** \brief Opaque structure used to manage created capture sessions. */
 struct CaptureSession;
@@ -256,7 +262,9 @@ AxScannerCommand {
 	/** Set general purpose DC analog output voltage maximum limit. */
 	SET_AUX_DC_ANALOG_MAX,
 	/** Set general purpose DC analog output voltage minimum limit. */
-	SET_AUX_DC_ANALOG_MIN
+	SET_AUX_DC_ANALOG_MIN,
+	/** Get the device model number. i.e. NI USB-xxxx*/
+	GET_DEVICE_MODEL_NUMBER
 } AxScannerCommand;
 
 /** \brief Structure for passing raster scan pattern parameters to axScanCmd(SET_RECT_PATTERN, ...). */
@@ -404,7 +412,7 @@ typedef struct new_image_callback_data_t {
 	uint32_t image_number;	
 	/** The size (in bytes) of a buffer that must be allocated before image retrieval using axRequestImage(). */
 	uint32_t required_buffer_size;
-};
+} new_image_callback_data_t;
 
 /** \brief A user-provided function to be called when a new image is enqueued in the Main Image Buffer. See axRegisterNewImageCallback() for usage.*/
 typedef void(__cdecl* AxNewImageCallbackFunction_t)(new_image_callback_data_t, void*);
@@ -642,7 +650,7 @@ extern "C" {
 	\param w_top The initial top edge of the window in display coordinates. Also see axUpdateView().
 	\param w_width The initial width of the window. Also see axUpdateView().
 	\param w_height The initial height of the window. Also see axUpdateView().
-	\param parent_window_handle The window handle (HWND) of an existing window of which the OpenGL window is created as a child window.  Set this to NULL for creating an OpenGL window with no parent.
+	\param parent_window_handle The window handle (HWND) of an existing window of which the OpenGL window is created as a child window.  Set this to 0 for creating an OpenGL window with no parent.
 	\return AxErr = NO_AxERROR for success or other AxErr error code on failure.  Call axGetErrorString() for a description of an AxErr error code.
 	\details Any resources allocated with axSetupDisplay() are automatically deallocated by axStopSession() when terminating the Axsun OCT Capture Session. Parameters set the initial window style, size, and location of the OpenGL window at creation but (except the parent/child relationship) these can be subsequently changed according to the axUpdateView() and axUpdateWindowStyle() functions.
 	The window is hidden by default after the session is created.  Call axHideWindow() with false argument to show the window after position and style are configured as desired.
@@ -1043,6 +1051,9 @@ extern "C" {
 
 		Sets the device's minimum general purpose DC analog output to a voltage given by misc_scalar in Volts. This feature is a safeguard against unintentional over-driving of this output terminal; subsequent commands to SET_AUX_DC_ANALOG_OUTPUT will return an error if the requested voltage exceeds the configured limit.
 
+	- axScanCmd(<STRONG>GET_DEVICE_MODEL_NUMBER</STRONG>, misc_scalar, ...) Returns a device's numeric model number (if AxErr return value > 0, type-cast it to `int`).
+
+		A list of N connected devices is maintained internally by the library.  The misc_scalar parameter sets the device index (from 0 to N-1) on which to query the device model number. If the index is higher than N-1, function will return AxErr::DAQMX_DEVICE_NOT_FOUND.
 	*/
 		
 	/*! \cond */ AXSUN_EXPORTS /*! \endcond */ 
