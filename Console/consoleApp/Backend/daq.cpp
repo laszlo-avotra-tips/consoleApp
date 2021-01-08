@@ -446,18 +446,18 @@ bool DAQ::getData()
 bool DAQ::startDaq()
 {
     AxErr success = AxErr::NO_AxERROR;
+    char message[512];      // variable for getting string output from axGetMessage() and axGetErrorString()
 
     try {
 
-//        success = axStartSession(&session, 4);    // Start Axsun engine session
-//        if(success != AxErr::NO_AxERROR){
-//            logAxErrorVerbose(__LINE__, success);
-//        } else {
-//            session0 = session;
-//        }
-        AxsunOCTCapture AOC(500);
-
-        session = AOC();
+        success = axStartSession(&session, 4);    // Start Axsun engine session
+        if(success != AxErr::NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
+            throw success;
+        } else {
+            session0 = session;
+        }
+//        AxsunOCTCapture AOC(500);
 
         const int framesUntilForceTrig {35};
         /*
@@ -482,9 +482,12 @@ bool DAQ::startDaq()
             logAxErrorVerbose(__LINE__, success);
         }
         LOG1(axMessage)
-    }  catch (std::exception& e) {
-       LOG1(e.what())
-    } catch(...){
+    }
+    catch (const AxErr& e) {
+        axGetErrorString(e, message);
+        LOG1(message);
+    }
+    catch(...){
         LOG0
     }
     const bool isSuccess(success == AxErr::NO_AxERROR);
@@ -503,11 +506,23 @@ bool DAQ::shutdownDaq()
 {
     qDebug() << "***** DAQ::shutdownDaq()";
     AxErr success = AxErr::NO_AxERROR;
+    char message[512];      // variable for getting string output from axGetMessage() and axGetErrorString()
 
-    success = axStopSession(session);    // Stop Axsun engine session
-    if(success != AxErr::NO_AxERROR){
-        logAxErrorVerbose(__LINE__, success);
+    try{
+        success = axStopSession(session);    // Stop Axsun engine session
+        if(success != AxErr::NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
+            throw success;
+        }
     }
+    catch (const AxErr& e) {
+        axGetErrorString(e, message);
+        LOG1(message);
+    }
+    catch(...){
+        LOG0
+    }
+
     return success == AxErr::NO_AxERROR;
 }
 
