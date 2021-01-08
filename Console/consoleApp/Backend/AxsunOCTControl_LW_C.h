@@ -1,5 +1,5 @@
 // AxsunOCTControl_LW_C.h
-// Copyright 2018 Axsun Technologies
+// Copyright 2020 Axsun Technologies
 
 /** \file AxsunOCTControl_LW_C.h
 \brief This header file defines the usage of the %AxsunOCTControl_LW "lightweight" library in a C or C++ application.
@@ -30,13 +30,6 @@ typedef enum {
 	LVDS = 2,		/*!< External LVDS (for Image_sync trigger only). */
 	LVCMOS = 3,		/*!< External LVCMOS (for Image_sync trigger only). */
 } AxEdgeSource;
-
-/*! \brief DAQ polarization modes. */
-typedef enum {
-	HORIZONTAL = 0,		/*!< Channel 1 (Horizontal) only. */
-	VERTICAL = 1,		/*!< Channel 2 (Vertical) only. */
-	DIVERSE = 2			/*!< Horizontal and Vertical channels mixed using vector sum. */
-} AxPolarizationMode;
 
 typedef enum {
 	NONE = 0,
@@ -71,10 +64,10 @@ typedef void(__cdecl *AxConnectCallbackFunctionC_t)(void*);
  \brief Gets a string which explains an error code in a more verbose fashion.
  \param errornum An error code number returned from other "ax" functions in this library.
  \param error_string A char array pre-allocated with at least 512 bytes into which the error explanation will be copied as a nul-terminated string.
- \details axGetErrorString() can be called at any time. It is unsafe to pass a error_string output buffer allocated with fewer than 512 bytes.
+ \details axGetErrorExplained() can be called at any time. It is unsafe to pass a error_string output buffer allocated with fewer than 512 bytes.
  */
-/*! \cond */ EXPORT /*! \endcond */
-void axGetErrorString(AxErr errornum, char* error_string);
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
+void axGetErrorExplained(AxErr errornum, char* error_string);
 
 /**
  \brief Opens the AxsunOCTControl context for subsequent device communication.
@@ -84,13 +77,13 @@ void axGetErrorString(AxErr errornum, char* error_string);
  \details If interfaces are not opened at the time of this function call, they can be opened later using axNetworkInterfaceOpen(), axUSBInterfaceOpen(), or axSerialInterfaceOpen(). This allows the registration of the connect/disconnect callback function using axRegisterConnectCallback() _prior to_ opening interfaces and gives the user individual control over which interface(s) to use.
  \details Close an AxsunOCTControl context by calling axCloseAxsunOCTControl().
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axOpenAxsunOCTControl(uint32_t open_all_interfaces);
 
 /**
  \brief Closes an AxsunOCTControl context previously opened with axOpenAxsunOCTControl().
  \return NO_AxERROR on success or other AxErr error code on failure. */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axCloseAxsunOCTControl();
 
 /**
@@ -99,7 +92,7 @@ AxErr axCloseAxsunOCTControl();
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details When the interface is open, devices present on this interface will be detected, enumerated, and trigger the execution of a callback function registered using axRegisterConnectCallback(). Use this function if the interface was not opened automatically during the initial axOpenAxsunOCTControl() call.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axNetworkInterfaceOpen(uint32_t interface_status);
 
 /**
@@ -108,7 +101,7 @@ AxErr axNetworkInterfaceOpen(uint32_t interface_status);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details When the interface is open, devices present on this interface will be detected, enumerated, and trigger the execution of a callback function registered using axRegisterConnectCallback(). Use this function if the interface was not opened automatically during the initial axOpenAxsunOCTControl() call.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axUSBInterfaceOpen(uint32_t interface_status);
 
 /**
@@ -118,7 +111,7 @@ AxErr axUSBInterfaceOpen(uint32_t interface_status);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details When the interface is open, a device present on this interface will be detected, enumerated, and trigger the execution of a callback function registered using axRegisterConnectCallback().
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSerialInterfaceOpen(uint32_t interface_status, char* port);
 
 /**
@@ -128,7 +121,7 @@ AxErr axSerialInterfaceOpen(uint32_t interface_status, char* port);
 \return NO_AxERROR on success or other AxErr error code on failure.
 \details This function does NOT control the laser and therefore the laser emission must be enabled/disabled separately using axSetLaserEmission(). To control the DAQ operational mode when using the PCIe interface, call axImagingCntrlPCIe() in the AxsunOCTCapture library.
 */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axImagingCntrlEthernet(int16_t number_of_images, uint32_t which_DAQ);
 
 /**
@@ -139,7 +132,7 @@ AxErr axImagingCntrlEthernet(int16_t number_of_images, uint32_t which_DAQ);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Use INTERNAL Image_sync source only for simulation and troubleshooting.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetImageSyncSource(AxEdgeSource source, float frequency, uint32_t which_DAQ);
 
 /**
@@ -149,7 +142,7 @@ AxErr axSetImageSyncSource(AxEdgeSource source, float frequency, uint32_t which_
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Use INTERNAL sample clock source only for simulation and troubleshooting.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetSampleClockSource(AxEdgeSource source, uint32_t which_DAQ);
 
 /**
@@ -159,27 +152,19 @@ AxErr axSetSampleClockSource(AxEdgeSource source, uint32_t which_DAQ);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Use INTERNAL sweep trigger source only for simulation and troubleshooting.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetSweepTriggerSource(AxEdgeSource source, uint32_t which_DAQ);
 
 /**
- \brief Select the DAQ's pipeline mode (i.e. bypass mode).
+ \brief Select the DAQ's pipeline mode (i.e. bypass mode) and polarization channel configuration.
  \param pipeline_mode The desired pipeline mode.
+ \param polarization_mode The desired polarization channel (horizontal, vertical, diverse, or interleaved).
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Insure that A-line subsampling has been configured with SetSubsamplingFactor() \b prior \b to setting a pipeline mode which could saturate the data interface bandwidth if subsampling is insufficient.
  */
-/*! \cond */ EXPORT /*! \endcond */
-AxErr axSetPipelineMode(AxPipelineMode pipeline_mode, uint32_t which_DAQ);
-
-/**
- \brief Select the DAQ's polarization channel configuration.
- \param polarization_mode The desired polarization channel (HORIZONTAL, VERTICAL, or DIVERSE).
- \param which_DAQ The numeric index of the desired DAQ.
- \return NO_AxERROR on success or other AxErr error code on failure.
- */
-/*! \cond */ EXPORT /*! \endcond */
-AxErr axSetPolarizationMode(AxPolarizationMode polarization_mode, uint32_t which_DAQ);
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
+AxErr axSetPipelineMode(AxPipelineMode pipeline_mode, AxChannelMode polarization_mode, uint32_t which_DAQ);
 
 /**
  \brief Set the GAIN term during 16- to 8-bit dynamic range compression.
@@ -187,7 +172,7 @@ AxErr axSetPolarizationMode(AxPolarizationMode polarization_mode, uint32_t which
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetEightBitGain(float gain, uint32_t which_DAQ);
 
 /**
@@ -196,7 +181,7 @@ AxErr axSetEightBitGain(float gain, uint32_t which_DAQ);
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetEightBitOffset(float offset, uint32_t which_DAQ);
 
 /**
@@ -205,7 +190,7 @@ AxErr axSetEightBitOffset(float offset, uint32_t which_DAQ);
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetSubsamplingFactor(uint8_t subsampling_factor, uint32_t which_DAQ);
 
 /**
@@ -215,7 +200,7 @@ AxErr axSetSubsamplingFactor(uint8_t subsampling_factor, uint32_t which_DAQ);
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetFPGARegister(const uint32_t regnum, uint16_t* regval, uint32_t which_DAQ);
 
 /**
@@ -228,7 +213,7 @@ AxErr axGetFPGARegister(const uint32_t regnum, uint16_t* regval, uint32_t which_
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details The size of the pre-allocated memory pointed to by `regvals` must be 2 bytes per register in the included range:  `bytes_allocated` should equal `2 * (end_regnum - start_regnum + 1)`.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetFPGARegisterRange(const uint32_t start_regnum, const uint32_t end_regnum, uint16_t* regvals, const uint32_t bytes_allocated, uint32_t which_DAQ);
 
 
@@ -242,7 +227,7 @@ AxErr axGetFPGARegisterRange(const uint32_t start_regnum, const uint32_t end_reg
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details `regnums` and `regvals` are arrays which must be pre-allocated by the user. `elements_returned` will never be higher than `elements_allocated`, however if `elements_returned == elements_allocated`, there may be more register number-value pairs stored on the device which were _not_ returned (indicating `elements_allocated` was too small to hold the full FPGA register configuration script).
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetFPGARegisterDefaults(uint32_t elements_allocated, uint16_t* regnums, uint16_t* regvals, uint32_t* elements_returned, uint32_t which_DAQ);
 
 
@@ -255,7 +240,7 @@ AxErr axGetFPGARegisterDefaults(uint32_t elements_allocated, uint16_t* regnums, 
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details `regnums` points to an array containing `count` register numbers and `regvals` points to an equal-sized array of corresponding register default values.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetFPGARegisterDefaults(const uint16_t* regnums, const uint16_t* regvals, const uint32_t count, uint32_t which_DAQ);
 
 /**
@@ -265,19 +250,41 @@ AxErr axSetFPGARegisterDefaults(const uint16_t* regnums, const uint16_t* regvals
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetFPGARegister(const uint32_t regnum, const uint16_t regval, uint32_t which_DAQ);
 
 /**
  \brief Sets or Clears a single bit in a FPGA register.
  \param regnum The FPGA register number in which to set or clear a bit.
- \param bitnum The bit number in the interval [0..15] to set or clear.
+ \param which_bit The bit number in the interval [0..15] to set or clear.
  \param value =1 to Set the bit, =0 to Clear the bit.
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
-AxErr axSetFPGARegisterSingleBit(const uint32_t regnum, const uint32_t bitnum, const uint32_t value, uint32_t which_DAQ);
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
+AxErr axSetFPGARegisterSingleBit(const uint32_t regnum, const uint32_t which_bit, const uint32_t value, uint32_t which_DAQ);
+
+/**
+\brief Sets (i.e. writes) the low or high byte of an FPGA register, leaving the other byte unchanged.
+\param regnum The FPGA register number in which to write.
+\param which_byte Set to = 0 for low byte, = 1 for high byte.
+\param value The value to be written. 
+\param which_DAQ The numeric index of the desired DAQ.
+\return NO_AxERROR on success or other AxErr error code on failure.
+*/
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
+AxErr axSetFPGARegisterSingleByte(const uint32_t regnum, const uint32_t which_byte, const uint32_t value, uint32_t which_DAQ);
+
+/**
+\brief Sets (i.e. writes) one nibble (4 bits) of an FPGA register, leaving the other 12 bits unchanged.
+\param regnum The FPGA register number in which to write.
+\param which_nibble Set to = 0 for lowest nibble, ... , = 3 for highest nibble.
+\param value The value to be written (must be in range of 0 to 15).
+\param which_DAQ The numeric index of the desired DAQ.
+\return NO_AxERROR on success or other AxErr error code on failure.
+*/
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
+AxErr axSetFPGARegisterSingleNibble(const uint32_t regnum, const uint32_t which_nibble, const uint32_t value, uint32_t which_DAQ);
 
 /**
  \brief Sets (i.e. writes) a FPGA register with an array of multiple values.
@@ -287,7 +294,7 @@ AxErr axSetFPGARegisterSingleBit(const uint32_t regnum, const uint32_t bitnum, c
  \param which_DAQ The numeric index of the desired DAQ.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetFPGADataArray(const uint32_t regnum, const uint16_t* data_array, const uint32_t number_of_words, uint32_t which_DAQ);
 
 /**
@@ -298,7 +305,7 @@ AxErr axSetFPGADataArray(const uint32_t regnum, const uint16_t* data_array, cons
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details This function is for Axsun internal use only.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axReadDAQPHYRegister(uint32_t phynum, uint32_t regnum, uint16_t* regval, uint32_t which_DAQ);
 
 /**
@@ -308,7 +315,7 @@ AxErr axReadDAQPHYRegister(uint32_t phynum, uint32_t regnum, uint16_t* regval, u
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details The Connection Heartbeat is enabled by default when a device is connected. This function can be used to disable or subsequently re-enable it. The Connection Heartbeat sends a periodic, non-functional message to a connected device for determining its current connectivity status. If a Heartbeat response is not received, a device disconnection has occurred. If the connection Heartbeat is disabled, a disconnected device will not be recognized as such until the response to a subsequent functional message is not received.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axConnectionHeartbeat(uint32_t heartbeat_state, uint32_t which_device);
 
 /**
@@ -321,7 +328,7 @@ AxErr axConnectionHeartbeat(uint32_t heartbeat_state, uint32_t which_device);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details This function is for Axsun internal use only.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axDebugCommand(uint32_t command_number, uint32_t value_out, uint32_t* command_in, uint32_t* value_in, uint32_t which_device);
 
 /**
@@ -332,7 +339,7 @@ AxErr axDebugCommand(uint32_t command_number, uint32_t value_out, uint32_t* comm
  \param which_device The numeric index of the desired device.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axFirmwareVersion(uint32_t* major, uint32_t* minor, uint32_t* patch, uint32_t which_device);
 
 /**
@@ -345,7 +352,7 @@ AxErr axFirmwareVersion(uint32_t* major, uint32_t* minor, uint32_t* patch, uint3
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Devices which do not have an FPGA will return all version elements = 0.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axFPGAVersion(uint32_t* major, uint32_t* minor, uint32_t* patch, uint32_t* build, uint32_t which_device);
 
 /**
@@ -356,7 +363,7 @@ AxErr axFPGAVersion(uint32_t* major, uint32_t* minor, uint32_t* patch, uint32_t*
  \param build Version number build element.
  \return NO_AxERROR on success.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axLibraryVersion(uint32_t* major, uint32_t* minor, uint32_t* patch, uint32_t* build);
 
 /**
@@ -365,7 +372,7 @@ AxErr axLibraryVersion(uint32_t* major, uint32_t* minor, uint32_t* patch, uint32
  \param which_device The numeric index of the desired device.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axDeviceType(AxDevType * device_type, uint32_t which_device);
 
 /**
@@ -374,7 +381,7 @@ AxErr axDeviceType(AxDevType * device_type, uint32_t which_device);
  \param which_device The numeric index of the desired device.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSerialNumber(char * serial_number, uint32_t which_device);
 
 /**
@@ -383,7 +390,7 @@ AxErr axSerialNumber(char * serial_number, uint32_t which_device);
  \param which_device The numeric index of the desired device.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axConnectionType(AxConnectionType * connection_type, uint32_t which_device);
 
 /**
@@ -394,7 +401,7 @@ AxErr axConnectionType(AxConnectionType * connection_type, uint32_t which_device
  \param which_device The numeric index of the desired device.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axCountDeviceSettings(uint32_t* float_count, uint32_t* int_count, uint32_t* bool_count, uint32_t which_device);
 
 /**
@@ -406,7 +413,7 @@ AxErr axCountDeviceSettings(uint32_t* float_count, uint32_t* int_count, uint32_t
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Use axCountDeviceSettings() to determine the number of floating point settings available (`float_count`) and then call this function in a loop while indexing `which_setting` from `0` up to `float_count - 1`.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetFloatSetting(uint32_t which_setting, float* setting_value, char * setting_string, uint32_t which_device);
 
 /**
@@ -418,7 +425,7 @@ AxErr axGetFloatSetting(uint32_t which_setting, float* setting_value, char * set
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Use axCountDeviceSettings() to determine the number of integer settings available (`int_count`) and then call this function in a loop while indexing `which_setting` from `0` up to `int_count - 1`.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetIntSetting(uint32_t which_setting, int32_t* setting_value, char * setting_string, uint32_t which_device);
 
 /**
@@ -430,7 +437,7 @@ AxErr axGetIntSetting(uint32_t which_setting, int32_t* setting_value, char * set
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Use axCountDeviceSettings() to determine the number of boolean settings available (`bool_count`) and then call this function in a loop while indexing `which_setting` from `0` up to `bool_count - 1`.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetBoolSetting(uint32_t which_setting, uint8_t* setting_value, char * setting_string, uint32_t which_device);
 
 /**
@@ -445,7 +452,7 @@ AxErr axGetBoolSetting(uint32_t which_setting, uint8_t* setting_value, char * se
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details After reading all device setting values and names (using axCountDeviceSettings(), axGetFloatSetting(), axGetIntSetting(), and axGetBoolSetting()), original (i.e. unchanged) and new (i.e. changed or updated) settings are written back to the device's non-volatile memory with this function.  Do \b NOT change the ordering or indexing of the device settings. The original values of unchanged settings \b must be written back to the device with the changed ones.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSettingsToDevice(uint32_t float_count, uint32_t int_count, uint32_t bool_count, float* float_values, int32_t* int_values, uint8_t* bool_values, uint32_t which_device);
 
 /**
@@ -453,25 +460,42 @@ AxErr axSettingsToDevice(uint32_t float_count, uint32_t int_count, uint32_t bool
  \return The number of connected devices.
  \details Count includes Laser engine and DAQ boards. A device connected on two interfaces concurrently will be counted twice and thus is not a recommended configuration.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 uint32_t axCountConnectedDevices();
 
 /**
- \brief Enables or disables laser emission.
+ \brief Enables or disables swept laser emission.
  \param emission_state =1 enables laser emission, =0 disables laser emission.
  \param which_laser The numeric index of the desired Laser.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetLaserEmission(uint32_t emission_state, uint32_t which_laser);
 
 /**
- \brief Gets laser emission status.
+ \brief Gets swept laser emission status.
  \param emitting Will be non-zero if laser is emitting or =0 if laser is not emitting.
  \param which_laser The numeric index of the desired Laser.
  \return NO_AxERROR on success or other AxErr error code on failure.
- */	/*! \cond */ EXPORT /*! \endcond */
-	AxErr axGetLaserEmission(uint32_t* emitting, uint32_t which_laser);
+ */	/*! \cond */ AXSUN_EXPORTS /*! \endcond */
+AxErr axGetLaserEmission(uint32_t* emitting, uint32_t which_laser);
+
+ /**
+ \brief Enables or disables pointer/aiming laser emission.
+ \param emission_state =1 enables pointer/aiming laser emission, =0 disables pointer/aiming laser emission.
+ \param which_laser The numeric index of the desired Laser.
+ \return NO_AxERROR on success or other AxErr error code on failure.
+ */
+ /*! \cond */ AXSUN_EXPORTS /*! \endcond */
+AxErr axSetPointerEmission(uint32_t emission_state, uint32_t which_laser);
+
+ /**
+ \brief Gets pointer/aiminglaser emission status.
+ \param emitting Will be non-zero if pointer/aiming laser is emitting or =0 if pointer/aiming laser is not emitting.
+ \param which_laser The numeric index of the desired Laser.
+ \return NO_AxERROR on success or other AxErr error code on failure.
+ */	/*! \cond */ AXSUN_EXPORTS /*! \endcond */
+AxErr axGetPointerEmission(uint32_t* emitting, uint32_t which_laser);
 
 /**
  \brief Sets the electronic K-clock delay.
@@ -480,7 +504,7 @@ AxErr axSetLaserEmission(uint32_t emission_state, uint32_t which_laser);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details <TODO> SOME DETAILS HERE
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetClockDelay(uint32_t delay_code, uint32_t which_laser);
 
 /*! \brief Gets the currently configured electronic K-clock delay.
@@ -489,7 +513,7 @@ AxErr axSetClockDelay(uint32_t delay_code, uint32_t which_laser);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details See details for axSetClockDelay().
 */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetClockDelay(uint32_t* delay_code, uint32_t which_laser);
 
 /**
@@ -498,7 +522,7 @@ AxErr axGetClockDelay(uint32_t* delay_code, uint32_t which_laser);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details This function returns after _requesting_ the homing operation from the VDL controller; it does not wait for the mechanical homing operation to complete before returning.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axHomeVDL(uint32_t which_laser);
 
 /**
@@ -506,7 +530,7 @@ AxErr axHomeVDL(uint32_t which_laser);
  \param which_laser The numeric index of the desired Laser.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axStopVDL(uint32_t which_laser);
 
 /**
@@ -516,7 +540,7 @@ AxErr axStopVDL(uint32_t which_laser);
  \param which_laser The numeric index of the desired Laser.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axMoveRelVDL(float rel_position, float speed, uint32_t which_laser);
 
 /**
@@ -526,7 +550,7 @@ AxErr axMoveRelVDL(float rel_position, float speed, uint32_t which_laser);
  \param which_laser The numeric index of the desired Laser.
  \return NO_AxERROR on success or other AxErr error code on failure.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axMoveAbsVDL(float abs_position, float speed, uint32_t which_laser);
 
 /**
@@ -550,7 +574,7 @@ AxErr axMoveAbsVDL(float abs_position, float speed, uint32_t which_laser);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Refer to documentation on AxsunOCTControl_LW::VDLStatus for additional explanation of function arguments.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetVDLStatus(float* current_pos, float* target_pos, float* speed,
 	int32_t* error_from_last_home, uint32_t* last_move_time,
 	uint8_t* state, uint8_t* home_switch, uint8_t* limit_switch, uint8_t* VDL_error, uint32_t which_laser);
@@ -563,7 +587,7 @@ AxErr axGetVDLStatus(float* current_pos, float* target_pos, float* speed,
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Some Laser Engines support more than one TEC. To query the state of the primary "TEC 1", use `which_TEC` = 1, or for a secondary TEC use `which_TEC` = 2.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetTECState(AxTECState* TEC_state, uint32_t which_TEC, uint32_t which_laser);
 
 /**
@@ -580,7 +604,7 @@ AxErr axGetTECState(AxTECState* TEC_state, uint32_t which_TEC, uint32_t which_la
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details This function is for Axsun internal use only.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetDACTable(uint32_t points, uint32_t speed, uint32_t timer1time, uint32_t timer2time,
 	uint32_t timer1duration, uint32_t timer2duration, uint16_t* volts_currents, uint32_t which_laser);
 
@@ -598,7 +622,7 @@ AxErr axSetDACTable(uint32_t points, uint32_t speed, uint32_t timer1time, uint32
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details This function is for Axsun internal use only.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetDACTable(uint32_t* points, uint32_t* speed, uint32_t* timer1time, uint32_t* timer2time,
 	uint32_t* timer1duration, uint32_t* timer2duration, uint16_t* volts_currents, uint32_t which_laser);
 
@@ -609,7 +633,7 @@ AxErr axGetDACTable(uint32_t* points, uint32_t* speed, uint32_t* timer1time, uin
  \return NO_AxERROR on success or other AxErr error code on failure.
 \details Laser Engines must be programmed during manufacture to support multiple drive configurations.  Contact Axsun technical support for more information.
 */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axSetDriveConfiguration(uint32_t which_config, uint32_t which_laser);
 
 /**
@@ -619,7 +643,7 @@ AxErr axSetDriveConfiguration(uint32_t which_config, uint32_t which_laser);
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details Laser Engines must be programmed during manufacture to support multiple drive configurations.  Contact Axsun technical support for more information.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axGetDriveConfiguration(uint32_t * current_configuration, uint32_t which_laser);
 
 /**
@@ -629,7 +653,7 @@ AxErr axGetDriveConfiguration(uint32_t * current_configuration, uint32_t which_l
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details The supplied callback function will be executed by a background thread when a new device is detected or when an existing device is disconnected. Within the callback function, access is provided to arbitrary user data passed as a void* parameter to this function.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axRegisterConnectCallback(AxConnectCallbackFunctionC_t callback_function, void * userData);
 
 #ifdef LabVIEW_CALLBACK
@@ -639,7 +663,7 @@ AxErr axRegisterConnectCallback(AxConnectCallbackFunctionC_t callback_function, 
  \return NO_AxERROR on success or other AxErr error code on failure.
  \details LabVIEW code can be called directly from this library when a new device is detected or when an existing device is disconnected, similar to a C-based callback function registered using axRegisterConnectCallback(). See the %AxsunOCTControl_LW LabVIEW example project and _extcode.h_ header file (provided by National Instruments) for more details.
  */
-/*! \cond */ EXPORT /*! \endcond */
+/*! \cond */ AXSUN_EXPORTS /*! \endcond */
 AxErr axRegisterLabVIEWCallback(LVUserEventRef* refnumptr);
 #endif
 

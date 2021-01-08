@@ -138,21 +138,39 @@ void DAQ::run( void )
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()");
-        auto retval = axOpenAxsunOCTControl(true);
+//        auto retval = axOpenAxsunOCTControl(true);
 
-//        char message[512];
+        char message[512];
 
-//        try{
-//            if (auto retval = axSetupDisplay(session, 0, 0, 0, 1024, 512, 0); retval != AxErr::NO_AxERROR) throw retval;
-//            if (auto retval = axAdjustBrightnessContrast(session, 1, 0, 1); retval != AxErr::NO_AxERROR) throw retval;
-//        }     catch (const AxErr& e) {
-//            axGetErrorString(e, message);
-//            LOG1 (message);
-//        }
-//        catch (...) {
-//            QString errorMessage("***** UNKNOWN ERROR. Program terminating.");
-//            LOG1(errorMessage);
-//        }
+        try{
+            if (auto retval = axOpenAxsunOCTControl(true); retval != AxErr::NO_AxERROR) throw retval;
+
+            if (auto retval = axUSBInterfaceOpen(1); retval != AxErr::NO_AxERROR) throw retval;
+            //axNetworkInterfaceOpen
+            if (auto retval = axNetworkInterfaceOpen(1); retval != AxErr::NO_AxERROR) throw retval;
+
+            // NOTE: before proceeding with this program:
+            //    TURN ON LASER EMISSION using AxsunOCTControl or AxsunOCTControl_LW API, or OCT Host or Hardware Control Tool GUI
+            //    FOR GIGABIT_ETHERNET INTERFACE, need to set DAQ Imaging On mode using AxsunOCTControl or AxsunOCTControl_LW API, or OCT Host or Hardware Control Tool GUI
+            /**
+            \brief Control the DAQ operational mode (Live Imaging, Burst Recording, or Imaging Off) when using the Ethernet interface.
+            \param number_of_images =0 for Imaging Off (idle), =-1 for Live Imaging (no record), or any positive value between 1 and 32767 to request the desired number of images in a Burst Record operation.
+            \param which_DAQ The numeric index of the desired DAQ.
+            \return NO_AxERROR on success or other AxErr error code on failure.
+            \details This function does NOT control the laser and therefore the laser emission must be enabled/disabled separately using axSetLaserEmission(). To control the DAQ operational mode when using the PCIe interface, call axImagingCntrlPCIe() in the AxsunOCTCapture library.
+            */
+            if (auto retval = axImagingCntrlEthernet(-1,1); retval != AxErr::NO_AxERROR) throw retval;
+
+
+        }
+        catch (const AxErr& e) {
+            axGetErrorString(e, message);
+            LOG1 (message);
+        }
+        catch (...) {
+            QString errorMessage("***** UNKNOWN ERROR. Program terminating.");
+            LOG1(errorMessage);
+        }
 
 //        while(m_numberOfConnectedDevices != 2){
 //            m_numberOfConnectedDevices = axCountConnectedDevices();
@@ -490,6 +508,11 @@ bool DAQ::startDaq()
     catch(...){
         LOG0
     }
+
+    m_numberOfConnectedDevices = axCountConnectedDevices();
+
+    LOG1(m_numberOfConnectedDevices);
+
     const bool isSuccess(success == AxErr::NO_AxERROR);
 
     LOG1(isSuccess);
