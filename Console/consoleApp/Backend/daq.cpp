@@ -396,7 +396,7 @@ bool DAQ::getData()
             }
             else {
                 // if no errors, configure the request preferences and then request the image for display
-                prefs.request_mode = AxRequestMode::RETRIEVE_AND_DISPLAY;
+                prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
                 prefs.which_window = 1;
 
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
