@@ -171,6 +171,7 @@ void DAQ::run( void )
             \return NO_AxERROR on success or other AxErr error code on failure.
             \details This function does NOT control the laser and therefore the laser emission must be enabled/disabled separately using axSetLaserEmission(). To control the DAQ operational mode when using the PCIe interface, call axImagingCntrlPCIe() in the AxsunOCTCapture library.
             */
+            sleep(1);
             const uint32_t which_DAQ{0};
             retval = axImagingCntrlEthernet(-1, which_DAQ);
             if(retval != AxErr::NO_AxERROR){
@@ -572,11 +573,11 @@ void DAQ::setLaserDivider()
         if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
         {
             LOG1(subsamplingFactor)
-//            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
-//            if(success != AxErr::NO_AxERROR){
-//                logAxErrorVerbose(__LINE__, success);
-//            }
-            auto success = axGetMessage( session, axMessage );
+            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
+            if(success != AxErr::NO_AxERROR){
+                logAxErrorVerbose(__LINE__, success);
+            }
+            success = axGetMessage( session, axMessage );
             if(success != AxErr::NO_AxERROR){
                 logAxErrorVerbose(__LINE__, success);
             }
