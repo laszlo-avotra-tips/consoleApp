@@ -143,24 +143,31 @@ void DAQ::run( void )
         AxErr retval{AxErr::NO_AxERROR};
 
         try{
-            retval = axOpenAxsunOCTControl(true);
-            if(retval != AxErr::NO_AxERROR) {
-                LOG1("axOpenAxsunOCTControl")
-                throw retval;
-            }
+            while(m_numberOfConnectedDevices != 2){
+                retval = axOpenAxsunOCTControl(true);
+                if(retval != AxErr::NO_AxERROR) {
+                    LOG1("axOpenAxsunOCTControl")
+                    throw retval;
+                }
 
-            retval = axUSBInterfaceOpen(1);
-            if(retval != AxErr::NO_AxERROR){
-                LOG1("axUSBInterfaceOpen")
-                throw retval;
-            }
+//                retval = axUSBInterfaceOpen(1);
+//                if(retval != AxErr::NO_AxERROR){
+//                    LOG1("axUSBInterfaceOpen")
+//                    throw retval;
+//                }
 
-            retval = axNetworkInterfaceOpen(1);
-            if(retval != AxErr::NO_AxERROR){
-                LOG1("axNetworkInterfaceOpen")
-                throw retval;
-            }
+//                retval = axNetworkInterfaceOpen(1);
+//                if(retval != AxErr::NO_AxERROR){
+//                    LOG1("axNetworkInterfaceOpen")
+//                    throw retval;
+//                }
 
+                msleep(500);
+
+                m_numberOfConnectedDevices = axCountConnectedDevices();
+                LOG1(m_numberOfConnectedDevices)
+
+            }
             // NOTE: before proceeding with this program:
             //    TURN ON LASER EMISSION using AxsunOCTControl or AxsunOCTControl_LW API, or OCT Host or Hardware Control Tool GUI
             //    FOR GIGABIT_ETHERNET INTERFACE, need to set DAQ Imaging On mode using AxsunOCTControl or AxsunOCTControl_LW API, or OCT Host or Hardware Control Tool GUI
@@ -188,12 +195,6 @@ void DAQ::run( void )
             LOG1(errorMessage);
         }
 
-        while(axCountConnectedDevices() != 2){
-            m_numberOfConnectedDevices = axCountConnectedDevices();
-            LOG1(m_numberOfConnectedDevices)
-
-            msleep(500);
-        }
 
 //        sleep(1);
         setLaserDivider();
