@@ -224,6 +224,7 @@ void DAQ::run( void )
 
 void DAQ::setSubsampling(int speed)
 {
+    LOG1(m_numberOfConnectedDevices)
     if(speed < m_subsamplingThreshold){
         m_subsamplingFactor = 2;
         setLaserDivider();
