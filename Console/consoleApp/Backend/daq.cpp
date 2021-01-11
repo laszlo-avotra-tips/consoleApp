@@ -138,16 +138,28 @@ void DAQ::run( void )
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()");
-//        auto retval = axOpenAxsunOCTControl(true);
 
         char message[512];
+        AxErr retval{AxErr::NO_AxERROR};
 
         try{
-            if (auto retval = axOpenAxsunOCTControl(true); retval != AxErr::NO_AxERROR) throw retval;
+            retval = axOpenAxsunOCTControl(true);
+            if(retval != AxErr::NO_AxERROR) {
+                LOG1("axOpenAxsunOCTControl")
+                throw retval;
+            }
 
-            if (auto retval = axUSBInterfaceOpen(1); retval != AxErr::NO_AxERROR) throw retval;
-            //axNetworkInterfaceOpen
-            if (auto retval = axNetworkInterfaceOpen(1); retval != AxErr::NO_AxERROR) throw retval;
+            retval = axUSBInterfaceOpen(1);
+            if(retval != AxErr::NO_AxERROR){
+                LOG1("axUSBInterfaceOpen")
+                throw retval;
+            }
+
+            retval = axNetworkInterfaceOpen(1);
+            if(retval != AxErr::NO_AxERROR){
+                LOG1("axNetworkInterfaceOpen")
+                throw retval;
+            }
 
             // NOTE: before proceeding with this program:
             //    TURN ON LASER EMISSION using AxsunOCTControl or AxsunOCTControl_LW API, or OCT Host or Hardware Control Tool GUI
@@ -160,9 +172,11 @@ void DAQ::run( void )
             \details This function does NOT control the laser and therefore the laser emission must be enabled/disabled separately using axSetLaserEmission(). To control the DAQ operational mode when using the PCIe interface, call axImagingCntrlPCIe() in the AxsunOCTCapture library.
             */
             const uint32_t which_DAQ{0};
-            if (auto retval = axImagingCntrlEthernet(-1, which_DAQ); retval != AxErr::NO_AxERROR) throw retval;
-
-
+            retval = axImagingCntrlEthernet(-1, which_DAQ);
+            if(retval != AxErr::NO_AxERROR){
+                LOG2("axImagingCntrlEthernet",which_DAQ)
+                throw retval;
+            }
         }
         catch (const AxErr& e) {
             axGetErrorString(e, message);
