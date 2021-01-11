@@ -188,13 +188,14 @@ void DAQ::run( void )
             LOG1(errorMessage);
         }
 
-//        while(m_numberOfConnectedDevices != 2){
-//            m_numberOfConnectedDevices = axCountConnectedDevices();
-//            LOG1(m_numberOfConnectedDevices)
+        while(axCountConnectedDevices() != 2){
+            m_numberOfConnectedDevices = axCountConnectedDevices();
+            LOG1(m_numberOfConnectedDevices)
 
-//            msleep(500);
-//        }
-        sleep(1);
+            msleep(500);
+        }
+
+//        sleep(1);
         setLaserDivider();
 
         while( isRunning )
