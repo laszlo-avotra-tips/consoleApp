@@ -246,7 +246,7 @@ bool DAQ::getData( )
         logAxErrorVerbose(__LINE__, success);
     }
     ++counter;
-    LOG1(counter)
+    LOG2(counter,int(imaging))
 
 //    isReturnedImageNumberChanged = (success == AxErr::NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
 //    sprevReturnedImageNumber = returned_image_number;
