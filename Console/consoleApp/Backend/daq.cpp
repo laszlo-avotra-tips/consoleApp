@@ -155,6 +155,7 @@ void DAQ::run( void )
             msleep(500);
         }
         setLaserDivider();
+        LOG1(isRunning)
 
         while( isRunning )
         {
@@ -244,6 +245,8 @@ bool DAQ::getData( )
     if(success != AxErr::NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
     }
+    ++counter;
+    LOG1(counter)
 
 //    isReturnedImageNumberChanged = (success == AxErr::NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
 //    sprevReturnedImageNumber = returned_image_number;
