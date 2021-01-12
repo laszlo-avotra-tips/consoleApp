@@ -168,7 +168,7 @@ void DAQ::run( void )
             LOG2(reg2Val, bit2)
         }
         uint16_t reg19Val{0};
-        retval = axGetFPGARegister(2,&reg19Val,0);
+        retval = axGetFPGARegister(19,&reg19Val,0);
         if(retval == AxErr::NO_AxERROR){
             bool bit15 = reg19Val & 0x8000;
             LOG2(reg19Val,bit15)
