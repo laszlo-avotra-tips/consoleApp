@@ -161,6 +161,19 @@ void DAQ::run( void )
             LOG2(int(retval), errorMsg)
         }
 
+        uint16_t reg2Val{0};
+        retval = axGetFPGARegister(2,&reg2Val,0);
+        if(retval == AxErr::NO_AxERROR){
+            bool bit2 = reg2Val & 0x4;
+            LOG2(reg2Val, bit2)
+        }
+        uint16_t reg19Val{0};
+        retval = axGetFPGARegister(2,&reg19Val,0);
+        if(retval == AxErr::NO_AxERROR){
+            bool bit15 = reg19Val & 0x8000;
+            LOG2(reg19Val,bit15)
+        }
+
         setLaserDivider();
         LOG1(isRunning)
 
