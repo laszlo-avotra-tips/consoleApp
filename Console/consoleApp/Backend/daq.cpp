@@ -464,16 +464,17 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider()
 {
-    if(m_numberOfConnectedDevices == 2){
+    if(m_numberOfConnectedDevices == 2)
+    {
         const int subsamplingFactor = m_subsamplingFactor;
         if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
         {
             LOG1(subsamplingFactor)
-//            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
-//            if(success != AxErr::NO_AxERROR){
-//                logAxErrorVerbose(__LINE__, success);
-//            }
-            AxErr success = axGetMessage( session, axMessage );
+            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
+            if(success != AxErr::NO_AxERROR){
+                logAxErrorVerbose(__LINE__, success);
+            }
+            success = axGetMessage( session, axMessage );
             if(success != AxErr::NO_AxERROR){
                 logAxErrorVerbose(__LINE__, success);
             }
