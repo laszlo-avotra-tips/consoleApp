@@ -150,7 +150,7 @@ void DAQ::run( void )
 
         while(m_numberOfConnectedDevices != 2){
             m_numberOfConnectedDevices = axCountConnectedDevices();
-//            LOG1(m_numberOfConnectedDevices)
+            LOG1(m_numberOfConnectedDevices)
 
             msleep(500);
         }
