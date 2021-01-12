@@ -171,6 +171,7 @@ void DAQ::run( void )
                 emit updateSector(axsunData);
             }
             yieldCurrentThread();
+            msleep(100);
         }
     }
     if(shutdownDaq()){
@@ -353,6 +354,7 @@ bool DAQ::getData( )
                 prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
                 prefs.which_window = 0;
                 success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
+                LOG1(info.image_number)
             }
         }
 
