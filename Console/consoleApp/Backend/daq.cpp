@@ -154,6 +154,13 @@ void DAQ::run( void )
 
             msleep(500);
         }
+        retval = axImagingCntrlEthernet(-1,0);
+        if(retval != AxErr::NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(retval, errorMsg);
+            LOG2(int(retval), errorMsg)
+        }
+
         setLaserDivider();
         LOG1(isRunning)
 
@@ -172,7 +179,7 @@ void DAQ::run( void )
                 emit updateSector(axsunData);
             }
             yieldCurrentThread();
-            msleep(100);
+            msleep(60);
         }
     }
     if(shutdownDaq()){
