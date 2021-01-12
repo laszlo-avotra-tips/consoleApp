@@ -143,6 +143,12 @@ void DAQ::run( void )
         AxErr retval{AxErr::NO_AxERROR};
 
         try{
+            retval = axOpenAxsunOCTControl(true);
+            if(retval != AxErr::NO_AxERROR) {
+                LOG1("axOpenAxsunOCTControl")
+                throw retval;
+            }
+            sleep(5);
             while(m_numberOfConnectedDevices != 2){
                 retval = axOpenAxsunOCTControl(true);
                 if(retval != AxErr::NO_AxERROR) {
@@ -570,7 +576,7 @@ bool DAQ::shutdownDaq()
 
 void DAQ::setLaserDivider()
 {
-//    if(m_numberOfConnectedDevices == 2)
+    if(m_numberOfConnectedDevices == 2)
     {
         const int subsamplingFactor = m_subsamplingFactor;
         if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
