@@ -161,19 +161,25 @@ void DAQ::run( void )
             LOG2(int(retval), errorMsg)
         }
 
-        uint16_t reg2Val{0};
-        retval = axGetFPGARegister(2,&reg2Val,0);
-        if(retval == AxErr::NO_AxERROR){
-            bool bit2 = reg2Val & 0x4;
-            LOG2(reg2Val, bit2)
+//        uint16_t reg2Val{0};
+//        retval = axGetFPGARegister(2,&reg2Val,0);
+//        if(retval == AxErr::NO_AxERROR){
+//            bool bit2 = reg2Val & 0x4;
+//            LOG2(reg2Val, bit2)
+//        }
+//        uint16_t reg19Val{0};
+//        retval = axGetFPGARegister(19,&reg19Val,0);
+//        if(retval == AxErr::NO_AxERROR){
+//            bool bit15 = reg19Val & 0x8000;
+//            LOG2(reg19Val,bit15)
+//        }
+//ax set laser emission
+        retval = axSetLaserEmission(1, 0);
+        if(retval != AxErr::NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(retval, errorMsg);
+            LOG2(int(retval), errorMsg)
         }
-        uint16_t reg19Val{0};
-        retval = axGetFPGARegister(19,&reg19Val,0);
-        if(retval == AxErr::NO_AxERROR){
-            bool bit15 = reg19Val & 0x8000;
-            LOG2(reg19Val,bit15)
-        }
-
         setLaserDivider();
         LOG1(isRunning)
 
@@ -266,7 +272,7 @@ bool DAQ::getData( )
         logAxErrorVerbose(__LINE__, success);
     }
     ++counter;
-    LOG2(counter,int(imaging))
+//    LOG2(counter,int(imaging))
 
 //    isReturnedImageNumberChanged = (success == AxErr::NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
 //    sprevReturnedImageNumber = returned_image_number;
@@ -377,7 +383,7 @@ bool DAQ::getData( )
                 prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
                 prefs.which_window = 0;
                 success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
-                LOG1(info.image_number)
+//                LOG1(info.image_number)
             }
         }
 
