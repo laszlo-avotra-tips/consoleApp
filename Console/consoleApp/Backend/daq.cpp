@@ -238,7 +238,7 @@ bool DAQ::getData( )
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;  // for axGetStatus()
     request_prefs_t prefs{ };
     image_info_t info{ };
-    int32_t counter = 0;
+    static int32_t counter = 0;
 
     // get Main Image Buffer status
     AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
@@ -449,11 +449,11 @@ void DAQ::setLaserDivider()
         if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
         {
             LOG1(subsamplingFactor)
-            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
-            if(success != AxErr::NO_AxERROR){
-                logAxErrorVerbose(__LINE__, success);
-            }
-            success = axGetMessage( session, axMessage );
+//            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
+//            if(success != AxErr::NO_AxERROR){
+//                logAxErrorVerbose(__LINE__, success);
+//            }
+            AxErr success = axGetMessage( session, axMessage );
             if(success != AxErr::NO_AxERROR){
                 logAxErrorVerbose(__LINE__, success);
             }
