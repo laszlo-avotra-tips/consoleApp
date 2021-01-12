@@ -196,28 +196,28 @@ void DAQ::setSubsampling(int speed)
  */
 bool DAQ::getData( )
 {
-    static bool isLoggingInitialized{false};
-    uint32_t required_buffer_size = 0;
-    uint32_t returned_image_number = 0;
-    static uint32_t sprevReturnedImageNumber = 0;
-    static int32_t lostImageCount = 0;
-    static uint32_t imageCount = 0;
-    static int64_t axErrorCount = 0;
-    float lostImagesInPercent = 0.0f;
-    int32_t width = 0;
-    int32_t height = 0;
-    AxDataType data_type = AxDataType::U8;
-    uint32_t returned_image = 0;
-    uint8_t force_trig = 0;
-    uint8_t trig_too_fast = 0;
-    static std::map<AxErr,int> errorTable;
-    static int64_t force_trigCount = 0;
-    static int64_t trig_too_fastCount = 0;
-    AxErr success{AxErr::NO_AxERROR};
-    static AxErr sRetVal{AxErr::NO_AxERROR};
-    bool isReturnedImageNumberChanged{false};
+//    static bool isLoggingInitialized{false};
+//    uint32_t required_buffer_size = 0;
+//    uint32_t returned_image_number = 0;
+//    static uint32_t sprevReturnedImageNumber = 0;
+//    static int32_t lostImageCount = 0;
+//    static uint32_t imageCount = 0;
+//    static int64_t axErrorCount = 0;
+//    float lostImagesInPercent = 0.0f;
+//    int32_t width = 0;
+//    int32_t height = 0;
+//    AxDataType data_type = AxDataType::U8;
+//    uint32_t returned_image = 0;
+//    uint8_t force_trig = 0;
+//    uint8_t trig_too_fast = 0;
+//    static std::map<AxErr,int> errorTable;
+//    static int64_t force_trigCount = 0;
+//    static int64_t trig_too_fastCount = 0;
+//    AxErr success{AxErr::NO_AxERROR};
+//    static AxErr sRetVal{AxErr::NO_AxERROR};
+//    bool isReturnedImageNumberChanged{false};
 
-    int64_t requestedImageNumber = -1;
+//    int64_t requestedImageNumber = -1;
 
 //    try{
 //        success = axGetImageInfoAdv(session, requestedImageNumber,
@@ -239,7 +239,7 @@ bool DAQ::getData( )
     int32_t counter = 0;
 
     // get Main Image Buffer status
-    success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+    AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
     if(success != AxErr::NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
     }
@@ -367,7 +367,7 @@ bool DAQ::getData( )
 
         yieldCurrentThread();
 
-        return true;
+        return success == AxErr::NO_AxERROR;
     }
 //    return false;
 //}
@@ -415,6 +415,7 @@ bool DAQ::startDaq()
     } catch(...){
         LOG1(__FUNCTION__)
     }
+    LOG0
 
     return success == AxErr::NO_AxERROR;
 }
