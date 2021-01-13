@@ -420,7 +420,7 @@ bool DAQ::startDaq()
 
     try {
 
-        success = axStartSession(&session, 500);    // Start Axsun engine session
+        success = axStartSession(&session, 4);    // Start Axsun engine session
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
