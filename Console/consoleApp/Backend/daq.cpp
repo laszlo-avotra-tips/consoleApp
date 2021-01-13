@@ -198,7 +198,7 @@ void DAQ::run( void )
                 emit updateSector(axsunData);
             }
             yieldCurrentThread();
-            msleep(20);
+            msleep(60);
         }
     }
     if(shutdownDaq()){
@@ -386,21 +386,26 @@ bool DAQ::getData( )
                 prefs.which_window = 0;
                 success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
                 int currentImageNumber = info.image_number;
-                if(!currentImageNumber){
-                    ++counterImage0;
-                }
-                if(counter % 100 == 0){
-                    LOG2(counter, counterImage0);
-                }
-                isNewData = true;
-                gBufferLength = info.width;
+                LOG2(counter, info.image_number)
+                if(currentImageNumber != sprevReturnedImageNumber){
+                    sprevReturnedImageNumber = currentImageNumber;
 
-                // write in frame information for recording/playback
-                axsunData->frameCount = gDaqCounter;
-                axsunData->timeStamp = fileTimer.elapsed();;
-                axsunData->milliseconds = 30;
+//                    if(!currentImageNumber){
+//                        ++counterImage0;
+//                    }
+//                    if(counter % 100 == 0){
+//                        LOG2(counter, counterImage0);
+//                    }
+                    isNewData = true;
+                    gBufferLength = info.width;
 
-                gDaqCounter++;
+                    // write in frame information for recording/playback
+                    axsunData->frameCount = gDaqCounter;
+                    axsunData->timeStamp = fileTimer.elapsed();;
+                    axsunData->milliseconds = 30;
+
+                    gDaqCounter++;
+                }
             }
         }
 
