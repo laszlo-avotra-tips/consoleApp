@@ -440,7 +440,7 @@ bool DAQ::startDaq()
         }
         msleep(100);
 
-        success = axSetImageSyncSource(AxEdgeSource::LVDS,0,0);
+        success = axSetImageSyncSource(AxEdgeSource::INTERNAL,16.6,0);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
