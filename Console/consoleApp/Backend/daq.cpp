@@ -437,7 +437,7 @@ bool DAQ::startDaq()
         }
         msleep(100);
 
-        success = axSetSweepTriggerSource(AxEdgeSource::LVDS,0);
+        success = axSetImageSyncSource(AxEdgeSource::LVCMOS,0,0);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
