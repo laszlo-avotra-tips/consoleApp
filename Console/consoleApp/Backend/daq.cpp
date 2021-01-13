@@ -435,13 +435,20 @@ bool DAQ::startDaq()
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
-
         msleep(100);
+
+        success = axSetSweepTriggerSource(AxEdgeSource::LVDS,0);
+        if(success != AxErr::NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
+        }
+        msleep(100);
+
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
         msleep(100);
+
         success = axGetMessage(session, axMessage );
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
