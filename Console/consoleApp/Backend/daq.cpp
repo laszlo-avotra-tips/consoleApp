@@ -198,7 +198,7 @@ void DAQ::run( void )
                 emit updateSector(axsunData);
             }
             yieldCurrentThread();
-            msleep(60);
+            msleep(20);
         }
     }
     if(shutdownDaq()){
@@ -273,7 +273,7 @@ bool DAQ::getData( )
         logAxErrorVerbose(__LINE__, success);
     }
     ++counter;
-    LOG2(counter,int(imaging))
+//    LOG2(counter,int(imaging))
 
 //    isReturnedImageNumberChanged = (success == AxErr::NO_AxERROR) && (returned_image_number != sprevReturnedImageNumber);
 //    sprevReturnedImageNumber = returned_image_number;
@@ -420,7 +420,7 @@ bool DAQ::startDaq()
 
     try {
 
-        success = axStartSession(&session, 50);    // Start Axsun engine session
+        success = axStartSession(&session, 500);    // Start Axsun engine session
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
