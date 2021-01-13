@@ -224,10 +224,11 @@ void DAQ::setSubsampling(int speed)
  */
 bool DAQ::getData( )
 {
+    bool isNewData{false};
 //    static bool isLoggingInitialized{false};
 //    uint32_t required_buffer_size = 0;
 //    uint32_t returned_image_number = 0;
-//    static uint32_t sprevReturnedImageNumber = 0;
+    static int sprevReturnedImageNumber = -1;
 //    static int32_t lostImageCount = 0;
 //    static uint32_t imageCount = 0;
 //    static int64_t axErrorCount = 0;
@@ -383,22 +384,27 @@ bool DAQ::getData( )
                 prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
                 prefs.which_window = 0;
                 success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
-//                LOG1(info.image_number)
+                int currentImageNumber = info.image_number;
+                if(sprevReturnedImageNumber != currentImageNumber){
+                    sprevReturnedImageNumber = currentImageNumber;
+                    isNewData = true;
+                    gBufferLength = info.width;
+
+                    // write in frame information for recording/playback
+                    axsunData->frameCount = gDaqCounter;
+                    axsunData->timeStamp = fileTimer.elapsed();;
+                    axsunData->milliseconds = 30;
+
+                    gDaqCounter++;
+                }
+                LOG3(isNewData, sprevReturnedImageNumber, currentImageNumber)
             }
         }
 
-        gBufferLength = info.width;
-
-        // write in frame information for recording/playback
-        axsunData->frameCount = gDaqCounter;
-        axsunData->timeStamp = fileTimer.elapsed();;
-        axsunData->milliseconds = 30;
-
-        gDaqCounter++;
 
         yieldCurrentThread();
 
-        return success == AxErr::NO_AxERROR;
+        return isNewData;
     }
 //    return false;
 //}
