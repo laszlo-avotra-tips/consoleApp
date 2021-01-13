@@ -385,7 +385,7 @@ bool DAQ::getData( )
                 prefs.which_window = 0;
                 success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
                 int currentImageNumber = info.image_number;
-                if(sprevReturnedImageNumber != currentImageNumber){
+//                if(sprevReturnedImageNumber != currentImageNumber){
                     sprevReturnedImageNumber = currentImageNumber;
                     isNewData = true;
                     gBufferLength = info.width;
@@ -396,8 +396,8 @@ bool DAQ::getData( )
                     axsunData->milliseconds = 30;
 
                     gDaqCounter++;
-                }
-                LOG3(isNewData, sprevReturnedImageNumber, currentImageNumber)
+//                }
+//                LOG3(isNewData, sprevReturnedImageNumber, currentImageNumber)
             }
         }
 
