@@ -380,7 +380,7 @@ bool DAQ::getData( )
             if(success != AxErr::NO_AxERROR) {
                 logAxErrorVerbose(__LINE__, success);
             } else {
-                const uint32_t output_buf_len{SectorHeight_px * SectorWidth_px};
+                const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
                 prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
                 prefs.which_window = 0;
                 success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
