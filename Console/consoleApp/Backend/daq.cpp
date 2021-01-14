@@ -385,11 +385,11 @@ bool DAQ::getData( )
                 prefs.which_window = 0;
                 success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
                 int currentImageNumber = info.image_number;
-                LOG2(counter, info.image_number)
+//                LOG2(counter, info.image_number)
                 if(currentImageNumber != sprevReturnedImageNumber){
                     sprevReturnedImageNumber = currentImageNumber;
 
-                    if(counter % 100 == 0){
+                    if(counter % 166 == 0){
                         LOG3(counter,info.width,info.height);
                     }
                     isNewData = true;
