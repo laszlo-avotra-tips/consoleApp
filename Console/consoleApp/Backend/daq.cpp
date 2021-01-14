@@ -266,7 +266,6 @@ bool DAQ::getData( )
     request_prefs_t prefs{ };
     image_info_t info{ };
     static int32_t counter = 0;
-    static int32_t counterImage0 = 0;
 
     // get Main Image Buffer status
     AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
@@ -390,12 +389,9 @@ bool DAQ::getData( )
                 if(currentImageNumber != sprevReturnedImageNumber){
                     sprevReturnedImageNumber = currentImageNumber;
 
-//                    if(!currentImageNumber){
-//                        ++counterImage0;
-//                    }
-//                    if(counter % 100 == 0){
-//                        LOG2(counter, counterImage0);
-//                    }
+                    if(counter % 100 == 0){
+                        LOG3(counter,info.width,info.height);
+                    }
                     isNewData = true;
                     gBufferLength = info.width;
 
