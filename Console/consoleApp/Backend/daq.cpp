@@ -141,31 +141,27 @@ void DAQ::run( void )
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()")
-//        retval = axOpenAxsunOCTControl(true);
+
+//        retval = axNetworkInterfaceOpen(1);
 //        if(retval != AxErr::NO_AxERROR){
-//            logAxErrorVerbose(__LINE__, retval);
+//            char errorMsg[512];
+//            axGetErrorString(retval, errorMsg);
+//            LOG2(int(retval), errorMsg)
+//        }
+//        retval = axUSBInterfaceOpen(1);
+//        if(retval != AxErr::NO_AxERROR){
+//            char errorMsg[512];
+//            axGetErrorString(retval, errorMsg);
+//            LOG2(int(retval), errorMsg)
 //        }
 
-        retval = axNetworkInterfaceOpen(1);
-        if(retval != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retval, errorMsg);
-            LOG2(int(retval), errorMsg)
-        }
-        retval = axUSBInterfaceOpen(1);
-        if(retval != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retval, errorMsg);
-            LOG2(int(retval), errorMsg)
-        }
 
+//        while(m_numberOfConnectedDevices != 2){
+//            m_numberOfConnectedDevices = axCountConnectedDevices();
+//            LOG1(m_numberOfConnectedDevices)
 
-        while(m_numberOfConnectedDevices != 2){
-            m_numberOfConnectedDevices = axCountConnectedDevices();
-            LOG1(m_numberOfConnectedDevices)
-
-            msleep(500);
-        }
+//            msleep(500);
+//        }
         retval = axImagingCntrlEthernet(-1,0);
         if(retval != AxErr::NO_AxERROR){
             char errorMsg[512];
@@ -445,6 +441,28 @@ bool DAQ::startDaq()
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
+
+        success = axNetworkInterfaceOpen(1);
+        if(success != AxErr::NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(success, errorMsg);
+            LOG2(int(success), errorMsg)
+        }
+        success = axUSBInterfaceOpen(1);
+        if(success != AxErr::NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(success, errorMsg);
+            LOG2(int(success), errorMsg)
+        }
+
+        while(m_numberOfConnectedDevices != 2){
+            m_numberOfConnectedDevices = axCountConnectedDevices();
+            LOG1(m_numberOfConnectedDevices)
+
+            msleep(500);
+        }
+
+
         const int framesUntilForceTrig {35};
         /*
          * The number of frames for which the driver will wait for a Image_sync signal before timing out and entering Force Trigger mode.
