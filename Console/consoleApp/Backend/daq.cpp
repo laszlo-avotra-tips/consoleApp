@@ -281,9 +281,9 @@ bool DAQ::getData( )
 
     // get Main Image Buffer status
     AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
-    if(success != AxErr::NO_AxERROR){
-        logAxErrorVerbose(__LINE__, success);
-    }
+//    if(success != AxErr::NO_AxERROR){
+//        logAxErrorVerbose(__LINE__, success);
+//    }
     ++counter;
 //    LOG2(counter,int(imaging))
 
@@ -390,7 +390,7 @@ bool DAQ::getData( )
         if(imaging){
             success = axGetImageInfo(session, 0, &info);
             if(success != AxErr::NO_AxERROR) {
-                logAxErrorVerbose(__LINE__, success);
+//                logAxErrorVerbose(__LINE__, success);
             } else {
                 const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
                 prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
@@ -401,9 +401,9 @@ bool DAQ::getData( )
                 if(currentImageNumber != sprevReturnedImageNumber){
                     sprevReturnedImageNumber = currentImageNumber;
 
-                    if(counter % 166 == 0){
-                        LOG3(counter,info.width,info.height);
-                    }
+//                    if(counter % 166 == 0){
+//                        LOG3(counter,info.width,info.height);
+//                    }
                     isNewData = true;
                     gBufferLength = info.width;
 
