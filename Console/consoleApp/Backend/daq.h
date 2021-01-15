@@ -53,6 +53,7 @@ private:
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
     void logDecimation();
     void logAxErrorVerbose(int line, AxErr e);
+    void logRegisterValue(int line, int reg);
 
 private:
     AOChandle session = NULL;

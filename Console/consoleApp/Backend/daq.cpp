@@ -64,6 +64,18 @@ void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode)
     LOG3(line, int(axErrorCode), errorVerbose)
 }
 
+void DAQ::logRegisterValue(int line, int registerNumber)
+{
+    uint16_t regVal{0};
+    AxErr retval = axGetFPGARegister(registerNumber,&regVal,0);
+    if(retval == AxErr::NO_AxERROR){
+        QString registerValue = QString::number(regVal,16);
+        LOG2(registerNumber, registerValue)
+    } else {
+        logAxErrorVerbose(line, retval);
+    }
+}
+
 DAQ::~DAQ()
 {
 }
@@ -161,18 +173,18 @@ void DAQ::run( void )
             LOG2(int(retval), errorMsg)
         }
 
-//        uint16_t reg2Val{0};
-//        retval = axGetFPGARegister(2,&reg2Val,0);
-//        if(retval == AxErr::NO_AxERROR){
-//            bool bit2 = reg2Val & 0x4;
-//            LOG2(reg2Val, bit2)
-//        }
-//        uint16_t reg19Val{0};
-//        retval = axGetFPGARegister(19,&reg19Val,0);
-//        if(retval == AxErr::NO_AxERROR){
-//            bool bit15 = reg19Val & 0x8000;
-//            LOG2(reg19Val,bit15)
-//        }
+        uint16_t reg2Val{0};
+        retval = axGetFPGARegister(2,&reg2Val,0);
+        if(retval == AxErr::NO_AxERROR){
+            bool bit2 = reg2Val & 0x4;
+            LOG2(reg2Val, bit2)
+        }
+        uint16_t reg19Val{0};
+        retval = axGetFPGARegister(19,&reg19Val,0);
+        if(retval == AxErr::NO_AxERROR){
+            bool bit15 = reg19Val & 0x8000;
+            LOG2(reg19Val,bit15)
+        }
 //ax set laser emission
         retval = axSetLaserEmission(1, 0);
         if(retval != AxErr::NO_AxERROR){
@@ -441,11 +453,18 @@ bool DAQ::startDaq()
         }
         msleep(100);
 
-        success = axSetImageSyncSource(AxEdgeSource::INTERNAL,16.6,0);
+        logRegisterValue(__LINE__, 2);
+        logRegisterValue(__LINE__, 5);
+        logRegisterValue(__LINE__, 6);
+        success = axSetImageSyncSource(AxEdgeSource::LVDS,16.6,0);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
         msleep(100);
+        logRegisterValue(__LINE__, 2);
+        logRegisterValue(__LINE__, 5);
+        logRegisterValue(__LINE__, 6);
+
 
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
         if(success != AxErr::NO_AxERROR){
