@@ -141,10 +141,10 @@ void DAQ::run( void )
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()")
-        retval = axOpenAxsunOCTControl(true);
-        if(retval != AxErr::NO_AxERROR){
-            logAxErrorVerbose(__LINE__, retval);
-        }
+//        retval = axOpenAxsunOCTControl(true);
+//        if(retval != AxErr::NO_AxERROR){
+//            logAxErrorVerbose(__LINE__, retval);
+//        }
 
         retval = axNetworkInterfaceOpen(1);
         if(retval != AxErr::NO_AxERROR){
@@ -436,6 +436,11 @@ bool DAQ::startDaq()
 
     try {
 
+        success = axOpenAxsunOCTControl(true);
+        if(success != AxErr::NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
+        }
+
         success = axStartSession(&session, 4);    // Start Axsun engine session
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
@@ -456,7 +461,7 @@ bool DAQ::startDaq()
         logRegisterValue(__LINE__, 2);
         logRegisterValue(__LINE__, 5);
         logRegisterValue(__LINE__, 6);
-        success = axSetImageSyncSource(AxEdgeSource::LVDS,16.6,0);
+        success = axSetImageSyncSource(AxEdgeSource::INTERNAL,16.6,0);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
