@@ -479,7 +479,7 @@ bool DAQ::startDaq()
         logRegisterValue(__LINE__, 2);
         logRegisterValue(__LINE__, 5);
         logRegisterValue(__LINE__, 6);
-        success = axSetImageSyncSource(AxEdgeSource::INTERNAL,16.6,0);
+        success = axSetImageSyncSource(AxEdgeSource::LVDS,16.6,0);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
