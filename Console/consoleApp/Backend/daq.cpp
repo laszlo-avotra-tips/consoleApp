@@ -145,18 +145,19 @@ void DAQ::run( void )
             LOG2(int(retval), errorMsg)
         }
 
-        uint16_t reg2Val{0};
-        retval = axGetFPGARegister(2,&reg2Val,0);
-        if(retval == AxErr::NO_AxERROR){
-            bool bit2 = reg2Val & 0x4;
-            LOG2(reg2Val, bit2)
-        }
-        uint16_t reg19Val{0};
-        retval = axGetFPGARegister(19,&reg19Val,0);
-        if(retval == AxErr::NO_AxERROR){
-            bool bit15 = reg19Val & 0x8000;
-            LOG2(reg19Val,bit15)
-        }
+//        uint16_t reg2Val{0};
+//        retval = axGetFPGARegister(2,&reg2Val,0);
+//        if(retval == AxErr::NO_AxERROR){
+//            bool bit2 = reg2Val & 0x4;
+//            LOG2(reg2Val, bit2)
+//        }
+//        uint16_t reg19Val{0};
+//        retval = axGetFPGARegister(19,&reg19Val,0);
+//        if(retval == AxErr::NO_AxERROR){
+//            bool bit15 = reg19Val & 0x8000;
+//            LOG2(reg19Val,bit15)
+//        }
+
 //ax set laser emission
         retval = axSetLaserEmission(1, 0);
         if(retval != AxErr::NO_AxERROR){
@@ -293,7 +294,7 @@ bool DAQ::startDaq()
             m_numberOfConnectedDevices = axCountConnectedDevices();
             LOG1(m_numberOfConnectedDevices)
 
-            msleep(500); //TO DO - handle failure
+            msleep(500); //TO DO - handle failure max number of retries 60 sec
         }
 
 
@@ -304,6 +305,13 @@ bool DAQ::startDaq()
          * 35 * 256 = 8960 A lines
          */
         msleep(100);
+
+        success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
+        if(success != AxErr::NO_AxERROR){
+            logAxErrorVerbose(__LINE__, success);
+        }
+        msleep(100);
+
         success = axSetTrigTimeout(session, framesUntilForceTrig * 2);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
@@ -323,11 +331,11 @@ bool DAQ::startDaq()
         logRegisterValue(__LINE__, 6);
 
 
-        success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
-        if(success != AxErr::NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
-        }
-        msleep(100);
+//        success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
+//        if(success != AxErr::NO_AxERROR){
+//            logAxErrorVerbose(__LINE__, success);
+//        }
+//        msleep(100);
 
         success = axGetMessage(session, axMessage );
         if(success != AxErr::NO_AxERROR){
