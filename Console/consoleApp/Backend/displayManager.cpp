@@ -73,7 +73,7 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 
     m_diplaySettingsMonitor->setArguments(m_programArguments);
     m_diplaySettingsMonitor->setProgram(m_programName);
-//    m_diplaySettingsMonitor->start();
+    m_diplaySettingsMonitor->start();
 
     m_secondMonitor = std::make_unique<FormSecondMonitor>();
 
