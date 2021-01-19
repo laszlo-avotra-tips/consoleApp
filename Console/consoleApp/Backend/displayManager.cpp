@@ -1,5 +1,6 @@
 #include "displayManager.h"
 #include "logger.h"
+#include "formSecondMonitor.h"
 
 #include <QFileSystemWatcher>
 #include <QProcess>
@@ -16,7 +17,10 @@ DisplayManager *DisplayManager::instance()
 
 void DisplayManager::killDisplayMonitor()
 {
+    LOG0
     m_diplaySettingsMonitor->kill();
+    QThread::msleep(1000);
+    delete this;
 }
 
 QString DisplayManager::eventFileName() const
@@ -27,7 +31,20 @@ QString DisplayManager::eventFileName() const
 void DisplayManager::monitorEvent(const QString &fileName)
 {
     LOG1(fileName)
-    parseEventFile(fileName);
+            parseEventFile(fileName);
+}
+
+void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
+{
+    LOG1(isNonPrimaryMonitorPresent)
+    if(isNonPrimaryMonitorPresent){
+        m_secondMonitor->show();
+        m_secondMonitor->move(3240,0);
+        m_secondMonitor->showFullScreen();
+    } else {
+        m_secondMonitor->hide();
+    }
+
 }
 
 bool DisplayManager::isNonPrimaryMonitorPresent() const
@@ -40,19 +57,33 @@ void DisplayManager::setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPrese
     m_isNonPrimaryMonitorPresent = isNonPrimaryMonitorPresent;
 }
 
+QGraphicsView *DisplayManager::getGraphicsView()
+{
+    return m_secondMonitor->getGraphicsView();
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
-    //    m_eventFileWatcher = new QFileSystemWatcher(QStringList(R"(C:\Avinger_System)"));
-    m_eventFileWatcher = new QFileSystemWatcher();
+    m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
     m_eventFileWatcher->addPath(m_eventFileName);
 
-    connect(m_eventFileWatcher, &QFileSystemWatcher::fileChanged, this, &DisplayManager::monitorEvent);
+    connect(m_eventFileWatcher.get(), &QFileSystemWatcher::fileChanged, this, &DisplayManager::monitorEvent);
 
-    m_diplaySettingsMonitor = new QProcess();
+    m_diplaySettingsMonitor = std::make_unique<QProcess>();
 
     m_diplaySettingsMonitor->setArguments(m_programArguments);
     m_diplaySettingsMonitor->setProgram(m_programName);
     m_diplaySettingsMonitor->start();
+
+    m_secondMonitor = std::make_unique<FormSecondMonitor>();
+
+    connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
+
+    m_secondMonitor->hide();
+
+    connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                this, &DisplayManager::programFinished);
+
 
 }
 
@@ -86,4 +117,23 @@ void DisplayManager::parse(const QString &line)
            m_isNonPrimaryMonitorPresent = true;
        }
     }
+}
+
+void DisplayManager::programFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    const std::map<QProcess::ExitStatus,QString>
+    lut{
+        {{QProcess::NormalExit},{"NormalExit"}},
+        {{QProcess::CrashExit},{"CrashExit"}}
+    };
+
+    QString message;
+    const auto it = lut.find(exitStatus);
+    if(it != lut.end()){
+        message = it->second;
+    }else {
+        message = QString::number(int(exitStatus));
+    }
+
+    LOG2(exitCode, message)
 }

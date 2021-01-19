@@ -6,29 +6,43 @@ This header file contains enums and other definitions for integrating _AxsunOCTC
 #ifndef AXSUNCOMMONENUMS_H
 #define AXSUNCOMMONENUMS_H
 
+#ifdef _WIN32
+/*! \cond */ #define AXSUN_EXPORTS __declspec(dllexport) /*! \endcond */
+#else	// linux or macOS
+#define AXSUN_EXPORTS __attribute__((visibility("default")))
+#include <stddef.h>				// for size_t on linux
+#define __cdecl					// re-define "__cdecl" to be "" for non-Windows targets
+#endif // _WIN32
 
-#ifdef _WINDOWS
-/*! \cond */ #define EXPORT __declspec(dllexport) /*! \endcond */
-#endif // _WINDOWS
+#ifdef __cplusplus
+#include <cstdint>			// for integer typedefs
+#else
+#include <stdint.h>			// for integer typedefs
+#endif // __cplusplus
 
-#ifdef __GNUC__
-#define EXPORT __attribute__((visibility("default")))
-#endif // __GNUC__
+/** \brief Structure for packet time stamp with platform-independent size (for internal use.) */
+typedef struct axtimeval_t {
+	int32_t tv_sec;
+	int32_t tv_usec;
+} axtimeval_t;
 
-#ifdef __APPLE__
-#define EXPORT __attribute__((visibility("default")))
-#endif // __APPLE__
-
-/** \brief Error codes returned from AxsunOCTCapture or AxsunOCTControl_LW functions. Use axGetErrorString() for descriptions. */
-typedef enum {
+/** \brief Error codes returned from AxsunOCTCapture or AxsunOCTControl_LW functions. Use axGetErrorString() in AxsunOCTCapture or axGetErrorExplained() in AxsunOCTControl_LW for descriptions. */
+typedef enum
+#ifdef __cplusplus
+class
+#endif // __cplusplus
+AxErr {
 	NO_AxERROR = 0,						
 	UNKNOWN_ERROR = -10004,				
 	INVALID_ARGUMENTS = -10007,			
+	CAPABILITY_NOT_SUPPORTED = -10009,
+	UNDEFINED_BOARD_TYPE = -10013,
 
 	CAPTURE_SESSION_NOT_SETUP = -5000,
 	CAPTURE_SESSION_ALREADY_DESTROYED = -5001,
 	CAPTURE_INTERFACE_SETUP_FAILURE = -5002,
 	CAPTURE_SESSION_HANDLE_INVALID = -5003,
+	CALLBACK_NOT_REGISTERED = -5004,
 
 	// return codes for Main Image Buffer management
 	BUFFER_UNINITIALIZED = -5020,
@@ -37,6 +51,7 @@ typedef enum {
 	BUFFER_BYTE_ALLIGNMENT_ERROR = -5023,
 	DATA_RATE_MEASUREMENT_FAILURE = -5024,
 	BUFFER_TOO_SMALL = -5025,
+	BUFFER_BUSY = -5026,
 
 	// return codes for file management
 	FILE_INCORRECT_TYPE = -5040,
@@ -47,6 +62,7 @@ typedef enum {
 	FILE_PATHNAME_TOO_LONG = -5045,
 	NOT_ALLOWED_WHILE_IMAGING = -5046,
 	DATA_TYPE_NOT_SUPPORTED = -5047,
+	FILE_READING_FAILURE = -5048,
 
 	// return codes for JPEG compression/decompression and BMP export
 	JPEG_LOAD_LIBRARY_FAILED = -5050,
@@ -55,6 +71,8 @@ typedef enum {
 	JPEG_DECOMPRESSION_ERROR = -5053,
 	JPEG_COMPRESSION_ERROR = -5054,
 	BMP_WRITING_FAILURE = -5055,
+	OPENCV_LOAD_LIBRARY_FAILED = -5056,
+	IMAGE_EXPORT_RESOURCES_MISSING = -5057,
 
 	// return codes for analog waveform generation control (axScanCmd() and related functions)
 	DAQMX_LOAD_LIBRARY_FAILED = -9000,
@@ -92,6 +110,7 @@ typedef enum {
 	RENDER_FUNCTIONS_NOT_SETUP = -8013,
 	RENDER_WINDOW_MOVE_FAILED = -8014,
 	RENDER_WINDOW_STYLE_FAILED = -8015,
+	RENDER_WINDOW_NOT_SETUP = -8016,
 
 	// return codes for Ethernet packet capture
 	PCAP_LOAD_LIBRARY_FAILED = -7000,
@@ -115,6 +134,10 @@ typedef enum {
 	PCIE_READ_REGISTER_FAILURE = -7030,
 	PCIE_SYNC_IO_FAILURE = -7031,
 	PCIE_INTERRUPT_ENABLE_FAILURE = -7032,
+	AQDAQ_LOAD_LIBRARY_FAILED = -7033,
+	AQDAQ_LOAD_FUNCTION_FAILED = -7034,
+	AQDAQ_FUNCTION_ERROR = -7035,
+	AQDAQ_NO_IMAGE_AVAILABLE = -7036,
 
 	// return codes for image/frame/packet request functions
 	DATA_INDEX_INVALID = -9991,
@@ -131,7 +154,6 @@ typedef enum {
 	ALREADY_INITIALIZED = -10005,		
 	INSUFFICIENT_ALLOCATION = -10006,	
 	DATA_VALIDATION_FAILED = -10008,	
-	CAPABILITY_NOT_SUPPORTED = -10009,	
 	COMMUNICATION_ERROR = -10010,		
 
 	COMMAND_NOT_RECOGNIZED = -55,		
@@ -162,17 +184,67 @@ typedef enum {
 
 } AxErr;
 
+
 /*! \brief DAQ pipeline modes. */
-typedef enum {
-	RAW_ADC = 1,		/*!< Sampled data directly from ADC (unprocessed). */
-	WINDOWED = 2,		/*!< After windowing and zero-padding. */
-	IFFT = 3,			/*!< After calculation of Fourier transformation and negative frequency truncation. */
-	MODULUS = 4,		/*!< After calculation of complex modulus and vector summing of polarization channels. */
-	SQRT = 5,			/*!< After calculation of square root and background subtraction. */
-	LOG = 6,			/*!< After logarithmic compression. */
-	EIGHT_BIT = 7,		/*!< After dynamic-range compression to 8-bits. */
-	JPEG_COMP = 8		/*!< After JPEG compression (Ethernet interface only). */
+typedef enum 
+#ifdef __cplusplus
+class
+#endif // __cplusplus
+AxPipelineMode {
+	UNKNOWN = 0,			/*!< Undefined mode (invalid value in FPGA Register 61?).  */
+	RAW_ADC = 1,			/*!< Sampled data directly from ADC (unprocessed). */
+	WINDOWED = 2,			/*!< After windowing and zero-padding. */
+	IFFT = 3,				/*!< After calculation of Fourier transformation and negative frequency truncation. */
+	MOD_SQUARED = 4,		/*!< After calculation of complex modulus squared. */
+	SQRT = 5,				/*!< After calculation of square root and background subtraction. */
+	LOG = 6,				/*!< After logarithmic compression. */
+	EIGHT_BIT = 7,			/*!< After dynamic-range compression to 8-bits. */
+	JPEG_COMP = 8,			/*!< After JPEG compression (Ethernet interface only). */
+	PIPELINEMODE_RFU = 9	/*!< Reserved for future use. */
 } AxPipelineMode;
+
+/*! \brief DAQ channel selection modes. */
+typedef enum 
+#ifdef __cplusplus
+class
+#endif // __cplusplus
+AxChannelMode {
+	CHAN_1 = 0,					/*!< Channel 1 only. */
+	CHAN_2 = 1,					/*!< Channel 2 only. */
+	SUM_CHANNELS = 2,			/*!< Channels 1 and 2 mixed using vector sum (e.g. polarization diverse). */
+	INTERLEAVE_CHANNELS = 3,	/*!< Channels 1 and 2 interleaved. */
+	CHANNELMODE_RFU = 4			/*!< Reserved for future use. */
+} AxChannelMode;
+
+/** \brief Integer data types which may be generated by the Axsun DAQ depending on selected pipeline bypass mode. */
+typedef enum
+#ifdef __cplusplus
+class
+#endif // __cplusplus
+AxDataType {
+	/** Unsigned 8-bit. */
+	U8,
+	/** Unsigned 16-bit, big endian. */
+	U16,
+	/** Unsigned 32-bit, big endian. */
+	U32,
+	/** 32-bit complex (Signed 16-bit imaginary, Signed 16-bit real), big endian. */
+	CMPLX,
+	/** Signed 16-bit, big endian. */
+	I16,
+	/** Unsigned 16-bit, little endian. */
+	U16_le,
+	/** Unsigned 32-bit, little endian. */
+	U32_le,
+	/** 32-bit complex (Signed 16-bit imaginary, Signed 16-bit real), little endian. */
+	CMPLX_le,
+	/** Signed 16-bit, little endian. */
+	I16_le,
+	/** Signed 32-bit, little endian. */
+	I32_le,
+	/** (reserved for future use). */
+	AXDATATYPE_RFU
+} AxDataType;
 
 
 #endif	//AXSUNCOMMONENUMS_H include guard

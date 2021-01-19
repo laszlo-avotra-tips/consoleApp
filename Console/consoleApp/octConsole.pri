@@ -37,6 +37,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
+    $$PWD/Frontend/Widgets/formSecondMonitor.h \
     $$PWD/Frontend/Widgets/iRotationIndicator.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/opaqueScreen.h \
@@ -115,6 +116,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
+    $$PWD/Frontend/Widgets/formSecondMonitor.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
     $$PWD/Frontend/Widgets/opaqueScreen.cpp \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
@@ -167,6 +169,7 @@ FORMS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
+    $$PWD/Frontend/Widgets/formSecondMonitor.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
     $$PWD/Frontend/Widgets/opaqueScreen.ui \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.ui \
