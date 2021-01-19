@@ -282,18 +282,18 @@ bool DAQ::startDaq()
             axGetErrorString(success, errorMsg);
             LOG2(int(success), errorMsg)
         }
-        success = axUSBInterfaceOpen(1);
-        if(success != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(success, errorMsg);
-            LOG2(int(success), errorMsg)
-        }
+//        success = axUSBInterfaceOpen(1);
+//        if(success != AxErr::NO_AxERROR){
+//            char errorMsg[512];
+//            axGetErrorString(success, errorMsg);
+//            LOG2(int(success), errorMsg)
+//        }
 
         while(m_numberOfConnectedDevices != 2){
             m_numberOfConnectedDevices = axCountConnectedDevices();
             LOG1(m_numberOfConnectedDevices)
 
-            msleep(500);
+            msleep(500); //TO DO - handle failure
         }
 
 
