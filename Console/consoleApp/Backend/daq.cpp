@@ -138,6 +138,13 @@ void DAQ::run( void )
         LOG2(loopCount, m_decimation)
         LOG1("***** Thread: DAQ::run()")
 
+        retval = axSetLaserEmission(1, 0);
+        if(retval != AxErr::NO_AxERROR){
+            char errorMsg[512];
+            axGetErrorString(retval, errorMsg);
+            LOG2(int(retval), errorMsg)
+        }
+
         retval = axImagingCntrlEthernet(-1,0);
         if(retval != AxErr::NO_AxERROR){
             char errorMsg[512];
@@ -159,12 +166,6 @@ void DAQ::run( void )
 //        }
 
 //ax set laser emission
-        retval = axSetLaserEmission(1, 0);
-        if(retval != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retval, errorMsg);
-            LOG2(int(retval), errorMsg)
-        }
         setLaserDivider();
         LOG1(isRunning)
 
