@@ -74,9 +74,9 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
         m_widgetOnTheSecondMonitor->hide();
         //find widget by name assign to m_widgetOnTheSecondMonitor
         if(m_widgetOnTheSecondMonitor = it->second){
+            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
             m_widgetOnTheSecondMonitor->move(3240,0);
             m_widgetOnTheSecondMonitor->showFullScreen();
-            m_widgetOnTheSecondMonitor->show();
         }
     }
 }
@@ -88,8 +88,9 @@ void DisplayManager::initSecondMonitor(QString name)
     if(it != m_widgetContainer.end()){
         if(it->second){
             m_widgetOnTheSecondMonitor = it->second;
+            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
             m_widgetOnTheSecondMonitor->move(3240,0);
-            m_widgetOnTheSecondMonitor->show();
+            m_widgetOnTheSecondMonitor->showFullScreen();
             LOG1(name)
         }
     }
