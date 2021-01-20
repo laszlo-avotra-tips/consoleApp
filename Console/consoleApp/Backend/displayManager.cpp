@@ -79,7 +79,7 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_diplaySettingsMonitor->setProgram(m_programName);
     m_diplaySettingsMonitor->start();
 
-    m_liveSceneView = std::make_unique<FormSecondMonitor>();
+    m_liveSceneView = std::make_unique<LiveSceneView>();
     m_pmLogo = std::make_unique<FormPmLogo>();
 
     m_physicianMonitor = m_liveSceneView.get();
