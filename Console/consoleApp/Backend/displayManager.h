@@ -33,6 +33,7 @@ public:
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
     void setScene(liveScene* scene);
     void showOnTheSecondMonitor(QString name);
+    void initSecondMonitor(QString name);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

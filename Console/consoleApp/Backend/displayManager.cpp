@@ -81,6 +81,19 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
     }
 }
 
+void DisplayManager::initSecondMonitor(QString name)
+{
+    LOG1(name)
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        if(it->second){
+            m_widgetOnTheSecondMonitor = it->second;
+            m_widgetOnTheSecondMonitor->move(3240,0);
+            m_widgetOnTheSecondMonitor->hide();
+        }
+    }
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
@@ -106,7 +119,7 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 
 //    m_widgetOnTheSecondMonitor->hide();
 
-    showOnTheSecondMonitor("logo");
+    initSecondMonitor("logo");
 
     connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                 this, &DisplayManager::programFinished);
