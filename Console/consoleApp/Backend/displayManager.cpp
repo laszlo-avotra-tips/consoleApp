@@ -89,7 +89,8 @@ void DisplayManager::initSecondMonitor(QString name)
         if(it->second){
             m_widgetOnTheSecondMonitor = it->second;
             m_widgetOnTheSecondMonitor->move(3240,0);
-            m_widgetOnTheSecondMonitor->hide();
+            m_widgetOnTheSecondMonitor->show();
+            LOG1(name)
         }
     }
 }

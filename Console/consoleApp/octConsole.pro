@@ -99,11 +99,8 @@ DEPENDPATH += $$PWD/../../lib/amd64/AVideoRecorder
 RESOURCES += \
     OpenClResources.qrc
 
-FORMS += \
-    Frontend/Widgets/formPmLogo.ui
+FORMS +=
 
-HEADERS += \
-    Frontend/Widgets/formPmLogo.h
+HEADERS +=
 
-SOURCES += \
-    Frontend/Widgets/formPmLogo.cpp
+SOURCES +=
