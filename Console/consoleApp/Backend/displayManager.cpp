@@ -113,11 +113,7 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_widgetContainer["logo"] = m_pmLogo.get();
     m_widgetContainer["liveData"] = m_liveSceneView.get();
 
-//    m_widgetOnTheSecondMonitor = m_pmLogo.get(); //m_liveSceneView.get();
-
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
-
-//    m_widgetOnTheSecondMonitor->hide();
 
     initSecondMonitor("logo");
 
