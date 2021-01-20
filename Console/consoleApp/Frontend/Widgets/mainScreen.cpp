@@ -226,6 +226,7 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
+    DisplayManager::instance()->showOnTheSecondMonitor("logo");
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
         ui->pushButtonRecord->click();
