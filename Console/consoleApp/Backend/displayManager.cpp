@@ -42,11 +42,11 @@ void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
 {
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
-        m_physicianMonitor->show();
-        m_physicianMonitor->move(3240,0);
-        m_physicianMonitor->showFullScreen();
+        m_widgetOnTheSecondMonitor->show();
+        m_widgetOnTheSecondMonitor->move(3240,0);
+        m_widgetOnTheSecondMonitor->showFullScreen();
     } else {
-        m_physicianMonitor->hide();
+        m_widgetOnTheSecondMonitor->hide();
     }
 
 }
@@ -66,6 +66,16 @@ void DisplayManager::setScene(liveScene *scene)
     m_liveSceneView->setScene(scene);
 }
 
+void DisplayManager::showOnTheSecondMonitor(QString name)
+{
+    LOG1(name)
+    m_widgetOnTheSecondMonitor->hide();
+    //find widget by name assign to m_widgetOnTheSecondMonitor
+    m_widgetOnTheSecondMonitor->move(3240,0);
+    m_widgetOnTheSecondMonitor->showFullScreen();
+    m_widgetOnTheSecondMonitor->show();
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
@@ -82,11 +92,11 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_liveSceneView = std::make_unique<LiveSceneView>();
     m_pmLogo = std::make_unique<FormPmLogo>();
 
-    m_physicianMonitor = m_liveSceneView.get();
+    m_widgetOnTheSecondMonitor = m_pmLogo.get(); //m_liveSceneView.get();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
 
-    m_physicianMonitor->hide();
+    m_widgetOnTheSecondMonitor->hide();
 
     connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                 this, &DisplayManager::programFinished);

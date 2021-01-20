@@ -30,6 +30,7 @@ public:
     bool isNonPrimaryMonitorPresent() const;
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
     void setScene(liveScene* scene);
+    void showOnTheSecondMonitor(QString name);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);
@@ -47,7 +48,7 @@ private:
     std::unique_ptr<QFileSystemWatcher> m_eventFileWatcher{nullptr};
     std::unique_ptr<LiveSceneView> m_liveSceneView{nullptr};
     std::unique_ptr<FormPmLogo> m_pmLogo{nullptr};
-    QWidget* m_physicianMonitor{nullptr};
+    QWidget* m_widgetOnTheSecondMonitor{nullptr};
 
     const QString m_programName{R"(MonWMIServer.exe)"};
     const QString m_eventFileName{R"(C:\Avinger_System\MonitorEvent.txt)"};
