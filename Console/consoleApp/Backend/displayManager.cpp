@@ -69,11 +69,16 @@ void DisplayManager::setScene(liveScene *scene)
 void DisplayManager::showOnTheSecondMonitor(QString name)
 {
     LOG1(name)
-    m_widgetOnTheSecondMonitor->hide();
-    //find widget by name assign to m_widgetOnTheSecondMonitor
-    m_widgetOnTheSecondMonitor->move(3240,0);
-    m_widgetOnTheSecondMonitor->showFullScreen();
-    m_widgetOnTheSecondMonitor->show();
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        m_widgetOnTheSecondMonitor->hide();
+        //find widget by name assign to m_widgetOnTheSecondMonitor
+        if(m_widgetOnTheSecondMonitor = it->second){
+            m_widgetOnTheSecondMonitor->move(3240,0);
+            m_widgetOnTheSecondMonitor->showFullScreen();
+            m_widgetOnTheSecondMonitor->show();
+        }
+    }
 }
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
@@ -92,11 +97,16 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_liveSceneView = std::make_unique<LiveSceneView>();
     m_pmLogo = std::make_unique<FormPmLogo>();
 
-    m_widgetOnTheSecondMonitor = m_pmLogo.get(); //m_liveSceneView.get();
+    m_widgetContainer["logo"] = m_pmLogo.get();
+    m_widgetContainer["liveData"] = m_liveSceneView.get();
+
+//    m_widgetOnTheSecondMonitor = m_pmLogo.get(); //m_liveSceneView.get();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
 
-    m_widgetOnTheSecondMonitor->hide();
+//    m_widgetOnTheSecondMonitor->hide();
+
+    showOnTheSecondMonitor("logo");
 
     connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                 this, &DisplayManager::programFinished);

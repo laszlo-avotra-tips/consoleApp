@@ -8,7 +8,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QProcess>
+#include <QString>
 #include <memory>
+#include <map>
 
 class QFileSystemWatcher;
 class LiveSceneView;
@@ -56,6 +58,8 @@ private:
     const QStringList m_programArguments{"-w", "1280", "-h", "1024", "-e", m_eventFileName, "-l", m_logFileName};
 
     bool m_isNonPrimaryMonitorPresent{false};
+
+    std::map<QString, QWidget*> m_widgetContainer;
 
 private:
     DisplayManager(QObject *parent = nullptr);
