@@ -63,7 +63,7 @@ void DisplayManager::setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPrese
 
 void DisplayManager::setScene(liveScene *scene)
 {
-    m_secondMonitor->setScene(scene);
+    m_liveSceneView->setScene(scene);
 }
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
@@ -79,10 +79,10 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_diplaySettingsMonitor->setProgram(m_programName);
     m_diplaySettingsMonitor->start();
 
-    m_secondMonitor = std::make_unique<FormSecondMonitor>();
+    m_liveSceneView = std::make_unique<FormSecondMonitor>();
     m_pmLogo = std::make_unique<FormPmLogo>();
 
-    m_physicianMonitor = m_secondMonitor.get();
+    m_physicianMonitor = m_liveSceneView.get();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
 
