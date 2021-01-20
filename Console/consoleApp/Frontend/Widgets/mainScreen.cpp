@@ -68,7 +68,7 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_scene = new liveScene( this );
     m_graphicsView->setScene(m_scene);
-    DisplayManager::instance()->getGraphicsView()->setScene(m_scene);
+//    DisplayManager::instance()->getGraphicsView()->setScene(m_scene);
     m_scene->handleReticleBrightnessChanged();
 
     m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
