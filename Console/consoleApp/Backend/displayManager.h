@@ -12,6 +12,7 @@
 
 class QFileSystemWatcher;
 class FormSecondMonitor;
+class FormPmLogo;
 class QGraphicsView;
 class liveScene;
 
@@ -44,7 +45,9 @@ private:
     static DisplayManager* m_instance;
     std::unique_ptr<QProcess> m_diplaySettingsMonitor{nullptr};
     std::unique_ptr<QFileSystemWatcher> m_eventFileWatcher{nullptr};
-    std::unique_ptr<FormSecondMonitor> m_secondMonitor{nullptr};
+    std::unique_ptr<FormSecondMonitor> m_liveSceneView{nullptr};
+    std::unique_ptr<FormPmLogo> m_pmLogo{nullptr};
+    QWidget* m_physicianMonitor{nullptr};
 
     const QString m_programName{R"(MonWMIServer.exe)"};
     const QString m_eventFileName{R"(C:\Avinger_System\MonitorEvent.txt)"};

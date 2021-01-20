@@ -2,6 +2,7 @@
 #include "logger.h"
 #include "formSecondMonitor.h"
 #include "livescene.h"
+#include "formPmLogo.h"
 
 #include <QFileSystemWatcher>
 #include <QProcess>
@@ -41,11 +42,11 @@ void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
 {
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
-        m_secondMonitor->show();
-        m_secondMonitor->move(3240,0);
-        m_secondMonitor->showFullScreen();
+        m_physicianMonitor->show();
+        m_physicianMonitor->move(3240,0);
+        m_physicianMonitor->showFullScreen();
     } else {
-        m_secondMonitor->hide();
+        m_physicianMonitor->hide();
     }
 
 }
@@ -79,14 +80,16 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_diplaySettingsMonitor->start();
 
     m_secondMonitor = std::make_unique<FormSecondMonitor>();
+    m_pmLogo = std::make_unique<FormPmLogo>();
+
+    m_physicianMonitor = m_secondMonitor.get();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
 
-    m_secondMonitor->hide();
+    m_physicianMonitor->hide();
 
     connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                 this, &DisplayManager::programFinished);
-
 
 }
 
