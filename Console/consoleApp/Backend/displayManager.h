@@ -13,6 +13,7 @@
 class QFileSystemWatcher;
 class FormSecondMonitor;
 class QGraphicsView;
+class liveScene;
 
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
@@ -27,7 +28,7 @@ public:
 
     bool isNonPrimaryMonitorPresent() const;
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
-    QGraphicsView* getGraphicsView();
+    void setScene(liveScene* scene);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

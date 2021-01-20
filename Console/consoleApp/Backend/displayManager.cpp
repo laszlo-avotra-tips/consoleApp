@@ -1,9 +1,12 @@
 #include "displayManager.h"
 #include "logger.h"
 #include "formSecondMonitor.h"
+#include "livescene.h"
 
 #include <QFileSystemWatcher>
 #include <QProcess>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 
 DisplayManager* DisplayManager::m_instance{nullptr};
 
@@ -57,9 +60,9 @@ void DisplayManager::setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPrese
     m_isNonPrimaryMonitorPresent = isNonPrimaryMonitorPresent;
 }
 
-QGraphicsView *DisplayManager::getGraphicsView()
+void DisplayManager::setScene(liveScene *scene)
 {
-    return m_secondMonitor->getGraphicsView();
+    m_secondMonitor->setScene(scene);
 }
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)

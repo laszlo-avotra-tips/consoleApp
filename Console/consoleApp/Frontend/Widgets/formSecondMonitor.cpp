@@ -1,5 +1,6 @@
 #include "formSecondMonitor.h"
 #include "ui_formSecondMonitor.h"
+#include "livescene.h"
 
 FormSecondMonitor::FormSecondMonitor(QWidget *parent) :
     QWidget(parent),
@@ -13,7 +14,7 @@ FormSecondMonitor::~FormSecondMonitor()
     delete ui;
 }
 
-QGraphicsView *FormSecondMonitor::getGraphicsView()
+void FormSecondMonitor::setScene(liveScene *scene)
 {
-    return ui->graphicsView;
+    ui->graphicsView->setScene(scene);
 }
