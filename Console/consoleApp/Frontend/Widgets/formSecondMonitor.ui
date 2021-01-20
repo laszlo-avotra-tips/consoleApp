@@ -57,8 +57,6 @@ border: 0px;
     </rect>
    </property>
   </widget>
-  <zorder>graphicsView</zorder>
-  <zorder>label</zorder>
  </widget>
  <resources/>
  <connections/>
