@@ -33,6 +33,7 @@ public:
     bool init( void );
     void setSledSpeed( QByteArray );
     int runningState();
+    int lastRunningState() const;
     void enableDisableBidirectional();
     bool writeSerial(QByteArray command);
 

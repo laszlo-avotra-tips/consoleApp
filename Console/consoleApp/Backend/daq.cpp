@@ -219,6 +219,11 @@ bool DAQ::getData( )
     image_info_t info{ };
     static int32_t counter = 0;
 
+    int lastRunningState = SledSupport::Instance().getLastRunningState();
+    if(!lastRunningState){
+        return false;
+    }
+
     // get Main Image Buffer status
     AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
     ++counter;

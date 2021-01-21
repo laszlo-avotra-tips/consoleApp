@@ -857,6 +857,11 @@ int SledSupport::runningState()
     return m_lastRunningState;
 }
 
+int SledSupport::lastRunningState() const
+{
+    return m_lastRunningState;
+}
+
 
 /*
  * setSledTorque
