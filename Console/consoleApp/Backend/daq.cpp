@@ -188,9 +188,9 @@ void DAQ::run( void )
 
                     emit updateSector(axsunData);
                 }
-                yieldCurrentThread();
+//                yieldCurrentThread();
+                msleep(60);
             }
-            msleep(60);
         }
     }
     if(shutdownDaq()){
