@@ -16,7 +16,7 @@ class SignalModel : public QObject
 public:
     static SignalModel* instance();
 
-    OCTFile::OctData_t * getOctData(int index);
+    OCTFile::OctData_t *getOctData(int index);
     void freeOctData();
 
     void pushImageRenderingQueue(const OctData& od);
