@@ -785,7 +785,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-                LOG2(pixmap,image)
+//                LOG2(pixmap,image)
                 if(pixmap){
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
