@@ -189,7 +189,7 @@ void DAQ::run( void )
                     emit updateSector(axsunData);
                 }
 //                yieldCurrentThread();
-                msleep(60);
+                msleep(10);
             }
         }
     }
