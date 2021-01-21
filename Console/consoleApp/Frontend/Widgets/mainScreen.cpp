@@ -732,7 +732,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 //        LOG2(image->width(),image->height());
 //        LOG2(image->sizeInBytes(), image->bytesPerLine());
 
-//        frameData->dispData = image->bits();
+        frameData->dispData = image->bits();
         auto bufferLength = sm->getBufferLength();
 
 //        LOG2(image->width(),image->height())
