@@ -263,8 +263,6 @@ bool DAQ::getData( )
         }
     }
 
-    yieldCurrentThread();
-
     return isNewData;
 }
 
