@@ -7,6 +7,7 @@
 #include "signalmodel.h"
 #include "Utility/userSettings.h"
 #include <exception>
+#include "sledsupport.h"
 
 #ifdef WIN32
 extern "C" {
@@ -223,8 +224,8 @@ bool DAQ::getData( )
     ++counter;
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
-
     if(imaging){
+
         success = axGetImageInfo(session, 0, &info);
         if(success != AxErr::NO_AxERROR) {
 //            logAxErrorVerbose(__LINE__, success);
@@ -250,7 +251,6 @@ bool DAQ::getData( )
             }
         }
     }
-
 
     yieldCurrentThread();
 

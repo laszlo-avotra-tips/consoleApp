@@ -32,7 +32,6 @@ public:
     // Initialize serial communication
     bool init( void );
     void setSledSpeed( QByteArray );
-    bool isRunningState();
     int runningState();
     void enableDisableBidirectional();
     bool writeSerial(QByteArray command);
