@@ -176,10 +176,12 @@ void DAQ::run( void )
             // get data and only procede if the image is new.
             if( getData() )
             {
-                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
+//                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
                 auto* sm =  SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-                LOG2(gFrameNumber, axsunData)
+                LOG2(gFrameNumber, axsunData);
+                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
+
                 sm->setBufferLength(gBufferLength);
 
                 emit updateSector(axsunData);
