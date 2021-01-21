@@ -108,7 +108,7 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 
     m_diplaySettingsMonitor->setArguments(m_programArguments);
     m_diplaySettingsMonitor->setProgram(m_programName);
-//    lcv m_diplaySettingsMonitor->start();
+    m_diplaySettingsMonitor->start();
 
     m_liveSceneView = std::make_unique<LiveSceneView>();
     m_pmLogo = std::make_unique<FormPmLogo>();

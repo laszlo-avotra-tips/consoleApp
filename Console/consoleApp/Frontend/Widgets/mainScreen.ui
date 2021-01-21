@@ -375,7 +375,7 @@ qproperty-flat: true;
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="styleSheet">
-         <string notr="true">color: &quot;black&quot;</string>
+         <string notr="true">color: &quot;white&quot;</string>
         </property>
         <property name="text">
          <string>SledOn</string>

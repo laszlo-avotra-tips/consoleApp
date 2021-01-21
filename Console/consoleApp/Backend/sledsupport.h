@@ -65,6 +65,9 @@ public:
 
     bool getIsClockwise() const;
 
+    bool getIsCmdStop() const;
+    void setIsCmdStop(bool value);
+
 signals:
     void announceClockingMode( int );
     void announceFirmwareVersions( QByteArray, QByteArray );
@@ -137,6 +140,7 @@ private:
     SledState_e prevSledState;
     int m_lastRunningState;
     bool m_isClockwise{true};
+    bool isCmdStop{false};
 
                                                     // prevent access to:
     SledSupport();                                  //   default constructor

@@ -859,7 +859,7 @@ int SledSupport::runningState()
 
 int SledSupport::lastRunningState() const
 {
-    return m_lastRunningState;
+    return bool(m_lastRunningState) && !isCmdStop ;
 }
 
 
@@ -1113,6 +1113,16 @@ QString SledSupport::commandToString(const QByteArray &ba)
         fcmd = QString("code: \"") + cmd + QString("\"");
     }
     return fcmd;
+}
+
+bool SledSupport::getIsCmdStop() const
+{
+    return isCmdStop;
+}
+
+void SledSupport::setIsCmdStop(bool value)
+{
+    isCmdStop = value;
 }
 
 bool SledSupport::getIsClockwise() const

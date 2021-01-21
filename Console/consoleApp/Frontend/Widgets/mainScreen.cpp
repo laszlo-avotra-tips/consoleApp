@@ -804,10 +804,12 @@ void MainScreen::on_pushButton_clicked()
 
     if(sledIsOn){
         sledIsOn = false;
+        sled.setIsCmdStop(!sledIsOn);
         sled.writeSerial("sr0\r");
         ui->pushButton->setText("SledOn");
     } else {
         sledIsOn = true;
+        sled.setIsCmdStop(!sledIsOn);
         sled.writeSerial("sr1\r");
         ui->pushButton->setText("SledOff");
     }
