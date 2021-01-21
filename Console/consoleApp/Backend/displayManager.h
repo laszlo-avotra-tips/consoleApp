@@ -8,11 +8,15 @@
 #include <QFile>
 #include <QTextStream>
 #include <QProcess>
+#include <QString>
 #include <memory>
+#include <map>
 
 class QFileSystemWatcher;
-class FormSecondMonitor;
+class LiveSceneView;
+class FormPmLogo;
 class QGraphicsView;
+class liveScene;
 
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
@@ -27,7 +31,9 @@ public:
 
     bool isNonPrimaryMonitorPresent() const;
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
-    QGraphicsView* getGraphicsView();
+    void setScene(liveScene* scene);
+    void showOnTheSecondMonitor(QString name);
+    void initSecondMonitor(QString name);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);
@@ -43,7 +49,9 @@ private:
     static DisplayManager* m_instance;
     std::unique_ptr<QProcess> m_diplaySettingsMonitor{nullptr};
     std::unique_ptr<QFileSystemWatcher> m_eventFileWatcher{nullptr};
-    std::unique_ptr<FormSecondMonitor> m_secondMonitor{nullptr};
+    std::unique_ptr<LiveSceneView> m_liveSceneView{nullptr};
+    std::unique_ptr<FormPmLogo> m_pmLogo{nullptr};
+    QWidget* m_widgetOnTheSecondMonitor{nullptr};
 
     const QString m_programName{R"(MonWMIServer.exe)"};
     const QString m_eventFileName{R"(C:\Avinger_System\MonitorEvent.txt)"};
@@ -51,6 +59,8 @@ private:
     const QStringList m_programArguments{"-w", "1280", "-h", "1024", "-e", m_eventFileName, "-l", m_logFileName};
 
     bool m_isNonPrimaryMonitorPresent{false};
+
+    std::map<QString, QWidget*> m_widgetContainer;
 
 private:
     DisplayManager(QObject *parent = nullptr);

@@ -1,9 +1,13 @@
 #include "displayManager.h"
 #include "logger.h"
 #include "formSecondMonitor.h"
+#include "livescene.h"
+#include "formPmLogo.h"
 
 #include <QFileSystemWatcher>
 #include <QProcess>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 
 DisplayManager* DisplayManager::m_instance{nullptr};
 
@@ -38,11 +42,11 @@ void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
 {
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
-        m_secondMonitor->show();
-        m_secondMonitor->move(3240,0);
-        m_secondMonitor->showFullScreen();
+        m_widgetOnTheSecondMonitor->show();
+        m_widgetOnTheSecondMonitor->move(3240,0);
+        m_widgetOnTheSecondMonitor->showFullScreen();
     } else {
-        m_secondMonitor->hide();
+        m_widgetOnTheSecondMonitor->hide();
     }
 
 }
@@ -57,9 +61,40 @@ void DisplayManager::setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPrese
     m_isNonPrimaryMonitorPresent = isNonPrimaryMonitorPresent;
 }
 
-QGraphicsView *DisplayManager::getGraphicsView()
+void DisplayManager::setScene(liveScene *scene)
 {
-    return m_secondMonitor->getGraphicsView();
+    m_liveSceneView->setScene(scene);
+}
+
+void DisplayManager::showOnTheSecondMonitor(QString name)
+{
+    LOG1(name)
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        m_widgetOnTheSecondMonitor->hide();
+        //find widget by name assign to m_widgetOnTheSecondMonitor
+        if(it->second){
+            m_widgetOnTheSecondMonitor = it->second;
+            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
+            m_widgetOnTheSecondMonitor->move(3240,0);
+            m_widgetOnTheSecondMonitor->showFullScreen();
+        }
+    }
+}
+
+void DisplayManager::initSecondMonitor(QString name)
+{
+    LOG1(name)
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        if(it->second){
+            m_widgetOnTheSecondMonitor = it->second;
+            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
+            m_widgetOnTheSecondMonitor->move(3240,0);
+            m_widgetOnTheSecondMonitor->showFullScreen();
+            LOG1(name)
+        }
+    }
 }
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
@@ -75,15 +110,18 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_diplaySettingsMonitor->setProgram(m_programName);
     m_diplaySettingsMonitor->start();
 
-    m_secondMonitor = std::make_unique<FormSecondMonitor>();
+    m_liveSceneView = std::make_unique<LiveSceneView>();
+    m_pmLogo = std::make_unique<FormPmLogo>();
+
+    m_widgetContainer["logo"] = m_pmLogo.get();
+    m_widgetContainer["liveData"] = m_liveSceneView.get();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
 
-    m_secondMonitor->hide();
+    initSecondMonitor("logo");
 
     connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                 this, &DisplayManager::programFinished);
-
 
 }
 

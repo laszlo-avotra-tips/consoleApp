@@ -4,19 +4,20 @@
 #include <QWidget>
 
 class QGraphicsView;
+class liveScene;
 
 namespace Ui {
 class FormSecondMonitor;
 }
 
-class FormSecondMonitor : public QWidget
+class LiveSceneView : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FormSecondMonitor(QWidget *parent = nullptr);
-    ~FormSecondMonitor();
-    QGraphicsView* getGraphicsView();
+    explicit LiveSceneView(QWidget *parent = nullptr);
+    ~LiveSceneView();
+    void setScene(liveScene* scene);
 
 private:
     Ui::FormSecondMonitor *ui;

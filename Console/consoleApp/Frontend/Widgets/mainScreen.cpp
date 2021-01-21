@@ -68,7 +68,7 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_scene = new liveScene( this );
     m_graphicsView->setScene(m_scene);
-    DisplayManager::instance()->getGraphicsView()->setScene(m_scene);
+    DisplayManager::instance()->setScene(m_scene);
     m_scene->handleReticleBrightnessChanged();
 
     m_graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -84,7 +84,7 @@ void MainScreen::setScene(liveScene *scene)
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
         daqfactory::instance()->getdaq();
-        DisplayManager::instance()->getGraphicsView()->setScene(m_scene);
+        DisplayManager::instance()->setScene(m_scene);
     }
 }
 
@@ -226,6 +226,7 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
+    DisplayManager::instance()->showOnTheSecondMonitor("logo");
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
         ui->pushButtonRecord->click();
@@ -463,6 +464,7 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
 
     } else {
         LOG1( "Cancelled")
