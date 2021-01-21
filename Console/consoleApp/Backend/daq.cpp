@@ -179,7 +179,7 @@ void DAQ::run( void )
                 gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
                 auto* sm =  SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-//                LOG2(gFrameNumber, axsunData)
+                LOG2(gFrameNumber, axsunData)
                 sm->setBufferLength(gBufferLength);
 
                 emit updateSector(axsunData);
@@ -235,6 +235,7 @@ bool DAQ::getData( )
         if(success != AxErr::NO_AxERROR) {
 //            logAxErrorVerbose(__LINE__, success);
         } else {
+            LOG1(gFrameNumber)
             const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
             prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
             prefs.which_window = 0;
