@@ -73,7 +73,8 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
     if(it != m_widgetContainer.end()){
         m_widgetOnTheSecondMonitor->hide();
         //find widget by name assign to m_widgetOnTheSecondMonitor
-        if(m_widgetOnTheSecondMonitor = it->second){
+        if(it->second){
+            m_widgetOnTheSecondMonitor = it->second;
             m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
             m_widgetOnTheSecondMonitor->move(3240,0);
             m_widgetOnTheSecondMonitor->showFullScreen();
