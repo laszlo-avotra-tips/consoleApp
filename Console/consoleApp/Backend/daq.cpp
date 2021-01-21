@@ -181,7 +181,7 @@ void DAQ::run( void )
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
                     auto* sm =  SignalModel::instance();
                     OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-                    LOG2(axsunData->frameCount, axsunData->acqData);
+                    LOG3(axsunData->frameCount, axsunData->acqData, axsunData->timeStamp);
     //                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
 
                     sm->setBufferLength(gBufferLength);
@@ -256,8 +256,8 @@ bool DAQ::getData( )
                 // write in frame information for recording/playback
                 axsunData->frameCount = gDaqCounter;
                 axsunData->timeStamp = fileTimer.elapsed();;
-                axsunData->milliseconds = 30;
-                LOG2(axsunData->frameCount,axsunData->acqData);
+                axsunData->milliseconds = 60;
+                LOG3(axsunData->frameCount, axsunData->acqData, axsunData->timeStamp);
                 gDaqCounter++;
             }
         }
