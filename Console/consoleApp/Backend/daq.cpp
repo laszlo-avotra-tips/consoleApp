@@ -182,7 +182,7 @@ void DAQ::run( void )
                 {
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
 
-                    int displayFrame = (gFrameNumber + 4) % NUM_OF_FRAME_BUFFERS;
+                    int displayFrame = (gFrameNumber + 32) % NUM_OF_FRAME_BUFFERS;
                     auto* sm =  SignalModel::instance();
                     OCTFile::OctData_t* axsunData = sm->getOctData(displayFrame);
                     LOG3(axsunData->frameCount, axsunData->acqData, axsunData->timeStamp);
