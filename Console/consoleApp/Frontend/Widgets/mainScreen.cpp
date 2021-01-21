@@ -736,6 +736,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         auto bufferLength = sm->getBufferLength();
 
 //        LOG2(image->width(),image->height())
+        LOG2(frameData->frameCount, frameData->acqData);
         m_scanWorker->warpData( frameData, bufferLength);
 
 //        OCTFile::OctData_t clipData(*frameData);
