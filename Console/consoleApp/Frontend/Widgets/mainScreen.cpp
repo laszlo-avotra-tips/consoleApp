@@ -722,11 +722,14 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
     }
-    if(frameData && m_scene && m_scanWorker){
+
+    QImage* image = m_scene->sectorImage();
+
+    if(frameData && m_scene && m_scanWorker && image){
 
         const auto* sm =  SignalModel::instance();
 
-        QImage* image = m_scene->sectorImage();
+
 
 //        LOG2(image->bitPlaneCount(), image->format());
 //        LOG2(image->width(),image->height());
@@ -782,6 +785,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
+                LOG2(pixmap,image)
                 if(pixmap){
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
