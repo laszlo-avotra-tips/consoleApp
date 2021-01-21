@@ -89,7 +89,7 @@ private slots:
     void on_pushButtonRecord_clicked(bool checked);
 
 public slots:
-    void updateSector(OCTFile::OctData_t* frameData);
+    void onUpdateSector(OCTFile::OctData_t* frameData);
 
 private:
     void showEvent(QShowEvent* se) override;

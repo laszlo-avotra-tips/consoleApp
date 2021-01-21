@@ -173,10 +173,12 @@ void DAQ::run( void )
         while( isRunning )
         {
             int lastRunningState = SledSupport::Instance().getLastRunningState();
+            LOG1(lastRunningState)
             if(lastRunningState)
             {
                 // get data and only procede if the image is new.
-                if( getData() )
+                bool newData =  getData();
+                if( newData )
                 {
                     gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
                     auto* sm =  SignalModel::instance();
