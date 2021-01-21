@@ -211,7 +211,7 @@ void DAQ::setSubsampling(int speed)
 bool DAQ::getData( )
 {
     bool isNewData{false};
-    static int sprevReturnedImageNumber = -1;
+    static int sprevReturnedImageNumber = 0;
 
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;  // for axGetStatus()
     request_prefs_t prefs{ };
