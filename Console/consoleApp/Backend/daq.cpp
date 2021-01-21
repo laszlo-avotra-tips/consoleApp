@@ -191,11 +191,11 @@ void DAQ::run( void )
                     sm->setBufferLength(gBufferLength);
 
 //                    emit updateSector(axsunData);
-                    msleep(60);
+                    msleep(50);
                 }
                 //yieldCurrentThread();
             }
-            msleep(1);
+            msleep(5);
         }
     }
     if(shutdownDaq()){
@@ -236,7 +236,8 @@ bool DAQ::getData( )
 
     // get Main Image Buffer status
     AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
-    if(success != AxErr::NO_AxERROR){
+    if(success == AxErr::NO_AxERROR){
+        logAxErrorVerbose(__LINE__, success);
         return false;
     }
     ++counter;
