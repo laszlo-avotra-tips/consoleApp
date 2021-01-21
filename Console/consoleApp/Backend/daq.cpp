@@ -172,21 +172,24 @@ void DAQ::run( void )
 
         while( isRunning )
         {
-
-            // get data and only procede if the image is new.
-            if( getData() )
+            int lastRunningState = SledSupport::Instance().getLastRunningState();
+            if(lastRunningState)
             {
-//                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
-                auto* sm =  SignalModel::instance();
-                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-                LOG2(gFrameNumber, axsunData);
-                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
+                // get data and only procede if the image is new.
+                if( getData() )
+                {
+                    gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
+                    auto* sm =  SignalModel::instance();
+                    OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
+                    LOG2(gFrameNumber, axsunData);
+    //                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
 
-                sm->setBufferLength(gBufferLength);
+                    sm->setBufferLength(gBufferLength);
 
-                emit updateSector(axsunData);
+                    emit updateSector(axsunData);
+                }
+                yieldCurrentThread();
             }
-            yieldCurrentThread();
             msleep(60);
         }
     }
@@ -221,10 +224,10 @@ bool DAQ::getData( )
     image_info_t info{ };
     static int32_t counter = 0;
 
-    int lastRunningState = SledSupport::Instance().getLastRunningState();
-    if(!lastRunningState){
-        return false;
-    }
+//    int lastRunningState = SledSupport::Instance().getLastRunningState();
+//    if(!lastRunningState){
+//        return false;
+//    }
 
     // get Main Image Buffer status
     AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
