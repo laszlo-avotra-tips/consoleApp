@@ -725,7 +725,10 @@ void MainScreen::onUpdateSector(OCTFile::OctData_t *frameData)
 
     QImage* image = m_scene->sectorImage();
 
-    if(frameData && m_scene && m_scanWorker && image){
+    int lastRunningState = SledSupport::Instance().getLastRunningState();
+    LOG1(lastRunningState)
+
+    if(lastRunningState && frameData && m_scene && m_scanWorker && image){
 
         const auto* sm =  SignalModel::instance();
 
@@ -789,11 +792,11 @@ void MainScreen::onUpdateSector(OCTFile::OctData_t *frameData)
                 if(pixmap){
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
-                m_scene->paintOverlay();
+                    m_scene->paintOverlay();
+                }
             }
         }
     }
-}
 }
 
 void MainScreen::on_pushButton_clicked()
