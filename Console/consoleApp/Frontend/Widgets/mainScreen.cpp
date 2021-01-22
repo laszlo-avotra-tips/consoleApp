@@ -810,7 +810,9 @@ void MainScreen::on_pushButton_clicked()
 
     if(sledIsOn){
         ui->pushButton->setText("SledOn");
-        QThread::sleep(1);
+        QThread::msleep(100);
+        sled.writeSerial("sr0\r");
+        QThread::msleep(100);
         sled.writeSerial("sr0\r");
     } else {
         ui->pushButton->setText("SledOff");
