@@ -12,6 +12,6 @@
 
 #define C_MAJOR_VERSION 0
 #define C_MINOR_VERSION 2
-#define C_PATCH_VERSION 13802
+#define C_PATCH_VERSION 1380
 
 #endif // OCTHS_VERSION_H
