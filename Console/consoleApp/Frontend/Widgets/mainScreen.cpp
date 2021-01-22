@@ -806,17 +806,15 @@ void MainScreen::on_pushButton_clicked()
 
     auto& sled = SledSupport::Instance();
 
+    sled.setIsCmdStop(sledIsOn);
+
     if(sledIsOn){
-        sledIsOn = false;
-        sled.setIsCmdStop(!sledIsOn);
+        ui->pushButton->setText("SledOn");
         QThread::sleep(1);
         sled.writeSerial("sr0\r");
-        ui->pushButton->setText("SledOn");
     } else {
-        sledIsOn = true;
-        sled.setIsCmdStop(!sledIsOn);
-        sled.writeSerial("sr1\r");
         ui->pushButton->setText("SledOff");
+        sled.writeSerial("sr1\r");
     }
 }
 
