@@ -68,31 +68,36 @@ void DisplayManager::setScene(liveScene *scene)
 
 void DisplayManager::showOnTheSecondMonitor(QString name)
 {
-    LOG1(name)
-    auto it = m_widgetContainer.find(name);
-    if(it != m_widgetContainer.end()){
-        m_widgetOnTheSecondMonitor->hide();
-        //find widget by name assign to m_widgetOnTheSecondMonitor
-        if(it->second){
-            m_widgetOnTheSecondMonitor = it->second;
-            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-            m_widgetOnTheSecondMonitor->move(3240,0);
-            m_widgetOnTheSecondMonitor->showFullScreen();
+    LOG1(name);
+
+    if(isNonPrimaryMonitorPresent()){
+        auto it = m_widgetContainer.find(name);
+        if(it != m_widgetContainer.end()){
+            m_widgetOnTheSecondMonitor->hide();
+            //find widget by name assign to m_widgetOnTheSecondMonitor
+            if(it->second){
+                m_widgetOnTheSecondMonitor = it->second;
+                m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
+                m_widgetOnTheSecondMonitor->move(3240,0);
+                m_widgetOnTheSecondMonitor->showFullScreen();
+            }
         }
     }
 }
 
 void DisplayManager::initSecondMonitor(QString name)
 {
-    LOG1(name)
-    auto it = m_widgetContainer.find(name);
-    if(it != m_widgetContainer.end()){
-        if(it->second){
-            m_widgetOnTheSecondMonitor = it->second;
-            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-            m_widgetOnTheSecondMonitor->move(3240,0);
-            m_widgetOnTheSecondMonitor->showFullScreen();
-            LOG1(name)
+    LOG1(name);
+    if(isNonPrimaryMonitorPresent()){
+        auto it = m_widgetContainer.find(name);
+        if(it != m_widgetContainer.end()){
+            if(it->second){
+                m_widgetOnTheSecondMonitor = it->second;
+                m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
+                m_widgetOnTheSecondMonitor->move(3240,0);
+                m_widgetOnTheSecondMonitor->showFullScreen();
+                LOG1(name)
+            }
         }
     }
 }
