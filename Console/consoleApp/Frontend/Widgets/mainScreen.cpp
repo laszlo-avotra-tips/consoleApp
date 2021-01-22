@@ -799,7 +799,10 @@ void MainScreen::onUpdateSector(OCTFile::OctData_t *frameData)
 
 void MainScreen::on_pushButton_clicked()
 {
-    static bool sledIsOn{false};
+    bool sledIsOn{true};
+    if(ui->pushButton->text() == QString("SledOn")){
+        sledIsOn = false;
+    }
 
     auto& sled = SledSupport::Instance();
 
@@ -815,7 +818,6 @@ void MainScreen::on_pushButton_clicked()
         sled.writeSerial("sr1\r");
         ui->pushButton->setText("SledOff");
     }
-
 }
 
 void MainScreen::initRecording()
