@@ -32,8 +32,8 @@ public:
     // Initialize serial communication
     bool init( void );
     void setSledSpeed( QByteArray );
-    bool isRunningState();
     int runningState();
+    int lastRunningState() const;
     void enableDisableBidirectional();
     bool writeSerial(QByteArray command);
 
@@ -64,6 +64,9 @@ public:
     void toggleDirection();
 
     bool getIsClockwise() const;
+
+    bool getIsCmdStop() const;
+    void setIsCmdStop(bool value);
 
 signals:
     void announceClockingMode( int );
@@ -137,6 +140,7 @@ private:
     SledState_e prevSledState;
     int m_lastRunningState;
     bool m_isClockwise{true};
+    bool isCmdStop{false};
 
                                                     // prevent access to:
     SledSupport();                                  //   default constructor

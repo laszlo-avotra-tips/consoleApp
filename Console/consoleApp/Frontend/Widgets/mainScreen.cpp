@@ -716,17 +716,20 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+void MainScreen::onUpdateSector(OCTFile::OctData_t *frameData)
 {
     static int count = -1;
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
     }
-    if(frameData && m_scene && m_scanWorker){
+
+    QImage* image = m_scene->sectorImage();
+
+    if(frameData && m_scene && m_scanWorker && image){
 
         const auto* sm =  SignalModel::instance();
 
-        QImage* image = m_scene->sectorImage();
+
 
 //        LOG2(image->bitPlaneCount(), image->format());
 //        LOG2(image->width(),image->height());
@@ -736,12 +739,13 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         auto bufferLength = sm->getBufferLength();
 
 //        LOG2(image->width(),image->height())
+        LOG3(frameData->frameCount, frameData->acqData, frameData->timeStamp);
         m_scanWorker->warpData( frameData, bufferLength);
 
-        OCTFile::OctData_t clipData(*frameData);
-        clipData.dispData = m_clipBuffer;
+//        OCTFile::OctData_t clipData(*frameData);
+//        clipData.dispData = m_clipBuffer;
 //        m_scanWorker->warpData( &clipData, bufferLength);
-        memcpy(m_clipBuffer,frameData->dispData,1024*1024);
+//        memcpy(m_clipBuffer,frameData->dispData,1024*1024);
 
         if(m_scanWorker->isReady){
 
@@ -773,7 +777,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 const QString catheterName{names[0]};
                 const QString cathalogName{names[1]};
 
-                emit updateRecorder(clipData.dispData,
+                emit updateRecorder(frameData->dispData,
                                     catheterName.toLatin1(),cathalogName.toLatin1(),
                                     activePassiveValue.toLatin1(),
                                     timeLabel.toLatin1(),
@@ -781,14 +785,15 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                 QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
+//                LOG2(pixmap,image)
                 if(pixmap){
                     QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                     pixmap->setPixmap(tmpPixmap);
-                }
                 m_scene->paintOverlay();
             }
         }
     }
+}
 }
 
 void MainScreen::on_pushButton_clicked()
@@ -799,10 +804,12 @@ void MainScreen::on_pushButton_clicked()
 
     if(sledIsOn){
         sledIsOn = false;
+        sled.setIsCmdStop(!sledIsOn);
         sled.writeSerial("sr0\r");
         ui->pushButton->setText("SledOn");
     } else {
         sledIsOn = true;
+        sled.setIsCmdStop(!sledIsOn);
         sled.writeSerial("sr1\r");
         ui->pushButton->setText("SledOff");
     }
