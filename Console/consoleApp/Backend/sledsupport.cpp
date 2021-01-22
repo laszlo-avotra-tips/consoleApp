@@ -859,7 +859,7 @@ int SledSupport::runningState()
 
 int SledSupport::lastRunningState() const
 {
-    return bool(m_lastRunningState) && !isCmdStop ;
+    return m_lastRunningState;
 }
 
 

@@ -725,14 +725,12 @@ void MainScreen::onUpdateSector(OCTFile::OctData_t *frameData)
 
     QImage* image = m_scene->sectorImage();
 
-    int lastRunningState = SledSupport::Instance().getLastRunningState();
-    LOG1(lastRunningState)
+    bool isCmdStop = SledSupport::Instance().getIsCmdStop();
+    LOG1(isCmdStop)
 
-    if(lastRunningState && frameData && m_scene && m_scanWorker && image){
+    if(!isCmdStop && frameData && m_scene && m_scanWorker && image){
 
         const auto* sm =  SignalModel::instance();
-
-
 
 //        LOG2(image->bitPlaneCount(), image->format());
 //        LOG2(image->width(),image->height());
