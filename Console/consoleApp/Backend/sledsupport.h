@@ -140,7 +140,7 @@ private:
     SledState_e prevSledState;
     int m_lastRunningState;
     bool m_isClockwise{true};
-    bool isCmdStop{false};
+    bool m_isCmdStop{true};
 
                                                     // prevent access to:
     SledSupport();                                  //   default constructor

@@ -1117,12 +1117,12 @@ QString SledSupport::commandToString(const QByteArray &ba)
 
 bool SledSupport::getIsCmdStop() const
 {
-    return isCmdStop;
+    return m_isCmdStop;
 }
 
 void SledSupport::setIsCmdStop(bool value)
 {
-    isCmdStop = value;
+    m_isCmdStop = value;
 }
 
 bool SledSupport::getIsClockwise() const
