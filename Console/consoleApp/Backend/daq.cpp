@@ -107,17 +107,20 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     // is needed prior to calling axRequestImage().
 
     // convert user_ptr from void back into a std::vector<uint8_t>
-    auto& image_vector = *(static_cast<std::vector<uint8_t>*>(user_ptr));
-    auto bytes_allocated = image_vector.size();
+//    auto& image_vector = *(static_cast<std::vector<uint8_t>*>(user_ptr));
+//    auto bytes_allocated = image_vector.size();
+    auto image_vector = static_cast<uint8_t *>(user_ptr);
+    uint32_t bytes_allocated = MAX_ACQ_IMAGE_SIZE;
 
-    if(bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
+//    if(bytes_allocated >= data.required_buffer_size)
+    {		// insure memory allocation large enough
 //        auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_AND_DISPLAY, .which_window = 1 };
         request_prefs_t prefs{};
         prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
         prefs.which_window = 0;
 
         auto info = image_info_t{};
-        auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, image_vector.data(), &info);
+        auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, image_vector, &info);
         if (retval == AxErr::NO_AxERROR) {
             LOG1 (info.width);
             if (info.force_trig){
@@ -135,10 +138,10 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             LOG1(axRequestImageReported);
         }
     }
-    else{
-        int MemoryAllocationTooSmallForRetrievalOfImage{static_cast<int>(data.image_number)};
-        LOG1(MemoryAllocationTooSmallForRetrievalOfImage);
-    }
+//    else{
+//        int MemoryAllocationTooSmallForRetrievalOfImage{static_cast<int>(data.image_number)};
+//        LOG1(MemoryAllocationTooSmallForRetrievalOfImage);
+//    }
 }
 
 
