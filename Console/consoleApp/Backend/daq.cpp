@@ -88,9 +88,11 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         sLastImage = last_image;
         LOG3(imaging,last_image,frames_since_sync);
         auto* daq = static_cast<DAQ*>(user_ptr);
-        daq->getData();
-        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-        daq->updateSector(axsunData);
+        if(daq){
+            daq->getData();
+            OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+            daq->updateSector(axsunData);
+        }
     }
 
     return;
