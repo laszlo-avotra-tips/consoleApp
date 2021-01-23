@@ -257,8 +257,6 @@ void DAQ::run( void )
         setLaserDivider();
         LOG1(isRunning);
         {
-//            auto* sm =  SignalModel::instance();
-//            OCTFile::OctData_t* axsunData = sm->getOctData(0);
             axRegisterNewImageCallback(session, NewImageArrived, static_cast<void*>(this));
         }
         while( isRunning )
