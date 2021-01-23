@@ -94,7 +94,11 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     LOG1 (data.image_number);
 
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
-    axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+    AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+    if(success != AxErr::NO_AxERROR) {
+        logAxErrorVerbose(__LINE__, success);
+        return;
+    }
 
     // axGetImageInfo() not necessary here, since required buffer size and image number
     // are already provided in the callback's data argument.  It is safe to call if other image info

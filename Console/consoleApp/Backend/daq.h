@@ -52,9 +52,9 @@ public slots:
 private:
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
     void logDecimation();
-    void logAxErrorVerbose(int line, AxErr e);
     void logRegisterValue(int line, int reg);
 
+    static void logAxErrorVerbose(int line, AxErr e);
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
 
 private:
