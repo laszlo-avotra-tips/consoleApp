@@ -34,7 +34,6 @@ public:
     void enableAuxTriggerAsTriggerEnable( bool ) override;
     IDAQ* getSignalSource() override;
 
-    bool getData();
     bool isRunning;
     int generateSyntheticData( unsigned char *pSyntheticData );
     QElapsedTimer frameTimer;
@@ -50,12 +49,15 @@ public slots:
     void setDisplay( float, int );
 
 private:
+    bool getData1();
+    void getData();
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
     void logDecimation();
     void logRegisterValue(int line, int reg);
 
     static void logAxErrorVerbose(int line, AxErr e);
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
+    static void NewImageArrived1(new_image_callback_data_t data, void* user_ptr);
 
 private:
     AOChandle session = NULL;

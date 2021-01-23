@@ -74,6 +74,29 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
+    static uint32_t sLastImage = 0;
+    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
+    AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+    if(success != AxErr::NO_AxERROR) {
+        logAxErrorVerbose(__LINE__, success);
+        return;
+    }
+
+    if(imaging){
+        if(sLastImage != last_image){
+            sLastImage = last_image;
+            LOG3(imaging,last_image,frames_since_sync);
+        }
+
+        auto* daq = static_cast<DAQ*>(user_ptr);
+        daq->getData();
+    }
+
+    return; //lcv
+}
+
+void DAQ::NewImageArrived1(new_image_callback_data_t data, void *user_ptr)
+{
 
     // Use the 'void * user_ptr' argument to send this callback a pointer to your preallocated
     // buffer if you are retrieving the image data rather than just direct-displaying it, as well as
@@ -234,9 +257,9 @@ void DAQ::run( void )
         setLaserDivider();
         LOG1(isRunning);
         {
-            auto* sm =  SignalModel::instance();
-            OCTFile::OctData_t* axsunData = sm->getOctData(0);
-            axRegisterNewImageCallback(session, NewImageArrived, static_cast<void*>(&axsunData->acqData));
+//            auto* sm =  SignalModel::instance();
+//            OCTFile::OctData_t* axsunData = sm->getOctData(0);
+            axRegisterNewImageCallback(session, NewImageArrived, static_cast<void*>(this));
         }
         while( isRunning )
         {
@@ -262,9 +285,9 @@ void DAQ::setSubsampling(int speed)
 }
 
 /*
- * getData
+ * getData1
  */
-bool DAQ::getData( )
+bool DAQ::getData1( )
 {
     bool isNewData{false};
     static int sprevReturnedImageNumber = -1;
@@ -316,6 +339,54 @@ bool DAQ::getData( )
     yieldCurrentThread();
 
     return isNewData;
+}
+
+void DAQ::getData( )
+{
+//    bool isNewData{false};
+//    static int sprevReturnedImageNumber = -1;
+
+//    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;  // for axGetStatus()
+//    request_prefs_t prefs{ };
+//    image_info_t info{ };
+//    static int32_t counter = 0;
+
+//    // get Main Image Buffer status
+//    AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+//    if(success != AxErr::NO_AxERROR) {
+//        logAxErrorVerbose(__LINE__, success);
+//        return;
+//    }
+
+//    ++counter;
+    request_prefs_t prefs{ };
+    image_info_t info{ };
+    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+
+
+//    if(imaging)
+    {
+        AxErr success = axGetImageInfo(session, 0, &info);
+        if(success != AxErr::NO_AxERROR)
+        {
+//            logAxErrorVerbose(__LINE__, success);
+        } else
+        {
+            const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
+            prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
+            prefs.which_window = 0;
+            success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
+
+            gBufferLength = info.width;
+
+            // write in frame information for recording/playback
+            axsunData->frameCount = gDaqCounter;
+            axsunData->timeStamp = fileTimer.elapsed();;
+            axsunData->milliseconds = 60;
+
+            gDaqCounter++;
+        }
+    }
 }
 
 /*
