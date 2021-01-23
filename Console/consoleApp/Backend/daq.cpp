@@ -99,6 +99,8 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         logAxErrorVerbose(__LINE__, success);
         return;
     }
+    LOG3(imaging,last_image,frames_since_sync);
+    return; //lcv
 
     // axGetImageInfo() not necessary here, since required buffer size and image number
     // are already provided in the callback's data argument.  It is safe to call if other image info
@@ -235,23 +237,27 @@ void DAQ::run( void )
 
 //ax set laser emission
         setLaserDivider();
-        LOG1(isRunning)
-
+        LOG1(isRunning);
+        {
+            auto* sm =  SignalModel::instance();
+            OCTFile::OctData_t* axsunData = sm->getOctData(0);
+            axRegisterNewImageCallback(session, NewImageArrived, static_cast<void*>(&axsunData->acqData));
+        }
         while( isRunning )
         {
 
-            // get data and only procede if the image is new.
-            if( getData() )
-            {
-                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
-                auto* sm =  SignalModel::instance();
-                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-//                LOG2(gFrameNumber, axsunData)
-                sm->setBufferLength(gBufferLength);
+//            // get data and only procede if the image is new.
+//            if( getData() )
+//            {
+//                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
+//                auto* sm =  SignalModel::instance();
+//                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
+////                LOG2(gFrameNumber, axsunData)
+//                sm->setBufferLength(gBufferLength);
 
-                emit updateSector(axsunData);
-            }
-            yieldCurrentThread();
+//                emit updateSector(axsunData);
+//            }
+//            yieldCurrentThread();
             msleep(60);
         }
     }
