@@ -55,6 +55,8 @@ private:
     void logAxErrorVerbose(int line, AxErr e);
     void logRegisterValue(int line, int reg);
 
+    static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
+
 private:
     AOChandle session = NULL;
     char axMessage[256];

@@ -72,6 +72,70 @@ void DAQ::logRegisterValue(int line, int registerNumber)
     }
 }
 
+void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
+{
+
+    // Use the 'void * user_ptr' argument to send this callback a pointer to your preallocated
+    // buffer if you are retrieving the image data rather than just direct-displaying it, as well as
+    // any other user resources needed in this callback (log handles, etc).
+    //
+    // Calling AxsunOCTCapture functions other than axRequestImage(), axGetImageInfo(), & axGetStatus()
+    // in this callback may result in undefined behavior, due to the nature of this callback's
+    // execution in a concurrent thread with the application's other calls to the AxsunOCTCapture API.
+    //
+    // New Image Arrived events are stored in a FIFO queue within the AxsunOCTCapture library.
+    // If the time spent in this callback exceeds the period of new images enqueued in the Main Image
+    // Buffer, unprocessed callback events will stack up indefinitely.  You can monitor the backlog
+    // of callback events by comparing the image number for the current callback 'data.image_number'
+    // with the 'last_image' argument of axGetStatus().
+    //
+    // Force-triggered images will also invoke this callback, with data.image_number = 0.
+
+    LOG1 (data.image_number);
+
+    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
+    axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+
+    // axGetImageInfo() not necessary here, since required buffer size and image number
+    // are already provided in the callback's data argument.  It is safe to call if other image info
+    // is needed prior to calling axRequestImage().
+
+    // convert user_ptr from void back into a std::vector<uint8_t>
+    auto& image_vector = *(static_cast<std::vector<uint8_t>*>(user_ptr));
+    auto bytes_allocated = image_vector.size();
+
+    if(bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
+//        auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_AND_DISPLAY, .which_window = 1 };
+        request_prefs_t prefs{};
+        prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
+        prefs.which_window = 0;
+
+        auto info = image_info_t{};
+        auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, image_vector.data(), &info);
+        if (retval == AxErr::NO_AxERROR) {
+            LOG1 (info.width);
+            if (info.force_trig){
+                LOG1("Force triggered mode.");
+            }
+            else{
+                LOG2(last_image, data.image_number);
+            }
+
+            // sleep timer to simulate additional user tasks in callback
+//			std::this_thread::sleep_for(10us);
+        }
+        else{
+            int axRequestImageReported{static_cast<int>(retval)};
+            LOG1(axRequestImageReported);
+        }
+    }
+    else{
+        int MemoryAllocationTooSmallForRetrievalOfImage{static_cast<int>(data.image_number)};
+        LOG1(MemoryAllocationTooSmallForRetrievalOfImage);
+    }
+}
+
+
 DAQ::~DAQ()
 {
 }
