@@ -91,15 +91,20 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     //
     // Force-triggered images will also invoke this callback, with data.image_number = 0.
 
-    LOG1 (data.image_number);
-
+//    LOG1 (data.image_number);
+    static uint32_t sLastImage = 0;
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
     AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
     if(success != AxErr::NO_AxERROR) {
         logAxErrorVerbose(__LINE__, success);
         return;
     }
-    LOG3(imaging,last_image,frames_since_sync);
+
+    if(sLastImage != last_image){
+        sLastImage = last_image;
+        LOG3(imaging,last_image,frames_since_sync);
+    }
+
     return; //lcv
 
     // axGetImageInfo() not necessary here, since required buffer size and image number
