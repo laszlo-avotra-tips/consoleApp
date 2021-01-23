@@ -75,6 +75,8 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
+    static uint32_t loopCount = 0;
+
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
     AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
     if(success != AxErr::NO_AxERROR) {
@@ -89,7 +91,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         }
 
         auto* daq = static_cast<DAQ*>(user_ptr);
-        daq->getData();
+//        daq->getData();
     }
 
     return; //lcv
@@ -261,6 +263,19 @@ void DAQ::run( void )
         }
         while( isRunning )
         {
+// get data and only procede if the image is new.
+//            if( getData() )
+//            {
+//                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
+//                auto* sm =  SignalModel::instance();
+//                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
+////                LOG2(gFrameNumber, axsunData)
+//                sm->setBufferLength(gBufferLength);
+
+//                emit updateSector(axsunData);
+//            }
+//            yieldCurrentThread();
+
             msleep(60);
         }
     }
