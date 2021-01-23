@@ -225,19 +225,6 @@ void DAQ::run( void )
             LOG2(int(retval), errorMsg)
         }
 
-//        uint16_t reg2Val{0};
-//        retval = axGetFPGARegister(2,&reg2Val,0);
-//        if(retval == AxErr::NO_AxERROR){
-//            bool bit2 = reg2Val & 0x4;
-//            LOG2(reg2Val, bit2)
-//        }
-//        uint16_t reg19Val{0};
-//        retval = axGetFPGARegister(19,&reg19Val,0);
-//        if(retval == AxErr::NO_AxERROR){
-//            bool bit15 = reg19Val & 0x8000;
-//            LOG2(reg19Val,bit15)
-//        }
-
 //ax set laser emission
         setLaserDivider();
         LOG1(isRunning);
@@ -248,19 +235,6 @@ void DAQ::run( void )
         }
         while( isRunning )
         {
-
-//            // get data and only procede if the image is new.
-//            if( getData() )
-//            {
-//                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
-//                auto* sm =  SignalModel::instance();
-//                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-////                LOG2(gFrameNumber, axsunData)
-//                sm->setBufferLength(gBufferLength);
-
-//                emit updateSector(axsunData);
-//            }
-//            yieldCurrentThread();
             msleep(60);
         }
     }
@@ -366,12 +340,6 @@ bool DAQ::startDaq()
             axGetErrorString(success, errorMsg);
             LOG2(int(success), errorMsg)
         }
-//        success = axUSBInterfaceOpen(1);
-//        if(success != AxErr::NO_AxERROR){
-//            char errorMsg[512];
-//            axGetErrorString(success, errorMsg);
-//            LOG2(int(success), errorMsg)
-//        }
 
         while(m_numberOfConnectedDevices != 2){
             m_numberOfConnectedDevices = axCountConnectedDevices();
@@ -412,13 +380,6 @@ bool DAQ::startDaq()
         logRegisterValue(__LINE__, 2);
         logRegisterValue(__LINE__, 5);
         logRegisterValue(__LINE__, 6);
-
-
-//        success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
-//        if(success != AxErr::NO_AxERROR){
-//            logAxErrorVerbose(__LINE__, success);
-//        }
-//        msleep(100);
 
         success = axGetMessage(session, axMessage );
         if(success != AxErr::NO_AxERROR){
