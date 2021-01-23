@@ -84,17 +84,16 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         return;
     }
 
-    if(imaging){
-        if(sLastImage != last_image){
-            sLastImage = last_image;
-            LOG3(imaging,last_image,frames_since_sync);
-        }
-
+    if(imaging && sLastImage != last_image){
+        sLastImage = last_image;
+        LOG3(imaging,last_image,frames_since_sync);
         auto* daq = static_cast<DAQ*>(user_ptr);
-//        daq->getData();
+        daq->getData();
+        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+        daq->updateSector(axsunData);
     }
 
-    return; //lcv
+    return;
 }
 
 void DAQ::NewImageArrived1(new_image_callback_data_t data, void *user_ptr)
@@ -259,7 +258,7 @@ void DAQ::run( void )
         setLaserDivider();
         LOG1(isRunning);
         {
-            axRegisterNewImageCallback(session, NewImageArrived, static_cast<void*>(this));
+            axRegisterNewImageCallback(session, NewImageArrived, this);
         }
         while( isRunning )
         {
@@ -362,7 +361,7 @@ void DAQ::getData( )
 //    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;  // for axGetStatus()
 //    request_prefs_t prefs{ };
 //    image_info_t info{ };
-//    static int32_t counter = 0;
+    static int32_t counter = 0;
 
 //    // get Main Image Buffer status
 //    AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
@@ -371,18 +370,16 @@ void DAQ::getData( )
 //        return;
 //    }
 
-//    ++counter;
     request_prefs_t prefs{ };
     image_info_t info{ };
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+    gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
 
-
-//    if(imaging)
     {
         AxErr success = axGetImageInfo(session, 0, &info);
         if(success != AxErr::NO_AxERROR)
         {
-//            logAxErrorVerbose(__LINE__, success);
+            logAxErrorVerbose(__LINE__, success);
         } else
         {
             const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
