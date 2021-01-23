@@ -220,6 +220,10 @@ bool DAQ::getData( )
 
     // get Main Image Buffer status
     AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+    if(success != AxErr::NO_AxERROR) {
+        logAxErrorVerbose(__LINE__, success);
+        return false;
+    }
     ++counter;
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
