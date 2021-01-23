@@ -75,7 +75,6 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
-    static uint32_t loopCount = 0;
 
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
     AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
@@ -90,10 +89,11 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         auto* daq = static_cast<DAQ*>(user_ptr);
         if(daq){
             LOG1(gFrameNumber);
-            daq->getData();
-            LOG1(gFrameNumber);
-            OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-            daq->updateSector(axsunData);
+            if(daq->getData(data)){
+                LOG1(gFrameNumber);
+                OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+                daq->updateSector(axsunData);
+            }
         }
     }
 
@@ -357,9 +357,9 @@ bool DAQ::getData1( )
     return isNewData;
 }
 
-void DAQ::getData( )
+bool DAQ::getData( new_image_callback_data_t data)
 {
-//    bool isNewData{false};
+    bool isNewData{false};
 //    static int sprevReturnedImageNumber = -1;
 
 //    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;  // for axGetStatus()
@@ -379,29 +379,29 @@ void DAQ::getData( )
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
     gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
 
-    {
-        AxErr success = axGetImageInfo(session, 0, &info);
-        if(success != AxErr::NO_AxERROR)
-        {
-            logAxErrorVerbose(__LINE__, success);
-        } else
-        {
-            const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
-            prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
-            prefs.which_window = 0;
-            success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
-
-            gBufferLength = info.width;
-
-            // write in frame information for recording/playback
-            axsunData->frameCount = gDaqCounter;
-            axsunData->timeStamp = fileTimer.elapsed();;
-            axsunData->milliseconds = 60;
-
-            gDaqCounter++;
-        }
+    const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
+    prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
+    prefs.which_window = 0;
+    AxErr success = axRequestImage(data.session, data.image_number, prefs, output_buf_len, axsunData->acqData, &info);
+    if(success != AxErr::NO_AxERROR) {
+        logAxErrorVerbose(__LINE__, success);
+        return isNewData;
+    } else {
+        isNewData = true;
     }
+
+    gBufferLength = info.width;
+
+    // write in frame information for recording/playback
+    axsunData->frameCount = gDaqCounter;
+    axsunData->timeStamp = fileTimer.elapsed();;
+    axsunData->milliseconds = 60;
+
+    gDaqCounter++;
+
+    return isNewData;
 }
+
 
 /*
  * startDaq

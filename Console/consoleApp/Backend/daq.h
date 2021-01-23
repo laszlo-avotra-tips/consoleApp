@@ -50,7 +50,7 @@ public slots:
 
 private:
     bool getData1();
-    void getData();
+    bool getData(new_image_callback_data_t data);
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
     void logDecimation();
     void logRegisterValue(int line, int reg);
