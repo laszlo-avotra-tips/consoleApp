@@ -718,13 +718,12 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
-    static int count = -1;
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
     }
     if(frameData && m_scene && m_scanWorker){
 
-        LOG1(frameData->frameCount);
+        LOG3(frameData->dispData, frameData->frameCount, frameData->timeStamp);
 
         const auto* sm =  SignalModel::instance();
 

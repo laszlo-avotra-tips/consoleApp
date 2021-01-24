@@ -381,11 +381,9 @@ bool DAQ::getData( new_image_callback_data_t data)
         gBufferLength = info.width;
 
         // write in frame information for recording/playback
-        axsunData->frameCount = gDaqCounter;
+        axsunData->frameCount = data.image_number;
         axsunData->timeStamp = fileTimer.elapsed();;
         axsunData->milliseconds = 60;
-
-        gDaqCounter++;
     }
 
     return isNewData;
