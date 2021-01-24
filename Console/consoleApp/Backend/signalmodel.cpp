@@ -315,9 +315,9 @@ OCTFile::OctData_t *SignalModel::getOctData(int index)
 {
     OCTFile::OctData_t * retVal(nullptr);
 
-    size_t frameDataIndex{ size_t(index) % m_octData.size()};
-    auto& val = m_octData[frameDataIndex];
-    val.frameCount = index;
+//    size_t frameDataIndex{ size_t(index) % m_octData.size()};
+    auto& val = m_octData[index];
+//    val.frameCount = index;
     retVal = &val;
     return retVal;
 }
