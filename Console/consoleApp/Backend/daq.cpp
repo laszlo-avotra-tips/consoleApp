@@ -85,13 +85,13 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
     if(imaging && sLastImage != last_image){
         sLastImage = last_image;
-        LOG3(data.image_number, last_image, frames_since_sync);
+//        LOG3(data.image_number, last_image, frames_since_sync);
         auto* daq = static_cast<DAQ*>(user_ptr);
         if(daq){
 //            LOG1(gFrameNumber);
             if(daq->getData(data)){
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-                LOG3(gFrameNumber, gBufferLength, axsunData);
+//                LOG3(gFrameNumber, gBufferLength, axsunData);
                 SignalModel::instance()->setBufferLength(gBufferLength);
                 daq->updateSector(axsunData);
             }
