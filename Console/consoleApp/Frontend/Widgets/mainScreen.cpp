@@ -724,6 +724,8 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     }
     if(frameData && m_scene && m_scanWorker){
 
+        LOG1(frameData->frameCount);
+
         const auto* sm =  SignalModel::instance();
 
         QImage* image = m_scene->sectorImage();
