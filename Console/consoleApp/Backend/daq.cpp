@@ -90,8 +90,8 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         if(daq){
 //            LOG1(gFrameNumber);
             if(daq->getData(data)){
-//                LOG1(gFrameNumber);
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+                LOG2(gFrameNumber, axsunData);
                 daq->updateSector(axsunData);
             }
         }
@@ -242,7 +242,17 @@ void DAQ::run( void )
         AxErr retval;
         int loopCount = NUM_OF_FRAME_BUFFERS - 1;
         LOG2(loopCount, m_decimation)
-        LOG1("***** Thread: DAQ::run()")
+        LOG1("***** Thread: DAQ::run()");
+
+        LOG1(isRunning);
+        {
+            retval = axRegisterNewImageCallback(session, NewImageArrived, this);
+            if(retval != AxErr::NO_AxERROR){
+                char errorMsg[512];
+                axGetErrorString(retval, errorMsg);
+                LOG2(int(retval), errorMsg)
+            }
+        }
 
         retval = axSetLaserEmission(1, 0);
         if(retval != AxErr::NO_AxERROR){
@@ -260,10 +270,6 @@ void DAQ::run( void )
 
 //ax set laser emission
         setLaserDivider();
-        LOG1(isRunning);
-        {
-            axRegisterNewImageCallback(session, NewImageArrived, this);
-        }
         while( isRunning )
         {
 // get data and only procede if the image is new.
