@@ -723,7 +723,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     }
     if(frameData && m_scene && m_scanWorker){
 
-        LOG3(frameData->dispData, frameData->frameCount, frameData->timeStamp);
+        LOG2(frameData->frameCount, frameData->timeStamp);
 
         const auto* sm =  SignalModel::instance();
 
