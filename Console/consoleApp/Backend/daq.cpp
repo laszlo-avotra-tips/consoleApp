@@ -91,7 +91,8 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 //            LOG1(gFrameNumber);
             if(daq->getData(data)){
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-                LOG2(gFrameNumber, axsunData);
+                LOG3(gFrameNumber, gBufferLength, axsunData);
+                SignalModel::instance()->setBufferLength(gBufferLength);
                 daq->updateSector(axsunData);
             }
         }
