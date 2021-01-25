@@ -102,45 +102,30 @@ DAQ::~DAQ()
 {
 }
 
-void DAQ::init()
+void DAQ::initDaq()
 {
     LOG1("init")
 }
 
-void DAQ::stop()
+void DAQ::stopDaq()
 {
     isRunning = false;
 }
 
-void DAQ::pause()
+void DAQ::pauseDaq()
 {
 
 }
 
-void DAQ::resume()
+void DAQ::resumeDaq()
 {
 
 }
 
-QString DAQ::getDaqLevel()
-{
-    return "";
-}
-
-long DAQ::getRecordLength() const
-{
-    return 0;
-}
-
-bool DAQ::configure()
+bool DAQ::configureDaq()
 {
     LOG1("configure")
     return true;
-}
-
-void DAQ::enableAuxTriggerAsTriggerEnable(bool)
-{
-
 }
 
 IDAQ *DAQ::getSignalSource()
@@ -238,6 +223,7 @@ bool DAQ::getData( new_image_callback_data_t data)
         prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
         prefs.which_window = 0;
         prefs.average_number = 1;
+        prefs.downsample = int(m_subsamplingFactor == 2);
 
         /**
          * The total number of A-scans to be retrieved. Set to 0 to retrieve the full image.

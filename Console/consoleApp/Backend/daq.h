@@ -18,31 +18,21 @@ class DAQ: public IDAQ
 public:
     DAQ();
     ~DAQ();
-    void init( void ) override;
+    void initDaq( void ) override;
     void run( void ) override;
     void setSubsampling(int speed) override;
 
-    void stop( void ) override;
-    void pause( void ) override;
-    void resume( void) override;
+    void stopDaq( void ) override;
+    void pauseDaq( void ) override;
+    void resumeDaq( void) override;
 
-    QString getDaqLevel() override;
-    long getRecordLength() const override;
+    bool configureDaq( void ) override;
 
-    bool configure( void ) override;
-
-    void enableAuxTriggerAsTriggerEnable( bool ) override;
     IDAQ* getSignalSource() override;
 
     bool isRunning;
-    int generateSyntheticData( unsigned char *pSyntheticData );
     QElapsedTimer frameTimer;
     QElapsedTimer fileTimer;
-
-signals:
-    void fpsCount( int );
-    void linesPerFrameCount( int );
-    void missedImagesCount( int );
 
 public slots:
     void setLaserDivider();

@@ -12,19 +12,15 @@ class IDAQ : public QThread
 public:
     virtual ~IDAQ(){}
 
-    virtual void stop() = 0;
-    virtual void pause() = 0;
-    virtual void resume() = 0;
-    virtual void init() = 0;
+    virtual void stopDaq() = 0;
+    virtual void pauseDaq() = 0;
+    virtual void resumeDaq() = 0;
+    virtual void initDaq() = 0;
     virtual void setSubsampling(int speed) = 0;
-
-    virtual QString getDaqLevel() = 0;
-
-    virtual long getRecordLength() const = 0;
 
     virtual IDAQ* getSignalSource() { return nullptr;}
 
-    virtual bool configure( void ) = 0;
+    virtual bool configureDaq( void ) = 0;
 
 signals:
     void sendWarning( QString );
@@ -37,10 +33,6 @@ signals:
     void attenuateLaser( bool );
     void updateSector(OCTFile::OctData_t*);
     void notifyAcqData();
-
-public slots:
-    virtual void enableAuxTriggerAsTriggerEnable( bool ) = 0; //  * R&D only
-
 };
 
 #endif // IDAQ_H
