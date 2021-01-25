@@ -104,7 +104,36 @@ DAQ::~DAQ()
 
 void DAQ::initDaq()
 {
-    LOG1("init")
+    AxErr retval;
+    int loopCount = NUM_OF_FRAME_BUFFERS - 1;
+    LOG2(loopCount, m_decimation);
+
+    frameTimer.start();
+    fileTimer.start(); // start a timer to provide frame information for recording.
+
+    retval = axRegisterNewImageCallback(session, NewImageArrived, this);
+    if(retval != AxErr::NO_AxERROR){
+        char errorMsg[512];
+        axGetErrorString(retval, errorMsg);
+        LOG2(int(retval), errorMsg)
+    }
+
+    retval = axSetLaserEmission(1, 0);
+    if(retval != AxErr::NO_AxERROR){
+        char errorMsg[512];
+        axGetErrorString(retval, errorMsg);
+        LOG2(int(retval), errorMsg)
+    }
+
+    retval = axImagingCntrlEthernet(-1,0);
+    if(retval != AxErr::NO_AxERROR){
+        char errorMsg[512];
+        axGetErrorString(retval, errorMsg);
+        LOG2(int(retval), errorMsg)
+    }
+
+    setLaserDivider();
+
 }
 
 void DAQ::stopDaq()
@@ -144,36 +173,36 @@ void DAQ::run( void )
         frameTimer.start();
         fileTimer.start(); // start a timer to provide frame information for recording.
 
-        AxErr retval;
-        int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-        LOG2(loopCount, m_decimation)
-        LOG1("***** Thread: DAQ::run()");
+//        AxErr retval;
+//        int loopCount = NUM_OF_FRAME_BUFFERS - 1;
+//        LOG2(loopCount, m_decimation)
+//        LOG1("***** Thread: DAQ::run()");
 
-        LOG1(isRunning);
-        {
-            retval = axRegisterNewImageCallback(session, NewImageArrived, this);
-            if(retval != AxErr::NO_AxERROR){
-                char errorMsg[512];
-                axGetErrorString(retval, errorMsg);
-                LOG2(int(retval), errorMsg)
-            }
-        }
+//        LOG1(isRunning);
+//        {
+//            retval = axRegisterNewImageCallback(session, NewImageArrived, this);
+//            if(retval != AxErr::NO_AxERROR){
+//                char errorMsg[512];
+//                axGetErrorString(retval, errorMsg);
+//                LOG2(int(retval), errorMsg)
+//            }
+//        }
 
-        retval = axSetLaserEmission(1, 0);
-        if(retval != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retval, errorMsg);
-            LOG2(int(retval), errorMsg)
-        }
+//        retval = axSetLaserEmission(1, 0);
+//        if(retval != AxErr::NO_AxERROR){
+//            char errorMsg[512];
+//            axGetErrorString(retval, errorMsg);
+//            LOG2(int(retval), errorMsg)
+//        }
 
-        retval = axImagingCntrlEthernet(-1,0);
-        if(retval != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retval, errorMsg);
-            LOG2(int(retval), errorMsg)
-        }
+//        retval = axImagingCntrlEthernet(-1,0);
+//        if(retval != AxErr::NO_AxERROR){
+//            char errorMsg[512];
+//            axGetErrorString(retval, errorMsg);
+//            LOG2(int(retval), errorMsg)
+//        }
 
-        setLaserDivider();
+//        setLaserDivider();
 
         while( isRunning )
         {
@@ -322,7 +351,6 @@ bool DAQ::startDaq()
     } catch(...){
         LOG1(__FUNCTION__)
     }
-    LOG0
 
     return success == AxErr::NO_AxERROR;
 }
