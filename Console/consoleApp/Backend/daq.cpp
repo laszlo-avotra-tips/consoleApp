@@ -253,8 +253,9 @@ bool DAQ::getData( new_image_callback_data_t data)
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
-            logAxErrorVerbose(counter, success);
+            logAxErrorVerbose(__LINE__, success);
         } else {
+            LOG3(counter, info.image_number, info.width);
             isNewData = true;
         }
 
