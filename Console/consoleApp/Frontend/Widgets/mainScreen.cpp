@@ -723,15 +723,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     }
     if(frameData && m_scene && m_scanWorker){
 
-        LOG2(frameData->frameCount, frameData->timeStamp);
+//        LOG2(frameData->frameCount, frameData->timeStamp);
 
         const auto* sm =  SignalModel::instance();
 
         QImage* image = m_scene->sectorImage();
-
-//        LOG2(image->bitPlaneCount(), image->format());
-//        LOG2(image->width(),image->height());
-//        LOG2(image->sizeInBytes(), image->bytesPerLine());
 
         frameData->dispData = image->bits();
         auto bufferLength = sm->getBufferLength();
