@@ -49,15 +49,13 @@ public slots:
     void setDisplay( float, int );
 
 private:
-    bool getData1();
     bool getData(new_image_callback_data_t data);
     void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
     void logDecimation();
     void logRegisterValue(int line, int reg);
 
-    static void logAxErrorVerbose(int line, AxErr e);
+    void logAxErrorVerbose(int line, AxErr e);
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
-    static void NewImageArrived1(new_image_callback_data_t data, void* user_ptr);
 
 private:
     AOChandle session = NULL;

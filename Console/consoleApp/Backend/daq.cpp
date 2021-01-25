@@ -76,108 +76,27 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
 
-    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
-    AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
-    if(success != AxErr::NO_AxERROR) {
-        logAxErrorVerbose(__LINE__, success);
-        return;
-    }
+    auto* daq = static_cast<DAQ*>(user_ptr);
 
-    if(imaging && sLastImage != last_image){
-        sLastImage = last_image;
-//        LOG3(data.image_number, last_image, frames_since_sync);
-        auto* daq = static_cast<DAQ*>(user_ptr);
-        if(daq){
-//            LOG1(gFrameNumber);
+    if(daq){
+        uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
+        AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+        if(success != AxErr::NO_AxERROR) {
+            daq->logAxErrorVerbose(__LINE__, success);
+            return;
+        }
+
+        if(imaging && sLastImage != last_image){
+            sLastImage = last_image;
             if(daq->getData(data)){
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-//                LOG3(gFrameNumber, gBufferLength, axsunData);
                 SignalModel::instance()->setBufferLength(gBufferLength);
                 daq->updateSector(axsunData);
             }
         }
     }
-
     return;
 }
-
-void DAQ::NewImageArrived1(new_image_callback_data_t data, void *user_ptr)
-{
-
-    // Use the 'void * user_ptr' argument to send this callback a pointer to your preallocated
-    // buffer if you are retrieving the image data rather than just direct-displaying it, as well as
-    // any other user resources needed in this callback (log handles, etc).
-    //
-    // Calling AxsunOCTCapture functions other than axRequestImage(), axGetImageInfo(), & axGetStatus()
-    // in this callback may result in undefined behavior, due to the nature of this callback's
-    // execution in a concurrent thread with the application's other calls to the AxsunOCTCapture API.
-    //
-    // New Image Arrived events are stored in a FIFO queue within the AxsunOCTCapture library.
-    // If the time spent in this callback exceeds the period of new images enqueued in the Main Image
-    // Buffer, unprocessed callback events will stack up indefinitely.  You can monitor the backlog
-    // of callback events by comparing the image number for the current callback 'data.image_number'
-    // with the 'last_image' argument of axGetStatus().
-    //
-    // Force-triggered images will also invoke this callback, with data.image_number = 0.
-
-//    LOG1 (data.image_number);
-    static uint32_t sLastImage = 0;
-    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
-    AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
-    if(success != AxErr::NO_AxERROR) {
-        logAxErrorVerbose(__LINE__, success);
-        return;
-    }
-
-    if(sLastImage != last_image){
-        sLastImage = last_image;
-        LOG3(imaging,last_image,frames_since_sync);
-    }
-
-    return; //lcv
-
-    // axGetImageInfo() not necessary here, since required buffer size and image number
-    // are already provided in the callback's data argument.  It is safe to call if other image info
-    // is needed prior to calling axRequestImage().
-
-    // convert user_ptr from void back into a std::vector<uint8_t>
-//    auto& image_vector = *(static_cast<std::vector<uint8_t>*>(user_ptr));
-//    auto bytes_allocated = image_vector.size();
-    auto image_vector = static_cast<uint8_t *>(user_ptr);
-    uint32_t bytes_allocated = MAX_ACQ_IMAGE_SIZE;
-
-//    if(bytes_allocated >= data.required_buffer_size)
-    {		// insure memory allocation large enough
-//        auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_AND_DISPLAY, .which_window = 1 };
-        request_prefs_t prefs{};
-        prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
-        prefs.which_window = 0;
-
-        auto info = image_info_t{};
-        auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, image_vector, &info);
-        if (retval == AxErr::NO_AxERROR) {
-            LOG1 (info.width);
-            if (info.force_trig){
-                LOG1("Force triggered mode.");
-            }
-            else{
-                LOG2(last_image, data.image_number);
-            }
-
-            // sleep timer to simulate additional user tasks in callback
-//			std::this_thread::sleep_for(10us);
-        }
-        else{
-            int axRequestImageReported{static_cast<int>(retval)};
-            LOG1(axRequestImageReported);
-        }
-    }
-//    else{
-//        int MemoryAllocationTooSmallForRetrievalOfImage{static_cast<int>(data.image_number)};
-//        LOG1(MemoryAllocationTooSmallForRetrievalOfImage);
-//    }
-}
-
 
 DAQ::~DAQ()
 {
@@ -305,63 +224,6 @@ void DAQ::setSubsampling(int speed)
         m_subsamplingFactor = 1;
         setLaserDivider();
     }
-}
-
-/*
- * getData1
- */
-bool DAQ::getData1( )
-{
-    bool isNewData{false};
-    static int sprevReturnedImageNumber = -1;
-
-    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;  // for axGetStatus()
-    request_prefs_t prefs{ };
-    image_info_t info{ };
-    static int32_t counter = 0;
-
-    // get Main Image Buffer status
-    AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
-    if(success != AxErr::NO_AxERROR) {
-        logAxErrorVerbose(__LINE__, success);
-        return false;
-    }
-
-    ++counter;
-    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-
-
-    if(imaging){
-        success = axGetImageInfo(session, 0, &info);
-        if(success != AxErr::NO_AxERROR) {
-//            logAxErrorVerbose(__LINE__, success);
-        } else {
-            const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
-            prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
-            prefs.which_window = 0;
-            success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
-            int currentImageNumber = info.image_number;
-//                LOG2(counter, info.image_number)
-            if(currentImageNumber != sprevReturnedImageNumber){
-                sprevReturnedImageNumber = currentImageNumber;
-
-                isNewData = true;
-                gBufferLength = info.width;
-
-                // write in frame information for recording/playback
-                axsunData->frameCount = gDaqCounter;
-                axsunData->timeStamp = fileTimer.elapsed();;
-                axsunData->milliseconds = 30;
-
-                gDaqCounter++;
-            }
-        }
-    }
-
-
-    yieldCurrentThread();
-
-    return isNewData;
 }
 
 bool DAQ::getData( new_image_callback_data_t data)
