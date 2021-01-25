@@ -231,17 +231,29 @@ bool DAQ::getData( new_image_callback_data_t data)
     bool isNewData{false};
     static int32_t counter = 0;
 
-    request_prefs_t prefs{ };
-    image_info_t info{ };
-    gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
-    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
+
     if(bytes_allocated >= data.required_buffer_size){
+        request_prefs_t prefs{ };
         prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
         prefs.which_window = 0;
-        AxErr success = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
+        prefs.average_number = 1;
+
+        /**
+         * The total number of A-scans to be retrieved. Set to 0 to retrieve the full image.
+         * If the value exceeds the remaining A-scans available following crop_width_offset,
+         * the remaining available A-scans in the image will be retrieved/displayed.
+*/
+        prefs.crop_width_total = 0;
+        image_info_t info{ };
+
+        gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
+        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+
+        AxErr success = axRequestImage(data.session, data.image_number, prefs,
+                                       bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
+            LOG2(info.image_number,info.size_bytes)
             logAxErrorVerbose(__LINE__, success);
         } else {
             isNewData = true;
