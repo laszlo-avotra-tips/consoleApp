@@ -170,49 +170,10 @@ void DAQ::run( void )
     if( !isRunning )
     {
         isRunning = true;
-        frameTimer.start();
-        fileTimer.start(); // start a timer to provide frame information for recording.
-
-//        AxErr retval;
-//        int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-//        LOG2(loopCount, m_decimation)
-//        LOG1("***** Thread: DAQ::run()");
-
-//        LOG1(isRunning);
-//        {
-//            retval = axRegisterNewImageCallback(session, NewImageArrived, this);
-//            if(retval != AxErr::NO_AxERROR){
-//                char errorMsg[512];
-//                axGetErrorString(retval, errorMsg);
-//                LOG2(int(retval), errorMsg)
-//            }
-//        }
-
-//        retval = axSetLaserEmission(1, 0);
-//        if(retval != AxErr::NO_AxERROR){
-//            char errorMsg[512];
-//            axGetErrorString(retval, errorMsg);
-//            LOG2(int(retval), errorMsg)
-//        }
-
-//        retval = axImagingCntrlEthernet(-1,0);
-//        if(retval != AxErr::NO_AxERROR){
-//            char errorMsg[512];
-//            axGetErrorString(retval, errorMsg);
-//            LOG2(int(retval), errorMsg)
-//        }
-
-//        setLaserDivider();
-
         while( isRunning )
         {
             sleep(1);
         }
-    }
-    if(shutdownDaq()){
-        qDebug() << "Thread: DAQ::run stop";
-    } else {
-        qDebug() << "Thread: DAQ::run failed to shut down";
     }
 }
 
@@ -355,20 +316,16 @@ bool DAQ::startDaq()
     return success == AxErr::NO_AxERROR;
 }
 
-/*
- * stopDaq
- *
- * Stop the Axsun DAQ based on PCIe or Ethernet mode.
- */
 bool DAQ::shutdownDaq()
 {
-    qDebug() << "***** DAQ::shutdownDaq()";
     AxErr success = AxErr::NO_AxERROR;
 
     success = axStopSession(session);    // Stop Axsun engine session
     if(success != AxErr::NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
     }
+    LOG1(int(success));
+
     return success == AxErr::NO_AxERROR;
 }
 

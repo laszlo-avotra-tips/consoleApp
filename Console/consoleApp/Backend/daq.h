@@ -33,6 +33,7 @@ public:
     bool isRunning;
     QElapsedTimer frameTimer;
     QElapsedTimer fileTimer;
+    bool shutdownDaq() override;
 
 public slots:
     void setLaserDivider();
@@ -52,7 +53,6 @@ private:
     uint32_t lastImageIdx;
     int missedImgs;
     bool startDaq();
-    bool shutdownDaq();
     int lapCounter;
     uint16_t lastPolarLineIndexEntered;
     int m_decimation{0};

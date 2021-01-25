@@ -9,6 +9,7 @@
 #include "idaq.h"
 #include "fullCaseRecorder.h"
 #include "displayManager.h"
+#include "daqfactory.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -91,8 +92,11 @@ void StartScreen::on_pushButtonShutdown_clicked()
 {
 //    FullCaseRecorder::instance()->closeRecorder();
     WidgetContainer::instance()->close();
-    LOG0
+
     DisplayManager::instance()->killDisplayMonitor();
+
+    auto daq = daqfactory::instance()->getdaq();
+    daq->shutdownDaq();
 }
 
 void StartScreen::showEvent(QShowEvent *se)

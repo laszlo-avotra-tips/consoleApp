@@ -21,6 +21,7 @@ public:
     virtual IDAQ* getSignalSource() { return nullptr;}
 
     virtual bool configureDaq( void ) = 0;
+    virtual bool shutdownDaq() = 0;
 
 signals:
     void sendWarning( QString );
