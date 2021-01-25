@@ -216,10 +216,11 @@ bool DAQ::getData( new_image_callback_data_t data)
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
-            LOG1(counter)
-            logAxErrorVerbose(__LINE__, success);
+//            LOG1(counter)
+//            logAxErrorVerbose(__LINE__, success);
+            ;
         } else {
-            LOG4(counter, info.image_number, info.width, info.force_trig);
+//            LOG4(counter, info.image_number, info.width, info.force_trig);
             isNewData = true;
         }
 
