@@ -221,9 +221,9 @@ bool DAQ::getData( new_image_callback_data_t data)
     if(bytes_allocated >= data.required_buffer_size){
         request_prefs_t prefs{ };
         prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
-        prefs.which_window = 0;
+        prefs.which_window = 1;
         prefs.average_number = 1;
-        prefs.downsample = int(m_subsamplingFactor == 2);
+//        prefs.downsample = int(m_subsamplingFactor == 2); do not enable
 
         /**
          * The total number of A-scans to be retrieved. Set to 0 to retrieve the full image.
@@ -239,9 +239,10 @@ bool DAQ::getData( new_image_callback_data_t data)
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
+            LOG1(counter)
             logAxErrorVerbose(__LINE__, success);
         } else {
-            LOG3(counter, info.image_number, info.width);
+            LOG4(counter, info.image_number, info.width, info.force_trig);
             isNewData = true;
         }
 
