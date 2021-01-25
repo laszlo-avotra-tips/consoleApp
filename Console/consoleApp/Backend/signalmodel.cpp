@@ -313,11 +313,10 @@ void SignalModel::freeOctData()
 
 OCTFile::OctData_t *SignalModel::getOctData(int index)
 {
-    OCTFile::OctData_t * retVal(nullptr);
+    OCTFile::OctData_t * retVal {&m_octData[0]};
 
-    size_t frameDataIndex{ size_t(index) % m_octData.size()};
-    auto& val = m_octData[frameDataIndex];
-//    val.frameCount = index;
-    retVal = &val;
+    if(index <  int(m_octData.size())){
+        retVal = &m_octData[index];
+    }
     return retVal;
 }
