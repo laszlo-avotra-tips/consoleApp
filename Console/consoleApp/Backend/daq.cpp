@@ -252,7 +252,6 @@ bool DAQ::getData( new_image_callback_data_t data)
         // write in frame information for recording/playback
         axsunData->frameCount = data.image_number;
         axsunData->timeStamp = fileTimer.elapsed();;
-        axsunData->milliseconds = 60;
     }
 
     return isNewData;
@@ -382,19 +381,4 @@ void DAQ::setLaserDivider()
 void DAQ::setDisplay(float angle, int direction)
 {
     LOG2(angle, direction);
-}
-
-void DAQ::sendToAdvacedView(const OCTFile::OctData_t &od, int frameNumber)
-{
-    uint8_t const * const src{od.acqData};
-    uint8_t * const dst{od.advancedViewFftData};
-    SignalModel::instance()->setAdvacedViewSourceFrameNumber(frameNumber);
-
-    if(src && dst){
-        const size_t bufferLength{FFTDataSize};
-        memcpy(dst,src,bufferLength);
-        emit notifyAcqData();
-    } else {
-        qDebug() << " src =" << src << ", dst=" << dst;
-    }
 }

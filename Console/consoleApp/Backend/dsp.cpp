@@ -180,33 +180,6 @@ bool DSP::findLabel( QTextStream *in, QString *currLine, const QString Label )
     return foundLabel;
 }
 
-/*
- * getAvgAmplitude()
- *
- * Calculate the average amplitude of an A-line using advancedViewIfftData between the first
- * third and second third samples of the A-line. This is called by
- * setEvoaPowerLevel() to read A-line strength and determine adjustment amount.
- */
-quint32 DSP::getAvgAmplitude( quint16 *pA )
-{
-    quint32 recordLength{4096};
-
-    size_t average = 0;
-    const quint32 start_idx = recordLength / 3 ;
-    const quint32 end_idx   = ( 2 * recordLength ) / 3;
-
-    for( quint32 i = start_idx; i < end_idx; i++ )
-    {
-        average += pA [ i ];
-    }
-
-    average /= ( recordLength / 3 );
-
-    // XXX: ippsMean_16s_Sfs( (Ipp16s *)pA, (int)( recordLength/3 ), (Ipp16s *)&avg, 0 );
-
-    return quint32(average);
-}
-
 unsigned int DSP::getTimeStamp() {
     return timeStamp;
 }

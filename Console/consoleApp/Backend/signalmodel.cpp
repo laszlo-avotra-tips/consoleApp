@@ -22,10 +22,7 @@ void SignalModel::allocateOctData()
 
         OCTFile::OctData_t oct;
 
-        oct.advancedViewIfftData  = new uint8_t [fftDataSize];
-        oct.advancedViewFftData   = new uint8_t [fftDataSize];
         oct.dispData  = new uint8_t [dispDataSize];
-        oct.videoData = new uint8_t [dispDataSize];
         oct.acqData   = new uint8_t [MAX_ACQ_IMAGE_SIZE];
 
         m_octData.push_back(oct);
@@ -71,11 +68,6 @@ const cl_int* SignalModel::getSectorHeight_px() const
 void SignalModel::setAdvacedViewSourceFrameNumber(int frameNumber)
 {
     m_dvacedViewSourceFrameNumber = frameNumber;
-}
-
-const uint8_t *SignalModel::getAdvancedViewFrame() const
-{
-    return m_octData[m_dvacedViewSourceFrameNumber].advancedViewFftData;
 }
 
 const cl_int* SignalModel::getSectorWidth_px() const
@@ -303,10 +295,8 @@ std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 void SignalModel::freeOctData()
 {
     for(auto it = m_octData.begin(); it != m_octData.end(); ++it){
-        delete [] it->advancedViewIfftData;
-        delete [] it->advancedViewFftData;
+        delete [] it->acqData;
         delete [] it->dispData;
-        delete [] it->videoData;
     }
     m_octData.clear();
 }

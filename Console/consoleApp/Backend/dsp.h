@@ -28,8 +28,6 @@ public:
 
     void init();
 
-    quint32 getAvgAmplitude( quint16 *pA );
-
     unsigned int getTimeStamp( void );
     int getMilliseconds( void );
 

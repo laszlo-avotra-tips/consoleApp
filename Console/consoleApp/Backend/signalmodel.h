@@ -97,8 +97,6 @@ public: //functions
 
     void setAdvacedViewSourceFrameNumber(int frameNumber);
 
-    const uint8_t* getAdvancedViewFrame() const;
-
     size_t getBufferLength() const;
     void setBufferLength(const size_t &bufferLength);
 
