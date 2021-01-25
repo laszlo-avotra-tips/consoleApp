@@ -173,24 +173,11 @@ void DAQ::run( void )
             LOG2(int(retval), errorMsg)
         }
 
-//ax set laser emission
         setLaserDivider();
+
         while( isRunning )
         {
-// get data and only procede if the image is new.
-//            if( getData() )
-//            {
-//                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
-//                auto* sm =  SignalModel::instance();
-//                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-////                LOG2(gFrameNumber, axsunData)
-//                sm->setBufferLength(gBufferLength);
-
-//                emit updateSector(axsunData);
-//            }
-//            yieldCurrentThread();
-
-            msleep(60);
+            sleep(1);
         }
     }
     if(shutdownDaq()){
