@@ -10,6 +10,7 @@
 #include "fullCaseRecorder.h"
 #include "displayManager.h"
 #include "daqfactory.h"
+#include "sledsupport.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -94,6 +95,9 @@ void StartScreen::on_pushButtonShutdown_clicked()
     WidgetContainer::instance()->close();
 
     DisplayManager::instance()->killDisplayMonitor();
+
+    auto& sled = SledSupport::Instance();
+    sled.writeSerial("sr0\r");
 
     auto daq = daqfactory::instance()->getdaq();
     daq->shutdownDaq();
