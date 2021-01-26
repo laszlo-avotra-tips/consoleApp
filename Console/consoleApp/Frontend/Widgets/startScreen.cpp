@@ -97,6 +97,7 @@ void StartScreen::on_pushButtonShutdown_clicked()
 
     auto daq = daqfactory::instance()->getdaq();
     daq->shutdownDaq();
+    QThread::sleep(1);
 }
 
 void StartScreen::showEvent(QShowEvent *se)
