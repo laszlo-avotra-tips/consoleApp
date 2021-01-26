@@ -136,27 +136,6 @@ void DAQ::initDaq()
 
 }
 
-void DAQ::stopDaq()
-{
-    isRunning = false;
-}
-
-void DAQ::pauseDaq()
-{
-
-}
-
-void DAQ::resumeDaq()
-{
-
-}
-
-bool DAQ::configureDaq()
-{
-    LOG1("configure")
-    return true;
-}
-
 IDAQ *DAQ::getSignalSource()
 {
     return this;

@@ -22,12 +22,6 @@ public:
     void run( void ) override;
     void setSubsampling(int speed) override;
 
-    void stopDaq( void ) override;
-    void pauseDaq( void ) override;
-    void resumeDaq( void) override;
-
-    bool configureDaq( void ) override;
-
     IDAQ* getSignalSource() override;
 
     bool isRunning;
