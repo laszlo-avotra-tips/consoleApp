@@ -99,8 +99,8 @@ void StartScreen::on_pushButtonShutdown_clicked()
     auto& sled = SledSupport::Instance();
     sled.writeSerial("sr0\r");
 
-    auto daq = daqfactory::instance()->getdaq();
-    daq->shutdownDaq();
+    auto idaq = daqfactory::instance()->getdaq();
+    idaq->shutdownDaq();
     QThread::sleep(1);
 }
 

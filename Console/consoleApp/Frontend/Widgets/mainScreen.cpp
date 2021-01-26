@@ -232,6 +232,10 @@ void MainScreen::on_pushButtonEndCase_clicked()
         ui->pushButtonRecord->click();
     }
 
+    auto idaq = daqfactory::instance()->getdaq();
+    bool isDisonnected = disconnect( idaq->getSignalSource(), &IDAQ::updateSector, this, &MainScreen::updateSector);
+    LOG1(isDisonnected);
+
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
         m_graphicsView->hide();
