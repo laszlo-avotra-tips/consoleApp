@@ -129,6 +129,9 @@ private:
     bool m_recordingIsOn{false};
     bool m_recordingIsInitialized{false};
     uint8_t* m_clipBuffer{nullptr};
+    int m_numberOfMissedImages[2]{};
+    int m_imageFrame[3]{};
+    bool startCount{false};
 
 };
 #endif // MAINSCREEN_H
