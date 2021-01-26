@@ -87,6 +87,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         }
         QThread::msleep(1);
         if(imaging && sLastImage != last_image){
+            LOG2(last_image,dropped_packets);
             sLastImage = last_image;
             if(daq->getData(data)){
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
@@ -196,7 +197,7 @@ bool DAQ::getData( new_image_callback_data_t data)
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
-            LOG2(counter, int(success));
+            LOG2(counter, int(success));//dropped_packets
 //            logAxErrorVerbose(__LINE__, success);
             ;
         } else {
