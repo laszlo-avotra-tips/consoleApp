@@ -737,13 +737,13 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         if(!startCount){
             startCount = m_numberOfMissedImages[0] == 1 && m_numberOfMissedImages[1] == 1;
-            if(startCount){
-                count =frameData->frameCount;;
-            }
         }
 
-        int numberOfMissedImages =  m_numberOfMissedImages[0];
-        LOG3(frameData->frameCount, frameData->timeStamp, numberOfMissedImages);
+        if(startCount) {
+            int numberOfMissedImages =  m_numberOfMissedImages[0] - 1;
+            count += numberOfMissedImages;
+            LOG3(frameData->frameCount, frameData->timeStamp, count);
+        }
 
         const auto* sm =  SignalModel::instance();
 
