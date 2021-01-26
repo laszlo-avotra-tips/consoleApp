@@ -85,7 +85,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             daq->logAxErrorVerbose(__LINE__, success);
             return;
         }
-
+        QThread::msleep(1);
         if(imaging && sLastImage != last_image){
             sLastImage = last_image;
             if(daq->getData(data)){
@@ -174,6 +174,8 @@ bool DAQ::getData( new_image_callback_data_t data)
 
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
 
+    gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
+
     if(bytes_allocated >= data.required_buffer_size){
         request_prefs_t prefs{ };
         prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
@@ -189,7 +191,6 @@ bool DAQ::getData( new_image_callback_data_t data)
         prefs.crop_width_total = 0;
         image_info_t info{ };
 
-        gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
         OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
