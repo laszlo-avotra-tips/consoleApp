@@ -734,7 +734,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         m_numberOfMissedImages[0] = m_imageFrame[0] - m_imageFrame[1];
         m_numberOfMissedImages[1] = m_imageFrame[1] - m_imageFrame[2];
-
+        LOG3(m_imageFrame[0],m_numberOfMissedImages[0],m_numberOfMissedImages[1])
         if(!startCount){
             startCount = m_numberOfMissedImages[0] == 1 && m_numberOfMissedImages[1] == 1;
         }
