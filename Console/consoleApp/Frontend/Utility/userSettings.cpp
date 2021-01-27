@@ -99,6 +99,21 @@ void userSettings::loadProfileSettings()
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
 }
 
+int userSettings::getDaqLogLevel() const
+{
+    return daqLogLevel;
+}
+
+int userSettings::getImageLogLevel() const
+{
+    return imageLogLevel;
+}
+
+int userSettings::getDaqIndexDecimation() const
+{
+    return daqIndexDecimation;
+}
+
 int userSettings::getRecordingDurationMin() const
 {
     return recordingDurationMin;
