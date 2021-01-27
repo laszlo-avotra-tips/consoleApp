@@ -132,6 +132,7 @@ private:
     int m_numberOfMissedImages[2]{};
     int m_imageFrame[2]{};
     bool startCount{false};
+    int m_decimation{0};
 
 };
 #endif // MAINSCREEN_H
