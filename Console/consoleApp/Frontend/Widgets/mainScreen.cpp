@@ -745,15 +745,13 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
             m_decimation = userSettings::Instance().getImageIndexDecimation();
         }
 
-        if(startCount & (frameData->frameCount > 32)){
+        if(startCount && m_decimation && (frameData->frameCount > 32)){
             missedImagesTotal += m_numberOfMissedImages[0];
-            LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal)
-        }
-
-
-        if(m_decimation && startCount && (frameData->frameCount > 32) && (++dispCount % m_decimation == 0)) {
-            percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
-            LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);
+            LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
+            if(++dispCount % m_decimation == 0) {
+                percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
+                LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);
+            }
         }
 
         const auto* sm =  SignalModel::instance();
