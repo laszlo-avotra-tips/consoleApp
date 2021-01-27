@@ -202,12 +202,12 @@ bool DAQ::getData( new_image_callback_data_t data)
                                        bytes_allocated, axsunData->acqData, &info);
         ++counter;
         if(success != AxErr::NO_AxERROR) {
-            if(m_daqDecimation && counter % m_daqDecimation){
-                LOG2(counter, int(success));
-                if(m_daqLevel >= 2){
-                    logAxErrorVerbose(__LINE__, success);
-                }
+//            if(m_daqDecimation && counter % m_daqDecimation){
+//                LOG2(counter, int(success));
+            if(m_daqLevel >= 2){
+                logAxErrorVerbose(__LINE__, success);
             }
+//            }
         } else {
             if(m_daqDecimation && counter % m_daqDecimation){
                 LOG4(counter, info.image_number, info.width, info.force_trig);
