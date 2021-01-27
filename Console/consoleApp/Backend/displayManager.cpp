@@ -70,7 +70,8 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
 {
     LOG1(name);
 
-    if(isNonPrimaryMonitorPresent()){
+//    if(isNonPrimaryMonitorPresent())
+    {
         auto it = m_widgetContainer.find(name);
         if(it != m_widgetContainer.end()){
             m_widgetOnTheSecondMonitor->hide();
@@ -88,7 +89,8 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
 void DisplayManager::initSecondMonitor(QString name)
 {
     LOG1(name);
-    if(isNonPrimaryMonitorPresent()){
+//    if(isNonPrimaryMonitorPresent())
+    {
         auto it = m_widgetContainer.find(name);
         if(it != m_widgetContainer.end()){
             if(it->second){
