@@ -747,7 +747,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         if(startCount){
             missedImagesTotal += m_numberOfMissedImages[0];
-            LOG3(m_imageFrame[0],m_numberOfMissedImages[0])
+            LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal)
         }
 
 
