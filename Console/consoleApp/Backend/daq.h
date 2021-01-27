@@ -49,7 +49,8 @@ private:
     bool startDaq();
     int lapCounter;
     uint16_t lastPolarLineIndexEntered;
-    int m_decimation{0};
+    int m_daqDecimation{0};
+    int m_daqLevel{0};
     int m_count{0};
     const int m_subsamplingThreshold{1000};
     int m_subsamplingFactor{2};

@@ -50,7 +50,8 @@ DAQ::DAQ()
 void DAQ::logDecimation()
 {
     userSettings &settings = userSettings::Instance();
-    m_decimation = settings.getImageIndexDecimation();
+    m_daqDecimation = settings.getDaqIndexDecimation();
+    m_daqLevel = settings.getDaqLogLevel();
 }
 
 void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode)
@@ -75,6 +76,7 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
+    static int count = 0;
 
     auto* daq = static_cast<DAQ*>(user_ptr);
 
@@ -87,7 +89,9 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         }
         QThread::msleep(1);
         if(imaging && sLastImage != last_image){
-//            LOG2(last_image,dropped_packets);
+            if(daq->m_daqDecimation && ++count % daq->m_daqDecimation){
+                LOG2(last_image,dropped_packets);
+            }
             sLastImage = last_image;
             if(daq->getData(data)){
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
@@ -107,7 +111,7 @@ void DAQ::initDaq()
 {
     AxErr retval;
     int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-    LOG2(loopCount, m_decimation);
+    LOG2(loopCount, m_daqDecimation);
 
     frameTimer.start();
     fileTimer.start(); // start a timer to provide frame information for recording.
@@ -196,12 +200,18 @@ bool DAQ::getData( new_image_callback_data_t data)
 
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
+        ++counter;
         if(success != AxErr::NO_AxERROR) {
-//            LOG2(counter, int(success));
-//            logAxErrorVerbose(__LINE__, success);
-            ;
+            if(m_daqDecimation && counter % m_daqDecimation){
+                LOG2(counter, int(success));
+                if(m_daqLevel >= 2){
+                    logAxErrorVerbose(__LINE__, success);
+                }
+            }
         } else {
-//            LOG4(counter, info.image_number, info.width, info.force_trig);
+            if(m_daqDecimation && counter % m_daqDecimation){
+                LOG4(counter, info.image_number, info.width, info.force_trig);
+            }
             isNewData = true;
         }
 

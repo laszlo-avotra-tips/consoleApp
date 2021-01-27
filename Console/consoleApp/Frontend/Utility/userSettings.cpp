@@ -83,7 +83,16 @@ void userSettings::loadVarSettings()
 void userSettings::loadProfileSettings()
 {
     imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 0).toInt();
-    LOG1(imageIndexDecimation)
+    LOG1(imageIndexDecimation);
+
+    daqIndexDecimation = profileSettings->value( "log/daqIndexDecimation", 0).toInt();
+    LOG1(daqIndexDecimation);
+
+    imageLogLevel = profileSettings->value( "log/imageLogLevel", 0).toInt();
+    LOG1(imageLogLevel);
+
+    daqLogLevel = profileSettings->value( "log/daqLogLevel", 0).toInt();
+    LOG1(daqLogLevel);
 
     recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
