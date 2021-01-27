@@ -131,10 +131,10 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
     }
     if(idaq){
         if(idaq->getSignalSource()){
-            connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector);
+            connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector, Qt::BlockingQueuedConnection);
+            idaq->initDaq();
         }
-        idaq->init();
-        idaq->start();
+//        idaq->start();
     }
 }
 

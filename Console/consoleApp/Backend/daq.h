@@ -18,42 +18,28 @@ class DAQ: public IDAQ
 public:
     DAQ();
     ~DAQ();
-    void init( void ) override;
+    void initDaq( void ) override;
     void run( void ) override;
     void setSubsampling(int speed) override;
 
-    void stop( void ) override;
-    void pause( void ) override;
-    void resume( void) override;
-
-    QString getDaqLevel() override;
-    long getRecordLength() const override;
-
-    bool configure( void ) override;
-
-    void enableAuxTriggerAsTriggerEnable( bool ) override;
     IDAQ* getSignalSource() override;
 
-    bool getData();
     bool isRunning;
-    int generateSyntheticData( unsigned char *pSyntheticData );
     QElapsedTimer frameTimer;
     QElapsedTimer fileTimer;
-
-signals:
-    void fpsCount( int );
-    void linesPerFrameCount( int );
-    void missedImagesCount( int );
+    bool shutdownDaq() override;
 
 public slots:
     void setLaserDivider();
     void setDisplay( float, int );
 
 private:
-    void sendToAdvacedView(const OCTFile::OctData_t& od, int frameNumber);
+    bool getData(new_image_callback_data_t data);
     void logDecimation();
-    void logAxErrorVerbose(int line, AxErr e);
     void logRegisterValue(int line, int reg);
+
+    void logAxErrorVerbose(int line, AxErr e);
+    static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
 
 private:
     AOChandle session = NULL;
@@ -61,7 +47,6 @@ private:
     uint32_t lastImageIdx;
     int missedImgs;
     bool startDaq();
-    bool shutdownDaq();
     int lapCounter;
     uint16_t lastPolarLineIndexEntered;
     int m_decimation{0};

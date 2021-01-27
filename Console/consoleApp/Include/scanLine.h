@@ -23,34 +23,31 @@
 class scanframe
 {
 public:
-    scanframe()
-    {
-        dispData = nullptr;
-    }
+    scanframe() = default;
     ~scanframe()
     {
-        if( dispData )
+        if( m_dispData )
         {
-            delete dispData;
-            dispData = nullptr;
+            delete m_dispData;
+            m_dispData = nullptr;
         }
 
-        if( videoData )
+        if( m_videoData )
         {
-            delete videoData;
-            videoData = nullptr;
+            delete m_videoData;
+            m_videoData = nullptr;
         }
 
     }
 
-    unsigned short angle;
-    bool           isPlayback;
-    unsigned int   depth;
-    unsigned int   width; // in angular elements.
-    unsigned long  timestamp;
-    unsigned long  frameCount;
-    QByteArray     *dispData;
-    QByteArray     *videoData;
+    unsigned short angle{0};
+    bool           isPlayback{false};
+    unsigned int   depth{0};
+    unsigned int   width{0}; // in angular elements.
+    unsigned long  timestamp{0};
+    unsigned long  frameCount{0};
+    QByteArray     *m_dispData{nullptr};
+    QByteArray     *m_videoData{nullptr};
 };
 
 #endif // SCANLINE_H_

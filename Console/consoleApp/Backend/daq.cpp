@@ -72,48 +72,68 @@ void DAQ::logRegisterValue(int line, int registerNumber)
     }
 }
 
+void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
+{
+    static uint32_t sLastImage = 0;
+
+    auto* daq = static_cast<DAQ*>(user_ptr);
+
+    if(daq){
+        uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
+        AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+        if(success != AxErr::NO_AxERROR) {
+            daq->logAxErrorVerbose(__LINE__, success);
+            return;
+        }
+        QThread::msleep(1);
+        if(imaging && sLastImage != last_image){
+//            LOG2(last_image,dropped_packets);
+            sLastImage = last_image;
+            if(daq->getData(data)){
+                OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+                SignalModel::instance()->setBufferLength(gBufferLength);
+                daq->updateSector(axsunData);
+            }
+        }
+    }
+    return;
+}
+
 DAQ::~DAQ()
 {
 }
 
-void DAQ::init()
+void DAQ::initDaq()
 {
-    LOG1("init")
-}
+    AxErr retval;
+    int loopCount = NUM_OF_FRAME_BUFFERS - 1;
+    LOG2(loopCount, m_decimation);
 
-void DAQ::stop()
-{
-    isRunning = false;
-}
+    frameTimer.start();
+    fileTimer.start(); // start a timer to provide frame information for recording.
 
-void DAQ::pause()
-{
+    retval = axRegisterNewImageCallback(session, NewImageArrived, this);
+    if(retval != AxErr::NO_AxERROR){
+        char errorMsg[512];
+        axGetErrorString(retval, errorMsg);
+        LOG2(int(retval), errorMsg)
+    }
 
-}
+    retval = axSetLaserEmission(1, 0);
+    if(retval != AxErr::NO_AxERROR){
+        char errorMsg[512];
+        axGetErrorString(retval, errorMsg);
+        LOG2(int(retval), errorMsg)
+    }
 
-void DAQ::resume()
-{
+    retval = axImagingCntrlEthernet(-1,0);
+    if(retval != AxErr::NO_AxERROR){
+        char errorMsg[512];
+        axGetErrorString(retval, errorMsg);
+        LOG2(int(retval), errorMsg)
+    }
 
-}
-
-QString DAQ::getDaqLevel()
-{
-    return "";
-}
-
-long DAQ::getRecordLength() const
-{
-    return 0;
-}
-
-bool DAQ::configure()
-{
-    LOG1("configure")
-    return true;
-}
-
-void DAQ::enableAuxTriggerAsTriggerEnable(bool)
-{
+    setLaserDivider();
 
 }
 
@@ -130,67 +150,10 @@ void DAQ::run( void )
     if( !isRunning )
     {
         isRunning = true;
-        frameTimer.start();
-        fileTimer.start(); // start a timer to provide frame information for recording.
-
-        AxErr retval;
-        int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-        LOG2(loopCount, m_decimation)
-        LOG1("***** Thread: DAQ::run()")
-
-        retval = axSetLaserEmission(1, 0);
-        if(retval != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retval, errorMsg);
-            LOG2(int(retval), errorMsg)
-        }
-
-        retval = axImagingCntrlEthernet(-1,0);
-        if(retval != AxErr::NO_AxERROR){
-            char errorMsg[512];
-            axGetErrorString(retval, errorMsg);
-            LOG2(int(retval), errorMsg)
-        }
-
-//        uint16_t reg2Val{0};
-//        retval = axGetFPGARegister(2,&reg2Val,0);
-//        if(retval == AxErr::NO_AxERROR){
-//            bool bit2 = reg2Val & 0x4;
-//            LOG2(reg2Val, bit2)
-//        }
-//        uint16_t reg19Val{0};
-//        retval = axGetFPGARegister(19,&reg19Val,0);
-//        if(retval == AxErr::NO_AxERROR){
-//            bool bit15 = reg19Val & 0x8000;
-//            LOG2(reg19Val,bit15)
-//        }
-
-//ax set laser emission
-        setLaserDivider();
-        LOG1(isRunning)
-
         while( isRunning )
         {
-
-            // get data and only procede if the image is new.
-            if( getData() )
-            {
-                gFrameNumber = ++loopCount % NUM_OF_FRAME_BUFFERS;
-                auto* sm =  SignalModel::instance();
-                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-//                LOG2(gFrameNumber, axsunData)
-                sm->setBufferLength(gBufferLength);
-
-                emit updateSector(axsunData);
-            }
-            yieldCurrentThread();
-            msleep(60);
+            sleep(1);
         }
-    }
-    if(shutdownDaq()){
-        qDebug() << "Thread: DAQ::run stop";
-    } else {
-        qDebug() << "Thread: DAQ::run failed to shut down";
     }
 }
 
@@ -205,57 +168,53 @@ void DAQ::setSubsampling(int speed)
     }
 }
 
-/*
- * getData
- */
-bool DAQ::getData( )
+bool DAQ::getData( new_image_callback_data_t data)
 {
     bool isNewData{false};
-    static int sprevReturnedImageNumber = -1;
-
-    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;  // for axGetStatus()
-    request_prefs_t prefs{ };
-    image_info_t info{ };
     static int32_t counter = 0;
 
-    // get Main Image Buffer status
-    AxErr success = axGetStatus(session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
-    ++counter;
-    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+    const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
 
+    gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
 
-    if(imaging){
-        success = axGetImageInfo(session, 0, &info);
+    if(bytes_allocated >= data.required_buffer_size){
+        request_prefs_t prefs{ };
+        prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
+        prefs.which_window = 1;
+        prefs.average_number = 1;
+//        prefs.downsample = int(m_subsamplingFactor == 2); do not enable
+
+        /**
+         * The total number of A-scans to be retrieved. Set to 0 to retrieve the full image.
+         * If the value exceeds the remaining A-scans available following crop_width_offset,
+         * the remaining available A-scans in the image will be retrieved/displayed.
+*/
+        prefs.crop_width_total = 0;
+        image_info_t info{ };
+
+        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+
+        AxErr success = axRequestImage(data.session, data.image_number, prefs,
+                                       bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
+//            LOG2(counter, int(success));
 //            logAxErrorVerbose(__LINE__, success);
+            ;
         } else {
-            const uint32_t output_buf_len{MAX_ACQ_IMAGE_SIZE};
-            prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
-            prefs.which_window = 0;
-            success = axRequestImage(session, info.image_number, prefs, output_buf_len, axsunData->acqData, &info);
-            int currentImageNumber = info.image_number;
-//                LOG2(counter, info.image_number)
-            if(currentImageNumber != sprevReturnedImageNumber){
-                sprevReturnedImageNumber = currentImageNumber;
-
-                isNewData = true;
-                gBufferLength = info.width;
-
-                // write in frame information for recording/playback
-                axsunData->frameCount = gDaqCounter;
-                axsunData->timeStamp = fileTimer.elapsed();;
-                axsunData->milliseconds = 30;
-
-                gDaqCounter++;
-            }
+//            LOG4(counter, info.image_number, info.width, info.force_trig);
+            isNewData = true;
         }
+
+        gBufferLength = info.width;
+
+        // write in frame information for recording/playback
+        axsunData->frameCount = data.image_number;
+        axsunData->timeStamp = fileTimer.elapsed();;
     }
-
-
-    yieldCurrentThread();
 
     return isNewData;
 }
+
 
 /*
  * startDaq
@@ -284,12 +243,6 @@ bool DAQ::startDaq()
             axGetErrorString(success, errorMsg);
             LOG2(int(success), errorMsg)
         }
-//        success = axUSBInterfaceOpen(1);
-//        if(success != AxErr::NO_AxERROR){
-//            char errorMsg[512];
-//            axGetErrorString(success, errorMsg);
-//            LOG2(int(success), errorMsg)
-//        }
 
         while(m_numberOfConnectedDevices != 2){
             m_numberOfConnectedDevices = axCountConnectedDevices();
@@ -331,13 +284,6 @@ bool DAQ::startDaq()
         logRegisterValue(__LINE__, 5);
         logRegisterValue(__LINE__, 6);
 
-
-//        success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
-//        if(success != AxErr::NO_AxERROR){
-//            logAxErrorVerbose(__LINE__, success);
-//        }
-//        msleep(100);
-
         success = axGetMessage(session, axMessage );
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
@@ -348,25 +294,20 @@ bool DAQ::startDaq()
     } catch(...){
         LOG1(__FUNCTION__)
     }
-    LOG0
 
     return success == AxErr::NO_AxERROR;
 }
 
-/*
- * stopDaq
- *
- * Stop the Axsun DAQ based on PCIe or Ethernet mode.
- */
 bool DAQ::shutdownDaq()
 {
-    qDebug() << "***** DAQ::shutdownDaq()";
     AxErr success = AxErr::NO_AxERROR;
 
     success = axStopSession(session);    // Stop Axsun engine session
     if(success != AxErr::NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
     }
+    LOG1(int(success));
+
     return success == AxErr::NO_AxERROR;
 }
 
@@ -393,19 +334,4 @@ void DAQ::setLaserDivider()
 void DAQ::setDisplay(float angle, int direction)
 {
     LOG2(angle, direction);
-}
-
-void DAQ::sendToAdvacedView(const OCTFile::OctData_t &od, int frameNumber)
-{
-    uint8_t const * const src{od.acqData};
-    uint8_t * const dst{od.advancedViewFftData};
-    SignalModel::instance()->setAdvacedViewSourceFrameNumber(frameNumber);
-
-    if(src && dst){
-        const size_t bufferLength{FFTDataSize};
-        memcpy(dst,src,bufferLength);
-        emit notifyAcqData();
-    } else {
-        qDebug() << " src =" << src << ", dst=" << dst;
-    }
 }

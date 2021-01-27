@@ -322,7 +322,7 @@ void sectorItem::setSectorImage(QImage *value)
 void sectorItem::addFrame( QSharedPointer<scanframe> &data )
 {
     // Copy the image into the display buffer
-    memcpy( sectorImage->bits(), data->dispData->data(), SectorWidth_px * SectorHeight_px );
+    memcpy( sectorImage->bits(), data->m_dispData->data(), SectorWidth_px * SectorHeight_px );
     sectorShouldPaint = true;
 }
 

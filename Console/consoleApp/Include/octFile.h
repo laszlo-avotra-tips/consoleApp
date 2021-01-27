@@ -24,11 +24,6 @@ class OCTFile : public QObject
     Q_OBJECT
 
 public:
-    // define which system is using this file
-    enum FileAccessMode {
-        Console,    // write-only access
-        Player      // read-only access
-    };
     // Changes in this structure must have changes made in writeFileHeader()
     // and writeNumFramesWritten() as well
     struct OctFileHeader_t
@@ -43,13 +38,8 @@ public:
     {
         unsigned long  frameCount{0};
         unsigned long  timeStamp{0};
-        unsigned short milliseconds{0};
-        unsigned short encoderPosition{0};  // XXX: hijack for fast OCT direction bit
         uint8_t *acqData{nullptr};
-        uint8_t *advancedViewIfftData{nullptr};         // used for Advanced View only
-        uint8_t *advancedViewFftData{nullptr};         // used for Advanced View, data storage
         uint8_t *dispData{nullptr};        // used for display
-        uint8_t *videoData{nullptr};       // High Speed only: video frame with appropriate rotation built in
     };
 
     OCTFile( unsigned short numLinesPerRev ); // constructor for the Console

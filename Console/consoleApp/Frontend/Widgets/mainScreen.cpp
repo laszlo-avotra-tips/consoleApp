@@ -232,6 +232,10 @@ void MainScreen::on_pushButtonEndCase_clicked()
         ui->pushButtonRecord->click();
     }
 
+    auto idaq = daqfactory::instance()->getdaq();
+    bool isDisonnected = disconnect( idaq->getSignalSource(), &IDAQ::updateSector, this, &MainScreen::updateSector);
+    LOG1(isDisonnected);
+
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
         m_graphicsView->hide();
@@ -718,30 +722,50 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
-    static int count = -1;
+    static int missedImagesTotal {0};
+    static int dispCount{0};
+    static int frame0{0};
+
+    float percent{0.0f};
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
     }
     if(frameData && m_scene && m_scanWorker){
+        //0,1
+        m_imageFrame[1] = m_imageFrame[0];
+        m_imageFrame[0] = frameData->frameCount;
+
+        m_numberOfMissedImages[1] = m_numberOfMissedImages[0];
+        m_numberOfMissedImages[0] = m_imageFrame[0] - m_imageFrame[1] - 1;
+
+        if(!startCount){
+            startCount = !m_numberOfMissedImages[0] && !m_numberOfMissedImages[1];
+            missedImagesTotal = 0;
+            frame0 = frameData->frameCount;;
+            m_decimation = userSettings::Instance().getImageIndexDecimation();
+        }
+
+        if(startCount && m_decimation && (frameData->frameCount > 32)){
+            missedImagesTotal += m_numberOfMissedImages[0];
+//            LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
+            if(++dispCount % m_decimation == 0) {
+                percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
+                LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);
+            }
+        }
 
         const auto* sm =  SignalModel::instance();
 
         QImage* image = m_scene->sectorImage();
 
-//        LOG2(image->bitPlaneCount(), image->format());
-//        LOG2(image->width(),image->height());
-//        LOG2(image->sizeInBytes(), image->bytesPerLine());
-
         frameData->dispData = image->bits();
         auto bufferLength = sm->getBufferLength();
 
-//        LOG2(image->width(),image->height())
         m_scanWorker->warpData( frameData, bufferLength);
 
-        OCTFile::OctData_t clipData(*frameData);
-        clipData.dispData = m_clipBuffer;
-//        m_scanWorker->warpData( &clipData, bufferLength);
-        memcpy(m_clipBuffer,frameData->dispData,1024*1024);
+//        OCTFile::OctData_t clipData(*frameData);
+//        clipData.dispData = m_clipBuffer;
+//        memcpy(m_clipBuffer,frameData->dispData,1024*1024);
 
         if(m_scanWorker->isReady){
 
@@ -773,7 +797,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 const QString catheterName{names[0]};
                 const QString cathalogName{names[1]};
 
-                emit updateRecorder(clipData.dispData,
+                emit updateRecorder(frameData->dispData, //clipData.dispData
                                     catheterName.toLatin1(),cathalogName.toLatin1(),
                                     activePassiveValue.toLatin1(),
                                     timeLabel.toLatin1(),

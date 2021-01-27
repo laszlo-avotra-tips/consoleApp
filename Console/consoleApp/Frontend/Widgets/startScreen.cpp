@@ -9,6 +9,8 @@
 #include "idaq.h"
 #include "fullCaseRecorder.h"
 #include "displayManager.h"
+#include "daqfactory.h"
+#include "sledsupport.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -62,7 +64,7 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
      ui->pushButtonDemoMode->hide();
 
      DisplayManager::instance();
-//     DisplayManager::instance()->showOnTheSecondMonitor("logo");
+     DisplayManager::instance()->showOnTheSecondMonitor("logo");
 }
 
 StartScreen::~StartScreen()
@@ -91,8 +93,15 @@ void StartScreen::on_pushButtonShutdown_clicked()
 {
 //    FullCaseRecorder::instance()->closeRecorder();
     WidgetContainer::instance()->close();
-    LOG0
+
     DisplayManager::instance()->killDisplayMonitor();
+
+    auto& sled = SledSupport::Instance();
+    sled.writeSerial("sr0\r");
+
+    auto idaq = daqfactory::instance()->getdaq();
+    idaq->shutdownDaq();
+    QThread::sleep(1);
 }
 
 void StartScreen::showEvent(QShowEvent *se)
