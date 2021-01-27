@@ -722,7 +722,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
-    static int count {0};
+    static int missedImagesTotal {0};
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
     }
@@ -737,12 +737,13 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         if(!startCount){
             startCount = !m_numberOfMissedImages[0] && !m_numberOfMissedImages[1];
+            missedImagesTotal = 0;
         }
 
         if(startCount) {
             int numberOfMissedImages =  m_numberOfMissedImages[0];
-            count += numberOfMissedImages;
-            LOG3(frameData->frameCount, frameData->timeStamp, count);
+            missedImagesTotal += numberOfMissedImages;
+            LOG3(frameData->frameCount, frameData->timeStamp, missedImagesTotal);
         }
 
         const auto* sm =  SignalModel::instance();
