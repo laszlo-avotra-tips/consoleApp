@@ -70,7 +70,7 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
 {
     LOG1(name);
 
-//    if(isNonPrimaryMonitorPresent())
+    if(isNonPrimaryMonitorPresent())
     {
         auto it = m_widgetContainer.find(name);
         if(it != m_widgetContainer.end()){
@@ -97,7 +97,7 @@ void DisplayManager::initSecondMonitor(QString name)
                 m_widgetOnTheSecondMonitor = it->second;
                 m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
                 m_widgetOnTheSecondMonitor->move(3240,0);
-                m_widgetOnTheSecondMonitor->showFullScreen();
+//                m_widgetOnTheSecondMonitor->showFullScreen();
                 LOG1(name)
             }
         }
