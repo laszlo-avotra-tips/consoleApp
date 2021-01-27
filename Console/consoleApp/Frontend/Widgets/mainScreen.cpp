@@ -728,19 +728,19 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     }
     if(frameData && m_scene && m_scanWorker){
         //0,1
-        m_imageFrame[0] = frameData->frameCount;
         m_imageFrame[1] = m_imageFrame[0];
-        m_imageFrame[2] = m_imageFrame[1];
+        m_imageFrame[0] = frameData->frameCount;
 
-        m_numberOfMissedImages[0] = m_imageFrame[0] - m_imageFrame[1];
-        m_numberOfMissedImages[1] = m_imageFrame[1] - m_imageFrame[2];
+        m_numberOfMissedImages[1] = m_numberOfMissedImages[0];
+        m_numberOfMissedImages[0] = m_imageFrame[0] - m_imageFrame[1] - 1;
         LOG3(m_imageFrame[0],m_numberOfMissedImages[0],m_numberOfMissedImages[1])
+
         if(!startCount){
-            startCount = m_numberOfMissedImages[0] == 1 && m_numberOfMissedImages[1] == 1;
+            startCount = !m_numberOfMissedImages[0] && !m_numberOfMissedImages[1];
         }
 
         if(startCount) {
-            int numberOfMissedImages =  m_numberOfMissedImages[0] - 1;
+            int numberOfMissedImages =  m_numberOfMissedImages[0];
             count += numberOfMissedImages;
             LOG3(frameData->frameCount, frameData->timeStamp, count);
         }
