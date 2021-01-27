@@ -747,11 +747,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         if(startCount){
             LOG2(m_imageFrame[0],m_numberOfMissedImages[0])
+            missedImagesTotal += m_numberOfMissedImages[0];
         }
 
+
         if(m_decimation && startCount && (frameData->frameCount > 32) && (++dispCount % m_decimation == 0)) {
-            int numberOfMissedImages =  m_numberOfMissedImages[0];
-            missedImagesTotal += numberOfMissedImages;
             percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
             LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);
         }
