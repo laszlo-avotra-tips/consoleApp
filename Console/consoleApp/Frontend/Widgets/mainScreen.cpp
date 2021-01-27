@@ -723,7 +723,8 @@ void MainScreen::setSceneCursor( QCursor cursor )
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
     static int missedImagesTotal {0};
-    static int dispCount;
+    static int dispCount{0};
+    static int frame0{0};
 
     float percent{0.0f};
     if(!m_scanWorker){
@@ -736,18 +737,22 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
         m_numberOfMissedImages[1] = m_numberOfMissedImages[0];
         m_numberOfMissedImages[0] = m_imageFrame[0] - m_imageFrame[1] - 1;
-//        LOG3(m_imageFrame[0],m_numberOfMissedImages[0],m_numberOfMissedImages[1])
 
         if(!startCount){
             startCount = !m_numberOfMissedImages[0] && !m_numberOfMissedImages[1];
             missedImagesTotal = 0;
+            frame0 = frameData->frameCount;;
             m_decimation = userSettings::Instance().getImageIndexDecimation();
+        }
+
+        if(startCount){
+            LOG2(m_imageFrame[0],m_numberOfMissedImages[0])
         }
 
         if(m_decimation && startCount && (frameData->frameCount > 32) && (++dispCount % m_decimation == 0)) {
             int numberOfMissedImages =  m_numberOfMissedImages[0];
             missedImagesTotal += numberOfMissedImages;
-            percent = 100.0f * missedImagesTotal / float(frameData->frameCount);
+            percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
             LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);
         }
 
