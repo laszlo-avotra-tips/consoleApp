@@ -745,7 +745,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
             m_decimation = userSettings::Instance().getImageIndexDecimation();
         }
 
-        if(startCount){
+        if(startCount & (frameData->frameCount > 32)){
             missedImagesTotal += m_numberOfMissedImages[0];
             LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal)
         }
