@@ -35,7 +35,6 @@ DAQ::DAQ()
     isRunning    = false;
     lastImageIdx = 0;
     missedImgs   = 0;
-    lapCounter   = 0;   // Ocelot lap counter
     gFrameNumber = NUM_OF_FRAME_BUFFERS - 1;
 
     if( !startDaq() )
@@ -80,13 +79,13 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
-    static int count = 0;
+    static int daqCount = 0;
 
     auto* daq = static_cast<DAQ*>(user_ptr);
 
     if(daq){
         uint32_t imaging, last_packet, last_frame, last_image, frames_since_sync;//, dropped_packets;
-        ++count;
+        ++daqCount;
 
         AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &(daq->m_droppedPackets), &frames_since_sync);
         if(success != AxErr::NO_AxERROR) {
@@ -97,9 +96,9 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
         if(imaging && (sLastImage != last_image)){
             if(daq->m_daqDecimation && (daq->m_daqLevel >= 3)){
-                LOG2(count, daq->m_droppedPackets)
+                LOG2(daqCount, daq->m_droppedPackets)
             }
-            if(daq->m_daqDecimation && (count % daq->m_daqDecimation)){
+            if(daq->m_daqDecimation && (daqCount % daq->m_daqDecimation)){
                 LOG2(last_image,daq->m_droppedPackets);
             }
             sLastImage = last_image;
@@ -210,7 +209,6 @@ bool DAQ::getData( new_image_callback_data_t data)
 
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
-        ++counter;
         if(success != AxErr::NO_AxERROR) {
             if(m_daqDecimation && (m_daqLevel >= 2)){
                 logAxErrorVerbose(__LINE__, success, counter);

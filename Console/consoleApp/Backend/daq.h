@@ -47,7 +47,6 @@ private:
     uint32_t lastImageIdx;
     int missedImgs;
     bool startDaq();
-    int lapCounter;
     uint16_t lastPolarLineIndexEntered;
     int m_daqDecimation{0};
     int m_daqLevel{0};
