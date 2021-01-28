@@ -95,11 +95,11 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         }
         QThread::msleep(1);
 
-        if(imaging && sLastImage != last_image){
-            if(daq->m_daqDecimation && daq->m_daqLevel >= 3){
+        if(imaging && (sLastImage != last_image)){
+            if(daq->m_daqDecimation && (daq->m_daqLevel >= 3)){
                 LOG2(count, daq->m_droppedPackets)
             }
-            if(daq->m_daqDecimation && count % daq->m_daqDecimation){
+            if(daq->m_daqDecimation && (count % daq->m_daqDecimation)){
                 LOG2(last_image,daq->m_droppedPackets);
             }
             sLastImage = last_image;
@@ -212,11 +212,11 @@ bool DAQ::getData( new_image_callback_data_t data)
                                        bytes_allocated, axsunData->acqData, &info);
         ++counter;
         if(success != AxErr::NO_AxERROR) {
-            if(m_daqDecimation && m_daqLevel >= 2){
+            if(m_daqDecimation && (m_daqLevel >= 2)){
                 logAxErrorVerbose(__LINE__, success, counter);
             }
         } else {
-            if(m_daqDecimation && counter % m_daqDecimation){
+            if(m_daqDecimation && (counter % m_daqDecimation)){
                 LOG4(counter, info.image_number, m_droppedPackets, info.force_trig);
             }
             isNewData = true;
