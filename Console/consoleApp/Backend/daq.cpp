@@ -79,13 +79,11 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
-    static int daqCount = 0;
 
     auto* daq = static_cast<DAQ*>(user_ptr);
 
     if(daq){
         uint32_t imaging, last_packet, last_frame, last_image, frames_since_sync;//, dropped_packets;
-        ++daqCount;
 
         AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &(daq->m_droppedPackets), &frames_since_sync);
         if(success != AxErr::NO_AxERROR) {
@@ -96,9 +94,9 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
         if(imaging && (sLastImage != last_image)){
             if(daq->m_daqDecimation && (daq->m_daqLevel >= 3)){
-                LOG2(daqCount, daq->m_droppedPackets)
+                LOG2(daq->m_daqCount, daq->m_droppedPackets)
             }
-            if(daq->m_daqDecimation && (daqCount % daq->m_daqDecimation)){
+            if(daq->m_daqDecimation && (daq->m_daqCount % daq->m_daqDecimation)){
                 LOG2(last_image,daq->m_droppedPackets);
             }
             sLastImage = last_image;
@@ -184,11 +182,10 @@ void DAQ::setSubsampling(int speed)
 bool DAQ::getData( new_image_callback_data_t data)
 {
     bool isNewData{false};
-    static int32_t counter = 0;
 
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
 
-    gFrameNumber = ++counter % NUM_OF_FRAME_BUFFERS;
+    gFrameNumber = ++m_daqCount % NUM_OF_FRAME_BUFFERS;
 
     if(bytes_allocated >= data.required_buffer_size){
         request_prefs_t prefs{ };
@@ -211,11 +208,11 @@ bool DAQ::getData( new_image_callback_data_t data)
                                        bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
             if(m_daqDecimation && (m_daqLevel >= 2)){
-                logAxErrorVerbose(__LINE__, success, counter);
+                logAxErrorVerbose(__LINE__, success, m_daqCount);
             }
         } else {
-            if(m_daqDecimation && (counter % m_daqDecimation)){
-                LOG4(counter, info.image_number, m_droppedPackets, info.force_trig);
+            if(m_daqDecimation && (m_daqCount % m_daqDecimation)){
+                LOG4(m_daqCount, info.image_number, m_droppedPackets, info.force_trig);
             }
             isNewData = true;
         }

@@ -50,7 +50,7 @@ private:
     uint16_t lastPolarLineIndexEntered;
     int m_daqDecimation{0};
     int m_daqLevel{0};
-    int m_count{0};
+    int m_daqCount{0};
     const int m_subsamplingThreshold{1000};
     int m_subsamplingFactor{2};
     int m_numberOfConnectedDevices {0};
