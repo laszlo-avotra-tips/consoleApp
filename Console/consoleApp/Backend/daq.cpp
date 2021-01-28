@@ -218,7 +218,7 @@ bool DAQ::getData( new_image_callback_data_t data)
                 logAxErrorVerbose(__LINE__, success, m_daqCount);
             }
         } else {
-            if(m_daqDecimation && (m_daqCount % m_daqDecimation)){
+            if(m_daqDecimation && (m_daqCount % m_daqDecimation == 0)){
                 LOG4(m_daqCount, info.image_number, m_droppedPackets, m_badCountAcc);
             }
             isNewData = true;
