@@ -108,7 +108,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 lastGoodImage = last_image;
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
-                daq->updateSector(axsunData);
+//                daq->updateSector(axsunData);
             }
         }
     }
@@ -210,7 +210,7 @@ bool DAQ::getData( new_image_callback_data_t data)
         }
         else
         {
-            m_percentageOfMissedImages = 100.0f * m_missedImagesCountAccumulated / info.image_numberß;
+            m_percentageOfMissedImages = 100.0f * m_missedImagesCountAccumulated / info.image_number;
             if(m_daqDecimation && (m_daqCount % m_daqDecimation == 0))
             {
                 LOG4(m_daqCount, info.image_number, m_missedImagesCountAccumulated, m_percentageOfMissedImages);
