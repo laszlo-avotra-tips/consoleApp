@@ -130,11 +130,12 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             }
             if(isNewData)
             {
+                daq->updateSector(axsunData);
                 gFrameNumber = ++daq->m_daqCount % NUM_OF_FRAME_BUFFERS;
                 badCount = daq->m_daqCount - lastGoodDaq - 1;
-                daq->m_badCountAcc += badCount;
                 lastGoodDaq = daq->m_daqCount;
-                daq->updateSector(axsunData);
+                daq->m_badCountAcc += badCount;
+                LOG4(gFrameNumber, daq->m_daqCount, badCount, daq->m_badCountAcc);
             }
         }
     }
