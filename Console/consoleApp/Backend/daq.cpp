@@ -80,6 +80,8 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
+    static uint32_t lastGoodDaq = 0;
+    static uint32_t badCount = 0;
 
     auto* daq = static_cast<DAQ*>(user_ptr);
 
@@ -99,6 +101,9 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             }
             sLastImage = last_image;
             if(daq->getData(data)){
+                badCount = daq->m_daqCount - lastGoodDaq - 1;
+                lastGoodDaq = daq->m_daqCount;
+                LOG3(daq->m_daqCount, lastGoodDaq, badCount);
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
                 if(daq->m_imageDecimation){
