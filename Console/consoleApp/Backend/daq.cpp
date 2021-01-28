@@ -93,11 +93,8 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         QThread::msleep(1);
 
         if(imaging && (sLastImage != last_image)){
-            if(daq->m_daqDecimation && (daq->m_daqLevel >= 3)){
-                LOG2(daq->m_daqCount, daq->m_droppedPackets)
-            }
-            if(daq->m_daqDecimation && (daq->m_daqCount % daq->m_daqDecimation)){
-                LOG2(last_image,daq->m_droppedPackets);
+            if(daq->m_daqDecimation && (daq->m_daqLevel >= 2)){
+                LOG3(daq->m_daqCount, last_image,daq->m_droppedPackets);
             }
             sLastImage = last_image;
             if(daq->getData(data)){
