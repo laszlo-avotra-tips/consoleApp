@@ -104,7 +104,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             if(daq->getData(data))
             {
                 missedImageCount = last_image - lastGoodImage - 1;
-                daq->m_badCountAcc += missedImageCount;
+                daq->m_missedImagesCountAccumulated += missedImageCount;
                 lastGoodImage = last_image;
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
@@ -212,7 +212,7 @@ bool DAQ::getData( new_image_callback_data_t data)
         {
             if(m_daqDecimation && (m_daqCount % m_daqDecimation == 0))
             {
-                LOG4(m_daqCount, info.image_number, m_droppedPackets, m_badCountAcc);
+                LOG4(m_daqCount, info.image_number, m_droppedPackets, m_missedImagesCountAccumulated);
             }
             isNewData = true;
         }
