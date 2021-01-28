@@ -83,6 +83,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     static uint32_t lastGoodDaq = 0;
     static uint32_t badCount = 0;
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
+    bool isNewData{false};
 
     OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(0);
     auto* daq = static_cast<DAQ*>(user_ptr);
@@ -95,7 +96,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             daq->logAxErrorVerbose(__LINE__, success);
             return;
         }
-        bool isNewData{false};
+
         if(imaging && (sLastImage != last_image)){
             if(daq->m_daqDecimation && (daq->m_daqLevel >= 2)){
                 LOG4(daq->m_daqCount, badCount,last_image, daq->m_droppedPackets);
@@ -118,6 +119,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 if(success != AxErr::NO_AxERROR)
                 {
                     daq->logAxErrorVerbose(__LINE__, success, daq->m_daqCount);
+                    isNewData = false;
                 } else
                 {
                     LOG4(daq->m_daqCount, info.image_number, daq->m_droppedPackets, daq->m_badCountAcc);
@@ -129,7 +131,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 badCount = daq->m_daqCount - lastGoodDaq - 1;
                 daq->m_badCountAcc += badCount;
                 lastGoodDaq = daq->m_daqCount;
-                daq->
+                daq->updateSector(axsunData);
             }
         }
     }
