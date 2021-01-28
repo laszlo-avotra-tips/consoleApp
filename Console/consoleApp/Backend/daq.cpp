@@ -213,7 +213,7 @@ bool DAQ::getData( new_image_callback_data_t data)
         ++counter;
         if(success != AxErr::NO_AxERROR) {
             if(m_daqDecimation && m_daqLevel >= 2){
-                logAxErrorVerbose(__LINE__, success);
+                logAxErrorVerbose(__LINE__, success, counter);
             }
         } else {
             if(m_daqDecimation && counter % m_daqDecimation){
