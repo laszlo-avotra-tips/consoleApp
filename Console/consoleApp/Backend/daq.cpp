@@ -80,33 +80,32 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t sLastImage = 0;
-    static uint32_t lastGoodDaq = 0;
-    static uint32_t badCount = 0;
-    static uint32_t badCountAcc = 0;
+    static uint32_t lastGoodImage = 0;
+    static uint32_t missedImageCount = 0;
 
     auto* daq = static_cast<DAQ*>(user_ptr);
 
-    if(daq){
+    if(daq)
+    {
         uint32_t imaging, last_packet, last_frame, last_image, frames_since_sync;//, dropped_packets;
 
         AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &(daq->m_droppedPackets), &frames_since_sync);
-        if(success != AxErr::NO_AxERROR) {
+        if(success != AxErr::NO_AxERROR)
+        {
             daq->logAxErrorVerbose(__LINE__, success);
             return;
         }
-        QThread::msleep(1);
 
-        if(imaging && (sLastImage != last_image)){
-//            if(daq->m_daqDecimation && (daq->m_daqLevel >= 2))
-            {
-                LOG4(daq->m_daqCount, badCount,last_image, daq->m_droppedPackets);
-            }
+        if(imaging && (sLastImage != last_image))
+        {
+            LOG4(last_image, missedImageCount,last_image, daq->m_droppedPackets);
             sLastImage = last_image;
-            if(daq->getData(data)){
-                badCount = daq->m_daqCount - lastGoodDaq - 1;
-                daq->m_badCountAcc += badCount;
-//                LOG3(daq->m_daqCount, lastGoodDaq, badCount);
-                lastGoodDaq = daq->m_daqCount;
+
+            if(daq->getData(data))
+            {
+                missedImageCount = last_image - lastGoodImage - 1;
+                daq->m_badCountAcc += missedImageCount;
+                lastGoodImage = last_image;
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
                 daq->updateSector(axsunData);
@@ -198,13 +197,6 @@ bool DAQ::getData( new_image_callback_data_t data)
         prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
         prefs.which_window = 1;
         prefs.average_number = 1;
-//        prefs.downsample = int(m_subsamplingFactor == 2); do not enable
-
-        /**
-         * The total number of A-scans to be retrieved. Set to 0 to retrieve the full image.
-         * If the value exceeds the remaining A-scans available following crop_width_offset,
-         * the remaining available A-scans in the image will be retrieved/displayed.
-*/
         prefs.crop_width_total = 0;
         image_info_t info{ };
 
@@ -212,11 +204,9 @@ bool DAQ::getData( new_image_callback_data_t data)
 
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
-        if(success != AxErr::NO_AxERROR) {
-//            if(m_daqDecimation && (m_daqLevel >= 2))
-            {
-                logAxErrorVerbose(__LINE__, success, m_daqCount);
-            }
+        if(success != AxErr::NO_AxERROR)
+        {
+            logAxErrorVerbose(__LINE__, success, m_daqCount);
         }
         else
         {
