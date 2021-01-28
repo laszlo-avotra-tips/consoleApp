@@ -743,11 +743,14 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
             missedImagesTotal = 0;
             frame0 = frameData->frameCount;;
             m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
+            m_imageLogLevel = userSettings::Instance().getImageLogLevel();
         }
 
         if(startCount && m_imageDecimation && (frameData->frameCount > 32)){
             missedImagesTotal += m_numberOfMissedImages[0];
-//            LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
+            if(m_imageLogLevel >= 2) {
+                LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
+            }
             if(++dispCount % m_imageDecimation == 0) {
                 percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
                 LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);

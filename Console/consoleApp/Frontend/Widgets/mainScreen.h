@@ -133,6 +133,7 @@ private:
     int m_imageFrame[2]{};
     bool startCount{false};
     int m_imageDecimation{0};
+    int m_imageLogLevel{0};
 
 };
 #endif // MAINSCREEN_H
