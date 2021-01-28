@@ -103,7 +103,6 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             sLastImage = last_image;
 
             if(bytes_allocated >= data.required_buffer_size){
-                gFrameNumber = ++daq->m_daqCount % NUM_OF_FRAME_BUFFERS;
                 request_prefs_t prefs{ };
                 prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
                 prefs.which_window = 1;
@@ -127,6 +126,8 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             }
             if(isNewData)
             {
+                OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+                gFrameNumber = ++daq->m_daqCount % NUM_OF_FRAME_BUFFERS;
                 badCount = daq->m_daqCount - lastGoodDaq - 1;
                 daq->m_badCountAcc += badCount;
                 lastGoodDaq = daq->m_daqCount;
