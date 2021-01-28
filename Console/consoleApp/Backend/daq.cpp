@@ -104,7 +104,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             if(daq->getData(data)){
                 badCount = daq->m_daqCount - lastGoodDaq - 1;
                 daq->m_badCountAcc += badCount;
-                LOG3(daq->m_daqCount, lastGoodDaq, badCount);
+//                LOG3(daq->m_daqCount, lastGoodDaq, badCount);
                 lastGoodDaq = daq->m_daqCount;
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
