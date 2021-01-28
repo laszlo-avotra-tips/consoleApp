@@ -746,7 +746,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
             m_imageLogLevel = userSettings::Instance().getImageLogLevel();
         }
 
-        if(startCount && m_imageDecimation && (frameData->frameCount > 32)){
+        if(startCount && (m_imageDecimation > 1) && (frameData->frameCount > 32)){
             missedImagesTotal += m_numberOfMissedImages[0];
             if(m_imageLogLevel >= 2) {
                 LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
