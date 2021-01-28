@@ -89,7 +89,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         }
         QThread::msleep(1);
         if(imaging && sLastImage != last_image){
-            if(daq->m_daqLevel >= 2){
+            if(daq->m_daqLevel >= 3){
                 LOG2(count, dropped_packets)
             }
             if(daq->m_daqDecimation && ++count % daq->m_daqDecimation){
