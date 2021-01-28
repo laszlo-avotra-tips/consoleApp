@@ -82,17 +82,20 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
     if(daq){
         uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
+        ++count;
+
         AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
         if(success != AxErr::NO_AxERROR) {
             daq->logAxErrorVerbose(__LINE__, success);
             return;
         }
         QThread::msleep(1);
+
         if(imaging && sLastImage != last_image){
             if(daq->m_daqLevel >= 3){
                 LOG2(count, dropped_packets)
             }
-            if(daq->m_daqDecimation && ++count % daq->m_daqDecimation){
+            if(daq->m_daqDecimation && count % daq->m_daqDecimation){
                 LOG2(last_image,dropped_packets);
             }
             sLastImage = last_image;
