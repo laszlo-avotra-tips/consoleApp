@@ -56,6 +56,7 @@ private:
     int m_subsamplingFactor{2};
     int m_numberOfConnectedDevices {0};
     uint32_t m_droppedPackets{0};
+    uint32_t m_badCountAcc{0};
 
 };
 

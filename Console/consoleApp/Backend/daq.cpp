@@ -82,6 +82,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     static uint32_t sLastImage = 0;
     static uint32_t lastGoodDaq = 0;
     static uint32_t badCount = 0;
+    static uint32_t badCountAcc = 0;
 
     auto* daq = static_cast<DAQ*>(user_ptr);
 
@@ -97,11 +98,12 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
         if(imaging && (sLastImage != last_image)){
             if(daq->m_daqDecimation && (daq->m_daqLevel >= 2)){
-                LOG3(daq->m_daqCount, last_image,daq->m_droppedPackets);
+                LOG4(daq->m_daqCount, badCount,last_image, daq->m_droppedPackets);
             }
             sLastImage = last_image;
             if(daq->getData(data)){
                 badCount = daq->m_daqCount - lastGoodDaq - 1;
+                daq->m_badCountAcc += badCount;
                 LOG3(daq->m_daqCount, lastGoodDaq, badCount);
                 lastGoodDaq = daq->m_daqCount;
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
@@ -217,7 +219,7 @@ bool DAQ::getData( new_image_callback_data_t data)
             }
         } else {
             if(m_daqDecimation && (m_daqCount % m_daqDecimation)){
-                LOG4(m_daqCount, info.image_number, m_droppedPackets, info.force_trig);
+                LOG4(m_daqCount, info.image_number, m_droppedPackets, m_badCountAcc);
             }
             isNewData = true;
         }
