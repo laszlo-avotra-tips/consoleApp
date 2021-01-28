@@ -97,7 +97,8 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         QThread::msleep(1);
 
         if(imaging && (sLastImage != last_image)){
-            if(daq->m_daqDecimation && (daq->m_daqLevel >= 2)){
+//            if(daq->m_daqDecimation && (daq->m_daqLevel >= 2))
+            {
                 LOG4(daq->m_daqCount, badCount,last_image, daq->m_droppedPackets);
             }
             sLastImage = last_image;
@@ -108,9 +109,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 lastGoodDaq = daq->m_daqCount;
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
-                if(daq->m_imageDecimation){
-                    daq->updateSector(axsunData);
-                }
+                daq->updateSector(axsunData);
             }
         }
     }
@@ -214,11 +213,15 @@ bool DAQ::getData( new_image_callback_data_t data)
         AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                        bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR) {
-            if(m_daqDecimation && (m_daqLevel >= 2)){
+//            if(m_daqDecimation && (m_daqLevel >= 2))
+            {
                 logAxErrorVerbose(__LINE__, success, m_daqCount);
             }
-        } else {
-            if(m_daqDecimation && (m_daqCount % m_daqDecimation == 0)){
+        }
+        else
+        {
+            if(m_daqDecimation && (m_daqCount % m_daqDecimation == 0))
+            {
                 LOG4(m_daqCount, info.image_number, m_droppedPackets, m_badCountAcc);
             }
             isNewData = true;
