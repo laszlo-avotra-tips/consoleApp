@@ -85,7 +85,6 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
     bool isNewData{false};
 
-    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(0);
     auto* daq = static_cast<DAQ*>(user_ptr);
 
     if(daq){
