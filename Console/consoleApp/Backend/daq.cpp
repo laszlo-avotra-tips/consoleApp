@@ -97,9 +97,9 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         }
 
         if(imaging && (sLastImage != last_image)){
-            if(daq->m_daqDecimation && (daq->m_daqLevel >= 2)){
-                LOG4(daq->m_daqCount, badCount,last_image, daq->m_droppedPackets);
-            }
+
+            OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+
             sLastImage = last_image;
 
             if(bytes_allocated >= data.required_buffer_size){
@@ -110,7 +110,10 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 prefs.crop_width_total = 0;
                 image_info_t info{ };
 
-                OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+                if(daq->m_daqDecimation && (daq->m_daqLevel >= 2))
+                {
+                    LOG4(daq->m_daqCount, badCount,last_image, daq->m_droppedPackets);
+                }
 
                 AxErr success = axRequestImage(data.session, data.image_number, prefs,
                                                bytes_allocated, axsunData->acqData, &info);
@@ -118,7 +121,8 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 {
                     daq->logAxErrorVerbose(__LINE__, success, daq->m_daqCount);
                     isNewData = false;
-                } else
+                }
+                else
                 {
                     LOG4(daq->m_daqCount, info.image_number, daq->m_droppedPackets, daq->m_badCountAcc);
                     isNewData = true;
@@ -126,7 +130,6 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             }
             if(isNewData)
             {
-                OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 gFrameNumber = ++daq->m_daqCount % NUM_OF_FRAME_BUFFERS;
                 badCount = daq->m_daqCount - lastGoodDaq - 1;
                 daq->m_badCountAcc += badCount;
