@@ -54,11 +54,15 @@ void DAQ::logDecimation()
     m_daqLevel = settings.getDaqLogLevel();
 }
 
-void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode)
+void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode, int count)
 {
     char errorVerbose[512];
     axGetErrorString(axErrorCode, errorVerbose);
-    LOG3(line, int(axErrorCode), errorVerbose)
+    if(count){
+        LOG4(line, count, int(axErrorCode), errorVerbose)
+    } else{
+        LOG3(line, int(axErrorCode), errorVerbose)
+    }
 }
 
 void DAQ::logRegisterValue(int line, int registerNumber)
@@ -81,10 +85,10 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     auto* daq = static_cast<DAQ*>(user_ptr);
 
     if(daq){
-        uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
+        uint32_t imaging, last_packet, last_frame, last_image, frames_since_sync;//, dropped_packets;
         ++count;
 
-        AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+        AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &(daq->m_droppedPackets), &frames_since_sync);
         if(success != AxErr::NO_AxERROR) {
             daq->logAxErrorVerbose(__LINE__, success);
             return;
@@ -92,11 +96,11 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
         QThread::msleep(1);
 
         if(imaging && sLastImage != last_image){
-            if(daq->m_daqLevel >= 3){
-                LOG2(count, dropped_packets)
+            if(daq->m_daqDecimation && daq->m_daqLevel >= 3){
+                LOG2(count, daq->m_droppedPackets)
             }
             if(daq->m_daqDecimation && count % daq->m_daqDecimation){
-                LOG2(last_image,dropped_packets);
+                LOG2(last_image,daq->m_droppedPackets);
             }
             sLastImage = last_image;
             if(daq->getData(data)){
@@ -208,15 +212,12 @@ bool DAQ::getData( new_image_callback_data_t data)
                                        bytes_allocated, axsunData->acqData, &info);
         ++counter;
         if(success != AxErr::NO_AxERROR) {
-//            if(m_daqDecimation && counter % m_daqDecimation){
-//                LOG2(counter, int(success));
-            if(m_daqLevel >= 2){
+            if(m_daqDecimation && m_daqLevel >= 2){
                 logAxErrorVerbose(__LINE__, success);
             }
-//            }
         } else {
             if(m_daqDecimation && counter % m_daqDecimation){
-                LOG4(counter, info.image_number, info.width, info.force_trig);
+                LOG4(counter, info.image_number, m_droppedPackets, info.force_trig);
             }
             isNewData = true;
         }

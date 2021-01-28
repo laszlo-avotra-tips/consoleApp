@@ -38,7 +38,7 @@ private:
     void logDecimation();
     void logRegisterValue(int line, int reg);
 
-    void logAxErrorVerbose(int line, AxErr e);
+    void logAxErrorVerbose(int line, AxErr e, int count = 0);
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
 
 private:
@@ -55,6 +55,7 @@ private:
     const int m_subsamplingThreshold{1000};
     int m_subsamplingFactor{2};
     int m_numberOfConnectedDevices {0};
+    uint32_t m_droppedPackets{0};
 
 };
 
