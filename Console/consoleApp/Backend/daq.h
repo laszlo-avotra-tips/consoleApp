@@ -56,7 +56,8 @@ private:
     int m_subsamplingFactor{2};
     int m_numberOfConnectedDevices {0};
     uint32_t m_droppedPackets{0};
-    uint32_t m_badCountAcc{0};
+    uint32_t m_missedImagesCountAccumulated{0};
+    float m_percentageOfMissedImages{0.0f};
 
 };
 
