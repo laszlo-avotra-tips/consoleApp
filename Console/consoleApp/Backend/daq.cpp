@@ -50,6 +50,7 @@ void DAQ::logDecimation()
 {
     userSettings &settings = userSettings::Instance();
     m_daqDecimation = settings.getDaqIndexDecimation();
+    m_imageDecimation = settings.getImageIndexDecimation();
     m_daqLevel = settings.getDaqLogLevel();
 }
 
@@ -100,7 +101,9 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             if(daq->getData(data)){
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
-                daq->updateSector(axsunData);
+                if(daq->m_imageDecimation){
+                    daq->updateSector(axsunData);
+                }
             }
         }
     }

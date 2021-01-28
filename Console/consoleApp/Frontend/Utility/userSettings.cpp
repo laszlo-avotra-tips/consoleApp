@@ -82,7 +82,7 @@ void userSettings::loadVarSettings()
 
 void userSettings::loadProfileSettings()
 {
-    imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 0).toInt();
+    imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 1).toInt();
     LOG1(imageIndexDecimation);
 
     daqIndexDecimation = profileSettings->value( "log/daqIndexDecimation", 0).toInt();

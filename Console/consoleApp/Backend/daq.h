@@ -49,6 +49,7 @@ private:
     bool startDaq();
     uint16_t lastPolarLineIndexEntered;
     int m_daqDecimation{0};
+    int m_imageDecimation{0};
     int m_daqLevel{0};
     int m_daqCount{0};
     const int m_subsamplingThreshold{1000};
