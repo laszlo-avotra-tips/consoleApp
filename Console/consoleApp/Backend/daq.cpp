@@ -82,6 +82,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
     static uint32_t sLastImage = 0;
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCount = 0;
+    static int count{0};
 
     auto* daq = static_cast<DAQ*>(user_ptr);
 
@@ -98,8 +99,14 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
         if(imaging && (sLastImage != last_image))
         {
-            LOG4(last_image, missedImageCount,last_image, daq->m_droppedPackets);
             sLastImage = last_image;
+
+            missedImageCount = last_image - lastGoodImage - 1;
+            daq->m_missedImagesCountAccumulated += missedImageCount;
+            lastGoodImage = last_image;
+            if(++count % daq->m_daqDecimation == 0){
+                LOG4(count, last_image, daq->m_missedImagesCountAccumulated, daq->m_droppedPackets);
+            }
 
 //            if(daq->getData(data))
 //            {
@@ -111,6 +118,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 ////                daq->updateSector(axsunData);
 //            }
         }
+        msleep(5);
     }
     return;
 }
