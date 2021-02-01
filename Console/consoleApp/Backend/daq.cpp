@@ -108,15 +108,15 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 LOG4(count, last_image, daq->m_missedImagesCountAccumulated, daq->m_droppedPackets);
             }
 
-//            if(daq->getData(data))
-//            {
+            if(daq->getData(data))
+            {
 //                missedImageCount = last_image - lastGoodImage - 1;
 //                daq->m_missedImagesCountAccumulated += missedImageCount;
 //                lastGoodImage = last_image;
 //                OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
 //                SignalModel::instance()->setBufferLength(gBufferLength);
 ////                daq->updateSector(axsunData);
-//            }
+            }
         }
         msleep(5);
     }
