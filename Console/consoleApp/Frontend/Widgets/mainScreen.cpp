@@ -180,7 +180,7 @@ void MainScreen::highlightSpeedButton(QPushButton *wid)
 int MainScreen::getSledRuntime()
 {
 
-    updateSledRunningState();
+//    updateSledRunningState();
 
     if(m_runTime.isValid()){
         int delta{0};
