@@ -110,7 +110,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 //                SignalModel::instance()->setBufferLength(gBufferLength);
 ////                daq->updateSector(axsunData);
 //            }
-//        }
+        }
     }
     return;
 }
