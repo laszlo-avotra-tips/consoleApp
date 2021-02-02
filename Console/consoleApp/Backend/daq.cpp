@@ -22,7 +22,7 @@ extern "C" {
 namespace{
 int gFrameNumber = 0;
 int gDaqCounter = 0;
-size_t gBufferLength;
+//size_t gBufferLength;
 }
 
 //static uint8_t gDaqBuffer[ 256 * FFT_DATA_SIZE ];
@@ -111,8 +111,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             if(daq->getData(data))
             {
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-                SignalModel::instance()->setBufferLength(gBufferLength);
-                LOG2(axsunData->frameCount, gBufferLength)
+//                LOG2(axsunData->frameCount, axsunData->bufferLength);
                 daq->updateSector(axsunData);
             }
         }
@@ -226,7 +225,8 @@ bool DAQ::getData( new_image_callback_data_t data)
             isNewData = true;
         }
 
-        gBufferLength = info.width;
+        //gBufferLength = info.width;
+        axsunData->bufferLength = info.width;
 
         // write in frame information for recording/playback
         axsunData->frameCount = data.image_number;

@@ -97,9 +97,6 @@ public: //functions
 
     void setAdvacedViewSourceFrameNumber(int frameNumber);
 
-    size_t getBufferLength() const;
-    void setBufferLength(const size_t &bufferLength);
-
     const cl_float *getStandardDepth_mm() const;
     void setStandardDepth_mm(const cl_float &standardDepth_mm);
 
@@ -153,7 +150,6 @@ private: //data
     cl_mem m_warpVideoBuffer{nullptr};
 
     int m_dvacedViewSourceFrameNumber{0};
-    size_t m_bufferLength{0};
 };
 
 #endif // SIGNALMODEL_H

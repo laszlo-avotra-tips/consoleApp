@@ -720,14 +720,14 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
 {
     const auto* sm =  SignalModel::instance();
 
-    LOG2(frameData->frameCount, sm->getBufferLength());
+    LOG2(frameData->frameCount, frameData->bufferLength);
 }
 
-void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
+void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
     static int missedImagesTotal {0};
     static int dispCount{0};
@@ -769,7 +769,7 @@ void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
         QImage* image = m_scene->sectorImage();
 
         frameData->dispData = image->bits();
-        auto bufferLength = sm->getBufferLength();
+        auto bufferLength = frameData->bufferLength;
 
         m_scanWorker->warpData( frameData, bufferLength);
 
