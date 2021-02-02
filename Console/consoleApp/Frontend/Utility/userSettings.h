@@ -191,6 +191,9 @@ public:
 
     int getDaqLogLevel() const;
 
+    int getDisableRendering() const;
+    void setDisableRendering(int value);
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -208,6 +211,7 @@ private:
     int  daqIndexDecimation;
     int  imageLogLevel;
     int  daqLogLevel;
+    int  disableRendering;
 
     int  recordingDurationMin;
     QDate m_serviceDate;

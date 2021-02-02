@@ -471,7 +471,7 @@ void MainScreen::openDeviceSelectDialog()
         model->persistModel();
         m_scene->handleDeviceChange();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
-        m_daqTimer.start(7);
+        m_daqTimer.start(3);
 
     } else {
         LOG1( "Cancelled")

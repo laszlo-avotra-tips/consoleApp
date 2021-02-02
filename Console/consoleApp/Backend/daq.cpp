@@ -52,6 +52,7 @@ void DAQ::logDecimation()
     m_daqDecimation = settings.getDaqIndexDecimation();
     m_imageDecimation = settings.getImageIndexDecimation();
     m_daqLevel = settings.getDaqLogLevel();
+    m_disableRendering = settings.getDisableRendering();
 }
 
 void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode, int count)
@@ -113,7 +114,9 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
                 auto* sm = SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
 //                daq->updateSector(axsunData);
-                sm->pushImageRenderingQueue(*axsunData);
+                if(!daq->m_disableRendering){
+                    sm->pushImageRenderingQueue(*axsunData);
+                }
             }
         }
     }
