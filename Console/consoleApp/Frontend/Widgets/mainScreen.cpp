@@ -729,6 +729,10 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     static uint32_t missedImageCountAcc = 0;
     static int count{0};
 
+    if(!m_scanWorker){
+        m_scanWorker = new ScanConversion();
+    }
+
     if(!frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
        auto* sm = SignalModel::instance();
