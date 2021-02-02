@@ -115,7 +115,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 //                LOG2(axsunData->frameCount, axsunData->bufferLength);
 //                daq->updateSector(axsunData);
                 sm->pushImageRenderingQueue(*axsunData);
-                daq->updateSector(nullptr);
+//                daq->updateSector(nullptr);
             }
         }
 //        msleep(5);

@@ -61,6 +61,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
+    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
 
     const double scaleUp = 2.1; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
@@ -76,6 +77,7 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_clipBuffer = new uint8_t[1024 * 1024];
 //    ui->pushButton->setEnabled(false);
+    m_daqTimer.start(5);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -843,6 +845,11 @@ void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
             }
         }
     }
+}
+
+void MainScreen::updateImage()
+{
+    updateSector(nullptr);
 }
 
 void MainScreen::on_pushButton_clicked()

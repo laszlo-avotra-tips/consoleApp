@@ -91,6 +91,7 @@ private slots:
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
     void updateSector1(OCTFile::OctData_t* frameData);
+    void updateImage();
 
 private:
     void showEvent(QShowEvent* se) override;
@@ -121,6 +122,7 @@ private:
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updatetimeTimer;
+    QTimer m_daqTimer;
     OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
     int m_sledRunningStateVal{0};
