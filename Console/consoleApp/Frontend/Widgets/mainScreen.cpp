@@ -722,7 +722,9 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
-    LOG1(frameData->frameCount);
+    const auto* sm =  SignalModel::instance();
+
+    LOG2(frameData->frameCount, sm->getBufferLength());
 }
 
 void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
