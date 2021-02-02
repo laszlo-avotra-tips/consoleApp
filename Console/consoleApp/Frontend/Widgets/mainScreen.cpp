@@ -750,7 +750,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                if(m_scanWorker->isReady){
 
-                   if(image && frameData && frameData->dispData){
+                   if(image && frame.dispData){
 
                        QString activePassiveValue{"ACTIVE"};
                        auto& sled = SledSupport::Instance();
@@ -778,7 +778,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        const QString catheterName{names[0]};
                        const QString cathalogName{names[1]};
 
-                       emit updateRecorder(frameData->dispData, //clipData.dispData
+                       emit updateRecorder(frame.dispData, //clipData.dispData
                                            catheterName.toLatin1(),cathalogName.toLatin1(),
                                            activePassiveValue.toLatin1(),
                                            timeLabel.toLatin1(),
