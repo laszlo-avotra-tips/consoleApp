@@ -726,19 +726,75 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
+    static int count{0};
 
     if(!frameData){
        auto* sm = SignalModel::instance();
        auto val = sm->frontImageRenderingQueue();
        if(val.first){
            auto frame = val.second;
-           LOG1(frame.frameCount);
            sm->popImageRenderingQueue();
            uint32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
            missedImageCountAcc += missedImageCount;
            lastGoodImage = frame.frameCount;
+           if(++count % m_imageDecimation == 0){
+                LOG3(frame.frameCount, missedImageCount, missedImageCountAcc);
+           }
+           {
+               QImage* image = m_scene->sectorImage();
 
-           LOG3(frame.frameCount, missedImageCount, missedImageCountAcc);
+               frame.dispData = image->bits();
+               auto bufferLength = frame.bufferLength;
+
+               m_scanWorker->warpData( &frame, bufferLength);
+
+               if(m_scanWorker->isReady){
+
+                   if(image && frameData && frameData->dispData){
+
+                       QString activePassiveValue{"ACTIVE"};
+                       auto& sled = SledSupport::Instance();
+
+                       int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
+                       if(lastRunningState == 3)
+                       {
+                           activePassiveValue = "PASSIVE";
+                       }
+                       else if(lastRunningState == 1)
+                       {
+                           activePassiveValue = "ACTIVE";
+                       }
+
+                       const QDateTime currentTime = QDateTime::currentDateTime();
+                       const QString timeLabel{currentTime.toString("hh:mm:ss")};
+                       const auto& dev = deviceSettings::Instance().current();
+
+                       if(!dev->isBiDirectional()){
+                           activePassiveValue = QString("");
+                       }
+
+                       auto devName = dev->getSplitDeviceName();
+                       QStringList names = devName.split("\n");
+                       const QString catheterName{names[0]};
+                       const QString cathalogName{names[1]};
+
+                       emit updateRecorder(frameData->dispData, //clipData.dispData
+                                           catheterName.toLatin1(),cathalogName.toLatin1(),
+                                           activePassiveValue.toLatin1(),
+                                           timeLabel.toLatin1(),
+                                           1024,1024);
+
+                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+                       if(pixmap){
+                           QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                           pixmap->setPixmap(tmpPixmap);
+                       }
+                       m_scene->paintOverlay();
+                   }
+               }
+
+           }
        }
     } else {
         uint32_t missedImageCount = frameData->frameCount - lastGoodImage - 1;

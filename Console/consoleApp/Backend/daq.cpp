@@ -112,13 +112,10 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             {
                 auto* sm = SignalModel::instance();
                 OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-//                LOG2(axsunData->frameCount, axsunData->bufferLength);
 //                daq->updateSector(axsunData);
                 sm->pushImageRenderingQueue(*axsunData);
-//                daq->updateSector(nullptr);
             }
         }
-//        msleep(5);
     }
     return;
 }
