@@ -105,7 +105,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
             missedImageCount = last_image - lastGoodImage - 1;
             daq->m_missedImagesCountAccumulated += missedImageCount;
             lastGoodImage = last_image;
-            if(++count % daq->m_daqDecimation == 0){
+            if(daq->m_daqDecimation && (++count % daq->m_daqDecimation == 0)){
                 LOG4(count, last_image, daq->m_missedImagesCountAccumulated, daq->m_droppedPackets);
             }
 
@@ -221,7 +221,7 @@ bool DAQ::getData( new_image_callback_data_t data)
         else
         {
             m_percentageOfMissedImages = 100.0f * m_missedImagesCountAccumulated / info.image_number;
-            if(m_daqDecimation && (m_daqCount % m_daqDecimation == 0))
+            if(m_daqDecimation && m_daqLevel && (m_daqCount % m_daqDecimation == 0))
             {
                 LOG4(m_daqCount, info.image_number, m_missedImagesCountAccumulated, m_percentageOfMissedImages);
             }
