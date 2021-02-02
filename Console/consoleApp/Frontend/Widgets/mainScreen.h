@@ -90,6 +90,7 @@ private slots:
 
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
+    void updateSector1(OCTFile::OctData_t* frameData);
 
 private:
     void showEvent(QShowEvent* se) override;

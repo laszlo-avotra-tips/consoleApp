@@ -722,6 +722,11 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
+    LOG1(frameData->frameCount);
+}
+
+void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
+{
     static int missedImagesTotal {0};
     static int dispCount{0};
     static int frame0{0};
