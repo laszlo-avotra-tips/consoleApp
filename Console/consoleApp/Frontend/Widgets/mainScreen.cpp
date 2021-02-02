@@ -720,14 +720,12 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
+void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
-    const auto* sm =  SignalModel::instance();
-
     LOG2(frameData->frameCount, frameData->bufferLength);
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
 {
     static int missedImagesTotal {0};
     static int dispCount{0};
