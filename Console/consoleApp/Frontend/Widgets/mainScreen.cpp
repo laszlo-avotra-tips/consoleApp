@@ -732,6 +732,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
            auto frame = val.second;
            LOG1(frame.frameCount);
            sm->popImageRenderingQueue();
+           uint32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+           missedImageCountAcc += missedImageCount;
+           lastGoodImage = frame.frameCount;
+
+           LOG3(frame.frameCount, missedImageCount, missedImageCountAcc);
        }
     } else {
         uint32_t missedImageCount = frameData->frameCount - lastGoodImage - 1;
