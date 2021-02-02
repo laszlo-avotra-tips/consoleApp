@@ -77,7 +77,7 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_clipBuffer = new uint8_t[1024 * 1024];
 //    ui->pushButton->setEnabled(false);
-    m_daqTimer.start(5);
+//    m_daqTimer.start(5);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -471,6 +471,7 @@ void MainScreen::openDeviceSelectDialog()
         model->persistModel();
         m_scene->handleDeviceChange();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
+        m_daqTimer.start(7);
 
     } else {
         LOG1( "Cancelled")
