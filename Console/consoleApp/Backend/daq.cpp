@@ -211,7 +211,9 @@ bool DAQ::getData( new_image_callback_data_t data)
                                        bytes_allocated, axsunData->acqData, &info);
         if(success != AxErr::NO_AxERROR)
         {
-            logAxErrorVerbose(__LINE__, success, m_daqCount);
+            if(m_daqLevel){
+                logAxErrorVerbose(__LINE__, success, m_daqCount);
+            }
         }
         else
         {
