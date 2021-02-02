@@ -750,54 +750,55 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                auto bufferLength = frame.bufferLength;
 
                m_scanWorker->warpData( &frame, bufferLength);
-
-               if(m_scanWorker->isReady){
-
-                   if(image && frame.dispData){
-
-                       QString activePassiveValue{"ACTIVE"};
-                       auto& sled = SledSupport::Instance();
-
-                       int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
-                       if(lastRunningState == 3)
-                       {
-                           activePassiveValue = "PASSIVE";
-                       }
-                       else if(lastRunningState == 1)
-                       {
-                           activePassiveValue = "ACTIVE";
-                       }
-
-                       const QDateTime currentTime = QDateTime::currentDateTime();
-                       const QString timeLabel{currentTime.toString("hh:mm:ss")};
-                       const auto& dev = deviceSettings::Instance().current();
-
-                       if(!dev->isBiDirectional()){
-                           activePassiveValue = QString("");
-                       }
-
-                       auto devName = dev->getSplitDeviceName();
-                       QStringList names = devName.split("\n");
-                       const QString catheterName{names[0]};
-                       const QString cathalogName{names[1]};
-
-                       emit updateRecorder(frame.dispData, //clipData.dispData
-                                           catheterName.toLatin1(),cathalogName.toLatin1(),
-                                           activePassiveValue.toLatin1(),
-                                           timeLabel.toLatin1(),
-                                           1024,1024);
-
-                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-
-                       if(pixmap){
-                           QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-                           pixmap->setPixmap(tmpPixmap);
-                       }
-                       m_scene->paintOverlay();
-                   }
-               }
-
            }
+
+//               if(m_scanWorker->isReady){
+
+//                   if(image && frame.dispData){
+
+//                       QString activePassiveValue{"ACTIVE"};
+//                       auto& sled = SledSupport::Instance();
+
+//                       int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
+//                       if(lastRunningState == 3)
+//                       {
+//                           activePassiveValue = "PASSIVE";
+//                       }
+//                       else if(lastRunningState == 1)
+//                       {
+//                           activePassiveValue = "ACTIVE";
+//                       }
+
+//                       const QDateTime currentTime = QDateTime::currentDateTime();
+//                       const QString timeLabel{currentTime.toString("hh:mm:ss")};
+//                       const auto& dev = deviceSettings::Instance().current();
+
+//                       if(!dev->isBiDirectional()){
+//                           activePassiveValue = QString("");
+//                       }
+
+//                       auto devName = dev->getSplitDeviceName();
+//                       QStringList names = devName.split("\n");
+//                       const QString catheterName{names[0]};
+//                       const QString cathalogName{names[1]};
+
+//                       emit updateRecorder(frame.dispData, //clipData.dispData
+//                                           catheterName.toLatin1(),cathalogName.toLatin1(),
+//                                           activePassiveValue.toLatin1(),
+//                                           timeLabel.toLatin1(),
+//                                           1024,1024);
+
+//                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+//                       if(pixmap){
+//                           QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+//                           pixmap->setPixmap(tmpPixmap);
+//                       }
+//                       m_scene->paintOverlay();
+//                   }
+//               }
+
+//           }
        }
     }
 }
