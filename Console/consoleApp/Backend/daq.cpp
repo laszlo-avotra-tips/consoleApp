@@ -110,15 +110,12 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
             if(daq->getData(data))
             {
-//                missedImageCount = last_image - lastGoodImage - 1;
-//                daq->m_missedImagesCountAccumulated += missedImageCount;
-//                lastGoodImage = last_image;
                 OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
                 SignalModel::instance()->setBufferLength(gBufferLength);
                 daq->updateSector(axsunData);
             }
         }
-        msleep(5);
+//        msleep(5);
     }
     return;
 }
