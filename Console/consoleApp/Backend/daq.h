@@ -52,6 +52,7 @@ private:
     int m_imageDecimation{0};
     int m_daqLevel{0};
     int m_daqCount{0};
+    bool m_disableRendering{false};
     const int m_subsamplingThreshold{1000};
     int m_subsamplingFactor{2};
     int m_numberOfConnectedDevices {0};
