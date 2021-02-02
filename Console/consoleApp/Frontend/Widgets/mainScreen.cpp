@@ -725,11 +725,21 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
 
-    uint32_t missedImageCount = frameData->frameCount - lastGoodImage - 1;
-    missedImageCountAcc += missedImageCount;
-    lastGoodImage = frameData->frameCount;
+    if(!frameData){
+       auto* sm = SignalModel::instance();
+       auto val = sm->frontImageRenderingQueue();
+       if(val.first){
+           auto frame = val.second;
+           LOG1(frame.frameCount);
+           sm->popImageRenderingQueue();
+       }
+    } else {
+        uint32_t missedImageCount = frameData->frameCount - lastGoodImage - 1;
+        missedImageCountAcc += missedImageCount;
+        lastGoodImage = frameData->frameCount;
 
-    LOG3(frameData->frameCount, missedImageCount, missedImageCountAcc);
+        LOG3(frameData->frameCount, missedImageCount, missedImageCountAcc);
+    }
 }
 
 void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
