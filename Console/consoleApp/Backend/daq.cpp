@@ -80,8 +80,6 @@ void DAQ::logRegisterValue(int line, int registerNumber)
 
 void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 {
-    static uint32_t sLastImage = 0;
-    static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCount = 0;
     static int count{0};
 
@@ -89,25 +87,22 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
 
     if(daq)
     {
-        uint32_t imaging, last_packet, last_frame, last_image, frames_since_sync;//, dropped_packets;
+        uint32_t imaging, last_packet, last_frame, last_image, frames_since_sync;
+        uint32_t& dropped_packets = (daq->m_droppedPackets);
 
-        AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &(daq->m_droppedPackets), &frames_since_sync);
+        AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
         if(success != AxErr::NO_AxERROR)
         {
             daq->logAxErrorVerbose(__LINE__, success);
             return;
         }
 
-        if(imaging && (sLastImage != last_image))
+//        if(imaging && (sLastImage != last_image))
+        if(!(last_image - data.image_number))
         {
-            sLastImage = last_image;
-
-            missedImageCount = last_image - lastGoodImage - 1;
             daq->m_missedImagesCountAccumulated += missedImageCount;
-            lastGoodImage = last_image;
             if(daq->m_daqDecimation && (++count % daq->m_daqDecimation == 0)){
-                float percent = 100.0f * daq->m_missedImagesCountAccumulated / count;
-                LOG4(count, last_image, percent, daq->m_droppedPackets);
+                LOG2(count, last_image);
             }
 
             if(daq->getData(data))
