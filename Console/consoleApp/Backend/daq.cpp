@@ -1,6 +1,8 @@
 #include "daq.h"
 #include <QApplication>
 #include <QDebug>
+#include <QTextStream>
+
 //#include "controller.h"
 #include "logger.h"
 #include <algorithm>
@@ -78,7 +80,7 @@ void DAQ::logRegisterValue(int line, int registerNumber)
     }
 }
 
-void DAQ::NewImageArrived(new_image_callback_data_t data, void *user_ptr)
+void DAQ::NewImageArrived1(new_image_callback_data_t data, void *user_ptr)
 {
     static uint32_t missedImageCount = 0;
     static int count{0};
@@ -188,7 +190,7 @@ void DAQ::setSubsampling(int speed)
     }
 }
 
-bool DAQ::getData( new_image_callback_data_t data)
+bool DAQ::getData1( new_image_callback_data_t data)
 {
     bool isNewData{false};
 
@@ -353,4 +355,90 @@ void DAQ::setLaserDivider()
 void DAQ::setDisplay(float angle, int direction)
 {
     LOG2(angle, direction);
+}
+
+void DAQ::NewImageArrived(new_image_callback_data_t data, void* user_ptr)
+{
+
+    // Use the 'void * user_ptr' argument to send this callback a pointer to your preallocated
+    // buffer if you are retrieving the image data rather than just direct-displaying it, as well as
+    // any other user resources needed in this callback (log handles, etc).
+    //
+    // Calling AxsunOCTCapture functions other than axRequestImage(), axGetImageInfo(), & axGetStatus()
+    // in this callback may result in undefined behavior, due to the nature of this callback's
+    // execution in a concurrent thread with the application's other calls to the AxsunOCTCapture API.
+    //
+    // New Image Arrived events are stored in a FIFO queue within the AxsunOCTCapture library.
+    // If the time spent in this callback exceeds the period of new images enqueued in the Main Image
+    // Buffer, unprocessed callback events will stack up indefinitely.  You can monitor the backlog
+    // of callback events by comparing the image number for the current callback 'data.image_number'
+    // with the 'last_image' argument of axGetStatus().
+    //
+    // Force-triggered images will also invoke this callback, with data.image_number = 0.
+
+    auto* daq = static_cast<DAQ*>(user_ptr);
+
+    if(daq)
+    {
+        daq->getData(data);
+    }
+}
+
+bool DAQ::getData(new_image_callback_data_t data)
+{
+
+    QString msg;
+    QTextStream qs(&msg);
+
+    auto currentTime = QTime::currentTime();
+    QString timeString = currentTime.toString("hh:mm:ss.zzz");
+    qs << timeString << "\t" <<data.image_number << "\t";
+
+    uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
+    auto success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
+    if(success ==  AxErr::NO_AxERROR){
+        if(dropped_packets)
+        {
+//            std::cout << __LINE__ << ". dropped_packets " << dropped_packets << std::endl;
+            LOG1(dropped_packets);
+        }
+    } else {
+//        std::cout << __LINE__  << ". " << int(success) << std::endl;
+        LOG1(int(success));
+    }
+
+    // axGetImageInfo() not necessary here, since required buffer size and image number
+    // are already provided in the callback's data argument.  It is safe to call if other image info
+    // is needed prior to calling axRequestImage().
+
+//    // convert user_ptr from void back into a std::vector<uint8_t>
+//    auto& image_vector = *(static_cast<std::vector<uint8_t>*>(user_ptr));
+    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+    const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
+
+
+    if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
+        auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
+        auto info = image_info_t{};
+        auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
+        if (retval == AxErr::NO_AxERROR) {
+            qs << "Success: \tWidth: " << info.width;
+            if (info.force_trig)
+                qs << "\tForce triggered mode.";
+            else
+                qs << "\tBacklog: " << (last_image - data.image_number);
+            qs << '\n';
+
+            // sleep timer to simulate additional user tasks in callback
+//            std::this_thread::sleep_for(10us);
+        }
+        else
+            qs << "axRequestImage reported: " << int(retval) << '\n';
+    }
+    else
+        qs << "Memory allocation too small for retrieval of image " << data.image_number << '\n';
+
+    LOG1(msg);
+
+    return true;
 }
