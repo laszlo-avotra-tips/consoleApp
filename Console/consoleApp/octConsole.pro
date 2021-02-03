@@ -13,7 +13,7 @@ QT += serialport
 QT += multimedia multimediawidgets
 
 
-CONFIG += c++14
+CONFIG += c++17
 
 DEFINES += QT_XML_LIB QT_SQL_LIB
 
