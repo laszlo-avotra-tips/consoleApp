@@ -403,9 +403,10 @@ bool DAQ::getData(new_image_callback_data_t data)
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
     gFrameNumber = ++m_daqCount % NUM_OF_FRAME_BUFFERS;
 
+    auto info = image_info_t{};
+
     if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
-        auto info = image_info_t{};
         auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
         if (retval == AxErr::NO_AxERROR) {
             qs << "Success: \tWidth: " << info.width;
@@ -431,6 +432,11 @@ bool DAQ::getData(new_image_callback_data_t data)
         LOG1(msg);
 
     if(!(last_image - data.image_number)){
+        axsunData->bufferLength = info.width;
+
+        // write in frame information for recording/playback
+        axsunData->frameCount = data.image_number;
+        axsunData->timeStamp = fileTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
     }
 
