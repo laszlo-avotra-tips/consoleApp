@@ -422,7 +422,12 @@ bool DAQ::getData(new_image_callback_data_t data)
     else
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
 
-    LOG1(msg);
+//    LOG1(msg);
+    if(!data.image_number)
+        LOG1(msg);
+
+    if(data.image_number && (data.image_number % 16 == 0))
+        LOG1(msg);
 
     return true;
 }
