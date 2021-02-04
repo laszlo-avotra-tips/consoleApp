@@ -164,21 +164,6 @@ IDAQ *DAQ::getSignalSource()
     return this;
 }
 
-/*
- *  run
- */
-void DAQ::run( void )
-{
-    if( !isRunning )
-    {
-        isRunning = true;
-        while( isRunning )
-        {
-            sleep(1);
-        }
-    }
-}
-
 void DAQ::setSubsampling(int speed)
 {
     if(speed < m_subsamplingThreshold){
@@ -269,7 +254,7 @@ bool DAQ::startDaq()
             m_numberOfConnectedDevices = axCountConnectedDevices();
             LOG1(m_numberOfConnectedDevices)
 
-            msleep(500); //TO DO - handle failure max number of retries 60 sec
+            QThread::msleep(500); //TO DO - handle failure max number of retries 60 sec
         }
 
 
@@ -279,19 +264,19 @@ bool DAQ::startDaq()
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
          * 35 * 256 = 8960 A lines
          */
-        msleep(100);
+        QThread::msleep(100);
 
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
-        msleep(100);
+        QThread::msleep(100);
 
         success = axSetTrigTimeout(session, framesUntilForceTrig * 2);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
-        msleep(100);
+        QThread::msleep(100);
 
         logRegisterValue(__LINE__, 2);
         logRegisterValue(__LINE__, 5);
@@ -300,7 +285,7 @@ bool DAQ::startDaq()
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
-        msleep(100);
+        QThread::msleep(100);
         logRegisterValue(__LINE__, 2);
         logRegisterValue(__LINE__, 5);
         logRegisterValue(__LINE__, 6);

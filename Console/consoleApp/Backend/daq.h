@@ -19,7 +19,6 @@ public:
     DAQ();
     ~DAQ();
     void initDaq( void ) override;
-    void run( void ) override;
     void setSubsampling(int speed) override;
 
     IDAQ* getSignalSource() override;

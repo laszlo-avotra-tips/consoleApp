@@ -5,7 +5,7 @@
 #include <QString>
 #include "octFile.h"
 
-class IDAQ : public QThread
+class IDAQ : public QObject
 {
     Q_OBJECT
 
