@@ -398,9 +398,10 @@ bool DAQ::getData(new_image_callback_data_t data)
 
 //    // convert user_ptr from void back into a std::vector<uint8_t>
 //    auto& image_vector = *(static_cast<std::vector<uint8_t>*>(user_ptr));
-    OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
+    auto* sm = SignalModel::instance();
+    OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-
+    gFrameNumber = ++m_daqCount % NUM_OF_FRAME_BUFFERS;
 
     if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
@@ -428,6 +429,10 @@ bool DAQ::getData(new_image_callback_data_t data)
 
     if(data.image_number && (data.image_number % 16 == 0))
         LOG1(msg);
+
+    if(!(last_image - data.image_number)){
+        sm->pushImageRenderingQueue(*axsunData);
+    }
 
     return true;
 }
