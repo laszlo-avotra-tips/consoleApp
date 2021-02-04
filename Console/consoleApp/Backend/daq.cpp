@@ -416,7 +416,7 @@ bool DAQ::getData(new_image_callback_data_t data)
                 qs << "\tBacklog: " << (last_image - data.image_number);
 
             // sleep timer to simulate additional user tasks in callback
-//            std::this_thread::sleep_for(10us);
+           QThread::usleep(10);
         }
         else
             qs << "axRequestImage reported: " << int(retval);
@@ -431,14 +431,14 @@ bool DAQ::getData(new_image_callback_data_t data)
     if(data.image_number && (data.image_number % 16 == 0))
         LOG1(msg);
 
-    if(!(last_image - data.image_number)){
-        axsunData->bufferLength = info.width;
+//    if(!(last_image - data.image_number)){
+//        axsunData->bufferLength = info.width;
 
-        // write in frame information for recording/playback
-        axsunData->frameCount = data.image_number;
-        axsunData->timeStamp = fileTimer.elapsed();;
-        sm->pushImageRenderingQueue(*axsunData);
-    }
+//        // write in frame information for recording/playback
+//        axsunData->frameCount = data.image_number;
+//        axsunData->timeStamp = fileTimer.elapsed();;
+//        sm->pushImageRenderingQueue(*axsunData);
+//    }
 
     return true;
 }
