@@ -427,16 +427,15 @@ bool DAQ::getData(new_image_callback_data_t data)
                 qs << "\tForce triggered mode.";
             else
                 qs << "\tBacklog: " << (last_image - data.image_number);
-            qs << '\n';
 
             // sleep timer to simulate additional user tasks in callback
 //            std::this_thread::sleep_for(10us);
         }
         else
-            qs << "axRequestImage reported: " << int(retval) << '\n';
+            qs << "axRequestImage reported: " << int(retval);
     }
     else
-        qs << "Memory allocation too small for retrieval of image " << data.image_number << '\n';
+        qs << "Memory allocation too small for retrieval of image " << data.image_number;
 
     LOG1(msg);
 
