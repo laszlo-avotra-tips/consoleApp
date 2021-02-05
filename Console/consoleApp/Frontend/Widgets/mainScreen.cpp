@@ -735,6 +735,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
     if(!frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
+        m_imageLogLevel = userSettings::Instance().getImageLogLevel();
        auto* sm = SignalModel::instance();
        auto val = sm->frontImageRenderingQueue();
        if(val.first){
@@ -743,7 +744,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
            uint32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
            missedImageCountAcc += missedImageCount;
            lastGoodImage = frame.frameCount;
-//           if(m_imageLogLevel)
+           if(m_imageLogLevel)
            {
                LOG4(frame.frameCount, lastGoodImage, missedImageCount, missedImageCountAcc)
            }
