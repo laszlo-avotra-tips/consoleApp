@@ -288,6 +288,7 @@ bool DAQ::startDaq()
         //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
         //Values outside the range of [2,100] will be automatically coerced into this range.
         success = axSetTrigTimeout(session, framesUntilForceTrigDefault * 4);
+        LOG2(int(success),framesUntilForceTrigDefault);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
