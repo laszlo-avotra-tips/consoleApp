@@ -382,9 +382,10 @@ bool DAQ::getData(new_image_callback_data_t data)
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
     auto success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
     if(success ==  AxErr::NO_AxERROR){
-        if(dropped_packets)
+        if(dropped_packets != m_lastDroppedPacketCount)
         {
 //            std::cout << __LINE__ << ". dropped_packets " << dropped_packets << std::endl;
+            m_lastDroppedPacketCount = dropped_packets;
             LOG1(dropped_packets);
         }
     } else {

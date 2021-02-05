@@ -60,6 +60,7 @@ private:
     uint32_t m_droppedPackets{0};
     uint32_t m_missedImagesCountAccumulated{0};
     float m_percentageOfMissedImages{0.0f};
+    uint32_t m_lastDroppedPacketCount{0};
 
 };
 
