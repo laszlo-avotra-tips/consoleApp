@@ -128,12 +128,12 @@ DAQ::~DAQ()
 void DAQ::initDaq()
 {
     AxErr retval;
-    int loopCount = NUM_OF_FRAME_BUFFERS - 1;
-    LOG2(loopCount, m_daqDecimation);
 
     frameTimer.start();
     fileTimer.start(); // start a timer to provide frame information for recording.
 
+    // NewImageArrived - callback_function A user-supplied function to be called.
+    // Pass NULL to un-register a callback function.
     retval = axRegisterNewImageCallback(session, NewImageArrived, this);
     if(retval != AxErr::NO_AxERROR){
         char errorMsg[512];
@@ -141,21 +141,30 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
-    retval = axSetLaserEmission(1, 0);
+    // emission_state =1 enables laser emission, =0 disables laser emission.
+    // which_laser The numeric index of the desired Laser.
+    const uint32_t emission_state{1};
+    const uint32_t which_laser{0};
+    retval = axSetLaserEmission(emission_state, which_laser);
     if(retval != AxErr::NO_AxERROR){
         char errorMsg[512];
         axGetErrorString(retval, errorMsg);
         LOG2(int(retval), errorMsg)
     }
 
-    retval = axImagingCntrlEthernet(-1,0);
+    // number_of_images =0 for Imaging Off (idle), =-1 for Live Imaging (no record), or any positive
+    // value between 1 and 32767 to request the desired number of images in a Burst Record operation.
+    // which_DAQ The numeric index of the desired DAQ.
+    const int16_t number_of_images{-1};
+    const uint32_t which_DAQ{0};
+    retval = axImagingCntrlEthernet(number_of_images, which_DAQ);
     if(retval != AxErr::NO_AxERROR){
         char errorMsg[512];
         axGetErrorString(retval, errorMsg);
         LOG2(int(retval), errorMsg)
     }
 
-    setLaserDivider();
+    setSubSampling();
 
 }
 
@@ -168,10 +177,10 @@ void DAQ::setSubsampling(int speed)
 {
     if(speed < m_subsamplingThreshold){
         m_subsamplingFactor = 2;
-        setLaserDivider();
+        setSubSampling();
     } else {
         m_subsamplingFactor = 1;
-        setLaserDivider();
+        setSubSampling();
     }
 }
 
@@ -238,18 +247,22 @@ bool DAQ::startDaq()
             logAxErrorVerbose(__LINE__, success);
         }
 
-        success = axStartSession(&session, 4);    // Start Axsun engine session
+        const float capacity_MB{50.0f};
+        success = axStartSession(&session, capacity_MB);    // Start Axsun engine session
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
 
-        success = axNetworkInterfaceOpen(1);
+        //interface_status =1 opens the interface or resets an existing open interface, =0 closes the interface.
+        const uint32_t interface_status{1};
+        success = axNetworkInterfaceOpen(interface_status);
         if(success != AxErr::NO_AxERROR){
             char errorMsg[512];
             axGetErrorString(success, errorMsg);
             LOG2(int(success), errorMsg)
         }
 
+        //the two network interfaces 192.168.10.1 and 10.2
         while(m_numberOfConnectedDevices != 2){
             m_numberOfConnectedDevices = axCountConnectedDevices();
             LOG1(m_numberOfConnectedDevices)
@@ -257,12 +270,11 @@ bool DAQ::startDaq()
             QThread::msleep(500); //TO DO - handle failure max number of retries 60 sec
         }
 
-
-        const int framesUntilForceTrig {35};
+        const int framesUntilForceTrigDefault {24};
         /*
          * The number of frames for which the driver will wait for a Image_sync signal before timing out and entering Force Trigger mode.
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
-         * 35 * 256 = 8960 A lines
+         * 24 gives us 6144 Alines.
          */
         QThread::msleep(100);
 
@@ -272,7 +284,10 @@ bool DAQ::startDaq()
         }
         QThread::msleep(100);
 
-        success = axSetTrigTimeout(session, framesUntilForceTrig * 2);
+        //framesUntilForceTrig The number of frames for which the driver will wait for a Image_sync signal
+        //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
+        //Values outside the range of [2,100] will be automatically coerced into this range.
+        success = axSetTrigTimeout(session, framesUntilForceTrigDefault * 4);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
@@ -281,7 +296,12 @@ bool DAQ::startDaq()
         logRegisterValue(__LINE__, 2);
         logRegisterValue(__LINE__, 5);
         logRegisterValue(__LINE__, 6);
-        success = axSetImageSyncSource(AxEdgeSource::LVDS,16.6,0);
+
+        // frequency The Image_sync frequency (Hz); this parameter is optional and is ignored when source
+        //is not INTERNAL.
+        const float frequency{16.6};
+        const uint32_t which_DAQ{0};
+        success = axSetImageSyncSource(AxEdgeSource::LVDS, frequency, which_DAQ);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
@@ -317,15 +337,19 @@ bool DAQ::shutdownDaq()
     return success == AxErr::NO_AxERROR;
 }
 
-void DAQ::setLaserDivider()
+void DAQ::setSubSampling()
 {
     if(m_numberOfConnectedDevices == 2)
     {
         const int subsamplingFactor = m_subsamplingFactor;
         if( subsamplingFactor > 0  && subsamplingFactor <= 4 )
         {
-            LOG1(subsamplingFactor)
-            AxErr success = axSetSubsamplingFactor(subsamplingFactor,0);
+            LOG1(subsamplingFactor);
+
+            // subsampling_factor Subsampling factor must be between 1 and 166.
+            // which_DAQ The numeric index of the desired DAQ.
+            const uint32_t which_DAQ{0};
+            AxErr success = axSetSubsamplingFactor(subsamplingFactor, which_DAQ);
             if(success != AxErr::NO_AxERROR){
                 logAxErrorVerbose(__LINE__, success);
             }

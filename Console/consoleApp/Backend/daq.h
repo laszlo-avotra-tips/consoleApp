@@ -29,7 +29,7 @@ public:
     bool shutdownDaq() override;
 
 public slots:
-    void setLaserDivider();
+    void setSubSampling();
     void setDisplay( float, int );
 
 private:
