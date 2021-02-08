@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QTextStream>
 
-//#include "controller.h"
 #include "logger.h"
 #include <algorithm>
 #include "signalmodel.h"
@@ -32,9 +31,6 @@ int gFrameNumber = 0;
  */
 DAQ::DAQ()
 {
-    isRunning    = false;
-    lastImageIdx = 0;
-    missedImgs   = 0;
     gFrameNumber = NUM_OF_FRAME_BUFFERS - 1;
 
     if( !startDaq() )
@@ -86,7 +82,6 @@ void DAQ::initDaq()
 {
     AxErr retval;
 
-    frameTimer.start();
     fileTimer.start(); // start a timer to provide frame information for recording.
 
     // NewImageArrived - callback_function A user-supplied function to be called.
@@ -121,7 +116,7 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
-    setSubSampling();
+    setSubSamplingFactor();
 
 }
 
@@ -135,10 +130,10 @@ void DAQ::setSubsampling(int speed)
     LOG2(speed, m_subsamplingThreshold)
     if(speed < m_subsamplingThreshold){
         m_subsamplingFactor = 2;
-        setSubSampling();
+        setSubSamplingFactor();
     } else {
         m_subsamplingFactor = 1;
-        setSubSampling();
+        setSubSamplingFactor();
     }
 }
 
@@ -249,7 +244,7 @@ bool DAQ::shutdownDaq()
     return success == AxErr::NO_AxERROR;
 }
 
-void DAQ::setSubSampling()
+void DAQ::setSubSamplingFactor()
 {
     if(m_numberOfConnectedDevices == 2)
     {
@@ -271,11 +266,6 @@ void DAQ::setSubSampling()
             }
         }
     }
-}
-
-void DAQ::setDisplay(float angle, int direction)
-{
-    LOG2(angle, direction);
 }
 
 void DAQ::NewImageArrived(new_image_callback_data_t data, void* user_ptr)
