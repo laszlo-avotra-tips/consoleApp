@@ -23,8 +23,6 @@ extern "C" {
 
 namespace{
 int gFrameNumber = 0;
-int gDaqCounter = 0;
-//size_t gBufferLength;
 }
 
 //static uint8_t gDaqBuffer[ 256 * FFT_DATA_SIZE ];
@@ -321,12 +319,10 @@ bool DAQ::getData(new_image_callback_data_t data)
     if(success ==  AxErr::NO_AxERROR){
         if(dropped_packets != m_lastDroppedPacketCount)
         {
-//            std::cout << __LINE__ << ". dropped_packets " << dropped_packets << std::endl;
             m_lastDroppedPacketCount = dropped_packets;
             LOG1(dropped_packets);
         }
     } else {
-//        std::cout << __LINE__  << ". " << int(success) << std::endl;
         LOG1(int(success));
     }
 
@@ -334,8 +330,6 @@ bool DAQ::getData(new_image_callback_data_t data)
     // are already provided in the callback's data argument.  It is safe to call if other image info
     // is needed prior to calling axRequestImage().
 
-//    // convert user_ptr from void back into a std::vector<uint8_t>
-//    auto& image_vector = *(static_cast<std::vector<uint8_t>*>(user_ptr));
     auto* sm = SignalModel::instance();
     OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
@@ -362,9 +356,8 @@ bool DAQ::getData(new_image_callback_data_t data)
     else
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
 
-//    LOG1(msg);
-    if(!data.image_number)
-        LOG1(msg);
+//    if(!data.image_number) //forced trigger logging
+//        LOG1(msg);
 
     if(data.image_number && (data.image_number % 16 == 0))
         LOG1(msg);
