@@ -16,37 +16,24 @@ extern "C" {
 }
 #endif
 
-
-#define NUM_OF_FRAME_BUFFERS FRAME_BUFFER_SIZE
-#define ALLOCATED_OVERRUN_BUFFER_SIZE ( 256 * FFT_DATA_SIZE )  // Overrun buffer for Ocelot Mode
-
-namespace{
-int gFrameNumber = 0;
-}
-
-//static uint8_t gDaqBuffer[ 256 * FFT_DATA_SIZE ];
-
 /*
  * Constructor
  */
 DAQ::DAQ()
 {
-    gFrameNumber = NUM_OF_FRAME_BUFFERS - 1;
+    initLogLevelAndDecimation();
 
     if( !startDaq() )
     {
         LOG1( "DAQ: Failed to start DAQ")
     }
-
-    logDecimation();
 }
 
 
-void DAQ::logDecimation()
+void DAQ::initLogLevelAndDecimation()
 {
     userSettings &settings = userSettings::Instance();
     m_daqDecimation = settings.getDaqIndexDecimation();
-    m_imageDecimation = settings.getImageIndexDecimation();
     m_daqLevel = settings.getDaqLogLevel();
     m_disableRendering = settings.getDisableRendering();
 }
@@ -311,10 +298,14 @@ bool DAQ::getData(new_image_callback_data_t data)
         if(dropped_packets != m_lastDroppedPacketCount)
         {
             m_lastDroppedPacketCount = dropped_packets;
-            LOG1(dropped_packets);
+            if(m_daqLevel){
+                LOG1(dropped_packets);
+            }
         }
     } else {
-        LOG1(int(success));
+        if(m_daqLevel){
+            LOG1(int(success));
+        }
     }
 
     // axGetImageInfo() not necessary here, since required buffer size and image number
@@ -322,9 +313,9 @@ bool DAQ::getData(new_image_callback_data_t data)
     // is needed prior to calling axRequestImage().
 
     auto* sm = SignalModel::instance();
-    OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
+    OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-    gFrameNumber = ++m_daqCount % NUM_OF_FRAME_BUFFERS;
+    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
 
     auto info = image_info_t{};
 
@@ -350,13 +341,13 @@ bool DAQ::getData(new_image_callback_data_t data)
 //    if(!data.image_number) //forced trigger logging
 //        LOG1(msg);
 
-    if(data.image_number && (data.image_number % 16 == 0))
+    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         LOG1(msg);
+    }
 
-    if(data.image_number && !(last_image - data.image_number)){
+    if(!m_disableRendering && data.image_number && !(last_image - data.image_number)){
         axsunData->bufferLength = info.width;
 
-        // write in frame information for recording/playback
         axsunData->frameCount = data.image_number;
         axsunData->timeStamp = fileTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);

@@ -29,7 +29,7 @@ private:
     bool startDaq();
     void setSubSamplingFactor();
     bool getData(new_image_callback_data_t data);
-    void logDecimation();
+    void initLogLevelAndDecimation();
     void logRegisterValue(int line, int reg);
 
     void logAxErrorVerbose(int line, AxErr e, int count = 0);
@@ -37,12 +37,12 @@ private:
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
 
 private:
+    int m_frameNumber{FRAME_BUFFER_SIZE - 1};
     AOChandle session{nullptr};
     QElapsedTimer fileTimer;
     char axMessage[256];
 
     int m_daqDecimation{0};
-    int m_imageDecimation{0};
     int m_daqLevel{0};
     int m_daqCount{0};
     bool m_disableRendering{false};
