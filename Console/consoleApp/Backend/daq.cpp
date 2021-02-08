@@ -132,6 +132,7 @@ IDAQ *DAQ::getSignalSource()
 
 void DAQ::setSubsampling(int speed)
 {
+    LOG2(speed, m_subsamplingThreshold)
     if(speed < m_subsamplingThreshold){
         m_subsamplingFactor = 2;
         setSubSampling();
