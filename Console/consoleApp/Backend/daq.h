@@ -34,13 +34,11 @@ public slots:
 
 private:
     bool getData(new_image_callback_data_t data);
-    bool getData1(new_image_callback_data_t data);
     void logDecimation();
     void logRegisterValue(int line, int reg);
 
     void logAxErrorVerbose(int line, AxErr e, int count = 0);
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
-    static void NewImageArrived1(new_image_callback_data_t data, void* user_ptr);
 
 private:
     AOChandle session = NULL;

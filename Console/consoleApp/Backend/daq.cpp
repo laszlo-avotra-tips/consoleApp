@@ -80,47 +80,6 @@ void DAQ::logRegisterValue(int line, int registerNumber)
     }
 }
 
-void DAQ::NewImageArrived1(new_image_callback_data_t data, void *user_ptr)
-{
-    static uint32_t missedImageCount = 0;
-    static int count{0};
-
-    auto* daq = static_cast<DAQ*>(user_ptr);
-
-    if(daq)
-    {
-        uint32_t imaging, last_packet, last_frame, last_image, frames_since_sync;
-        uint32_t& dropped_packets = (daq->m_droppedPackets);
-
-        AxErr success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
-        if(success != AxErr::NO_AxERROR)
-        {
-            daq->logAxErrorVerbose(__LINE__, success);
-            return;
-        }
-
-//        if(imaging && (sLastImage != last_image))
-        if(!(last_image - data.image_number))
-        {
-            daq->m_missedImagesCountAccumulated += missedImageCount;
-            if(daq->m_daqDecimation && (++count % daq->m_daqDecimation == 0)){
-                LOG2(count, last_image);
-            }
-
-            if(daq->getData(data))
-            {
-                auto* sm = SignalModel::instance();
-                OCTFile::OctData_t* axsunData = sm->getOctData(gFrameNumber);
-//                daq->updateSector(axsunData);
-                if(!daq->m_disableRendering){
-                    sm->pushImageRenderingQueue(*axsunData);
-                }
-            }
-        }
-    }
-    return;
-}
-
 DAQ::~DAQ()
 {
 }
@@ -183,53 +142,6 @@ void DAQ::setSubsampling(int speed)
         setSubSampling();
     }
 }
-
-bool DAQ::getData1( new_image_callback_data_t data)
-{
-    bool isNewData{false};
-
-    const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-
-    gFrameNumber = ++m_daqCount % NUM_OF_FRAME_BUFFERS;
-
-    if(bytes_allocated >= data.required_buffer_size){
-        request_prefs_t prefs{ };
-        prefs.request_mode = AxRequestMode::RETRIEVE_TO_CALLER;
-        prefs.which_window = 1;
-        prefs.average_number = 1;
-        prefs.crop_width_total = 0;
-        image_info_t info{ };
-
-        OCTFile::OctData_t* axsunData = SignalModel::instance()->getOctData(gFrameNumber);
-
-        AxErr success = axRequestImage(data.session, data.image_number, prefs,
-                                       bytes_allocated, axsunData->acqData, &info);
-        if(success != AxErr::NO_AxERROR)
-        {
-            if(m_daqLevel){
-                logAxErrorVerbose(__LINE__, success, m_daqCount);
-            }
-        }
-        else
-        {
-            if(m_daqDecimation && m_daqLevel && (m_daqCount % m_daqDecimation == 0))
-            {
-                LOG3(m_daqCount, info.image_number, m_missedImagesCountAccumulated);
-            }
-            isNewData = true;
-        }
-
-        //gBufferLength = info.width;
-        axsunData->bufferLength = info.width;
-
-        // write in frame information for recording/playback
-        axsunData->frameCount = data.image_number;
-        axsunData->timeStamp = fileTimer.elapsed();;
-    }
-
-    return isNewData;
-}
-
 
 /*
  * startDaq
