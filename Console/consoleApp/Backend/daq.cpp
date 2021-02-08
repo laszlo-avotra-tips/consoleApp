@@ -69,7 +69,7 @@ void DAQ::initDaq()
 {
     AxErr retval;
 
-    fileTimer.start(); // start a timer to provide frame information for recording.
+    imageFrameTimer.start(); // start a timer to provide frame information
 
     // NewImageArrived - callback_function A user-supplied function to be called.
     // Pass NULL to un-register a callback function.
@@ -338,8 +338,10 @@ bool DAQ::getData(new_image_callback_data_t data)
     else
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
 
-//    if(!data.image_number) //forced trigger logging
-//        LOG1(msg);
+    if((m_daqLevel > 1 ) && !data.image_number) {
+        //forced trigger logging
+        LOG1(msg);
+    }
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         LOG1(msg);
@@ -349,7 +351,7 @@ bool DAQ::getData(new_image_callback_data_t data)
         axsunData->bufferLength = info.width;
 
         axsunData->frameCount = data.image_number;
-        axsunData->timeStamp = fileTimer.elapsed();;
+        axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
     }
 

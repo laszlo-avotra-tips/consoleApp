@@ -39,7 +39,7 @@ private:
 private:
     int m_frameNumber{FRAME_BUFFER_SIZE - 1};
     AOChandle session{nullptr};
-    QElapsedTimer fileTimer;
+    QElapsedTimer imageFrameTimer;
     char axMessage[256];
 
     int m_daqDecimation{0};
@@ -53,7 +53,6 @@ private:
 
     uint32_t m_droppedPackets{0};
     uint32_t m_missedImagesCountAccumulated{0};
-    float m_percentageOfMissedImages{0.0f};
     uint32_t m_lastDroppedPacketCount{0};
 
 };
