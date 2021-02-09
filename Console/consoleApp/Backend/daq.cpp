@@ -102,7 +102,7 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
-    setSubSamplingFactor();
+//    setSubSamplingFactor();
 
 }
 
