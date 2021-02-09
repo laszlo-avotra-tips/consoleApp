@@ -162,7 +162,7 @@ bool DAQ::startDaq()
             QThread::msleep(500); //TO DO - handle failure max number of retries 60 sec
         }
 
-        const int framesUntilForceTrigDefault {24};
+        const int framesUntilForceTrig1000 {23};
         /*
          * The number of frames for which the driver will wait for a Image_sync signal before timing out and entering Force Trigger mode.
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
@@ -179,8 +179,8 @@ bool DAQ::startDaq()
         //framesUntilForceTrig The number of frames for which the driver will wait for a Image_sync signal
         //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
         //Values outside the range of [2,100] will be automatically coerced into this range.
-        success = axSetTrigTimeout(session, framesUntilForceTrigDefault * 4);
-        LOG2(int(success),framesUntilForceTrigDefault);
+        success = axSetTrigTimeout(session, framesUntilForceTrig1000);
+        LOG2(int(success),framesUntilForceTrig1000);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
