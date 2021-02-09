@@ -23,43 +23,36 @@ public:
 
     IDAQ* getSignalSource() override;
 
-    bool isRunning;
-    QElapsedTimer frameTimer;
-    QElapsedTimer fileTimer;
     bool shutdownDaq() override;
 
-public slots:
-    void setSubSampling();
-    void setDisplay( float, int );
-
 private:
+    bool startDaq();
+    void setSubSamplingFactor();
     bool getData(new_image_callback_data_t data);
-    bool getData1(new_image_callback_data_t data);
-    void logDecimation();
+    void initLogLevelAndDecimation();
     void logRegisterValue(int line, int reg);
 
     void logAxErrorVerbose(int line, AxErr e, int count = 0);
+
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
-    static void NewImageArrived1(new_image_callback_data_t data, void* user_ptr);
 
 private:
-    AOChandle session = NULL;
+    int m_frameNumber{FRAME_BUFFER_SIZE - 1};
+    AOChandle session{nullptr};
+    QElapsedTimer imageFrameTimer;
     char axMessage[256];
-    uint32_t lastImageIdx;
-    int missedImgs;
-    bool startDaq();
-    uint16_t lastPolarLineIndexEntered;
+
     int m_daqDecimation{0};
-    int m_imageDecimation{0};
     int m_daqLevel{0};
     int m_daqCount{0};
     bool m_disableRendering{false};
+
     const int m_subsamplingThreshold{1000};
     int m_subsamplingFactor{2};
     int m_numberOfConnectedDevices {0};
+
     uint32_t m_droppedPackets{0};
     uint32_t m_missedImagesCountAccumulated{0};
-    float m_percentageOfMissedImages{0.0f};
     uint32_t m_lastDroppedPacketCount{0};
 
 };
