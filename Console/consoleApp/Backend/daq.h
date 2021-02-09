@@ -9,7 +9,9 @@
 #include "AxsunOCTCapture.h"
 #include "idaq.h"
 #include <cstdint>
+#include <map>
 
+using ForceTriggerTimeoutTable = std::map<int,int>;
 
 class DAQ: public IDAQ
 {
@@ -37,6 +39,15 @@ private:
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
 
 private:
+    const ForceTriggerTimeoutTable m_forceTriggerTimeoutTable
+    {//   rpm  | timeout
+        { 2000 ,   12   },
+        { 1000 ,   23   },
+        { 600  ,   20   },
+        { 800  ,   15   }
+    };
+    const int m_framesUntilForceTrigDefault{24};
+
     int m_frameNumber{FRAME_BUFFER_SIZE - 1};
     AOChandle session{nullptr};
     QElapsedTimer imageFrameTimer;
