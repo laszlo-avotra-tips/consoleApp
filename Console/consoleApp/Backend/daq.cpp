@@ -34,7 +34,6 @@ void DAQ::initLogLevelAndDecimation()
 {
     userSettings &settings = userSettings::Instance();
     m_daqDecimation = settings.getDaqIndexDecimation();
-    m_daqLevel = settings.getDaqLogLevel();
     m_disableRendering = settings.getDisableRendering();
 }
 
@@ -298,14 +297,10 @@ bool DAQ::getData(new_image_callback_data_t data)
         if(dropped_packets != m_lastDroppedPacketCount)
         {
             m_lastDroppedPacketCount = dropped_packets;
-            if(m_daqLevel){
-                LOG1(dropped_packets);
-            }
+            qs << "\tdropped_packets=" << dropped_packets;//todo1
         }
     } else {
-        if(m_daqLevel){
-            LOG1(int(success));
-        }
+        qs << "\tsucces=" << int(success);
     }
 
     // axGetImageInfo() not necessary here, since required buffer size and image number
@@ -338,7 +333,7 @@ bool DAQ::getData(new_image_callback_data_t data)
     else
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
 
-    if((m_daqLevel > 1 ) && !data.image_number) {
+    if((m_daqDecimation == 1 ) && !data.image_number) {
         //forced trigger logging
         LOG1(msg);
     }

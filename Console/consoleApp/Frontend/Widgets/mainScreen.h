@@ -90,7 +90,6 @@ private slots:
 
 public slots:
     void updateSector(OCTFile::OctData_t* frameData);
-    void updateSector1(OCTFile::OctData_t* frameData);
     void updateImage();
 
 private:
@@ -136,7 +135,5 @@ private:
     int m_imageFrame[2]{};
     bool startCount{false};
     int m_imageDecimation{0};
-    int m_imageLogLevel{0};
-
 };
 #endif // MAINSCREEN_H

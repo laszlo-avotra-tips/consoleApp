@@ -88,14 +88,11 @@ void userSettings::loadProfileSettings()
     daqIndexDecimation = profileSettings->value( "log/daqIndexDecimation", 0).toInt();
     LOG1(daqIndexDecimation);
 
-    imageLogLevel = profileSettings->value( "log/imageLogLevel", 0).toInt();
-    LOG1(imageLogLevel);
-
-    daqLogLevel = profileSettings->value( "log/daqLogLevel", 0).toInt();
-    LOG1(daqLogLevel);
-
-    disableRendering = profileSettings->value( "log/disableRendering", 0).toInt();
+    disableRendering = profileSettings->value( "control/disableRendering", 0).toInt();
     LOG1(disableRendering);
+
+    disableExternalMonitor = profileSettings->value( "control/disableExternalMonitor", 0).toInt();
+    LOG1(disableExternalMonitor);
 
     recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
@@ -111,6 +108,11 @@ void userSettings::loadProfileSettings()
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
 }
 
+int userSettings::getDisableExternalMonitor() const
+{
+    return disableExternalMonitor;
+}
+
 int userSettings::getDisableRendering() const
 {
     return disableRendering;
@@ -119,16 +121,6 @@ int userSettings::getDisableRendering() const
 void userSettings::setDisableRendering(int value)
 {
     disableRendering = value;
-}
-
-int userSettings::getDaqLogLevel() const
-{
-    return daqLogLevel;
-}
-
-int userSettings::getImageLogLevel() const
-{
-    return imageLogLevel;
 }
 
 int userSettings::getDaqIndexDecimation() const

@@ -187,12 +187,12 @@ public:
 
     int getDaqIndexDecimation() const;
 
-    int getImageLogLevel() const;
-
     int getDaqLogLevel() const;
 
     int getDisableRendering() const;
     void setDisableRendering(int value);
+
+    int getDisableExternalMonitor() const;
 
 private:
     void saveSettings();
@@ -209,9 +209,8 @@ private:
     bool invertOctColorEnabled;       //
     int  imageIndexDecimation;        //
     int  daqIndexDecimation;
-    int  imageLogLevel;
-    int  daqLogLevel;
     int  disableRendering;
+    int  disableExternalMonitor;
 
     int  recordingDurationMin;
     QDate m_serviceDate;

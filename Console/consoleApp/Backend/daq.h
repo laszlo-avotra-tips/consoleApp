@@ -43,7 +43,6 @@ private:
     char axMessage[256];
 
     int m_daqDecimation{0};
-    int m_daqLevel{0};
     int m_daqCount{0};
     bool m_disableRendering{false};
 
