@@ -84,7 +84,6 @@ void MainScreen::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
-//        DAQ::instance();
         DisplayManager::instance()->setScene(m_scene);
     }
 }

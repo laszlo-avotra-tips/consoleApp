@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 {
     QApplication app( argc, argv );
 
-    DAQ::instance();
+//    DAQ::instance();
     ScreenNavigator navigator;
     navigator.display();
 
