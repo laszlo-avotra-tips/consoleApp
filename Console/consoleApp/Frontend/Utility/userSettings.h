@@ -185,6 +185,15 @@ public:
     int getRecordingDurationMin() const;
     void setRecordingDurationMin(int value);
 
+    int getDaqIndexDecimation() const;
+
+    int getImageLogLevel() const;
+
+    int getDaqLogLevel() const;
+
+    int getDisableRendering() const;
+    void setDisableRendering(int value);
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -199,6 +208,11 @@ private:
     bool noiseReductionEnabled;       //
     bool invertOctColorEnabled;       //
     int  imageIndexDecimation;        //
+    int  daqIndexDecimation;
+    int  imageLogLevel;
+    int  daqLogLevel;
+    int  disableRendering;
+
     int  recordingDurationMin;
     QDate m_serviceDate;
     QStringList m_physicians;
