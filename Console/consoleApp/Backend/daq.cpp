@@ -121,6 +121,17 @@ void DAQ::setSubsampling(int speed)
         m_subsamplingFactor = 1;
         setSubSamplingFactor();
     }
+
+    //framesUntilForceTrig The number of frames for which the driver will wait for a Image_sync signal
+    //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
+    //Values outside the range of [2,100] will be automatically coerced into this range.
+    const int framesUntilForceTrig1000 {23};
+    AxErr success = axSetTrigTimeout(session, framesUntilForceTrig1000);
+    LOG2(int(success),framesUntilForceTrig1000);
+    if(success != AxErr::NO_AxERROR){
+        logAxErrorVerbose(__LINE__, success);
+    }
+    QThread::msleep(100);
 }
 
 /*
@@ -176,15 +187,15 @@ bool DAQ::startDaq()
         }
         QThread::msleep(100);
 
-        //framesUntilForceTrig The number of frames for which the driver will wait for a Image_sync signal
-        //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
-        //Values outside the range of [2,100] will be automatically coerced into this range.
-        success = axSetTrigTimeout(session, framesUntilForceTrig1000);
-        LOG2(int(success),framesUntilForceTrig1000);
-        if(success != AxErr::NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
-        }
-        QThread::msleep(100);
+//        //framesUntilForceTrig The number of frames for which the driver will wait for a Image_sync signal
+//        //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
+//        //Values outside the range of [2,100] will be automatically coerced into this range.
+//        success = axSetTrigTimeout(session, framesUntilForceTrig1000);
+//        LOG2(int(success),framesUntilForceTrig1000);
+//        if(success != AxErr::NO_AxERROR){
+//            logAxErrorVerbose(__LINE__, success);
+//        }
+//        QThread::msleep(100);
 
         logRegisterValue(__LINE__, 2);
         logRegisterValue(__LINE__, 5);
