@@ -19,10 +19,10 @@ int main(int argc, char *argv[])
 {
     QApplication app( argc, argv );
 
-    DAQ::instance();
     ScreenNavigator navigator;
     navigator.display();
 
+    DAQ::instance();
     app.exec();
 
     return 0;
