@@ -6,10 +6,9 @@
 #include "mainScreen.h"
 #include "deviceSettings.h"
 #include "util.h"
-#include "idaq.h"
+#include "daq.h"
 #include "fullCaseRecorder.h"
 #include "displayManager.h"
-#include "daqfactory.h"
 #include "sledsupport.h"
 
 #include <QDebug>
@@ -99,8 +98,8 @@ void StartScreen::on_pushButtonShutdown_clicked()
     auto& sled = SledSupport::Instance();
     sled.writeSerial("sr0\r");
 
-    auto idaq = daqfactory::instance()->getdaq();
-    idaq->shutdownDaq();
+    DAQ::instance()->shutdownDaq();
+
     QThread::sleep(1);
 }
 

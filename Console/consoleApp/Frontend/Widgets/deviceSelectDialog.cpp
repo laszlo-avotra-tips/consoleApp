@@ -8,9 +8,8 @@
 #include "deviceListModel.h"
 #include "deviceDelegate.h"
 #include "deviceDisplayModel.h"
-#include "idaq.h"
+#include "daq.h"
 
-#include <daqfactory.h>
 #include <QImage>
 #include <QIcon>
 #include <QStringListModel>
@@ -123,19 +122,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
 
 void DeviceSelectDialog::startDaq(MainScreen *ms)
 {
-    auto idaq = daqfactory::instance()->getdaq();
-
-    if(!idaq){
-        LOG( INFO, "Device not supported. OCT Console cancelled" )
-        return;
-    }
-    if(idaq){
-        if(idaq->getSignalSource()){
-            connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector, Qt::QueuedConnection);
-            idaq->initDaq();
-        }
-//        idaq->start();
-    }
+    DAQ::instance()->initDaq();
 }
 
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)

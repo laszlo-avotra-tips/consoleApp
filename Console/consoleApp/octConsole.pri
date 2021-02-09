@@ -82,8 +82,6 @@ HEADERS += \
     Frontend/Widgets/annotateoverlay.h \
     ../../Common/Include/backgroundmask.h \
     Backend/ftd2xx.h \
-    $$PWD/Backend/daqfactory.h \
-    $$PWD/Backend/idaq.h \
     $$PWD/Backend/signalmodel.h
 
 # Source files
@@ -157,7 +155,6 @@ SOURCES += \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/backgroundmask.cpp \
-    $$PWD/Backend/daqfactory.cpp \
     $$PWD/Backend/signalmodel.cpp
 
 win32:SOURCES += Utility/qtsingleapplication_win.cpp

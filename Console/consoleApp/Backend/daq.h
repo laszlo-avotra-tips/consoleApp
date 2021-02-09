@@ -7,23 +7,23 @@
 #include "scanconversion.h"
 #include "octFile.h"
 #include "AxsunOCTCapture.h"
-#include "idaq.h"
 #include <cstdint>
 
 
-class DAQ: public IDAQ
+class DAQ: public QObject
 {
     Q_OBJECT
 
 public:
+    static DAQ* instance();
     DAQ();
     ~DAQ();
-    void initDaq( void ) override;
-    void setSubsampling(int speed) override;
+    void initDaq( void );
+    void setSubsampling(int speed);
 
-    IDAQ* getSignalSource() override;
+    DAQ* getSignalSource();
 
-    bool shutdownDaq() override;
+    bool shutdownDaq();
 
 private:
     bool startDaq();
@@ -37,6 +37,7 @@ private:
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
 
 private:
+    static DAQ* m_instance;
     int m_frameNumber{FRAME_BUFFER_SIZE - 1};
     AOChandle session{nullptr};
     QElapsedTimer imageFrameTimer;

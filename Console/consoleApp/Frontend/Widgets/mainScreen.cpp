@@ -16,8 +16,7 @@
 #include "livescene.h"
 #include "scanconversion.h"
 #include "signalmodel.h"
-#include "daqfactory.h"
-#include "idaq.h"
+#include "daq.h"
 #include "Utility/userSettings.h"
 #include "Utility/clipListModel.h"
 #include "displayManager.h"
@@ -85,7 +84,7 @@ void MainScreen::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
-        daqfactory::instance()->getdaq();
+//        DAQ::instance();
         DisplayManager::instance()->setScene(m_scene);
     }
 }
@@ -156,10 +155,7 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
     if(speed >= 600){
         LOG1(speed);
 
-        auto idaq = daqfactory::instance()->getdaq();
-        if(idaq){
-            idaq->setSubsampling(speed);
-        }
+        DAQ::instance()->setSubsampling(speed);
 
         const QString qSpeed(QString::number(speed));
         const QByteArray baSpeed(qSpeed.toStdString().c_str());
@@ -233,10 +229,6 @@ void MainScreen::on_pushButtonEndCase_clicked()
         LOG1(m_recordingIsOn)
         ui->pushButtonRecord->click();
     }
-
-    auto idaq = daqfactory::instance()->getdaq();
-    bool isDisonnected = disconnect( idaq->getSignalSource(), &IDAQ::updateSector, this, &MainScreen::updateSector);
-    LOG1(isDisonnected);
 
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();

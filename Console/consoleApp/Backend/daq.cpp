@@ -16,9 +16,19 @@ extern "C" {
 }
 #endif
 
+DAQ* DAQ::m_instance{nullptr};
+
 /*
  * Constructor
  */
+DAQ *DAQ::instance()
+{
+    if(!m_instance){
+        m_instance = new DAQ();
+    }
+    return m_instance;
+}
+
 DAQ::DAQ()
 {
     initLogLevelAndDecimation();
@@ -107,7 +117,7 @@ void DAQ::initDaq()
 
 }
 
-IDAQ *DAQ::getSignalSource()
+DAQ *DAQ::getSignalSource()
 {
     return this;
 }
