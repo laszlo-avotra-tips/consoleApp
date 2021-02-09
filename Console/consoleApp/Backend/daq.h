@@ -16,8 +16,6 @@ class DAQ: public QObject
 
 public:
     static DAQ* instance();
-    DAQ();
-    ~DAQ();
     void initDaq( void );
     void setSubsampling(int speed);
 
@@ -26,6 +24,8 @@ public:
     bool shutdownDaq();
 
 private:
+    DAQ();
+    ~DAQ();
     bool startDaq();
     void setSubSamplingFactor();
     bool getData(new_image_callback_data_t data);
