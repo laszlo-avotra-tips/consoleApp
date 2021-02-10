@@ -37,6 +37,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
+    $$PWD/Frontend/Widgets/formDisk.h \
     $$PWD/Frontend/Widgets/formPmLogo.h \
     $$PWD/Frontend/Widgets/formSecondMonitor.h \
     $$PWD/Frontend/Widgets/iRotationIndicator.h \
@@ -117,6 +118,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
+    $$PWD/Frontend/Widgets/formDisk.cpp \
     $$PWD/Frontend/Widgets/formPmLogo.cpp \
     $$PWD/Frontend/Widgets/formSecondMonitor.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
@@ -171,6 +173,7 @@ FORMS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
+    $$PWD/Frontend/Widgets/formDisk.ui \
     $$PWD/Frontend/Widgets/formPmLogo.ui \
     $$PWD/Frontend/Widgets/formSecondMonitor.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
