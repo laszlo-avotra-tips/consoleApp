@@ -61,6 +61,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
+    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
 
     const double scaleUp = 2.1; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
@@ -76,6 +77,7 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_clipBuffer = new uint8_t[1024 * 1024];
 //    ui->pushButton->setEnabled(false);
+//    m_daqTimer.start(5);
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -469,6 +471,7 @@ void MainScreen::openDeviceSelectDialog()
         model->persistModel();
         m_scene->handleDeviceChange();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
+        m_daqTimer.start(3);
 
     } else {
         LOG1( "Cancelled")
@@ -722,6 +725,94 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
+    static uint32_t lastGoodImage = 0;
+    static uint32_t missedImageCountAcc = 0;
+    static int count{0};
+
+    if(!m_scanWorker){
+        m_scanWorker = new ScanConversion();
+    }
+
+    if(!frameData){
+        m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
+        m_imageLogLevel = userSettings::Instance().getImageLogLevel();
+       auto* sm = SignalModel::instance();
+       auto val = sm->frontImageRenderingQueue();
+       if(val.first){
+           auto& frame = val.second;
+           sm->popImageRenderingQueue();
+           uint32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+           missedImageCountAcc += missedImageCount;
+           lastGoodImage = frame.frameCount;
+           if(m_imageLogLevel)
+           {
+               LOG4(frame.frameCount, lastGoodImage, missedImageCount, missedImageCountAcc)
+           }
+           if(m_imageDecimation && (++count % m_imageDecimation == 0)){
+               float percent = 100.0f * missedImageCountAcc / frame.frameCount;
+                LOG3(frame.frameCount, missedImageCountAcc, percent);
+           }
+           if(m_scene)
+           {
+               QImage* image = m_scene->sectorImage();
+
+               frame.dispData = image->bits();
+               auto bufferLength = frame.bufferLength;
+
+               m_scanWorker->warpData( &frame, bufferLength);
+
+               if(m_scanWorker->isReady){
+
+                   if(image && frame.dispData){
+
+                       QString activePassiveValue{"ACTIVE"};
+                       auto& sled = SledSupport::Instance();
+
+                       int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
+                       if(lastRunningState == 3)
+                       {
+                           activePassiveValue = "PASSIVE";
+                       }
+                       else if(lastRunningState == 1)
+                       {
+                           activePassiveValue = "ACTIVE";
+                       }
+
+                       const QDateTime currentTime = QDateTime::currentDateTime();
+                       const QString timeLabel{currentTime.toString("hh:mm:ss")};
+                       const auto& dev = deviceSettings::Instance().current();
+
+                       if(!dev->isBiDirectional()){
+                           activePassiveValue = QString("");
+                       }
+
+                       auto devName = dev->getSplitDeviceName();
+                       QStringList names = devName.split("\n");
+                       const QString catheterName{names[0]};
+                       const QString cathalogName{names[1]};
+
+                       emit updateRecorder(frame.dispData, //clipData.dispData
+                                           catheterName.toLatin1(),cathalogName.toLatin1(),
+                                           activePassiveValue.toLatin1(),
+                                           timeLabel.toLatin1(),
+                                           1024,1024);
+
+                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+                       if(pixmap){
+                           QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                           pixmap->setPixmap(tmpPixmap);
+                       }
+                       m_scene->paintOverlay();
+                   }
+               }
+           }
+       }
+    }
+}
+
+void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
+{
     static int missedImagesTotal {0};
     static int dispCount{0};
     static int frame0{0};
@@ -742,13 +833,16 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
             startCount = !m_numberOfMissedImages[0] && !m_numberOfMissedImages[1];
             missedImagesTotal = 0;
             frame0 = frameData->frameCount;;
-            m_decimation = userSettings::Instance().getImageIndexDecimation();
+            m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
+            m_imageLogLevel = userSettings::Instance().getImageLogLevel();
         }
 
-        if(startCount && m_decimation && (frameData->frameCount > 32)){
+        if(startCount && (m_imageDecimation > 1) && (frameData->frameCount > 32)){
             missedImagesTotal += m_numberOfMissedImages[0];
-//            LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
-            if(++dispCount % m_decimation == 0) {
+            if(m_imageLogLevel >= 2) {
+                LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
+            }
+            if((++dispCount % m_imageDecimation) == 0) {
                 percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
                 LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);
             }
@@ -759,7 +853,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         QImage* image = m_scene->sectorImage();
 
         frameData->dispData = image->bits();
-        auto bufferLength = sm->getBufferLength();
+        auto bufferLength = frameData->bufferLength;
 
         m_scanWorker->warpData( frameData, bufferLength);
 
@@ -813,6 +907,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
             }
         }
     }
+}
+
+void MainScreen::updateImage()
+{
+    updateSector(nullptr);
 }
 
 void MainScreen::on_pushButton_clicked()

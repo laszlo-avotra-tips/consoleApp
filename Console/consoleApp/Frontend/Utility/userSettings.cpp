@@ -82,8 +82,20 @@ void userSettings::loadVarSettings()
 
 void userSettings::loadProfileSettings()
 {
-    imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 0).toInt();
-    LOG1(imageIndexDecimation)
+    imageIndexDecimation = profileSettings->value( "log/imageIndexDecimation", 1).toInt();
+    LOG1(imageIndexDecimation);
+
+    daqIndexDecimation = profileSettings->value( "log/daqIndexDecimation", 0).toInt();
+    LOG1(daqIndexDecimation);
+
+    imageLogLevel = profileSettings->value( "log/imageLogLevel", 0).toInt();
+    LOG1(imageLogLevel);
+
+    daqLogLevel = profileSettings->value( "log/daqLogLevel", 0).toInt();
+    LOG1(daqLogLevel);
+
+    disableRendering = profileSettings->value( "log/disableRendering", 0).toInt();
+    LOG1(disableRendering);
 
     recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
@@ -97,6 +109,31 @@ void userSettings::loadProfileSettings()
     m_oct_firmware_version = profileSettings->value( "subSystemVersion/oct_firmware_version", "").toString();
     m_interface_hw_version = profileSettings->value( "subSystemVersion/interface_hw_version", "").toString();
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
+}
+
+int userSettings::getDisableRendering() const
+{
+    return disableRendering;
+}
+
+void userSettings::setDisableRendering(int value)
+{
+    disableRendering = value;
+}
+
+int userSettings::getDaqLogLevel() const
+{
+    return daqLogLevel;
+}
+
+int userSettings::getImageLogLevel() const
+{
+    return imageLogLevel;
+}
+
+int userSettings::getDaqIndexDecimation() const
+{
+    return daqIndexDecimation;
 }
 
 int userSettings::getRecordingDurationMin() const

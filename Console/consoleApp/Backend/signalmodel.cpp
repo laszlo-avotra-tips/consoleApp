@@ -50,16 +50,6 @@ void SignalModel::setStandardDepth_mm(const cl_float &standardDepth_mm)
     m_standardDepth_mm = standardDepth_mm;
 }
 
-size_t SignalModel::getBufferLength() const
-{
-    return m_bufferLength;
-}
-
-void SignalModel::setBufferLength(const size_t &bufferLength)
-{
-    m_bufferLength = bufferLength;
-}
-
 const cl_int* SignalModel::getSectorHeight_px() const
 {
     return &m_sectorHeight_px;
