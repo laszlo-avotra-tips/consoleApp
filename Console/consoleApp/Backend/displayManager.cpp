@@ -71,7 +71,8 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
 {
     LOG1(name);
 
-    if(isNonPrimaryMonitorPresent()){
+    if(isNonPrimaryMonitorPresent())
+    {
         auto it = m_widgetContainer.find(name);
         if(it != m_widgetContainer.end()){
             m_widgetOnTheSecondMonitor->hide();
@@ -89,14 +90,15 @@ void DisplayManager::showOnTheSecondMonitor(QString name)
 void DisplayManager::initSecondMonitor(QString name)
 {
     LOG1(name);
-    if(isNonPrimaryMonitorPresent()){
+//    if(isNonPrimaryMonitorPresent())
+    {
         auto it = m_widgetContainer.find(name);
         if(it != m_widgetContainer.end()){
             if(it->second){
                 m_widgetOnTheSecondMonitor = it->second;
                 m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
                 m_widgetOnTheSecondMonitor->move(3240,0);
-                m_widgetOnTheSecondMonitor->showFullScreen();
+//                m_widgetOnTheSecondMonitor->showFullScreen();
                 LOG1(name)
             }
         }
@@ -114,7 +116,6 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 
     m_diplaySettingsMonitor->setArguments(m_programArguments);
     m_diplaySettingsMonitor->setProgram(m_programName);
-
     if(!userSettings::Instance().getDisableExternalMonitor()){
         m_diplaySettingsMonitor->start();
     }
