@@ -13,7 +13,7 @@ public:
     virtual ~IDAQ(){}
 
     virtual void initDaq() = 0;
-    virtual void setSubsampling(int speed) = 0;
+    virtual void setSubsamplingAndForcedTrigger(int speed) = 0;
 
     virtual IDAQ* getSignalSource() { return nullptr;}
     virtual bool shutdownDaq() = 0;

@@ -158,7 +158,7 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
 
         auto idaq = daqfactory::instance()->getdaq();
         if(idaq){
-            idaq->setSubsampling(speed);
+            idaq->setSubsamplingAndForcedTrigger(speed);
         }
 
         const QString qSpeed(QString::number(speed));

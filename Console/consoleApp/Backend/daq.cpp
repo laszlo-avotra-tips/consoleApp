@@ -111,7 +111,7 @@ IDAQ *DAQ::getSignalSource()
     return this;
 }
 
-void DAQ::setSubsampling(int speed)
+void DAQ::setSubsamplingAndForcedTrigger(int speed)
 {
     //set sbsampling
     LOG2(speed, m_subsamplingThreshold)

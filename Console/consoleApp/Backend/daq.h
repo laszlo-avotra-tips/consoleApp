@@ -21,7 +21,7 @@ public:
     DAQ();
     ~DAQ();
     void initDaq( void ) override;
-    void setSubsampling(int speed) override;
+    void setSubsamplingAndForcedTrigger(int speed) override;
 
     IDAQ* getSignalSource() override;
 
