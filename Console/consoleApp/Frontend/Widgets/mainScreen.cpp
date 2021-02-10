@@ -735,7 +735,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
     if(!frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
-        m_imageLogLevel = userSettings::Instance().getImageLogLevel();
        auto* sm = SignalModel::instance();
        auto val = sm->frontImageRenderingQueue();
        if(val.first){
@@ -744,13 +743,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
            uint32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
            missedImageCountAcc += missedImageCount;
            lastGoodImage = frame.frameCount;
-           if(m_imageLogLevel)
-           {
-               LOG4(frame.frameCount, lastGoodImage, missedImageCount, missedImageCountAcc)
-           }
            if(m_imageDecimation && (++count % m_imageDecimation == 0)){
                float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-                LOG3(frame.frameCount, missedImageCountAcc, percent);
+               LOG4(frame.frameCount, missedImageCount, missedImageCountAcc, percent);
            }
            if(m_scene)
            {
@@ -806,104 +801,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        m_scene->paintOverlay();
                    }
                }
-           }
-       }
-    }
-}
-
-void MainScreen::updateSector1(OCTFile::OctData_t *frameData)
-{
-    static int missedImagesTotal {0};
-    static int dispCount{0};
-    static int frame0{0};
-
-    float percent{0.0f};
-    if(!m_scanWorker){
-        m_scanWorker = new ScanConversion();
-    }
-    if(frameData && m_scene && m_scanWorker){
-        //0,1
-        m_imageFrame[1] = m_imageFrame[0];
-        m_imageFrame[0] = frameData->frameCount;
-
-        m_numberOfMissedImages[1] = m_numberOfMissedImages[0];
-        m_numberOfMissedImages[0] = m_imageFrame[0] - m_imageFrame[1] - 1;
-
-        if(!startCount){
-            startCount = !m_numberOfMissedImages[0] && !m_numberOfMissedImages[1];
-            missedImagesTotal = 0;
-            frame0 = frameData->frameCount;;
-            m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
-            m_imageLogLevel = userSettings::Instance().getImageLogLevel();
-        }
-
-        if(startCount && (m_imageDecimation > 1) && (frameData->frameCount > 32)){
-            missedImagesTotal += m_numberOfMissedImages[0];
-            if(m_imageLogLevel >= 2) {
-                LOG3(m_imageFrame[0],m_numberOfMissedImages[0],missedImagesTotal);
-            }
-            if((++dispCount % m_imageDecimation) == 0) {
-                percent = 100.0f * missedImagesTotal / float(frameData->frameCount - frame0);
-                LOG4(frameData->frameCount, frameData->timeStamp, missedImagesTotal, percent);
-            }
-        }
-
-        const auto* sm =  SignalModel::instance();
-
-        QImage* image = m_scene->sectorImage();
-
-        frameData->dispData = image->bits();
-        auto bufferLength = frameData->bufferLength;
-
-        m_scanWorker->warpData( frameData, bufferLength);
-
-//        OCTFile::OctData_t clipData(*frameData);
-//        clipData.dispData = m_clipBuffer;
-//        memcpy(m_clipBuffer,frameData->dispData,1024*1024);
-
-        if(m_scanWorker->isReady){
-
-            if(image && frameData && frameData->dispData){
-
-                QString activePassiveValue{"ACTIVE"};
-                auto& sled = SledSupport::Instance();
-
-                int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
-                if(lastRunningState == 3)
-                {
-                    activePassiveValue = "PASSIVE";
-                }
-                else if(lastRunningState == 1)
-                {
-                    activePassiveValue = "ACTIVE";
-                }
-
-                const QDateTime currentTime = QDateTime::currentDateTime();
-                const QString timeLabel{currentTime.toString("hh:mm:ss")};
-                const auto& dev = deviceSettings::Instance().current();
-
-                if(!dev->isBiDirectional()){
-                    activePassiveValue = QString("");
-                }
-
-                auto devName = dev->getSplitDeviceName();
-                QStringList names = devName.split("\n");
-                const QString catheterName{names[0]};
-                const QString cathalogName{names[1]};
-
-                emit updateRecorder(frameData->dispData, //clipData.dispData
-                                    catheterName.toLatin1(),cathalogName.toLatin1(),
-                                    activePassiveValue.toLatin1(),
-                                    timeLabel.toLatin1(),
-                                    1024,1024);
-
-                QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-
-                if(pixmap){
-                    QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-                    pixmap->setPixmap(tmpPixmap);
-                }
-                m_scene->paintOverlay();
             }
         }
     }

@@ -3,6 +3,7 @@
 #include "formSecondMonitor.h"
 #include "livescene.h"
 #include "formPmLogo.h"
+#include "Utility/userSettings.h"
 
 #include <QFileSystemWatcher>
 #include <QProcess>
@@ -115,7 +116,9 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 
     m_diplaySettingsMonitor->setArguments(m_programArguments);
     m_diplaySettingsMonitor->setProgram(m_programName);
-    m_diplaySettingsMonitor->start();
+    if(!userSettings::Instance().getDisableExternalMonitor()){
+        m_diplaySettingsMonitor->start();
+    }
 
     m_liveSceneView = std::make_unique<LiveSceneView>();
     m_pmLogo = std::make_unique<FormPmLogo>();

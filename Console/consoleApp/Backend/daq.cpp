@@ -34,7 +34,6 @@ void DAQ::initLogLevelAndDecimation()
 {
     userSettings &settings = userSettings::Instance();
     m_daqDecimation = settings.getDaqIndexDecimation();
-    m_daqLevel = settings.getDaqLogLevel();
     m_disableRendering = settings.getDisableRendering();
 }
 
@@ -103,7 +102,7 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
-    setSubSamplingFactor();
+//    setSubSamplingFactor();
 
 }
 
@@ -114,6 +113,7 @@ IDAQ *DAQ::getSignalSource()
 
 void DAQ::setSubsampling(int speed)
 {
+    //set sbsampling
     LOG2(speed, m_subsamplingThreshold)
     if(speed < m_subsamplingThreshold){
         m_subsamplingFactor = 2;
@@ -122,6 +122,29 @@ void DAQ::setSubsampling(int speed)
         m_subsamplingFactor = 1;
         setSubSamplingFactor();
     }
+
+    //framesUntilForceTrig The number of frames for which the driver will wait for a Image_sync signal
+    //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
+    //Values outside the range of [2,100] will be automatically coerced into this range.
+    //    const ForceTriggerTimeoutTable m_forceTriggerTimeoutTable
+    //    {//   rpm  | timeout
+    //        { 2000 ,   12   },
+    //        { 1000 ,   23   },
+    //        { 600  ,   20   },
+    //        { 800  ,   15   }
+    //    };
+    int framesUntilForceTrig = m_framesUntilForceTrigDefault;
+    const auto& line = m_forceTriggerTimeoutTable.find(speed);
+    if(line != m_forceTriggerTimeoutTable.end()){
+        framesUntilForceTrig = line->second;
+    }
+
+    AxErr success = axSetTrigTimeout(session, framesUntilForceTrig);
+    LOG3(int(success), speed, framesUntilForceTrig);
+    if(success != AxErr::NO_AxERROR){
+        logAxErrorVerbose(__LINE__, success);
+    }
+    QThread::msleep(100);
 }
 
 /*
@@ -163,7 +186,6 @@ bool DAQ::startDaq()
             QThread::msleep(500); //TO DO - handle failure max number of retries 60 sec
         }
 
-        const int framesUntilForceTrigDefault {24};
         /*
          * The number of frames for which the driver will wait for a Image_sync signal before timing out and entering Force Trigger mode.
          * Defaults to 24 frames at session creation.  Values outside the range of [2,100] will be automatically coerced into this range.
@@ -172,16 +194,6 @@ bool DAQ::startDaq()
         QThread::msleep(100);
 
         success = axSelectInterface(session, AxInterface::GIGABIT_ETHERNET);
-        if(success != AxErr::NO_AxERROR){
-            logAxErrorVerbose(__LINE__, success);
-        }
-        QThread::msleep(100);
-
-        //framesUntilForceTrig The number of frames for which the driver will wait for a Image_sync signal
-        //before timing out and entering Force Trigger mode.  Defaults to 24 frames at session creation.
-        //Values outside the range of [2,100] will be automatically coerced into this range.
-        success = axSetTrigTimeout(session, framesUntilForceTrigDefault * 4);
-        LOG2(int(success),framesUntilForceTrigDefault);
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
         }
@@ -298,14 +310,10 @@ bool DAQ::getData(new_image_callback_data_t data)
         if(dropped_packets != m_lastDroppedPacketCount)
         {
             m_lastDroppedPacketCount = dropped_packets;
-            if(m_daqLevel){
-                LOG1(dropped_packets);
-            }
+            qs << "\tdropped_packets=" << dropped_packets;//todo1
         }
     } else {
-        if(m_daqLevel){
-            LOG1(int(success));
-        }
+        qs << "\tsucces=" << int(success);
     }
 
     // axGetImageInfo() not necessary here, since required buffer size and image number
@@ -338,7 +346,7 @@ bool DAQ::getData(new_image_callback_data_t data)
     else
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
 
-    if((m_daqLevel > 1 ) && !data.image_number) {
+    if((m_daqDecimation == 1 ) && !data.image_number) {
         //forced trigger logging
         LOG1(msg);
     }
