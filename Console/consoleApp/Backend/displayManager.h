@@ -40,7 +40,7 @@ signals:
 
 public slots:
     void monitorEvent(const QString& fileName);
-    void showSecondMonitor(bool isNonPrimaryMonitorPresent);
+    void showHideSecondMonitor(bool isNonPrimaryMonitorPresent);
 
 private slots:
     void programFinished(int exitCode, QProcess::ExitStatus exitStatus);

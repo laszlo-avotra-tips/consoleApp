@@ -39,7 +39,7 @@ void DisplayManager::monitorEvent(const QString &fileName)
     parseEventFile(fileName);
 }
 
-void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
+void DisplayManager::showHideSecondMonitor(bool isNonPrimaryMonitorPresent)
 {
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
@@ -70,21 +70,17 @@ void DisplayManager::initWidgetForTheSecondMonitor(QString name)
 {
     LOG1(name);
 
-//    if(isNonPrimaryMonitorPresent())
-//    {
-        auto it = m_widgetContainer.find(name);
-        if(it != m_widgetContainer.end()){
-            m_widgetOnTheSecondMonitor->hide();
-            //find widget by name assign to m_widgetOnTheSecondMonitor
-            if(it->second){
-                m_widgetOnTheSecondMonitor = it->second;
-                m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-                m_widgetOnTheSecondMonitor->move(3240,0);
-//                m_widgetOnTheSecondMonitor->showFullScreen();
-            }
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        m_widgetOnTheSecondMonitor->hide();
+        //find widget by name assign to m_widgetOnTheSecondMonitor
+        if(it->second){
+            m_widgetOnTheSecondMonitor = it->second;
+            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
+            m_widgetOnTheSecondMonitor->move(3240,0);
         }
-//    }
-         emit nonPrimaryMonitorIsPresent(isNonPrimaryMonitorPresent());
+    }
+    emit nonPrimaryMonitorIsPresent(isNonPrimaryMonitorPresent());
 }
 
 void DisplayManager::initSecondMonitor(QString name)
@@ -121,7 +117,7 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_widgetContainer["logo"] = m_pmLogo.get();
     m_widgetContainer["liveData"] = m_liveSceneView.get();
 
-    connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
+    connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showHideSecondMonitor);
 
     initSecondMonitor("logo");
 
