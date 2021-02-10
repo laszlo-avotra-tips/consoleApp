@@ -172,4 +172,5 @@ void StartScreen::on_pushButtonStart_pressed()
 {
     m_isPressAndHold = false;
 //    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
+    DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
 }

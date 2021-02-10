@@ -17,6 +17,7 @@ class LiveSceneView;
 class FormPmLogo;
 class QGraphicsView;
 class liveScene;
+class OpaqueScreen;
 
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
@@ -51,6 +52,7 @@ private:
     std::unique_ptr<QFileSystemWatcher> m_eventFileWatcher{nullptr};
     std::unique_ptr<LiveSceneView> m_liveSceneView{nullptr};
     std::unique_ptr<FormPmLogo> m_pmLogo{nullptr};
+    std::unique_ptr<OpaqueScreen> m_opaqueScreen{nullptr};
     QWidget* m_widgetOnTheSecondMonitor{nullptr};
 
     const QString m_programName{R"(MonWMIServer.exe)"};
