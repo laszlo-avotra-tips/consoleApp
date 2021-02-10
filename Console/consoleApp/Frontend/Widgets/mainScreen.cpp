@@ -228,7 +228,7 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
-    DisplayManager::instance()->showOnTheSecondMonitor("logo");
+    DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
         ui->pushButtonRecord->click();
@@ -470,7 +470,7 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
-        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
         m_daqTimer.start(3);
 
     } else {
