@@ -98,6 +98,11 @@ void DisplayManager::initSecondMonitor(QString name)
     }
 }
 
+void DisplayManager::setWindowTitle(const QString &msg)
+{
+    m_widgetOnTheSecondMonitor->setWindowTitle(msg);
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

@@ -15,6 +15,9 @@ public:
     explicit FormDisk(QWidget *parent = nullptr);
     ~FormDisk();
 
+private slots:
+    void setInfoLabel(const QString& msg);
+
 private:
     Ui::FormDisk *ui;
 };

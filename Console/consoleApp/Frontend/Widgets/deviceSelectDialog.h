@@ -26,6 +26,7 @@ public:
     bool isComplete() const;
 
 private:
+    void showEvent(QShowEvent* se) override;
     void populateList(void);
     void initializeSelectedDevice();
 
