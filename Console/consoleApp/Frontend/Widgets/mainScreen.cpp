@@ -799,7 +799,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        if(pixmap && !m_disableRendering){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
-//                           m_scene->paintOverlay();
+                           m_scene->paintOverlay();
                        }
                    }
                }
