@@ -14,6 +14,8 @@ class FormDisk : public QWidget
 public:
     explicit FormDisk(QWidget *parent = nullptr);
     ~FormDisk();
+    void setRuntimeLabel(const QString &msg);
+    void setCurrentTime(const QString &msg);
 
 private slots:
     void setInfoLabel(const QString& msg);

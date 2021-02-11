@@ -36,6 +36,8 @@ public:
     void initWidgetForTheSecondMonitor(QString name);
     void initSecondMonitor(QString name);
     void setWindowTitle(const QString& msg);
+    void setRuntimeLabel(const QString& msg);
+    void setCurrentTime(const QString& msg);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

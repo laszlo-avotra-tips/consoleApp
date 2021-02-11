@@ -149,6 +149,7 @@ void MainScreen::setCurrentTime()
     m_currentTime = QTime::currentTime();
     QString timeString = m_currentTime.toString("hh:mm:ss");
     ui->labelCurrentTime->setText(timeString);
+    DisplayManager::instance()->setCurrentTime(timeString);
 }
 
 void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
@@ -537,8 +538,10 @@ void MainScreen::updateTime()
 
         if(runtimeDisplay.isEmpty() || !m_runTime.isValid()){
              ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
+             DisplayManager::instance()->setRuntimeLabel(QString("Runtime: 0:00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + runtimeDisplay);
+            DisplayManager::instance()->setRuntimeLabel(QString("Runtime: ") + runtimeDisplay);
         }
     }
 

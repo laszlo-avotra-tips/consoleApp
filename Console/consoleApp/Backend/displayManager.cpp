@@ -103,6 +103,22 @@ void DisplayManager::setWindowTitle(const QString &msg)
     m_widgetOnTheSecondMonitor->setWindowTitle(msg);
 }
 
+void DisplayManager::setRuntimeLabel(const QString &msg)
+{
+    if(m_pmDisk)
+    {
+        m_pmDisk->setRuntimeLabel(msg);
+    }
+}
+
+void DisplayManager::setCurrentTime(const QString &msg)
+{
+    if(m_pmDisk)
+    {
+        m_pmDisk->setCurrentTime(msg);
+    }
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

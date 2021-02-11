@@ -78,7 +78,7 @@ void DeviceSelectDialog::showEvent(QShowEvent *se)
     if(se->type() == QEvent::Show){
         LOG1("show");
         DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
-        DisplayManager::instance()->setWindowTitle("DeviceSelectDialog");
+        DisplayManager::instance()->setWindowTitle("DEVICE SELECTION IN PROCESS");
         WidgetContainer::instance()->setIsNewCase(true);
     }
 }
