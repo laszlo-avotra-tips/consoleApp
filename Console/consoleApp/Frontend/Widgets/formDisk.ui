@@ -51,8 +51,8 @@ border: 0px;
    </property>
    <property name="iconSize">
     <size>
-     <width>1024</width>
-     <height>1024</height>
+     <width>1536</width>
+     <height>1536</height>
     </size>
    </property>
    <property name="flat">
