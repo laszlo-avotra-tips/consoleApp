@@ -29,6 +29,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QGraphicsView>
+#include <QBitmap>
 #include <memory>
 
 MainScreen::MainScreen(QWidget *parent)
@@ -796,7 +797,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
                        if(pixmap && !m_disableRendering){
-                           QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                           QBitmap tmpPixmap = QBitmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
                            m_scene->paintOverlay();
                        }
