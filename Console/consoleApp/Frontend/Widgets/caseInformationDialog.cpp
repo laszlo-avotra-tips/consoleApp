@@ -125,7 +125,6 @@ void CaseInformationDialog::showEvent(QShowEvent *se)
         DisplayManager::instance()->setWindowTitle("CaseInformationDialog");
         WidgetContainer::instance()->setIsNewCase(true);
     }
-
 }
 
 void CaseInformationDialog::handleBack()

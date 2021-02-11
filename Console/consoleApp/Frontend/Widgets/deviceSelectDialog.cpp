@@ -9,6 +9,8 @@
 #include "deviceDelegate.h"
 #include "deviceDisplayModel.h"
 #include "idaq.h"
+#include "displayManager.h"
+#include "defaults.h"
 
 #include <daqfactory.h>
 #include <QImage>
@@ -18,6 +20,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include "Frontend/Utility/octFrameRecorder.h"
+#include <QShowEvent>
 
 DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -26,6 +29,11 @@ DeviceSelectDialog::DeviceSelectDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
     initDialog();
+
+    const int xc = ControlScreenWidth / 2 - width() / 2;
+    const int yc = ControlScreenHeight / 2 - height() / 2;
+    move(xc,yc);
+
 }
 
 DeviceSelectDialog::~DeviceSelectDialog()
@@ -62,6 +70,17 @@ void DeviceSelectDialog::initDialog()
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
 
     populateList();
+}
+
+void DeviceSelectDialog::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    if(se->type() == QEvent::Show){
+        LOG1("show");
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
+        DisplayManager::instance()->setWindowTitle("DeviceSelectDialog");
+        WidgetContainer::instance()->setIsNewCase(true);
+    }
 }
 
 void DeviceSelectDialog::populateList()
