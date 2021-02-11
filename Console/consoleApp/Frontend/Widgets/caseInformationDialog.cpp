@@ -6,6 +6,7 @@
 #include "caseInformationModel.h"
 #include "logger.h"
 #include "displayManager.h"
+#include "defaults.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -36,6 +37,10 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &CaseInformationDialog::handleLocationSelect);
 
     initDialog(param);
+
+    const int xc = ControlScreenWidth / 2 - width() / 2;
+    const int yc = ControlScreenHeight / 2 - height() / 2;
+    move(xc,yc);
 }
 
 CaseInformationDialog::~CaseInformationDialog()
