@@ -145,7 +145,7 @@ border-radius: 40px;
     </rect>
    </property>
    <property name="text">
-    <string>Runtime: 05:10</string>
+    <string>Runtime: 0:00:00</string>
    </property>
   </widget>
  </widget>
