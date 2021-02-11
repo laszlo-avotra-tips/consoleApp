@@ -59,7 +59,90 @@ border: 0px;
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>27</x>
+     <y>34</y>
+     <width>192</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../octConsole.qrc">
+     <normaloff>:/octConsole/captureLogo.png</normaloff>:/octConsole/captureLogo.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>192</width>
+     <height>48</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelInfo">
+   <property name="geometry">
+    <rect>
+     <x>332</x>
+     <y>93</y>
+     <width>615</width>
+     <height>88</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CASE INFORMATION IN PROCESS</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTime">
+   <property name="geometry">
+    <rect>
+     <x>1078</x>
+     <y>35</y>
+     <width>112</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>09:15:59</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelLive">
+   <property name="geometry">
+    <rect>
+     <x>1195</x>
+     <y>37</y>
+     <width>58</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LIVE</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelRunTime">
+   <property name="geometry">
+    <rect>
+     <x>1074</x>
+     <y>68</y>
+     <width>184</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Runtime: 05:10</string>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../octConsole.qrc"/>
+ </resources>
  <connections/>
 </ui>
