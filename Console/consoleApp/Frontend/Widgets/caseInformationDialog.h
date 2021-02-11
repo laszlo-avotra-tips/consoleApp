@@ -99,6 +99,12 @@ private slots:
 
 private:
     /*!
+     * \brief showEvent
+     * \param se
+     */
+    void showEvent(QShowEvent* se) override;
+
+    /*!
      * \brief enableNext - enable/disable the < NEXT> > button
      * \param isNext - enable if true, disable otherwise
      */

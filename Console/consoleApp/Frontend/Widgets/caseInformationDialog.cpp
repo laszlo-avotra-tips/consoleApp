@@ -3,14 +3,16 @@
 #include "Utility/widgetcontainer.h"
 #include "consoleLineEdit.h"
 #include "selectDialog.h"
+#include "caseInformationModel.h"
+#include "logger.h"
+#include "displayManager.h"
 
 #include <QDateTime>
 #include <QTimer>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
-#include "caseInformationModel.h"
-#include "logger.h"
+#include <QShowEvent>
 
 
 CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<QString> *param) :
@@ -107,6 +109,17 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
         m_model.setSelectedLocation("");
         m_model.setPatientId("");
     }
+}
+
+void CaseInformationDialog::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    if(se->type() == QEvent::Show){
+        LOG1("show");
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
+        WidgetContainer::instance()->setIsNewCase(true);
+    }
+
 }
 
 void CaseInformationDialog::handleBack()
