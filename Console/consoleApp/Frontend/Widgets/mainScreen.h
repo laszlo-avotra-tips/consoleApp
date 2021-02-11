@@ -135,5 +135,7 @@ private:
     int m_imageFrame[2]{};
     bool startCount{false};
     int m_imageDecimation{0};
+    bool m_disableRendering{false};
+
 };
 #endif // MAINSCREEN_H

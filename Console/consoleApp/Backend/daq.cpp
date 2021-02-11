@@ -34,7 +34,6 @@ void DAQ::initLogLevelAndDecimation()
 {
     userSettings &settings = userSettings::Instance();
     m_daqDecimation = settings.getDaqIndexDecimation();
-    m_disableRendering = settings.getDisableRendering();
 }
 
 void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode, int count)
@@ -355,7 +354,7 @@ bool DAQ::getData(new_image_callback_data_t data)
         LOG1(msg);
     }
 
-    if(!m_disableRendering && data.image_number && !(last_image - data.image_number)){
+    if(data.image_number && !(last_image - data.image_number)){
         axsunData->bufferLength = info.width;
 
         axsunData->frameCount = data.image_number;

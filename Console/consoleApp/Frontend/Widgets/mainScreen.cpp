@@ -735,6 +735,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
     if(!frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
+        m_disableRendering = userSettings::Instance().getDisableRendering();
        auto* sm = SignalModel::instance();
        auto val = sm->frontImageRenderingQueue();
        if(val.first){
@@ -747,7 +748,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                float percent = 100.0f * missedImageCountAcc / frame.frameCount;
                LOG4(frame.frameCount, missedImageCount, missedImageCountAcc, percent);
            }
-           if(m_scene)
+           if(m_scene && !m_disableRendering)
            {
                QImage* image = m_scene->sectorImage();
 
