@@ -340,7 +340,7 @@ bool DAQ::getData(new_image_callback_data_t data)
            QThread::usleep(10);
         }
         else
-            qs << "axRequestImage reported: " << int(retval);
+            qs << "\taxRequestImage reported: " << int(retval);
     }
     else
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
