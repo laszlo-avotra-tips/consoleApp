@@ -51,8 +51,8 @@ border-radius: 40px;
     <rect>
      <x>27</x>
      <y>34</y>
-     <width>500</width>
-     <height>100</height>
+     <width>192</width>
+     <height>48</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -67,6 +67,12 @@ border-radius: 40px;
    <property name="icon">
     <iconset resource="../../octConsole.qrc">
      <normaloff>:/octConsole/captureLogo.png</normaloff>:/octConsole/captureLogo.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>192</width>
+     <height>48</height>
+    </size>
    </property>
   </widget>
   <widget class="QLabel" name="labelTime">
