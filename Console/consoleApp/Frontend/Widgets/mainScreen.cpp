@@ -795,14 +795,16 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                                            timeLabel.toLatin1(),
                                            1024,1024);
 
-                       memcpy( image->bits(), frame.dispData, SectorWidth_px * SectorHeight_px );
+                       sectorItem* pixmap = m_scene->sectorHandle();
+                       QImage* liveImage = pixmap->getSectorImage();
 
-//                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+                       memcpy( liveImage->bits(), frame.dispData, SectorWidth_px * SectorHeight_px );
+
 
 //                       if(pixmap && !m_disableRendering){
 //                           const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
 //                           pixmap->setPixmap(tmpPixmap);
-//                           m_scene->paintOverlay();
+                           m_scene->paintOverlay();
 //                       }
                    }
                }
