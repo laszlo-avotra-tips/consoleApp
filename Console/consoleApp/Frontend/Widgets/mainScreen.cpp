@@ -79,6 +79,7 @@ MainScreen::MainScreen(QWidget *parent)
     m_clipBuffer = new uint8_t[1024 * 1024];
 //    ui->pushButton->setEnabled(false);
 //    m_daqTimer.start(5);
+    grabImage();
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -794,13 +795,15 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                                            timeLabel.toLatin1(),
                                            1024,1024);
 
-                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+                       memcpy( image->bits(), frame.dispData, SectorWidth_px * SectorHeight_px );
 
-                       if(pixmap && !m_disableRendering){
-                           const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-                           pixmap->setPixmap(tmpPixmap);
-                           m_scene->paintOverlay();
-                       }
+//                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+//                       if(pixmap && !m_disableRendering){
+//                           const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+//                           pixmap->setPixmap(tmpPixmap);
+//                           m_scene->paintOverlay();
+//                       }
                    }
                }
             }
