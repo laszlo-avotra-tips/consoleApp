@@ -619,23 +619,29 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     auto&ds = deviceSettings::Instance();
     auto device = ds.current();
 
+    QString labelLiveColor;
     if(device && m_scene){
         const bool isBd = device->isBiDirectional();
 
         if(runningStateVal == 1){
-            ui->labelLive->setStyleSheet("color: green;");
+            labelLiveColor = QString("color: green;");
+//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setActive();
             }
         } else if (runningStateVal == 3){
-            ui->labelLive->setStyleSheet("color: green;");
+            labelLiveColor = QString("color: green;");
+//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setPassive();
             }
         }else{
-            ui->labelLive->setStyleSheet("color: grey;");
+            labelLiveColor = QString("color: grey;");
+//            ui->labelLive->setStyleSheet("color: grey;");
             m_scene->setIdle();
         }
+        ui->labelLive->setStyleSheet(labelLiveColor);
+        DisplayManager::instance()->setLabelLiveColor(labelLiveColor);
         if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
             on_pushButtonMeasure_clicked(false);
         }

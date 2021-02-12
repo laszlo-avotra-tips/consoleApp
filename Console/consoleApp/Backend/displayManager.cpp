@@ -134,6 +134,14 @@ void DisplayManager::setDevice(const QString &msg)
     }
 }
 
+void DisplayManager::setLabelLiveColor(const QString &msg)
+{
+    if(m_liveSceneView)
+    {
+        m_liveSceneView->setLabelLiveColor(msg);
+    }
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

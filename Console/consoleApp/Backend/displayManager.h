@@ -39,6 +39,7 @@ public:
     void setRuntimeLabel(const QString& msg);
     void setCurrentTime(const QString& msg);
     void setDevice(const QString& msg);
+    void setLabelLiveColor(const QString& msg);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

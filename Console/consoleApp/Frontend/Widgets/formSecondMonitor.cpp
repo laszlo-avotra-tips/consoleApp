@@ -33,3 +33,8 @@ void LiveSceneView::setDevice(const QString &msg)
 {
     ui->labelDevice->setText(msg);
 }
+
+void LiveSceneView::setLabelLiveColor(const QString &msg)
+{
+    ui->labelLive->setStyleSheet(msg);
+}
