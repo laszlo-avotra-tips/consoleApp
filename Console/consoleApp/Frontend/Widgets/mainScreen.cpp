@@ -796,16 +796,15 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                                            1024,1024);
 
                        sectorItem* pixmap = m_scene->sectorHandle();
-                       QImage* liveImage = pixmap->getSectorImage();
 
-                       memcpy( liveImage->bits(), frame.dispData, SectorWidth_px * SectorHeight_px );
+//                       QImage* liveImage = pixmap->getSectorImage();
+//                       memcpy( liveImage->bits(), frame.dispData, SectorWidth_px * SectorHeight_px );
 
-
-//                       if(pixmap && !m_disableRendering){
-//                           const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-//                           pixmap->setPixmap(tmpPixmap);
+                       if(pixmap && !m_disableRendering){
+                           const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                           pixmap->setPixmap(tmpPixmap);
                            m_scene->paintOverlay();
-//                       }
+                       }
                    }
                }
             }
