@@ -26,27 +26,16 @@ color: white;
 QFrame{
 border: 0px;
 }
+QLabel{
+font: 14pt &quot;Helvetica Neue&quot;;
+}
+QLabel#labelInfo{
+font: 22pt &quot;Helvetica Neue&quot;;
+border: 2px solid black; 
+border-radius: 40px;
+}
 </string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>300</x>
-     <y>400</y>
-     <width>703</width>
-     <height>97</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 21pt &quot;Helvetica Neue&quot;;</string>
-   </property>
-   <property name="text">
-    <string>The second monitor</string>
-   </property>
-  </widget>
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
@@ -57,7 +46,87 @@ border: 0px;
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButtonLogo">
+   <property name="geometry">
+    <rect>
+     <x>27</x>
+     <y>34</y>
+     <width>500</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../octConsole.qrc">
+     <normaloff>:/octConsole/captureLogo.png</normaloff>:/octConsole/captureLogo.png</iconset>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTime">
+   <property name="geometry">
+    <rect>
+     <x>1078</x>
+     <y>35</y>
+     <width>112</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>09:15:59</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelLive">
+   <property name="geometry">
+    <rect>
+     <x>1195</x>
+     <y>37</y>
+     <width>58</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LIVE</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelRunTime">
+   <property name="geometry">
+    <rect>
+     <x>1074</x>
+     <y>66</y>
+     <width>184</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Runtime: 0:00:00</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelDevice">
+   <property name="geometry">
+    <rect>
+     <x>1086</x>
+     <y>117</y>
+     <width>169</width>
+     <height>73</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../octConsole.qrc"/>
+ </resources>
  <connections/>
 </ui>

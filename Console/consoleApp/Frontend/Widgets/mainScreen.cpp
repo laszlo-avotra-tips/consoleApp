@@ -472,6 +472,9 @@ void MainScreen::openDeviceSelectDialog()
         model->persistModel();
         m_scene->handleDeviceChange();
         DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+        deviceSettings &dev = deviceSettings::Instance();
+        auto selectedDevice = dev.current();
+        DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
         m_daqTimer.start(3);
 
     } else {

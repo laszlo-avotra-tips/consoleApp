@@ -109,6 +109,9 @@ void DisplayManager::setRuntimeLabel(const QString &msg)
     {
         m_pmDisk->setRuntimeLabel(msg);
     }
+    {
+        m_liveSceneView->setRuntimeLabel(msg);
+    }
 }
 
 void DisplayManager::setCurrentTime(const QString &msg)
@@ -116,6 +119,18 @@ void DisplayManager::setCurrentTime(const QString &msg)
     if(m_pmDisk)
     {
         m_pmDisk->setCurrentTime(msg);
+    }
+    if(m_liveSceneView)
+    {
+        m_liveSceneView->setCurrentTime(msg);
+    }
+}
+
+void DisplayManager::setDevice(const QString &msg)
+{
+    if(m_liveSceneView)
+    {
+        m_liveSceneView->setDevice(msg);
     }
 }
 

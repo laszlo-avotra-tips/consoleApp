@@ -38,6 +38,7 @@ public:
     void setWindowTitle(const QString& msg);
     void setRuntimeLabel(const QString& msg);
     void setCurrentTime(const QString& msg);
+    void setDevice(const QString& msg);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

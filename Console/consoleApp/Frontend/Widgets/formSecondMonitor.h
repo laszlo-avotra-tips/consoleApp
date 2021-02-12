@@ -18,6 +18,9 @@ public:
     explicit LiveSceneView(QWidget *parent = nullptr);
     ~LiveSceneView();
     void setScene(liveScene* scene);
+    void setRuntimeLabel(const QString &msg);
+    void setCurrentTime(const QString &msg);
+    void setDevice(const QString &msg);
 
 private:
     Ui::FormSecondMonitor *ui;
