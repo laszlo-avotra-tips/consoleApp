@@ -7,6 +7,9 @@ LiveSceneView::LiveSceneView(QWidget *parent) :
     ui(new Ui::FormSecondMonitor)
 {
     ui->setupUi(this);
+
+    ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 }
 
 LiveSceneView::~LiveSceneView()
@@ -39,7 +42,7 @@ void LiveSceneView::setLabelLiveColor(const QString &msg)
     ui->labelLive->setStyleSheet(msg);
 }
 
-void LiveSceneView::setBorderForRecording(QString styleSheet)
+void LiveSceneView::setBorderForRecording(const QString &styleSheet)
 {
     ui->graphicsView->setStyleSheet(styleSheet);
 }

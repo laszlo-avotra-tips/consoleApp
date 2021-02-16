@@ -133,6 +133,12 @@ border-radius: 40px;
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <zorder>labelTime</zorder>
+  <zorder>graphicsView</zorder>
+  <zorder>labelLive</zorder>
+  <zorder>labelDevice</zorder>
+  <zorder>labelRunTime</zorder>
+  <zorder>pushButtonLogo</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>

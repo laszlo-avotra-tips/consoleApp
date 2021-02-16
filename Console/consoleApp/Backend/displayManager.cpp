@@ -142,7 +142,7 @@ void DisplayManager::setLabelLiveColor(const QString &msg)
     }
 }
 
-void DisplayManager::setBorderForRecording(QString styleSheet)
+void DisplayManager::setBorderForRecording(const QString &styleSheet)
 {
     m_liveSceneView->setBorderForRecording(styleSheet);
 }
