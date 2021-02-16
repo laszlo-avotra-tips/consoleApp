@@ -153,7 +153,7 @@ void VideoPlayer::handleError()
     const QMediaPlayer::Error& errorNumber = m_mediaPlayer->error();
 
     if(uint(errorNumber) < 7){
-    const QString& errorDecode = errorLut[int(errorNumber)];
+        const QString& errorDecode = errorLut[int(errorNumber)];
         LOG3(errorNumber, errorDecode, errorString)
     } else {
         LOG2(errorNumber, errorString)
