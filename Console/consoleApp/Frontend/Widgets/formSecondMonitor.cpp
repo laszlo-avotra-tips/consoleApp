@@ -1,6 +1,7 @@
 #include "formSecondMonitor.h"
 #include "ui_formSecondMonitor.h"
 #include "livescene.h"
+#include "logger.h"
 
 LiveSceneView::LiveSceneView(QWidget *parent) :
     QWidget(parent),
@@ -44,5 +45,6 @@ void LiveSceneView::setLabelLiveColor(const QString &msg)
 
 void LiveSceneView::setBorderForRecording(const QString &styleSheet)
 {
+    LOG1(styleSheet);
     ui->frame->setStyleSheet(styleSheet);
 }

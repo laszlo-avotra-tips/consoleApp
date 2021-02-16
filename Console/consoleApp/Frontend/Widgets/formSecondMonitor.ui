@@ -43,10 +43,10 @@ border-radius: 40px;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QFrame{
-border: 0px;
-}
-</string>
+    <string notr="true">border: 0px;</string>
+   </property>
+   <property name="lineWidth">
+    <number>0</number>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonLogo">
@@ -146,7 +146,7 @@ border: 0px;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border:5px solid rgb(245,196,0);</string>
+    <string notr="true"/>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>

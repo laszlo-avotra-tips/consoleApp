@@ -274,15 +274,14 @@ void MainScreen::on_pushButtonCondensUp_clicked()
 
 void MainScreen::handleYellowBorder()
 {
+    QString borderStyleSheet;
     if(m_recordingIsOn){
-        const QString yellowBorder("border:1px solid rgb(245,196,0);");
-        ui->graphicsView->setStyleSheet(yellowBorder);
-        DisplayManager::instance()->setBorderForRecording(yellowBorder);
+        borderStyleSheet = QString("border:5px solid rgb(245,196,0);");
     } else {
-        const QString blackBorder("border:5px solid rgb(0,0,0);");
-        ui->graphicsView->setStyleSheet(blackBorder);
-        DisplayManager::instance()->setBorderForRecording(blackBorder);
+        borderStyleSheet = QString("border:5px solid rgb(0,0,0);");
     }
+    ui->graphicsView->setStyleSheet(borderStyleSheet);
+    DisplayManager::instance()->setBorderForRecording(borderStyleSheet);
 }
 
 void MainScreen::setDeviceLabel()
@@ -455,7 +454,7 @@ void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
     if(m_recordingIsOn){
         borderStyleSheet = QString("border:1px solid rgb(245,196,0);");
     } else {
-        borderStyleSheet = QString("border:0px solid rgb(0,0,0);");
+        borderStyleSheet = QString("border:1px solid rgb(0,0,0);");
     }
     ui->graphicsView->setStyleSheet(borderStyleSheet);
     DisplayManager::instance()->setBorderForRecording(borderStyleSheet);
@@ -590,6 +589,7 @@ void MainScreen::on_pushButtonCapture_released()
 {
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
     QString blackBorder("border:5px solid rgb(0,0,0);");
     ui->graphicsView->setStyleSheet(blackBorder);
     DisplayManager::instance()->setBorderForRecording(blackBorder);
@@ -598,6 +598,8 @@ void MainScreen::on_pushButtonCapture_released()
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
+    DisplayManager::instance()->setBorderForRecording(yellowBorder);
+
     QTimer::singleShot(500,this,&MainScreen::handleYellowBorder);
 }
 
