@@ -605,7 +605,6 @@ void MainScreen::on_pushButtonCapture_released()
 
 void MainScreen::on_pushButtonMeasure_clicked(bool checked)
 {
-//    emit measureImage(checked);
     setMeasurementMode(checked);
 }
 
