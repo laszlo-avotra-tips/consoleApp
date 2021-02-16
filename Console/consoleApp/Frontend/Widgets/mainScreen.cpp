@@ -275,9 +275,13 @@ void MainScreen::on_pushButtonCondensUp_clicked()
 void MainScreen::handleYellowBorder()
 {
     if(m_recordingIsOn){
-        ui->graphicsView->setStyleSheet("border:1px solid rgb(245,196,0);");
+        const QString yellowBorder("border:1px solid rgb(245,196,0);");
+        ui->graphicsView->setStyleSheet(yellowBorder);
+        DisplayManager::instance()->setBorderForRecording(yellowBorder);
     } else {
-        ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
+        const QString blackBorder("border:5px solid rgb(0,0,0);");
+        ui->graphicsView->setStyleSheet(blackBorder);
+        DisplayManager::instance()->setBorderForRecording(blackBorder);
     }
 }
 
@@ -588,6 +592,7 @@ void MainScreen::on_pushButtonCapture_released()
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     QString blackBorder("border:5px solid rgb(0,0,0);");
     ui->graphicsView->setStyleSheet(blackBorder);
+    DisplayManager::instance()->setBorderForRecording(blackBorder);
 
     onCaptureImage();
 
