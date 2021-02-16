@@ -23,9 +23,6 @@
 background-color: dark-gray;
 color: white;
 }
-QFrame{
-border: 0px;
-}
 QLabel{
 font: 14pt &quot;Helvetica Neue&quot;;
 }
@@ -44,6 +41,12 @@ border-radius: 40px;
      <width>1024</width>
      <height>1014</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QFrame{
+border: 0px;
+}
+</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonLogo">
@@ -141,6 +144,9 @@ border-radius: 40px;
      <width>1280</width>
      <height>1024</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:5px solid rgb(245,196,0);</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
