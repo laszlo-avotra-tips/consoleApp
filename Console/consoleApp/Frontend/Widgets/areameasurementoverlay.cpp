@@ -638,8 +638,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 //                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
 //                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
 
-                int w = int(staticText.size().width());
-                int h = int(( staticText.size().height() * 3 ) + ( 3 * yMargin ) );
+                int w = 149; //int(staticText.size().width());
+                int h = 111; //int(( staticText.size().height() * 3 ) + ( 3 * yMargin ) );
                 box->setWidth( w );
                 box->setHeight( h );
                 box->setX(1024 - w - 9);
