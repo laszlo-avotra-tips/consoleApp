@@ -40,9 +40,9 @@ border-radius: 40px;
    <property name="geometry">
     <rect>
      <x>128</x>
-     <y>0</y>
+     <y>5</y>
      <width>1024</width>
-     <height>1024</height>
+     <height>1014</height>
     </rect>
    </property>
   </widget>
@@ -133,12 +133,29 @@ border-radius: 40px;
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <zorder>labelTime</zorder>
-  <zorder>graphicsView</zorder>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>1024</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+  </widget>
+  <zorder>frame</zorder>
   <zorder>labelLive</zorder>
-  <zorder>labelDevice</zorder>
-  <zorder>labelRunTime</zorder>
+  <zorder>graphicsView</zorder>
   <zorder>pushButtonLogo</zorder>
+  <zorder>labelTime</zorder>
+  <zorder>labelRunTime</zorder>
+  <zorder>labelDevice</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>

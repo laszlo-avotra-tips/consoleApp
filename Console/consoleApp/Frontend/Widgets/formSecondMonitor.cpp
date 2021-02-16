@@ -44,5 +44,5 @@ void LiveSceneView::setLabelLiveColor(const QString &msg)
 
 void LiveSceneView::setBorderForRecording(const QString &styleSheet)
 {
-    ui->graphicsView->setStyleSheet(styleSheet);
+    ui->frame->setStyleSheet(styleSheet);
 }
