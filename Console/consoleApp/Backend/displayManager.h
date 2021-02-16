@@ -40,6 +40,7 @@ public:
     void setCurrentTime(const QString& msg);
     void setDevice(const QString& msg);
     void setLabelLiveColor(const QString& msg);
+    void setBorderForRecording(QString styleSheet);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

@@ -22,6 +22,7 @@ public:
     void setCurrentTime(const QString &msg);
     void setDevice(const QString &msg);
     void setLabelLiveColor(const QString &msg);
+    void setBorderForRecording(QString styleSheet);
 
 private:
     Ui::FormSecondMonitor *ui;

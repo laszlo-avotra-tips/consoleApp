@@ -38,3 +38,8 @@ void LiveSceneView::setLabelLiveColor(const QString &msg)
 {
     ui->labelLive->setStyleSheet(msg);
 }
+
+void LiveSceneView::setBorderForRecording(QString styleSheet)
+{
+    ui->graphicsView->setStyleSheet(styleSheet);
+}

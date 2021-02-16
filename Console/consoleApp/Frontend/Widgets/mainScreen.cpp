@@ -447,13 +447,14 @@ void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
 {
     m_recordingIsOn = recordingIsOn;
     LOG1(m_recordingIsOn)
+    QString borderStyleSheet;
     if(m_recordingIsOn){
-        QString yellowBorder("border:1px solid rgb(245,196,0);");
-        ui->graphicsView->setStyleSheet(yellowBorder);
+        borderStyleSheet = QString("border:1px solid rgb(245,196,0);");
     } else {
-        QString noBorder("border:0px solid rgb(0,0,0);");
-        ui->graphicsView->setStyleSheet(noBorder);
+        borderStyleSheet = QString("border:0px solid rgb(0,0,0);");
     }
+    ui->graphicsView->setStyleSheet(borderStyleSheet);
+    DisplayManager::instance()->setBorderForRecording(borderStyleSheet);
 }
 
 void MainScreen::openDeviceSelectDialog()

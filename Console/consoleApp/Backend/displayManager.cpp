@@ -142,6 +142,11 @@ void DisplayManager::setLabelLiveColor(const QString &msg)
     }
 }
 
+void DisplayManager::setBorderForRecording(QString styleSheet)
+{
+    m_liveSceneView->setBorderForRecording(styleSheet);
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
