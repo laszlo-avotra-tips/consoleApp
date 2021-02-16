@@ -276,9 +276,9 @@ void MainScreen::handleYellowBorder()
 {
     QString borderStyleSheet;
     if(m_recordingIsOn){
-        borderStyleSheet = QString("border:5px solid rgb(245,196,0);");
+        borderStyleSheet = QString("border:1px solid rgb(245,196,0);");
     } else {
-        borderStyleSheet = QString("border:5px solid rgb(0,0,0);");
+        borderStyleSheet = QString("border:1px solid rgb(0,0,0);");
     }
     ui->graphicsView->setStyleSheet(borderStyleSheet);
     DisplayManager::instance()->setBorderForRecording(borderStyleSheet);
