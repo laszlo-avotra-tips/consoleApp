@@ -138,7 +138,7 @@ void VideoPlayer::setPosition(int position)
 
 void VideoPlayer::handleError()
 {
-    std::vector<QString> errorLut
+    const std::vector<QString> errorLut
     {
         "NoError",
         "ResourceError",
