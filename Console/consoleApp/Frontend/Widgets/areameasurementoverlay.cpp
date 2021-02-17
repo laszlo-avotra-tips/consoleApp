@@ -611,11 +611,6 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 box->setY(1024 - h - 9);
                 painter->drawRect( *box );
             }
-
-//            LOG2(w,h)
-//            LOG2(box->top(), box->left())
-//            LOG2(box->width(), box->height())
-//            LOG2(st.size().width(), st.size().height())
         }
     }
     else
@@ -688,51 +683,15 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                     painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize2 / 2 ) ), QString( "2" ) );
                     painter->setFont( font2 );
                 }
-//                QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
-//                painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
-//                painter->drawText( minRect.bottomLeft(), str );
 
-//                QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
-//                painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
-//                str = QString( "Max: %1 mm" ).arg( QString::number( classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
-//                painter->drawText( maxRect.bottomLeft(), str );
-
-//                QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
-//                painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
-//                str = QString( "Area: %1 mm" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
-//                painter->drawText( areaRect.bottomLeft(), str );
-
-//                /*
-//                 * Draw a superscript "2" using drawText by finding the right edge of the drawn text and drawing a smaller font
-//                 * "2" in a higher position. This is not the preffered method, but we are having issues with drawStaticText().
-//                 */
-//                QStaticText staticText( str );
-//                staticText.prepare( QTransform(), font );
-//                QFont subFont = painter->font();
-//                subFont.setPointSize( FontSize - ( FontSize / 3 ) );
-//                painter->setFont( subFont );
-//                painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize / 2 ) ), QString( "2" ) );
-//                painter->setFont( font );
-
-                // Size the box according to the text drawn.
-//                staticText.setText( QString( "Area: %1 mm^2" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
-//                staticText.prepare( QTransform(), font );                               // prepare text so we can determine the text size
-//                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
-//                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
-
-                int w = m_width; //int(staticText.size().width());
-                int h = 111; //int(( staticText.size().height() * 3 ) + ( 3 * yMargin ) );
+                int w = m_width;
+                int h = 111;
                 box->setWidth( w );
                 box->setHeight( h );
                 box->setX(1024 - w - 9);
                 box->setY(1024 - h - 9);
 
                 painter->drawRect( *box );
-                LOG2(w,h)
-                LOG2(box->top(), box->left())
-                LOG2(box->width(), box->height())
-//                LOG2(staticText.size().width(), staticText.size().height())
-
             }
         }
     }
