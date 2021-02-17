@@ -583,17 +583,17 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 //            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
             int w = 149; //int(st.size().width() + ( 2.11 * xMargin ));
             int h = 52; //int(st.size().height() + ( 2.11 * yMargin ) );
-            const int FontSize = 7;
+            const int FontSize1 = 7;
             QFont font1 = painter->font();
-            font1.setPointSize( FontSize );
+            font1.setPointSize( FontSize1 );
             painter->setFont( font1 );
 
             // Size the box according to the text drawn.
             QStaticText st( str );
             st.prepare( QTransform(), font1 );  // prepare text so we can determine the text size
             if(st.size().width() > 100){
-                const int xMargin = FontSize;
-                const int yMargin = 2*FontSize;
+                const int xMargin = FontSize1;
+                const int yMargin = 2*FontSize1;
                 box->setWidth( w );
                 box->setHeight( h );
                 box->setX(1024 - w - 9);
@@ -615,6 +615,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
         {
             if( centroid.isValid )
             {
+                const int xMargin = FontSize;
+                const int yMargin = 2*FontSize;
                 QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
                 painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
                 QString str( QString( "Min: %1 mm" ).arg( QString::number( classMinLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
