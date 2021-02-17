@@ -598,7 +598,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 font2.setPointSize( FontSize2 );
                 painter->setFont( font2 );
                 const int xMargin = FontSize2;
-                const int yMargin = 2*FontSize2;
+                const int yMargin = FontSize2;
                 painter->drawText( box->left() + xMargin, box->top() + font2.pointSize() + yMargin, str );
             }
             int w = m_width; //149; //int(st.size().width() + ( 2.11 * xMargin ));
