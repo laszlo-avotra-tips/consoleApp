@@ -154,30 +154,36 @@ border-radius: 40px;
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPushButton" name="pushButtonRecord">
-    <property name="geometry">
-     <rect>
-      <x>27</x>
-      <y>907</y>
-      <width>71</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="../../octConsole.qrc">
-      <normaloff>:/octConsole/record</normaloff>
-      <normalon>:/octConsole/recordRed</normalon>:/octConsole/record</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>75</width>
-      <height>75</height>
-     </size>
-    </property>
-   </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButtonRecord">
+   <property name="geometry">
+    <rect>
+     <x>27</x>
+     <y>910</y>
+     <width>71</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../octConsole.qrc">
+     <normaloff>:/octConsole/record</normaloff>
+     <normalon>:/octConsole/recordRed</normalon>:/octConsole/record</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>75</width>
+     <height>75</height>
+    </size>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
   </widget>
   <zorder>frame</zorder>
   <zorder>labelLive</zorder>
@@ -186,6 +192,7 @@ border-radius: 40px;
   <zorder>labelTime</zorder>
   <zorder>labelRunTime</zorder>
   <zorder>labelDevice</zorder>
+  <zorder>pushButtonRecord</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>

@@ -25,6 +25,7 @@ public:
     void setBorderForRecording(const QString& styleSheet);
     void setEnableRecording(bool isEnabled);
     void setCheckRecording(bool isChecked);
+    void pushButtonRecord_clicked(bool isChecked);
 
 private:
     Ui::FormSecondMonitor *ui;
