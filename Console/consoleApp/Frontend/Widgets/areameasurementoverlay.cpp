@@ -583,6 +583,13 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 //            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
             int w = 149; //int(st.size().width() + ( 2.11 * xMargin ));
             int h = 52; //int(st.size().height() + ( 2.11 * yMargin ) );
+
+            box->setWidth( w );
+            box->setHeight( h );
+            box->setX(1024 - w - 9);
+            box->setY(1024 - h - 9);
+            painter->drawRect( *box );
+
             const int FontSize1 = 7;
             QFont font1 = painter->font();
             font1.setPointSize( FontSize1 );
@@ -594,12 +601,12 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             if(st.size().width() > 100){
                 const int xMargin = FontSize1;
                 const int yMargin = 2*FontSize1;
-                box->setWidth( w );
-                box->setHeight( h );
-                box->setX(1024 - w - 9);
-                box->setY(1024 - h - 9);
+//                box->setWidth( w );
+//                box->setHeight( h );
+//                box->setX(1024 - w - 9);
+//                box->setY(1024 - h - 9);
+//                painter->drawRect( *box );
                 painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
-                painter->drawRect( *box );
             } else {
                 const int FontSize2 = 12;
                 QFont font2 = painter->font();
@@ -607,12 +614,12 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 painter->setFont( font2 );
                 const int xMargin = FontSize2;
                 const int yMargin = 2*FontSize2;
-                box->setWidth( w );
-                box->setHeight( h );
-                box->setX(1024 - w - 9);
-                box->setY(1024 - h - 9);
+//                box->setWidth( w );
+//                box->setHeight( h );
+//                box->setX(1024 - w - 9);
+//                box->setY(1024 - h - 9);
+//                painter->drawRect( *box );
                 painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
-                painter->drawRect( *box );
             }
             LOG2(w,h)
             LOG2(box->top(), box->left())
