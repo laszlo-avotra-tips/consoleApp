@@ -54,6 +54,7 @@
 #include <QVideoWidget>
 #include <QDebug>
 #include "logger.h"
+#include <vector>
 
 //#define LOG1(x_)  qDebug() << __LINE__ << ". " << #x_ << "=" << x_
 
@@ -68,9 +69,6 @@ void VideoPlayer::init()
     m_mediaPlayer = new QMediaPlayer(this,QMediaPlayer::VideoSurface);
     m_videoWidget = new QVideoWidget();
 
-    m_errorLabel = new QLabel(this);
-    m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-
     if(!m_videoWidgetContainer){
         m_videoWidgetContainer = new QVBoxLayout();
         setLayout(m_videoWidgetContainer);
@@ -79,7 +77,6 @@ void VideoPlayer::init()
     }
     QVBoxLayout *layout = m_videoWidgetContainer;
     layout->addWidget(m_videoWidget);
-    layout->addWidget(m_errorLabel);
 
     m_videoWidget->autoFillBackground();
     m_mediaPlayer->setVideoOutput(m_videoWidget);
@@ -102,13 +99,11 @@ VideoPlayer::~VideoPlayer()
     LOG1("~VideoPlayer");
     delete m_videoWidget;
     delete m_mediaPlayer;
-    delete m_errorLabel;
 }
 
 
 void VideoPlayer::setUrl(const QUrl &url)
 {
-    m_errorLabel->setText(QString());
     setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
     m_mediaPlayer->setMedia(url);
 }
@@ -143,14 +138,26 @@ void VideoPlayer::setPosition(int position)
 
 void VideoPlayer::handleError()
 {
-    const QString errorString = m_mediaPlayer->errorString();
-    QString errorMessage = "Error: ";
-    if (errorString.isEmpty())
-        errorMessage += " #" + QString::number(int(m_mediaPlayer->error()));
-    else
-        errorMessage += errorString;
-    m_errorLabel->setText(errorMessage);
-    LOG1(errorMessage)
+    const std::vector<QString> errorLut
+    {
+        "NoError",
+        "ResourceError",
+        "FormatError",
+        "NetworkError",
+        "AccessDeniedError",
+        "ServiceMissingError",
+        "MediaIsPlaylist"
+    };
+
+    const QString& errorString = m_mediaPlayer->errorString();
+    const QMediaPlayer::Error& errorNumber = m_mediaPlayer->error();
+
+    if(uint(errorNumber) < 7){
+        const QString& errorDecode = errorLut[int(errorNumber)];
+        LOG3(errorNumber, errorDecode, errorString)
+    } else {
+        LOG2(errorNumber, errorString)
+    }
 }
 
 void VideoPlayer::setVideoWidgetContainer(QVBoxLayout *videoWidgetContainer)
