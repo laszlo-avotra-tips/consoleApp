@@ -662,7 +662,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                     font2.setPointSize( FontSize2 );
                     painter->setFont( font2 );
                     xMargin = FontSize2;
-                    yMargin = 2*FontSize2;
+                    yMargin = FontSize2;
                     QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font2.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
                     painter->drawText( minRect.bottomLeft(), str );
