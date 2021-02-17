@@ -158,23 +158,23 @@ border-radius: 40px;
     <property name="geometry">
      <rect>
       <x>27</x>
-      <y>953</y>
-      <width>110</width>
-      <height>44</height>
+      <y>906</y>
+      <width>71</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="icon">
-     <iconset>
-      <normalon>:/octConsole/recordRed</normalon>
-     </iconset>
+     <iconset resource="../../octConsole.qrc">
+      <normaloff>:/octConsole/record</normaloff>
+      <normalon>:/octConsole/recordRed</normalon>:/octConsole/record</iconset>
     </property>
     <property name="iconSize">
      <size>
-      <width>44</width>
-      <height>48</height>
+      <width>75</width>
+      <height>75</height>
      </size>
     </property>
    </widget>
