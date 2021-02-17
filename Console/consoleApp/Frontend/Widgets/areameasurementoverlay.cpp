@@ -601,7 +601,18 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
                 painter->drawRect( *box );
             } else {
-
+                const int FontSize2 = 15;
+                QFont font2 = painter->font();
+                font2.setPointSize( FontSize2 );
+                painter->setFont( font2 );
+                const int xMargin = FontSize2;
+                const int yMargin = 2*FontSize2;
+                box->setWidth( w );
+                box->setHeight( h );
+                box->setX(1024 - w - 9);
+                box->setY(1024 - h - 9);
+                painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
+                painter->drawRect( *box );
             }
             LOG2(w,h)
             LOG2(box->top(), box->left())
