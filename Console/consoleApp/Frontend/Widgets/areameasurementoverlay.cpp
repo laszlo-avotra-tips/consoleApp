@@ -581,16 +581,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
             QString str = QString( "Length: %1 mm" ).arg( QString::number( line.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
 
-//            int w = m_width; //149; //int(st.size().width() + ( 2.11 * xMargin ));
-//            int h = m_height; //52; //int(st.size().height() + ( 2.11 * yMargin ) );
-
-//            if(w && h){
-//                box->setWidth( w );
-//                box->setHeight( h );
-//                box->setX(1024 - w - 9);
-//                box->setY(1024 - h - 9);
-//                painter->drawRect( *box );
-//            }
+//            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
 
             const int FontSize1 = 7;
             QFont font1 = painter->font();
@@ -626,10 +617,10 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 painter->drawRect( *box );
             }
 
-            LOG2(w,h)
-            LOG2(box->top(), box->left())
-            LOG2(box->width(), box->height())
-            LOG2(st.size().width(), st.size().height())
+//            LOG2(w,h)
+//            LOG2(box->top(), box->left())
+//            LOG2(box->width(), box->height())
+//            LOG2(st.size().width(), st.size().height())
         }
     }
     else
@@ -673,7 +664,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 //                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
 //                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
 
-                int w = 149; //int(staticText.size().width());
+                int w = m_width; //int(staticText.size().width());
                 int h = 111; //int(( staticText.size().height() * 3 ) + ( 3 * yMargin ) );
                 box->setWidth( w );
                 box->setHeight( h );
