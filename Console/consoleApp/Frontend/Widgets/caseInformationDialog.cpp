@@ -3,14 +3,17 @@
 #include "Utility/widgetcontainer.h"
 #include "consoleLineEdit.h"
 #include "selectDialog.h"
+#include "caseInformationModel.h"
+#include "logger.h"
+#include "displayManager.h"
+#include "defaults.h"
 
 #include <QDateTime>
 #include <QTimer>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
-#include "caseInformationModel.h"
-#include "logger.h"
+#include <QShowEvent>
 
 
 CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<QString> *param) :
@@ -34,6 +37,10 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &CaseInformationDialog::handleLocationSelect);
 
     initDialog(param);
+
+    const int xc = ControlScreenWidth / 2 - width() / 2;
+    const int yc = ControlScreenHeight / 2 - height() / 2;
+    move(xc,yc);
 }
 
 CaseInformationDialog::~CaseInformationDialog()
@@ -106,6 +113,17 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
         enableNext(false);
         m_model.setSelectedLocation("");
         m_model.setPatientId("");
+    }
+}
+
+void CaseInformationDialog::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    if(se->type() == QEvent::Show){
+        LOG1("show");
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
+        DisplayManager::instance()->setWindowTitle("CASE INFORMATION IN PROCESS");
+        WidgetContainer::instance()->setIsNewCase(true);
     }
 }
 

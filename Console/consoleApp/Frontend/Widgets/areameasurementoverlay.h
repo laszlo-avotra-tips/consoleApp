@@ -68,6 +68,8 @@ private:
     QLineF classMinLine;
     QLineF classMaxLine;
     int polygonArea;
+    int m_width{0};
+    int m_height{0};
 
 protected:
     void mouseMoveEvent( QGraphicsSceneMouseEvent *event );

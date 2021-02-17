@@ -33,9 +33,9 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     int boxY = overlayPixmap->height() - int(280/imageScaleFactor);
 
     box = new QRect( boxX, boxY, 1, 1 );
-//    LOG2(boxX, boxY)
-//    LOG2(overlayPixmap->width(), overlayPixmap->height())
-//    LOG2(box->x(),box->y())
+    LOG2(boxX, boxY)
+    LOG2(overlayPixmap->width(), overlayPixmap->height())
+    LOG2(box->x(),box->y())
     setPixmap( *overlayPixmap );
     currentColor     = Qt::yellow;
     mouseIsDown      = false;
@@ -571,8 +571,6 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
     QFont font = painter->font();
     font.setPointSize( FontSize );
     painter->setFont( font );
-    const int xMargin = FontSize;
-    const int yMargin = 2*FontSize;
 
     if( polygonPoints.size() == 2 )
     {
@@ -582,21 +580,37 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             line.setPoints( polygonPoints.point( 0 ), polygonPoints.point( 1 ) );
             painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
             QString str = QString( "Length: %1 mm" ).arg( QString::number( line.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
-            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
+
+//            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
 
             // Size the box according to the text drawn.
             QStaticText st( str );
             st.prepare( QTransform(), font );  // prepare text so we can determine the text size
-            int w = int(st.size().width() + ( 2 * xMargin ));
-            int h = int(st.size().height() + ( 2 * yMargin ) );
-            box->setWidth( w );
-            box->setHeight( h );
-            box->setX(1024 - w - 9);
-            box->setY(1024 - h - 9);
-            painter->drawRect( *box );
-//            LOG2(w,h)
-//            LOG2(box->top(), box->left())
-//            LOG2(box->width(), box->height())
+            if(st.size().width() > 100){
+                const int xMargin = FontSize;
+                const int yMargin = 2*FontSize;
+                m_width = int(st.size().width() + ( 2.11 * xMargin ));
+                m_height = int(st.size().height() + ( 2.11 * yMargin ) );
+                painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
+            } else {
+                const int FontSize2 = 12;
+                QFont font2 = painter->font();
+                font2.setPointSize( FontSize2 );
+                painter->setFont( font2 );
+                const int xMargin = FontSize2;
+                const int yMargin = FontSize2;
+                painter->drawText( box->left() + xMargin, box->top() + font2.pointSize() + yMargin, str );
+            }
+            int w = m_width; //149; //int(st.size().width() + ( 2.11 * xMargin ));
+            int h = m_height; //52; //int(st.size().height() + ( 2.11 * yMargin ) );
+
+            if(w && h){
+                box->setWidth( w );
+                box->setHeight( h );
+                box->setX(1024 - w - 9);
+                box->setY(1024 - h - 9);
+                painter->drawRect( *box );
+            }
         }
     }
     else
@@ -605,50 +619,79 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
         {
             if( centroid.isValid )
             {
-                QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
-                painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
                 QString str( QString( "Min: %1 mm" ).arg( QString::number( classMinLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
-                painter->drawText( minRect.bottomLeft(), str );
+                QStaticText st( str );
+                st.prepare( QTransform(), font );
+                int xMargin, yMargin;
 
-                QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
-                painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
-                str = QString( "Max: %1 mm" ).arg( QString::number( classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
-                painter->drawText( maxRect.bottomLeft(), str );
+                if(st.size().width() > 100){
+                    xMargin = FontSize;
+                    yMargin = 2*FontSize;
+                    QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
+                    painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
+                    painter->drawText( minRect.bottomLeft(), str );
 
-                QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
-                painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
-                str = QString( "Area: %1 mm" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
-                painter->drawText( areaRect.bottomLeft(), str );
+                    QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
+                    painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
+                    str = QString( "Max: %1 mm" ).arg( QString::number( classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    painter->drawText( maxRect.bottomLeft(), str );
 
-                /*
-                 * Draw a superscript "2" using drawText by finding the right edge of the drawn text and drawing a smaller font
-                 * "2" in a higher position. This is not the preffered method, but we are having issues with drawStaticText().
-                 */
-                QStaticText staticText( str );
-                staticText.prepare( QTransform(), font );
-                QFont subFont = painter->font();
-                subFont.setPointSize( FontSize - ( FontSize / 3 ) );
-                painter->setFont( subFont );
-                painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize / 2 ) ), QString( "2" ) );
-                painter->setFont( font );
+                    QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
+                    painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
+                    str = QString( "Area: %1 mm" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    painter->drawText( areaRect.bottomLeft(), str );
+                    /*
+                     * Draw a superscript "2" using drawText by finding the right edge of the drawn text and drawing a smaller font
+                     * "2" in a higher position. This is not the preffered method, but we are having issues with drawStaticText().
+                     */
+                    QStaticText staticText( str );
+                    staticText.prepare( QTransform(), font );
+                    QFont subFont = painter->font();
+                    subFont.setPointSize( FontSize - ( FontSize / 3 ) );
+                    painter->setFont( subFont );
+                    painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize / 2 ) ), QString( "2" ) );
+                    painter->setFont( font );
+                } else {
+                    const int FontSize2 = 12;
+                    QFont font2 = painter->font();
+                    font2.setPointSize( FontSize2 );
+                    painter->setFont( font2 );
+                    xMargin = FontSize2;
+                    yMargin = FontSize2;
+                    QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font2.pointSize() + yMargin );
+                    painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
+                    painter->drawText( minRect.bottomLeft(), str );
 
-                // Size the box according to the text drawn.
-                staticText.setText( QString( "Area: %1 mm^2" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
-                staticText.prepare( QTransform(), font );                               // prepare text so we can determine the text size
-//                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
-//                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
+                    QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font2.pointSize() + yMargin );
+                    painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
+                    str = QString( "Max: %1 mm" ).arg( QString::number( classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    painter->drawText( maxRect.bottomLeft(), str );
 
-                int w = int(staticText.size().width());
-                int h = int(( staticText.size().height() * 3 ) + ( 3 * yMargin ) );
+                    QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font2.pointSize() + yMargin );
+                    painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
+                    str = QString( "Area: %1 mm" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    painter->drawText( areaRect.bottomLeft(), str );
+                    /*
+                     * Draw a superscript "2" using drawText by finding the right edge of the drawn text and drawing a smaller font
+                     * "2" in a higher position. This is not the preffered method, but we are having issues with drawStaticText().
+                     */
+                    QStaticText staticText( str );
+                    staticText.prepare( QTransform(), font2 );
+                    QFont subFont = painter->font();
+                    subFont.setPointSize( FontSize2 - ( FontSize2 / 3 ) );
+                    painter->setFont( subFont );
+                    painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize2 / 2 ) ), QString( "2" ) );
+                    painter->setFont( font2 );
+                }
+
+                int w = m_width;
+                int h = 111;
                 box->setWidth( w );
                 box->setHeight( h );
                 box->setX(1024 - w - 9);
                 box->setY(1024 - h - 9);
 
                 painter->drawRect( *box );
-//                LOG2(w,h)
-//                LOG2(box->top(), box->left())
-//                LOG2(box->width(), box->height())
             }
         }
     }

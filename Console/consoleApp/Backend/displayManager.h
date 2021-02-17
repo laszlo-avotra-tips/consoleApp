@@ -17,6 +17,7 @@ class LiveSceneView;
 class FormPmLogo;
 class QGraphicsView;
 class liveScene;
+class FormDisk;
 
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
@@ -32,15 +33,24 @@ public:
     bool isNonPrimaryMonitorPresent() const;
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
     void setScene(liveScene* scene);
-    void showOnTheSecondMonitor(QString name);
+    void initWidgetForTheSecondMonitor(QString name);
     void initSecondMonitor(QString name);
+    void setWindowTitle(const QString& msg);
+    void setRuntimeLabel(const QString& msg);
+    void setCurrentTime(const QString& msg);
+    void setDevice(const QString& msg);
+    void setLabelLiveColor(const QString& msg);
+    void setBorderForRecording(const QString& styleSheet);
+    void setRecordingEnabled(bool isEnabled);
+    void setRecordingChecked(bool isChecked);
+    void pushButtonRecord_clicked(bool isChecked);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);
 
 public slots:
     void monitorEvent(const QString& fileName);
-    void showSecondMonitor(bool isNonPrimaryMonitorPresent);
+    void showHideSecondMonitor(bool isNonPrimaryMonitorPresent);
 
 private slots:
     void programFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -51,6 +61,7 @@ private:
     std::unique_ptr<QFileSystemWatcher> m_eventFileWatcher{nullptr};
     std::unique_ptr<LiveSceneView> m_liveSceneView{nullptr};
     std::unique_ptr<FormPmLogo> m_pmLogo{nullptr};
+    std::unique_ptr<FormDisk> m_pmDisk{nullptr};
     QWidget* m_widgetOnTheSecondMonitor{nullptr};
 
     const QString m_programName{R"(MonWMIServer.exe)"};

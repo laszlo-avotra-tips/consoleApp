@@ -62,9 +62,6 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     QTapAndHoldGesture::setTimeout(2000);
 
      ui->pushButtonDemoMode->hide();
-
-     DisplayManager::instance();
-//     DisplayManager::instance()->showOnTheSecondMonitor("logo");
 }
 
 StartScreen::~StartScreen()
@@ -108,7 +105,8 @@ void StartScreen::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
     if(se->type() == QEvent::Show){
-        LOG1(se->type());
+        LOG1("show");
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
         WidgetContainer::instance()->setIsNewCase(true);
     }
 }
@@ -172,4 +170,5 @@ void StartScreen::on_pushButtonStart_pressed()
 {
     m_isPressAndHold = false;
 //    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
+//    DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
 }

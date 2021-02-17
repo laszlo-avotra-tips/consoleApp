@@ -18,6 +18,14 @@ public:
     explicit LiveSceneView(QWidget *parent = nullptr);
     ~LiveSceneView();
     void setScene(liveScene* scene);
+    void setRuntimeLabel(const QString &msg);
+    void setCurrentTime(const QString &msg);
+    void setDevice(const QString &msg);
+    void setLabelLiveColor(const QString &msg);
+    void setBorderForRecording(const QString& styleSheet);
+    void setEnableRecording(bool isEnabled);
+    void setCheckRecording(bool isChecked);
+    void pushButtonRecord_clicked(bool isChecked);
 
 private:
     Ui::FormSecondMonitor *ui;

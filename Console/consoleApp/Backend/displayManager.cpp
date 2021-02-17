@@ -3,6 +3,8 @@
 #include "formSecondMonitor.h"
 #include "livescene.h"
 #include "formPmLogo.h"
+#include "opaqueScreen.h"
+#include "formDisk.h"
 #include "Utility/userSettings.h"
 
 #include <QFileSystemWatcher>
@@ -39,7 +41,7 @@ void DisplayManager::monitorEvent(const QString &fileName)
     parseEventFile(fileName);
 }
 
-void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
+void DisplayManager::showHideSecondMonitor(bool isNonPrimaryMonitorPresent)
 {
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
@@ -49,7 +51,6 @@ void DisplayManager::showSecondMonitor(bool isNonPrimaryMonitorPresent)
     } else {
         m_widgetOnTheSecondMonitor->hide();
     }
-
 }
 
 bool DisplayManager::isNonPrimaryMonitorPresent() const
@@ -67,42 +68,98 @@ void DisplayManager::setScene(liveScene *scene)
     m_liveSceneView->setScene(scene);
 }
 
-void DisplayManager::showOnTheSecondMonitor(QString name)
+void DisplayManager::initWidgetForTheSecondMonitor(QString name)
 {
     LOG1(name);
 
-    if(isNonPrimaryMonitorPresent())
-    {
-        auto it = m_widgetContainer.find(name);
-        if(it != m_widgetContainer.end()){
-            m_widgetOnTheSecondMonitor->hide();
-            //find widget by name assign to m_widgetOnTheSecondMonitor
-            if(it->second){
-                m_widgetOnTheSecondMonitor = it->second;
-                m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-                m_widgetOnTheSecondMonitor->move(3240,0);
-                m_widgetOnTheSecondMonitor->showFullScreen();
-            }
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        m_widgetOnTheSecondMonitor->hide();
+        //find widget by name assign to m_widgetOnTheSecondMonitor
+        if(it->second){
+            m_widgetOnTheSecondMonitor = it->second;
+            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
+            m_widgetOnTheSecondMonitor->move(3240,0);
         }
     }
+    emit nonPrimaryMonitorIsPresent(isNonPrimaryMonitorPresent());
 }
 
 void DisplayManager::initSecondMonitor(QString name)
 {
-    LOG1(name);
-//    if(isNonPrimaryMonitorPresent())
-    {
-        auto it = m_widgetContainer.find(name);
-        if(it != m_widgetContainer.end()){
-            if(it->second){
-                m_widgetOnTheSecondMonitor = it->second;
-                m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-                m_widgetOnTheSecondMonitor->move(3240,0);
-//                m_widgetOnTheSecondMonitor->showFullScreen();
-                LOG1(name)
-            }
+    auto it = m_widgetContainer.find(name);
+    if(it != m_widgetContainer.end()){
+        if(it->second){
+            m_widgetOnTheSecondMonitor = it->second;
+            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
+            m_widgetOnTheSecondMonitor->move(3240,0);
+            LOG1(name)
         }
     }
+}
+
+void DisplayManager::setWindowTitle(const QString &msg)
+{
+    m_widgetOnTheSecondMonitor->setWindowTitle(msg);
+}
+
+void DisplayManager::setRuntimeLabel(const QString &msg)
+{
+    if(m_pmDisk)
+    {
+        m_pmDisk->setRuntimeLabel(msg);
+    }
+    {
+        m_liveSceneView->setRuntimeLabel(msg);
+    }
+}
+
+void DisplayManager::setCurrentTime(const QString &msg)
+{
+    if(m_pmDisk)
+    {
+        m_pmDisk->setCurrentTime(msg);
+    }
+    if(m_liveSceneView)
+    {
+        m_liveSceneView->setCurrentTime(msg);
+    }
+}
+
+void DisplayManager::setDevice(const QString &msg)
+{
+    if(m_liveSceneView)
+    {
+        m_liveSceneView->setDevice(msg);
+    }
+}
+
+void DisplayManager::setLabelLiveColor(const QString &msg)
+{
+    if(m_liveSceneView)
+    {
+        m_liveSceneView->setLabelLiveColor(msg);
+    }
+}
+
+void DisplayManager::setBorderForRecording(const QString &styleSheet)
+{
+    m_liveSceneView->setBorderForRecording(styleSheet);
+}
+
+void DisplayManager::setRecordingEnabled(bool isEnabled)
+{
+    m_liveSceneView->setEnableRecording(isEnabled);
+}
+
+void DisplayManager::setRecordingChecked(bool isChecked)
+{
+    m_liveSceneView->setCheckRecording(isChecked);
+}
+
+void DisplayManager::pushButtonRecord_clicked(bool isChecked)
+{
+    m_liveSceneView->pushButtonRecord_clicked(isChecked);
 }
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
@@ -121,12 +178,14 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     }
 
     m_liveSceneView = std::make_unique<LiveSceneView>();
+    m_pmDisk = std::make_unique<FormDisk>();
     m_pmLogo = std::make_unique<FormPmLogo>();
 
     m_widgetContainer["logo"] = m_pmLogo.get();
+    m_widgetContainer["disk"] = m_pmDisk.get();
     m_widgetContainer["liveData"] = m_liveSceneView.get();
 
-    connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showSecondMonitor);
+    connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showHideSecondMonitor);
 
     initSecondMonitor("logo");
 

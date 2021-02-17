@@ -150,6 +150,7 @@ void MainScreen::setCurrentTime()
     m_currentTime = QTime::currentTime();
     QString timeString = m_currentTime.toString("hh:mm:ss");
     ui->labelCurrentTime->setText(timeString);
+    DisplayManager::instance()->setCurrentTime(timeString);
 }
 
 void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
@@ -229,7 +230,7 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
-    DisplayManager::instance()->showOnTheSecondMonitor("logo");
+    DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
         ui->pushButtonRecord->click();
@@ -274,11 +275,14 @@ void MainScreen::on_pushButtonCondensUp_clicked()
 
 void MainScreen::handleYellowBorder()
 {
+    QString borderStyleSheet;
     if(m_recordingIsOn){
-        ui->graphicsView->setStyleSheet("border:1px solid rgb(245,196,0);");
+        borderStyleSheet = QString("border:1px solid rgb(245,196,0);");
     } else {
-        ui->graphicsView->setStyleSheet("border:5px solid rgb(0,0,0);");
+        borderStyleSheet = QString("border:1px solid rgb(0,0,0);");
     }
+    ui->graphicsView->setStyleSheet(borderStyleSheet);
+    DisplayManager::instance()->setBorderForRecording(borderStyleSheet);
 }
 
 void MainScreen::setDeviceLabel()
@@ -447,13 +451,14 @@ void MainScreen::showYellowBorderForRecordingOn(bool recordingIsOn)
 {
     m_recordingIsOn = recordingIsOn;
     LOG1(m_recordingIsOn)
+    QString borderStyleSheet;
     if(m_recordingIsOn){
-        QString yellowBorder("border:1px solid rgb(245,196,0);");
-        ui->graphicsView->setStyleSheet(yellowBorder);
+        borderStyleSheet = QString("border:1px solid rgb(245,196,0);");
     } else {
-        QString noBorder("border:0px solid rgb(0,0,0);");
-        ui->graphicsView->setStyleSheet(noBorder);
+        borderStyleSheet = QString("border:1px solid rgb(0,0,0);");
     }
+    ui->graphicsView->setStyleSheet(borderStyleSheet);
+    DisplayManager::instance()->setBorderForRecording(borderStyleSheet);
 }
 
 void MainScreen::openDeviceSelectDialog()
@@ -471,7 +476,10 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
-        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+        deviceSettings &dev = deviceSettings::Instance();
+        auto selectedDevice = dev.current();
+        DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
         m_daqTimer.start(3);
 
     } else {
@@ -538,8 +546,10 @@ void MainScreen::updateTime()
 
         if(runtimeDisplay.isEmpty() || !m_runTime.isValid()){
              ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
+             DisplayManager::instance()->setRuntimeLabel(QString("Runtime: 0:00:00"));
         }else {
             ui->labelRunTime->setText(QString("Runtime: ") + runtimeDisplay);
+            DisplayManager::instance()->setRuntimeLabel(QString("Runtime: ") + runtimeDisplay);
         }
     }
 
@@ -580,19 +590,22 @@ void MainScreen::on_pushButtonCapture_released()
 {
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
     QString blackBorder("border:5px solid rgb(0,0,0);");
     ui->graphicsView->setStyleSheet(blackBorder);
+    DisplayManager::instance()->setBorderForRecording(blackBorder);
 
     onCaptureImage();
 
     QString yellowBorder("border:5px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
+    DisplayManager::instance()->setBorderForRecording(yellowBorder);
+
     QTimer::singleShot(500,this,&MainScreen::handleYellowBorder);
 }
 
 void MainScreen::on_pushButtonMeasure_clicked(bool checked)
 {
-//    emit measureImage(checked);
     setMeasurementMode(checked);
 }
 
@@ -614,23 +627,29 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     auto&ds = deviceSettings::Instance();
     auto device = ds.current();
 
+    QString labelLiveColor;
     if(device && m_scene){
         const bool isBd = device->isBiDirectional();
 
         if(runningStateVal == 1){
-            ui->labelLive->setStyleSheet("color: green;");
+            labelLiveColor = QString("color: green;");
+//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setActive();
             }
         } else if (runningStateVal == 3){
-            ui->labelLive->setStyleSheet("color: green;");
+            labelLiveColor = QString("color: green;");
+//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setPassive();
             }
         }else{
-            ui->labelLive->setStyleSheet("color: grey;");
+            labelLiveColor = QString("color: grey;");
+//            ui->labelLive->setStyleSheet("color: grey;");
             m_scene->setIdle();
         }
+        ui->labelLive->setStyleSheet(labelLiveColor);
+        DisplayManager::instance()->setLabelLiveColor(labelLiveColor);
         if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
             on_pushButtonMeasure_clicked(false);
         }
@@ -641,12 +660,15 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked(bool checked)
 {
+
     if(checked != m_recordingIsOn){
         m_recordingIsOn = checked;
-        LOG1(m_recordingIsOn)
+        LOG1(m_recordingIsOn);
+        DisplayManager::instance()->setRecordingChecked(m_recordingIsOn);
 
         if(m_recordingIsOn){
             ui->pushButtonRecord->setEnabled(false);
+            DisplayManager::instance()->setRecordingEnabled(false);
         }
 
         if(!m_recordingIsInitialized){
@@ -717,6 +739,7 @@ void MainScreen::setMeasurementMode(bool enable)
 void MainScreen::enableRecordButton()
 {
     ui->pushButtonRecord->setEnabled(true);
+    DisplayManager::instance()->setRecordingEnabled(true);
 }
 
 void MainScreen::setSceneCursor( QCursor cursor )

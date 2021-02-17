@@ -644,6 +644,22 @@ CASE</string>
           </layout>
          </item>
          <item>
+          <widget class="QLabel" name="labelRunTime">
+           <property name="minimumSize">
+            <size>
+             <width>270</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Runtime: 0:00:00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -669,22 +685,6 @@ CASE</string>
            </property>
            <property name="text">
             <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelRunTime">
-           <property name="minimumSize">
-            <size>
-             <width>270</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Runtime: 0:00:00</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
