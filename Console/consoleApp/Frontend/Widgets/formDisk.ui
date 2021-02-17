@@ -147,6 +147,9 @@ border-radius: 40px;
    <property name="text">
     <string>Runtime: 0:00:00</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources>

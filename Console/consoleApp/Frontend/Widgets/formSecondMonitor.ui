@@ -123,9 +123,9 @@ border-radius: 40px;
   <widget class="QLabel" name="labelDevice">
    <property name="geometry">
     <rect>
-     <x>1086</x>
+     <x>1074</x>
      <y>117</y>
-     <width>169</width>
+     <width>184</width>
      <height>73</height>
     </rect>
    </property>
@@ -154,6 +154,30 @@ border-radius: 40px;
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>27</x>
+      <y>953</y>
+      <width>110</width>
+      <height>44</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/octConsole/recordRed</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>44</width>
+      <height>48</height>
+     </size>
+    </property>
+   </widget>
   </widget>
   <zorder>frame</zorder>
   <zorder>labelLive</zorder>
