@@ -659,6 +659,8 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
 void MainScreen::on_pushButtonRecord_clicked(bool checked)
 {
+    DisplayManager::instance()->pushButtonRecord_clicked(checked);
+
     if(checked != m_recordingIsOn){
         m_recordingIsOn = checked;
         LOG1(m_recordingIsOn)

@@ -59,3 +59,8 @@ void LiveSceneView::setCheckRecording(bool isChecked)
 {
     ui->pushButtonRecord->setChecked(isChecked);
 }
+
+bool LiveSceneView::pushButtonRecord_clicked(bool isChecked)
+{
+    ui->pushButtonRecord->clicked();
+}

@@ -154,7 +154,12 @@ void DisplayManager::setRecordingEnabled(bool isEnabled)
 
 void DisplayManager::setRecordingChecked(bool isChecked)
 {
-     m_liveSceneView->setCheckRecording(isChecked);
+    m_liveSceneView->setCheckRecording(isChecked);
+}
+
+void DisplayManager::pushButtonRecord_clicked(bool isChecked)
+{
+    m_liveSceneView->pushButtonRecord_clicked(isChecked);
 }
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)

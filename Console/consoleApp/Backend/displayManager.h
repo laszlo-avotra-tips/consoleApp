@@ -43,6 +43,7 @@ public:
     void setBorderForRecording(const QString& styleSheet);
     void setRecordingEnabled(bool isEnabled);
     void setRecordingChecked(bool isChecked);
+    void pushButtonRecord_clicked(bool isChecked);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);
