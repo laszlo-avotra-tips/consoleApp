@@ -573,6 +573,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
     painter->setFont( font );
     const int xMargin = FontSize;
     const int yMargin = 2*FontSize;
+    LOG1(font.pointSizeF());
 
     if( polygonPoints.size() == 2 )
     {
@@ -597,6 +598,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             LOG2(w,h)
             LOG2(box->top(), box->left())
             LOG2(box->width(), box->height())
+            LOG2(int(st.size().width()), int(st.size().height()))
         }
     }
     else
@@ -649,6 +651,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 LOG2(w,h)
                 LOG2(box->top(), box->left())
                 LOG2(box->width(), box->height())
+                LOG2(int(staticText.size().width()), int(staticText.size().height()))
             }
         }
     }
