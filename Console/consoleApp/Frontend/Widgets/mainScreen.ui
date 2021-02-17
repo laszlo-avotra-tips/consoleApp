@@ -660,22 +660,6 @@ CASE</string>
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="labelDevice">
-           <property name="minimumSize">
-            <size>
-             <width>270</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QLabel" name="labelRunTime">
            <property name="minimumSize">
             <size>
@@ -685,6 +669,22 @@ CASE</string>
            </property>
            <property name="text">
             <string>Runtime: 0:00:00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelDevice">
+           <property name="minimumSize">
+            <size>
+             <width>270</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
