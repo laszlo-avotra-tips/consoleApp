@@ -627,11 +627,16 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 QString str( QString( "Min: %1 mm" ).arg( QString::number( classMinLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
                 QStaticText st( str );
                 st.prepare( QTransform(), font );
-
+                int xMargin, yMargin;
                 if(st.size().width() > 100){
 
-                const int xMargin = FontSize;
-                const int yMargin = 2*FontSize;
+                    xMargin = FontSize;
+                    yMargin = 2*FontSize;
+                } else {
+                    xMargin = 12;
+                    yMargin = 2*12;
+
+                }
                 QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
                 painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
                 painter->drawText( minRect.bottomLeft(), str );
@@ -659,8 +664,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 painter->setFont( font );
 
                 // Size the box according to the text drawn.
-                staticText.setText( QString( "Area: %1 mm^2" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
-                staticText.prepare( QTransform(), font );                               // prepare text so we can determine the text size
+//                staticText.setText( QString( "Area: %1 mm^2" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
+//                staticText.prepare( QTransform(), font );                               // prepare text so we can determine the text size
 //                box->setWidth( int(staticText.size().width() ) );                             // set box width based on text
 //                box->setHeight( int( ( staticText.size().height() * 3 ) + ( 3 * yMargin ) ) ); // set box heigh based on text
 
@@ -675,8 +680,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 LOG2(w,h)
                 LOG2(box->top(), box->left())
                 LOG2(box->width(), box->height())
-                LOG2(staticText.size().width(), staticText.size().height())
-            }
+//                LOG2(staticText.size().width(), staticText.size().height())
+
             }
         }
     }
