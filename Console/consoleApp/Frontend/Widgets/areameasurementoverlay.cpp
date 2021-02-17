@@ -601,7 +601,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
                 painter->drawRect( *box );
             } else {
-                const int FontSize2 = 15;
+                const int FontSize2 = 12;
                 QFont font2 = painter->font();
                 font2.setPointSize( FontSize2 );
                 painter->setFont( font2 );
