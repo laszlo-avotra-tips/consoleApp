@@ -583,22 +583,25 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             line.setPoints( polygonPoints.point( 0 ), polygonPoints.point( 1 ) );
             painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
             QString str = QString( "Length: %1 mm" ).arg( QString::number( line.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
-            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
+//            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
+            int w = 149; //int(st.size().width() + ( 2.11 * xMargin ));
+            int h = 52; //int(st.size().height() + ( 2.11 * yMargin ) );
 
             // Size the box according to the text drawn.
             QStaticText st( str );
             st.prepare( QTransform(), font );  // prepare text so we can determine the text size
-            int w = 149; //int(st.size().width() + ( 2.11 * xMargin ));
-            int h = 52; //int(st.size().height() + ( 2.11 * yMargin ) );
-            box->setWidth( w );
-            box->setHeight( h );
-            box->setX(1024 - w - 9);
-            box->setY(1024 - h - 9);
-            painter->drawRect( *box );
+            if(st.size().width() > 100){
+                box->setWidth( w );
+                box->setHeight( h );
+                box->setX(1024 - w - 9);
+                box->setY(1024 - h - 9);
+                painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
+                painter->drawRect( *box );
+            }
             LOG2(w,h)
             LOG2(box->top(), box->left())
             LOG2(box->width(), box->height())
-            LOG2(int(st.size().width()), int(st.size().height()))
+            LOG2(st.size().width(), st.size().height())
         }
     }
     else
@@ -651,7 +654,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 LOG2(w,h)
                 LOG2(box->top(), box->left())
                 LOG2(box->width(), box->height())
-                LOG2(int(staticText.size().width()), int(staticText.size().height()))
+                LOG2(staticText.size().width(), staticText.size().height())
             }
         }
     }
