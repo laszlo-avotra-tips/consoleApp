@@ -147,6 +147,16 @@ void DisplayManager::setBorderForRecording(const QString &styleSheet)
     m_liveSceneView->setBorderForRecording(styleSheet);
 }
 
+void DisplayManager::setRecordingEnabled(bool isEnabled)
+{
+    m_liveSceneView->setEnableRecording(isEnabled);
+}
+
+void DisplayManager::setRecordingChecked(bool isChecked)
+{
+     m_liveSceneView->setCheckRecording(isChecked);
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

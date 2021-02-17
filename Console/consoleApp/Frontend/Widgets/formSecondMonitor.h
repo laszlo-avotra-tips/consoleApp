@@ -23,6 +23,8 @@ public:
     void setDevice(const QString &msg);
     void setLabelLiveColor(const QString &msg);
     void setBorderForRecording(const QString& styleSheet);
+    void setEnableRecording(bool isEnabled);
+    void setCheckRecording(bool isChecked);
 
 private:
     Ui::FormSecondMonitor *ui;

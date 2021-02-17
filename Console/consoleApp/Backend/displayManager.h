@@ -41,6 +41,8 @@ public:
     void setDevice(const QString& msg);
     void setLabelLiveColor(const QString& msg);
     void setBorderForRecording(const QString& styleSheet);
+    void setRecordingEnabled(bool isEnabled);
+    void setRecordingChecked(bool isChecked);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

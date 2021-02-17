@@ -11,6 +11,7 @@ LiveSceneView::LiveSceneView(QWidget *parent) :
 
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->pushButtonRecord->setCheckable(true);
 }
 
 LiveSceneView::~LiveSceneView()
@@ -47,4 +48,14 @@ void LiveSceneView::setBorderForRecording(const QString &styleSheet)
 {
     LOG1(styleSheet);
     ui->frame->setStyleSheet(styleSheet);
+}
+
+void LiveSceneView::setEnableRecording(bool isEnabled)
+{
+    ui->pushButtonRecord->setEnabled(isEnabled);
+}
+
+void LiveSceneView::setCheckRecording(bool isChecked)
+{
+    ui->pushButtonRecord->setChecked(isChecked);
 }

@@ -665,6 +665,7 @@ void MainScreen::on_pushButtonRecord_clicked(bool checked)
 
         if(m_recordingIsOn){
             ui->pushButtonRecord->setEnabled(false);
+            DisplayManager::instance()->setRecordingEnabled(false);
         }
 
         if(!m_recordingIsInitialized){
@@ -735,6 +736,7 @@ void MainScreen::setMeasurementMode(bool enable)
 void MainScreen::enableRecordButton()
 {
     ui->pushButtonRecord->setEnabled(true);
+    DisplayManager::instance()->setRecordingEnabled(true);
 }
 
 void MainScreen::setSceneCursor( QCursor cursor )
