@@ -657,18 +657,22 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                     painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize / 2 ) ), QString( "2" ) );
                     painter->setFont( font );
                 } else {
-                    xMargin = 12;
-                    yMargin = 2*12;
-                    QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
+                    const int FontSize2 = 12;
+                    QFont font2 = painter->font();
+                    font2.setPointSize( FontSize2 );
+                    painter->setFont( font2 );
+                    xMargin = FontSize2;
+                    yMargin = 2*FontSize2;
+                    QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font2.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
                     painter->drawText( minRect.bottomLeft(), str );
 
-                    QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
+                    QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font2.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
                     str = QString( "Max: %1 mm" ).arg( QString::number( classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
                     painter->drawText( maxRect.bottomLeft(), str );
 
-                    QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
+                    QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font2.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
                     str = QString( "Area: %1 mm" ).arg( QString::number( polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
                     painter->drawText( areaRect.bottomLeft(), str );
@@ -677,12 +681,12 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                      * "2" in a higher position. This is not the preffered method, but we are having issues with drawStaticText().
                      */
                     QStaticText staticText( str );
-                    staticText.prepare( QTransform(), font );
+                    staticText.prepare( QTransform(), font2 );
                     QFont subFont = painter->font();
-                    subFont.setPointSize( FontSize - ( FontSize / 3 ) );
+                    subFont.setPointSize( FontSize2 - ( FontSize2 / 3 ) );
                     painter->setFont( subFont );
-                    painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize / 2 ) ), QString( "2" ) );
-                    painter->setFont( font );
+                    painter->drawText( QPoint( int(areaRect.left() + staticText.size().width()), areaRect.bottom() - ( FontSize2 / 2 ) ), QString( "2" ) );
+                    painter->setFont( font2 );
                 }
 //                QRect minRect( box->left() + xMargin, box->top(), box->width() - xMargin, font.pointSize() + yMargin );
 //                painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
