@@ -583,20 +583,20 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 
 //            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
 
-            const int FontSize1 = 7;
-            QFont font1 = painter->font();
-            font1.setPointSize( FontSize1 );
-            painter->setFont( font1 );
+            //const int FontSize1 = 7;
+//            QFont font = painter->font();
+//            font.setPointSize( FontSize );
+//            painter->setFont( font );
 
             // Size the box according to the text drawn.
             QStaticText st( str );
-            st.prepare( QTransform(), font1 );  // prepare text so we can determine the text size
+            st.prepare( QTransform(), font );  // prepare text so we can determine the text size
             if(st.size().width() > 100){
-                const int xMargin = FontSize1;
-                const int yMargin = 2*FontSize1;
+                const int xMargin = FontSize;
+                const int yMargin = 2*FontSize;
                 m_width = int(st.size().width() + ( 2.11 * xMargin ));
                 m_height = int(st.size().height() + ( 2.11 * yMargin ) );
-                painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
+                painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
             } else {
                 const int FontSize2 = 12;
                 QFont font2 = painter->font();
@@ -604,7 +604,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 painter->setFont( font2 );
                 const int xMargin = FontSize2;
                 const int yMargin = 2*FontSize2;
-                painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
+                painter->drawText( box->left() + xMargin, box->top() + font2.pointSize() + yMargin, str );
             }
             int w = m_width; //149; //int(st.size().width() + ( 2.11 * xMargin ));
             int h = m_height; //52; //int(st.size().height() + ( 2.11 * yMargin ) );
