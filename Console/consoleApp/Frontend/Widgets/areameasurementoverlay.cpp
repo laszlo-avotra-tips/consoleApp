@@ -580,15 +580,17 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             line.setPoints( polygonPoints.point( 0 ), polygonPoints.point( 1 ) );
             painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
             QString str = QString( "Length: %1 mm" ).arg( QString::number( line.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
-//            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
-            int w = 149; //int(st.size().width() + ( 2.11 * xMargin ));
-            int h = 52; //int(st.size().height() + ( 2.11 * yMargin ) );
 
-            box->setWidth( w );
-            box->setHeight( h );
-            box->setX(1024 - w - 9);
-            box->setY(1024 - h - 9);
-            painter->drawRect( *box );
+//            int w = m_width; //149; //int(st.size().width() + ( 2.11 * xMargin ));
+//            int h = m_height; //52; //int(st.size().height() + ( 2.11 * yMargin ) );
+
+//            if(w && h){
+//                box->setWidth( w );
+//                box->setHeight( h );
+//                box->setX(1024 - w - 9);
+//                box->setY(1024 - h - 9);
+//                painter->drawRect( *box );
+//            }
 
             const int FontSize1 = 7;
             QFont font1 = painter->font();
@@ -601,11 +603,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             if(st.size().width() > 100){
                 const int xMargin = FontSize1;
                 const int yMargin = 2*FontSize1;
-//                box->setWidth( w );
-//                box->setHeight( h );
-//                box->setX(1024 - w - 9);
-//                box->setY(1024 - h - 9);
-//                painter->drawRect( *box );
+                m_width = int(st.size().width() + ( 2.11 * xMargin ));
+                m_height = int(st.size().height() + ( 2.11 * yMargin ) );
                 painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
             } else {
                 const int FontSize2 = 12;
@@ -614,13 +613,19 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 painter->setFont( font2 );
                 const int xMargin = FontSize2;
                 const int yMargin = 2*FontSize2;
-//                box->setWidth( w );
-//                box->setHeight( h );
-//                box->setX(1024 - w - 9);
-//                box->setY(1024 - h - 9);
-//                painter->drawRect( *box );
                 painter->drawText( box->left() + xMargin, box->top() + font1.pointSize() + yMargin, str );
             }
+            int w = m_width; //149; //int(st.size().width() + ( 2.11 * xMargin ));
+            int h = m_height; //52; //int(st.size().height() + ( 2.11 * yMargin ) );
+
+            if(w && h){
+                box->setWidth( w );
+                box->setHeight( h );
+                box->setX(1024 - w - 9);
+                box->setY(1024 - h - 9);
+                painter->drawRect( *box );
+            }
+
             LOG2(w,h)
             LOG2(box->top(), box->left())
             LOG2(box->width(), box->height())
