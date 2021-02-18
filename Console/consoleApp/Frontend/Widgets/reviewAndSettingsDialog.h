@@ -30,6 +30,8 @@ private slots:
     void on_pushButtonCaseInformation_clicked(bool checked);
 
 private:
+    void showEvent(QShowEvent* se) override;
+
     void showLastButtonSelected(QPushButton* button, bool isChecked);
 
     Ui::ReviewAndSettingsDialog *ui;

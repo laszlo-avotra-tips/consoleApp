@@ -15,9 +15,9 @@ public:
     explicit OpaqueScreen(QWidget *parent = nullptr);
     ~OpaqueScreen();
 
-    void hideEvent(QHideEvent* se) override;
-
 private:
+    void hideEvent(QHideEvent* he) override;
+
     void init();
     Ui::OpacScreen *ui;
 };

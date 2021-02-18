@@ -1,11 +1,14 @@
 #include "reviewAndSettingsDialog.h"
 #include "ui_reviewAndSettingsDialog.h"
 #include "Utility/widgetcontainer.h"
+#include <displayManager.h>
 
 #include <QTimer>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+#include <QShowEvent>
+
 
 ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -81,6 +84,15 @@ void ReviewAndSettingsDialog::on_pushButtonDeviceSelect_clicked(bool checked)
 void ReviewAndSettingsDialog::on_pushButtonCaseInformation_clicked(bool checked)
 {
     showLastButtonSelected(ui->pushButtonCaseInformation, checked);
+}
+
+void ReviewAndSettingsDialog::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    if(se->type() == QEvent::Show){
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+    }
+
 }
 
 void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool)

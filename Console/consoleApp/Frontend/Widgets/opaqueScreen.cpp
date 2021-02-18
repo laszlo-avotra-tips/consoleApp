@@ -20,10 +20,10 @@ OpaqueScreen::~OpaqueScreen()
     delete ui;
 }
 
-void OpaqueScreen::hideEvent(QHideEvent *se)
+void OpaqueScreen::hideEvent(QHideEvent *he)
 {
-    QWidget::hideEvent( se );
-    if(se->type() == QEvent::Hide){
+    QWidget::hideEvent( he );
+    if(he->type() == QEvent::Hide){
         DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
 }
