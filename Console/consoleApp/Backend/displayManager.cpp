@@ -46,7 +46,7 @@ void DisplayManager::showHideSecondMonitor(bool isNonPrimaryMonitorPresent)
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
         m_widgetOnTheSecondMonitor->show();
-        m_widgetOnTheSecondMonitor->move(3240,0);
+        m_widgetOnTheSecondMonitor->move(ControlScreenWidth,0);
         m_widgetOnTheSecondMonitor->showFullScreen();
     } else {
         m_widgetOnTheSecondMonitor->hide();
@@ -79,7 +79,7 @@ void DisplayManager::initWidgetForTheSecondMonitor(QString name)
         if(it->second){
             m_widgetOnTheSecondMonitor = it->second;
             m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-            m_widgetOnTheSecondMonitor->move(3240,0);
+            m_widgetOnTheSecondMonitor->move(ControlScreenWidth,0);
         }
     }
     emit nonPrimaryMonitorIsPresent(isNonPrimaryMonitorPresent());
@@ -92,7 +92,7 @@ void DisplayManager::initSecondMonitor(QString name)
         if(it->second){
             m_widgetOnTheSecondMonitor = it->second;
             m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-            m_widgetOnTheSecondMonitor->move(3240,0);
+            m_widgetOnTheSecondMonitor->move(ControlScreenWidth,0);
             LOG1(name)
         }
     }

@@ -37,12 +37,12 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
 
 
     const int sideFrameWidth = 640;
-    const int middleFrameWidth = 3240 - 2 * sideFrameWidth;
-    const int middleFrameHight = 2160;
+    const int middleFrameWidth = ControlScreenWidth - 2 * sideFrameWidth;
+    const int middleFrameHight = ControlScreenHeight;
     const int frameHeight = middleFrameHight - 160;
 
-    const int windowWidth{3240};
-    const int windowHeight{2160};
+    const int windowWidth{ControlScreenWidth};
+    const int windowHeight{ControlScreenHeight};
 
     setMinimumSize(windowWidth, windowHeight);
     setMaximumSize(windowWidth, windowHeight);

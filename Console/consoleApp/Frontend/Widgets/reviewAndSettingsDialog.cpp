@@ -2,6 +2,7 @@
 #include "ui_reviewAndSettingsDialog.h"
 #include "Utility/widgetcontainer.h"
 #include <displayManager.h>
+#include "defaults.h"
 
 #include <QTimer>
 #include <QGraphicsOpacityEffect>
@@ -92,7 +93,7 @@ void ReviewAndSettingsDialog::showEvent(QShowEvent *se)
     if(se->type() == QEvent::Show){
         DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
-
+    move(ControlScreenWidth - width(), ControlScreenHeight - height());
 }
 
 void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool)
