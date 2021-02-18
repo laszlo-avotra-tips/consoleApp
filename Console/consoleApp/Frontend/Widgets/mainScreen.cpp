@@ -406,7 +406,6 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
     if( result.second != QDialog::Accepted){
         *CaseInformationModel::instance() = model;
         on_pushButtonSettings_clicked();
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
 }
 
@@ -477,7 +476,7 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+//        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
@@ -498,7 +497,7 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
         on_pushButtonSettings_clicked();
     } else {
         updateDeviceSettings();
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+//        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
 }
 
