@@ -566,6 +566,7 @@ void MainScreen::udpateToSpeed1()
 
     setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonLow);
+    DisplayManager::instance()->setSpeed("LOW");
 }
 
 void MainScreen::udpateToSpeed2()
@@ -576,6 +577,7 @@ void MainScreen::udpateToSpeed2()
 
     setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonMedium);
+    DisplayManager::instance()->setSpeed("MEDIUM");
 }
 
 void MainScreen::udpateToSpeed3()
@@ -586,6 +588,8 @@ void MainScreen::udpateToSpeed3()
 
     setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonHigh);
+    DisplayManager::instance()->setSpeed("HIGH");
+
 }
 
 void MainScreen::on_pushButtonCapture_released()

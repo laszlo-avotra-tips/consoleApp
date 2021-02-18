@@ -45,6 +45,7 @@ public:
     void setRecordingChecked(bool isChecked);
     void pushButtonRecord_clicked(bool isChecked);
     void setSpeedVisible(bool isVisible);
+    void setSpeed( const QString& speed);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

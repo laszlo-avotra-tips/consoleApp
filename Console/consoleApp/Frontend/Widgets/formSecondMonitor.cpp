@@ -72,3 +72,8 @@ void LiveSceneView::setSpeedVisible(bool isVisible)
     ui->labelSpeed->setVisible(isVisible);
     ui->pushButtonSpeed->setVisible(isVisible);
 }
+
+void LiveSceneView::setSpeed(const QString &speed)
+{
+    ui->pushButtonSpeed->setText(speed);
+}

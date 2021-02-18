@@ -27,6 +27,7 @@ public:
     void setCheckRecording(bool isChecked);
     void pushButtonRecord_clicked(bool isChecked);
     void setSpeedVisible(bool isVisible);
+    void setSpeed(const QString &speed);
 
 private:
     Ui::FormSecondMonitor *ui;
