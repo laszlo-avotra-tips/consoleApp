@@ -498,6 +498,7 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
         on_pushButtonSettings_clicked();
     } else {
         updateDeviceSettings();
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
 }
 
