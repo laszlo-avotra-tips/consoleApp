@@ -100,11 +100,14 @@ border-radius: 40px;
      <height>43</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;Helvetica Neue&quot;;</string>
+   </property>
    <property name="text">
     <string>LIVE</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelRunTime">
