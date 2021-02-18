@@ -26,6 +26,7 @@ public:
     void setEnableRecording(bool isEnabled);
     void setCheckRecording(bool isChecked);
     void pushButtonRecord_clicked(bool isChecked);
+    void setSpeedVisible(bool isVisible);
 
 private:
     Ui::FormSecondMonitor *ui;

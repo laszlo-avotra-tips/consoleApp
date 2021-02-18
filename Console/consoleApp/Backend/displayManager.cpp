@@ -162,6 +162,11 @@ void DisplayManager::pushButtonRecord_clicked(bool isChecked)
     m_liveSceneView->pushButtonRecord_clicked(isChecked);
 }
 
+void DisplayManager::setSpeedVisible(bool isVisible)
+{
+    m_liveSceneView->setSpeedVisible(isVisible);
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

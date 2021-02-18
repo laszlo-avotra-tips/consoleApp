@@ -256,6 +256,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_updatetimeTimer.stop();
         ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
         ui->frameSpeed->hide();
+        DisplayManager::instance()->setSpeedVisible(false);
 
         captureListModel::Instance().reset();
         clipListModel::Instance().reset();
@@ -303,6 +304,7 @@ void MainScreen::setDeviceLabel()
 void MainScreen::showSpeed(bool isShown)
 {
     ui->frameSpeed->setVisible(isShown);
+    DisplayManager::instance()->setSpeedVisible(isShown);
 }
 
 void MainScreen::on_pushButtonSettings_clicked()

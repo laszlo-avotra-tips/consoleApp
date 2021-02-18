@@ -44,6 +44,7 @@ public:
     void setRecordingEnabled(bool isEnabled);
     void setRecordingChecked(bool isChecked);
     void pushButtonRecord_clicked(bool isChecked);
+    void setSpeedVisible(bool isVisible);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);
