@@ -339,7 +339,6 @@ void MainScreen::on_pushButtonSettings_clicked()
             if(result.first){
                 delete result.first;
             }
-
         }
     }
     else {
@@ -639,19 +638,19 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
         if(runningStateVal == 1){
             labelLiveColor = QString("color: green;");
-//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setActive();
+                DisplayManager::instance()->setSpeedVisible(true);
             }
         } else if (runningStateVal == 3){
             labelLiveColor = QString("color: green;");
-//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setPassive();
+                DisplayManager::instance()->setSpeedVisible(true);
             }
         }else{
             labelLiveColor = QString("color: grey;");
-//            ui->labelLive->setStyleSheet("color: grey;");
+            DisplayManager::instance()->setSpeedVisible(false);
             m_scene->setIdle();
         }
         ui->labelLive->setStyleSheet(labelLiveColor);
