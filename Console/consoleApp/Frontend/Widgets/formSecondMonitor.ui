@@ -90,6 +90,9 @@ border-radius: 40px;
    <property name="text">
     <string>09:15:59</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="labelLive">
    <property name="geometry">
@@ -107,7 +110,7 @@ border-radius: 40px;
     <string>LIVE</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="labelRunTime">
