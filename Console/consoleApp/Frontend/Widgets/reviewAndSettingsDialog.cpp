@@ -93,7 +93,11 @@ void ReviewAndSettingsDialog::showEvent(QShowEvent *se)
     if(se->type() == QEvent::Show){
         DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
-    move(ControlScreenWidth - width(), ControlScreenHeight - height());
+
+    const int xc = ControlScreenWidth / 2 - width() / 2;
+    const int yc = ControlScreenHeight / 2 - height() / 2;
+
+    move(xc,yc);
 }
 
 void ReviewAndSettingsDialog::showLastButtonSelected(QPushButton *button, bool)
