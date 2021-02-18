@@ -400,13 +400,13 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
     CaseInformationModel model = *CaseInformationModel::instance();
     const std::vector<QString> cidParam{"DONE"};
     auto result = WidgetContainer::instance()->openDialog(this, "caseInformationDialog", &cidParam);
-
     if(result.first){
         result.first->hide();
     }
     if( result.second != QDialog::Accepted){
         *CaseInformationModel::instance() = model;
         on_pushButtonSettings_clicked();
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
 }
 
