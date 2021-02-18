@@ -3,7 +3,7 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
-#include <QShowEvent>
+#include <QHideEvent>
 
 #include <displayManager.h>
 
@@ -20,9 +20,9 @@ OpaqueScreen::~OpaqueScreen()
     delete ui;
 }
 
-void OpaqueScreen::showEvent(QShowEvent *se)
+void OpaqueScreen::hideEvent(QHideEvent *se)
 {
-    QWidget::showEvent( se );
+    QWidget::hideEvent( se );
     if(se->type() == QEvent::Hide){
         DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
     }
