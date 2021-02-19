@@ -75,7 +75,7 @@ void DisplayManager::initWidgetForTheSecondMonitor(QString name)
 
     auto it = m_widgetContainer.find(name);
     if(it != m_widgetContainer.end()){
-        m_widgetOnTheSecondMonitor->hide();
+//        m_widgetOnTheSecondMonitor->hide();
         //find widget by name assign to m_widgetOnTheSecondMonitor
         if(it->second){
             m_widgetOnTheSecondMonitor = it->second;
