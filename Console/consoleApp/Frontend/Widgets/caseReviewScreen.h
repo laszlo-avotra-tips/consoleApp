@@ -20,7 +20,6 @@ class CaseReviewScreen : public QWidget
 public:
     explicit CaseReviewScreen(QWidget *parent = nullptr);
     ~CaseReviewScreen();
-    void showEvent(QShowEvent *) override;
 
 signals:
     void sendStatusText( QString );
@@ -49,6 +48,9 @@ private slots:
     void on_pushButtonClipsRightArrow_clicked();
 
 private:
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *e) override;
+
     void initPlayer();
     void initCapture();
     void initClips();

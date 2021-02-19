@@ -14,6 +14,7 @@
 
 #include <QGraphicsPixmapItem>
 #include <QShowEvent>
+#include <QHideEvent>
 
 
 CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
@@ -242,6 +243,15 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
         DisplayManager::instance()->initWidgetForTheSecondMonitor("caseReview");
     }
 
+}
+
+void CaseReviewScreen::hideEvent(QHideEvent * e)
+{
+    QWidget::hideEvent(e);
+    if(e->type() == QEvent::Hide)
+    {
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+    }
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()
