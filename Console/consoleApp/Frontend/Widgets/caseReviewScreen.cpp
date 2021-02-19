@@ -10,8 +10,10 @@
 #include "clipItemDelegate.h"
 #include "Utility/clipListModel.h"
 #include "Utility/octFrameRecorder.h"
+#include "displayManager.h"
 
 #include <QGraphicsPixmapItem>
+#include <QShowEvent>
 
 
 CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
@@ -222,17 +224,24 @@ CaseReviewScreen::~CaseReviewScreen()
 
 void CaseReviewScreen::showEvent(QShowEvent * e)
 {
-    updateCaseInfo();
-    updateCaptureLabel();
+
     QWidget::showEvent(e);
+    if(e->type() == QEvent::Show)
+    {
+        updateCaseInfo();
+        updateCaptureLabel();
 
-    showCapture(false);
-    showClip(false);
-    showPlayer(false);
+        showCapture(false);
+        showClip(false);
+        showPlayer(false);
 
-    QGraphicsScene *scene = new QGraphicsScene();
+        QGraphicsScene *scene = new QGraphicsScene();
 
-    ui->captureScene->setScene(scene);
+        ui->captureScene->setScene(scene);
+
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("caseReview");
+    }
+
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()

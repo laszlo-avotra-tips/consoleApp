@@ -3,6 +3,7 @@
 #include "formSecondMonitor.h"
 #include "livescene.h"
 #include "formPmLogo.h"
+#include "formPmCaseReview.h"
 #include "opaqueScreen.h"
 #include "formDisk.h"
 #include "Utility/userSettings.h"
@@ -190,10 +191,12 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_liveSceneView = std::make_unique<LiveSceneView>();
     m_pmDisk = std::make_unique<FormDisk>();
     m_pmLogo = std::make_unique<FormPmLogo>();
+    m_pmCaseReview = std::make_unique<FormPmCaseReview>();
 
     m_widgetContainer["logo"] = m_pmLogo.get();
     m_widgetContainer["disk"] = m_pmDisk.get();
     m_widgetContainer["liveData"] = m_liveSceneView.get();
+    m_widgetContainer["caseReview"] = m_pmCaseReview.get();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showHideSecondMonitor);
 
