@@ -200,8 +200,6 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showHideSecondMonitor);
 
-    initSecondMonitor("logo");
-
     connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                 this, &DisplayManager::programFinished);
 

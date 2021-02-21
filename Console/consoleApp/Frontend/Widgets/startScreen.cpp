@@ -111,10 +111,10 @@ void StartScreen::showEvent(QShowEvent *se)
     }
 }
 
-void StartScreen::hideEvent(QHideEvent *he)
-{
-    QWidget::hideEvent( he );
-}
+//void StartScreen::hideEvent(QHideEvent *he)
+//{
+//    QWidget::hideEvent( he );
+//}
 
 void StartScreen::on_pushButtonStart_released()
 {

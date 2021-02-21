@@ -38,7 +38,7 @@ private slots:
 
 private:
     void showEvent(QShowEvent* se) override;
-    void hideEvent(QHideEvent* he) override;
+//    void hideEvent(QHideEvent* he) override;
 
     Ui::StartScreen *ui;
     Backend* m_backend{nullptr};

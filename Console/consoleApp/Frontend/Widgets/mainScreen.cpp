@@ -382,9 +382,6 @@ void MainScreen::openCaseInformationDialog()
     const std::vector<QString> cidParam{"NEXT"};
     auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
 
-//    if(result.first){
-//        result.first->hide();
-//    }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
         openDeviceSelectDialog();
