@@ -73,6 +73,19 @@ border-radius: 40px;
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QGraphicsView" name="captureScene">
+   <property name="geometry">
+    <rect>
+     <x>12</x>
+     <y>10</y>
+     <width>1266</width>
+     <height>1004</height>
+    </rect>
+   </property>
+  </widget>
+  <zorder>captureScene</zorder>
+  <zorder>pushButtonLogo</zorder>
+  <zorder>labelRunTime</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>
