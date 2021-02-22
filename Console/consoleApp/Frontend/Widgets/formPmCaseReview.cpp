@@ -19,15 +19,17 @@ FormPmCaseReview::~FormPmCaseReview()
 void FormPmCaseReview::setScene(QGraphicsScene* scene)
 {
     ui->captureScene->setScene(scene);
-    ui->pushButtonLogo->hide();
-    ui->labelRunTime->move(950,60);
 }
 
 void FormPmCaseReview::showCapture(bool isVisible)
 {
     if(isVisible){
         ui->captureScene->show();
+        ui->pushButtonLogo->hide();
+        ui->labelRunTime->move(960,80);
     } else {
         ui->captureScene->hide();
+        ui->pushButtonLogo->show();
+        ui->labelRunTime->move(1100,34);
     }
 }
