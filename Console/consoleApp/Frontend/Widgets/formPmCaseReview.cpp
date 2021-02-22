@@ -18,6 +18,7 @@ FormPmCaseReview::~FormPmCaseReview()
 void FormPmCaseReview::setScene(QGraphicsScene* scene)
 {
     ui->captureScene->setScene(scene);
+    ui->pushButtonLogo->hide();
 }
 
 void FormPmCaseReview::showCapture(bool isVisible)
