@@ -646,7 +646,7 @@ void MainScreen::handleSledRunningState(int runningStateVal)
             }
         }else{
             labelLiveColor = QString("color: grey;");
-            DisplayManager::instance()->setSpeedVisible(false);
+//            DisplayManager::instance()->setSpeedVisible(false);
             m_scene->setIdle();
         }
         ui->labelLive->setStyleSheet(labelLiveColor);
