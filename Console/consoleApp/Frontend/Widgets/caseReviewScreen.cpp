@@ -338,17 +338,21 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
         const auto& imageName{m_selectedCaptureItem->getName()};
         LOG1(imageName)
         QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
+        QImage imagePm = image.scaledToWidth(1000);
 
         LOG2(image.size().width(), image.size().height())
 
-        QGraphicsScene *scene = new QGraphicsScene();
+        QGraphicsScene *scene = new QGraphicsScene(this);
+        QGraphicsScene *scenePm = new QGraphicsScene(this);
 
         QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+        QGraphicsPixmapItem* itemPm = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 
         scene->addItem(item);
+        scenePm->addItem(itemPm);
 
         ui->captureScene->setScene(scene);
-        DisplayManager::instance()->setScene(scene);
+        DisplayManager::instance()->setScene(scenePm);
     }
 }
 
