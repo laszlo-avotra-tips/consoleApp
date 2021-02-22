@@ -348,6 +348,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
         scene->addItem(item);
 
         ui->captureScene->setScene(scene);
+        DisplayManager::instance()->setScene(scene);
     }
 }
 
