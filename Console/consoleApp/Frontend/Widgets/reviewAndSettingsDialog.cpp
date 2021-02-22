@@ -91,7 +91,7 @@ void ReviewAndSettingsDialog::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
     if(se->type() == QEvent::Show){
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     }
 
     const int xc = ControlScreenWidth / 2 - width() / 2;

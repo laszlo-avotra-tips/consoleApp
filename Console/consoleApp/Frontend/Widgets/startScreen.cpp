@@ -106,7 +106,7 @@ void StartScreen::showEvent(QShowEvent *se)
     QWidget::showEvent( se );
     if(se->type() == QEvent::Show){
         LOG1("show");
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
+        DisplayManager::instance()->showOnTheSecondMonitor("logo");
         WidgetContainer::instance()->setIsNewCase(true);
     }
 }

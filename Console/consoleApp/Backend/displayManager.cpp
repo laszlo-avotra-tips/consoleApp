@@ -69,7 +69,7 @@ void DisplayManager::setScene(liveScene *scene)
     m_liveSceneView->setScene(scene);
 }
 
-void DisplayManager::initWidgetForTheSecondMonitor(QString name)
+void DisplayManager::showOnTheSecondMonitor(QString name)
 {
     LOG1(name);
 

@@ -241,7 +241,7 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
         ui->captureScene->setScene(scene);
         DisplayManager::instance()->setScene(scene);
 
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("caseReview");
+        DisplayManager::instance()->showOnTheSecondMonitor("caseReview");
     }
 
 }
@@ -251,7 +251,7 @@ void CaseReviewScreen::hideEvent(QHideEvent * e)
     QWidget::hideEvent(e);
     if(e->type() == QEvent::Hide)
     {
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     }
 }
 

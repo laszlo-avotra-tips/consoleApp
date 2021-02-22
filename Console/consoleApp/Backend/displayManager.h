@@ -35,7 +35,7 @@ public:
     bool isNonPrimaryMonitorPresent() const;
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
     void setScene(liveScene* scene);
-    void initWidgetForTheSecondMonitor(QString name);
+    void showOnTheSecondMonitor(QString name);
     void setWindowTitle(const QString& msg);
     void setRuntimeLabel(const QString& msg);
     void setCurrentTime(const QString& msg);
