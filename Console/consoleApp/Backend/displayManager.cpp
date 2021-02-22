@@ -173,6 +173,16 @@ void DisplayManager::setSpeed(const QString &speed)
     m_liveSceneView->setSpeed(speed);
 }
 
+void DisplayManager::setScene(QGraphicsScene * scene)
+{
+    m_pmCaseReview->setScene(scene);
+}
+
+void DisplayManager::showCapture(bool isVisible)
+{
+    m_pmCaseReview->showCapture(isVisible);
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

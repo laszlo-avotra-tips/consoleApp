@@ -19,6 +19,7 @@ class QGraphicsView;
 class liveScene;
 class FormDisk;
 class FormPmCaseReview;
+class QGraphicsScene;
 
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
@@ -47,6 +48,8 @@ public:
     void pushButtonRecord_clicked(bool isChecked);
     void setSpeedVisible(bool isVisible);
     void setSpeed( const QString& speed);
+    void setScene(QGraphicsScene*);
+    void showCapture(bool isVisible);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

@@ -206,7 +206,7 @@ void CaseReviewScreen::showCapture(bool isVisible)
     } else {
         ui->captureScene->hide();
     }
-
+    DisplayManager::instance()->showCapture(isVisible);             )
 }
 
 void CaseReviewScreen::showClip(bool isVisible)
@@ -239,6 +239,7 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
         QGraphicsScene *scene = new QGraphicsScene();
 
         ui->captureScene->setScene(scene);
+        DisplayManager::instance()->setScene(scene);
 
         DisplayManager::instance()->initWidgetForTheSecondMonitor("caseReview");
     }
