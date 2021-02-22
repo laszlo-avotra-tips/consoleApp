@@ -2,6 +2,7 @@
 #include "ui_formPmCaseReview.h"
 
 #include <QGraphicsScene>
+#include <QLabel>
 
 FormPmCaseReview::FormPmCaseReview(QWidget *parent) :
     QWidget(parent),
@@ -19,6 +20,7 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 {
     ui->captureScene->setScene(scene);
     ui->pushButtonLogo->hide();
+    ui->labelRunTime->move(1000,100);
 }
 
 void FormPmCaseReview::showCapture(bool isVisible)

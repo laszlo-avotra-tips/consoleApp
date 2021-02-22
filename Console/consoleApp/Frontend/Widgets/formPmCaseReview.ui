@@ -70,7 +70,7 @@ border-radius: 40px;
     <string>CASE REVIEW</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QGraphicsView" name="captureScene">
