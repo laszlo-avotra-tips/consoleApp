@@ -206,7 +206,7 @@ void CaseReviewScreen::showCapture(bool isVisible)
     } else {
         ui->captureScene->hide();
     }
-    DisplayManager::instance()->showCapture(isVisible);             )
+    DisplayManager::instance()->showCapture(isVisible);
 }
 
 void CaseReviewScreen::showClip(bool isVisible)
