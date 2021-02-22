@@ -20,7 +20,7 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 {
     ui->captureScene->setScene(scene);
     ui->pushButtonLogo->hide();
-    ui->labelRunTime->move(1000,100);
+    ui->labelRunTime->move(950,60);
 }
 
 void FormPmCaseReview::showCapture(bool isVisible)
