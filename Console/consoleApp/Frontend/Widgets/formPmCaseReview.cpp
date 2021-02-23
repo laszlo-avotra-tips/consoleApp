@@ -33,3 +33,8 @@ void FormPmCaseReview::showCapture(bool isVisible)
         ui->labelRunTime->move(1100,34);
     }
 }
+
+QVBoxLayout *FormPmCaseReview::getVideoWidgetContainer()
+{
+    return ui->verticalLayout;
+}

@@ -20,6 +20,7 @@ class liveScene;
 class FormDisk;
 class FormPmCaseReview;
 class QGraphicsScene;
+class QVBoxLayout;
 
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
@@ -49,6 +50,7 @@ public:
     void setSpeed( const QString& speed);
     void setScene(QGraphicsScene*);
     void showCapture(bool isVisible);
+    QVBoxLayout* getVideoWidgetContainer();
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

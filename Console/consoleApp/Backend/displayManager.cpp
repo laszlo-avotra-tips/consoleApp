@@ -172,6 +172,11 @@ void DisplayManager::showCapture(bool isVisible)
     m_pmCaseReview->showCapture(isVisible);
 }
 
+QVBoxLayout *DisplayManager::getVideoWidgetContainer()
+{
+    return m_pmCaseReview->getVideoWidgetContainer();
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
