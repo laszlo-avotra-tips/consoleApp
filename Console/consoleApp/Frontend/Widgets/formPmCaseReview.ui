@@ -99,9 +99,7 @@ border-radius: 40px;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QFrame#framePlayer{
-border: 3px solid #F5C400;
-}</string>
+    <string notr="true"/>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
