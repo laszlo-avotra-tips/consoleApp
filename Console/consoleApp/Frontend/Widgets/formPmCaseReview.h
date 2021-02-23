@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class QGraphicsScene;
+class QVBoxLayout;
 
 namespace Ui {
 class FormPmCaseReview;
@@ -18,6 +19,7 @@ public:
     ~FormPmCaseReview();
     void setScene(QGraphicsScene* scene);
     void showCapture(bool isVisible);
+    QVBoxLayout *getVideoWidgetContainer();
 
 private:
     Ui::FormPmCaseReview *ui;

@@ -24,7 +24,7 @@ void OpaqueScreen::hideEvent(QHideEvent *he)
 {
     QWidget::hideEvent( he );
     if(he->type() == QEvent::Hide){
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     }
 }
 

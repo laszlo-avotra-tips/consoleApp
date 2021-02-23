@@ -69,13 +69,15 @@ void DisplayManager::setScene(liveScene *scene)
     m_liveSceneView->setScene(scene);
 }
 
-void DisplayManager::initWidgetForTheSecondMonitor(QString name)
+void DisplayManager::showOnTheSecondMonitor(QString name)
 {
     LOG1(name);
 
     auto it = m_widgetContainer.find(name);
     if(it != m_widgetContainer.end()){
-//        m_widgetOnTheSecondMonitor->hide();
+        if(m_widgetOnTheSecondMonitor){
+            m_widgetOnTheSecondMonitor->hide();
+        }
         //find widget by name assign to m_widgetOnTheSecondMonitor
         if(it->second){
             m_widgetOnTheSecondMonitor = it->second;
@@ -84,19 +86,6 @@ void DisplayManager::initWidgetForTheSecondMonitor(QString name)
         }
     }
     emit nonPrimaryMonitorIsPresent(isNonPrimaryMonitorPresent());
-}
-
-void DisplayManager::initSecondMonitor(QString name)
-{
-    auto it = m_widgetContainer.find(name);
-    if(it != m_widgetContainer.end()){
-        if(it->second){
-            m_widgetOnTheSecondMonitor = it->second;
-            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-            m_widgetOnTheSecondMonitor->move(ControlScreenWidth,0);
-            LOG1(name)
-        }
-    }
 }
 
 void DisplayManager::setWindowTitle(const QString &msg)
@@ -181,6 +170,11 @@ void DisplayManager::setScene(QGraphicsScene * scene)
 void DisplayManager::showCapture(bool isVisible)
 {
     m_pmCaseReview->showCapture(isVisible);
+}
+
+QVBoxLayout *DisplayManager::getVideoWidgetContainer()
+{
+    return m_pmCaseReview->getVideoWidgetContainer();
 }
 
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)

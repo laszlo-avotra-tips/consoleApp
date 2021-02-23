@@ -121,7 +121,7 @@ void CaseInformationDialog::showEvent(QShowEvent *se)
     QWidget::showEvent( se );
     if(se->type() == QEvent::Show){
         LOG1("show");
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
+        DisplayManager::instance()->showOnTheSecondMonitor("disk");
         DisplayManager::instance()->setWindowTitle("CASE INFORMATION IN PROCESS");
         WidgetContainer::instance()->setIsNewCase(true);
     }

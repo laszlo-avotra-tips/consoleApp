@@ -107,6 +107,7 @@ void CaseReviewScreen::initPlayer()
 
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
+//    m_player->setVideoWidgetContainer(DisplayManager::instance()->getVideoWidgetContainer());
     m_player->init();
 
     auto* slider = ui->horizontalSlider;
@@ -241,7 +242,7 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
         ui->captureScene->setScene(scene);
         DisplayManager::instance()->setScene(scene);
 
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("caseReview");
+        DisplayManager::instance()->showOnTheSecondMonitor("caseReview");
     }
 
 }
@@ -251,7 +252,7 @@ void CaseReviewScreen::hideEvent(QHideEvent * e)
     QWidget::hideEvent(e);
     if(e->type() == QEvent::Hide)
     {
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     }
 }
 
