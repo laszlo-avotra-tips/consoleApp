@@ -893,13 +893,13 @@ background-color: #262626</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>260</width>
+          <width>270</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>260</width>
+          <width>270</width>
           <height>16777215</height>
          </size>
         </property>
@@ -907,7 +907,7 @@ background-color: #262626</string>
          <string>12:12:12 PM</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1007,13 +1007,13 @@ background-color: #262626</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>260</width>
+          <width>270</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>260</width>
+          <width>270</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1021,7 +1021,7 @@ background-color: #262626</string>
          <string>07/07/2020</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
