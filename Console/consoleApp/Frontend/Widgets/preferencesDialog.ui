@@ -832,22 +832,22 @@ background-color: #262626</string>
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QLabel" name="label2">
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>16777215</height>
          </size>
         </property>
@@ -893,18 +893,18 @@ background-color: #262626</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
+          <width>250</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>200</width>
+          <width>250</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string>12:12:12</string>
+         <string>12:12:12 PM</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -946,22 +946,22 @@ background-color: #262626</string>
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>40</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QLabel" name="label3">
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1007,13 +1007,13 @@ background-color: #262626</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
+          <width>250</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>200</width>
+          <width>250</width>
           <height>16777215</height>
          </size>
         </property>
