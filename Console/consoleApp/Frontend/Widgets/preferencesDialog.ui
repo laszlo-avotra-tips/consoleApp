@@ -31,7 +31,7 @@ background-color: black;
 color: white;
 }
 QLabel{
-font: 33pt &quot;Helvetica Neue&quot;;
+font: 22pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelInfo{
 font: 22pt &quot;Helvetica Neue&quot;;
@@ -53,7 +53,7 @@ QFrame#frame{
 border: 2px solid grey; 
 }
 QLabel#labelTitle{
-font: 44pt &quot;Helvetica Neue&quot;;
+font: 36pt &quot;Helvetica Neue&quot;;
 font-weight: 600
 }
 QFrame#frameDone{
@@ -146,7 +146,7 @@ QScrollBar:vertical {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 36pt</string>
+     <string notr="true">font: 28pt</string>
     </property>
     <property name="text">
      <string>PHYSICIANS</string>
@@ -178,7 +178,7 @@ QScrollBar:vertical {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 36pt</string>
+     <string notr="true">font: 28pt</string>
     </property>
     <property name="text">
      <string>LOCATIONS</string>
