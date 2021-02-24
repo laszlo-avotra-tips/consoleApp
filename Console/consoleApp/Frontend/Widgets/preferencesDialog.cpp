@@ -24,6 +24,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButtonLocationDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultLocation);
 
     initPhysiciansContainer();
+    initLocationsContainer();
 }
 
 PreferencesDialog::~PreferencesDialog()

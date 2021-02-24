@@ -34,7 +34,7 @@ private:
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;
-    LabelContainer m_locationssContainer;
+    LabelContainer m_locationsContainer;
 
     std::vector<QLabel*> m_physicianLabels;
     std::vector<QLabel*> m_locationLabels;
