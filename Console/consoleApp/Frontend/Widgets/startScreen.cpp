@@ -87,7 +87,7 @@ void StartScreen::on_pushButtonMenu_clicked(bool checked)
 
 void StartScreen::on_pushButtonPreferences_clicked()
 {
-    if(m_preferenceDialog->exec() == QDialog::Accepted){
+    if(m_preferencesDialog->exec() == QDialog::Accepted){
         LOG1("ACCEPTED");
     }
 }

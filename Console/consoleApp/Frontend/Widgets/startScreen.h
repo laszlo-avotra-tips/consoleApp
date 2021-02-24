@@ -45,7 +45,7 @@ private:
     Backend* m_backend{nullptr};
     bool m_isPressAndHold{false};
     QTimer m_timer;
-    PreferencesDialog* m_preferenceDialog{nullptr};
+    PreferencesDialog* m_preferencesDialog{nullptr};
 };
 
 #endif // STARTSCREEN_H
