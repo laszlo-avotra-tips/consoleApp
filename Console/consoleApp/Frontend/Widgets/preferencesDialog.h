@@ -8,7 +8,7 @@
 
 #include "activeLabel.h"
 
-using PhysicansContainer = std::map<QString, ActiveLabel*>;
+using PhysicansContainer = std::map<QString, QLabel*>;
 
 namespace Ui {
 class PreferencesDialog;
@@ -31,9 +31,9 @@ private:
 
     Ui::PreferencesDialog *ui;
     PhysicansContainer m_physiciansContainer;
-    std::vector<ActiveLabel*> m_labels;
+    std::vector<QLabel*> m_labels;
     QString m_defaultPhysicianCandidate;
-
+    QLabel* m_selectedLabel{nullptr};
 };
 
 #endif // PREFERENCESDIALOG_H
