@@ -25,6 +25,51 @@
   <property name="windowOpacity">
    <double>0.900000000000000</double>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+background-color: black;
+color: white;
+}
+QLabel{
+font: 22pt &quot;Helvetica Neue&quot;;
+}
+QLabel#labelInfo{
+font: 22pt &quot;Helvetica Neue&quot;;
+}
+QFrame#frameType{
+border-top: 2px solid #676767
+}
+QPushButton{
+font: 19pt;
+color: white;
+background-color:#262626;
+}
+QDialog{
+border: 2px solid grey; 
+border-radius: 200px;
+}
+QLabel#labelTitle{
+font: 36pt &quot;Helvetica Neue&quot;;
+font-weight: 600
+}
+QFrame#frameDone{
+background-color:#262626;
+border-radius: 10px;
+}
+QFrame#frameBack{
+background-color:#636363;
+border-radius: 10px;
+}
+QListView{
+font: 22pt &quot;Helvetica Neue&quot;;
+}
+QScrollBar::handle:vertical {
+background-color:rgb(245,196,0);
+} 
+QScrollBar:vertical {
+    background-color:black; width:100px;
+}</string>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -55,7 +100,7 @@
     <rect>
      <x>1916</x>
      <y>1555</y>
-     <width>466</width>
+     <width>366</width>
      <height>76</height>
     </rect>
    </property>
@@ -64,6 +109,9 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(245,196,0); color: black;</string>
    </property>
    <property name="text">
     <string>DONE</string>
