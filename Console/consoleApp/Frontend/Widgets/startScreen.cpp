@@ -11,6 +11,7 @@
 #include "displayManager.h"
 #include "daqfactory.h"
 #include "sledsupport.h"
+#include "preferencesDialog.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -23,6 +24,8 @@ StartScreen::StartScreen(QWidget *parent) :
 {
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());
+
+    m_preferencesDialog = new PreferencesDialog(this);
 
     QString brandVersion("<html><head/><body><p><span style=\" font-size:21pt; font-weight:600; color:#A9A9A9;\">LIGHTBOX</span><span \
 style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
@@ -84,6 +87,9 @@ void StartScreen::on_pushButtonMenu_clicked(bool checked)
 
 void StartScreen::on_pushButtonPreferences_clicked()
 {
+    if(m_preferenceDialog->exec() == QDialog::Accepted){
+        LOG1("ACCEPTED");
+    }
 }
 
 void StartScreen::on_pushButtonShutdown_clicked()

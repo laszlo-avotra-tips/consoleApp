@@ -6,6 +6,7 @@
 
 class Backend;
 class QGestureEvent;
+class PreferencesDialog;
 
 namespace Ui {
 class StartScreen;
@@ -44,6 +45,7 @@ private:
     Backend* m_backend{nullptr};
     bool m_isPressAndHold{false};
     QTimer m_timer;
+    PreferencesDialog* m_preferenceDialog{nullptr};
 };
 
 #endif // STARTSCREEN_H
