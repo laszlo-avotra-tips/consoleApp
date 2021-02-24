@@ -31,13 +31,7 @@ background-color: black;
 color: white;
 }
 QLabel{
-font: 22pt &quot;Helvetica Neue&quot;;
-}
-QLabel#labelInfo{
-font: 22pt &quot;Helvetica Neue&quot;;
-}
-QFrame#frameType{
-border-top: 2px solid #676767
+font: 18pt &quot;Helvetica Neue&quot;;
 }
 QPushButton{
 font: 22pt;
@@ -64,15 +58,7 @@ QFrame#frameBack{
 background-color:#636363;
 border-radius: 10px;
 }
-QListView{
-font: 22pt &quot;Helvetica Neue&quot;;
-}
-QScrollBar::handle:vertical {
-background-color:rgb(245,196,0);
-} 
-QScrollBar:vertical {
-    background-color:black; width:100px;
-}</string>
+</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -529,12 +515,12 @@ QScrollBar:vertical {
      <rect>
       <x>130</x>
       <y>636</y>
-      <width>305</width>
+      <width>350</width>
       <height>60</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 18pt</string>
+     <string notr="true">font: 14pt</string>
     </property>
     <property name="text">
      <string>Default: DR. XXX</string>
@@ -550,7 +536,7 @@ QScrollBar:vertical {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 18pt</string>
+     <string notr="true">font: 14pt</string>
     </property>
     <property name="text">
      <string>Default: AVINGER HQ</string>
@@ -572,7 +558,8 @@ QScrollBar:vertical {
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: black;</string>
+     <string notr="true">color: black;
+font: 18pt;</string>
     </property>
     <property name="text">
      <string>SET DEFAULT</string>
@@ -594,7 +581,8 @@ QScrollBar:vertical {
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: black;</string>
+     <string notr="true">color: black;
+font: 18pt;</string>
     </property>
     <property name="text">
      <string>SET DEFAULT</string>
