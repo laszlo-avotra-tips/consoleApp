@@ -31,7 +31,7 @@ background-color: black;
 color: white;
 }
 QLabel{
-font: 22pt &quot;Helvetica Neue&quot;;
+font: 33pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelInfo{
 font: 22pt &quot;Helvetica Neue&quot;;
@@ -40,16 +40,20 @@ QFrame#frameType{
 border-top: 2px solid #676767
 }
 QPushButton{
-font: 19pt;
+font: 22pt;
 color: white;
-background-color:#262626;
+background-color:#636363;
+border-radius: 10px;
 }
 QDialog{
 border: 2px solid grey; 
-border-radius: 200px;
+border-radius: 280px;
+}
+QFrame#frame{
+border: 2px solid grey; 
 }
 QLabel#labelTitle{
-font: 36pt &quot;Helvetica Neue&quot;;
+font: 44pt &quot;Helvetica Neue&quot;;
 font-weight: 600
 }
 QFrame#frameDone{
@@ -116,6 +120,278 @@ QScrollBar:vertical {
    <property name="text">
     <string>DONE</string>
    </property>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>280</y>
+     <width>2514</width>
+     <height>749</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="labelPhysicians">
+    <property name="geometry">
+     <rect>
+      <x>134</x>
+      <y>54</y>
+      <width>419</width>
+      <height>84</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 36pt</string>
+    </property>
+    <property name="text">
+     <string>PHYSICIANS</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonAddPhysician">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>54</y>
+      <width>193</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>+ ADD</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelLocations">
+    <property name="geometry">
+     <rect>
+      <x>1519</x>
+      <y>54</y>
+      <width>419</width>
+      <height>84</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 36pt</string>
+    </property>
+    <property name="text">
+     <string>LOCATIONS</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonAddLocation">
+    <property name="geometry">
+     <rect>
+      <x>2104</x>
+      <y>54</y>
+      <width>193</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>+ ADD</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>132</x>
+      <y>250</y>
+      <width>774</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid grey; </string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_3">
+    <property name="geometry">
+     <rect>
+      <x>1519</x>
+      <y>250</y>
+      <width>774</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid grey; </string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_4">
+    <property name="geometry">
+     <rect>
+      <x>132</x>
+      <y>364</y>
+      <width>774</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid grey; </string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_5">
+    <property name="geometry">
+     <rect>
+      <x>1519</x>
+      <y>364</y>
+      <width>774</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid grey; </string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_6">
+    <property name="geometry">
+     <rect>
+      <x>132</x>
+      <y>475</y>
+      <width>774</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid grey; </string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_7">
+    <property name="geometry">
+     <rect>
+      <x>1519</x>
+      <y>475</y>
+      <width>774</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid grey; </string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelDr1">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>178</y>
+      <width>750</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DR. XXX</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelDr2">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>292</y>
+      <width>750</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DR. XXX</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelDr3">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>403</y>
+      <width>750</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DR. XXX</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelLocation1">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>178</y>
+      <width>750</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>LAB XXX</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelLocation1_2">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>292</y>
+      <width>750</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>LAB XXX</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelLocation1_3">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>403</y>
+      <width>750</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>LAB XXX</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
