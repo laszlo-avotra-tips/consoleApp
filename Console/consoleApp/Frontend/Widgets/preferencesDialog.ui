@@ -1056,6 +1056,106 @@ background-color: #262626</string>
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="pushButtonDrDefault_2">
+   <property name="geometry">
+    <rect>
+     <x>999</x>
+     <y>1555</y>
+     <width>515</width>
+     <height>72</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: black;
+font: 18pt;</string>
+   </property>
+   <property name="text">
+    <string>SERVICE SETTINGS</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frameSn">
+   <property name="geometry">
+    <rect>
+     <x>1810</x>
+     <y>1243</y>
+     <width>694</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="labelSn">
+      <property name="minimumSize">
+       <size>
+        <width>670</width>
+        <height>60</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>670</width>
+        <height>60</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 14pt</string>
+      </property>
+      <property name="text">
+       <string>Lightbox Serial Number: 0037</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelDiskSpace">
+      <property name="minimumSize">
+       <size>
+        <width>670</width>
+        <height>60</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>670</width>
+        <height>60</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 14pt</string>
+      </property>
+      <property name="text">
+       <string>Disk Space Remaining: 100 GB</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections>
