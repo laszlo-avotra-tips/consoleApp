@@ -21,6 +21,7 @@ HEADERS += \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
+    $$PWD/Frontend/Widgets/activeLabel.h \
     $$PWD/Frontend/Widgets/captureItemDelegate.h \
     $$PWD/Frontend/Widgets/capturelistview.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
@@ -103,6 +104,7 @@ SOURCES += \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
+    $$PWD/Frontend/Widgets/activeLabel.cpp \
     $$PWD/Frontend/Widgets/captureItemDelegate.cpp \
     $$PWD/Frontend/Widgets/capturelistview.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
