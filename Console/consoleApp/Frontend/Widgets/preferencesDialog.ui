@@ -349,7 +349,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>LAB XXX</string>
+     <string>LAB XXX1</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelLocation2">
@@ -362,7 +362,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>LAB XXX</string>
+     <string>LAB XXX2</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelLocation3">
@@ -375,7 +375,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>LAB XXX</string>
+     <string>LAB XXX3</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonDrDown">
