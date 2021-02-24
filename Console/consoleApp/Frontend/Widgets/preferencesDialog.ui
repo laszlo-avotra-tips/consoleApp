@@ -42,7 +42,7 @@ border-top: 2px solid #676767
 QPushButton{
 font: 22pt;
 color: white;
-background-color:#636363;
+background-color:#676767;
 border-radius: 10px;
 }
 QDialog{
@@ -146,7 +146,7 @@ QScrollBar:vertical {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 28pt</string>
+     <string notr="true">font: 24pt</string>
     </property>
     <property name="text">
      <string>PHYSICIANS</string>
@@ -162,7 +162,7 @@ QScrollBar:vertical {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background-color: #262626</string>
     </property>
     <property name="text">
      <string>+ ADD</string>
@@ -178,7 +178,7 @@ QScrollBar:vertical {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 28pt</string>
+     <string notr="true">font: 24pt</string>
     </property>
     <property name="text">
      <string>LOCATIONS</string>
@@ -194,7 +194,7 @@ QScrollBar:vertical {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background-color: #262626</string>
     </property>
     <property name="text">
      <string>+ ADD</string>
@@ -390,6 +390,214 @@ QScrollBar:vertical {
     </property>
     <property name="text">
      <string>LAB XXX</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonDrDown">
+    <property name="geometry">
+     <rect>
+      <x>151</x>
+      <y>522</y>
+      <width>56</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 0px;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/images/arrow_down_rollover.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>56</width>
+      <height>47</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonLocationDown">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>522</y>
+      <width>56</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 0px;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/images/arrow_down_rollover.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>56</width>
+      <height>47</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonDrUp">
+    <property name="geometry">
+     <rect>
+      <x>315</x>
+      <y>522</y>
+      <width>56</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 0px;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/images/arrow_up_rollover.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>56</width>
+      <height>47</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonLocationUp">
+    <property name="geometry">
+     <rect>
+      <x>1701</x>
+      <y>522</y>
+      <width>56</width>
+      <height>47</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 0px;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/images/arrow_up_rollover.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>56</width>
+      <height>47</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelDrDefault">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>636</y>
+      <width>305</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt</string>
+    </property>
+    <property name="text">
+     <string>Default: DR. XXX</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelLocationDefault">
+    <property name="geometry">
+     <rect>
+      <x>1520</x>
+      <y>636</y>
+      <width>400</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt</string>
+    </property>
+    <property name="text">
+     <string>Default: AVINGER HQ</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonDrDefault">
+    <property name="geometry">
+     <rect>
+      <x>547</x>
+      <y>636</y>
+      <width>361</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: black;</string>
+    </property>
+    <property name="text">
+     <string>SET DEFAULT</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonDrDefault_2">
+    <property name="geometry">
+     <rect>
+      <x>2031</x>
+      <y>636</y>
+      <width>361</width>
+      <height>72</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: black;</string>
+    </property>
+    <property name="text">
+     <string>SET DEFAULT</string>
     </property>
    </widget>
   </widget>
