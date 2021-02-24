@@ -45,7 +45,7 @@ void PreferencesDialog::handleSelectedLabel(const QString &name)
 
 void PreferencesDialog::setDefaultPhysician()
 {
-    ui->labelDrDefault->setText(m_defaultPhysicianCandidate);
+    ui->labelDrDefault->setText(QString("Default: ") + m_defaultPhysicianCandidate);
     ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     if(m_selectedLabel){
         m_selectedLabel->setStyleSheet("color: white");
