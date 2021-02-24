@@ -339,7 +339,7 @@ border-radius: 10px;
      <string>DR. XXX3</string>
     </property>
    </widget>
-   <widget class="QLabel" name="labelLocation1">
+   <widget class="ActiveLabel" name="labelLocation1">
     <property name="geometry">
      <rect>
       <x>1530</x>
@@ -352,7 +352,7 @@ border-radius: 10px;
      <string>LAB XXX1</string>
     </property>
    </widget>
-   <widget class="QLabel" name="labelLocation2">
+   <widget class="ActiveLabel" name="labelLocation2">
     <property name="geometry">
      <rect>
       <x>1530</x>
@@ -365,7 +365,7 @@ border-radius: 10px;
      <string>LAB XXX2</string>
     </property>
    </widget>
-   <widget class="QLabel" name="labelLocation3">
+   <widget class="ActiveLabel" name="labelLocation3">
     <property name="geometry">
      <rect>
       <x>1530</x>

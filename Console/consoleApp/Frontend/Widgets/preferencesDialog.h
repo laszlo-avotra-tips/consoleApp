@@ -25,9 +25,12 @@ public:
 private slots:
     void handleSelectedPhysician(const QString &name);
     void setDefaultPhysician();
+    void handleSelectedLocation(const QString &name);
+    void setDefaultLocation();
 
 private:
     void initPhysiciansContainer();
+    void initLocationsContainer();
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;
