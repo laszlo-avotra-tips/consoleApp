@@ -893,13 +893,13 @@ background-color: #262626</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>260</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>250</width>
+          <width>260</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1007,13 +1007,13 @@ background-color: #262626</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>260</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>250</width>
+          <width>260</width>
           <height>16777215</height>
          </size>
         </property>
