@@ -6,6 +6,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::SplashScreen);
 }
 
 PreferencesDialog::~PreferencesDialog()
