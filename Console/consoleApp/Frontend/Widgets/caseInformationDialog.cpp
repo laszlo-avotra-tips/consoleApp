@@ -41,6 +41,16 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     const int xc = ControlScreenWidth / 2 - width() / 2;
     const int yc = ControlScreenHeight / 2 - height() / 2;
     move(xc,yc);
+
+    const auto& ci = CaseInformationModel::instance();
+    if(!ci->defaultPhysicianName().isEmpty()){
+        ui->lineEditPhysicianName->setStyleSheet("");
+        ui->lineEditPhysicianName->setText(ci->defaultPhysicianName());
+        enableNext(true);
+    }
+    if(!ci->defaultLocation().isEmpty()){
+        ui->lineEditLocation->setText(ci->defaultLocation());
+    }
 }
 
 CaseInformationDialog::~CaseInformationDialog()
