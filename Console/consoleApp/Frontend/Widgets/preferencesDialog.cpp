@@ -2,6 +2,8 @@
 #include "ui_preferencesDialog.h"
 #include "logger.h"
 
+#include "caseInformationModel.h"
+
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PreferencesDialog)
@@ -88,8 +90,14 @@ void PreferencesDialog::setDefaultLocation()
 
 void PreferencesDialog::initPhysiciansContainer()
 {
-    for(const auto& label : m_physicianLabels){
-        m_physiciansContainer[label->text()] = label;
+    const auto& ci = CaseInformationModel::instance();
+    const auto& phns = ci->physicianNames();
+    if(phns.size() >= int(m_physicianLabels.size())){
+        int i{0};
+        for(const auto& label : m_physicianLabels){
+            m_physiciansContainer[phns[i]] = label;
+            ++i;
+        }
     }
 }
 
