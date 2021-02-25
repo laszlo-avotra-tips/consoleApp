@@ -149,7 +149,7 @@ private:
     QString m_selectedPhysicianName;
 
     /*!
-     * \brief m_defaultPhysicianName - the default physitioan name
+     * \brief m_defaultPhysicianName - the default physician name
      */
     QString m_defaultPhysicianName;
 
