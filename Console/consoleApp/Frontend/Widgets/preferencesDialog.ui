@@ -23,7 +23,7 @@
    <string>Dialog</string>
   </property>
   <property name="windowOpacity">
-   <double>0.900000000000000</double>
+   <double>0.950000000000000</double>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget{
@@ -515,7 +515,7 @@ border-radius: 10px;
      <rect>
       <x>130</x>
       <y>636</y>
-      <width>350</width>
+      <width>800</width>
       <height>60</height>
      </rect>
     </property>
@@ -531,7 +531,7 @@ border-radius: 10px;
      <rect>
       <x>1520</x>
       <y>636</y>
-      <width>400</width>
+      <width>800</width>
       <height>60</height>
      </rect>
     </property>
@@ -546,7 +546,7 @@ border-radius: 10px;
     <property name="geometry">
      <rect>
       <x>547</x>
-      <y>636</y>
+      <y>510</y>
       <width>361</width>
       <height>72</height>
      </rect>
@@ -569,7 +569,7 @@ font: 18pt;</string>
     <property name="geometry">
      <rect>
       <x>2031</x>
-      <y>636</y>
+      <y>510</y>
       <width>361</width>
       <height>72</height>
      </rect>
