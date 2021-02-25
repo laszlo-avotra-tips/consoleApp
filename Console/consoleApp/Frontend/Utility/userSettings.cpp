@@ -47,6 +47,8 @@ void userSettings::saveSettings()
         varSettings->setValue( "displayOptions/color", QString("sepia") );
     }
 //    LOG2(m_isGray,m_imageDepthIndex)
+    varSettings->setValue( "caseSetup/physician", m_physician );
+    varSettings->setValue( "caseSetup/location", m_location );
 }
 
 void userSettings::loadVarSettings()
@@ -109,6 +111,18 @@ void userSettings::loadProfileSettings()
     m_oct_firmware_version = profileSettings->value( "subSystemVersion/oct_firmware_version", "").toString();
     m_interface_hw_version = profileSettings->value( "subSystemVersion/interface_hw_version", "").toString();
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
+}
+
+void userSettings::setLocation(const QString &location)
+{
+    m_location = location;
+    saveSettings();
+}
+
+void userSettings::setPhysician(const QString &physician)
+{
+    m_physician = physician;
+    saveSettings();
 }
 
 QString userSettings::getLocation() const
@@ -196,6 +210,7 @@ QStringList userSettings::getLocations() const
 void userSettings::setLocations(const QStringList &locations)
 {
     m_locations = locations;
+    saveSettings();
 }
 
 QStringList userSettings::getPhysicians() const
@@ -206,6 +221,7 @@ QStringList userSettings::getPhysicians() const
 void userSettings::setPhysicians(const QStringList &doctors)
 {
     m_physicians = doctors;
+    saveSettings();
 }
 
 QDate userSettings::getServiceDate() const

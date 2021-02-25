@@ -198,6 +198,10 @@ public:
 
     QString getLocation() const;
 
+    void setPhysician(const QString &physician);
+
+    void setLocation(const QString &location);
+
 private:
     void saveSettings();
     void loadVarSettings();

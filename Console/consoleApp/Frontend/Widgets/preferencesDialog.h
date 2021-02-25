@@ -27,6 +27,7 @@ private slots:
     void setDefaultPhysician();
     void handleSelectedLocation(const QString &name);
     void setDefaultLocation();
+    void persistDefaults();
 
 private:
     void initPhysiciansContainer();
