@@ -98,17 +98,29 @@ void PreferencesDialog::initPhysiciansContainer()
         if(i < phns.size()){
             label->setText(phns[i]);
         }
+        m_physiciansContainer[label->text()] = label;
         ++i;
     }
 
-    for(const auto& label : m_physicianLabels){
-        m_physiciansContainer[label->text()] = label;
-    }
+//    for(const auto& label : m_physicianLabels){
+//        m_physiciansContainer[label->text()] = label;
+//    }
 }
 
 void PreferencesDialog::initLocationsContainer()
 {
+//    for(const auto& label : m_locationLabels){
+//        m_locationsContainer[label->text()] = label;
+//    }
+    const auto& ci = CaseInformationModel::instance();
+    const auto& locs = ci->locations();
+
+    int i{0};
     for(const auto& label : m_locationLabels){
+        if(i < locs.size()){
+            label->setText(locs[i]);
+        }
         m_locationsContainer[label->text()] = label;
+        ++i;
     }
 }
