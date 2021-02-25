@@ -194,6 +194,10 @@ public:
 
     int getDisableExternalMonitor() const;
 
+    QString getPhysician() const;
+
+    QString getLocation() const;
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -216,6 +220,8 @@ private:
     QDate m_serviceDate;
     QStringList m_physicians;
     QStringList m_locations;
+    QString m_physician;
+    QString m_location;
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
     CatheterView_t catheterViewMode{DistalToProximal};  //
     bool m_isGray{true};

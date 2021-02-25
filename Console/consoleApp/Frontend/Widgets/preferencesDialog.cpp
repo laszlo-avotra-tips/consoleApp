@@ -27,6 +27,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     initPhysiciansContainer();
     initLocationsContainer();
+
+    const auto& ci = CaseInformationModel::instance();
+    m_defaultLocationCandidate = ci->defaultLocation();
+    m_defaultPhysicianCandidate = ci->defaultPhysicianName();
+
+    setDefaultPhysician();
+    setDefaultLocation();
 }
 
 PreferencesDialog::~PreferencesDialog()

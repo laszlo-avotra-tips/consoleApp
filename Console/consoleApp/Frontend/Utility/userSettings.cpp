@@ -73,11 +73,14 @@ void userSettings::loadVarSettings()
     for(const auto& doctor : m_physicians){
         LOG1(doctor)
     }
+    m_physician = varSettings->value( "caseSetup/physician",        "" ).toString();
+    LOG1(m_physician)
 
     m_locations = varSettings->value( "caseSetup/locations",        "" ).toStringList();
     for(const auto& location : m_locations){
         LOG1(location)
     }
+    m_location = varSettings->value( "caseSetup/location",        "" ).toString();
 }
 
 void userSettings::loadProfileSettings()
@@ -106,6 +109,16 @@ void userSettings::loadProfileSettings()
     m_oct_firmware_version = profileSettings->value( "subSystemVersion/oct_firmware_version", "").toString();
     m_interface_hw_version = profileSettings->value( "subSystemVersion/interface_hw_version", "").toString();
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
+}
+
+QString userSettings::getLocation() const
+{
+    return m_location;
+}
+
+QString userSettings::getPhysician() const
+{
+    return m_physician;
 }
 
 int userSettings::getDisableExternalMonitor() const
