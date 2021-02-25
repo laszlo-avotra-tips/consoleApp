@@ -127,6 +127,12 @@ public:
      */
     void validate();
 
+    QString defaultLocation() const;
+    void setDefaultLocation(const QString &defaultLocation);
+
+    QString defaultPhysicianName() const;
+    void setDefaultPhysicianName(const QString &defaultPhysicianName);
+
 private:
     /*!
      * \brief CaseInformationModel - private constructor
@@ -162,6 +168,11 @@ private:
      * \brief m_selectedLocation - the selected location for this case
      */
     QString m_selectedLocation;
+
+    /*!
+     * \brief m_selectedLocation - the selected location for this case
+     */
+    QString m_defaultLocation;
 
     /*!
      * \brief m_patientId - the patient id for this case

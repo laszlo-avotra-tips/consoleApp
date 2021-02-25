@@ -59,6 +59,8 @@ void PreferencesDialog::setDefaultPhysician()
     if(m_selectedPhysicianLabel){
         m_selectedPhysicianLabel->setStyleSheet("color: white");
     }
+    auto ci = CaseInformationModel::instance();
+    ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
 }
 
 void PreferencesDialog::handleSelectedLocation(const QString &name)
@@ -86,6 +88,8 @@ void PreferencesDialog::setDefaultLocation()
     if(m_selectedLocationLabel){
         m_selectedLocationLabel->setStyleSheet("color: white");
     }
+    auto ci = CaseInformationModel::instance();
+    ci->setDefaultLocation(m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::initPhysiciansContainer()
@@ -101,17 +105,10 @@ void PreferencesDialog::initPhysiciansContainer()
         m_physiciansContainer[label->text()] = label;
         ++i;
     }
-
-//    for(const auto& label : m_physicianLabels){
-//        m_physiciansContainer[label->text()] = label;
-//    }
 }
 
 void PreferencesDialog::initLocationsContainer()
 {
-//    for(const auto& label : m_locationLabels){
-//        m_locationsContainer[label->text()] = label;
-//    }
     const auto& ci = CaseInformationModel::instance();
     const auto& locs = ci->locations();
 

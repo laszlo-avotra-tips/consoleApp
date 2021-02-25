@@ -13,6 +13,26 @@ CaseInformationModel::CaseInformationModel()
     m_locations = userSettings::Instance().getLocations();
 }
 
+QString CaseInformationModel::defaultPhysicianName() const
+{
+    return m_defaultPhysicianName;
+}
+
+void CaseInformationModel::setDefaultPhysicianName(const QString &defaultPhysicianName)
+{
+    m_defaultPhysicianName = defaultPhysicianName;
+}
+
+QString CaseInformationModel::defaultLocation() const
+{
+    return m_defaultLocation;
+}
+
+void CaseInformationModel::setDefaultLocation(const QString &defaultLocation)
+{
+    m_defaultLocation = defaultLocation;
+}
+
 CaseInformationModel *CaseInformationModel::instance()
 {
     if(!m_instance){
