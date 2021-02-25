@@ -92,13 +92,15 @@ void PreferencesDialog::initPhysiciansContainer()
 {
     const auto& ci = CaseInformationModel::instance();
     const auto& phns = ci->physicianNames();
-    if(phns.size() >= int(m_physicianLabels.size())){
-        int i{0};
-        for(const auto& label : m_physicianLabels){
+
+    int i{0};
+    for(const auto& label : m_physicianLabels){
+        if(i < phns.size()){
             label->setText(phns[i]);
-            ++i;
         }
+        ++i;
     }
+
     for(const auto& label : m_physicianLabels){
         m_physiciansContainer[label->text()] = label;
     }
