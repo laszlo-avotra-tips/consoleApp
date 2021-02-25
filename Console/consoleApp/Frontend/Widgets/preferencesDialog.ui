@@ -523,7 +523,7 @@ border-radius: 10px;
      <string notr="true">font: 14pt</string>
     </property>
     <property name="text">
-     <string>Default: DR. XXX</string>
+     <string>Default:</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelLocationDefault">
@@ -539,7 +539,7 @@ border-radius: 10px;
      <string notr="true">font: 14pt</string>
     </property>
     <property name="text">
-     <string>Default: AVINGER HQ</string>
+     <string>Default:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonDrDefault">
