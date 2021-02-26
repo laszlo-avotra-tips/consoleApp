@@ -4,6 +4,7 @@
 
 #include "caseInformationModel.h"
 #include "Utility/userSettings.h"
+#include "Utility/caseInfoDatabase.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     QDialog(parent),
@@ -26,7 +27,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButtonDrDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultPhysician);
     connect(ui->pushButtonLocationDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultLocation);
 
-    connect(ui->pushButtonDone, &QPushButton::clicked, this, &PreferencesDialog::persistDefaults);
+    connect(ui->pushButtonDone, &QPushButton::clicked, this, &PreferencesDialog::persistPreferences);
 
     initPhysiciansContainer();
     initLocationsContainer();
@@ -132,7 +133,7 @@ void PreferencesDialog::initLocationsContainer()
     }
 }
 
-void PreferencesDialog::persistDefaults()
+void PreferencesDialog::persistPreferences()
 {
     auto& settings = userSettings::Instance();
     const auto& ci = CaseInformationModel::instance();
@@ -141,4 +142,7 @@ void PreferencesDialog::persistDefaults()
     LOG1(loc);
     settings.setLocation(loc);
     settings.setPhysician(ci->defaultPhysicianName());
+
+    CaseInfoDatabase ciDb;
+    ciDb.initDb();
 }
