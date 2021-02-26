@@ -24,6 +24,7 @@ public:
      * \return the list of registered physician names
      */
     QStringList physicianNames() const;
+    QStringList physicianNames2() const;
 
     /*!
      * \brief selectedPhysicianName - get the selected physician name
@@ -61,6 +62,7 @@ public:
      * \return the list of registered locations
      */
     QStringList locations() const;
+    QStringList locations2() const;
 
     /*!
      * \brief selectedLocation - get the selected location

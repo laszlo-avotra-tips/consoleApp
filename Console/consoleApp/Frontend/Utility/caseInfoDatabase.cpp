@@ -29,7 +29,6 @@ QSqlError CaseInfoDatabase::initDb()
     {
         // Doesn't exist, create it.
         QSqlQuery q;
-//        if( !q.exec(QLatin1String("create table Pysicians(id integer primary key, tablename varchar, name varchar)") ) )
         if( !q.exec(QLatin1String("create table Pysicians(id integer primary key, name varchar)") ) )
         {
             sqlerr = q.lastError();
@@ -54,9 +53,11 @@ QSqlError CaseInfoDatabase::initDb()
         }
     }
 
-    LOG1(sqlerr.databaseText())
+    LOG1(sqlerr.databaseText());
 
-            return sqlerr;
+    initCaseInfo();
+
+    return sqlerr;
 }
 
 int CaseInfoDatabase::addPhysician(const QString &name)
@@ -147,4 +148,33 @@ int CaseInfoDatabase::addLocation(const QString &name)
     }
 
     return maxID;
+}
+
+const QStringList &CaseInfoDatabase::physicians() const
+{
+    return m_physicians;
+}
+
+const QStringList &CaseInfoDatabase::locations() const
+{
+    return m_locations;
+}
+
+void CaseInfoDatabase::initCaseInfo()
+{
+    QSqlQuery q;
+    QSqlError sqlerr;
+    QStringList nl;
+
+    q.prepare( "SELECT name FROM Locations" );
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+    QSqlRecord record = q.record();
+
+    LOG1(record.count());
 }

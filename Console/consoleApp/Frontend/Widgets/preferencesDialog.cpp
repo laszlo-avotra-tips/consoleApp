@@ -29,6 +29,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     connect(ui->pushButtonDone, &QPushButton::clicked, this, &PreferencesDialog::persistPreferences);
 
+    CaseInfoDatabase ciDb;
+    ciDb.initDb();
+
     initPhysiciansContainer();
     initLocationsContainer();
 
@@ -118,6 +121,22 @@ void PreferencesDialog::initPhysiciansContainer()
     }
 }
 
+void PreferencesDialog::initPhysiciansContainer2()
+{
+    const auto& ci = CaseInformationModel::instance();
+    const auto& phns = ci->physicianNames2();
+
+    int i{0};
+    for(const auto& label : m_physicianLabels){
+        if(i < phns.size()){
+            label->setText(phns[i]);
+        }
+        m_physiciansContainer[label->text()] = label;
+        ++i;
+    }
+}
+
+
 void PreferencesDialog::initLocationsContainer()
 {
     const auto& ci = CaseInformationModel::instance();
@@ -133,6 +152,37 @@ void PreferencesDialog::initLocationsContainer()
     }
 }
 
+void PreferencesDialog::initLocationsContainer2()
+{
+    const auto& ci = CaseInformationModel::instance();
+    const auto& locs = ci->locations2();
+
+    int i{0};
+    for(const auto& label : m_locationLabels){
+        if(i < locs.size()){
+            label->setText(locs[i]);
+        }
+        m_locationsContainer[label->text()] = label;
+        ++i;
+    }
+}
+
+void PreferencesDialog::createCaseInfoDb()
+{
+    initLocationsContainer2();
+    initPhysiciansContainer2();
+    //lcv only once
+    CaseInfoDatabase ciDb;
+    ciDb.initDb();
+    for(const auto& physician : m_physiciansContainer){
+        ciDb.addPhysician(physician.first);
+    }
+
+    for(const auto& location : m_locationsContainer){
+        ciDb.addLocation(location.first);
+    }
+}
+
 void PreferencesDialog::persistPreferences()
 {
     auto& settings = userSettings::Instance();
@@ -143,13 +193,5 @@ void PreferencesDialog::persistPreferences()
     settings.setLocation(loc);
     settings.setPhysician(ci->defaultPhysicianName());
 
-    CaseInfoDatabase ciDb;
-    ciDb.initDb();
-    for(const auto& physician : m_physiciansContainer){
-        ciDb.addPhysician(physician.first);
-    }
-
-    for(const auto& location : m_locationsContainer){
-        ciDb.addLocation(location.first);
-    }
+//    createCaseInfoDb();
 }

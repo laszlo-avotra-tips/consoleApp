@@ -12,6 +12,7 @@ CaseInformationModel::CaseInformationModel()
     const auto& settings = userSettings::Instance();
     m_physicianNames = settings.getPhysicians();
     m_locations = settings.getLocations();
+
     const auto& defaultPhysicianName = settings.getPhysician();
     if(m_physicianNames.contains(defaultPhysicianName)){
         m_defaultPhysicianName = defaultPhysicianName;
@@ -55,6 +56,11 @@ QStringList CaseInformationModel::physicianNames() const
     return m_physicianNames;
 }
 
+QStringList CaseInformationModel::physicianNames2() const
+{
+    return QStringList{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
+}
+
 QString CaseInformationModel::selectedPhysicianName() const
 {
     return m_selectedPhysicianName;
@@ -83,6 +89,11 @@ void CaseInformationModel::setPhysicianName(int index, const QString &name)
 QStringList CaseInformationModel::locations() const
 {
     return m_locations;
+}
+
+QStringList CaseInformationModel::locations2() const
+{
+    return QStringList{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
 }
 
 QString CaseInformationModel::selectedLocation() const
