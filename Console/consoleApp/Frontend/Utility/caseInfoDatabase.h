@@ -8,6 +8,7 @@ class CaseInfoDatabase
 public:
     CaseInfoDatabase();
     QSqlError initDb(void);
+    int addPhysician(const QString& name);
 
 private:
     const QString m_dbName{"C:/Avinger_Data/caseInfo.db"};

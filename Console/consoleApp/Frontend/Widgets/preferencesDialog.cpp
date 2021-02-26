@@ -145,4 +145,7 @@ void PreferencesDialog::persistPreferences()
 
     CaseInfoDatabase ciDb;
     ciDb.initDb();
+    for(const auto& physician : m_physiciansContainer){
+        ciDb.addPhysician(physician.first);
+    }
 }

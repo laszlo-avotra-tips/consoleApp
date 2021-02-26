@@ -24,12 +24,13 @@ QSqlError CaseInfoDatabase::initDb()
     // that the tables don't already exist
     QStringList tables = db.tables();
 
-    // Set up the schema version table
-    if( !tables.contains( "version", Qt::CaseInsensitive ) )
+    // Set up the schema Pysician table
+    if( !tables.contains( "Pysicians", Qt::CaseSensitive ) )
     {
         // Doesn't exist, create it.
         QSqlQuery q;
-        if( !q.exec(QLatin1String("create table version(id integer primary key, tablename varchar, version integer)") ) )
+//        if( !q.exec(QLatin1String("create table Pysicians(id integer primary key, tablename varchar, name varchar)") ) )
+        if( !q.exec(QLatin1String("create table Pysicians(id integer primary key, name varchar)") ) )
         {
             sqlerr = q.lastError();
             const QString& errorMsg = sqlerr.databaseText();
@@ -39,12 +40,12 @@ QSqlError CaseInfoDatabase::initDb()
     }
 
     // Set up the Captures table
-    if( !tables.contains( "captures", Qt::CaseInsensitive ) )
+    if( !tables.contains( "Locations", Qt::CaseInsensitive ) )
     {
 
         // Doesn't exist, create it.
         QSqlQuery q;
-        if( !q.exec(QLatin1String("create table captures(id integer primary key, timestamp timestamp, tag varchar, name varchar, deviceName varchar, pixelsPerMm int)") ) )
+        if( !q.exec(QLatin1String("create table Locations(id integer primary key, name varchar)") ) )
         {
             sqlerr = q.lastError();
             const QString& errorMsg = sqlerr.databaseText();
@@ -55,5 +56,48 @@ QSqlError CaseInfoDatabase::initDb()
 
     LOG1(sqlerr.databaseText())
 
-    return sqlerr;
+            return sqlerr;
+}
+
+int CaseInfoDatabase::addPhysician(const QString &name)
+{
+    QSqlQuery q;
+    QSqlError sqlerr;
+
+    // Find next available ID
+    int maxID = 0;
+    q.prepare( "SELECT MAX(id) FROM Pysicians" );
+
+    if(!q.exec()){
+        sqlerr = q.lastError();
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+        return -1;
+    }
+    q.next();
+    QSqlRecord record = q.record();
+    if( record.isNull("MAX(id)") )
+    {
+        maxID = 1;
+    }
+    else
+    {
+        int idCol = record.indexOf( "MAX(id)" );
+        maxID = record.value( idCol ).toInt() + 1;
+    }
+
+    q.prepare( QString("INSERT INTO Pysicians (id, name, deviceName)"
+               "VALUES (?, ?)") );
+    LOG2(maxID, name)
+    q.addBindValue( maxID );
+    q.addBindValue( name );
+
+    if(!q.exec()){
+        sqlerr = q.lastError();
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+        return -1;
+    }
+
+    return maxID;
 }
