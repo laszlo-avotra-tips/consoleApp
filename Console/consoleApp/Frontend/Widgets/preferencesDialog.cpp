@@ -148,4 +148,8 @@ void PreferencesDialog::persistPreferences()
     for(const auto& physician : m_physiciansContainer){
         ciDb.addPhysician(physician.first);
     }
+
+    for(const auto& location : m_locationsContainer){
+        ciDb.addLocation(location.first);
+    }
 }

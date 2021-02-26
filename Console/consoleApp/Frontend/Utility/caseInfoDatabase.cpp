@@ -103,3 +103,48 @@ int CaseInfoDatabase::addPhysician(const QString &name)
 
     return maxID;
 }
+
+int CaseInfoDatabase::addLocation(const QString &name)
+{
+    QSqlQuery q;
+    QSqlError sqlerr;
+
+    // Find next available ID
+    int maxID = 0;
+    q.prepare( "SELECT MAX(id) FROM Locations" );
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+        return -1;
+    }
+    q.next();
+    QSqlRecord record = q.record();
+    if( record.isNull("MAX(id)") )
+    {
+        maxID = 1;
+    }
+    else
+    {
+        int idCol = record.indexOf( "MAX(id)" );
+        maxID = record.value( idCol ).toInt() + 1;
+    }
+
+    q.prepare( QString("INSERT INTO Locations (id, name)"
+               "VALUES (?, ?)") );
+    LOG2(maxID, name)
+    q.addBindValue( maxID );
+    q.addBindValue( name );
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+        return -1;
+    }
+
+    return maxID;
+}
