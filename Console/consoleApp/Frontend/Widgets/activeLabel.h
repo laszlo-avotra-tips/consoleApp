@@ -9,7 +9,7 @@ class ActiveLabel : public QLabel
 
 public:
     ActiveLabel(QWidget* parent);
-    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
 
 signals:
     void labelSelected(const QString& name);

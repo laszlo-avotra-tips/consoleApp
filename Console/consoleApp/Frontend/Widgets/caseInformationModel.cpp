@@ -12,8 +12,6 @@ CaseInformationModel::CaseInformationModel()
     const auto& settings = userSettings::Instance();
     m_physicianNames = settings.getPhysicians();
     m_locations = settings.getLocations();
-//    m_defaultPhysicianName = settings.getPhysician();
-//    m_defaultLocation = settings.getLocation();
     const auto& defaultPhysicianName = settings.getPhysician();
     if(m_physicianNames.contains(defaultPhysicianName)){
         m_defaultPhysicianName = defaultPhysicianName;
