@@ -68,8 +68,9 @@ int CaseInfoDatabase::addPhysician(const QString &name)
     int maxID = 0;
     q.prepare( "SELECT MAX(id) FROM Pysicians" );
 
-    if(!q.exec()){
-        sqlerr = q.lastError();
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
         const QString& errorMsg = sqlerr.databaseText();
         LOG1(errorMsg)
         return -1;
@@ -86,14 +87,15 @@ int CaseInfoDatabase::addPhysician(const QString &name)
         maxID = record.value( idCol ).toInt() + 1;
     }
 
-    q.prepare( QString("INSERT INTO Pysicians (id, name, deviceName)"
+    q.prepare( QString("INSERT INTO Pysicians (id, name)"
                "VALUES (?, ?)") );
     LOG2(maxID, name)
     q.addBindValue( maxID );
     q.addBindValue( name );
 
-    if(!q.exec()){
-        sqlerr = q.lastError();
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
         const QString& errorMsg = sqlerr.databaseText();
         LOG1(errorMsg)
         return -1;
