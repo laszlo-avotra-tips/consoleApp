@@ -6,7 +6,7 @@ ActiveLabel::ActiveLabel(QWidget* parent) : QLabel(parent)
 
 }
 
-void ActiveLabel::mouseReleaseEvent(QMouseEvent *event)
+void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
 {
     const auto& name = text();
     emit labelSelected(name);

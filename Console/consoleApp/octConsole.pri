@@ -14,6 +14,7 @@ HEADERS += \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/scanconversion.h \
     $$PWD/Frontend/Utility/ScreenCapture.hpp \
+    $$PWD/Frontend/Utility/caseInfoDatabase.h \
     $$PWD/Frontend/Utility/clipListModel.h \
     $$PWD/Frontend/Utility/concatenateVideo.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
@@ -97,6 +98,7 @@ SOURCES += \
     $$PWD/Backend/fullCaseRecorder.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/scanconversion.cpp \
+    $$PWD/Frontend/Utility/caseInfoDatabase.cpp \
     $$PWD/Frontend/Utility/clipListModel.cpp \
     $$PWD/Frontend/Utility/concatenateVideo.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
