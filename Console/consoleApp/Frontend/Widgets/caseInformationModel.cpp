@@ -11,14 +11,14 @@ CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 CaseInformationModel::CaseInformationModel()
 {
     const auto& settings = userSettings::Instance();
-//    m_physicianNames = settings.getPhysicians();
-//    m_locations = settings.getLocations();
+    m_physicianNames = settings.getPhysicians();
+    m_locations = settings.getLocations();
 
-    CaseInfoDatabase ciDb;
-    ciDb.initDb();
+//    CaseInfoDatabase ciDb;
+//    ciDb.initDb();
 
-    m_physicianNames = ciDb.physicians();
-    m_locations = ciDb.locations();
+//    m_physicianNames = ciDb.physicians();
+//    m_locations = ciDb.locations();
 
     const auto& defaultPhysicianName = settings.getPhysician();
     if(m_physicianNames.contains(defaultPhysicianName)){
