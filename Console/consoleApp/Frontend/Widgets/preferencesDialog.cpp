@@ -35,6 +35,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButtonAddLocation, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemoveLocation);
     connect(ui->pushButtonAddPhysician, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemovePhysician);
 
+    connect(ui->pushButtonDrUp, &QPushButton::clicked, this, &PreferencesDialog::handlePhysicianUp);
+    connect(ui->pushButtonDrDown, &QPushButton::clicked, this, &PreferencesDialog::handlePhysicianDown);
+
+    connect(ui->pushButtonLocationUp, &QPushButton::clicked, this, &PreferencesDialog::handleLocationUp);
+    connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &PreferencesDialog::handleLocationDown);
+
     ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
 
@@ -133,7 +139,7 @@ void PreferencesDialog::initPhysiciansContainer()
     int i{0};
     for(const auto& label : m_physicianLabels){
         if(i < phns.size()){
-            label->setText(phns[i]);
+            label->setText(phns[i + m_physicianBase]);
         }
         m_physiciansContainer[label->text()] = label;
         ++i;
@@ -250,6 +256,32 @@ void PreferencesDialog::handleAddRemovePhysician()
 void PreferencesDialog::handleAddLocation()
 {
 //    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+    QString paramName("LOCATIONE");
+    QString paramValue("");
+    const int keyboardY{height() / 2};
+
+    /*
+     * create the keyboard parameters
+     */
+    const std::vector<QString> param{paramName, paramValue};
+
+    /*
+     * create the modal keyboard instance for physician name
+     */
+    auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+
+    /*
+     * code execution continues here once the keyboard is closed
+     * update selected physician name with newName
+     */
+    LOG1(newName);
+
+    if(!newName.isEmpty()){
+        auto cim = CaseInformationModel::instance();
+        cim->addLocation(newName);
+        initLocationsContainer();
+    }
+
 }
 
 void PreferencesDialog::handleAddPhysician()
@@ -289,4 +321,36 @@ void PreferencesDialog::handleRemoveLocation()
 void PreferencesDialog::handleRemovePhysician()
 {
     LOG1(m_selectedPhysicianLabel->text())
+}
+
+void PreferencesDialog::handlePhysicianUp()
+{
+   auto cim = CaseInformationModel::instance();
+   auto numNames = cim->physicianNames().size();
+   auto numLabels = m_physicianLabels.size();
+
+   int maxBaseIndex = ((numNames - numLabels) > 0) ? (numNames - numLabels) : 0;
+
+   if(m_physicianBase < maxBaseIndex){
+       ++m_physicianBase;
+   }
+   LOG1(m_physicianBase)
+}
+
+void PreferencesDialog::handlePhysicianDown()
+{
+    if(m_physicianBase > 0){
+        --m_physicianBase;
+    }
+    LOG1(m_physicianBase)
+}
+
+void PreferencesDialog::handleLocationUp()
+{
+
+}
+
+void PreferencesDialog::handleLocationDown()
+{
+
 }

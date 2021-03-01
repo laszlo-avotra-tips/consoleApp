@@ -24,10 +24,13 @@ public:
 
 private slots:
     void handleSelectedPhysician(const QString &name);
-    void setDefaultPhysician();
     void handleSelectedLocation(const QString &name);
+
+    void setDefaultPhysician();
     void setDefaultLocation();
+
     void persistPreferences();
+
     void handleAddRemoveLocation();
     void handleAddRemovePhysician();
     void handleAddLocation();
@@ -35,6 +38,11 @@ private slots:
     void handleRemoveLocation();
     void handleRemovePhysician();
 
+    void handlePhysicianUp();
+    void handlePhysicianDown();
+
+    void handleLocationUp();
+    void handleLocationDown();
 private:
     void initPhysiciansContainer();
     void initLocationsContainer();
@@ -54,6 +62,9 @@ private:
 
     QLabel* m_selectedPhysicianLabel{nullptr};
     QLabel* m_selectedLocationLabel{nullptr};
+
+    int m_physicianBase{0};
+    int m_locationBase{0};
 };
 
 #endif // PREFERENCESDIALOG_H
