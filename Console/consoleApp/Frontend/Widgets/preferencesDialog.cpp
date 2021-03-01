@@ -29,24 +29,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     connect(ui->pushButtonDone, &QPushButton::clicked, this, &PreferencesDialog::persistPreferences);
 
-    auto cim = CaseInformationModel::instance();
+    CaseInfoDatabase ciDb;
+    ciDb.initDb();
 
     initPhysiciansContainer();
     initLocationsContainer();
 
-    LOG1(cim->physicianNames().size())
-
-    const auto& settings = userSettings::Instance();
-    const auto& defaultPhysicianName = settings.getPhysician();
-    if(cim->isValidPysicianCandidate(defaultPhysicianName))
-    {
-        m_defaultPhysicianCandidate = defaultPhysicianName;
-    }
-    const auto& defaultLocation = settings.getLocation();
-    if(cim->isValidLocatioCandidate(defaultLocation))
-    {
-        m_defaultLocationCandidate = defaultLocation;
-    }
+    const auto& ci = CaseInformationModel::instance();
+    m_defaultLocationCandidate = ci->defaultLocation();
+    m_defaultPhysicianCandidate = ci->defaultPhysicianName();
 
     setDefaultPhysician();
     setDefaultLocation();
