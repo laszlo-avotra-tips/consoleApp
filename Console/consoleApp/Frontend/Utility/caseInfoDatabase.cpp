@@ -1,5 +1,6 @@
 #include "caseInfoDatabase.h"
 #include "logger.h"
+#include "caseInformationModel.h"
 
 CaseInfoDatabase::CaseInfoDatabase()
 {
@@ -25,11 +26,11 @@ QSqlError CaseInfoDatabase::initDb()
     QStringList tables = db.tables();
 
     // Set up the schema Pysician table
-    if( !tables.contains( "Pysicians", Qt::CaseSensitive ) )
+    if( !tables.contains( "Physicians", Qt::CaseSensitive ) )
     {
         // Doesn't exist, create it.
         QSqlQuery q;
-        if( !q.exec(QLatin1String("create table Pysicians(id integer primary key, name varchar)") ) )
+        if( !q.exec(QLatin1String("create table Physicians(id integer primary key, name varchar)") ) )
         {
             sqlerr = q.lastError();
             const QString& errorMsg = sqlerr.databaseText();
@@ -67,7 +68,7 @@ int CaseInfoDatabase::addPhysician(const QString &name)
 
     // Find next available ID
     int maxID = 0;
-    q.prepare( "SELECT MAX(id) FROM Pysicians" );
+    q.prepare( "SELECT MAX(id) FROM Physicians" );
 
     q.exec();
     sqlerr = q.lastError();
@@ -88,7 +89,7 @@ int CaseInfoDatabase::addPhysician(const QString &name)
         maxID = record.value( idCol ).toInt() + 1;
     }
 
-    q.prepare( QString("INSERT INTO Pysicians (id, name)"
+    q.prepare( QString("INSERT INTO Physicians (id, name)"
                "VALUES (?, ?)") );
     LOG2(maxID, name)
     q.addBindValue( maxID );
@@ -166,28 +167,7 @@ void CaseInfoDatabase::initCaseInfo()
     QSqlError sqlerr;
     QStringList nl;
 
-//    int maxID = 0;
-//    q.prepare( "SELECT MAX(id) FROM Locations" );
-
-//    q.exec();
-//    sqlerr = q.lastError();
-//    if(sqlerr.isValid()){
-//        const QString& errorMsg = sqlerr.databaseText();
-//        LOG1(errorMsg)
-//        return;
-//    }
-//    q.next();
-//    QSqlRecord record = q.record();
-//    if( record.isNull("MAX(id)") )
-//    {
-//        maxID = 1;
-//    }
-//    else
-//    {
-//        int idCol = record.indexOf( "MAX(id)" );
-//        maxID = record.value( idCol ).toInt();
-//    }
-//    LOG1(maxID);
+    auto cim = CaseInformationModel::instance();
 
     q.prepare( "SELECT name FROM Locations" );
 
@@ -206,7 +186,32 @@ void CaseInfoDatabase::initCaseInfo()
     while(q.next()){
         ++numLocations;
         record = q.record();
-        LOG1(record.value(0).toString());
+        const auto& location = (record.value(0).toString());
+        LOG1(location);
+        cim->addLocation(location);
     }
-    LOG1(numLocations);
+    LOG2(numLocations, cim->locations().size());
+
+    q.prepare( "SELECT name FROM Physicians" );
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+    record = q.record();
+    LOG1(record.count());
+
+    int numPhysicians{0};
+    LOG1(record.value(0).toString());
+    LOG1(record.indexOf("name"));
+    while(q.next()){
+        ++numPhysicians;
+        record = q.record();
+        const auto& physician = (record.value(0).toString());
+        LOG1(physician);
+        cim->addPhysicianName(physician);
+    }
+    LOG2(numLocations, cim->physicianNames().size());
 }

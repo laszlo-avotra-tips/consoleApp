@@ -4,14 +4,21 @@
 #include "util.h"
 #include "logger.h"
 #include "fullCaseRecorder.h"
+#include "Utility/caseInfoDatabase.h"
 
 CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
 CaseInformationModel::CaseInformationModel()
 {
     const auto& settings = userSettings::Instance();
-    m_physicianNames = settings.getPhysicians();
-    m_locations = settings.getLocations();
+//    m_physicianNames = settings.getPhysicians();
+//    m_locations = settings.getLocations();
+
+    CaseInfoDatabase ciDb;
+    ciDb.initDb();
+
+    m_physicianNames = ciDb.physicians();
+    m_locations = ciDb.locations();
 
     const auto& defaultPhysicianName = settings.getPhysician();
     if(m_physicianNames.contains(defaultPhysicianName)){
@@ -49,6 +56,16 @@ CaseInformationModel *CaseInformationModel::instance()
         m_instance = new CaseInformationModel();
     }
     return m_instance;
+}
+
+void CaseInformationModel::eraseLocations()
+{
+    m_locations.erase(m_locations.begin(), m_locations.end());
+}
+
+void CaseInformationModel::erasePhysicians()
+{
+    m_physicianNames.erase(m_physicianNames.begin(), m_physicianNames.end());
 }
 
 QStringList CaseInformationModel::physicianNames() const

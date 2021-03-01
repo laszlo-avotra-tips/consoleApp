@@ -19,6 +19,8 @@ class CaseInformationModel
 public:
     static CaseInformationModel* instance();
 
+    void eraseLocations();
+    void erasePhysicians();
     /*!
      * \brief physicianNames - get the list of registered physicina names
      * \return the list of registered physician names
