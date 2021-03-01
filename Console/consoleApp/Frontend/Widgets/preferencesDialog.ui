@@ -141,9 +141,9 @@ border-radius: 10px;
    <widget class="QPushButton" name="pushButtonAddPhysician">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>547</x>
       <y>54</y>
-      <width>193</width>
+      <width>361</width>
       <height>72</height>
      </rect>
     </property>
@@ -173,9 +173,9 @@ border-radius: 10px;
    <widget class="QPushButton" name="pushButtonAddLocation">
     <property name="geometry">
      <rect>
-      <x>2104</x>
+      <x>2031</x>
       <y>54</y>
-      <width>193</width>
+      <width>361</width>
       <height>72</height>
      </rect>
     </property>

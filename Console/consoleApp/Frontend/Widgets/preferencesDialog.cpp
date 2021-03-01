@@ -65,6 +65,7 @@ void PreferencesDialog::handleSelectedPhysician(const QString &name)
     }
     m_defaultPhysicianCandidate = name;
     ui->pushButtonDrDefault->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
+    ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setText("REMOVE");
 }
 
@@ -78,7 +79,7 @@ void PreferencesDialog::setDefaultPhysician()
     auto ci = CaseInformationModel::instance();
     ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
     ui->pushButtonAddPhysician->setText("+ADD");
-
+    ui->pushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
 }
 
 void PreferencesDialog::handleSelectedLocation(const QString &name)
@@ -98,6 +99,7 @@ void PreferencesDialog::handleSelectedLocation(const QString &name)
     m_defaultLocationCandidate = name;
     ui->pushButtonLocationDefault->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
 
+    ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddLocation->setText("REMOVE");
 }
 
@@ -111,6 +113,7 @@ void PreferencesDialog::setDefaultLocation()
     auto ci = CaseInformationModel::instance();
     ci->setDefaultLocation(m_defaultLocationCandidate);
     ui->pushButtonAddLocation->setText("+ADD");
+    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
 }
 
 void PreferencesDialog::initPhysiciansContainer()
