@@ -66,33 +66,32 @@ int CaseInfoDatabase::addPhysician(const QString &name)
     QSqlQuery q;
     QSqlError sqlerr;
 
-    // Find next available ID
-    int maxID = 0;
-    q.prepare( "SELECT MAX(id) FROM Physicians" );
+//    // Find next available ID
+//    int maxID = 0;
+//    q.prepare( "SELECT MAX(id) FROM Physicians" );
 
-    q.exec();
-    sqlerr = q.lastError();
-    if(sqlerr.isValid()){
-        const QString& errorMsg = sqlerr.databaseText();
-        LOG1(errorMsg)
-        return -1;
-    }
-    q.next();
-    QSqlRecord record = q.record();
-    if( record.isNull("MAX(id)") )
-    {
-        maxID = 1;
-    }
-    else
-    {
-        int idCol = record.indexOf( "MAX(id)" );
-        maxID = record.value( idCol ).toInt() + 1;
-    }
+//    q.exec();
+//    sqlerr = q.lastError();
+//    if(sqlerr.isValid()){
+//        const QString& errorMsg = sqlerr.databaseText();
+//        LOG1(errorMsg)
+//        return -1;
+//    }
+//    q.next();
+//    QSqlRecord record = q.record();
+//    if( record.isNull("MAX(id)") )
+//    {
+//        maxID = 1;
+//    }
+//    else
+//    {
+//        int idCol = record.indexOf( "MAX(id)" );
+//        maxID = record.value( idCol ).toInt() + 1;
+//    }
 
-    q.prepare( QString("INSERT INTO Physicians (id, name)"
-               "VALUES (?, ?)") );
-    LOG2(maxID, name)
-    q.addBindValue( maxID );
+    q.prepare( QString("INSERT INTO Physicians (name)"
+               "VALUES (?)") );
+    LOG1(name)
     q.addBindValue( name );
 
     q.exec();
@@ -103,7 +102,7 @@ int CaseInfoDatabase::addPhysician(const QString &name)
         return -1;
     }
 
-    return maxID;
+    return 0;
 }
 
 int CaseInfoDatabase::addLocation(const QString &name)
