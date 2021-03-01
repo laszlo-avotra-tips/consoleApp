@@ -148,7 +148,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: #262626</string>
+     <string notr="true">background-color: rgb(245,196,0); color: black;</string>
     </property>
     <property name="text">
      <string>+ ADD</string>
@@ -180,7 +180,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: #262626</string>
+     <string notr="true">background-color: rgb(245,196,0); color: black;</string>
     </property>
     <property name="text">
      <string>+ ADD</string>

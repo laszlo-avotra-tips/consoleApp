@@ -5,6 +5,8 @@
 #include "caseInformationModel.h"
 #include "Utility/userSettings.h"
 #include "Utility/caseInfoDatabase.h"
+#include "Utility/widgetcontainer.h"
+
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     QDialog(parent),
@@ -31,6 +33,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     connect(ui->pushButtonAddLocation, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemoveLocation);
     connect(ui->pushButtonAddPhysician, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemovePhysician);
+
+    ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
+    ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
+
 
     CaseInfoDatabase ciDb;
     ciDb.initDb();
@@ -81,7 +87,7 @@ void PreferencesDialog::setDefaultPhysician()
     auto ci = CaseInformationModel::instance();
     ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
     ui->pushButtonAddPhysician->setText("+ADD");
-    ui->pushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+//    ui->spushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
 }
 
 void PreferencesDialog::handleSelectedLocation(const QString &name)
@@ -115,7 +121,7 @@ void PreferencesDialog::setDefaultLocation()
     auto ci = CaseInformationModel::instance();
     ci->setDefaultLocation(m_defaultLocationCandidate);
     ui->pushButtonAddLocation->setText("+ADD");
-    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+//    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
 }
 
 void PreferencesDialog::initPhysiciansContainer()
@@ -229,12 +235,34 @@ void PreferencesDialog::handleAddRemovePhysician()
 
 void PreferencesDialog::handleAddLocation()
 {
+//    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
     LOG1(m_selectedLocationLabel->text())
 }
 
 void PreferencesDialog::handleAddPhysician()
 {
-    LOG1(m_selectedPhysicianLabel->text())
+//    ui->pushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+    LOG1(m_selectedPhysicianLabel->text());
+    QString paramName = "PHYSICIAN NAME";
+    QString paramValue = m_selectedPhysicianLabel->text();
+    const int keyboardY{-100};
+
+    /*
+     * create the keyboard parameters
+     */
+    const std::vector<QString> param{paramName, paramValue};
+
+    /*
+     * create the modal keyboard instance for physician name
+     */
+    auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+
+    /*
+     * code execution continues here once the keyboard is closed
+     * update selected physician name with newName
+     */
+    LOG1(newName);
+
 }
 
 void PreferencesDialog::handleRemoveLocation()
