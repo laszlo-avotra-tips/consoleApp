@@ -243,9 +243,9 @@ void PreferencesDialog::handleAddPhysician()
 {
 //    ui->pushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
     LOG1(m_selectedPhysicianLabel->text());
-    QString paramName = "PHYSICIAN NAME";
+    QString paramName("PHYSICIAN NAME");
     QString paramValue = m_selectedPhysicianLabel->text();
-    const int keyboardY{-100};
+    const int keyboardY{100};
 
     /*
      * create the keyboard parameters
