@@ -237,16 +237,13 @@ void PreferencesDialog::handleAddRemovePhysician()
 void PreferencesDialog::handleAddLocation()
 {
 //    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
-    LOG1(m_selectedLocationLabel->text())
 }
 
 void PreferencesDialog::handleAddPhysician()
 {
-//    ui->pushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
-    LOG1(m_selectedPhysicianLabel->text());
     QString paramName("PHYSICIAN NAME");
     QString paramValue("Dr. ");
-    const int keyboardY{100};
+    const int keyboardY{height() / 2};
 
     /*
      * create the keyboard parameters
@@ -257,24 +254,6 @@ void PreferencesDialog::handleAddPhysician()
      * create the modal keyboard instance for physician name
      */
     auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
-//{
-//        QString retVal;
-//        ConsoleKeyboard* okb = new ConsoleKeyboard(param, this);
-////        auto pw = this->width();
-////        auto dw = okb->width();
-////        int x = this->x() + pw/2 - dw/2;
-
-////        okb->move(x, this->y() + keyboardY);
-//        okb->show();
-
-////        if(okb->exec() == QDialog::Accepted){
-////            retVal = okb->value();
-////        } else {
-////            retVal = param[1];
-////        }
-
-////        LOG1(retVal);
-//    }
 
     /*
      * code execution continues here once the keyboard is closed
@@ -282,7 +261,11 @@ void PreferencesDialog::handleAddPhysician()
      */
     LOG1(newName);
 
-
+    if(!newName.isEmpty()){
+        auto cim = CaseInformationModel::instance();
+        cim->addPhysicianName(newName);
+        initPhysiciansContainer();
+    }
 }
 
 void PreferencesDialog::handleRemoveLocation()
