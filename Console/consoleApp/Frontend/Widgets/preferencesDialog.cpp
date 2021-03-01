@@ -215,6 +215,8 @@ void PreferencesDialog::persistPreferences()
     CaseInfoDatabase ciDb;
     ciDb.initDb();
 
+    LOG2(ci->physicianNames().size(), ci->locations().size())
+
     for(const auto& physician : ci->physicianNames()){
         ciDb.addPhysician(physician);
     }
