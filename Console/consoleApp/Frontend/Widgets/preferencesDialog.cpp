@@ -334,7 +334,8 @@ void PreferencesDialog::handlePhysicianUp()
    if(m_physicianBase < maxBaseIndex){
        ++m_physicianBase;
    }
-   LOG1(m_physicianBase)
+   LOG1(m_physicianBase);
+   initPhysiciansContainer();
 }
 
 void PreferencesDialog::handlePhysicianDown()
@@ -342,7 +343,8 @@ void PreferencesDialog::handlePhysicianDown()
     if(m_physicianBase > 0){
         --m_physicianBase;
     }
-    LOG1(m_physicianBase)
+    LOG1(m_physicianBase);
+    initPhysiciansContainer();
 }
 
 void PreferencesDialog::handleLocationUp()
