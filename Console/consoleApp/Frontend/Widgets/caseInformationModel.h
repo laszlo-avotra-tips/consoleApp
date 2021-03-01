@@ -21,6 +21,9 @@ public:
 
     void eraseLocations();
     void erasePhysicians();
+    bool isValidPysicianCandidate(const QString& name);
+    bool isValidLocatioCandidate(const QString& name);
+
     /*!
      * \brief physicianNames - get the list of registered physicina names
      * \return the list of registered physician names

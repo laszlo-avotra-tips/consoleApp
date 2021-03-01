@@ -11,23 +11,14 @@ CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 CaseInformationModel::CaseInformationModel()
 {
     const auto& settings = userSettings::Instance();
-//    m_physicianNames = settings.getPhysicians();
-//    m_locations = settings.getLocations();
+    m_physicianNames = settings.getPhysicians();
+    m_locations = settings.getLocations();
 
     CaseInfoDatabase ciDb;
     ciDb.initDb();
 
     m_physicianNames = ciDb.physicians();
     m_locations = ciDb.locations();
-
-    const auto& defaultPhysicianName = settings.getPhysician();
-    if(m_physicianNames.contains(defaultPhysicianName)){
-        m_defaultPhysicianName = defaultPhysicianName;
-    }
-    const auto& defaultLocation = settings.getLocation();
-    if(m_locations.contains(defaultLocation)){
-        m_defaultLocation = defaultLocation;
-    }
 }
 
 QString CaseInformationModel::defaultPhysicianName() const
@@ -66,6 +57,26 @@ void CaseInformationModel::eraseLocations()
 void CaseInformationModel::erasePhysicians()
 {
     m_physicianNames.erase(m_physicianNames.begin(), m_physicianNames.end());
+}
+
+bool CaseInformationModel::isValidPysicianCandidate(const QString &name)
+{
+    bool success{false};
+    if(m_physicianNames.contains(name)){
+        m_defaultPhysicianName = name;
+        success = true;
+    }
+    return success;
+}
+
+bool CaseInformationModel::isValidLocatioCandidate(const QString &name)
+{
+    bool success{false};
+    if(m_locations.contains(name)){
+        m_defaultLocation = name;
+        success = true;
+    }
+    return success;
 }
 
 QStringList CaseInformationModel::physicianNames() const
