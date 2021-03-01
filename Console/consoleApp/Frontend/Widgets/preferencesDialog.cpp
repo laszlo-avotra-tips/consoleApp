@@ -29,9 +29,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     connect(ui->pushButtonDone, &QPushButton::clicked, this, &PreferencesDialog::persistPreferences);
 
+    connect(ui->pushButtonAddLocation, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemoveLocation);
+    connect(ui->pushButtonAddPhysician, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemovePhysician);
+
     CaseInfoDatabase ciDb;
     ciDb.initDb();
-    LOG1("m_physicianNames")
 
     initPhysiciansContainer();
     initLocationsContainer();
@@ -203,5 +205,44 @@ void PreferencesDialog::persistPreferences()
     settings.setLocation(loc);
     settings.setPhysician(ci->defaultPhysicianName());
 
-//    createCaseInfoDb();
+    //    createCaseInfoDb();
+}
+
+void PreferencesDialog::handleAddRemoveLocation()
+{
+    if(ui->pushButtonAddLocation->text() == "+ADD"){
+        handleAddLocation();
+    }else{
+        handleRemoveLocation();
+    }
+}
+
+void PreferencesDialog::handleAddRemovePhysician()
+{
+    if(ui->pushButtonAddPhysician->text() == "+ADD"){
+        handleAddPhysician();
+    }else{
+        handleRemovePhysician();
+    }
+
+}
+
+void PreferencesDialog::handleAddLocation()
+{
+    LOG1(m_selectedLocationLabel->text())
+}
+
+void PreferencesDialog::handleAddPhysician()
+{
+    LOG1(m_selectedPhysicianLabel->text())
+}
+
+void PreferencesDialog::handleRemoveLocation()
+{
+    LOG1(m_selectedLocationLabel->text())
+}
+
+void PreferencesDialog::handleRemovePhysician()
+{
+    LOG1(m_selectedPhysicianLabel->text())
 }

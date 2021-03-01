@@ -28,6 +28,12 @@ private slots:
     void handleSelectedLocation(const QString &name);
     void setDefaultLocation();
     void persistPreferences();
+    void handleAddRemoveLocation();
+    void handleAddRemovePhysician();
+    void handleAddLocation();
+    void handleAddPhysician();
+    void handleRemoveLocation();
+    void handleRemovePhysician();
 
 private:
     void initPhysiciansContainer();
