@@ -31,6 +31,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     CaseInfoDatabase ciDb;
     ciDb.initDb();
+    LOG1("m_physicianNames")
 
     initPhysiciansContainer();
     initLocationsContainer();

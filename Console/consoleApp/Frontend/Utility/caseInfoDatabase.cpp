@@ -214,4 +214,5 @@ void CaseInfoDatabase::initCaseInfo()
         cim->addPhysicianName(physician);
     }
     LOG2(numLocations, cim->physicianNames().size());
+    cim->initDefaults();
 }
