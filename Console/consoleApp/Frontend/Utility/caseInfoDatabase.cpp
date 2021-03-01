@@ -166,28 +166,28 @@ void CaseInfoDatabase::initCaseInfo()
     QSqlError sqlerr;
     QStringList nl;
 
-    int maxID = 0;
-    q.prepare( "SELECT MAX(id) FROM Locations" );
+//    int maxID = 0;
+//    q.prepare( "SELECT MAX(id) FROM Locations" );
 
-    q.exec();
-    sqlerr = q.lastError();
-    if(sqlerr.isValid()){
-        const QString& errorMsg = sqlerr.databaseText();
-        LOG1(errorMsg)
-        return;
-    }
-    q.next();
-    QSqlRecord record = q.record();
-    if( record.isNull("MAX(id)") )
-    {
-        maxID = 1;
-    }
-    else
-    {
-        int idCol = record.indexOf( "MAX(id)" );
-        maxID = record.value( idCol ).toInt();
-    }
-    LOG1(maxID);
+//    q.exec();
+//    sqlerr = q.lastError();
+//    if(sqlerr.isValid()){
+//        const QString& errorMsg = sqlerr.databaseText();
+//        LOG1(errorMsg)
+//        return;
+//    }
+//    q.next();
+//    QSqlRecord record = q.record();
+//    if( record.isNull("MAX(id)") )
+//    {
+//        maxID = 1;
+//    }
+//    else
+//    {
+//        int idCol = record.indexOf( "MAX(id)" );
+//        maxID = record.value( idCol ).toInt();
+//    }
+//    LOG1(maxID);
 
     q.prepare( "SELECT name FROM Locations" );
 
@@ -197,7 +197,7 @@ void CaseInfoDatabase::initCaseInfo()
         const QString& errorMsg = sqlerr.databaseText();
         LOG1(errorMsg)
     }
-    record = q.record();
+    QSqlRecord record = q.record();
     LOG1(record.count());
 
     int numLocations{0};
