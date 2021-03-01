@@ -212,6 +212,17 @@ void PreferencesDialog::persistPreferences()
     settings.setLocation(loc);
     settings.setPhysician(ci->defaultPhysicianName());
 
+    CaseInfoDatabase ciDb;
+    ciDb.initDb();
+
+    for(const auto& physician : ci->physicianNames()){
+        ciDb.addPhysician(physician);
+    }
+
+    for(const auto& location : ci->locations()){
+        ciDb.addLocation(location);
+    }
+
     //    createCaseInfoDb();
 }
 
