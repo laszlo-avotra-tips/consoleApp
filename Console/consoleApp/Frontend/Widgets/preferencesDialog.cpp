@@ -109,9 +109,13 @@ void PreferencesDialog::handleSelectedLocation(const QString &name)
     const auto& labelIt = m_locationsContainer.find(name);
     if(labelIt != m_locationsContainer.end()){
         m_selectedLocationLabel = labelIt->second;
+        QString yellowSt("color: rgb(245,196,0)");
         if(m_selectedLocationLabel){
-            m_selectedLocationLabel->setStyleSheet("color: rgb(245,196,0)");
+            LOG1(yellowSt)
+            m_selectedLocationLabel->setStyleSheet(yellowSt);
         }
+    } else {
+        LOG1(name);
     }
     m_defaultLocationCandidate = name;
     ui->pushButtonLocationDefault->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
@@ -163,7 +167,7 @@ void PreferencesDialog::initLocationsContainer()
         if(nameIt != names.end()){
             const auto& name = *nameIt;
             label->setText(name);
-             m_physiciansContainer[label->text()] = label;
+             m_locationsContainer[label->text()] = label;
             LOG2(name,*m_locIt)
              ++nameIt;
         }
@@ -176,9 +180,10 @@ void PreferencesDialog::persistPreferences()
     const auto& ci = CaseInformationModel::instance();
 
     const auto& loc = ci->defaultLocation();
-    LOG1(loc);
+    const auto& pn = ci->defaultPhysicianName();
+    LOG2(loc, pn);
     settings.setLocation(loc);
-    settings.setPhysician(ci->defaultPhysicianName());
+    settings.setPhysician(pn);
 
     CaseInfoDatabase ciDb;
     ciDb.initDb();
