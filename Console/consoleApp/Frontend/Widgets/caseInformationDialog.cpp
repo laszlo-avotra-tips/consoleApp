@@ -131,7 +131,15 @@ int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QSt
 {
     const auto it = std::find(cont.begin(), cont.end(), val);
 
-    int index = it - cont.begin();
+    auto base = cont.begin();
+
+    int index{0};
+    while( base != it){
+        ++base;
+        ++index;
+    }
+
+    //int index = it - cont.begin();
 
     return index;
 }

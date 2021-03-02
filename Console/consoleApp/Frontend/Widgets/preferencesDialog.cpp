@@ -137,9 +137,10 @@ void PreferencesDialog::initPhysiciansContainer()
     const auto& phns = ci->physicianNames();
 
     int i{0};
+    auto phnIt = phns.begin();
     for(const auto& label : m_physicianLabels){
         if(i < phns.size()){
-            label->setText(phns[i + m_physicianBase]);
+            label->setText(*(phnIt++));
         }
         m_physiciansContainer[label->text()] = label;
         ++i;
@@ -148,17 +149,17 @@ void PreferencesDialog::initPhysiciansContainer()
 
 void PreferencesDialog::initPhysiciansContainer2()
 {
-    const auto& ci = CaseInformationModel::instance();
-    const auto& phns = ci->physicianNames2();
+//    const auto& ci = CaseInformationModel::instance();
+//    const auto& phns = ci->physicianNames2();
 
-    int i{0};
-    for(const auto& label : m_physicianLabels){
-        if(i < phns.size()){
-            label->setText(phns[i]);
-        }
-        m_physiciansContainer[label->text()] = label;
-        ++i;
-    }
+//    int i{0};
+//    for(const auto& label : m_physicianLabels){
+//        if(i < phns.size()){
+//            label->setText(phns[i]);
+//        }
+//        m_physiciansContainer[label->text()] = label;
+//        ++i;
+//    }
 }
 
 
@@ -167,10 +168,11 @@ void PreferencesDialog::initLocationsContainer()
     const auto& ci = CaseInformationModel::instance();
     const auto& locs = ci->locations();
 
-    int i{0};
+    size_t i{0};
+    auto locIt = locs.begin();
     for(const auto& label : m_locationLabels){
         if(i < locs.size()){
-            label->setText(locs[i]);
+            label->setText(*(locIt++));
         }
         m_locationsContainer[label->text()] = label;
         ++i;
@@ -179,17 +181,17 @@ void PreferencesDialog::initLocationsContainer()
 
 void PreferencesDialog::initLocationsContainer2()
 {
-    const auto& ci = CaseInformationModel::instance();
-    const auto& locs = ci->locations2();
+//    const auto& ci = CaseInformationModel::instance();
+//    const auto& locs = ci->locations2();
 
-    int i{0};
-    for(const auto& label : m_locationLabels){
-        if(i < locs.size()){
-            label->setText(locs[i]);
-        }
-        m_locationsContainer[label->text()] = label;
-        ++i;
-    }
+//    int i{0};
+//    for(const auto& label : m_locationLabels){
+//        if(i < locs.size()){
+//            label->setText(locs[i]);
+//        }
+//        m_locationsContainer[label->text()] = label;
+//        ++i;
+//    }
 }
 
 void PreferencesDialog::createCaseInfoDb()

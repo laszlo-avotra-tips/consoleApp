@@ -96,12 +96,17 @@ bool CaseInformationModel::isSelectedPhysicianName() const
 
 void CaseInformationModel::addPhysicianName(const QString &name)
 {
-    m_physicianNames.push_back(name);
+    m_physicianNames.insert(name);
 }
 
 void CaseInformationModel::setPhysicianName(int index, const QString &name)
 {
-    m_physicianNames[index] = name;
+    auto old = m_physicianNames.begin();
+    for(int i = 0; i < index; ++i){
+        ++old;
+    }
+    m_physicianNames.erase(old);
+    m_physicianNames.insert(name);
 }
 
 PhysicianNameContainer CaseInformationModel::locations() const
@@ -131,12 +136,17 @@ bool CaseInformationModel::isSelectedLocation() const
 
 void CaseInformationModel::addLocation(const QString &location)
 {
-    m_locations.push_back(location);
+    m_locations.insert(location);
 }
 
 void CaseInformationModel::setLocation(int index, const QString &location)
 {
-    m_locations[index] = location;
+    auto old = m_locations.begin();
+    for(int i = 0; i < index; ++i){
+        ++old;
+    }
+    m_locations.erase(old);
+    m_locations.insert(location);
 }
 
 QString CaseInformationModel::patientId() const
