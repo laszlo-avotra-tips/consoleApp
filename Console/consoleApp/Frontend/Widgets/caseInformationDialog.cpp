@@ -14,6 +14,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QShowEvent>
+#include <algorithm>
 
 
 CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<QString> *param) :
@@ -126,6 +127,15 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
     }
 }
 
+int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QString &val) const
+{
+    const auto it = std::find(cont.begin(), cont.end(), val);
+
+    int index = it - cont.begin();
+
+    return index;
+}
+
 void CaseInformationDialog::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
@@ -164,7 +174,7 @@ void CaseInformationDialog::editOrSelectPhysicianName()
          */
         const auto& list = m_model.physicianNames();
         const auto& value = m_model.selectedPhysicianName();
-        int index = list.indexOf(value);
+        int index = indexOf(list,value);
         QString paramName = ui->labelPhysicianName->text();
         QString paramValue = ui->lineEditPhysicianName->text();
         const int keyboardY{410};
@@ -236,7 +246,7 @@ void CaseInformationDialog::editOrSelectLocation()
          */
         const auto& list = m_model.locations();
         const auto& value = m_model.selectedLocation();
-        int index = list.indexOf(value);
+        int index = indexOf(list,value);
         QString paramName = ui->labelLocation->text();
         QString paramValue = ui->lineEditLocation->text();
         const int keyboardY{610};

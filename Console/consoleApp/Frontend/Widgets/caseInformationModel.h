@@ -3,6 +3,7 @@
 
 #include <QStringList>
 #include <QString>
+#include <vector>
 
 /*!
     \class CaseInformationModel saseInformationModel.h
@@ -15,7 +16,7 @@
     \sa CaseInformationDialog
  */
 
-using PhysicianNameContainer = QStringList;
+using PhysicianNameContainer = std::vector<QString>;
 
 class CaseInformationModel
 {

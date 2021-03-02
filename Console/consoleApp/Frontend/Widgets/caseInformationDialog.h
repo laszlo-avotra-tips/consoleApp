@@ -4,9 +4,9 @@
 #include <QDialog>
 #include <QDateTime>
 #include <QTimer>
+#include "caseInformationModel.h"
 
 class SelectDialog;
-class CaseInformationModel;
 
 namespace Ui {
 class CaseInformationDialog;
@@ -96,6 +96,8 @@ private slots:
      * \param param - list of constructor parameters
      */
     void initDialog(const std::vector<QString> *param = nullptr);
+
+    int indexOf(const PhysicianNameContainer& cont, const QString& val) const;
 
 private:
     /*!

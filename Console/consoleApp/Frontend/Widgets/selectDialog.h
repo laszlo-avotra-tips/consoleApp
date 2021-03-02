@@ -37,6 +37,7 @@ private slots:
 
 private:
     void selectItem(int index);
+    int indexOf(const PhysicianNameContainer& cont, const QString& val) const;
 
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;

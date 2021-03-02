@@ -42,7 +42,8 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
 
     if(!m_selectedItem.isEmpty()){
         m_itemsInView.clear();
-        auto si = m_items.indexOf(m_selectedItem);
+//        auto si = m_items.indexOf(m_selectedItem);
+        int si = indexOf(m_items,m_selectedItem);
         LOG2(si, m_selectedItem)
         if(si >= 0){
             if(si < 3){
@@ -98,7 +99,9 @@ void SelectDialog::scrollDown()
 {
     if(m_itemsInView.size() == 3){
         auto lastInView = m_itemsInView[2];
-        auto indexOfLastInView = m_items.indexOf(lastInView);
+//        auto indexOfLastInView = m_items.indexOf(lastInView);
+        int indexOfLastInView = indexOf(m_items,lastInView);
+
         auto maxIndexInView = m_items.size() - 1;
         if(indexOfLastInView == maxIndexInView){
             m_itemsInView[0] = m_items[maxIndexInView - 1];
@@ -123,7 +126,8 @@ void SelectDialog::scrollDown()
             }
             ++index;
         }
-        auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
+//        auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
+        int highlighted = indexOf(m_itemsInView,m_selectedItem);
         LOG2(m_selectedItem, highlighted)
         if(highlighted >= 0 && highlighted < 3){
             auto* wid = m_selectableWidgets[highlighted];
@@ -147,6 +151,16 @@ void SelectDialog::selectItem(int index)
         }
     }
     QTimer::singleShot(500,this,&SelectDialog::accept);
+}
+
+int SelectDialog::indexOf(const PhysicianNameContainer &cont, const QString &val) const
+{
+    const auto it = std::find(cont.begin(), cont.end(), val);
+
+    int index = it - cont.begin();
+
+    return index;
+
 }
 
 QString SelectDialog::selectedItem() const

@@ -22,7 +22,7 @@ QSqlError CaseInfoDatabase::initDb()
     }
     // Setup the database only in the case
     // that the tables don't already exist
-    PhysicianNameContainer tables = db.tables();
+    QStringList tables = db.tables();
 
     // Set up the schema Pysician table
     if( !tables.contains( "Physicians", Qt::CaseSensitive ) )
