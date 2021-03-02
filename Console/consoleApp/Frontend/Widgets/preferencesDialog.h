@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "activeLabel.h"
+#include "Utility/caseInfoDatabase.h"
 
 using LabelContainer = std::map<QString, QLabel*>;
 
@@ -65,6 +66,10 @@ private:
 
     int m_physicianBase{0};
     int m_locationBase{0};
+
+    PhysicianNameContainer::iterator m_phIt;
+    PhysicianNameContainer::iterator m_locIt;
+
 };
 
 #endif // PREFERENCESDIALOG_H

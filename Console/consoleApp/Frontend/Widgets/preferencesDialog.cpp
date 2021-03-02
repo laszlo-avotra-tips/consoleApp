@@ -55,6 +55,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     m_defaultLocationCandidate = ci->defaultLocation();
     m_defaultPhysicianCandidate = ci->defaultPhysicianName();
 
+    m_locIt = ci->locations().begin();
+    m_phIt = ci->physicianNames().begin();
+
     setDefaultPhysician();
     setDefaultLocation();
 }
@@ -136,14 +139,22 @@ void PreferencesDialog::initPhysiciansContainer()
     const auto& ci = CaseInformationModel::instance();
     const auto& phns = ci->physicianNames();
 
-    int i{0};
-    auto phnIt = phns.begin();
+//    size_t i{0};
+//    for(const auto& label : m_physicianLabels){
+//        if(i < phns.size()){
+//            label->setText(*(phnIt++));
+//        }
+//        m_physiciansContainer[label->text()] = label;
+//        ++i;
+//    }
+
+    auto phnIt = m_phIt;
     for(const auto& label : m_physicianLabels){
-        if(i < phns.size()){
-            label->setText(*(phnIt++));
+        if(phnIt != phns.end()){
+            label->setText(*phnIt);
+             m_physiciansContainer[label->text()] = label;
+            ++phnIt;
         }
-        m_physiciansContainer[label->text()] = label;
-        ++i;
     }
 }
 
@@ -168,14 +179,22 @@ void PreferencesDialog::initLocationsContainer()
     const auto& ci = CaseInformationModel::instance();
     const auto& locs = ci->locations();
 
-    size_t i{0};
-    auto locIt = locs.begin();
+//    size_t i{0};
+//    auto locIt = locs.begin();
+//    for(const auto& label : m_locationLabels){
+//        if(i < locs.size()){
+//            label->setText(*(locIt++));
+//        }
+//        m_locationsContainer[label->text()] = label;
+//        ++i;
+//    }
+    auto locIt = m_locIt;
     for(const auto& label : m_locationLabels){
-        if(i < locs.size()){
-            label->setText(*(locIt++));
+        if(locIt != locs.end()){
+            label->setText(*locIt);
+             m_locationsContainer[label->text()] = label;
+            ++locIt;
         }
-        m_locationsContainer[label->text()] = label;
-        ++i;
     }
 }
 
