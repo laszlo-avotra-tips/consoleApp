@@ -147,21 +147,24 @@ void PreferencesDialog::initPhysiciansContainer()
             LOG2(name,*m_phIt)
              ++nameIt;
         }
-        QThread::msleep(100);
     }
 }
 
 void PreferencesDialog::initLocationsContainer()
 {
     const auto& ci = CaseInformationModel::instance();
-    const auto& locs = ci->locations();
+    const auto& names = ci->locations();
 
-    auto locIt = m_locIt;
+    auto nameIt = m_locIt;
+    if(m_locIt != names.end()) LOG1(*m_locIt);
+    m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
     for(const auto& label : m_locationLabels){
-        if(locIt != locs.end()){
-            label->setText(*locIt);
-             m_locationsContainer[label->text()] = label;
-            ++locIt;
+        if(nameIt != names.end()){
+            const auto& name = *nameIt;
+            label->setText(name);
+             m_physiciansContainer[label->text()] = label;
+            LOG2(name,*m_locIt)
+             ++nameIt;
         }
     }
 }
@@ -312,10 +315,31 @@ void PreferencesDialog::handlePhysicianDown()
 
 void PreferencesDialog::handleLocationUp()
 {
+    auto cim = CaseInformationModel::instance();
+    const auto& names = cim->locations();
 
+    auto maxBaseIt = names.end();
+    int i=0;
+    while((i < 3) && (maxBaseIt != names.begin())){
+        --maxBaseIt;
+        LOG1(*maxBaseIt);
+        ++i;
+    }
+    if(m_locIt != maxBaseIt){
+        ++m_locIt;
+        LOG1(*m_locIt);
+        initLocationsContainer();
+    }
 }
 
 void PreferencesDialog::handleLocationDown()
 {
+    auto cim = CaseInformationModel::instance();
+    const auto& names = cim->locations();
 
+    if(m_locIt != names.begin()){
+        --m_locIt;
+        LOG1(*m_locIt);
+        initLocationsContainer();
+    }
 }
