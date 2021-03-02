@@ -372,8 +372,8 @@ void PreferencesDialog::handlePhysicianUp()
     if(m_phIt != maxBaseIt){
         ++m_phIt;
         LOG1(*m_phIt);
+        initPhysiciansContainer();
     }
-    initPhysiciansContainer();
 }
 
 void PreferencesDialog::handlePhysicianDown()
@@ -386,8 +386,8 @@ void PreferencesDialog::handlePhysicianDown()
 //    LOG1(m_physicianBase);
     if(m_phIt != names.begin()){
         --m_phIt;
+        initPhysiciansContainer();
     }
-    initPhysiciansContainer();
 }
 
 void PreferencesDialog::handleLocationUp()
