@@ -151,7 +151,7 @@ void PreferencesDialog::initPhysiciansContainer()
 //    }
 
     auto nameIt = m_phIt;
-    LOG1(*m_phIt);
+    if(m_phIt != names.end()) LOG1(*m_phIt);
     m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
     for(const auto& label : m_physicianLabels){
         if(nameIt != names.end()){
