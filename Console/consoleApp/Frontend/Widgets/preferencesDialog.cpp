@@ -82,6 +82,7 @@ void PreferencesDialog::handleSelectedPhysician(const QString &name)
     }
     m_defaultPhysicianCandidate = name;
     ui->pushButtonDrDefault->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
+
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setText("REMOVE");
 }
