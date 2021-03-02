@@ -365,11 +365,13 @@ void PreferencesDialog::handlePhysicianUp()
     auto maxBaseIt = names.end();
     int i=0;
     while((i < 3) && (maxBaseIt != names.begin())){
-        ++i;
         --maxBaseIt;
+        LOG1(*maxBaseIt);
+        ++i;
     }
     if(m_phIt != maxBaseIt){
         ++m_phIt;
+        LOG1(*m_phIt);
     }
     initPhysiciansContainer();
 }
