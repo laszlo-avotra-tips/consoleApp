@@ -349,24 +349,39 @@ void PreferencesDialog::handleRemovePhysician()
 void PreferencesDialog::handlePhysicianUp()
 {
    auto cim = CaseInformationModel::instance();
-   auto numNames = cim->physicianNames().size();
-   auto numLabels = m_physicianLabels.size();
+   const auto names = cim->physicianNames();
 
-   int maxBaseIndex = ((numNames - numLabels) > 0) ? (numNames - numLabels) : 0;
+//   auto numLabels = m_physicianLabels.size();
 
-   if(m_physicianBase < maxBaseIndex){
-       ++m_physicianBase;
-   }
-   LOG1(m_physicianBase);
-   initPhysiciansContainer();
+//   int maxBaseIndex = ((numNames - numLabels) > 0) ? (numNames - numLabels) : 0;
+
+//   if(m_physicianBase < maxBaseIndex){
+//       ++m_physicianBase;
+//   }
+//   LOG1(m_physicianBase);
+    auto maxBaseIt = names.end();
+    int i=0;
+    while((i < 3) && (maxBaseIt != names.begin())){
+        ++i;
+        --maxBaseIt;
+    }
+    if(m_phIt != maxBaseIt){
+        ++m_phIt;
+    }
+    initPhysiciansContainer();
 }
 
 void PreferencesDialog::handlePhysicianDown()
 {
-    if(m_physicianBase > 0){
-        --m_physicianBase;
+    auto cim = CaseInformationModel::instance();
+    const auto names = cim->physicianNames();
+//    if(m_physicianBase > 0){
+//        --m_physicianBase;
+//    }
+//    LOG1(m_physicianBase);
+    if(m_phIt != names.begin()){
+        --m_phIt;
     }
-    LOG1(m_physicianBase);
     initPhysiciansContainer();
 }
 
