@@ -48,9 +48,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     CaseInfoDatabase ciDb;
     ciDb.initDb();
 
-//    initPhysiciansContainer();
-//    initLocationsContainer();
-
     const auto& ci = CaseInformationModel::instance();
     m_defaultLocationCandidate = ci->defaultLocation();
     m_defaultPhysicianCandidate = ci->defaultPhysicianName();
@@ -99,7 +96,6 @@ void PreferencesDialog::setDefaultPhysician()
     auto ci = CaseInformationModel::instance();
     ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
     ui->pushButtonAddPhysician->setText("+ADD");
-//    ui->spushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
 }
 
 void PreferencesDialog::handleSelectedLocation(const QString &name)
@@ -133,22 +129,12 @@ void PreferencesDialog::setDefaultLocation()
     auto ci = CaseInformationModel::instance();
     ci->setDefaultLocation(m_defaultLocationCandidate);
     ui->pushButtonAddLocation->setText("+ADD");
-//    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
 }
 
 void PreferencesDialog::initPhysiciansContainer()
 {
     const auto& ci = CaseInformationModel::instance();
     const auto& names = ci->physicianNames();
-
-//    size_t i{0};
-//    for(const auto& label : m_physicianLabels){
-//        if(i < phns.size()){
-//            label->setText(*(phnIt++));
-//        }
-//        m_physiciansContainer[label->text()] = label;
-//        ++i;
-//    }
 
     auto nameIt = m_phIt;
     if(m_phIt != names.end()) LOG1(*m_phIt);
@@ -165,36 +151,11 @@ void PreferencesDialog::initPhysiciansContainer()
     }
 }
 
-void PreferencesDialog::initPhysiciansContainer2()
-{
-//    const auto& ci = CaseInformationModel::instance();
-//    const auto& phns = ci->physicianNames2();
-
-//    int i{0};
-//    for(const auto& label : m_physicianLabels){
-//        if(i < phns.size()){
-//            label->setText(phns[i]);
-//        }
-//        m_physiciansContainer[label->text()] = label;
-//        ++i;
-//    }
-}
-
-
 void PreferencesDialog::initLocationsContainer()
 {
     const auto& ci = CaseInformationModel::instance();
     const auto& locs = ci->locations();
 
-//    size_t i{0};
-//    auto locIt = locs.begin();
-//    for(const auto& label : m_locationLabels){
-//        if(i < locs.size()){
-//            label->setText(*(locIt++));
-//        }
-//        m_locationsContainer[label->text()] = label;
-//        ++i;
-//    }
     auto locIt = m_locIt;
     for(const auto& label : m_locationLabels){
         if(locIt != locs.end()){
@@ -202,37 +163,6 @@ void PreferencesDialog::initLocationsContainer()
              m_locationsContainer[label->text()] = label;
             ++locIt;
         }
-    }
-}
-
-void PreferencesDialog::initLocationsContainer2()
-{
-//    const auto& ci = CaseInformationModel::instance();
-//    const auto& locs = ci->locations2();
-
-//    int i{0};
-//    for(const auto& label : m_locationLabels){
-//        if(i < locs.size()){
-//            label->setText(locs[i]);
-//        }
-//        m_locationsContainer[label->text()] = label;
-//        ++i;
-//    }
-}
-
-void PreferencesDialog::createCaseInfoDb()
-{
-    initLocationsContainer2();
-    initPhysiciansContainer2();
-    //lcv only once
-    CaseInfoDatabase ciDb;
-    ciDb.initDb();
-    for(const auto& physician : m_physiciansContainer){
-        ciDb.addPhysician(physician.first);
-    }
-
-    for(const auto& location : m_locationsContainer){
-        ciDb.addLocation(location.first);
     }
 }
 
@@ -258,8 +188,6 @@ void PreferencesDialog::persistPreferences()
     for(const auto& location : ci->locations()){
         ciDb.addLocation(location);
     }
-
-    //    createCaseInfoDb();
 }
 
 void PreferencesDialog::handleAddRemoveLocation()
@@ -353,17 +281,9 @@ void PreferencesDialog::handleRemovePhysician()
 
 void PreferencesDialog::handlePhysicianUp()
 {
-   auto cim = CaseInformationModel::instance();
-   const auto& names = cim->physicianNames();
+    auto cim = CaseInformationModel::instance();
+    const auto& names = cim->physicianNames();
 
-//   auto numLabels = m_physicianLabels.size();
-
-//   int maxBaseIndex = ((numNames - numLabels) > 0) ? (numNames - numLabels) : 0;
-
-//   if(m_physicianBase < maxBaseIndex){
-//       ++m_physicianBase;
-//   }
-//   LOG1(m_physicianBase);
     auto maxBaseIt = names.end();
     int i=0;
     while((i < 3) && (maxBaseIt != names.begin())){
@@ -382,12 +302,10 @@ void PreferencesDialog::handlePhysicianDown()
 {
     auto cim = CaseInformationModel::instance();
     const auto& names = cim->physicianNames();
-//    if(m_physicianBase > 0){
-//        --m_physicianBase;
-//    }
-//    LOG1(m_physicianBase);
+
     if(m_phIt != names.begin()){
         --m_phIt;
+        LOG1(*m_phIt);
         initPhysiciansContainer();
     }
 }

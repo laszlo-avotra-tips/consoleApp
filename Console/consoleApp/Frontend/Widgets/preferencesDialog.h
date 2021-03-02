@@ -47,9 +47,6 @@ private slots:
 private:
     void initPhysiciansContainer();
     void initLocationsContainer();
-    void initPhysiciansContainer2();
-    void initLocationsContainer2();
-    void createCaseInfoDb();
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;
