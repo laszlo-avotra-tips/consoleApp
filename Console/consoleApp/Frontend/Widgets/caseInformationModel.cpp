@@ -109,7 +109,7 @@ void CaseInformationModel::setPhysicianName(int index, const QString &name)
     m_physicianNames.insert(name);
 }
 
-PhysicianNameContainer CaseInformationModel::locations() const
+const PhysicianNameContainer& CaseInformationModel::locations() const
 {
     return m_locations;
 }

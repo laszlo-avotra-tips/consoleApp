@@ -68,7 +68,7 @@ public:
      * \brief locations - get the list of registered locations
      * \return the list of registered locations
      */
-    PhysicianNameContainer locations() const;
+    const PhysicianNameContainer& locations() const;
     PhysicianNameContainer locations2() const;
 
     /*!
