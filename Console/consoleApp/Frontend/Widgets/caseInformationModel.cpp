@@ -18,14 +18,12 @@ void CaseInformationModel::initDefaults()
     const auto& settings = userSettings::Instance();
     LOG2(m_physicianNames.size(), m_locations.size())
     const auto& defaultPhysicianName = settings.getPhysician();
-//    if(m_physicianNames.contains(defaultPhysicianName))
     auto itPhn = std::find(m_physicianNames.begin(), m_physicianNames.end(), defaultPhysicianName);
     if(itPhn != m_physicianNames.end())
     {
         m_defaultPhysicianName = defaultPhysicianName;
     }
     const auto& defaultLocation = settings.getLocation();
-//    if(m_locations.contains(defaultLocation))
     auto itL = std::find(m_locations.begin(), m_locations.end(), defaultLocation);
     if(itL != m_locations.end())
     {

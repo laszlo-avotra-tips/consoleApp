@@ -42,7 +42,6 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
 
     if(!m_selectedItem.isEmpty()){
         m_itemsInView.clear();
-//        auto si = m_items.indexOf(m_selectedItem);
         int si = indexOf(m_items,m_selectedItem);
         LOG2(si, m_selectedItem)
         if(si >= 0){
@@ -99,10 +98,9 @@ void SelectDialog::scrollDown()
 {
     if(m_itemsInView.size() == 3){
         auto lastInView = m_itemsInView[2];
-//        auto indexOfLastInView = m_items.indexOf(lastInView);
         int indexOfLastInView = indexOf(m_items,lastInView);
 
-        auto maxIndexInView = m_items.size() - 1;
+        int maxIndexInView = m_items.size() - 1;
         if(indexOfLastInView == maxIndexInView){
             m_itemsInView[0] = m_items[maxIndexInView - 1];
             m_itemsInView[1] = m_items[maxIndexInView];
@@ -117,7 +115,7 @@ void SelectDialog::scrollDown()
             m_itemsInView[2] = m_items[1];
         }
 
-        int index{0};
+        size_t index{0};
         for(auto* lineEdit : m_selectableWidgets){
             if(m_items.size()>index){
                 auto style = lineEdit->styleSheet();
@@ -126,7 +124,6 @@ void SelectDialog::scrollDown()
             }
             ++index;
         }
-//        auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
         int highlighted = indexOf(m_itemsInView,m_selectedItem);
         LOG2(m_selectedItem, highlighted)
         if(highlighted >= 0 && highlighted < 3){
