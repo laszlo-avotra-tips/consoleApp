@@ -41,6 +41,14 @@ void CaseInformationModel::setDefaultPhysicianName(const QString &defaultPhysici
     m_defaultPhysicianName = defaultPhysicianName;
 }
 
+void CaseInformationModel::removePhysicianName(const QString &name)
+{
+    if(name != m_selectedPhysicianName){
+        auto it = m_physicianNames.find(name);
+        m_physicianNames.erase(it);
+    }
+}
+
 QString CaseInformationModel::defaultLocation() const
 {
     return m_defaultLocation;

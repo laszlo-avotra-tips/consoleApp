@@ -285,7 +285,16 @@ void PreferencesDialog::handleRemoveLocation()
 
 void PreferencesDialog::handleRemovePhysician()
 {
-    LOG1(m_selectedPhysicianLabel->text())
+    for(auto& ph : m_physicianLabels){
+        ph->setStyleSheet("color: white");
+    }
+
+    auto name = m_selectedPhysicianLabel->text();
+    LOG1(name);
+
+    auto cim = CaseInformationModel::instance();
+    cim->removePhysicianName(name);
+    initPhysiciansContainer();
 }
 
 void PreferencesDialog::handlePhysicianUp()
