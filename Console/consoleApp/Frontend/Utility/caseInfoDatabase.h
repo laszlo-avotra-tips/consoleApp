@@ -2,6 +2,7 @@
 #define CASEINFODATABASE_H
 
 #include <QtSql>
+#include "caseInformationModel.h"
 
 class CaseInfoDatabase
 {
@@ -11,15 +12,15 @@ public:
     int addPhysician(const QString& name);
     int addLocation(const QString& name);
 
-    const QStringList& physicians() const;
-    const QStringList& locations() const;
+    const PhysicianNameContainer& physicians() const;
+    const PhysicianNameContainer& locations() const;
 
 private:
     void initCaseInfo();
 
     const QString m_dbName{"C:/Avinger_Data/caseInfo.db"};
-    QStringList m_physicians;
-    QStringList m_locations;
+    PhysicianNameContainer m_physicians;
+    PhysicianNameContainer m_locations;
 };
 
 #endif // CASEINFODATABASE_H

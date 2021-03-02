@@ -69,9 +69,9 @@ PhysicianNameContainer CaseInformationModel::physicianNames() const
     return m_physicianNames;
 }
 
-QStringList CaseInformationModel::physicianNames2() const
+PhysicianNameContainer CaseInformationModel::physicianNames2() const
 {
-    return QStringList{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
+    return PhysicianNameContainer{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
 }
 
 QString CaseInformationModel::selectedPhysicianName() const
@@ -99,14 +99,14 @@ void CaseInformationModel::setPhysicianName(int index, const QString &name)
     m_physicianNames[index] = name;
 }
 
-QStringList CaseInformationModel::locations() const
+PhysicianNameContainer CaseInformationModel::locations() const
 {
     return m_locations;
 }
 
-QStringList CaseInformationModel::locations2() const
+PhysicianNameContainer CaseInformationModel::locations2() const
 {
-    return QStringList{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
+    return PhysicianNameContainer{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
 }
 
 QString CaseInformationModel::selectedLocation() const

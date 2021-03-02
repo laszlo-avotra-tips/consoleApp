@@ -1,6 +1,5 @@
 #include "caseInfoDatabase.h"
 #include "logger.h"
-#include "caseInformationModel.h"
 
 CaseInfoDatabase::CaseInfoDatabase()
 {
@@ -23,7 +22,7 @@ QSqlError CaseInfoDatabase::initDb()
     }
     // Setup the database only in the case
     // that the tables don't already exist
-    QStringList tables = db.tables();
+    PhysicianNameContainer tables = db.tables();
 
     // Set up the schema Pysician table
     if( !tables.contains( "Physicians", Qt::CaseSensitive ) )
@@ -103,12 +102,12 @@ int CaseInfoDatabase::addLocation(const QString &name)
     return 0;
 }
 
-const QStringList &CaseInfoDatabase::physicians() const
+const PhysicianNameContainer &CaseInfoDatabase::physicians() const
 {
     return m_physicians;
 }
 
-const QStringList &CaseInfoDatabase::locations() const
+const PhysicianNameContainer &CaseInfoDatabase::locations() const
 {
     return m_locations;
 }
@@ -117,7 +116,7 @@ void CaseInfoDatabase::initCaseInfo()
 {
     QSqlQuery q;
     QSqlError sqlerr;
-    QStringList nl;
+    PhysicianNameContainer nl;
 
     auto cim = CaseInformationModel::instance();
 

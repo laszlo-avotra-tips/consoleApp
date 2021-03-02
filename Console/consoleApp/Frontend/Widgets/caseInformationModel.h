@@ -67,8 +67,8 @@ public:
      * \brief locations - get the list of registered locations
      * \return the list of registered locations
      */
-    QStringList locations() const;
-    QStringList locations2() const;
+    PhysicianNameContainer locations() const;
+    PhysicianNameContainer locations2() const;
 
     /*!
      * \brief selectedLocation - get the selected location
@@ -155,7 +155,7 @@ private:
     /*!
      * \brief m_physicianNames - the pysician name registry
      */
-    QStringList m_physicianNames; //{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
+    PhysicianNameContainer m_physicianNames; //{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
 
     /*!
      * \brief m_selectedPhysicianName - the selected physician name for this case - empty string means no selection
@@ -170,7 +170,7 @@ private:
     /*!
      * \brief m_locations - the location registry
      */
-    QStringList m_locations; //{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
+    PhysicianNameContainer m_locations; //{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
 
     /*!
      * \brief m_selectedLocation - the selected location for this case

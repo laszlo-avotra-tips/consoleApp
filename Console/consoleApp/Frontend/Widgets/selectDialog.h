@@ -10,7 +10,6 @@
 #include <vector>
 #include <caseInformationModel.h>
 
-class QStringList;
 
 using SelectableWidgetContainer = std::vector<ConsoleLineEdit*>;
 
@@ -26,7 +25,7 @@ public:
     explicit SelectDialog(QWidget *parent = nullptr);
     ~SelectDialog();
 
-    void populate(const QStringList& sl, const QString& selected);
+    void populate(const PhysicianNameContainer& sl, const QString& selected);
 
     QString selectedItem() const;
 
@@ -42,7 +41,7 @@ private:
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
     PhysicianNameContainer m_items;
-    QStringList m_itemsInView;
+    PhysicianNameContainer m_itemsInView;
     QString m_selectedItem;
 };
 
