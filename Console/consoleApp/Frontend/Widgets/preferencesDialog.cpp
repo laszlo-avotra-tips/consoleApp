@@ -48,8 +48,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     CaseInfoDatabase ciDb;
     ciDb.initDb();
 
-    initPhysiciansContainer();
-    initLocationsContainer();
+//    initPhysiciansContainer();
+//    initLocationsContainer();
 
     const auto& ci = CaseInformationModel::instance();
     m_defaultLocationCandidate = ci->defaultLocation();
@@ -57,6 +57,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     m_locIt = ci->locations().begin();
     m_phIt = ci->physicianNames().begin();
+    initPhysiciansContainer();
+    initLocationsContainer();
 
     setDefaultPhysician();
     setDefaultLocation();
