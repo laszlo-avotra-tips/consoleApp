@@ -139,7 +139,7 @@ void PreferencesDialog::setDefaultLocation()
 void PreferencesDialog::initPhysiciansContainer()
 {
     const auto& ci = CaseInformationModel::instance();
-    const auto& phns = ci->physicianNames();
+    const auto& names = ci->physicianNames();
 
 //    size_t i{0};
 //    for(const auto& label : m_physicianLabels){
@@ -150,12 +150,15 @@ void PreferencesDialog::initPhysiciansContainer()
 //        ++i;
 //    }
 
-    auto phnIt = m_phIt;
+    auto nameIt = m_phIt;
+    LOG1(*m_phIt)
     for(const auto& label : m_physicianLabels){
-        if(phnIt != phns.end()){
-            label->setText(*phnIt);
+        if(nameIt != names.end()){
+            const auto& name = *nameIt;
+            label->setText(name);
              m_physiciansContainer[label->text()] = label;
-            ++phnIt;
+            LOG1(name)
+             ++nameIt;
         }
     }
 }
