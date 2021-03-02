@@ -120,7 +120,7 @@ void CaseInfoDatabase::initCaseInfo()
 
     auto cim = CaseInformationModel::instance();
 
-    q.prepare( "SELECT name FROM Locations" );
+    q.prepare( "SELECT name FROM Locations ORDER BY name ASC" );
 
     q.exec();
     sqlerr = q.lastError();
@@ -143,7 +143,7 @@ void CaseInfoDatabase::initCaseInfo()
     }
     LOG2(numLocations, cim->locations().size());
 
-    q.prepare( "SELECT name FROM Physicians" );
+    q.prepare( "SELECT name FROM Physicians ORDER BY name ACS" );
 
     q.exec();
     sqlerr = q.lastError();

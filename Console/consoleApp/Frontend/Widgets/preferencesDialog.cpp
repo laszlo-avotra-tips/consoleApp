@@ -151,15 +151,17 @@ void PreferencesDialog::initPhysiciansContainer()
 //    }
 
     auto nameIt = m_phIt;
-    LOG1(*m_phIt)
+    LOG1(*m_phIt);
+    m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
     for(const auto& label : m_physicianLabels){
         if(nameIt != names.end()){
             const auto& name = *nameIt;
             label->setText(name);
              m_physiciansContainer[label->text()] = label;
-            LOG1(name)
+            LOG2(name,*m_phIt)
              ++nameIt;
         }
+        QThread::msleep(100);
     }
 }
 
