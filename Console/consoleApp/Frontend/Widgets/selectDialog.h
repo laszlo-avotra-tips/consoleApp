@@ -8,6 +8,7 @@
 #include <QString>
 
 #include <vector>
+#include <caseInformationModel.h>
 
 class QStringList;
 
@@ -40,7 +41,7 @@ private:
 
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
-    QStringList m_items;
+    PhysicianNameContainer m_items;
     QStringList m_itemsInView;
     QString m_selectedItem;
 };
