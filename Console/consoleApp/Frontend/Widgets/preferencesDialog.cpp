@@ -354,7 +354,7 @@ void PreferencesDialog::handleRemovePhysician()
 void PreferencesDialog::handlePhysicianUp()
 {
    auto cim = CaseInformationModel::instance();
-   const auto names = cim->physicianNames();
+   const auto& names = cim->physicianNames();
 
 //   auto numLabels = m_physicianLabels.size();
 
@@ -381,7 +381,7 @@ void PreferencesDialog::handlePhysicianUp()
 void PreferencesDialog::handlePhysicianDown()
 {
     auto cim = CaseInformationModel::instance();
-    const auto names = cim->physicianNames();
+    const auto& names = cim->physicianNames();
 //    if(m_physicianBase > 0){
 //        --m_physicianBase;
 //    }
