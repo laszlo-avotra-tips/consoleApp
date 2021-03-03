@@ -2,7 +2,6 @@
 #define PREFERENCESDIALOG_H
 
 #include <QDialog>
-#include <QLabel>
 
 #include <vector>
 
@@ -66,9 +65,8 @@ private:
     bool m_isCandidatePhysitian{false};
     bool m_isCandidateLocation{false};
 
-
-    QLabel* m_selectedPhysicianLabel{nullptr};
-    QLabel* m_selectedLocationLabel{nullptr};
+    ActiveLabel* m_selectedPhysicianLabel{nullptr};
+    ActiveLabel* m_selectedLocationLabel{nullptr};
 
     int m_physicianBase{0};
     int m_locationBase{0};

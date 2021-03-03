@@ -70,14 +70,14 @@ void PreferencesDialog::handleSelectedPhysician(const QString &name)
 {
     LOG1(name)
     for(auto& label : m_physicianLabels){
-        label->setStyleSheet("color: white");
+        label->unmark();
     }
 
     const auto& labelIt = m_physiciansContainer.find(name);
     if(labelIt != m_physiciansContainer.end()){
         m_selectedPhysicianLabel = labelIt->second;
         if(m_selectedPhysicianLabel){
-            m_selectedPhysicianLabel->setStyleSheet("color: rgb(245,196,0)");
+            m_selectedPhysicianLabel->mark();
         }
     }
     m_defaultPhysicianCandidate = name;
@@ -92,7 +92,7 @@ void PreferencesDialog::setDefaultPhysician()
     ui->labelDrDefault->setText(QString("Default: ") + m_defaultPhysicianCandidate);
     ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     if(m_selectedPhysicianLabel){
-        m_selectedPhysicianLabel->setStyleSheet("color: white");
+        m_selectedPhysicianLabel->unmark();
     }
     auto ci = CaseInformationModel::instance();
     ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
@@ -103,16 +103,14 @@ void PreferencesDialog::handleSelectedLocation(const QString &name)
 {
     LOG1(name)
     for(auto& label : m_locationLabels){
-        label->setStyleSheet("color: white");
+        label->unmark();
     }
 
     const auto& labelIt = m_locationsContainer.find(name);
     if(labelIt != m_locationsContainer.end()){
         m_selectedLocationLabel = labelIt->second;
-        QString yellowSt("color: rgb(245,196,0)");
         if(m_selectedLocationLabel){
-            LOG1(yellowSt)
-            m_selectedLocationLabel->setStyleSheet(yellowSt);
+            m_selectedLocationLabel->mark();
         }
     } else {
         LOG1(name);
@@ -129,7 +127,7 @@ void PreferencesDialog::setDefaultLocation()
     ui->labelLocationDefault->setText(QString("Default: ") + m_defaultLocationCandidate);
     ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     if(m_selectedLocationLabel){
-        m_selectedLocationLabel->setStyleSheet("color: white");
+        m_selectedLocationLabel->unmark();
     }
     auto ci = CaseInformationModel::instance();
     ci->setDefaultLocation(m_defaultLocationCandidate);
@@ -343,7 +341,7 @@ void PreferencesDialog::handleRemoveLocation()
     if(cim->removeLocation(name)){
         updateLocationLabels();
         for(auto& locationLabel : m_locationLabels){
-            locationLabel->setStyleSheet("color: white");
+            locationLabel->unmark();
         }
         ui->pushButtonAddLocation->setText("ADD");
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
@@ -362,7 +360,7 @@ void PreferencesDialog::handleRemovePhysician()
     if(cim->removePhysicianName(name)){
         updatePysicianLabels();
         for(auto& physicianLabel : m_physicianLabels){
-            physicianLabel->setStyleSheet("color: white");
+            physicianLabel->unmark();
         }
         ui->pushButtonAddPhysician->setText("ADD");
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");

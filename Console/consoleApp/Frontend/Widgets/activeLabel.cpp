@@ -12,3 +12,13 @@ void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
     emit labelSelected(name);
     LOG1(name);
 }
+
+void ActiveLabel::unmark()
+{
+    setStyleSheet("color: white");
+}
+
+void ActiveLabel::mark()
+{
+    setStyleSheet("color: rgb(245,196,0)");
+}
