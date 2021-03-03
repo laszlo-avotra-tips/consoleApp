@@ -136,6 +136,7 @@ void PreferencesDialog::handleSelectedPhysician(const QString &name)
 
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setText("REMOVE");
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::setDefaultPhysician()
@@ -166,6 +167,7 @@ void PreferencesDialog::handleSelectedLocation(const QString &name)
 
     ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddLocation->setText("REMOVE");
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::setDefaultLocation()
@@ -415,6 +417,7 @@ void PreferencesDialog::handlePhysicianUp()
         ++m_phIt;
         initPhysiciansContainer();
     }
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::handlePhysicianDown()
@@ -426,6 +429,7 @@ void PreferencesDialog::handlePhysicianDown()
         --m_phIt;
         initPhysiciansContainer();
     }
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::handleLocationUp()
