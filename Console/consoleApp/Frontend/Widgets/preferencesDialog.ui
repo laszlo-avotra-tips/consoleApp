@@ -151,7 +151,7 @@ border-radius: 10px;
      <string notr="true">background-color: rgb(245,196,0); color: black;</string>
     </property>
     <property name="text">
-     <string>+ ADD</string>
+     <string>ADD</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelLocations">
@@ -183,7 +183,7 @@ border-radius: 10px;
      <string notr="true">background-color: rgb(245,196,0); color: black;</string>
     </property>
     <property name="text">
-     <string>+ ADD</string>
+     <string>ADD</string>
     </property>
    </widget>
    <widget class="QFrame" name="frame_2">
@@ -589,25 +589,6 @@ font: 18pt;</string>
     </property>
    </widget>
   </widget>
-  <widget class="QLabel" name="labelPatientData">
-   <property name="geometry">
-    <rect>
-     <x>234</x>
-     <y>1049</y>
-     <width>419</width>
-     <height>84</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 22pt</string>
-   </property>
-   <property name="text">
-    <string>PATIENT DATA</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QLabel" name="labelSystemInformation">
    <property name="geometry">
     <rect>
@@ -626,156 +607,6 @@ font: 18pt;</string>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
-  </widget>
-  <widget class="QFrame" name="framePatientData">
-   <property name="geometry">
-    <rect>
-     <x>157</x>
-     <y>1161</y>
-     <width>573</width>
-     <height>464</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>573</width>
-     <height>464</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>573</width>
-     <height>464</height>
-    </size>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>73</number>
-    </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
-    <item>
-     <widget class="QPushButton" name="pushButtonBackup">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>570</width>
-        <height>60</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: white;
-font: 18pt;
-background-color: #262626</string>
-      </property>
-      <property name="text">
-       <string>BACKUP</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButtonBackup_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>570</width>
-        <height>60</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: white;
-font: 18pt;
-background-color: #262626</string>
-      </property>
-      <property name="text">
-       <string>RESTORE</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButtonBackup_3">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>570</width>
-        <height>60</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: white;
-font: 18pt;
-background-color: #262626</string>
-      </property>
-      <property name="text">
-       <string>REFRESH</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButtonBackup_4">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>570</width>
-        <height>60</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: white;
-font: 18pt;
-background-color: #262626</string>
-      </property>
-      <property name="text">
-       <string>DELETE</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
   </widget>
   <widget class="QFrame" name="frameTimeDate">
    <property name="geometry">
@@ -1055,29 +886,6 @@ background-color: #262626</string>
      </layout>
     </item>
    </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButtonDrDefault_2">
-   <property name="geometry">
-    <rect>
-     <x>999</x>
-     <y>1555</y>
-     <width>515</width>
-     <height>72</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: black;
-font: 18pt;</string>
-   </property>
-   <property name="text">
-    <string>SERVICE SETTINGS</string>
-   </property>
   </widget>
   <widget class="QFrame" name="frameSn">
    <property name="geometry">
