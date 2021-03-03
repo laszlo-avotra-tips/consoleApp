@@ -119,6 +119,18 @@ void PreferencesDialog::unmarkAll(std::vector<ActiveLabel*>& container)
     }
 }
 
+void PreferencesDialog::markCandidate(std::vector<ActiveLabel *> &cont, const QString &name)
+{
+    // for empty default - "" - all will be unmarked
+    for(auto& label : cont){
+        if(label->text() == name){
+            label->mark();
+        } else {
+            label->unmark();
+        }
+    }
+}
+
 
 void PreferencesDialog::handleSelectedPhysician(const QString &name)
 {
@@ -417,6 +429,7 @@ void PreferencesDialog::handlePhysicianUp()
         ++m_phIt;
         initPhysiciansContainer();
     }
+    markCandidate(m_physicianLabels, m_defaultPhysicianCandidate);
     LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
@@ -429,6 +442,7 @@ void PreferencesDialog::handlePhysicianDown()
         --m_phIt;
         initPhysiciansContainer();
     }
+    markCandidate(m_physicianLabels, m_defaultPhysicianCandidate);
     LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 

@@ -64,6 +64,7 @@ private:
     void updatePysicianLabels();
     void updateLocationLabels();
     void unmarkAll(std::vector<ActiveLabel*>& container);
+    void markCandidate(std::vector<ActiveLabel*>& cont, const QString& name);
 
 
     Ui::PreferencesDialog *ui;
