@@ -31,6 +31,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->labelLocation2, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation2);
     connect(ui->labelLocation3, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation3);
 
+    connect(ui->labelLocation1, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handleLocationUnmarked);
+    connect(ui->labelLocation2, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handleLocationUnmarked);
+    connect(ui->labelLocation3, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handleLocationUnmarked);
+
     connect(ui->pushButtonDrDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultPhysician);
     connect(ui->pushButtonLocationDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultLocation);
 
@@ -482,4 +486,10 @@ void PreferencesDialog::handlePhysicianUnmarked()
 {
     ui->pushButtonAddPhysician->setText("ADD");
     ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+}
+
+void PreferencesDialog::handleLocationUnmarked()
+{
+    ui->pushButtonAddLocation->setText("ADD");
+    ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
 }

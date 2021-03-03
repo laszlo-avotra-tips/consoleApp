@@ -53,6 +53,7 @@ private slots:
     void handleLocationDown();
 
     void handlePhysicianUnmarked();
+    void handleLocationUnmarked();
 private:
     void initPhysiciansContainer();
     void initLocationsContainer();
