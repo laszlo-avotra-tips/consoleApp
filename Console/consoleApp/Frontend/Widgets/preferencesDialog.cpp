@@ -208,10 +208,18 @@ void PreferencesDialog::persistPreferences()
     ciDb.initCaseInfo();
 
     QSqlQuery q;
-    q.prepare( QString("DELETE FROM Physicians"));
 
+    q.prepare( QString("DELETE FROM Physicians"));
     q.exec();
     QSqlError sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+
+    q.prepare( QString("DELETE FROM Locations"));
+    q.exec();
+    sqlerr = q.lastError();
     if(sqlerr.isValid()){
         const QString& errorMsg = sqlerr.databaseText();
         LOG1(errorMsg)

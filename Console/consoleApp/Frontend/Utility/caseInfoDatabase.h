@@ -3,6 +3,7 @@
 
 #include <QtSql>
 #include "caseInformationModel.h"
+#include <set>
 
 class CaseInfoDatabase
 {
@@ -15,7 +16,10 @@ public:
 
     const PhysicianNameContainer& physicians() const;
     const PhysicianNameContainer& locations() const;
+
     void initCaseInfo();
+    void updatePhysicianTable(const std::set<QString>& names);
+    void updateLocationTable(const std::set<QString>& names);
 
 private:
     QSqlError createTables();
