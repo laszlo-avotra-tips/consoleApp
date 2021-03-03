@@ -96,7 +96,7 @@ void PreferencesDialog::setDefaultPhysician()
     }
     auto ci = CaseInformationModel::instance();
     ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
-    ui->pushButtonAddPhysician->setText("+ADD");
+    ui->pushButtonAddPhysician->setText("ADD");
 }
 
 void PreferencesDialog::handleSelectedLocation(const QString &name)
@@ -133,7 +133,7 @@ void PreferencesDialog::setDefaultLocation()
     }
     auto ci = CaseInformationModel::instance();
     ci->setDefaultLocation(m_defaultLocationCandidate);
-    ui->pushButtonAddLocation->setText("+ADD");
+    ui->pushButtonAddLocation->setText("ADD");
 }
 
 void PreferencesDialog::initPhysiciansContainer()
@@ -257,7 +257,7 @@ void PreferencesDialog::persistPreferences()
 
 void PreferencesDialog::handleAddRemoveLocation()
 {
-    if(ui->pushButtonAddLocation->text() == "+ADD"){
+    if(ui->pushButtonAddLocation->text() == "ADD"){
         handleAddLocation();
     }else{
         handleRemoveLocation();
@@ -266,7 +266,7 @@ void PreferencesDialog::handleAddRemoveLocation()
 
 void PreferencesDialog::handleAddRemovePhysician()
 {
-    if(ui->pushButtonAddPhysician->text() == "+ADD"){
+    if(ui->pushButtonAddPhysician->text() == "ADD"){
         handleAddPhysician();
     }else{
         handleRemovePhysician();
@@ -277,7 +277,7 @@ void PreferencesDialog::handleAddRemovePhysician()
 void PreferencesDialog::handleAddLocation()
 {
 //    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
-    QString paramName("LOCATIONE");
+    QString paramName("LOCATION");
     QString paramValue("");
     const int keyboardY{height() / 2};
 
@@ -345,8 +345,11 @@ void PreferencesDialog::handleRemoveLocation()
         for(auto& ph : m_locationLabels){
             ph->setStyleSheet("color: white");
         }
-        ui->pushButtonAddLocation->setText("+ADD");
+        ui->pushButtonAddLocation->setText("ADD");
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+        if(cim->defaultLocation() == name){
+            ui->labelLocationDefault->setText("Default:");
+        }
     }
 }
 
@@ -361,8 +364,11 @@ void PreferencesDialog::handleRemovePhysician()
         for(auto& ph : m_physicianLabels){
             ph->setStyleSheet("color: white");
         }
-        ui->pushButtonAddPhysician->setText("+ADD");
+        ui->pushButtonAddPhysician->setText("ADD");
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+        if(cim->defaultPhysicianName() == name){
+            ui->labelDrDefault->setText("Default:");
+        }
     }
 }
 
