@@ -47,6 +47,7 @@ void CaseInformationModel::removePhysicianName(const QString &name)
         auto it = m_physicianNames.find(name);
         m_physicianNames.erase(it);
     }
+    LOG1(m_physicianNames.size());
 }
 
 QString CaseInformationModel::defaultLocation() const
