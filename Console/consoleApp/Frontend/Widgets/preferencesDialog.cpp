@@ -160,6 +160,7 @@ void PreferencesDialog::setDefaultPhysician()
     }
     auto ci = CaseInformationModel::instance();
     ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
+    m_defaultPhysicianCandidate = "";
     ui->pushButtonAddPhysician->setText("ADD");
 }
 
