@@ -345,6 +345,8 @@ void PreferencesDialog::handleRemoveLocation()
         for(auto& ph : m_locationLabels){
             ph->setStyleSheet("color: white");
         }
+        ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+        ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     }
 }
 
@@ -359,6 +361,8 @@ void PreferencesDialog::handleRemovePhysician()
         for(auto& ph : m_physicianLabels){
             ph->setStyleSheet("color: white");
         }
+        ui->pushButtonAddPhysician ->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+        ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     }
 }
 
