@@ -11,8 +11,10 @@ void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
     const auto& name = text();
     if(!isMarked()){
         mark();
+        emit labelItemMarked(this);
      } else {
         unmark();
+        emit labelItemUnmarked();
     }
     LOG1(name);
 }
@@ -21,7 +23,6 @@ void ActiveLabel::unmark()
 {
     m_isMarked = false;
     setStyleSheet("color: white");
-    emit labelItemUnmarked();
 }
 
 bool ActiveLabel::isMarked() const
@@ -38,5 +39,4 @@ void ActiveLabel::mark()
 {
     m_isMarked = true;
     setStyleSheet("color: rgb(245,196,0)");
-    emit labelItemMarked(this);
 }
