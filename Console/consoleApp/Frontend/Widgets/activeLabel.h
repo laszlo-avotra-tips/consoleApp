@@ -17,7 +17,8 @@ public:
     void setIsMarked(bool isMarked);
 
 signals:
-    void labelItemSelected(ActiveLabel* label);
+    void labelItemMarked(ActiveLabel* label);
+    void labelItemUnmarked();
 
 private:
     bool m_isMarked{false};

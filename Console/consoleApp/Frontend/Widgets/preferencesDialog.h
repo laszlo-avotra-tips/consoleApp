@@ -51,12 +51,15 @@ private slots:
 
     void handleLocationUp();
     void handleLocationDown();
+
+    void handlePhysicianUnmarked();
 private:
     void initPhysiciansContainer();
     void initLocationsContainer();
     void updatePysicianLabels();
     void updateLocationLabels();
     void unmarkAll(std::vector<ActiveLabel*>& container);
+
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;

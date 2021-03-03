@@ -19,13 +19,17 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     setWindowFlags(Qt::SplashScreen);
 
-    connect(ui->labelDr1, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr1);
-    connect(ui->labelDr2, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr2);
-    connect(ui->labelDr3, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr3);
+    connect(ui->labelDr1, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLabelDr1);
+    connect(ui->labelDr2, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLabelDr2);
+    connect(ui->labelDr3, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLabelDr3);
 
-    connect(ui->labelLocation1, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLocation1);
-    connect(ui->labelLocation2, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLocation2);
-    connect(ui->labelLocation3, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLocation3);
+    connect(ui->labelDr1, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handlePhysicianUnmarked);
+    connect(ui->labelDr2, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handlePhysicianUnmarked);
+    connect(ui->labelDr3, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handlePhysicianUnmarked);
+
+    connect(ui->labelLocation1, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation1);
+    connect(ui->labelLocation2, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation2);
+    connect(ui->labelLocation3, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation3);
 
     connect(ui->pushButtonDrDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultPhysician);
     connect(ui->pushButtonLocationDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultLocation);
@@ -472,4 +476,10 @@ void PreferencesDialog::handleLocationDown()
         LOG1(*m_locIt);
         initLocationsContainer();
     }
+}
+
+void PreferencesDialog::handlePhysicianUnmarked()
+{
+    ui->pushButtonAddPhysician->setText("ADD");
+    ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
 }
