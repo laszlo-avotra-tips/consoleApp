@@ -342,8 +342,8 @@ void PreferencesDialog::handleRemoveLocation()
     auto cim = CaseInformationModel::instance();
     if(cim->removeLocation(name)){
         updateLocationLabels();
-        for(auto& ph : m_locationLabels){
-            ph->setStyleSheet("color: white");
+        for(auto& locationLabel : m_locationLabels){
+            locationLabel->setStyleSheet("color: white");
         }
         ui->pushButtonAddLocation->setText("ADD");
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
@@ -361,8 +361,8 @@ void PreferencesDialog::handleRemovePhysician()
     auto cim = CaseInformationModel::instance();
     if(cim->removePhysicianName(name)){
         updatePysicianLabels();
-        for(auto& ph : m_physicianLabels){
-            ph->setStyleSheet("color: white");
+        for(auto& physicianLabel : m_physicianLabels){
+            physicianLabel->setStyleSheet("color: white");
         }
         ui->pushButtonAddPhysician->setText("ADD");
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");

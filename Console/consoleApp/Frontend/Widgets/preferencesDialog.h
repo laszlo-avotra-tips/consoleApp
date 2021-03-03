@@ -9,7 +9,7 @@
 #include "activeLabel.h"
 #include "Utility/caseInfoDatabase.h"
 
-using LabelContainer = std::map<QString, QLabel*>;
+using LabelContainer = std::map<QString, ActiveLabel*>;
 
 namespace Ui {
 class PreferencesDialog;
@@ -54,11 +54,18 @@ private:
     LabelContainer m_physiciansContainer;
     LabelContainer m_locationsContainer;
 
-    std::vector<QLabel*> m_physicianLabels;
-    std::vector<QLabel*> m_locationLabels;
+    std::vector<ActiveLabel*> m_physicianLabels;
+    std::vector<ActiveLabel*> m_locationLabels;
 
     QString m_defaultPhysicianCandidate;
     QString m_defaultLocationCandidate;
+
+    QString m_highlightedPhysician;
+    QString m_highlightedLocation;
+
+    bool m_isCandidatePhysitian{false};
+    bool m_isCandidateLocation{false};
+
 
     QLabel* m_selectedPhysicianLabel{nullptr};
     QLabel* m_selectedLocationLabel{nullptr};
