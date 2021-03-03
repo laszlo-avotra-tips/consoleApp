@@ -19,17 +19,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     setWindowFlags(Qt::SplashScreen);
 
-//    connect(ui->labelDr1, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
-//    connect(ui->labelDr2, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
-//    connect(ui->labelDr3, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
-
     connect(ui->labelDr1, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr1);
     connect(ui->labelDr2, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr2);
     connect(ui->labelDr3, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr3);
 
-    connect(ui->labelLocation1, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
-    connect(ui->labelLocation2, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
-    connect(ui->labelLocation3, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
+    connect(ui->labelLocation1, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLocation1);
+    connect(ui->labelLocation2, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLocation2);
+    connect(ui->labelLocation3, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLocation3);
 
     connect(ui->pushButtonDrDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultPhysician);
     connect(ui->pushButtonLocationDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultLocation);
@@ -91,12 +87,42 @@ void PreferencesDialog::handleLabelDr3(ActiveLabel* label)
     handleSelectedPhysician(name);
 }
 
-void PreferencesDialog::handleSelectedPhysician(const QString &name)
+void PreferencesDialog::handleLocation1(ActiveLabel *label)
 {
-    LOG1(name)
-    for(auto& label : m_physicianLabels){
+    const auto& name = label->text();
+    LOG1(name);
+    handleSelectedLocation(name);
+}
+
+void PreferencesDialog::handleLocation2(ActiveLabel *label)
+{
+    const auto& name = label->text();
+    LOG1(name);
+    handleSelectedLocation(name);
+}
+
+void PreferencesDialog::handleLocation3(ActiveLabel *label)
+{
+    const auto& name = label->text();
+    LOG1(name);
+    handleSelectedLocation(name);
+}
+
+void PreferencesDialog::unmarkAll(std::vector<ActiveLabel*>& container)
+{
+    for(auto& label : container){
         label->unmark();
     }
+}
+
+
+void PreferencesDialog::handleSelectedPhysician(const QString &name)
+{
+    LOG1(name);
+//    for(auto& label : m_physicianLabels){
+//        label->unmark();
+//    }
+    unmarkAll(m_physicianLabels);
 
     const auto& labelIt = m_physiciansContainer.find(name);
     if(labelIt != m_physiciansContainer.end()){
@@ -127,9 +153,10 @@ void PreferencesDialog::setDefaultPhysician()
 void PreferencesDialog::handleSelectedLocation(const QString &name)
 {
     LOG1(name)
-    for(auto& label : m_locationLabels){
-        label->unmark();
-    }
+//    for(auto& label : m_locationLabels){
+//        label->unmark();
+//    }
+    unmarkAll(m_locationLabels);
 
     const auto& labelIt = m_locationsContainer.find(name);
     if(labelIt != m_locationsContainer.end()){
@@ -365,9 +392,10 @@ void PreferencesDialog::handleRemoveLocation()
     auto cim = CaseInformationModel::instance();
     if(cim->removeLocation(name)){
         updateLocationLabels();
-        for(auto& locationLabel : m_locationLabels){
-            locationLabel->unmark();
-        }
+//        for(auto& locationLabel : m_locationLabels){
+//            locationLabel->unmark();
+//        }
+        unmarkAll(m_locationLabels);
         ui->pushButtonAddLocation->setText("ADD");
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
         if(cim->defaultLocation() == name){
@@ -384,9 +412,10 @@ void PreferencesDialog::handleRemovePhysician()
     auto cim = CaseInformationModel::instance();
     if(cim->removePhysicianName(name)){
         updatePysicianLabels();
-        for(auto& physicianLabel : m_physicianLabels){
-            physicianLabel->unmark();
-        }
+//        for(auto& physicianLabel : m_physicianLabels){
+//            physicianLabel->unmark();
+//        }
+        unmarkAll(m_physicianLabels);
         ui->pushButtonAddPhysician->setText("ADD");
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
         if(cim->defaultPhysicianName() == name){

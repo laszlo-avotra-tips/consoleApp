@@ -27,9 +27,9 @@ private slots:
     void handleLabelDr2(ActiveLabel* label);
     void handleLabelDr3(ActiveLabel* label);
 
-//    void handleLocation1();
-//    void handleLocation2();
-//    void handleLocation3();
+    void handleLocation1(ActiveLabel* label);
+    void handleLocation2(ActiveLabel* label);
+    void handleLocation3(ActiveLabel* label);
 
     void handleSelectedPhysician(const QString &name);
     void handleSelectedLocation(const QString &name);
@@ -56,6 +56,7 @@ private:
     void initLocationsContainer();
     void updatePysicianLabels();
     void updateLocationLabels();
+    void unmarkAll(std::vector<ActiveLabel*>& container);
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;
