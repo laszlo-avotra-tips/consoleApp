@@ -48,42 +48,50 @@ bool CaseInformationModel::removePhysicianName(const QString &name)
     if(name != m_selectedPhysicianName){
         size = m_physicianNames.erase(name);
         success = true;
-        QSqlError sqlerr;
+        const bool isOld(false);
+        if(isOld){
+            QSqlError sqlerr;
 
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-        const QString m_dbName{"C:/Avinger_Data/caseInfo.db"};
-        db.setDatabaseName( m_dbName );
+            QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+            const QString m_dbName{"C:/Avinger_Data/caseInfo.db"};
+            db.setDatabaseName( m_dbName );
 
-        if( !db.open() )
-        {
-            sqlerr =  db.lastError();
-            const QString& errorMsg = sqlerr.databaseText();
-            LOG1(errorMsg)
-        }
-        QSqlQuery q;
-        q.prepare( QString("DELETE FROM Physicians"));
-
-        q.exec();
-        sqlerr = q.lastError();
-        if(sqlerr.isValid()){
-            const QString& errorMsg = sqlerr.databaseText();
-            LOG1(errorMsg)
-        }
-
-        const auto& ci = CaseInformationModel::instance();
-        for(const auto& name : ci->physicianNames()){
-            //ciDb.addPhysician(physician);
-            q.prepare( QString("INSERT INTO Physicians (name)"
-                       "VALUES (?)") );
-            LOG1(name)
-            q.addBindValue( name );
+            if( !db.open() )
+            {
+                sqlerr =  db.lastError();
+                const QString& errorMsg = sqlerr.databaseText();
+                LOG1(errorMsg)
+            }
+            QSqlQuery q;
+            q.prepare( QString("DELETE FROM Physicians"));
 
             q.exec();
             sqlerr = q.lastError();
             if(sqlerr.isValid()){
                 const QString& errorMsg = sqlerr.databaseText();
                 LOG1(errorMsg)
-             }
+            }
+
+            const auto& ci = CaseInformationModel::instance();
+            for(const auto& name : ci->physicianNames()){
+                //ciDb.addPhysician(physician);
+                q.prepare( QString("INSERT INTO Physicians (name)"
+                           "VALUES (?)") );
+                LOG1(name)
+                q.addBindValue( name );
+
+                q.exec();
+                sqlerr = q.lastError();
+                if(sqlerr.isValid()){
+                    const QString& errorMsg = sqlerr.databaseText();
+                    LOG1(errorMsg)
+                 }
+            }
+        } else{
+            CaseInfoDatabase ciDb;
+            const auto& ci = CaseInformationModel::instance();
+            const auto& names = ci->physicianNames();
+            ciDb.updatePhysicianTable(names);
         }
     }
     LOG2(m_physicianNames.size(), size);

@@ -168,3 +168,31 @@ void CaseInfoDatabase::initCaseInfo()
     LOG2(numLocations, cim->physicianNames().size());
     cim->initDefaults();
 }
+
+void CaseInfoDatabase::updatePhysicianTable(const std::set<QString> &names)
+{
+    QSqlError sqlerr;
+    QSqlQuery q;
+    q.prepare( QString("DELETE FROM Physicians"));
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+    for(const auto& name : names){
+        //ciDb.addPhysician(physician);
+        q.prepare( QString("INSERT INTO Physicians (name)"
+                   "VALUES (?)") );
+        LOG1(name)
+        q.addBindValue( name );
+
+        q.exec();
+        sqlerr = q.lastError();
+        if(sqlerr.isValid()){
+            const QString& errorMsg = sqlerr.databaseText();
+            LOG1(errorMsg)
+         }
+    }
+}
