@@ -164,12 +164,6 @@ public:
 
     QDate getServiceDate() const;
 
-    QStringList getPhysicians() const;
-    void setPhysicians(const QStringList &doctors);
-
-    QStringList getLocations() const;
-    void setLocations(const QStringList &locations);
-
     float getImagingDepth_mm() const;
 
     int getALineLength_px() const;
@@ -222,8 +216,6 @@ private:
 
     int  recordingDurationMin;
     QDate m_serviceDate;
-    QStringList m_physicians;
-    QStringList m_locations;
     QString m_physician;
     QString m_location;
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
