@@ -432,7 +432,7 @@ void PreferencesDialog::handlePhysicianUp()
         initPhysiciansContainer();
     }
     markCandidate(m_physicianLabels, m_defaultPhysicianCandidate);
-    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
+//    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::handlePhysicianDown()
@@ -445,7 +445,7 @@ void PreferencesDialog::handlePhysicianDown()
         initPhysiciansContainer();
     }
     markCandidate(m_physicianLabels, m_defaultPhysicianCandidate);
-    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
+//    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::handleLocationUp()
