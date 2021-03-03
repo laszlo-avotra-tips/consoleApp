@@ -16,7 +16,6 @@ void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
         unmark();
         emit labelItemUnmarked();
     }
-    LOG1(name);
 }
 
 void ActiveLabel::unmark()

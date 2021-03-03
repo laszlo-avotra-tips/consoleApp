@@ -16,7 +16,6 @@ CaseInformationModel::CaseInformationModel()
 void CaseInformationModel::initDefaults()
 {
     const auto& settings = userSettings::Instance();
-    LOG2(m_physicianNames.size(), m_locations.size())
     const auto& defaultPhysicianName = settings.getPhysician();
     auto itPhn = std::find(m_physicianNames.begin(), m_physicianNames.end(), defaultPhysicianName);
     if(itPhn != m_physicianNames.end())
@@ -53,7 +52,6 @@ bool CaseInformationModel::removePhysicianName(const QString &name)
         const auto& names = ci->physicianNames();
         ciDb.updatePhysicianTable(names);
     }
-    LOG2(m_physicianNames.size(), size);
     return success;
 }
 
@@ -69,7 +67,6 @@ bool CaseInformationModel::removeLocation(const QString &name)
         const auto& names = ci->locations();
         ciDb.updateLocationTable(names);
     }
-    LOG2(m_physicianNames.size(), size);
     return success;
 }
 

@@ -68,7 +68,6 @@ int CaseInfoDatabase::addPhysician(const QString &name)
 
     q.prepare( QString("INSERT INTO Physicians (name)"
                "VALUES (?)") );
-    LOG1(name)
     q.addBindValue( name );
 
     q.exec();
@@ -89,7 +88,6 @@ int CaseInfoDatabase::addLocation(const QString &name)
 
     q.prepare( QString("INSERT INTO Locations (name)"
                "VALUES (?)") );
-    LOG1(name)
     q.addBindValue( name );
 
     q.exec();
@@ -130,19 +128,14 @@ void CaseInfoDatabase::initCaseInfo()
         LOG1(errorMsg)
     }
     QSqlRecord record = q.record();
-    LOG1(record.count());
 
     int numLocations{0};
-    LOG1(record.value(0).toString());
-    LOG1(record.indexOf("name"));
     while(q.next()){
         ++numLocations;
         record = q.record();
         const auto& location = (record.value(0).toString());
-        LOG1(location);
         cim->addLocation(location);
     }
-    LOG2(numLocations, cim->locations().size());
 
     q.prepare( "SELECT name FROM Physicians ORDER BY name ASC" );
 
@@ -153,19 +146,14 @@ void CaseInfoDatabase::initCaseInfo()
         LOG1(errorMsg)
     }
     record = q.record();
-    LOG1(record.count());
 
     int numPhysicians{0};
-    LOG1(record.value(0).toString());
-    LOG1(record.indexOf("name"));
     while(q.next()){
         ++numPhysicians;
         record = q.record();
         const auto& physician = (record.value(0).toString());
-        LOG1(physician);
         cim->addPhysicianName(physician);
     }
-    LOG2(numLocations, cim->physicianNames().size());
     cim->initDefaults();
 }
 
@@ -184,7 +172,6 @@ void CaseInfoDatabase::updatePhysicianTable(const std::set<QString> &names)
     for(const auto& name : names){
         q.prepare( QString("INSERT INTO Physicians (name)"
                    "VALUES (?)") );
-        LOG1(name)
         q.addBindValue( name );
 
         q.exec();
@@ -212,7 +199,6 @@ void CaseInfoDatabase::updateLocationTable(const std::set<QString> &names)
         //ciDb.addPhysician(physician);
         q.prepare( QString("INSERT INTO Locations (name)"
                    "VALUES (?)") );
-        LOG1(name)
         q.addBindValue( name );
 
         q.exec();

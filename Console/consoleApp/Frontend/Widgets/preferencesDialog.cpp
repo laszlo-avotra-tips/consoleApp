@@ -77,42 +77,36 @@ PreferencesDialog::~PreferencesDialog()
 void PreferencesDialog::handleLabelDr1(ActiveLabel *label)
 {
     const auto& name = label->text();
-    LOG1(name);
     handleSelectedPhysician(name);
 }
 
 void PreferencesDialog::handleLabelDr2(ActiveLabel* label)
 {
     const auto& name = label->text();
-    LOG1(name);
     handleSelectedPhysician(name);
 }
 
 void PreferencesDialog::handleLabelDr3(ActiveLabel* label)
 {
     const auto& name = label->text();
-    LOG1(name);
     handleSelectedPhysician(name);
 }
 
 void PreferencesDialog::handleLocation1(ActiveLabel *label)
 {
     const auto& name = label->text();
-    LOG1(name);
     handleSelectedLocation(name);
 }
 
 void PreferencesDialog::handleLocation2(ActiveLabel *label)
 {
     const auto& name = label->text();
-    LOG1(name);
     handleSelectedLocation(name);
 }
 
 void PreferencesDialog::handleLocation3(ActiveLabel *label)
 {
     const auto& name = label->text();
-    LOG1(name);
     handleSelectedLocation(name);
 }
 
@@ -126,7 +120,6 @@ void PreferencesDialog::unmarkAll(std::vector<ActiveLabel*>& container)
 
 void PreferencesDialog::handleSelectedPhysician(const QString &name)
 {
-    LOG1(name);
     unmarkAll(m_physicianLabels);
 
     const auto& labelIt = m_physiciansContainer.find(name);
@@ -157,7 +150,6 @@ void PreferencesDialog::setDefaultPhysician()
 
 void PreferencesDialog::handleSelectedLocation(const QString &name)
 {
-    LOG1(name)
     unmarkAll(m_locationLabels);
 
     const auto& labelIt = m_locationsContainer.find(name);
@@ -166,8 +158,6 @@ void PreferencesDialog::handleSelectedLocation(const QString &name)
         if(m_selectedLocationLabel){
             m_selectedLocationLabel->mark();
         }
-    } else {
-        LOG1(name);
     }
     m_defaultLocationCandidate = name;
     ui->pushButtonLocationDefault->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
@@ -194,15 +184,13 @@ void PreferencesDialog::initPhysiciansContainer()
     const auto& names = ci->physicianNames();
 
     auto nameIt = m_phIt;
-    if(m_phIt != names.end()) LOG1(*m_phIt);
     m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
     for(const auto& label : m_physicianLabels){
         if(nameIt != names.end()){
             const auto& name = *nameIt;
             label->setText(name);
-             m_physiciansContainer[label->text()] = label;
-            LOG2(name,*m_phIt)
-             ++nameIt;
+            m_physiciansContainer[label->text()] = label;
+            ++nameIt;
         }
     }
 }
@@ -213,15 +201,13 @@ void PreferencesDialog::initLocationsContainer()
     const auto& names = ci->locations();
 
     auto nameIt = m_locIt;
-    if(m_locIt != names.end()) LOG1(*m_locIt);
     m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
     for(const auto& label : m_locationLabels){
         if(nameIt != names.end()){
             const auto& name = *nameIt;
             label->setText(name);
-             m_locationsContainer[label->text()] = label;
-            LOG2(name,*m_locIt)
-             ++nameIt;
+            m_locationsContainer[label->text()] = label;
+            ++nameIt;
         }
     }
 }
@@ -240,7 +226,6 @@ void PreferencesDialog::updatePysicianLabels()
             label->setText(name);
              m_physiciansContainer[name] = label;
              ++nameIt;
-             LOG1(name)
         }
     }
 }
@@ -259,7 +244,6 @@ void PreferencesDialog::updateLocationLabels()
             label->setText(name);
              m_locationsContainer[name] = label;
              ++nameIt;
-             LOG1(name)
         }
     }
 }
@@ -271,7 +255,7 @@ void PreferencesDialog::persistPreferences()
 
     const auto& loc = ci->defaultLocation();
     const auto& pn = ci->defaultPhysicianName();
-    LOG2(loc, pn);
+
     settings.setLocation(loc);
     settings.setPhysician(pn);
 
@@ -295,8 +279,6 @@ void PreferencesDialog::persistPreferences()
         const QString& errorMsg = sqlerr.databaseText();
         LOG1(errorMsg)
     }
-
-    LOG2(ci->physicianNames().size(), ci->locations().size())
 
     for(const auto& physician : ci->physicianNames()){
         ciDb.addPhysician(physician);
@@ -347,7 +329,6 @@ void PreferencesDialog::handleAddLocation()
      * code execution continues here once the keyboard is closed
      * update selected physician name with newName
      */
-    LOG1(newName);
 
     if(!newName.isEmpty()){
         auto cim = CaseInformationModel::instance();
@@ -377,7 +358,6 @@ void PreferencesDialog::handleAddPhysician()
      * code execution continues here once the keyboard is closed
      * update selected physician name with newName
      */
-    LOG1(newName);
 
     if(!newName.isEmpty()){
         auto cim = CaseInformationModel::instance();
@@ -389,7 +369,6 @@ void PreferencesDialog::handleAddPhysician()
 void PreferencesDialog::handleRemoveLocation()
 {
     const auto& name = m_selectedLocationLabel->text();
-    LOG1(name);
 
     auto cim = CaseInformationModel::instance();
     if(cim->removeLocation(name)){
@@ -406,7 +385,6 @@ void PreferencesDialog::handleRemoveLocation()
 void PreferencesDialog::handleRemovePhysician()
 {
     const auto& name = m_selectedPhysicianLabel->text();
-    LOG1(name);
 
     auto cim = CaseInformationModel::instance();
     if(cim->removePhysicianName(name)){
