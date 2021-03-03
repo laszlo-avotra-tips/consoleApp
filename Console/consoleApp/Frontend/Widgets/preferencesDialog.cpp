@@ -464,12 +464,14 @@ void PreferencesDialog::handlePhysicianUnmarked()
 {
     ui->pushButtonAddPhysician->setText("ADD");
     ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+    m_defaultPhysicianCandidate = "";
 }
 
 void PreferencesDialog::handleLocationUnmarked()
 {
     ui->pushButtonAddLocation->setText("ADD");
     ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+    m_defaultLocationCandidate = "";
 }
 
 void PreferencesDialog::showEvent(QShowEvent *se)
