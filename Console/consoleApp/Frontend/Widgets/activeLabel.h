@@ -13,8 +13,15 @@ public:
     void mark();
     void unmark();
 
+    bool isSelected() const;
+    void setIsSelected(bool isSelected);
+
 signals:
     void labelSelected(const QString& name);
+    void labelItemSelected(ActiveLabel* label);
+
+private:
+    bool m_isSelected{false};
 
 };
 

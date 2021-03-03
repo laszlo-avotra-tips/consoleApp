@@ -10,12 +10,23 @@ void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
 {
     const auto& name = text();
     emit labelSelected(name);
+    emit labelItemSelected(this);
     LOG1(name);
 }
 
 void ActiveLabel::unmark()
 {
     setStyleSheet("color: white");
+}
+
+bool ActiveLabel::isSelected() const
+{
+    return m_isSelected;
+}
+
+void ActiveLabel::setIsSelected(bool isSelected)
+{
+    m_isSelected = isSelected;
 }
 
 void ActiveLabel::mark()

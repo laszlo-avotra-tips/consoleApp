@@ -23,6 +23,14 @@ public:
     ~PreferencesDialog();
 
 private slots:
+    void handleLabelDr1(ActiveLabel* label);
+    void handleLabelDr2(ActiveLabel* label);
+    void handleLabelDr3(ActiveLabel* label);
+
+    void handleLocation1();
+    void handleLocation2();
+    void handleLocation3();
+
     void handleSelectedPhysician(const QString &name);
     void handleSelectedLocation(const QString &name);
 

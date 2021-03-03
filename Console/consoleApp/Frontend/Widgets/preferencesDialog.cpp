@@ -19,9 +19,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     setWindowFlags(Qt::SplashScreen);
 
-    connect(ui->labelDr1, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
-    connect(ui->labelDr2, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
-    connect(ui->labelDr3, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
+//    connect(ui->labelDr1, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
+//    connect(ui->labelDr2, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
+//    connect(ui->labelDr3, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
+
+    connect(ui->labelDr1, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr1);
+    connect(ui->labelDr2, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr2);
+    connect(ui->labelDr3, &ActiveLabel::labelItemSelected, this, &PreferencesDialog::handleLabelDr3);
 
     connect(ui->labelLocation1, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
     connect(ui->labelLocation2, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
@@ -64,6 +68,27 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 PreferencesDialog::~PreferencesDialog()
 {
     delete ui;
+}
+
+void PreferencesDialog::handleLabelDr1(ActiveLabel *label)
+{
+    const auto& name = label->text();
+    LOG1(name);
+    handleSelectedPhysician(name);
+}
+
+void PreferencesDialog::handleLabelDr2(ActiveLabel* label)
+{
+    const auto& name = label->text();
+    LOG1(name);
+    handleSelectedPhysician(name);
+}
+
+void PreferencesDialog::handleLabelDr3(ActiveLabel* label)
+{
+    const auto& name = label->text();
+    LOG1(name);
+    handleSelectedPhysician(name);
 }
 
 void PreferencesDialog::handleSelectedPhysician(const QString &name)
