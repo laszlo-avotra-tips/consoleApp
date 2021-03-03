@@ -3,26 +3,37 @@
 
 CaseInfoDatabase::CaseInfoDatabase()
 {
+    m_db = QSqlDatabase::addDatabase("QSQLITE");
+    m_db.setDatabaseName( m_dbName );
 
+    if( !m_db.open() )
+    {
+        QSqlError sqlerr =  m_db.lastError();
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
 }
 
-QSqlError CaseInfoDatabase::initDb()
+CaseInfoDatabase::~CaseInfoDatabase()
+{
+    if(m_db.open()){
+        m_db.close();
+    }
+}
+
+void CaseInfoDatabase::initDb()
+{
+    createTables();
+    initCaseInfo();
+}
+
+QSqlError CaseInfoDatabase::createTables()
 {
     QSqlError sqlerr;
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName( m_dbName );
-
-    if( !db.open() )
-    {
-        sqlerr =  db.lastError();
-        const QString& errorMsg = sqlerr.databaseText();
-        LOG1(errorMsg)
-        return sqlerr;
-    }
     // Setup the database only in the case
     // that the tables don't already exist
-    QStringList tables = db.tables();
+    QStringList tables = m_db.tables();
 
     // Set up the schema Pysician table
     if( !tables.contains( "Physicians", Qt::CaseSensitive ) )
@@ -52,11 +63,6 @@ QSqlError CaseInfoDatabase::initDb()
             return sqlerr;
         }
     }
-
-    LOG1(sqlerr.databaseText());
-
-    initCaseInfo();
-
     return sqlerr;
 }
 

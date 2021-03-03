@@ -85,7 +85,6 @@ bool CaseInformationModel::removePhysicianName(const QString &name)
                 LOG1(errorMsg)
              }
         }
-
     }
     LOG2(m_physicianNames.size(), size);
     return success;

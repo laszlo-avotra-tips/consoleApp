@@ -8,7 +8,9 @@ class CaseInfoDatabase
 {
 public:
     CaseInfoDatabase();
-    QSqlError initDb(void);
+    ~CaseInfoDatabase();
+
+    void initDb(void);
     int addPhysician(const QString& name);
     int addLocation(const QString& name);
 
@@ -16,9 +18,12 @@ public:
     const PhysicianNameContainer& locations() const;
 
 private:
+    QSqlError createTables();
     void initCaseInfo();
 
     const QString m_dbName{"C:/Avinger_Data/caseInfo.db"};
+    QSqlDatabase m_db;
+
     PhysicianNameContainer m_physicians;
     PhysicianNameContainer m_locations;
 };
