@@ -57,6 +57,22 @@ bool CaseInformationModel::removePhysicianName(const QString &name)
     return success;
 }
 
+bool CaseInformationModel::removeLocation(const QString &name)
+{
+    bool success{false};
+    size_t size{};
+    if(name != m_selectedLocation){
+        size = m_locations.erase(name);
+        success = true;
+        CaseInfoDatabase ciDb;
+        const auto& ci = CaseInformationModel::instance();
+        const auto& names = ci->locations();
+        ciDb.updateLocationTable(names);
+    }
+    LOG2(m_physicianNames.size(), size);
+    return success;
+}
+
 QString CaseInformationModel::defaultLocation() const
 {
     return m_defaultLocation;

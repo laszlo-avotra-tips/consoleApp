@@ -182,8 +182,35 @@ void CaseInfoDatabase::updatePhysicianTable(const std::set<QString> &names)
         LOG1(errorMsg)
     }
     for(const auto& name : names){
-        //ciDb.addPhysician(physician);
         q.prepare( QString("INSERT INTO Physicians (name)"
+                   "VALUES (?)") );
+        LOG1(name)
+        q.addBindValue( name );
+
+        q.exec();
+        sqlerr = q.lastError();
+        if(sqlerr.isValid()){
+            const QString& errorMsg = sqlerr.databaseText();
+            LOG1(errorMsg)
+         }
+    }
+}
+
+void CaseInfoDatabase::updateLocationTable(const std::set<QString> &names)
+{
+    QSqlError sqlerr;
+    QSqlQuery q;
+    q.prepare( QString("DELETE FROM Locations"));
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+    for(const auto& name : names){
+        //ciDb.addPhysician(physician);
+        q.prepare( QString("INSERT INTO Locations (name)"
                    "VALUES (?)") );
         LOG1(name)
         q.addBindValue( name );

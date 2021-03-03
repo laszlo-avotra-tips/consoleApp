@@ -48,6 +48,7 @@ private:
     void initPhysiciansContainer();
     void initLocationsContainer();
     void updatePysicianLabels();
+    void updateLocationLabels();
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;

@@ -193,6 +193,25 @@ void PreferencesDialog::updatePysicianLabels()
     }
 }
 
+void PreferencesDialog::updateLocationLabels()
+{
+    const auto& ci = CaseInformationModel::instance();
+    const auto& names = ci->locations();
+
+    auto nameIt = names.begin();
+    m_locIt = names.begin();
+
+    for(const auto& label : m_locationLabels){
+        if(nameIt != names.end()){
+            const auto& name = *nameIt;
+            label->setText(name);
+             m_locationsContainer[name] = label;
+             ++nameIt;
+             LOG1(name)
+        }
+    }
+}
+
 void PreferencesDialog::persistPreferences()
 {
     auto& settings = userSettings::Instance();
@@ -317,12 +336,21 @@ void PreferencesDialog::handleAddPhysician()
 
 void PreferencesDialog::handleRemoveLocation()
 {
-    LOG1(m_selectedLocationLabel->text())
+    const auto& name = m_selectedLocationLabel->text();
+    LOG1(name);
+
+    auto cim = CaseInformationModel::instance();
+    if(cim->removeLocation(name)){
+        updateLocationLabels();
+        for(auto& ph : m_locationLabels){
+            ph->setStyleSheet("color: white");
+        }
+    }
 }
 
 void PreferencesDialog::handleRemovePhysician()
 {
-    auto name = m_selectedPhysicianLabel->text();
+    const auto& name = m_selectedPhysicianLabel->text();
     LOG1(name);
 
     auto cim = CaseInformationModel::instance();
