@@ -192,6 +192,7 @@ void PreferencesDialog::setDefaultLocation()
     }
     auto ci = CaseInformationModel::instance();
     ci->setDefaultLocation(m_defaultLocationCandidate);
+    m_defaultLocationCandidate = "";
     ui->pushButtonAddLocation->setText("ADD");
 }
 
@@ -462,6 +463,7 @@ void PreferencesDialog::handleLocationUp()
         ++m_locIt;
         initLocationsContainer();
     }
+    markCandidate(m_locationLabels, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::handleLocationDown()
@@ -473,6 +475,7 @@ void PreferencesDialog::handleLocationDown()
         --m_locIt;
         initLocationsContainer();
     }
+    markCandidate(m_locationLabels, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::handlePhysicianUnmarked()
