@@ -407,12 +407,10 @@ void PreferencesDialog::handlePhysicianUp()
     int i=0;
     while((i < 3) && (maxBaseIt != names.begin())){
         --maxBaseIt;
-        LOG1(*maxBaseIt);
         ++i;
     }
     if(m_phIt != maxBaseIt){
         ++m_phIt;
-        LOG1(*m_phIt);
         initPhysiciansContainer();
     }
 }
@@ -424,7 +422,6 @@ void PreferencesDialog::handlePhysicianDown()
 
     if(m_phIt != names.begin()){
         --m_phIt;
-        LOG1(*m_phIt);
         initPhysiciansContainer();
     }
 }
@@ -438,12 +435,10 @@ void PreferencesDialog::handleLocationUp()
     int i=0;
     while((i < 3) && (maxBaseIt != names.begin())){
         --maxBaseIt;
-        LOG1(*maxBaseIt);
         ++i;
     }
     if(m_locIt != maxBaseIt){
         ++m_locIt;
-        LOG1(*m_locIt);
         initLocationsContainer();
     }
 }
@@ -455,7 +450,6 @@ void PreferencesDialog::handleLocationDown()
 
     if(m_locIt != names.begin()){
         --m_locIt;
-        LOG1(*m_locIt);
         initLocationsContainer();
     }
 }
