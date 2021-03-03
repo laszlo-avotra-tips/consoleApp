@@ -188,6 +188,16 @@ void PreferencesDialog::persistPreferences()
     CaseInfoDatabase ciDb;
     ciDb.initDb();
 
+    QSqlQuery q;
+    q.prepare( QString("DELETE FROM Physicians"));
+
+    q.exec();
+    QSqlError sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+
     LOG2(ci->physicianNames().size(), ci->locations().size())
 
     for(const auto& physician : ci->physicianNames()){
