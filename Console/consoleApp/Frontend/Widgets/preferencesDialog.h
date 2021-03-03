@@ -54,7 +54,11 @@ private slots:
 
     void handlePhysicianUnmarked();
     void handleLocationUnmarked();
+
 private:
+    void showEvent(QShowEvent* se) override;
+    void hideEvent(QHideEvent* se) override;
+
     void initPhysiciansContainer();
     void initLocationsContainer();
     void updatePysicianLabels();

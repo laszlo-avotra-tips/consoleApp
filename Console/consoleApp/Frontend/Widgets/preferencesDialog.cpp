@@ -7,6 +7,8 @@
 #include "Utility/caseInfoDatabase.h"
 #include "Utility/widgetcontainer.h"
 #include "consoleKeyboard.h"
+#include <QShowEvent>
+#include <QHideEvent>
 
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
@@ -464,4 +466,20 @@ void PreferencesDialog::handleLocationUnmarked()
 {
     ui->pushButtonAddLocation->setText("ADD");
     ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+}
+
+void PreferencesDialog::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    if(se->type() == QEvent::Show){
+        LOG1(se->type());
+    }
+}
+
+void PreferencesDialog::hideEvent(QHideEvent *he)
+{
+    QWidget::hideEvent( he );
+    if(he->type() == QEvent::Hide){
+        LOG1(he->type());
+    }
 }
