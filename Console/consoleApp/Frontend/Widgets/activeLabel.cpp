@@ -13,7 +13,7 @@ void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
         mark();
         emit labelItemSelected(this);
     } else {
-
+        unmark();
     }
     LOG1(name);
 }
