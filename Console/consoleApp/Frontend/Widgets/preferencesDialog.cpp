@@ -119,9 +119,6 @@ void PreferencesDialog::unmarkAll(std::vector<ActiveLabel*>& container)
 void PreferencesDialog::handleSelectedPhysician(const QString &name)
 {
     LOG1(name);
-//    for(auto& label : m_physicianLabels){
-//        label->unmark();
-//    }
     unmarkAll(m_physicianLabels);
 
     const auto& labelIt = m_physiciansContainer.find(name);
@@ -153,9 +150,6 @@ void PreferencesDialog::setDefaultPhysician()
 void PreferencesDialog::handleSelectedLocation(const QString &name)
 {
     LOG1(name)
-//    for(auto& label : m_locationLabels){
-//        label->unmark();
-//    }
     unmarkAll(m_locationLabels);
 
     const auto& labelIt = m_locationsContainer.find(name);
@@ -392,9 +386,6 @@ void PreferencesDialog::handleRemoveLocation()
     auto cim = CaseInformationModel::instance();
     if(cim->removeLocation(name)){
         updateLocationLabels();
-//        for(auto& locationLabel : m_locationLabels){
-//            locationLabel->unmark();
-//        }
         unmarkAll(m_locationLabels);
         ui->pushButtonAddLocation->setText("ADD");
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
@@ -412,9 +403,6 @@ void PreferencesDialog::handleRemovePhysician()
     auto cim = CaseInformationModel::instance();
     if(cim->removePhysicianName(name)){
         updatePysicianLabels();
-//        for(auto& physicianLabel : m_physicianLabels){
-//            physicianLabel->unmark();
-//        }
         unmarkAll(m_physicianLabels);
         ui->pushButtonAddPhysician->setText("ADD");
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");

@@ -9,27 +9,33 @@ ActiveLabel::ActiveLabel(QWidget* parent) : QLabel(parent)
 void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
 {
     const auto& name = text();
-    emit labelSelected(name);
-    emit labelItemSelected(this);
+    if(!isMarked()){
+        mark();
+        emit labelItemSelected(this);
+    } else {
+
+    }
     LOG1(name);
 }
 
 void ActiveLabel::unmark()
 {
+    m_isMarked = false;
     setStyleSheet("color: white");
 }
 
-bool ActiveLabel::isSelected() const
+bool ActiveLabel::isMarked() const
 {
-    return m_isSelected;
+    return m_isMarked;
 }
 
-void ActiveLabel::setIsSelected(bool isSelected)
+void ActiveLabel::setIsMarked(bool isMarked)
 {
-    m_isSelected = isSelected;
+    m_isMarked = isMarked;
 }
 
 void ActiveLabel::mark()
 {
+    m_isMarked = true;
     setStyleSheet("color: rgb(245,196,0)");
 }
