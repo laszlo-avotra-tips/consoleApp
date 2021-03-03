@@ -47,6 +47,7 @@ private slots:
 private:
     void initPhysiciansContainer();
     void initLocationsContainer();
+    void updatePysicianLabels();
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;

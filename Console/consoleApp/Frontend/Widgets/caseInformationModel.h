@@ -142,7 +142,7 @@ public:
     QString defaultPhysicianName() const;
     void setDefaultPhysicianName(const QString &defaultPhysicianName);
 
-    void removePhysicianName(const QString& name);
+    bool removePhysicianName(const QString& name);
 
 private:
     /*!
