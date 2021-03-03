@@ -290,7 +290,7 @@ void CaseInformationModel::validate()
         /*
          *  Create and save the session information to the case database
          */
-        db.initDb();
+        db.initSessionDb();
         db.createSession();
 
         /*

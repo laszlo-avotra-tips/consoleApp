@@ -10,16 +10,15 @@ public:
     CaseInfoDatabase();
     ~CaseInfoDatabase();
 
-    void initDb(void);
     int addPhysician(const QString& name);
     int addLocation(const QString& name);
 
     const PhysicianNameContainer& physicians() const;
     const PhysicianNameContainer& locations() const;
+    void initCaseInfo();
 
 private:
     QSqlError createTables();
-    void initCaseInfo();
 
     const QString m_dbName{"C:/Avinger_Data/caseInfo.db"};
     QSqlDatabase m_db;

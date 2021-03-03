@@ -34,7 +34,7 @@ sessionDatabase::sessionDatabase()
         // TBD:  this should fail earlier.  don't allow app to start up?
         displayFailureMessage( QObject::tr( "Unable to load database:\nThis application needs the SQLITE driver" ), true );
     }
-    initDb();
+    initSessionDb();
 }
 
 sessionDatabase::~sessionDatabase()
@@ -48,7 +48,7 @@ sessionDatabase::~sessionDatabase()
  * specified by the user. Sets up the SQLite file,
  * the schema and tables.
  */
-QSqlError sessionDatabase::initDb(void)
+QSqlError sessionDatabase::initSessionDb(void)
 {
     caseInfo &info = caseInfo::Instance();
 

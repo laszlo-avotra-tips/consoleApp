@@ -46,7 +46,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
 
     CaseInfoDatabase ciDb;
-    ciDb.initDb();
+    ciDb.initCaseInfo();
 
     const auto& ci = CaseInformationModel::instance();
     m_defaultLocationCandidate = ci->defaultLocation();
@@ -205,7 +205,7 @@ void PreferencesDialog::persistPreferences()
     settings.setPhysician(pn);
 
     CaseInfoDatabase ciDb;
-    ciDb.initDb();
+    ciDb.initCaseInfo();
 
     QSqlQuery q;
     q.prepare( QString("DELETE FROM Physicians"));

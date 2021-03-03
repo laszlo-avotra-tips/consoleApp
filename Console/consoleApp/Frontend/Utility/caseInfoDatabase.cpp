@@ -12,6 +12,7 @@ CaseInfoDatabase::CaseInfoDatabase()
         const QString& errorMsg = sqlerr.databaseText();
         LOG1(errorMsg)
     }
+    createTables();
 }
 
 CaseInfoDatabase::~CaseInfoDatabase()
@@ -19,12 +20,6 @@ CaseInfoDatabase::~CaseInfoDatabase()
     if(m_db.open()){
         m_db.close();
     }
-}
-
-void CaseInfoDatabase::initDb()
-{
-    createTables();
-    initCaseInfo();
 }
 
 QSqlError CaseInfoDatabase::createTables()
