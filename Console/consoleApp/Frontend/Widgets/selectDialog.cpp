@@ -1,7 +1,7 @@
 #include "selectDialog.h"
 #include "ui_selectDialog.h"
 #include <logger.h>
-#include <caseInformationModel.h>
+
 
 SelectDialog::SelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -30,7 +30,7 @@ SelectDialog::~SelectDialog()
     delete ui;
 }
 
-void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &selected)
+void SelectDialog::populate(const QStringList &sl, const QString &selected)
 {
     m_items = sl;
     m_selectedItem = selected;
