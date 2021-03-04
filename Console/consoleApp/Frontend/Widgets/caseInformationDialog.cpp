@@ -331,6 +331,7 @@ void CaseInformationDialog::handlePhysicianNameSelect()
     /*
      * populate the select dialog with physician names
      */
+    QString candidate = m_model.selectedPhysicianName().isEmpty() ? m_model.defaultPhysicianName() : m_model.selectedPhysicianName();
     m_selectDialog->populate(m_model.physicianNames(), m_model.defaultPhysicianName());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
