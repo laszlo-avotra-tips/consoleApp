@@ -40,14 +40,23 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
         ui->pushButtonScrollDown->hide();
     }
 
-   auto nameIt = m_items.begin();
-   for(int i = 0; i < 3; ++i){
+    auto nameIt = m_items.begin();
+    m_itemsInView.clear();
+    for(int i = 0; i < 3; ++i){
        if(nameIt != m_items.end()){
-           const auto& name = *nameIt;
+           const auto& name = *nameIt++;
            LOG1(name);
            m_itemsInView.insert(name);
        }
-   }
+    }
+    auto itemIt = m_itemsInView.begin();
+    for(auto* lineEdit : m_selectableWidgets){
+        if(itemIt != m_itemsInView.end()){
+            const auto& name = *itemIt++;
+            LOG1(name);
+            lineEdit->setText(name);
+        }
+    }
 
 //    if(!m_selectedItem.isEmpty()){
 //        m_itemsInView.clear();
