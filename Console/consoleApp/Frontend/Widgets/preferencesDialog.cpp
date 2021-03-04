@@ -362,7 +362,7 @@ void PreferencesDialog::handleAddLocation()
 void PreferencesDialog::handleAddPhysician()
 {
     QString paramName("PHYSICIAN NAME");
-    QString paramValue("Dr. ");
+    QString paramValue("");
     const int keyboardY{height() / 2};
 
     /*

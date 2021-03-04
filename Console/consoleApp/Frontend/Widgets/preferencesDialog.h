@@ -61,6 +61,7 @@ private:
 
     void initPhysiciansContainer();
     void initLocationsContainer();
+    void init();
     void updatePysicianLabels();
     void updateLocationLabels();
     void unmarkAll(std::vector<ActiveLabel*>& container);
