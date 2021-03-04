@@ -8,7 +8,6 @@ ActiveLabel::ActiveLabel(QWidget* parent) : QLabel(parent)
 
 void ActiveLabel::mouseReleaseEvent(QMouseEvent *)
 {
-    const auto& name = text();
     if(!isMarked()){
         mark();
         emit labelItemMarked(this);

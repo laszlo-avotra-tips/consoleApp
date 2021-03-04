@@ -185,6 +185,30 @@ int SelectDialog::indexOf(const PhysicianNameContainer &cont, const QString &val
     return index;
 }
 
+void SelectDialog::incrementCircular(const PhysicianNameContainer &cont, PhysicianNameContainer::iterator &it)
+{
+    if(it != cont.end()){
+        auto tempIt = it;
+        if(++tempIt == cont.end()){
+            it = cont.begin();
+        } else {
+            ++it;
+        }
+    }
+}
+
+void SelectDialog::decrementCircular(const PhysicianNameContainer &cont, PhysicianNameContainer::iterator &it)
+{
+    if(it != cont.end()){
+        if(it == cont.begin()){
+            auto tempIt = cont.end();
+            it = -- tempIt;
+        }else{
+            --it;
+        }
+    }
+}
+
 QString SelectDialog::selectedItem() const
 {
     return m_selectedItem;
