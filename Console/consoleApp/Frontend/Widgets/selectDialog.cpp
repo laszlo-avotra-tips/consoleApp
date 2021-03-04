@@ -42,16 +42,12 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
     }
     LOG1(selected);
     auto selectedIt = m_items.find(selected);
+
     PhysicianNameContainer::iterator nameIt = selectedIt;
-    if(selectedIt != m_items.end()){
-        decrementCircular(sl, nameIt);
-        int diff1 = std::distance( selectedIt, nameIt);
-        int diff2 = std::distance( nameIt, selectedIt);
-        LOG2(diff1,diff2);
-        nameIt = selectedIt;
-    } else {
+    if(selectedIt == m_items.end()){
         nameIt = m_items.begin();
     }
+
     m_itemsInView.clear();
     for(int i = 0; i < 3; ++i){
        if(nameIt != m_items.end()){
@@ -60,9 +56,11 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
            m_itemsInView.push_back(name);
        } else {
            nameIt = m_items.begin();
-           const auto& name = *nameIt++;
-           LOG1(name);
-           m_itemsInView.push_back(name);
+            if(++nameIt != m_items.end()){
+                const auto& name = *nameIt;
+                LOG1(name);
+                m_itemsInView.push_back(name);
+           }
        }
     }
     auto itemIt = m_itemsInView.begin();
