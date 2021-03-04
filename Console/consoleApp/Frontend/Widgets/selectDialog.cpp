@@ -44,7 +44,6 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
     PhysicianNameContainer::iterator nameIt = selectedIt;
     if(selectedIt != m_items.end()){
         decrementCircular(sl, nameIt);
-        nameIt = selectedIt;
     } else {
         nameIt = m_items.begin();
     }
@@ -67,6 +66,11 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
             const auto& name = *itemIt++;
             LOG1(name);
             lineEdit->setText(name);
+            if(name == selected){
+                lineEdit->mark();
+            }else {
+                lineEdit->unmark();
+            }
         }
     }
 
@@ -214,7 +218,7 @@ void SelectDialog::decrementCircular(const PhysicianNameContainer &cont, Physici
     if(it != cont.end()){
         if(it == cont.begin()){
             auto tempIt = cont.end();
-            it = -- tempIt;
+            it = --tempIt;
         }else{
             --it;
         }
