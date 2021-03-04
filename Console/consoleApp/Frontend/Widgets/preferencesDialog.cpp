@@ -54,7 +54,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
 
+}
 
+void PreferencesDialog::init()
+{
     CaseInfoDatabase ciDb;
     ciDb.initCaseInfo();
 
@@ -497,6 +500,7 @@ void PreferencesDialog::showEvent(QShowEvent *se)
     QWidget::showEvent( se );
     if(se->type() == QEvent::Show){
         LOG1(se->type());
+        init();
     }
 }
 
