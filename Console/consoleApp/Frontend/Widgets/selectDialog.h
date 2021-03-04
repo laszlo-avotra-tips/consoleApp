@@ -44,7 +44,7 @@ private:
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
     PhysicianNameContainer m_items;
-    PhysicianNameContainer m_itemsInView;
+    QStringList m_itemsInView;
     QString m_selectedItem;
 };
 

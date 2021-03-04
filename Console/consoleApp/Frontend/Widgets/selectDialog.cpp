@@ -39,14 +39,26 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
     } else {
         ui->pushButtonScrollDown->hide();
     }
-
-    auto nameIt = m_items.begin();
+    LOG1(selected);
+    auto selectedIt = m_items.find(selected);
+    PhysicianNameContainer::iterator nameIt = selectedIt;
+    if(selectedIt != m_items.end()){
+        decrementCircular(sl, nameIt);
+        nameIt = selectedIt;
+    } else {
+        nameIt = m_items.begin();
+    }
     m_itemsInView.clear();
     for(int i = 0; i < 3; ++i){
        if(nameIt != m_items.end()){
            const auto& name = *nameIt++;
            LOG1(name);
-           m_itemsInView.insert(name);
+           m_itemsInView.push_back(name);
+       } else {
+           nameIt = m_items.begin();
+           const auto& name = *nameIt++;
+           LOG1(name);
+           m_itemsInView.push_back(name);
        }
     }
     auto itemIt = m_itemsInView.begin();
