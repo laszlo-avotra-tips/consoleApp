@@ -14,9 +14,6 @@
     The CaseInfornationModel is persisten - saved to a database
     \sa CaseInformationDialog
  */
-
-using PhysicianNameContainer = QStringList;
-
 class CaseInformationModel
 {
 public:
@@ -29,8 +26,8 @@ public:
      * \brief physicianNames - get the list of registered physicina names
      * \return the list of registered physician names
      */
-    PhysicianNameContainer physicianNames() const;
-    PhysicianNameContainer physicianNames2() const;
+    QStringList physicianNames() const;
+    QStringList physicianNames2() const;
 
     /*!
      * \brief selectedPhysicianName - get the selected physician name

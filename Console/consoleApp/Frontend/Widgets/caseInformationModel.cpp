@@ -64,7 +64,7 @@ void CaseInformationModel::erasePhysicians()
     m_physicianNames.erase(m_physicianNames.begin(), m_physicianNames.end());
 }
 
-PhysicianNameContainer CaseInformationModel::physicianNames() const
+QStringList CaseInformationModel::physicianNames() const
 {
     return m_physicianNames;
 }
