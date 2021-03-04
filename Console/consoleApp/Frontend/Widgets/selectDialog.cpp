@@ -2,6 +2,7 @@
 #include "ui_selectDialog.h"
 #include <logger.h>
 #include <caseInformationModel.h>
+#include <iterator>
 
 SelectDialog::SelectDialog(QWidget *parent) :
     QDialog(parent),
@@ -44,6 +45,10 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
     PhysicianNameContainer::iterator nameIt = selectedIt;
     if(selectedIt != m_items.end()){
         decrementCircular(sl, nameIt);
+        int diff1 = std::distance( selectedIt, nameIt);
+        int diff2 = std::distance( nameIt, selectedIt);
+        LOG2(diff1,diff2);
+        nameIt = selectedIt;
     } else {
         nameIt = m_items.begin();
     }
