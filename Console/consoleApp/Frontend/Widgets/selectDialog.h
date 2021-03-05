@@ -29,6 +29,9 @@ public:
 
     QString selectedItem() const;
 
+public slots:
+    void closeDialog(bool isChecked);
+
 private slots:
     void selectItem0();
     void selectItem1();

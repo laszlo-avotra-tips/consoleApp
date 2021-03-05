@@ -145,16 +145,6 @@ int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QSt
     return index;
 }
 
-void CaseInformationDialog::closeSelect(bool isChecked)
-{
-    LOG1(isChecked);
-    if(!isChecked){
-        return;
-    }
-    LOG1(m_selectDialog->selectedItem());
-    emit QDialog::reject();
-}
-
 void CaseInformationDialog::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
@@ -326,7 +316,6 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     LOG1(isChecked);
     if(isChecked)
     {
-        QDialog::reject();
         return;
     }
     auto* parent = this;
@@ -335,6 +324,8 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
      * create the modal select dialog
      */
     m_selectDialog = new SelectDialog(parent);
+
+    connect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
 
     /*
      * move the select dialog
@@ -382,6 +373,9 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
         ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
 
         ui->lineEditPhysicianName->setStyleSheet("");
+    }
+    if(m_selectDialog){
+        disconnect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
     }
 
     /*

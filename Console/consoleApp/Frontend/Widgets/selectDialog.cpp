@@ -168,7 +168,15 @@ void SelectDialog::scrollDown()
 //            auto style = wid->styleSheet();
 //            wid->setStyleSheet(style + QString("color:#F5C400;"));
 //        }
-//    }
+    //    }
+}
+
+void SelectDialog::closeDialog(bool isChecked)
+{
+    if(!isChecked){
+        LOG1(isChecked);
+    }
+
 }
 //border-top: 2px solid rgb( 169, 169, 169);
 void SelectDialog::selectItem(int index)
