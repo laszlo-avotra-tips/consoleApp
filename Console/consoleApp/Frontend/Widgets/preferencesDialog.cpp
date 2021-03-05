@@ -239,12 +239,12 @@ void PreferencesDialog::updatePysicianLabels(const QString& name)
     const auto& names = ci->physicianNames();
 
     m_phIt = names.begin();
-    if(!name.isEmpty()){
-        auto temp = names.find(name);
-        if(temp != names.end()){
-            m_phIt = temp;
-        }
-    }
+//    if(!name.isEmpty()){
+//        auto temp = names.find(name);
+//        if(temp != names.end()){
+//            m_phIt = temp;
+//        }
+//    }
     auto nameIt = m_phIt;
 
     for(const auto& label : m_physicianLabels){
@@ -263,12 +263,12 @@ void PreferencesDialog::updateLocationLabels(const QString& name)
     const auto& names = ci->locations();
 
     m_locIt = names.begin();
-    if(!name.isEmpty()){
-        auto temp = names.find(name);
-        if(temp != names.end()){
-            m_locIt = temp;
-        }
-    }
+//    if(!name.isEmpty()){
+//        auto temp = names.find(name);
+//        if(temp != names.end()){
+//            m_locIt = temp;
+//        }
+//    }
     auto nameIt = names.begin();
 
     for(const auto& label : m_locationLabels){
