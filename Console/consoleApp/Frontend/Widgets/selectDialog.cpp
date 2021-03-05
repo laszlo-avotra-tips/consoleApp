@@ -43,9 +43,37 @@ void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, const QStr
         ui->pushButtonScrollDown->hide();
     }
     LOG1(selected);
+//    auto selectedIt = m_items.find(selected);
+
+//    PhysicianNameContainer::iterator nameIt = selectedIt;
+//    if(selectedIt == m_items.end()){
+//        nameIt = m_items.begin();
+//    }
+
+//    m_itemsInView.clear();
+//    for(int i = 0; i < 3; ++i){
+//       if(nameIt != m_items.end()){
+//           const auto& name = *nameIt++;
+//           LOG1(name);
+//           m_itemsInView.push_back(name);
+//       } else {
+//           nameIt = m_items.begin();
+//            if(++nameIt != m_items.end()){
+//                const auto& name = *nameIt;
+//                LOG1(name);
+//                m_itemsInView.push_back(name);
+//           }
+//       }
+//    }
+    populateItemsInview(m_selectedItem);
+    highlight(m_selectedItem);
+}
+
+void SelectDialog::populateItemsInview(const QString &selected)
+{
     auto selectedIt = m_items.find(selected);
 
-    PhysicianNameContainer::iterator nameIt = selectedIt;
+    auto nameIt = selectedIt;
     if(selectedIt == m_items.end()){
         nameIt = m_items.begin();
     }
@@ -65,8 +93,9 @@ void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, const QStr
            }
        }
     }
-    highlight(m_selectedItem);
 }
+
+
 
 void SelectDialog::highlight(const QString &selected)
 {

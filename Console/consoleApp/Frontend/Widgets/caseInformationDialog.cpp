@@ -358,7 +358,7 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
      * populate the select dialog with physician names
      */
     QString candidate = m_model.selectedPhysicianName().isEmpty() ? m_model.defaultPhysicianName() : m_model.selectedPhysicianName();
-    m_selectDialog->populate(m_model.physicianNames(), candidate);
+    m_selectDialog->initializeSelect(m_model.physicianNames(), candidate);
     if(m_selectDialog->exec() == QDialog::Accepted){
         /*
          * handle selection was made
@@ -422,7 +422,7 @@ void CaseInformationDialog::handleLocationSelect()
     m_selectDialog->move(xVal, yVal);
     m_selectDialog->show();
 
-    m_selectDialog->populate(m_model.locations(), m_model.defaultLocation());
+    m_selectDialog->initializeSelect(m_model.locations(), m_model.defaultLocation());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
 

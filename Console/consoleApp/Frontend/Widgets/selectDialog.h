@@ -26,7 +26,7 @@ public:
     explicit SelectDialog(CaseInformationDialog *parent = nullptr);
     ~SelectDialog();
 
-    void populate(const PhysicianNameContainer& sl, const QString& selected);
+    void initializeSelect(const PhysicianNameContainer& sl, const QString& selected);
 
     QString selectedItem() const;
 
@@ -39,12 +39,14 @@ private slots:
     void selectItem2();
     void scrollDown();
     void addNew();
+    void highlight(const QString& selected);
 
 private:
     void selectItem(int index);
     int indexOf(const PhysicianNameContainer& cont, const QString& val) const;
     void incrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
     void decrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
+    void populateItemsInview(const QString& selected);
 
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
