@@ -62,7 +62,7 @@ private:
     void initPhysiciansContainer();
     void initLocationsContainer();
     void init();
-    void updatePysicianLabels();
+    void updatePysicianLabels(const QString &name);
     void updateLocationLabels();
     void unmarkAll(std::vector<ActiveLabel*>& container);
     void markCandidate(std::vector<ActiveLabel*>& cont, const QString& name);

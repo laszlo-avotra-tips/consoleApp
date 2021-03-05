@@ -233,13 +233,19 @@ void PreferencesDialog::initLocationsContainer()
     }
 }
 
-void PreferencesDialog::updatePysicianLabels()
+void PreferencesDialog::updatePysicianLabels(const QString& name)
 {
     const auto& ci = CaseInformationModel::instance();
     const auto& names = ci->physicianNames();
 
-    auto nameIt = names.begin();
     m_phIt = names.begin();
+    if(!name.isEmpty()){
+        auto temp = names.find(name);
+        if(temp != names.end()){
+            m_phIt = temp;
+        }
+    }
+    auto nameIt = m_phIt;
 
     for(const auto& label : m_physicianLabels){
         if(nameIt != names.end()){
@@ -383,8 +389,7 @@ void PreferencesDialog::handleAddPhysician()
     if(!newName.isEmpty()){
         auto cim = CaseInformationModel::instance();
         cim->addPhysicianName(newName);
-//        initPhysiciansContainer();
-        updatePysicianLabels();
+        updatePysicianLabels(newName);
     }
 }
 
@@ -410,7 +415,7 @@ void PreferencesDialog::handleRemovePhysician()
 
     auto cim = CaseInformationModel::instance();
     if(cim->removePhysicianName(name)){
-        updatePysicianLabels();
+        updatePysicianLabels("");
         unmarkAll(m_physicianLabels);
         ui->pushButtonAddPhysician->setText("ADD");
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
