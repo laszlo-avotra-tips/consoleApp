@@ -147,6 +147,7 @@ QString CaseInformationModel::selectedPhysicianName() const
 
 void CaseInformationModel::setSelectedPhysicianName(const QString &selectedPysicianName)
 {
+    LOG1(selectedPysicianName)
     m_selectedPhysicianName = selectedPysicianName;
 }
 
