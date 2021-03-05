@@ -50,6 +50,10 @@ public:
      */
     static void reset();
 
+    QString getPhysicianName() const;
+
+
+
 private slots:
     /*!
      * \brief setDateAndTime - store the date and time for this case

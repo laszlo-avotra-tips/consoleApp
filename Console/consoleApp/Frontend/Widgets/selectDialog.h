@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <caseInformationModel.h>
+#include "caseInformationDialog.h"
 
 
 using SelectableWidgetContainer = std::vector<ConsoleLineEdit*>;
@@ -22,7 +23,7 @@ class SelectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SelectDialog(QWidget *parent = nullptr);
+    explicit SelectDialog(CaseInformationDialog *parent = nullptr);
     ~SelectDialog();
 
     void populate(const PhysicianNameContainer& sl, const QString& selected);
@@ -37,6 +38,7 @@ private slots:
     void selectItem1();
     void selectItem2();
     void scrollDown();
+    void addNew();
 
 private:
     void selectItem(int index);
@@ -49,6 +51,7 @@ private:
     PhysicianNameContainer m_items;
     QStringList m_itemsInView;
     QString m_selectedItem;
+    CaseInformationDialog* m_parent{nullptr};
 };
 
 #endif // SELECTDIALOG_H

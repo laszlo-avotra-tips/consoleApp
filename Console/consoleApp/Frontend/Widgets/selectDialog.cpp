@@ -3,11 +3,13 @@
 #include <logger.h>
 #include <caseInformationModel.h>
 #include <iterator>
+#include "Utility/widgetcontainer.h"
 
-SelectDialog::SelectDialog(QWidget *parent) :
+SelectDialog::SelectDialog(CaseInformationDialog *parent) :
     QDialog(parent),
     ui(new Ui::SelectDialog)
 {
+    m_parent = parent;
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
 
@@ -18,7 +20,7 @@ SelectDialog::SelectDialog(QWidget *parent) :
         ui->lineEditItem3,
     };
 
-    connect(ui->pushButtonAddNew, &QPushButton::clicked, this, &SelectDialog::reject);
+    connect(ui->pushButtonAddNew, &QPushButton::clicked, this, &SelectDialog::addNew);
     connect(ui->pushButtonScrollDown, &QPushButton::clicked, this, &SelectDialog::scrollDown);
 
     connect(m_selectableWidgets[0], &ConsoleLineEdit::mousePressed, this, &SelectDialog::selectItem0);
@@ -171,10 +173,40 @@ void SelectDialog::scrollDown()
     //    }
 }
 
+void SelectDialog::addNew()
+{
+    /*
+     * handle "ADD NEW" physician name
+     */
+    QString paramName = m_parent->getPhysicianName();
+    QString paramValue("");
+    const int keyboardY{200};
+    const ParameterType param{paramName, paramValue, "ADD NEW"};
+
+    /*
+     * create the modal keyboard instance for physician name
+     */
+    auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+
+    /*
+     * code execution continues here once the keyboard is closed
+     * add newName
+     * update selected physician name with newName
+     */
+    auto model = *CaseInformationModel::instance();
+    model.addPhysicianName(newName);
+    model.setSelectedPhysicianName(newName);
+//    ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
+
+//    ui->lineEditPhysicianName->setStyleSheet("");
+
+}
+
 void SelectDialog::closeDialog(bool isChecked)
 {
     if(!isChecked){
         LOG1(isChecked);
+        emit rejected();
     }
 
 }

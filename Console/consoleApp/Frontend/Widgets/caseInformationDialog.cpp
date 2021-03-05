@@ -145,6 +145,11 @@ int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QSt
     return index;
 }
 
+QString CaseInformationDialog::getPhysicianName() const
+{
+    return ui->labelPhysicianName->text();
+}
+
 void CaseInformationDialog::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
@@ -313,19 +318,24 @@ void CaseInformationDialog::enableNext(bool isNext)
 
 void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
 {
-    LOG1(isChecked);
     if(isChecked)
     {
+        if(m_selectDialog){
+            LOG1(isChecked);
+            m_selectDialog->reject();
+        }
         return;
     }
+    LOG1(isChecked);
     auto* parent = this;
 
     /*
      * create the modal select dialog
      */
     m_selectDialog = new SelectDialog(parent);
+    m_selectDialog->setModal(false);
 
-    connect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
+//    connect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
 
     /*
      * move the select dialog
@@ -348,8 +358,12 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
         m_model.setSelectedPhysicianName(m_selectDialog->selectedItem());
         ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
         ui->lineEditPhysicianName->setStyleSheet("");
+        ui->pushButtonPhysicianNameDown->toggle();
     } else {
-
+        LOG1(isChecked);
+        if(!isChecked){
+            return;
+        }
         /*
          * handle "ADD NEW" physician name
          */
@@ -374,9 +388,9 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
 
         ui->lineEditPhysicianName->setStyleSheet("");
     }
-    if(m_selectDialog){
-        disconnect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
-    }
+//    if(m_selectDialog){
+//        disconnect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
+//    }
 
     /*
      * update isNext condition
