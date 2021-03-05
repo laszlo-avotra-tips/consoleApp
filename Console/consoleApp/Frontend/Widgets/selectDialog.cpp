@@ -33,7 +33,7 @@ SelectDialog::~SelectDialog()
     delete ui;
 }
 
-void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &selected)
+void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, const QString &selected)
 {
     m_items = sl;
     m_selectedItem = selected;
@@ -65,6 +65,11 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
            }
        }
     }
+    highlight(m_selectedItem);
+}
+
+void SelectDialog::highlight(const QString &selected)
+{
     auto itemIt = m_itemsInView.begin();
     for(auto* lineEdit : m_selectableWidgets){
         if(itemIt != m_itemsInView.end()){
@@ -78,44 +83,6 @@ void SelectDialog::populate(const PhysicianNameContainer &sl, const QString &sel
             }
         }
     }
-
-//    if(!m_selectedItem.isEmpty()){
-//        m_itemsInView.clear();
-//        int si = indexOf(m_items,m_selectedItem);
-//        LOG2(si, m_selectedItem)
-//        if(si >= 0){
-//            if(si < 3){
-//                m_itemsInView.insert(m_items[0]);
-//                m_itemsInView.insert(m_items[1]);
-//                m_itemsInView.insert(m_items[2]);
-//                auto* wid = m_selectableWidgets[si];
-//                auto style = wid->styleSheet();
-//                wid->setStyleSheet(style + QString("color:#F5C400;"));
-//            } else {
-//                m_itemsInView.insert(m_items[si - 2]);
-//                m_itemsInView.insert(m_items[si - 1]);
-//                m_itemsInView.insert(m_items[si]);
-//                auto* wid = m_selectableWidgets[2];
-//                auto style = wid->styleSheet();
-//                wid->setStyleSheet(style + QString("color:#F5C400;"));
-//            }
-//            int index{0};
-//            for(auto* lineEdit : m_selectableWidgets){
-//                if(m_items.size()>index){
-//                    lineEdit->setText(m_itemsInView[index]);
-//                }
-//                ++index;
-//            }
-//        }
-//    } else {
-//        int index{0};
-//        for(auto* lineEdit : m_selectableWidgets){
-//            if(m_items.size()>index){
-//                lineEdit->setText(m_items[index]);
-//            }
-//            ++index;
-//        }
-//    }
 }
 
 void SelectDialog::selectItem0()
@@ -136,43 +103,7 @@ void SelectDialog::selectItem2()
 void SelectDialog::scrollDown()
 {
     const QString nextName = m_itemsInView[1];
-    populate(m_items,nextName);
-//    if(m_itemsInView.size() == 3){
-//        auto lastInView = m_itemsInView[2];
-//        int indexOfLastInView = indexOf(m_items,lastInView);
-
-//        int maxIndexInView = m_items.size() - 1;
-//        if(indexOfLastInView == maxIndexInView){
-//            m_itemsInView[0] = m_items[maxIndexInView - 1];
-//            m_itemsInView[1] = m_items[maxIndexInView];
-//            m_itemsInView[2] = m_items[0];
-//        }else if (indexOfLastInView > 0){
-//            m_itemsInView[0] = m_items[indexOfLastInView - 1];
-//            m_itemsInView[1] = m_items[indexOfLastInView];
-//            m_itemsInView[2] = m_items[indexOfLastInView + 1];
-//        } else if(indexOfLastInView == 0){
-//            m_itemsInView[0] = m_items[maxIndexInView];
-//            m_itemsInView[1] = m_items[0];
-//            m_itemsInView[2] = m_items[1];
-//        }
-
-//        size_t index{0};
-//        for(auto* lineEdit : m_selectableWidgets){
-//            if(m_items.size()>index){
-//                auto style = lineEdit->styleSheet();
-//                lineEdit->setText(m_itemsInView[index]);
-//                lineEdit->setStyleSheet(style + QString("color:white"));
-//            }
-//            ++index;
-//        }
-//        int highlighted = indexOf(m_itemsInView,m_selectedItem);
-//        LOG2(m_selectedItem, highlighted)
-//        if(highlighted >= 0 && highlighted < 3){
-//            auto* wid = m_selectableWidgets[highlighted];
-//            auto style = wid->styleSheet();
-//            wid->setStyleSheet(style + QString("color:#F5C400;"));
-//        }
-    //    }
+    initializeSelect(m_items,nextName);
 }
 
 void SelectDialog::addNew()
@@ -199,11 +130,8 @@ void SelectDialog::addNew()
     model.addPhysicianName(newName);
     model.setSelectedPhysicianName(newName);
 
-    populate(model.physicianNames(),newName);
+    initializeSelect(model.physicianNames(),newName);
     model.persistModel();
-
-//    m_parent->setPhysicianName(model.selectedPhysicianName());
-//    m_selectedItem = newName;
 }
 
 void SelectDialog::closeDialog(bool isChecked)
