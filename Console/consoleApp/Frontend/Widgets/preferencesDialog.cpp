@@ -383,7 +383,8 @@ void PreferencesDialog::handleAddPhysician()
     if(!newName.isEmpty()){
         auto cim = CaseInformationModel::instance();
         cim->addPhysicianName(newName);
-        initPhysiciansContainer();
+//        initPhysiciansContainer();
+        updatePysicianLabels();
     }
 }
 
