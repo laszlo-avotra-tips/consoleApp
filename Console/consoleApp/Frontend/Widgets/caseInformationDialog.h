@@ -100,7 +100,7 @@ private slots:
 
     int indexOf(const PhysicianNameContainer& cont, const QString& val) const;
 
-    void closeSelect();
+    void closeSelect(bool isChecked);
 
 private:
     /*!

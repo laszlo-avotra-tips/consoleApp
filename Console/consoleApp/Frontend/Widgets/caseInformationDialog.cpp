@@ -145,10 +145,10 @@ int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QSt
     return index;
 }
 
-void CaseInformationDialog::closeSelect()
+void CaseInformationDialog::closeSelect(bool isChecked)
 {
-    LOG1(ui->pushButtonPhysicianNameDown->isChecked());
-    if(ui->pushButtonPhysicianNameDown->isChecked()){
+    LOG1(isChecked);
+    if(isChecked){
         return;
     }
     LOG1(m_selectDialog->selectedItem());
@@ -324,7 +324,7 @@ void CaseInformationDialog::enableNext(bool isNext)
 void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
 {
     LOG1(isChecked);
-    if(!isChecked)
+    if(isChecked)
     {
         return;
     }
