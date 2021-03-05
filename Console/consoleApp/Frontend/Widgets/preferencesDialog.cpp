@@ -343,7 +343,6 @@ void PreferencesDialog::handleAddRemovePhysician()
 
 void PreferencesDialog::handleAddLocation()
 {
-//    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
     QString paramName("LOCATION");
     QString paramValue("");
     const int keyboardY{height() / 2};
