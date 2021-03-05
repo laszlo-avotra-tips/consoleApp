@@ -36,6 +36,7 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     connect(ui->pushButtonNext, &QPushButton::clicked, this, &CaseInformationDialog::handleNext);
     connect(ui->pushButtonPhysicianNameDown, &QPushButton::clicked, this, &CaseInformationDialog::handlePhysicianNameSelect);
     connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &CaseInformationDialog::handleLocationSelect);
+//    connect(ui->pushButtonPhysicianNameDown, &QPushButton::clicked, this, &CaseInformationDialog::closeSelect);
 
     initDialog(param);
 
@@ -142,6 +143,16 @@ int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QSt
     //int index = it - cont.begin();
 
     return index;
+}
+
+void CaseInformationDialog::closeSelect()
+{
+    LOG1(ui->pushButtonPhysicianNameDown->isChecked());
+    if(ui->pushButtonPhysicianNameDown->isChecked()){
+        return;
+    }
+    LOG1(m_selectDialog->selectedItem());
+    emit QDialog::reject();
 }
 
 void CaseInformationDialog::showEvent(QShowEvent *se)
@@ -312,6 +323,11 @@ void CaseInformationDialog::enableNext(bool isNext)
 
 void CaseInformationDialog::handlePhysicianNameSelect()
 {
+    LOG1(ui->pushButtonPhysicianNameDown->isChecked());
+    if(!ui->pushButtonPhysicianNameDown->isChecked())
+    {
+        return;
+    }
     auto* parent = this;
 
     /*
@@ -333,9 +349,9 @@ void CaseInformationDialog::handlePhysicianNameSelect()
      */
     QString candidate = m_model.selectedPhysicianName().isEmpty() ? m_model.defaultPhysicianName() : m_model.selectedPhysicianName();
     m_selectDialog->populate(m_model.physicianNames(), candidate);
-
+    ui->pushButtonPhysicianNameDown->setChecked(false);
     if(m_selectDialog->exec() == QDialog::Accepted){
-
+        ui->pushButtonPhysicianNameDown->setChecked(true);
         /*
          * handle selection was made
          */

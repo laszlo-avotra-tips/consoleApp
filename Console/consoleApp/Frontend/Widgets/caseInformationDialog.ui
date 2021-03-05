@@ -261,15 +261,21 @@ font:12pt &quot;Helvetica Neue&quot;;
             <string/>
            </property>
            <property name="icon">
-            <iconset>
-             <normalon>:/octConsole/dropdown</normalon>
-            </iconset>
+            <iconset resource="../../../../Common/Resources/common.qrc">
+             <normaloff>:/images/arrow_up_rollover.png</normaloff>
+             <normalon>:/octConsole/dropdown</normalon>:/images/arrow_up_rollover.png</iconset>
            </property>
            <property name="iconSize">
             <size>
              <width>50</width>
              <height>50</height>
             </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -590,6 +596,8 @@ border-bottom: 2px solid rgb( 169, 169, 169 );
   <tabstop>lineEditDateAndTime</tabstop>
   <tabstop>pushButtonNext</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../../../Common/Resources/common.qrc"/>
+ </resources>
  <connections/>
 </ui>
