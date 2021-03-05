@@ -145,6 +145,8 @@ public:
     bool removePhysicianName(const QString& name);
     bool removeLocation(const QString& name);
 
+    void persistModel();
+
 private:
     /*!
      * \brief CaseInformationModel - private constructor

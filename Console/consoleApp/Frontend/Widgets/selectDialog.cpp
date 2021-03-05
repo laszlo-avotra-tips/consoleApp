@@ -198,6 +198,7 @@ void SelectDialog::addNew()
     model.setSelectedPhysicianName(newName);
 
     populate(model.physicianNames(),newName);
+    model.persistModel();
 
 //    m_parent->setPhysicianName(model.selectedPhysicianName());
 //    m_selectedItem = newName;

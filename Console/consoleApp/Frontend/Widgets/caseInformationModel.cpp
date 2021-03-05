@@ -70,6 +70,38 @@ bool CaseInformationModel::removeLocation(const QString &name)
     return success;
 }
 
+void CaseInformationModel::persistModel()
+{
+    CaseInfoDatabase ciDb;
+    ciDb.initCaseInfo();
+
+    QSqlQuery q;
+
+    q.prepare( QString("DELETE FROM Physicians"));
+    q.exec();
+    QSqlError sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+
+    q.prepare( QString("DELETE FROM Locations"));
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+
+    for(const auto& physician : physicianNames()){
+        ciDb.addPhysician(physician);
+    }
+
+    for(const auto& location : locations()){
+        ciDb.addLocation(location);
+    }
+}
+
 QString CaseInformationModel::defaultLocation() const
 {
     return m_defaultLocation;
@@ -125,6 +157,7 @@ bool CaseInformationModel::isSelectedPhysicianName() const
 
 void CaseInformationModel::addPhysicianName(const QString &name)
 {
+    LOG1(name);
     m_physicianNames.insert(name);
 }
 
