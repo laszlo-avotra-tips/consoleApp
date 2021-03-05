@@ -7,6 +7,7 @@
 #include "logger.h"
 #include "displayManager.h"
 #include "defaults.h"
+#include "Utility/caseInfoDatabase.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -36,13 +37,15 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     connect(ui->pushButtonNext, &QPushButton::clicked, this, &CaseInformationDialog::handleNext);
     connect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, this, &CaseInformationDialog::handlePhysicianNameSelect);
     connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &CaseInformationDialog::handleLocationSelect);
-//    connect(ui->pushButtonPhysicianNameDown, &QPushButton::clicked, this, &CaseInformationDialog::closeSelect);
 
     initDialog(param);
 
     const int xc = ControlScreenWidth / 2 - width() / 2;
     const int yc = ControlScreenHeight / 2 - height() / 2;
     move(xc,yc);
+
+    CaseInfoDatabase ciDb;
+    ciDb.initCaseInfo();
 
     const auto& ci = CaseInformationModel::instance();
     if(!ci->defaultPhysicianName().isEmpty()){
@@ -165,6 +168,17 @@ void CaseInformationDialog::showEvent(QShowEvent *se)
         DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
         DisplayManager::instance()->setWindowTitle("CASE INFORMATION IN PROCESS");
         WidgetContainer::instance()->setIsNewCase(true);
+
+        QString candidatePhysician;
+        if(m_model.selectedPhysicianName().isEmpty()){
+            candidatePhysician = m_model.defaultPhysicianName();
+        }else{
+            candidatePhysician = m_model.selectedPhysicianName();
+        }
+        LOG1(candidatePhysician)
+        if(!candidatePhysician.isEmpty()){
+            ui->lineEditPhysicianName->setText(candidatePhysician);
+        }
     }
 }
 
@@ -343,8 +357,6 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     m_selectDialog = new SelectDialog(parent);
     m_selectDialog->setModal(false);
 
-//    connect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
-
     /*
      * move the select dialog
      */
@@ -357,7 +369,13 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     /*
      * populate the select dialog with physician names
      */
-    QString candidate = m_model.selectedPhysicianName().isEmpty() ? m_model.defaultPhysicianName() : m_model.selectedPhysicianName();
+    QString candidate;
+    if(m_model.selectedPhysicianName().isEmpty()){
+        candidate = m_model.defaultPhysicianName();
+    }else{
+        candidate = m_model.selectedPhysicianName();
+    }
+    LOG1(candidate);
     m_selectDialog->initializeSelect(m_model.physicianNames(), candidate);
     if(m_selectDialog->exec() == QDialog::Accepted){
         /*

@@ -158,7 +158,6 @@ bool CaseInformationModel::isSelectedPhysicianName() const
 
 void CaseInformationModel::addPhysicianName(const QString &name)
 {
-    LOG1(name);
     m_physicianNames.insert(name);
 }
 
