@@ -78,8 +78,9 @@ private slots:
 
     /*!
      * \brief handlePhysicianNameSelect
+     * \param isCkecked
      */
-    void handlePhysicianNameSelect();
+    void handlePhysicianNameSelect(bool isChecked);
 
     /*!
      * \brief handleLocationSelect

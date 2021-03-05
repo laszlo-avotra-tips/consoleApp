@@ -34,7 +34,7 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
 
     connect(ui->pushButtonBack, &QPushButton::clicked, this, &CaseInformationDialog::handleBack);
     connect(ui->pushButtonNext, &QPushButton::clicked, this, &CaseInformationDialog::handleNext);
-    connect(ui->pushButtonPhysicianNameDown, &QPushButton::clicked, this, &CaseInformationDialog::handlePhysicianNameSelect);
+    connect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, this, &CaseInformationDialog::handlePhysicianNameSelect);
     connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &CaseInformationDialog::handleLocationSelect);
 //    connect(ui->pushButtonPhysicianNameDown, &QPushButton::clicked, this, &CaseInformationDialog::closeSelect);
 
@@ -321,10 +321,10 @@ void CaseInformationDialog::enableNext(bool isNext)
     }
 }
 
-void CaseInformationDialog::handlePhysicianNameSelect()
+void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
 {
-    LOG1(ui->pushButtonPhysicianNameDown->isChecked());
-    if(!ui->pushButtonPhysicianNameDown->isChecked())
+    LOG1(isChecked);
+    if(!isChecked)
     {
         return;
     }
@@ -349,9 +349,7 @@ void CaseInformationDialog::handlePhysicianNameSelect()
      */
     QString candidate = m_model.selectedPhysicianName().isEmpty() ? m_model.defaultPhysicianName() : m_model.selectedPhysicianName();
     m_selectDialog->populate(m_model.physicianNames(), candidate);
-    ui->pushButtonPhysicianNameDown->setChecked(false);
     if(m_selectDialog->exec() == QDialog::Accepted){
-        ui->pushButtonPhysicianNameDown->setChecked(true);
         /*
          * handle selection was made
          */

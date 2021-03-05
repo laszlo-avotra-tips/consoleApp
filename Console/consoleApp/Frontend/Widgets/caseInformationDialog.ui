@@ -263,7 +263,7 @@ font:12pt &quot;Helvetica Neue&quot;;
            <property name="icon">
             <iconset resource="../../../../Common/Resources/common.qrc">
              <normaloff>:/images/arrow_up_rollover.png</normaloff>
-             <normalon>:/octConsole/dropdown</normalon>:/images/arrow_up_rollover.png</iconset>
+             <normalon>:/images/arrow_down_rollover.png</normalon>:/images/arrow_up_rollover.png</iconset>
            </property>
            <property name="iconSize">
             <size>
