@@ -257,13 +257,19 @@ void PreferencesDialog::updatePysicianLabels(const QString& name)
     }
 }
 
-void PreferencesDialog::updateLocationLabels()
+void PreferencesDialog::updateLocationLabels(const QString& name)
 {
     const auto& ci = CaseInformationModel::instance();
     const auto& names = ci->locations();
 
-    auto nameIt = names.begin();
     m_locIt = names.begin();
+    if(!name.isEmpty()){
+        auto temp = names.find(name);
+        if(temp != names.end()){
+            m_locIt = temp;
+        }
+    }
+    auto nameIt = names.begin();
 
     for(const auto& label : m_locationLabels){
         if(nameIt != names.end()){
@@ -360,7 +366,7 @@ void PreferencesDialog::handleAddLocation()
     if(!newName.isEmpty()){
         auto cim = CaseInformationModel::instance();
         cim->addLocation(newName);
-        initLocationsContainer();
+        updateLocationLabels(newName);
     }
 
 }
@@ -399,7 +405,7 @@ void PreferencesDialog::handleRemoveLocation()
 
     auto cim = CaseInformationModel::instance();
     if(cim->removeLocation(name)){
-        updateLocationLabels();
+        updateLocationLabels("");
         unmarkAll(m_locationLabels);
         ui->pushButtonAddLocation->setText("ADD");
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
