@@ -148,7 +148,7 @@ int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QSt
 void CaseInformationDialog::closeSelect(bool isChecked)
 {
     LOG1(isChecked);
-    if(isChecked){
+    if(!isChecked){
         return;
     }
     LOG1(m_selectDialog->selectedItem());
@@ -326,6 +326,7 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     LOG1(isChecked);
     if(isChecked)
     {
+        QDialog::reject();
         return;
     }
     auto* parent = this;
