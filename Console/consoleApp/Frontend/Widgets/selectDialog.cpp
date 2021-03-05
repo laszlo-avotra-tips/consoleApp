@@ -135,6 +135,8 @@ void SelectDialog::selectItem2()
 
 void SelectDialog::scrollDown()
 {
+    const QString nextName = m_itemsInView[1];
+    populate(m_items,nextName);
 //    if(m_itemsInView.size() == 3){
 //        auto lastInView = m_itemsInView[2];
 //        int indexOfLastInView = indexOf(m_items,lastInView);
