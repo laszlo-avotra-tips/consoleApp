@@ -435,6 +435,7 @@ void PreferencesDialog::handlePhysicianUp()
         initPhysiciansContainer();
     }
     handlePhysicianUnmarked();
+    unmarkAll(m_physicianLabels);
 }
 
 void PreferencesDialog::handlePhysicianDown()
@@ -447,6 +448,7 @@ void PreferencesDialog::handlePhysicianDown()
         initPhysiciansContainer();
     }
     handlePhysicianUnmarked();
+    unmarkAll(m_physicianLabels);
 }
 
 void PreferencesDialog::handleLocationUp()
@@ -464,7 +466,8 @@ void PreferencesDialog::handleLocationUp()
         ++m_locIt;
         initLocationsContainer();
     }
-    markCandidate(m_locationLabels, m_defaultLocationCandidate);
+    handleLocationUnmarked();
+    unmarkAll(m_locationLabels);
 }
 
 void PreferencesDialog::handleLocationDown()
@@ -476,7 +479,8 @@ void PreferencesDialog::handleLocationDown()
         --m_locIt;
         initLocationsContainer();
     }
-    markCandidate(m_locationLabels, m_defaultLocationCandidate);
+    handleLocationUnmarked();
+    unmarkAll(m_locationLabels);
 }
 
 void PreferencesDialog::handlePhysicianUnmarked()
