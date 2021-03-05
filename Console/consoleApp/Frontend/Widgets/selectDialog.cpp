@@ -196,10 +196,11 @@ void SelectDialog::addNew()
     auto model = *CaseInformationModel::instance();
     model.addPhysicianName(newName);
     model.setSelectedPhysicianName(newName);
-//    ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
 
-//    ui->lineEditPhysicianName->setStyleSheet("");
+    populate(model.physicianNames(),newName);
 
+//    m_parent->setPhysicianName(model.selectedPhysicianName());
+//    m_selectedItem = newName;
 }
 
 void SelectDialog::closeDialog(bool isChecked)

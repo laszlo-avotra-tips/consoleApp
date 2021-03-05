@@ -51,7 +51,7 @@ public:
     static void reset();
 
     QString getPhysicianName() const;
-
+    void setPhysicianName(const QString& name);
 
 
 private slots:

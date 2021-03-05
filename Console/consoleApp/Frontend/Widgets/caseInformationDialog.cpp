@@ -150,6 +150,14 @@ QString CaseInformationDialog::getPhysicianName() const
     return ui->labelPhysicianName->text();
 }
 
+void CaseInformationDialog::setPhysicianName(const QString &name)
+{
+    ui->lineEditPhysicianName->setText(name);
+    ui->lineEditPhysicianName->setStyleSheet("");
+    const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
+    enableNext(isNext);
+}
+
 void CaseInformationDialog::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
@@ -364,33 +372,30 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
         if(!isChecked){
             return;
         }
-        /*
-         * handle "ADD NEW" physician name
-         */
-        QString paramName = ui->labelPhysicianName->text();
-        QString paramValue("");
-        const int keyboardY{200};
-        const ParameterType param{paramName, paramValue, "ADD NEW"};
+//        /*
+//         * handle "ADD NEW" physician name
+//         */
+//        QString paramName = ui->labelPhysicianName->text();
+//        QString paramValue("");
+//        const int keyboardY{200};
+//        const ParameterType param{paramName, paramValue, "ADD NEW"};
 
-        /*
-         * create the modal keyboard instance for physician name
-         */
-        auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+//        /*
+//         * create the modal keyboard instance for physician name
+//         */
+//        auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
 
-        /*
-         * code execution continues here once the keyboard is closed
-         * add newName
-         * update selected physician name with newName
-         */
-        m_model.addPhysicianName(newName);
-        m_model.setSelectedPhysicianName(newName);
-        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
+//        /*
+//         * code execution continues here once the keyboard is closed
+//         * add newName
+//         * update selected physician name with newName
+//         */
+//        m_model.addPhysicianName(newName);
+//        m_model.setSelectedPhysicianName(newName);
+//        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
 
-        ui->lineEditPhysicianName->setStyleSheet("");
+//        ui->lineEditPhysicianName->setStyleSheet("");
     }
-//    if(m_selectDialog){
-//        disconnect(ui->pushButtonPhysicianNameDown, &QPushButton::toggled, m_selectDialog, &SelectDialog::closeDialog);
-//    }
 
     /*
      * update isNext condition
