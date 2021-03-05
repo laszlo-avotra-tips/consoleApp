@@ -140,6 +140,8 @@ void SelectDialog::addNew()
 
     initializeSelect(model.physicianNames(),newName);
     model.persistModel();
+    populateItemsInview(newName);
+    highlight(newName);
 }
 
 void SelectDialog::closeDialog(bool isChecked)
