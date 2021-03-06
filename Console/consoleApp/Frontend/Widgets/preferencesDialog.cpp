@@ -410,6 +410,7 @@ void PreferencesDialog::handleRemoveLocation()
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
         if(cim->defaultLocation() == name){
             ui->labelLocationDefault->setText("Default:");
+            cim->setDefaultLocation("");
         }
     }
 }
@@ -426,6 +427,7 @@ void PreferencesDialog::handleRemovePhysician()
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
         if(cim->defaultPhysicianName() == name){
             ui->labelDrDefault->setText("Default:");
+            cim->setDefaultPhysicianName("");
         }
     }
 }
