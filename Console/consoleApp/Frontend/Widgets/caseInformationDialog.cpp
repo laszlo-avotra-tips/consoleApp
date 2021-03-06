@@ -47,14 +47,17 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     CaseInfoDatabase ciDb;
     ciDb.initCaseInfo();
 
-    const auto& ci = CaseInformationModel::instance();
-    if(!ci->defaultPhysicianName().isEmpty()){
+    const auto& cim = CaseInformationModel::instance();
+    const auto& dr = cim->defaultPhysicianName();
+    if(!dr.isEmpty()){
         ui->lineEditPhysicianName->setStyleSheet("");
-        ui->lineEditPhysicianName->setText(ci->defaultPhysicianName());
+        ui->lineEditPhysicianName->setText(dr);
         enableNext(true);
     }
-    if(!ci->defaultLocation().isEmpty()){
-        ui->lineEditLocation->setText(ci->defaultLocation());
+    const auto& loc = cim->defaultLocation();
+    if(!cim->defaultLocation().isEmpty()){
+        ui->lineEditLocation->setText(loc);
+        cim->setSelectedLocation(loc);
     }
 }
 
@@ -356,6 +359,7 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
      */
     m_selectDialog = new SelectDialog(parent);
     m_selectDialog->setModal(false);
+    ui->lineEditPhysicianName->setEnabled(false);
 
     /*
      * move the select dialog
@@ -388,36 +392,15 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     } else {
         LOG1(isChecked);
         if(!isChecked){
+            ui->lineEditPhysicianName->setEnabled(true);
             return;
         }
-//        /*
-//         * handle "ADD NEW" physician name
-//         */
-//        QString paramName = ui->labelPhysicianName->text();
-//        QString paramValue("");
-//        const int keyboardY{200};
-//        const ParameterType param{paramName, paramValue, "ADD NEW"};
-
-//        /*
-//         * create the modal keyboard instance for physician name
-//         */
-//        auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
-
-//        /*
-//         * code execution continues here once the keyboard is closed
-//         * add newName
-//         * update selected physician name with newName
-//         */
-//        m_model.addPhysicianName(newName);
-//        m_model.setSelectedPhysicianName(newName);
-//        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
-
-//        ui->lineEditPhysicianName->setStyleSheet("");
     }
 
     /*
      * update isNext condition
      */
+    ui->lineEditPhysicianName->setEnabled(true);
     const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
     enableNext(isNext);
 }
