@@ -360,7 +360,7 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     /*
      * move the select dialog
      */
-    const int xVal = x() + parent->width()/2 - m_selectDialog->width()/2 + 300;
+    const int xVal = x() + parent->width()/2 - m_selectDialog->width()/2 + 305;
     const int yVal = y() + 430;
 
     m_selectDialog->move(xVal, yVal);
@@ -434,7 +434,7 @@ void CaseInformationDialog::handleLocationSelect()
     /*
      * move the select dialog
      */
-    const int xVal = x() + parent->width()/2 - m_selectDialog->width()/2 + 300;
+    const int xVal = x() + parent->width()/2 - m_selectDialog->width()/2 + 305;
     const int yVal = y() + 630;
 
     m_selectDialog->move(xVal, yVal);
