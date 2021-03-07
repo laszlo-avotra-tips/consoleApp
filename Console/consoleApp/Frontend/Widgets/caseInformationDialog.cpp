@@ -8,6 +8,7 @@
 #include "displayManager.h"
 #include "defaults.h"
 #include "Utility/caseInfoDatabase.h"
+#include "Utility/userSettings.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -47,7 +48,20 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     CaseInfoDatabase ciDb;
     ciDb.initCaseInfo();
 
-    const auto& cim = CaseInformationModel::instance();
+    auto& settings = userSettings::Instance();
+
+    auto cim = CaseInformationModel::instance();
+    auto phn = settings.getPhysician();
+
+    if(!phn.isEmpty()){
+        cim->setDefaultPhysicianName(phn);
+    }
+
+    auto loc = settings.getLocation();
+    if(!loc.isEmpty()){
+        cim->setDefaultLocation(loc);
+    }
+
     const auto& dr = cim->defaultPhysicianName();
     if(!dr.isEmpty()){
         ui->lineEditPhysicianName->setStyleSheet("");
@@ -205,6 +219,7 @@ void CaseInformationDialog::setDateAndTime()
 
 void CaseInformationDialog::editOrSelectPhysicianName()
 {
+    LOG1(m_model.isSelectedPhysicianName());
     if(m_model.isSelectedPhysicianName()){
         /*
          * edit the physician name
@@ -343,28 +358,27 @@ void CaseInformationDialog::enableNext(bool isNext)
 
 void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
 {
+    LOG2(isChecked,m_selectDialog);
     if(isChecked)
     {
         if(m_selectDialog){
-            LOG1(isChecked);
             m_selectDialog->reject();
         }
         return;
     }
-    LOG1(isChecked);
-    auto* parent = this;
+    auto* cid = this;
 
     /*
      * create the modal select dialog
      */
-    m_selectDialog = new SelectDialog(parent);
+    m_selectDialog = new SelectDialog(cid);
     m_selectDialog->setModal(false);
     ui->lineEditPhysicianName->setEnabled(false);
 
     /*
      * move the select dialog
      */
-    const int xVal = x() + parent->width()/2 - m_selectDialog->width()/2 + 305;
+    const int xVal = x() + cid->width()/2 - m_selectDialog->width()/2 + 305;
     const int yVal = y() + 430;
 
     m_selectDialog->move(xVal, yVal);
