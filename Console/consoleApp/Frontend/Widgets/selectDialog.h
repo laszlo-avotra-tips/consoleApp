@@ -23,10 +23,10 @@ class SelectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SelectDialog(CaseInformationDialog *parent = nullptr);
+    explicit SelectDialog(const QString& name, CaseInformationDialog *parent = nullptr);
     ~SelectDialog();
 
-    void initializeSelect(const PhysicianNameContainer& sl, const QString& selected);
+    void initializeSelect(const PhysicianNameContainer& sl, QString selected);
 
     QString selectedItem() const;
 
@@ -48,6 +48,7 @@ private:
     void decrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
     void populateItemsInview(const QString& selected);
 
+    QString m_name;
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
     PhysicianNameContainer m_items;

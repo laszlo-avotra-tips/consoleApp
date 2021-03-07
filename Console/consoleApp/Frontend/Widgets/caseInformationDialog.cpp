@@ -179,6 +179,17 @@ void CaseInformationDialog::setPhysicianName(const QString &name)
     enableNext(isNext);
 }
 
+QString CaseInformationDialog::getLocation() const
+{
+    return ui->labelLocation->text();
+}
+
+void CaseInformationDialog::setLocation(const QString &name)
+{
+    ui->lineEditLocation->setText(name);
+    ui->lineEditLocation->setStyleSheet("");
+}
+
 void CaseInformationDialog::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
@@ -372,7 +383,7 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     /*
      * create the modal select dialog
      */
-    m_selectDialog = new SelectDialog(cid);
+    m_selectDialog = new SelectDialog("physician", cid);
     m_selectDialog->setModal(false);
     ui->lineEditPhysicianName->setEnabled(false);
 
@@ -431,25 +442,35 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
         }
         return;
     }
-    auto* parent = this;
+    auto* cid = this;
 
     /*
      * create the modal select dialog
      */
-    m_selectDialog = new SelectDialog(parent);
+    m_selectDialog = new SelectDialog("location",cid);
     m_selectDialog->setModal(false);
     ui->lineEditLocation->setEnabled(false);
 
     /*
      * move the select dialog
      */
-    const int xVal = x() + parent->width()/2 - m_selectDialog->width()/2 + 305;
+    const int xVal = x() + width()/2 - m_selectDialog->width()/2 + 305;
     const int yVal = y() + 630;
 
     m_selectDialog->move(xVal, yVal);
     m_selectDialog->show();
 
-    m_selectDialog->initializeSelect(m_model.locations(), m_model.defaultLocation());
+    /*
+     * populate the select dialog with physician names
+     */
+    QString candidate;
+    if(m_model.selectedLocation().isEmpty()){
+        candidate = m_model.defaultLocation();
+    }else{
+        candidate = m_model.selectedLocation();
+    }
+    LOG1(candidate);
+    m_selectDialog->initializeSelect(m_model.locations(), candidate);
 
     if(m_selectDialog->exec() == QDialog::Accepted){
 
@@ -469,29 +490,4 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
             return;
         }
     }
-//    {
-//        /*
-//         * handle "ADD NEW" physician name
-//         */
-//        QString paramName = ui->labelLocation->text();
-//        QString paramValue("");
-//        const int keyboardY{200};
-//        const ParameterType param{paramName, paramValue, "ADD NEW"};
-
-//        /*
-//         * create the modal keyboard instance for location
-//         */
-//        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
-
-
-//        /*
-//         * code execution continues here once the keyboard is closed
-//         * add newLocation
-//         * update selected location with newLocation
-//         */
-//        m_model.addLocation(newLocation);
-//        ui->lineEditLocation->setText(newLocation);
-
-//        m_model.setSelectedLocation(newLocation);
-//    }
 }

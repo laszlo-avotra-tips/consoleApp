@@ -5,8 +5,9 @@
 #include <iterator>
 #include "Utility/widgetcontainer.h"
 
-SelectDialog::SelectDialog(CaseInformationDialog *parent) :
+SelectDialog::SelectDialog(const QString& name, CaseInformationDialog *parent) :
     QDialog(parent),
+    m_name(name),
     ui(new Ui::SelectDialog)
 {
     m_parent = parent;
@@ -33,7 +34,7 @@ SelectDialog::~SelectDialog()
     delete ui;
 }
 
-void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, const QString &selected)
+void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, QString selected)
 {
     m_items = sl;
     m_selectedItem = selected;
@@ -113,9 +114,17 @@ void SelectDialog::addNew()
     /*
      * handle "ADD NEW" physician name
      */
-    QString paramName = m_parent->getPhysicianName();
+    QString paramName;
     QString paramValue("");
-    const int keyboardY{200};
+    int keyboardY;
+
+    if(m_name == "physician"){
+        paramName = m_parent->getPhysicianName();
+        keyboardY = 200;
+    } else {
+        keyboardY = 0;
+        paramName = m_parent->getLocation();
+    }
     const ParameterType param{paramName, paramValue, "ADD NEW"};
 
     /*
@@ -129,11 +138,17 @@ void SelectDialog::addNew()
      * update selected physician name with newName
      */
     auto model = *CaseInformationModel::instance();
-    model.addPhysicianName(newName);
-    model.setSelectedPhysicianName(newName);
-
-    model.persistModel();
-    initializeSelect(model.physicianNames(),newName);
+    if(m_name == QString("physician")){
+        model.addPhysicianName(newName);
+        model.setSelectedPhysicianName(newName);
+        model.persistModel();
+        initializeSelect(model.physicianNames(),newName);
+    } else {
+        model.addLocation(newName);
+        model.setSelectedLocation(newName);
+        model.persistModel();
+        initializeSelect(model.locations(),newName);
+    }
 }
 
 void SelectDialog::closeDialog(bool isChecked)

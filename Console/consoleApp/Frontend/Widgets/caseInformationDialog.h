@@ -53,6 +53,9 @@ public:
     QString getPhysicianName() const;
     void setPhysicianName(const QString& name);
 
+    QString getLocation() const;
+    void setLocation(const QString& name);
+
 
 private slots:
     /*!
