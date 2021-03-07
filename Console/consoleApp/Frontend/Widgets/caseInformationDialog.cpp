@@ -66,9 +66,10 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     if(!dr.isEmpty()){
         ui->lineEditPhysicianName->setStyleSheet("");
         ui->lineEditPhysicianName->setText(dr);
+        cim->setSelectedPhysicianName(dr);
         enableNext(true);
     }
-    const auto& loc = cim->defaultLocation();
+    loc = cim->defaultLocation();
     if(!cim->defaultLocation().isEmpty()){
         ui->lineEditLocation->setText(loc);
         cim->setSelectedLocation(loc);
