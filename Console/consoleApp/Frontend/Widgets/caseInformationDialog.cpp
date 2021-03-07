@@ -457,7 +457,7 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
     /*
      * move the select dialog
      */
-    const int xVal = x() + width()/2 - m_selectDialog->width()/2 + 305;
+    const int xVal = x() + cid->width()/2 - m_selectDialog->width()/2 + 305;
     const int yVal = y() + 630;
 
     m_selectDialog->move(xVal, yVal);
@@ -480,16 +480,19 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
         /*
          * handle selection was made
          */
-        const auto& location =  m_selectDialog->selectedItem();
-        ui->lineEditLocation->setText(location);
-        m_model.setSelectedLocation(location);
+        LOG1(m_selectDialog->selectedItem());
+        m_model.setSelectedLocation(m_selectDialog->selectedItem());
+        ui->lineEditLocation->setText(m_model.selectedPhysicianName());
         ui->pushButtonLocationDown->toggle();
     }
     else
     {
         LOG1(isChecked);
         if(!isChecked){
+            ui->lineEditLocation->setEnabled(true);
             ui->lineEditPhysicianName->setEnabled(true);
+            ui->lineEditPatientId->setEnabled(true);
+            ui->pushButtonPhysicianNameDown->setEnabled(true);
             return;
         }
     }
