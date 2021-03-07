@@ -437,6 +437,8 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
      * create the modal select dialog
      */
     m_selectDialog = new SelectDialog(parent);
+    m_selectDialog->setModal(false);
+    ui->lineEditLocation->setEnabled(false);
 
     /*
      * move the select dialog
@@ -457,6 +459,7 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
         const auto& location =  m_selectDialog->selectedItem();
         ui->lineEditLocation->setText(location);
         m_model.setSelectedLocation(location);
+        ui->pushButtonLocationDown->toggle();
     }
     else
     {
