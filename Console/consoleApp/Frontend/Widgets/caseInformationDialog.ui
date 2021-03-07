@@ -353,24 +353,27 @@ font:12pt &quot;Helvetica Neue&quot;;
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">QPushButton{
-background-color:black;
-border-bottom: 2px solid rgb( 169, 169, 169 );
-}</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="icon">
-            <iconset>
-             <normalon>:/octConsole/dropdown</normalon>
-            </iconset>
+            <iconset resource="../../../../Common/Resources/common.qrc">
+             <normaloff>:/images/arrow_up_rollover.png</normaloff>
+             <normalon>:/images/arrow_down_rollover.png</normalon>:/images/arrow_up_rollover.png</iconset>
            </property>
            <property name="iconSize">
             <size>
              <width>50</width>
              <height>50</height>
             </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

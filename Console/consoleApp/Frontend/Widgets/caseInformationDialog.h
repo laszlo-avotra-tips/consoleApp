@@ -88,8 +88,9 @@ private slots:
 
     /*!
      * \brief handleLocationSelect
+     * \param isCkecked
      */
-    void handleLocationSelect();
+    void handleLocationSelect(bool isChecked);
 
     /*!
      * \brief handleBack

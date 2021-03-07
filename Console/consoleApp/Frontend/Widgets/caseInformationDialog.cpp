@@ -400,6 +400,7 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
         /*
          * handle selection was made
          */
+        LOG1(m_selectDialog->selectedItem());
         m_model.setSelectedPhysicianName(m_selectDialog->selectedItem());
         ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
         ui->lineEditPhysicianName->setStyleSheet("");
@@ -420,8 +421,16 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     enableNext(isNext);
 }
 
-void CaseInformationDialog::handleLocationSelect()
+void CaseInformationDialog::handleLocationSelect(bool isChecked)
 {
+    LOG2(isChecked,m_selectDialog);
+    if(isChecked)
+    {
+        if(m_selectDialog){
+            m_selectDialog->reject();
+        }
+        return;
+    }
     auto* parent = this;
 
     /*
@@ -448,29 +457,38 @@ void CaseInformationDialog::handleLocationSelect()
         const auto& location =  m_selectDialog->selectedItem();
         ui->lineEditLocation->setText(location);
         m_model.setSelectedLocation(location);
-    } else {
-        /*
-         * handle "ADD NEW" physician name
-         */
-        QString paramName = ui->labelLocation->text();
-        QString paramValue("");
-        const int keyboardY{200};
-        const ParameterType param{paramName, paramValue, "ADD NEW"};
-
-        /*
-         * create the modal keyboard instance for location
-         */
-        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
-
-
-        /*
-         * code execution continues here once the keyboard is closed
-         * add newLocation
-         * update selected location with newLocation
-         */
-        m_model.addLocation(newLocation);
-        ui->lineEditLocation->setText(newLocation);
-
-        m_model.setSelectedLocation(newLocation);
     }
+    else
+    {
+        LOG1(isChecked);
+        if(!isChecked){
+            ui->lineEditPhysicianName->setEnabled(true);
+            return;
+        }
+    }
+//    {
+//        /*
+//         * handle "ADD NEW" physician name
+//         */
+//        QString paramName = ui->labelLocation->text();
+//        QString paramValue("");
+//        const int keyboardY{200};
+//        const ParameterType param{paramName, paramValue, "ADD NEW"};
+
+//        /*
+//         * create the modal keyboard instance for location
+//         */
+//        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+
+
+//        /*
+//         * code execution continues here once the keyboard is closed
+//         * add newLocation
+//         * update selected location with newLocation
+//         */
+//        m_model.addLocation(newLocation);
+//        ui->lineEditLocation->setText(newLocation);
+
+//        m_model.setSelectedLocation(newLocation);
+//    }
 }
