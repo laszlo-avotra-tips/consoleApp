@@ -449,8 +449,11 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
      */
     m_selectDialog = new SelectDialog("location",cid);
     m_selectDialog->setModal(false);
-    ui->lineEditLocation->setEnabled(false);
 
+    ui->lineEditLocation->setEnabled(false);
+    ui->lineEditPhysicianName->setEnabled(false);
+    ui->lineEditPatientId->setEnabled(false);
+    ui->pushButtonPhysicianNameDown->setEnabled(false);
     /*
      * move the select dialog
      */
@@ -490,4 +493,10 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
             return;
         }
     }
+
+    ui->lineEditLocation->setEnabled(true);
+    ui->lineEditPhysicianName->setEnabled(true);
+    ui->lineEditPatientId->setEnabled(true);
+    ui->pushButtonPhysicianNameDown->setEnabled(true);
+
 }
