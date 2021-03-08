@@ -158,6 +158,43 @@ void PreferencesDatabase::initCaseInfo()
     cim->initDefaults();
 }
 
+void PreferencesDatabase::initContainers()
+{
+    QSqlQuery q;
+    QSqlError sqlerr;
+
+    q.prepare( "SELECT name FROM Locations ORDER BY name ASC" );
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+    QSqlRecord record = q.record();
+
+    while(q.next()){
+        record = q.record();
+        const auto& location = (record.value(0).toString());
+        m_locations.insert(location);
+    }
+
+    q.prepare( "SELECT name FROM Physicians ORDER BY name ASC" );
+
+    q.exec();
+    sqlerr = q.lastError();
+    if(sqlerr.isValid()){
+        const QString& errorMsg = sqlerr.databaseText();
+        LOG1(errorMsg)
+    }
+    record = q.record();
+    while(q.next()){
+        record = q.record();
+        const auto& physician = (record.value(0).toString());
+        m_physicians.insert(physician);
+    }
+}
+
 void PreferencesDatabase::updatePhysicianTable(const std::set<QString> &names)
 {
     QSqlError sqlerr;

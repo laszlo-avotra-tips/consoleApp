@@ -19,6 +19,7 @@ HEADERS += \
     $$PWD/Frontend/Utility/dialogFactory.h \
     $$PWD/Frontend/Utility/octFrameRecorder.h \
     $$PWD/Frontend/Utility/preferencesDatabase.h \
+    $$PWD/Frontend/Utility/preferencesModel.h \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
@@ -103,6 +104,7 @@ SOURCES += \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
     $$PWD/Frontend/Utility/octFrameRecorder.cpp \
     $$PWD/Frontend/Utility/preferencesDatabase.cpp \
+    $$PWD/Frontend/Utility/preferencesModel.cpp \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
