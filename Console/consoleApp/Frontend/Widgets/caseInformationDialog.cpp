@@ -482,7 +482,7 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
          */
         LOG1(m_selectDialog->selectedItem());
         m_model.setSelectedLocation(m_selectDialog->selectedItem());
-        ui->lineEditLocation->setText(m_model.selectedLocation();
+        ui->lineEditLocation->setText(m_model.selectedLocation());
         ui->pushButtonLocationDown->toggle();
     }
     else
