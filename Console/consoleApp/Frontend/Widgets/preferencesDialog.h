@@ -95,6 +95,8 @@ private:
     PreferenceContainers_t::iterator m_phIt;
     PreferenceContainers_t::iterator m_locIt;
 
+    PreferencesModel* m_model{nullptr};
+
 };
 
 #endif // PREFERENCESDIALOG_H

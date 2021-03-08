@@ -3,7 +3,7 @@
 #include "logger.h"
 #include "Utility/preferencesModel.h"
 
-#include "caseInformationModel.h"
+//#include "caseInformationModel.h"
 #include "Utility/userSettings.h"
 #include "Utility/preferencesDatabase.h"
 #include "Utility/widgetcontainer.h"
@@ -61,16 +61,16 @@ void PreferencesDialog::init()
 {
 //    PreferencesDatabase ciDb;
 //    ciDb.initCaseInfo();
-    auto* model = PreferencesModel::instance();
+    m_model = PreferencesModel::instance();
 
-    m_defaultLocationCandidate = model->defaultLocation();
-    m_defaultPhysicianCandidate = model->defaultPhysician();
+    m_defaultLocationCandidate = m_model->defaultLocation();
+    m_defaultPhysicianCandidate = m_model->defaultPhysician();
 //    const auto& ci = CaseInformationModel::instance();
 //    m_defaultLocationCandidate = ci->defaultLocation();
 //    m_defaultPhysicianCandidate = ci->defaultPhysicianName();
 
-    m_locIt = model->locations().begin();
-    m_phIt = model->physicians().begin();
+    m_locIt = m_model->locations().begin();
+    m_phIt = m_model->physicians().begin();
 //    m_locIt = ci->locations().begin();
 //    m_phIt = ci->physicianNames().begin();
 
@@ -166,8 +166,7 @@ void PreferencesDialog::setDefaultPhysician()
     }
 //    auto ci = CaseInformationModel::instance();
 //    ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
-    auto* model = PreferencesModel::instance();
-    model->setDefaultPhysician(m_defaultPhysicianCandidate);
+    m_model->setDefaultPhysician(m_defaultPhysicianCandidate);
     m_defaultPhysicianCandidate = "";
     ui->pushButtonAddPhysician->setText("ADD");
 }
@@ -200,8 +199,7 @@ void PreferencesDialog::setDefaultLocation()
     }
 //    auto ci = CaseInformationModel::instance();
 //    ci->setDefaultLocation(m_defaultLocationCandidate);
-    auto* model = PreferencesModel::instance();
-    model->setDefaultLocation(m_defaultLocationCandidate);
+    m_model->setDefaultLocation(m_defaultLocationCandidate);
     m_defaultLocationCandidate = "";
     ui->pushButtonAddLocation->setText("ADD");
 }
@@ -210,9 +208,7 @@ void PreferencesDialog::initPhysiciansContainer()
 {
 //    const auto& ci = CaseInformationModel::instance();
 //    const auto& names = ci->physicianNames();
-
-    auto* model = PreferencesModel::instance();
-    const auto& names = model->physicians();
+    const auto& names = m_model->physicians();
 
     auto nameIt = m_phIt;
     m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
@@ -230,9 +226,7 @@ void PreferencesDialog::initLocationsContainer()
 {
 //    const auto& ci = CaseInformationModel::instance();
 //    const auto& names = ci->locations();
-
-    auto* model = PreferencesModel::instance();
-    const auto& names = model->physicians();
+    const auto& names = m_model->physicians();
 
     auto nameIt = m_locIt;
     m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
@@ -248,9 +242,9 @@ void PreferencesDialog::initLocationsContainer()
 
 void PreferencesDialog::updatePysicianLabels(const QString& name)
 {
-    const auto& ci = CaseInformationModel::instance();
-    const auto& names = ci->physicianNames();
-
+//    const auto& ci = CaseInformationModel::instance();
+//    const auto& names = ci->physicianNames();
+    const auto& names = m_model->physicians();
     m_phIt = names.begin();
 //    if(!name.isEmpty()){
 //        auto temp = names.find(name);
@@ -272,8 +266,9 @@ void PreferencesDialog::updatePysicianLabels(const QString& name)
 
 void PreferencesDialog::updateLocationLabels(const QString& name)
 {
-    const auto& ci = CaseInformationModel::instance();
-    const auto& names = ci->locations();
+//    const auto& ci = CaseInformationModel::instance();
+//    const auto& names = ci->locations();
+    const auto& names = m_model->locations();
 
     m_locIt = names.begin();
 //    if(!name.isEmpty()){
@@ -296,43 +291,44 @@ void PreferencesDialog::updateLocationLabels(const QString& name)
 
 void PreferencesDialog::persistPreferences()
 {
-    auto& settings = userSettings::Instance();
-    const auto& ci = CaseInformationModel::instance();
+    m_model->persistPreferences();
+//    auto& settings = userSettings::Instance();
+//    const auto& ci = CaseInformationModel::instance();
 
-    const auto& loc = ci->defaultLocation();
-    const auto& pn = ci->defaultPhysicianName();
+//    const auto& loc = ci->defaultLocation();
+//    const auto& pn = ci->defaultPhysicianName();
 
-    settings.setLocation(loc);
-    settings.setPhysician(pn);
+//    settings.setLocation(loc);
+//    settings.setPhysician(pn);
 
-    PreferencesDatabase ciDb;
-    ciDb.initCaseInfo();
+//    PreferencesDatabase ciDb;
+//    ciDb.initCaseInfo();
 
-    QSqlQuery q;
+//    QSqlQuery q;
 
-    q.prepare( QString("DELETE FROM Physicians"));
-    q.exec();
-    QSqlError sqlerr = q.lastError();
-    if(sqlerr.isValid()){
-        const QString& errorMsg = sqlerr.databaseText();
-        LOG1(errorMsg)
-    }
+//    q.prepare( QString("DELETE FROM Physicians"));
+//    q.exec();
+//    QSqlError sqlerr = q.lastError();
+//    if(sqlerr.isValid()){
+//        const QString& errorMsg = sqlerr.databaseText();
+//        LOG1(errorMsg)
+//    }
 
-    q.prepare( QString("DELETE FROM Locations"));
-    q.exec();
-    sqlerr = q.lastError();
-    if(sqlerr.isValid()){
-        const QString& errorMsg = sqlerr.databaseText();
-        LOG1(errorMsg)
-    }
+//    q.prepare( QString("DELETE FROM Locations"));
+//    q.exec();
+//    sqlerr = q.lastError();
+//    if(sqlerr.isValid()){
+//        const QString& errorMsg = sqlerr.databaseText();
+//        LOG1(errorMsg)
+//    }
 
-    for(const auto& physician : ci->physicianNames()){
-        ciDb.addPhysician(physician);
-    }
+//    for(const auto& physician : ci->physicianNames()){
+//        ciDb.addPhysician(physician);
+//    }
 
-    for(const auto& location : ci->locations()){
-        ciDb.addLocation(location);
-    }
+//    for(const auto& location : ci->locations()){
+//        ciDb.addLocation(location);
+//    }
 }
 
 void PreferencesDialog::handleAddRemoveLocation()
@@ -376,8 +372,8 @@ void PreferencesDialog::handleAddLocation()
      */
 
     if(!newName.isEmpty()){
-        auto cim = CaseInformationModel::instance();
-        cim->addLocation(newName);
+//        auto cim = CaseInformationModel::instance();
+        m_model->addLocation(newName);
         updateLocationLabels(newName);
     }
 
@@ -405,8 +401,8 @@ void PreferencesDialog::handleAddPhysician()
      */
 
     if(!newName.isEmpty()){
-        auto cim = CaseInformationModel::instance();
-        cim->addPhysicianName(newName);
+//        auto cim = CaseInformationModel::instance();
+        m_model->addPhysician(newName);
         updatePysicianLabels(newName);
     }
 }
@@ -415,15 +411,15 @@ void PreferencesDialog::handleRemoveLocation()
 {
     const auto& name = m_selectedLocationLabel->text();
 
-    auto cim = CaseInformationModel::instance();
-    if(cim->removeLocation(name)){
+//    auto cim = CaseInformationModel::instance();
+    if(m_model->removeLocation(name)){
         updateLocationLabels("");
         unmarkAll(m_locationLabels);
         ui->pushButtonAddLocation->setText("ADD");
         ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
-        if(cim->defaultLocation() == name){
+        if(m_model->defaultLocation() == name){
             ui->labelLocationDefault->setText("Default:");
-            cim->setDefaultLocation("");
+            m_model->setDefaultLocation("");
         }
     }
 }
@@ -432,23 +428,23 @@ void PreferencesDialog::handleRemovePhysician()
 {
     const auto& name = m_selectedPhysicianLabel->text();
 
-    auto cim = CaseInformationModel::instance();
-    if(cim->removePhysicianName(name)){
+//    auto cim = CaseInformationModel::instance();
+    if(m_model->removePhysician(name)){
         updatePysicianLabels("");
         unmarkAll(m_physicianLabels);
         ui->pushButtonAddPhysician->setText("ADD");
         ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
-        if(cim->defaultPhysicianName() == name){
+        if(m_model->defaultPhysician() == name){
             ui->labelDrDefault->setText("Default:");
-            cim->setDefaultPhysicianName("");
+            m_model->setDefaultPhysician("");
         }
     }
 }
 
 void PreferencesDialog::handlePhysicianUp()
 {
-    auto cim = CaseInformationModel::instance();
-    const auto& names = cim->physicianNames();
+//    auto cim = CaseInformationModel::instance();
+    const auto& names = m_model->physicians();
 
     auto maxBaseIt = names.end();
     int i=0;
@@ -466,8 +462,8 @@ void PreferencesDialog::handlePhysicianUp()
 
 void PreferencesDialog::handlePhysicianDown()
 {
-    auto cim = CaseInformationModel::instance();
-    const auto& names = cim->physicianNames();
+//    auto cim = CaseInformationModel::instance();
+    const auto& names = m_model->physicians();
 
     if(m_phIt != names.begin()){
         --m_phIt;
@@ -479,8 +475,8 @@ void PreferencesDialog::handlePhysicianDown()
 
 void PreferencesDialog::handleLocationUp()
 {
-    auto cim = CaseInformationModel::instance();
-    const auto& names = cim->locations();
+//    auto cim = CaseInformationModel::instance();
+    const auto& names = m_model->locations();
 
     auto maxBaseIt = names.end();
     int i=0;
@@ -498,8 +494,8 @@ void PreferencesDialog::handleLocationUp()
 
 void PreferencesDialog::handleLocationDown()
 {
-    auto cim = CaseInformationModel::instance();
-    const auto& names = cim->locations();
+//    auto cim = CaseInformationModel::instance();
+    const auto& names = m_model->locations();
 
     if(m_locIt != names.begin()){
         --m_locIt;
