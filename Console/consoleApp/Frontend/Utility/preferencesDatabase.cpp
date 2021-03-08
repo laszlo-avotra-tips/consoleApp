@@ -1,7 +1,8 @@
-#include "caseInfoDatabase.h"
+#include "preferencesDatabase.h"
 #include "logger.h"
+#include "caseInformationModel.h"
 
-CaseInfoDatabase::CaseInfoDatabase()
+PreferencesDatabase::PreferencesDatabase()
 {
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName( m_dbName );
@@ -15,14 +16,14 @@ CaseInfoDatabase::CaseInfoDatabase()
     createTables();
 }
 
-CaseInfoDatabase::~CaseInfoDatabase()
+PreferencesDatabase::~PreferencesDatabase()
 {
     if(m_db.open()){
         m_db.close();
     }
 }
 
-QSqlError CaseInfoDatabase::createTables()
+QSqlError PreferencesDatabase::createTables()
 {
     QSqlError sqlerr;
 
@@ -61,7 +62,7 @@ QSqlError CaseInfoDatabase::createTables()
     return sqlerr;
 }
 
-int CaseInfoDatabase::addPhysician(const QString &name)
+int PreferencesDatabase::addPhysician(const QString &name)
 {
     QSqlQuery q;
     QSqlError sqlerr;
@@ -81,7 +82,7 @@ int CaseInfoDatabase::addPhysician(const QString &name)
     return 0;
 }
 
-int CaseInfoDatabase::addLocation(const QString &name)
+int PreferencesDatabase::addLocation(const QString &name)
 {
     QSqlQuery q;
     QSqlError sqlerr;
@@ -101,21 +102,21 @@ int CaseInfoDatabase::addLocation(const QString &name)
     return 0;
 }
 
-const PhysicianNameContainer &CaseInfoDatabase::physicians() const
+const TableContainers_t &PreferencesDatabase::physicians() const
 {
     return m_physicians;
 }
 
-const PhysicianNameContainer &CaseInfoDatabase::locations() const
+const TableContainers_t &PreferencesDatabase::locations() const
 {
     return m_locations;
 }
 
-void CaseInfoDatabase::initCaseInfo()
+void PreferencesDatabase::initCaseInfo()
 {
     QSqlQuery q;
     QSqlError sqlerr;
-    PhysicianNameContainer nl;
+    TableContainers_t nl;
 
     auto cim = CaseInformationModel::instance();
 
@@ -157,7 +158,7 @@ void CaseInfoDatabase::initCaseInfo()
     cim->initDefaults();
 }
 
-void CaseInfoDatabase::updatePhysicianTable(const std::set<QString> &names)
+void PreferencesDatabase::updatePhysicianTable(const std::set<QString> &names)
 {
     QSqlError sqlerr;
     QSqlQuery q;
@@ -183,7 +184,7 @@ void CaseInfoDatabase::updatePhysicianTable(const std::set<QString> &names)
     }
 }
 
-void CaseInfoDatabase::updateLocationTable(const std::set<QString> &names)
+void PreferencesDatabase::updateLocationTable(const std::set<QString> &names)
 {
     QSqlError sqlerr;
     QSqlQuery q;

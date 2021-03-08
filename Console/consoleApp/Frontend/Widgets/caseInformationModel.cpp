@@ -4,7 +4,7 @@
 #include "util.h"
 #include "logger.h"
 #include "fullCaseRecorder.h"
-#include "Utility/caseInfoDatabase.h"
+#include "Utility/preferencesDatabase.h"
 #include <algorithm>
 
 CaseInformationModel* CaseInformationModel::m_instance{nullptr};
@@ -47,7 +47,7 @@ bool CaseInformationModel::removePhysicianName(const QString &name)
     if(name != m_selectedPhysicianName){
         size = m_physicianNames.erase(name);
         success = true;
-        CaseInfoDatabase ciDb;
+        PreferencesDatabase ciDb;
         const auto& ci = CaseInformationModel::instance();
         const auto& names = ci->physicianNames();
         ciDb.updatePhysicianTable(names);
@@ -62,7 +62,7 @@ bool CaseInformationModel::removeLocation(const QString &name)
     if(name != m_selectedLocation){
         size = m_locations.erase(name);
         success = true;
-        CaseInfoDatabase ciDb;
+        PreferencesDatabase ciDb;
         const auto& ci = CaseInformationModel::instance();
         const auto& names = ci->locations();
         ciDb.updateLocationTable(names);
@@ -72,7 +72,7 @@ bool CaseInformationModel::removeLocation(const QString &name)
 
 void CaseInformationModel::persistModel()
 {
-    CaseInfoDatabase ciDb;
+    PreferencesDatabase ciDb;
     ciDb.initCaseInfo();
 
     QSqlQuery q;

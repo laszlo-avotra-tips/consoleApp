@@ -4,7 +4,7 @@
 
 #include "caseInformationModel.h"
 #include "Utility/userSettings.h"
-#include "Utility/caseInfoDatabase.h"
+#include "Utility/preferencesDatabase.h"
 #include "Utility/widgetcontainer.h"
 #include "consoleKeyboard.h"
 #include <QShowEvent>
@@ -58,7 +58,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
 void PreferencesDialog::init()
 {
-    CaseInfoDatabase ciDb;
+    PreferencesDatabase ciDb;
     ciDb.initCaseInfo();
 
     const auto& ci = CaseInformationModel::instance();
@@ -286,7 +286,7 @@ void PreferencesDialog::persistPreferences()
     settings.setLocation(loc);
     settings.setPhysician(pn);
 
-    CaseInfoDatabase ciDb;
+    PreferencesDatabase ciDb;
     ciDb.initCaseInfo();
 
     QSqlQuery q;

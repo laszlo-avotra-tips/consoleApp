@@ -7,7 +7,7 @@
 #include "logger.h"
 #include "displayManager.h"
 #include "defaults.h"
-#include "Utility/caseInfoDatabase.h"
+#include "Utility/preferencesDatabase.h"
 #include "Utility/userSettings.h"
 
 #include <QDateTime>
@@ -45,7 +45,7 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     const int yc = ControlScreenHeight / 2 - height() / 2;
     move(xc,yc);
 
-    CaseInfoDatabase ciDb;
+    PreferencesDatabase ciDb;
     ciDb.initCaseInfo();
 
     auto& settings = userSettings::Instance();
