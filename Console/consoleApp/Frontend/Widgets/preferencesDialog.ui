@@ -310,7 +310,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>DR. XXX1</string>
+     <string/>
     </property>
    </widget>
    <widget class="ActiveLabel" name="labelDr2">
@@ -323,7 +323,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>DR. XXX2</string>
+     <string/>
     </property>
    </widget>
    <widget class="ActiveLabel" name="labelDr3">
@@ -336,7 +336,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>DR. XXX3</string>
+     <string/>
     </property>
    </widget>
    <widget class="ActiveLabel" name="labelLocation1">
@@ -349,7 +349,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>LAB XXX1</string>
+     <string/>
     </property>
    </widget>
    <widget class="ActiveLabel" name="labelLocation2">
@@ -362,7 +362,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>LAB XXX2</string>
+     <string/>
     </property>
    </widget>
    <widget class="ActiveLabel" name="labelLocation3">
@@ -375,7 +375,7 @@ border-radius: 10px;
      </rect>
     </property>
     <property name="text">
-     <string>LAB XXX3</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonDrDown">
