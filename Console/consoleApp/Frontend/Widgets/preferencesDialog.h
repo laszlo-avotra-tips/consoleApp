@@ -56,6 +56,8 @@ private slots:
     void handleLocationUnmarked();
 
 private:
+    void handlePhysicianLabel(const ActiveLabel* label);
+    void handleLocationLabel(const ActiveLabel* label);
     void showEvent(QShowEvent* se) override;
     void hideEvent(QHideEvent* se) override;
 

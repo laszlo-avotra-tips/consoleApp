@@ -81,38 +81,32 @@ PreferencesDialog::~PreferencesDialog()
 
 void PreferencesDialog::handleLabelDr1(ActiveLabel *label)
 {
-    const auto& name = label->text();
-    handleSelectedPhysician(name);
+    handlePhysicianLabel(label);
 }
 
 void PreferencesDialog::handleLabelDr2(ActiveLabel* label)
 {
-    const auto& name = label->text();
-    handleSelectedPhysician(name);
+    handlePhysicianLabel(label);
 }
 
 void PreferencesDialog::handleLabelDr3(ActiveLabel* label)
 {
-    const auto& name = label->text();
-    handleSelectedPhysician(name);
+    handlePhysicianLabel(label);
 }
 
 void PreferencesDialog::handleLocation1(ActiveLabel *label)
 {
-    const auto& name = label->text();
-    handleSelectedLocation(name);
+    handleLocationLabel(label);
 }
 
 void PreferencesDialog::handleLocation2(ActiveLabel *label)
 {
-    const auto& name = label->text();
-    handleSelectedLocation(name);
+    handleLocationLabel(label);
 }
 
 void PreferencesDialog::handleLocation3(ActiveLabel *label)
 {
-    const auto& name = label->text();
-    handleSelectedLocation(name);
+    handleLocationLabel(label);
 }
 
 void PreferencesDialog::unmarkAll(std::vector<ActiveLabel*>& container)
@@ -508,6 +502,22 @@ void PreferencesDialog::handleLocationUnmarked()
     ui->pushButtonAddLocation->setText("ADD");
     ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     m_defaultLocationCandidate = "";
+}
+
+void PreferencesDialog::handlePhysicianLabel(const ActiveLabel *label)
+{
+    const auto& name = label->text();
+    if(!name.isEmpty()){
+        handleSelectedPhysician(name);
+    }
+}
+
+void PreferencesDialog::handleLocationLabel(const ActiveLabel *label)
+{
+    const auto& name = label->text();
+    if(!name.isEmpty()){
+        handleSelectedLocation(name);
+    }
 }
 
 void PreferencesDialog::showEvent(QShowEvent *se)
