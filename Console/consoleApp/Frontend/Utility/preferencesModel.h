@@ -4,6 +4,7 @@
 #include <QObject>
 #include <set>
 
+class PreferencesDatabase;
 
 using PreferenceContainers_t = std::set<QString>;
 

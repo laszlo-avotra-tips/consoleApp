@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "activeLabel.h"
-#include "Utility/preferencesDatabase.h"
+#include "Utility/preferencesModel.h"
 
 using LabelContainer = std::map<QString, ActiveLabel*>;
 
@@ -92,8 +92,8 @@ private:
     int m_physicianBase{0};
     int m_locationBase{0};
 
-    TableContainers_t::iterator m_phIt;
-    TableContainers_t::iterator m_locIt;
+    PreferenceContainers_t::iterator m_phIt;
+    PreferenceContainers_t::iterator m_locIt;
 
 };
 
