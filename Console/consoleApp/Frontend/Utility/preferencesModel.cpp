@@ -101,8 +101,17 @@ void PreferencesModel::loadPreferences()
     m_physicians = db.physicians();
     m_locations = db.locations();
 
-    m_defaultPhysician = userSettings::Instance().getPhysician();
-    m_defaultLocation = userSettings::Instance().getLocation();
+    auto defaultPhysicianCandidate = userSettings::Instance().getPhysician();
+    const auto phIt = m_physicians.find(defaultPhysicianCandidate);
+    if(phIt != m_physicians.end()){
+        m_defaultPhysician = defaultPhysicianCandidate;
+    }
+
+    auto defaultLocationCandidate = userSettings::Instance().getLocation();
+    const auto locIt = m_locations.find(defaultLocationCandidate);
+    if(locIt != m_locations.end()){
+        m_defaultLocation = defaultLocationCandidate;
+    }
 }
 
 void PreferencesModel::persistPreferences()
