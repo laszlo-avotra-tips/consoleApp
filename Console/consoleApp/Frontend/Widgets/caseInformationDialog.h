@@ -45,11 +45,6 @@ public:
      */
     ~CaseInformationDialog();
 
-    /*!
-     * \brief reset the case information model to default values
-     */
-    static void reset();
-
     QString getPhysicianName() const;
     void setPhysicianName(const QString& name);
 
@@ -143,11 +138,6 @@ private:
      * the model
      */
     CaseInformationModel& m_model;
-
-    /*!
-     * \brief m_isNewCase - true for new case
-     */
-    bool m_isNewCase{true};
 };
 
 #endif // CASEINFORMATIONDIALOG_H

@@ -244,8 +244,6 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_opacScreen->show();
         m_graphicsView->hide();
 
-//        CaseInformationDialog::reset();
-
         WidgetContainer::instance()->gotoScreen("startScreen");
 
         WidgetContainer::instance()->unRegisterWidget("l2500Frontend");

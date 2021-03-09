@@ -52,21 +52,11 @@ CaseInformationDialog::~CaseInformationDialog()
     delete ui;
 }
 
-void CaseInformationDialog::reset()
-{
-    /*
-     * remove selections
-     */
-    CaseInformationModel::instance()->setSelectedPhysicianName("");
-    CaseInformationModel::instance()->setSelectedLocation("");
-}
-
 void CaseInformationDialog::initDialog(const std::vector<QString> *param)
 {
     if(param && !param->empty()){
         const auto& enterButtonText = *param->begin();
         ui->pushButtonNext->setText(enterButtonText);
-        m_isNewCase = false;
     }
 
     /*
@@ -157,11 +147,6 @@ void CaseInformationDialog::showEvent(QShowEvent *se)
 
 void CaseInformationDialog::handleBack()
 {
-//    if(m_isNewCase){
-//        m_model.setSelectedPhysicianName("");
-//        m_model.setSelectedLocation("");
-//        m_model.setPatientId("");
-//    }
     reject();
 }
 
