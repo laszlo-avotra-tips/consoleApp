@@ -86,6 +86,7 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
      * required field logic
      */
     if(m_model.isSelectedPhysicianName()){
+        LOG1(m_model.selectedPhysicianName());
         ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
         ui->lineEditPhysicianName->setStyleSheet("");
         ui->lineEditDateAndTime->setText(m_model.dateAndTime());
@@ -144,7 +145,12 @@ void CaseInformationDialog::showEvent(QShowEvent *se)
         DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
         DisplayManager::instance()->setWindowTitle("CASE INFORMATION IN PROCESS");
         WidgetContainer::instance()->setIsNewCase(true);
-        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
+        if(m_model.selectedPhysicianName().isEmpty()){
+            ui->lineEditPhysicianName->setText("Required field");
+            ui->lineEditPhysicianName->setStyleSheet("color:grey;font:12pt \"Helvetica Neue\"");
+        }else{
+            ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
+        }
         ui->lineEditLocation->setText(m_model.selectedLocation());
     }
 }
