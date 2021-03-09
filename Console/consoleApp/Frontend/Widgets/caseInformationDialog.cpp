@@ -205,12 +205,12 @@ void CaseInformationDialog::editOrSelectPhysicianName()
 //        enableNext();
 //    }
 //    else
-    {
-        /*
-         * select physicianName
-         */
-        emit ui->pushButtonPhysicianNameDown->clicked();
-    }
+//    {
+//        /*
+//         * select physicianName
+//         */
+//        emit ui->pushButtonPhysicianNameDown->clicked();
+//    }
 }
 
 void CaseInformationDialog::openKeyboardPatientId()
@@ -270,12 +270,12 @@ void CaseInformationDialog::editOrSelectLocation()
 //        m_model.setSelectedLocation(newLocation);
 //    }
 //    else
-    {
-        /*
-         * select location
-         */
-        emit ui->pushButtonLocationDown->clicked();
-    }
+//    {
+//        /*
+//         * select location
+//         */
+//        emit ui->pushButtonLocationDown->clicked();
+//    }
 }
 
 void CaseInformationDialog::handleNext()
