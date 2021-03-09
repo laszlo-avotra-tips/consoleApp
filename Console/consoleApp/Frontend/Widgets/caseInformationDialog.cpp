@@ -29,9 +29,7 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     /*
      * connect the user interface to this class
      */
-    connect(ui->lineEditPhysicianName, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::editOrSelectPhysicianName);
     connect(ui->lineEditPatientId, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::openKeyboardPatientId);
-    connect(ui->lineEditLocation, &ConsoleLineEdit::mousePressed, this, &CaseInformationDialog::editOrSelectLocation);
 
     connect(ui->pushButtonBack, &QPushButton::clicked, this, &CaseInformationDialog::handleBack);
     connect(ui->pushButtonNext, &QPushButton::clicked, this, &CaseInformationDialog::handleNext);
@@ -101,9 +99,6 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
             ui->lineEditLocation->setText(m_model.selectedLocation());
         }
     } else {
-//        setDateAndTime();
-//        connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
-//        m_displayTimer.start(500);
         ui->lineEditPhysicianName->setText("Required field");
         enableNext();
         m_model.setSelectedLocation("");
@@ -123,7 +118,6 @@ void CaseInformationDialog::setPhysicianName(const QString &name)
 {
     ui->lineEditPhysicianName->setText(name);
     ui->lineEditPhysicianName->setStyleSheet("");
-    const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
     enableNext();
 }
 
@@ -168,51 +162,6 @@ void CaseInformationDialog::setDateAndTime()
     ui->lineEditDateAndTime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd  hh:mm:ss"));
 }
 
-void CaseInformationDialog::editOrSelectPhysicianName()
-{
-    LOG1(m_model.isSelectedPhysicianName());
-//    if(m_model.isSelectedPhysicianName()){
-//        /*
-//         * edit the physician name
-//         * initialize the keyboard for edit
-//         */
-//        const auto& value = m_model.selectedPhysicianName();
-//        QString paramName = ui->labelPhysicianName->text();
-//        QString paramValue = ui->lineEditPhysicianName->text();
-//        const int keyboardY{410};
-
-//        /*
-//         * create the keyboard parameters
-//         */
-//        const std::vector<QString> param{paramName, paramValue};
-
-//        /*
-//         * create the modal keyboard instance for physician name
-//         */
-//        auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
-
-//        /*
-//         * code execution continues here once the keyboard is closed
-//         * update selected physician name with newName
-//         */
-//        ui->lineEditPhysicianName->setText(newName);
-//        m_model.setSelectedPhysicianName(newName);
-
-//        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-//        /*
-//         * enable disable Next
-//         */
-//        enableNext();
-//    }
-//    else
-//    {
-//        /*
-//         * select physicianName
-//         */
-//        emit ui->pushButtonPhysicianNameDown->clicked();
-//    }
-}
-
 void CaseInformationDialog::openKeyboardPatientId()
 {
     /*
@@ -238,44 +187,6 @@ void CaseInformationDialog::openKeyboardPatientId()
      */
     ui->lineEditPatientId->setText(newPatientId);
     m_model.setPatientId(newPatientId);
-}
-
-void CaseInformationDialog::editOrSelectLocation()
-{
-//    if(m_model.isSelectedLocation()){
-//        /*
-//         * edit the location
-//         * initialize the keyboard for edit
-//         */
-//        const auto& value = m_model.selectedLocation();
-//        QString paramName = ui->labelLocation->text();
-//        QString paramValue = ui->lineEditLocation->text();
-//        const int keyboardY{610};
-
-//        /*
-//         * create the keyboard parameters
-//         */
-//        const std::vector<QString> param{paramName, paramValue};
-
-//        /*
-//         * create the modal keyboard instance for location
-//         */
-//        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
-
-//        /*
-//         * code execution continues here once the keyboard is closed
-//         * update selected location with newLocation
-//         */
-//        ui->lineEditLocation->setText(newLocation);
-//        m_model.setSelectedLocation(newLocation);
-//    }
-//    else
-//    {
-//        /*
-//         * select location
-//         */
-//        emit ui->pushButtonLocationDown->clicked();
-//    }
 }
 
 void CaseInformationDialog::handleNext()

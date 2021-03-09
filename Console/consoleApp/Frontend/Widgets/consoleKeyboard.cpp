@@ -37,6 +37,7 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
             enterButton->setText(actionOnEnter);
         }
     }
+    ui->pushButton_enter->setEnabled(false);
 
     /*
      * connect the UI widgets to this classes methods
@@ -93,6 +94,7 @@ void ConsoleKeyboard::handleDelete()
     }
     ui->lineEditParam->setFocus();
     highlightEnter();
+
 }
 
 void ConsoleKeyboard::handleSpace()
@@ -285,7 +287,14 @@ void ConsoleKeyboard::buttonToLower(QPushButton *button)
 
 void ConsoleKeyboard::highlightEnter()
 {
-    ui->pushButton_enter->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    if(!ui->lineEditParam->text().isEmpty()){
+        ui->pushButton_enter->setStyleSheet("background-color: rgb(245,196,0); color: black");
+        ui->pushButton_enter->setEnabled(true);
+    } else {
+        //background-color: #343434;
+        ui->pushButton_enter->setStyleSheet("background-color: #343434; color: black");
+        ui->pushButton_enter->setEnabled(false);
+    }
 }
 
 void ConsoleKeyboard::handleCapsLock(bool checked)
