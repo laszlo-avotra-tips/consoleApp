@@ -426,9 +426,11 @@ void PreferencesDialog::handleRemoveLocation()
 void PreferencesDialog::handleRemovePhysician()
 {
     const auto& name = m_selectedPhysicianLabel->text();
+    LOG1(name);
 
 //    auto cim = CaseInformationModel::instance();
     if(m_model->removePhysician(name)){
+        LOG1(name);
         updatePysicianLabels("");
         unmarkAll(m_physicianLabels);
         ui->pushButtonAddPhysician->setText("ADD");
