@@ -12,15 +12,7 @@ CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
 CaseInformationModel::CaseInformationModel()
 {
-    m_preferencesModel = PreferencesModel::instance();
-    m_preferencesModel->loadPreferences();
-
-    m_selectedLocation = m_preferencesModel->defaultLocation();
-
-    if(!m_preferencesModel->defaultPhysician().isEmpty()){
-        m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
-    }
-
+    init();
     QString msgCaseInformationModel("created");
     LOG1(msgCaseInformationModel);
 }
@@ -31,6 +23,18 @@ CaseInformationModel *CaseInformationModel::instance()
         m_instance = new CaseInformationModel();
     }
     return m_instance;
+}
+
+void CaseInformationModel::init()
+{
+    m_preferencesModel = PreferencesModel::instance();
+    m_preferencesModel->loadPreferences();
+
+    m_selectedLocation = m_preferencesModel->defaultLocation();
+
+    if(!m_preferencesModel->defaultPhysician().isEmpty()){
+        m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
+    }
 }
 
 QString CaseInformationModel::selectedPhysicianName() const

@@ -348,6 +348,7 @@ void MainScreen::showEvent(QShowEvent *se)
     QWidget::showEvent( se );
     qDebug() << __FUNCTION__;
     if(WidgetContainer::instance()->getIsNewCase()){
+        CaseInformationModel::instance()->init();
         QTimer::singleShot(100,this, &MainScreen::openCaseInformationDialog);
         //clear sector
     }
