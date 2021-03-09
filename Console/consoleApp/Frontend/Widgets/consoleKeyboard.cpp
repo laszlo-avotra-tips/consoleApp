@@ -108,8 +108,13 @@ void ConsoleKeyboard::handleNumbersAndOthers(const QString& number)
 {
     auto stringList = number.split("\n");
     if(stringList.size() == 2){
-        const QString val = ui->lineEditParam->text() + stringList[1];
-        ui->lineEditParam->setText(val);
+        if(m_isLowCap){
+            const QString val = ui->lineEditParam->text() + stringList[0];
+            ui->lineEditParam->setText(val);
+        } else {
+            const QString val = ui->lineEditParam->text() + stringList[1];
+            ui->lineEditParam->setText(val);
+        }
     } else if(stringList.size() == 1){
         const QString val = ui->lineEditParam->text() + stringList[0];
         ui->lineEditParam->setText(val);
