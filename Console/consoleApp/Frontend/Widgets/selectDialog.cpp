@@ -55,19 +55,23 @@ void SelectDialog::populateItemsInview(const QString &selected)
 {
     auto selectedIt = m_items.find(selected);
 
-    auto nameIt = selectedIt;
-    if(selectedIt == m_items.end()){
-        nameIt = m_items.begin();
-    }
-
     m_itemsInView.clear();
-    for(int i = 0; i < 3; ++i){
-        if(nameIt != m_items.end()){
-            const auto& name = *nameIt++;
-            LOG1(name);
-            m_itemsInView.push_back(name);
+    if(m_items.size() >= 3){
+        auto nameIt = selectedIt;
+        for(int i = 0; i < 3; ++i){
+            if(nameIt != m_items.end()){
+                const auto& name = *nameIt++;
+                LOG1(name);
+                m_itemsInView.push_back(name);
+            }
+            incrementCircular(m_items,nameIt);
         }
-        incrementCircular(m_items,nameIt);
+    } else {
+        for(const auto& item : m_items){
+           const auto& name = item;
+           LOG1(name);
+           m_itemsInView.push_back(name);
+        }
     }
 }
 
