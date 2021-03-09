@@ -244,7 +244,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_opacScreen->show();
         m_graphicsView->hide();
 
-        CaseInformationDialog::reset();
+//        CaseInformationDialog::reset();
 
         WidgetContainer::instance()->gotoScreen("startScreen");
 

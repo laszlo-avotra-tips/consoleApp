@@ -157,11 +157,11 @@ void CaseInformationDialog::showEvent(QShowEvent *se)
 
 void CaseInformationDialog::handleBack()
 {
-    if(m_isNewCase){
-        m_model.setSelectedPhysicianName("");
-        m_model.setSelectedLocation("");
-        m_model.setPatientId("");
-    }
+//    if(m_isNewCase){
+//        m_model.setSelectedPhysicianName("");
+//        m_model.setSelectedLocation("");
+//        m_model.setPatientId("");
+//    }
     reject();
 }
 
