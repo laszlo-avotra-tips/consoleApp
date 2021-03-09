@@ -68,6 +68,7 @@ void PreferencesDialog::init()
 //    const auto& ci = CaseInformationModel::instance();
 //    m_defaultLocationCandidate = ci->defaultLocation();
 //    m_defaultPhysicianCandidate = ci->defaultPhysicianName();
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 
     m_locIt = m_model->locations().begin();
     m_phIt = m_model->physicians().begin();
@@ -79,8 +80,6 @@ void PreferencesDialog::init()
 
     setDefaultPhysician();
     setDefaultLocation();
-
-
 }
 
 PreferencesDialog::~PreferencesDialog()
