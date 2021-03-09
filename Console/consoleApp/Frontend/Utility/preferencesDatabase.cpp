@@ -208,6 +208,7 @@ void PreferencesDatabase::updatePhysicianTable(const std::set<QString> &names)
         LOG1(errorMsg)
     }
     for(const auto& name : names){
+        LOG1(name);
         q.prepare( QString("INSERT INTO Physicians (name)"
                    "VALUES (?)") );
         q.addBindValue( name );
