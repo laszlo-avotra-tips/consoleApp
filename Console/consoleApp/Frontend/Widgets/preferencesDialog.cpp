@@ -209,7 +209,7 @@ void PreferencesDialog::initPhysiciansContainer()
 
 void PreferencesDialog::initLocationsContainer()
 {
-    const auto& names = m_model->physicians();
+    const auto& names = m_model->locations();
 
     auto nameIt = m_locIt;
     m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
