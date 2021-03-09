@@ -110,9 +110,8 @@ private:
 
     /*!
      * \brief enableNext - enable/disable the < NEXT> > button
-     * \param isNext - enable if true, disable otherwise
      */
-    void enableNext(bool isNext);
+    void enableNext();
 
     /*!
      * the widgets

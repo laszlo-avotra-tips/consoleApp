@@ -89,7 +89,7 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
         ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
         ui->lineEditPhysicianName->setStyleSheet("");
         ui->lineEditDateAndTime->setText(m_model.dateAndTime());
-        enableNext(true);
+        enableNext();
         if(!m_model.patientId().isEmpty()){
             ui->lineEditPatientId->setText(m_model.patientId());
         }
@@ -103,7 +103,7 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
 //        setDateAndTime();
 //        connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
 //        m_displayTimer.start(500);
-        enableNext(false);
+        enableNext();
         m_model.setSelectedLocation("");
         m_model.setPatientId("");
     }
@@ -122,7 +122,7 @@ void CaseInformationDialog::setPhysicianName(const QString &name)
     ui->lineEditPhysicianName->setText(name);
     ui->lineEditPhysicianName->setStyleSheet("");
     const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-    enableNext(isNext);
+    enableNext();
 }
 
 QString CaseInformationDialog::getLocation() const
@@ -164,39 +164,41 @@ void CaseInformationDialog::setDateAndTime()
 void CaseInformationDialog::editOrSelectPhysicianName()
 {
     LOG1(m_model.isSelectedPhysicianName());
-    if(m_model.isSelectedPhysicianName()){
-        /*
-         * edit the physician name
-         * initialize the keyboard for edit
-         */
-        const auto& value = m_model.selectedPhysicianName();
-        QString paramName = ui->labelPhysicianName->text();
-        QString paramValue = ui->lineEditPhysicianName->text();
-        const int keyboardY{410};
+//    if(m_model.isSelectedPhysicianName()){
+//        /*
+//         * edit the physician name
+//         * initialize the keyboard for edit
+//         */
+//        const auto& value = m_model.selectedPhysicianName();
+//        QString paramName = ui->labelPhysicianName->text();
+//        QString paramValue = ui->lineEditPhysicianName->text();
+//        const int keyboardY{410};
 
-        /*
-         * create the keyboard parameters
-         */
-        const std::vector<QString> param{paramName, paramValue};
+//        /*
+//         * create the keyboard parameters
+//         */
+//        const std::vector<QString> param{paramName, paramValue};
 
-        /*
-         * create the modal keyboard instance for physician name
-         */
-        auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+//        /*
+//         * create the modal keyboard instance for physician name
+//         */
+//        auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
 
-        /*
-         * code execution continues here once the keyboard is closed
-         * update selected physician name with newName
-         */
-        ui->lineEditPhysicianName->setText(newName);
-        m_model.setSelectedPhysicianName(newName);
+//        /*
+//         * code execution continues here once the keyboard is closed
+//         * update selected physician name with newName
+//         */
+//        ui->lineEditPhysicianName->setText(newName);
+//        m_model.setSelectedPhysicianName(newName);
 
-        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-        /*
-         * enable disable Next
-         */
-        enableNext(isNext);
-    } else {
+//        const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
+//        /*
+//         * enable disable Next
+//         */
+//        enableNext();
+//    }
+//    else
+    {
         /*
          * select physicianName
          */
@@ -233,33 +235,35 @@ void CaseInformationDialog::openKeyboardPatientId()
 
 void CaseInformationDialog::editOrSelectLocation()
 {
-    if(m_model.isSelectedLocation()){
-        /*
-         * edit the location
-         * initialize the keyboard for edit
-         */
-        const auto& value = m_model.selectedLocation();
-        QString paramName = ui->labelLocation->text();
-        QString paramValue = ui->lineEditLocation->text();
-        const int keyboardY{610};
+//    if(m_model.isSelectedLocation()){
+//        /*
+//         * edit the location
+//         * initialize the keyboard for edit
+//         */
+//        const auto& value = m_model.selectedLocation();
+//        QString paramName = ui->labelLocation->text();
+//        QString paramValue = ui->lineEditLocation->text();
+//        const int keyboardY{610};
 
-        /*
-         * create the keyboard parameters
-         */
-        const std::vector<QString> param{paramName, paramValue};
+//        /*
+//         * create the keyboard parameters
+//         */
+//        const std::vector<QString> param{paramName, paramValue};
 
-        /*
-         * create the modal keyboard instance for location
-         */
-        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+//        /*
+//         * create the modal keyboard instance for location
+//         */
+//        auto newLocation = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
 
-        /*
-         * code execution continues here once the keyboard is closed
-         * update selected location with newLocation
-         */
-        ui->lineEditLocation->setText(newLocation);
-        m_model.setSelectedLocation(newLocation);
-    } else {
+//        /*
+//         * code execution continues here once the keyboard is closed
+//         * update selected location with newLocation
+//         */
+//        ui->lineEditLocation->setText(newLocation);
+//        m_model.setSelectedLocation(newLocation);
+//    }
+//    else
+    {
         /*
          * select location
          */
@@ -279,8 +283,13 @@ void CaseInformationDialog::handleNext()
     accept();
 }
 
-void CaseInformationDialog::enableNext(bool isNext)
+void CaseInformationDialog::enableNext()
 {
+    bool isNext = false;
+    //Required field
+    if(!ui->lineEditPhysicianName->text().isEmpty() && ui->lineEditPhysicianName->text() != "Required field"){
+        isNext = true;
+    }
     ui->pushButtonNext->setEnabled(isNext);
 
     /*
@@ -346,8 +355,7 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
      * update isNext condition
      */
     ui->lineEditPhysicianName->setEnabled(true);
-    const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
-    enableNext(isNext);
+    enableNext();
 }
 
 void CaseInformationDialog::handleLocationSelect(bool isChecked)
