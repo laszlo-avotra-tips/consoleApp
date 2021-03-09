@@ -229,12 +229,16 @@ void PreferencesDialog::updatePysicianLabels()
     m_phIt = names.begin();
     auto nameIt = m_phIt;
 
+    m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
     for(const auto& label : m_physicianLabels){
         if(nameIt != names.end()){
             const auto& name = *nameIt;
+            LOG1(name);
             label->setText(name);
              m_physiciansContainer[name] = label;
              ++nameIt;
+        } else {
+            label->setText("");
         }
     }
 }
