@@ -56,7 +56,7 @@ void SelectDialog::populateItemsInview(const QString &selected)
     auto selectedIt = m_items.find(selected);
 
     m_itemsInView.clear();
-    if(m_items.size() >= 3){
+    if(m_items.size() > 3){
         auto nameIt = selectedIt;
         for(int i = 0; i < 3; ++i){
             if(nameIt != m_items.end()){
