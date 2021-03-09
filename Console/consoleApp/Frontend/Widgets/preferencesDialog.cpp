@@ -203,6 +203,8 @@ void PreferencesDialog::initPhysiciansContainer()
             label->setText(name);
             m_physiciansContainer[label->text()] = label;
             ++nameIt;
+        } else {
+            label->setText("");
         }
     }
 }
@@ -219,6 +221,8 @@ void PreferencesDialog::initLocationsContainer()
             label->setText(name);
             m_locationsContainer[label->text()] = label;
             ++nameIt;
+        } else {
+            label->setText("");
         }
     }
 }
