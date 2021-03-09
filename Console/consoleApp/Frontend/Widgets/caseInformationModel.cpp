@@ -11,7 +11,10 @@ CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
 CaseInformationModel::CaseInformationModel()
 {
+    QString msgCaseInformationModel("created");
+    LOG1(msgCaseInformationModel);
 }
+
 
 void CaseInformationModel::initDefaults()
 {
