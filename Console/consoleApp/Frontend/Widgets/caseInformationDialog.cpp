@@ -103,6 +103,7 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
 //        setDateAndTime();
 //        connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
 //        m_displayTimer.start(500);
+        ui->lineEditPhysicianName->setText("Required field");
         enableNext();
         m_model.setSelectedLocation("");
         m_model.setPatientId("");
