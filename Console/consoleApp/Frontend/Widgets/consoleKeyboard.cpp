@@ -160,6 +160,7 @@ void ConsoleKeyboard::initButtonContainers()
 
         ui->pushButton_slash,
         ui->pushButton_backSlash,
+        ui->pushButton_quote,
 
     };
 
