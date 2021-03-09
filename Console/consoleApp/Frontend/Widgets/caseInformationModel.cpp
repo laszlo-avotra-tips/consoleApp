@@ -34,6 +34,8 @@ void CaseInformationModel::init()
 
     if(!m_preferencesModel->defaultPhysician().isEmpty()){
         m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
+    } else {
+         m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
     }
 }
 
