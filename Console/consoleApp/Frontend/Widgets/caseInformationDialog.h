@@ -106,8 +106,6 @@ private slots:
      */
     void initDialog(const std::vector<QString> *param = nullptr);
 
-    int indexOf(const PhysicianNameContainer& cont, const QString& val) const;
-
 private:
     /*!
      * \brief showEvent

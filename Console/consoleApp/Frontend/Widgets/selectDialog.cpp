@@ -4,6 +4,7 @@
 #include <caseInformationModel.h>
 #include <iterator>
 #include "Utility/widgetcontainer.h"
+#include "Utility/preferencesModel.h"
 
 SelectDialog::SelectDialog(const QString& name, CaseInformationDialog *parent) :
     QDialog(parent),
@@ -11,6 +12,8 @@ SelectDialog::SelectDialog(const QString& name, CaseInformationDialog *parent) :
     ui(new Ui::SelectDialog)
 {
     m_parent = parent;
+    m_pModel = PreferencesModel::instance();
+    m_pModel->loadPreferences();
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
 
@@ -139,15 +142,15 @@ void SelectDialog::addNew()
      */
     auto model = *CaseInformationModel::instance();
     if(m_name == QString("physician")){
-        model.addPhysicianName(newName);
+        m_pModel->addPhysician(newName);
         model.setSelectedPhysicianName(newName);
-        model.persistModel();
-        initializeSelect(model.physicianNames(),newName);
+        m_pModel->persistPreferences();
+        initializeSelect(m_pModel->physicians(),newName);
     } else {
-        model.addLocation(newName);
+        m_pModel->addLocation(newName);
         model.setSelectedLocation(newName);
-        model.persistModel();
-        initializeSelect(model.locations(),newName);
+        m_pModel->persistPreferences();
+        initializeSelect(m_pModel->locations(),newName);
     }
 }
 
@@ -157,8 +160,8 @@ void SelectDialog::closeDialog(bool isChecked)
         LOG1(isChecked);
         emit rejected();
     }
-
 }
+
 //border-top: 2px solid rgb( 169, 169, 169);
 void SelectDialog::selectItem(int index)
 {

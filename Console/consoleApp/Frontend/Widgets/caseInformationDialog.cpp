@@ -7,8 +7,7 @@
 #include "logger.h"
 #include "displayManager.h"
 #include "defaults.h"
-#include "Utility/preferencesDatabase.h"
-#include "Utility/userSettings.h"
+#include "Utility/preferencesModel.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -45,35 +44,6 @@ CaseInformationDialog::CaseInformationDialog(QWidget *parent, const std::vector<
     const int yc = ControlScreenHeight / 2 - height() / 2;
     move(xc,yc);
 
-    PreferencesDatabase ciDb;
-    ciDb.initCaseInfo();
-
-    auto& settings = userSettings::Instance();
-
-    auto cim = CaseInformationModel::instance();
-    auto phn = settings.getPhysician();
-
-    if(!phn.isEmpty()){
-        cim->setDefaultPhysicianName(phn);
-    }
-
-    auto loc = settings.getLocation();
-    if(!loc.isEmpty()){
-        cim->setDefaultLocation(loc);
-    }
-
-    const auto& dr = cim->defaultPhysicianName();
-    if(!dr.isEmpty()){
-        ui->lineEditPhysicianName->setStyleSheet("");
-        ui->lineEditPhysicianName->setText(dr);
-        cim->setSelectedPhysicianName(dr);
-        enableNext(true);
-    }
-    loc = cim->defaultLocation();
-    if(!cim->defaultLocation().isEmpty()){
-        ui->lineEditLocation->setText(loc);
-        cim->setSelectedLocation(loc);
-    }
 }
 
 CaseInformationDialog::~CaseInformationDialog()
@@ -149,23 +119,6 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
     }
 }
 
-int CaseInformationDialog::indexOf(const PhysicianNameContainer &cont, const QString &val) const
-{
-    const auto it = std::find(cont.begin(), cont.end(), val);
-
-    auto base = cont.begin();
-
-    int index{0};
-    while( base != it){
-        ++base;
-        ++index;
-    }
-
-    //int index = it - cont.begin();
-
-    return index;
-}
-
 QString CaseInformationDialog::getPhysicianName() const
 {
     return ui->labelPhysicianName->text();
@@ -197,17 +150,8 @@ void CaseInformationDialog::showEvent(QShowEvent *se)
         DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
         DisplayManager::instance()->setWindowTitle("CASE INFORMATION IN PROCESS");
         WidgetContainer::instance()->setIsNewCase(true);
-
-        QString candidatePhysician;
-        if(m_model.selectedPhysicianName().isEmpty()){
-            candidatePhysician = m_model.defaultPhysicianName();
-        }else{
-            candidatePhysician = m_model.selectedPhysicianName();
-        }
-        LOG1(candidatePhysician)
-        if(!candidatePhysician.isEmpty()){
-            ui->lineEditPhysicianName->setText(candidatePhysician);
-        }
+        ui->lineEditPhysicianName->setText(m_model.selectedPhysicianName());
+        ui->lineEditLocation->setText(m_model.selectedLocation());
     }
 }
 
@@ -237,9 +181,7 @@ void CaseInformationDialog::editOrSelectPhysicianName()
          * edit the physician name
          * initialize the keyboard for edit
          */
-        const auto& list = m_model.physicianNames();
         const auto& value = m_model.selectedPhysicianName();
-        int index = indexOf(list,value);
         QString paramName = ui->labelPhysicianName->text();
         QString paramValue = ui->lineEditPhysicianName->text();
         const int keyboardY{410};
@@ -260,7 +202,6 @@ void CaseInformationDialog::editOrSelectPhysicianName()
          */
         ui->lineEditPhysicianName->setText(newName);
         m_model.setSelectedPhysicianName(newName);
-        m_model.setPhysicianName(index,newName);
 
         const bool isNext(!ui->lineEditPhysicianName->text().isEmpty());
         /*
@@ -309,9 +250,7 @@ void CaseInformationDialog::editOrSelectLocation()
          * edit the location
          * initialize the keyboard for edit
          */
-        const auto& list = m_model.locations();
         const auto& value = m_model.selectedLocation();
-        int index = indexOf(list,value);
         QString paramName = ui->labelLocation->text();
         QString paramValue = ui->lineEditLocation->text();
         const int keyboardY{610};
@@ -332,8 +271,6 @@ void CaseInformationDialog::editOrSelectLocation()
          */
         ui->lineEditLocation->setText(newLocation);
         m_model.setSelectedLocation(newLocation);
-        m_model.setLocation(index, newLocation);
-
     } else {
         /*
          * select location
@@ -378,19 +315,18 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
         }
         return;
     }
-    auto* cid = this;
 
     /*
      * create the modal select dialog
      */
-    m_selectDialog = new SelectDialog("physician", cid);
+    m_selectDialog = new SelectDialog("physician", this);
     m_selectDialog->setModal(false);
     ui->lineEditPhysicianName->setEnabled(false);
 
     /*
      * move the select dialog
      */
-    const int xVal = x() + cid->width()/2 - m_selectDialog->width()/2 + 305;
+    const int xVal = x() + width()/2 - m_selectDialog->width()/2 + 305;
     const int yVal = y() + 430;
 
     m_selectDialog->move(xVal, yVal);
@@ -399,14 +335,8 @@ void CaseInformationDialog::handlePhysicianNameSelect(bool isChecked)
     /*
      * populate the select dialog with physician names
      */
-    QString candidate;
-    if(m_model.selectedPhysicianName().isEmpty()){
-        candidate = m_model.defaultPhysicianName();
-    }else{
-        candidate = m_model.selectedPhysicianName();
-    }
-    LOG1(candidate);
-    m_selectDialog->initializeSelect(m_model.physicianNames(), candidate);
+    LOG1(m_model.selectedPhysicianName());
+    m_selectDialog->initializeSelect(PreferencesModel::instance()->physicians(), m_model.selectedPhysicianName());
     if(m_selectDialog->exec() == QDialog::Accepted){
         /*
          * handle selection was made
@@ -466,14 +396,8 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
     /*
      * populate the select dialog with physician names
      */
-    QString candidate;
-    if(m_model.selectedLocation().isEmpty()){
-        candidate = m_model.defaultLocation();
-    }else{
-        candidate = m_model.selectedLocation();
-    }
-    LOG1(candidate);
-    m_selectDialog->initializeSelect(m_model.locations(), candidate);
+    LOG1(m_model.selectedLocation());
+    m_selectDialog->initializeSelect(PreferencesModel::instance()->locations(), m_model.selectedLocation());
 
     if(m_selectDialog->exec() == QDialog::Accepted){
 

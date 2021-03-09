@@ -29,6 +29,7 @@ public:
     QString defaultLocation() const;
     void setDefaultLocation(const QString &defaultLocation);
     void persistPreferences();
+    void loadPreferences();
 
 private:
     PreferencesModel();
@@ -36,7 +37,6 @@ private:
 
     void addPreference(PreferenceContainers_t& container, const QString& name);
     bool removePreference(PreferenceContainers_t& container, const QString& name);
-    void loadPreferences();
 
     PreferenceContainers_t m_physicians;
     PreferenceContainers_t m_locations;

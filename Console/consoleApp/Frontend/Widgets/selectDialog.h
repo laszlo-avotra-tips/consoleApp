@@ -8,7 +8,6 @@
 #include <QString>
 
 #include <vector>
-#include <caseInformationModel.h>
 #include "caseInformationDialog.h"
 
 
@@ -17,6 +16,8 @@ using SelectableWidgetContainer = std::vector<ConsoleLineEdit*>;
 namespace Ui {
 class SelectDialog;
 }
+
+class PreferencesModel;
 
 class SelectDialog : public QDialog
 {
@@ -55,6 +56,7 @@ private:
     QStringList m_itemsInView;
     QString m_selectedItem;
     CaseInformationDialog* m_parent{nullptr};
+    PreferencesModel* m_pModel{nullptr};
 };
 
 #endif // SELECTDIALOG_H

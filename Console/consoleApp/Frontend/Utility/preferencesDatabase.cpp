@@ -112,52 +112,6 @@ const TableContainers_t &PreferencesDatabase::locations() const
     return m_locations;
 }
 
-void PreferencesDatabase::initCaseInfo()
-{
-    QSqlQuery q;
-    QSqlError sqlerr;
-    TableContainers_t nl;
-
-    auto cim = CaseInformationModel::instance();
-
-    q.prepare( "SELECT name FROM Locations ORDER BY name ASC" );
-
-    q.exec();
-    sqlerr = q.lastError();
-    if(sqlerr.isValid()){
-        const QString& errorMsg = sqlerr.databaseText();
-        LOG1(errorMsg)
-    }
-    QSqlRecord record = q.record();
-
-    int numLocations{0};
-    while(q.next()){
-        ++numLocations;
-        record = q.record();
-        const auto& location = (record.value(0).toString());
-        cim->addLocation(location);
-    }
-
-    q.prepare( "SELECT name FROM Physicians ORDER BY name ASC" );
-
-    q.exec();
-    sqlerr = q.lastError();
-    if(sqlerr.isValid()){
-        const QString& errorMsg = sqlerr.databaseText();
-        LOG1(errorMsg)
-    }
-    record = q.record();
-
-    int numPhysicians{0};
-    while(q.next()){
-        ++numPhysicians;
-        record = q.record();
-        const auto& physician = (record.value(0).toString());
-        cim->addPhysicianName(physician);
-    }
-    cim->initDefaults();
-}
-
 void PreferencesDatabase::initContainers()
 {
     QSqlQuery q;

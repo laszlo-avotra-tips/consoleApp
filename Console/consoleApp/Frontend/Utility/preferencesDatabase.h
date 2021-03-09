@@ -18,7 +18,6 @@ public:
     const TableContainers_t& physicians() const;
     const TableContainers_t& locations() const;
 
-    void initCaseInfo();
     void initContainers();
     void updatePhysicianTable(const std::set<QString>& names);
     void updateLocationTable(const std::set<QString>& names);
