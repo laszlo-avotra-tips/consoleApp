@@ -45,6 +45,8 @@ void ConsoleLineEdit::setIsMarked(bool isMarked)
 
 void ConsoleLineEdit::mark()
 {
-    m_isMarked = true;
-    setStyleSheet("color: rgb(245,196,0)");
+    if(!text().isEmpty()){
+        m_isMarked = true;
+        setStyleSheet("color: rgb(245,196,0)");
+    }
 }
