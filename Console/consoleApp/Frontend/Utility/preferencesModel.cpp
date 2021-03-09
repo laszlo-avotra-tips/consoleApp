@@ -86,8 +86,8 @@ bool PreferencesModel::removePreference(PreferenceContainers_t &container, const
 {
     bool success{false};
 
-    const auto it = container.insert(name);
-    if(it.first != container.end()){
+    const auto num = container.erase(name);
+    if(num){
         success = true;
     }
     return success;

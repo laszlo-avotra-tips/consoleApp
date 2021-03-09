@@ -263,6 +263,7 @@ void PreferencesDialog::updatePysicianLabels(const QString& name)
     }
 }
 
+
 void PreferencesDialog::updateLocationLabels(const QString& name)
 {
 //    const auto& ci = CaseInformationModel::instance();
