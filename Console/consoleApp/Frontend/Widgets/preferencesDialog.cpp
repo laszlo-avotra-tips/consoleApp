@@ -549,5 +549,8 @@ void PreferencesDialog::hideEvent(QHideEvent *he)
     QWidget::hideEvent( he );
     if(he->type() == QEvent::Hide){
         LOG1(he->type());
+        if(m_model){
+            m_model->persistPreferences();
+        }
     }
 }

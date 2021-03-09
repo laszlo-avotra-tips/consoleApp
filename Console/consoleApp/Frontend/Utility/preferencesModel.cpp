@@ -110,4 +110,7 @@ void PreferencesModel::persistPreferences()
     PreferencesDatabase db;
     db.updatePhysicianTable(m_physicians);
     db.updateLocationTable(m_locations);
+
+    userSettings::Instance().setPhysician(m_defaultPhysician);
+    userSettings::Instance().setLocation(m_defaultLocation);
 }
