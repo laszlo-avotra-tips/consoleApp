@@ -44,7 +44,6 @@ private slots:
 
 private:
     void selectItem(int index);
-    int indexOf(const PhysicianNameContainer& cont, const QString& val) const;
     void incrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
     void decrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
     void populateItemsInview(const QString& selected);

@@ -63,7 +63,7 @@ void SelectDialog::populateItemsInview(const QString &selected)
     m_itemsInView.clear();
     for(int i = 0; i < 3; ++i){
         if(nameIt != m_items.end()){
-            const auto& name = *nameIt;
+            const auto& name = *nameIt++;
             LOG1(name);
             m_itemsInView.push_back(name);
         }
@@ -178,21 +178,6 @@ void SelectDialog::selectItem(int index)
         }
     }
     QTimer::singleShot(500,this,&SelectDialog::accept);
-}
-
-int SelectDialog::indexOf(const PhysicianNameContainer &cont, const QString &val) const
-{
-    const auto it = std::find(cont.begin(), cont.end(), val);
-
-    auto base = cont.begin();
-
-    int index{0};
-    while( base != it){
-        ++base;
-        ++index;
-    }
-
-    return index;
 }
 
 void SelectDialog::incrementCircular(const PhysicianNameContainer &cont, PhysicianNameContainer::iterator &it)
