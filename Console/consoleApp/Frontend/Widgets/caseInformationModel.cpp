@@ -16,7 +16,10 @@ CaseInformationModel::CaseInformationModel()
     m_preferencesModel->loadPreferences();
 
     m_selectedLocation = m_preferencesModel->defaultLocation();
-    m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
+
+    if(!m_preferencesModel->defaultPhysician().isEmpty()){
+        m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
+    }
 
     QString msgCaseInformationModel("created");
     LOG1(msgCaseInformationModel);
