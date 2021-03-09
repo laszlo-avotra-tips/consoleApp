@@ -138,6 +138,8 @@ void PreferencesDialog::handleSelectedPhysician(const QString &name)
         m_selectedPhysicianLabel = labelIt->second;
         if(m_selectedPhysicianLabel){
             m_selectedPhysicianLabel->mark();
+        } else {
+            LOG1(m_selectedPhysicianLabel);
         }
     }
     m_defaultPhysicianCandidate = name;
@@ -169,6 +171,8 @@ void PreferencesDialog::handleSelectedLocation(const QString &name)
         m_selectedLocationLabel = labelIt->second;
         if(m_selectedLocationLabel){
             m_selectedLocationLabel->mark();
+        } else {
+            LOG1(m_selectedLocationLabel);
         }
     }
     m_defaultLocationCandidate = name;
@@ -349,34 +353,38 @@ void PreferencesDialog::handleAddPhysician()
 
 void PreferencesDialog::handleRemoveLocation()
 {
-    const auto& name = m_selectedLocationLabel->text();
-
-    if(m_model->removeLocation(name)){
-        updateLocationLabels();
-        unmarkAll(m_locationLabels);
-        ui->pushButtonAddLocation->setText("ADD");
-        ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
-        if(m_model->defaultLocation() == name){
-            ui->labelLocationDefault->setText("Default:");
-            m_model->setDefaultLocation("");
+    if(m_selectedLocationLabel){
+        const auto& name = m_selectedLocationLabel->text();
+        LOG1(name);
+        if(m_model->removeLocation(name)){
+            updateLocationLabels();
+            unmarkAll(m_locationLabels);
+            ui->pushButtonAddLocation->setText("ADD");
+            ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+            if(m_model->defaultLocation() == name){
+                ui->labelLocationDefault->setText("Default:");
+                m_model->setDefaultLocation("");
+            }
         }
     }
 }
 
 void PreferencesDialog::handleRemovePhysician()
 {
-    const auto& name = m_selectedPhysicianLabel->text();
-    LOG1(name);
-
-    if(m_model->removePhysician(name)){
+    if(m_selectedPhysicianLabel){
+        const auto& name = m_selectedPhysicianLabel->text();
         LOG1(name);
-        updatePysicianLabels();
-        unmarkAll(m_physicianLabels);
-        ui->pushButtonAddPhysician->setText("ADD");
-        ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
-        if(m_model->defaultPhysician() == name){
-            ui->labelDrDefault->setText("Default:");
-            m_model->setDefaultPhysician("");
+
+        if(m_model->removePhysician(name)){
+            LOG1(name);
+            updatePysicianLabels();
+            unmarkAll(m_physicianLabels);
+            ui->pushButtonAddPhysician->setText("ADD");
+            ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+            if(m_model->defaultPhysician() == name){
+                ui->labelDrDefault->setText("Default:");
+                m_model->setDefaultPhysician("");
+            }
         }
     }
 }
