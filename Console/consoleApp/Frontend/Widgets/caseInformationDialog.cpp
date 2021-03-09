@@ -100,13 +100,16 @@ void CaseInformationDialog::initDialog(const std::vector<QString> *param)
             ui->lineEditLocation->setText(m_model.selectedLocation());
         }
     } else {
-        setDateAndTime();
-        connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
-        m_displayTimer.start(500);
+//        setDateAndTime();
+//        connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
+//        m_displayTimer.start(500);
         enableNext(false);
         m_model.setSelectedLocation("");
         m_model.setPatientId("");
     }
+    setDateAndTime();
+    connect(&m_displayTimer, &QTimer::timeout, this, &CaseInformationDialog::setDateAndTime);
+    m_displayTimer.start(500);
 }
 
 QString CaseInformationDialog::getPhysicianName() const
