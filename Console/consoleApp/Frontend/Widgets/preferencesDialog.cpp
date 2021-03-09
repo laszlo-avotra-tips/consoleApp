@@ -197,7 +197,7 @@ void PreferencesDialog::initPhysiciansContainer()
 
     auto nameIt = m_phIt;
     m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
-    for(const auto& label : m_physicianLabels){
+    for(auto* label : m_physicianLabels){
         if(nameIt != names.end()){
             const auto& name = *nameIt;
             label->setText(name);
@@ -215,7 +215,7 @@ void PreferencesDialog::initLocationsContainer()
 
     auto nameIt = m_locIt;
     m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
-    for(const auto& label : m_locationLabels){
+    for(auto* label : m_locationLabels){
         if(nameIt != names.end()){
             const auto& name = *nameIt;
             label->setText(name);
