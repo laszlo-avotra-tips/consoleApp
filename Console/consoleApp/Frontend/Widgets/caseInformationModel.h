@@ -23,6 +23,8 @@ class CaseInformationModel
 public:
     static CaseInformationModel* instance();
 
+    void init();
+
     /*!
      * \brief selectedPhysicianName - get the selected physician name
      * \return the selected physician name
