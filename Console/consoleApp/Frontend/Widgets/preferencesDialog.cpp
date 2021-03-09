@@ -259,7 +259,7 @@ void PreferencesDialog::updateLocationLabels()
     m_locIt = names.begin();
     auto nameIt = m_locIt;
 
-    m_physiciansContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
+    m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
     for(const auto& label : m_locationLabels){
         if(nameIt != names.end()){
             const auto& name = *nameIt;

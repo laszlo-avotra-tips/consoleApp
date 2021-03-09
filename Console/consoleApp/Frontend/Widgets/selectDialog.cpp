@@ -152,6 +152,7 @@ void SelectDialog::addNew()
         m_pModel->persistPreferences();
         initializeSelect(m_pModel->locations(),newName);
     }
+    emit accepted();
 }
 
 void SelectDialog::closeDialog(bool isChecked)
