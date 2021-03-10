@@ -40,7 +40,11 @@ SelectDialog::~SelectDialog()
 void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, QString selected)
 {
     m_items = sl;
-    m_selectedItem = selected;
+    if(!selected.isEmpty()){
+        m_selectedItem = selected;
+    } else if(!sl.empty()){
+        m_selectedItem = *(sl.begin());
+    }
     if(sl.size() > 3){
         ui->pushButtonScrollDown->show();
     } else {
@@ -61,11 +65,10 @@ void SelectDialog::populateItemsInview(const QString &selected)
         for(int i = 0; i < 3; ++i){
             if(nameIt != m_items.end()){
                 const auto& name = *nameIt;
-//                incrementCircular(m_items,nameIt);
+                incrementCircular(m_items,nameIt);
                 LOG1(name);
                 m_itemsInView.push_back(name);
             }
-            incrementCircular(m_items,nameIt);
         }
     } else {
         for(const auto& item : m_items){
