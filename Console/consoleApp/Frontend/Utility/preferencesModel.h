@@ -33,6 +33,8 @@ public:
 
     QString getSerialNumber() const;
 
+    QString getSpaceRemaining() const;
+
 private:
     PreferencesModel();
     static PreferencesModel* m_instance;
@@ -45,6 +47,7 @@ private:
 
     QString m_defaultPhysician;
     QString m_defaultLocation;
+    QString m_spaceRemaining;
 };
 
 #endif // PREFERENCESMODEL_H

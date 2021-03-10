@@ -25,7 +25,7 @@ public:
 private:
     QSqlError createTables();
 
-    const QString m_dbName{"C:/Avinger_System/preferences.db"};
+    const QString m_dbName{"/preferences.db"};
     QSqlDatabase m_db;
 
     TableContainers_t m_physicians;

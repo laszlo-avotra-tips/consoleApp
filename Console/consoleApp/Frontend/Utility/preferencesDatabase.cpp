@@ -1,11 +1,12 @@
 #include "preferencesDatabase.h"
 #include "logger.h"
 #include "caseInformationModel.h"
+#include "defaults.h"
 
 PreferencesDatabase::PreferencesDatabase()
 {
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName( m_dbName );
+    m_db.setDatabaseName( SystemDir + m_dbName );
 
     if( !m_db.open() )
     {

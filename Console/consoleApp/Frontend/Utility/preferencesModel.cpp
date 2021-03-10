@@ -1,7 +1,10 @@
 #include "preferencesModel.h"
 #include "preferencesDatabase.h"
 #include "userSettings.h"
+#include "defaults.h"
+
 #include <QStorageInfo>
+
 
 PreferencesModel* PreferencesModel::m_instance = nullptr;
 
@@ -9,8 +12,8 @@ PreferencesModel::PreferencesModel()
 {
     loadPreferences();
 
-    QStorageInfo sInfo("/AvingerData");
-    int mb = sInfo.bytesAvailable() / (1024 * 1024);
+    QStorageInfo sInfo(DataDir);
+    int mb = sInfo.bytesAvailable() / (1024 * 1024 * 1024);
     m_spaceRemaining = QString::number(mb);
 }
 
