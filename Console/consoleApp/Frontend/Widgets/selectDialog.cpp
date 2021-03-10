@@ -53,18 +53,19 @@ void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, QString se
 
 void SelectDialog::populateItemsInview(const QString &selected)
 {
-    auto selectedIt = m_items.begin(); //m_items.find(selected);
+    auto selectedIt = m_items.find(selected);
 
     m_itemsInView.clear();
     if(m_items.size() > 3){
         auto nameIt = selectedIt;
         for(int i = 0; i < 3; ++i){
             if(nameIt != m_items.end()){
-                const auto& name = *nameIt++;
+                const auto& name = *nameIt;
+                incrementCircular(m_items,nameIt);
                 LOG1(name);
                 m_itemsInView.push_back(name);
             }
-            incrementCircular(m_items,nameIt);
+//            incrementCircular(m_items,nameIt);
         }
     } else {
         for(const auto& item : m_items){
