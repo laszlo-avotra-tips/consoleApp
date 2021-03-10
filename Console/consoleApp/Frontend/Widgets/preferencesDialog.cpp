@@ -72,6 +72,8 @@ void PreferencesDialog::init()
 
     setDefaultPhysician();
     setDefaultLocation();
+
+    ui->labelSn->setText(QString("Lightbox Serial Number: ") + m_model->getSerialNumber());
 }
 
 PreferencesDialog::~PreferencesDialog()

@@ -114,6 +114,11 @@ void PreferencesModel::loadPreferences()
     }
 }
 
+QString PreferencesModel::getSerialNumber() const
+{
+    return userSettings::Instance().getSerialNumber();
+}
+
 void PreferencesModel::persistPreferences()
 {
     PreferencesDatabase db;

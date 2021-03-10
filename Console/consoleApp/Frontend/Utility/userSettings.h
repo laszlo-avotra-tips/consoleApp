@@ -196,6 +196,8 @@ public:
 
     void setLocation(const QString &location);
 
+    QString getSerialNumber() const;
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -238,4 +240,5 @@ private:
     QSettings *varSettings{nullptr};
     QSettings *profileSettings{nullptr};
     static userSettings* theSettings;
+    QString m_serialNumber;
 };

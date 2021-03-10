@@ -26,6 +26,11 @@ userSettings::userSettings()
     loadSettings();
 }
 
+QString userSettings::getSerialNumber() const
+{
+    return m_serialNumber;
+}
+
 /*
  * saveSettings()
  *
@@ -103,6 +108,9 @@ void userSettings::loadProfileSettings()
     m_oct_firmware_version = profileSettings->value( "subSystemVersion/oct_firmware_version", "").toString();
     m_interface_hw_version = profileSettings->value( "subSystemVersion/interface_hw_version", "").toString();
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
+
+    m_serialNumber = profileSettings->value( "System/serialNumber", "0000").toString();
+    LOG1(m_serialNumber)
 }
 
 void userSettings::setLocation(const QString &location)

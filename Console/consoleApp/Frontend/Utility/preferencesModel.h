@@ -31,6 +31,8 @@ public:
     void persistPreferences();
     void loadPreferences();
 
+    QString getSerialNumber() const;
+
 private:
     PreferencesModel();
     static PreferencesModel* m_instance;
@@ -43,7 +45,6 @@ private:
 
     QString m_defaultPhysician;
     QString m_defaultLocation;
-
 };
 
 #endif // PREFERENCESMODEL_H
