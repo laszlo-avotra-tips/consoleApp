@@ -43,7 +43,7 @@ private slots:
     void highlight(const QString& selected);
 
 private:
-    void selectItem(int index);
+    void selectItem(size_t index);
     void incrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
     void decrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
     void populateItemsInview(const QString& selected);
@@ -51,6 +51,7 @@ private:
     QString m_name;
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
+    const size_t m_selectableCount{3};
     PhysicianNameContainer m_items;
     QStringList m_itemsInView;
     QString m_selectedItem;

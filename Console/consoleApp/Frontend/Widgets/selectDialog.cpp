@@ -45,7 +45,7 @@ void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, QString se
     } else if(!sl.empty()){
         m_selectedItem = *(sl.begin());
     }
-    if(sl.size() > 3){
+    if(sl.size() > m_selectableCount){
         ui->pushButtonScrollDown->show();
     } else {
         ui->pushButtonScrollDown->hide();
@@ -60,9 +60,9 @@ void SelectDialog::populateItemsInview(const QString &selected)
     auto selectedIt = m_items.find(selected);
 
     m_itemsInView.clear();
-    if(m_items.size() > 3){
+    if(m_items.size() > m_selectableCount){
         auto nameIt = selectedIt;
-        for(int i = 0; i < 3; ++i){
+        for(size_t i = 0; i < m_selectableCount; ++i){
             if(nameIt != m_items.end()){
                 const auto& name = *nameIt;
                 incrementCircular(m_items,nameIt);
@@ -172,11 +172,11 @@ void SelectDialog::closeDialog(bool isChecked)
 }
 
 //border-top: 2px solid rgb( 169, 169, 169);
-void SelectDialog::selectItem(int index)
+void SelectDialog::selectItem(size_t index)
 {
     m_selectedItem = m_selectableWidgets[index]->text();
 
-    for(int i = 0; i < 3; ++i ){
+    for(size_t i = 0; i < m_selectableCount; ++i ){
         auto* wid = m_selectableWidgets[i];
         auto style = wid->styleSheet();
         if(i == index){

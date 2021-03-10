@@ -286,12 +286,11 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
         }
         return;
     }
-    auto* cid = this;
 
     /*
      * create the modal select dialog
      */
-    m_selectDialog = new SelectDialog("location",cid);
+    m_selectDialog = new SelectDialog("location",this);
     m_selectDialog->setModal(false);
 
     ui->lineEditLocation->setEnabled(false);
@@ -301,7 +300,7 @@ void CaseInformationDialog::handleLocationSelect(bool isChecked)
     /*
      * move the select dialog
      */
-    const int xVal = x() + cid->width()/2 - m_selectDialog->width()/2 + 305;
+    const int xVal = x() + width()/2 - m_selectDialog->width()/2 + 305;
     const int yVal = y() + 630;
 
     m_selectDialog->move(xVal, yVal);
