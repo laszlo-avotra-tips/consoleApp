@@ -2,6 +2,7 @@
 #define PREFERENCESDIALOG_H
 
 #include <QDialog>
+#include <QTimer>
 
 #include <vector>
 
@@ -55,6 +56,9 @@ private slots:
     void handlePhysicianUnmarked();
     void handleLocationUnmarked();
 
+    void setCurrentDate();
+    void setCurrentTime();
+
 private:
     void handlePhysicianLabel(const ActiveLabel* label);
     void handleLocationLabel(const ActiveLabel* label);
@@ -96,6 +100,9 @@ private:
     PreferenceContainers_t::iterator m_locIt;
 
     PreferencesModel* m_model{nullptr};
+
+    QTimer m_currentTimeUpdate;
+    QTimer m_currentDateUpdate;
 
 };
 
