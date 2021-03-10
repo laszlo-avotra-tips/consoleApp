@@ -53,7 +53,7 @@ void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, QString se
 
 void SelectDialog::populateItemsInview(const QString &selected)
 {
-    auto selectedIt = m_items.find(selected);
+    auto selectedIt = m_items.begin(); //m_items.find(selected);
 
     m_itemsInView.clear();
     if(m_items.size() > 3){
