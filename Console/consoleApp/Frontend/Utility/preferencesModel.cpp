@@ -1,12 +1,17 @@
 #include "preferencesModel.h"
 #include "preferencesDatabase.h"
 #include "userSettings.h"
+#include <QStorageInfo>
 
 PreferencesModel* PreferencesModel::m_instance = nullptr;
 
 PreferencesModel::PreferencesModel()
 {
     loadPreferences();
+
+    QStorageInfo sInfo("/AvingerData");
+    int mb = sInfo.bytesAvailable() / (1024 * 1024);
+    m_spaceRemaining = QString::number(mb);
 }
 
 PreferencesModel *PreferencesModel::instance()
@@ -91,6 +96,11 @@ bool PreferencesModel::removePreference(PreferenceContainers_t &container, const
         success = true;
     }
     return success;
+}
+
+QString PreferencesModel::getSpaceRemaining() const
+{
+    return m_spaceRemaining;
 }
 
 void PreferencesModel::loadPreferences()

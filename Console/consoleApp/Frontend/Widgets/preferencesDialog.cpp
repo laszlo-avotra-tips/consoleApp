@@ -74,6 +74,7 @@ void PreferencesDialog::init()
     setDefaultLocation();
 
     ui->labelSn->setText(QString("Lightbox Serial Number: ") + m_model->getSerialNumber());
+    ui->labelDiskSpace->setText(QString("Disk Space Remaining: ") + m_model->getSpaceRemaining() + QString(" GB"));
 }
 
 PreferencesDialog::~PreferencesDialog()
