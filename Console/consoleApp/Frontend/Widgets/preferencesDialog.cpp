@@ -54,12 +54,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButtonLocationUp, &QPushButton::clicked, this, &PreferencesDialog::handleLocationDown);
     connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &PreferencesDialog::handleLocationUp);
 
-    connect(&m_currentDateUpdate, &QTimer::timeout, this, &PreferencesDialog::setCurrentDate);
-    connect(&m_currentTimeUpdate, &QTimer::timeout, this, &PreferencesDialog::setCurrentTime);
-
-    m_currentDateUpdate.start(1000);
-    m_currentTimeUpdate.start(100);
-
     ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
 }
@@ -472,16 +466,6 @@ void PreferencesDialog::handleLocationUnmarked()
     ui->pushButtonAddLocation->setText("ADD");
     ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     m_defaultLocationCandidate = "";
-}
-
-void PreferencesDialog::setCurrentDate()
-{
-    ui->labelDate->setText(QDateTime::currentDateTime().toString("dd/MM/yyyy")) ;
-}
-
-void PreferencesDialog::setCurrentTime()
-{
-    ui->labelTime->setText(QDateTime::currentDateTime().toString(" hh:mm:ss")) ;
 }
 
 void PreferencesDialog::handlePhysicianLabel(const ActiveLabel *label)

@@ -58,7 +58,11 @@ QFrame#frameBack{
 background-color:#636363;
 border-radius: 10px;
 }
-</string>
+QLineEdit{
+font: 20pt &quot;Helvetica Neue&quot;;
+color:white;
+background-color: black;
+}</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -611,10 +615,10 @@ font: 18pt;</string>
   <widget class="QFrame" name="frameTimeDate">
    <property name="geometry">
     <rect>
-     <x>902</x>
-     <y>1182</y>
-     <width>631</width>
-     <height>391</height>
+     <x>890</x>
+     <y>1180</y>
+     <width>761</width>
+     <height>401</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -644,8 +648,8 @@ font: 18pt;</string>
    <widget class="QPushButton" name="pushButtonApply">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>290</y>
+      <x>10</x>
+      <y>300</y>
       <width>231</width>
       <height>101</height>
      </rect>
@@ -665,8 +669,8 @@ font: 18pt;</string>
    <widget class="QPushButton" name="pushButtonCancel">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>290</y>
+      <x>510</x>
+      <y>300</y>
       <width>231</width>
       <height>101</height>
      </rect>
@@ -684,6 +688,14 @@ font: 18pt;</string>
     </property>
    </widget>
    <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>1</x>
+      <y>1</y>
+      <width>751</width>
+      <height>102</height>
+     </rect>
+    </property>
     <layout class="QHBoxLayout" name="horizontalLayoutTime">
      <property name="spacing">
       <number>0</number>
@@ -741,13 +753,7 @@ font: 18pt;</string>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelTime">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QLineEdit" name="lineEditTime">
        <property name="minimumSize">
         <size>
          <width>300</width>
@@ -757,14 +763,14 @@ font: 18pt;</string>
        <property name="maximumSize">
         <size>
          <width>300</width>
-         <height>16777215</height>
+         <height>100</height>
         </size>
        </property>
        <property name="text">
-        <string>12:12:12 PM</string>
+        <string>11:42:00</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -802,7 +808,7 @@ font: 18pt;</string>
      <rect>
       <x>0</x>
       <y>150</y>
-      <width>630</width>
+      <width>756</width>
       <height>102</height>
      </rect>
     </property>
@@ -863,17 +869,11 @@ font: 18pt;</string>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelDate">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QLineEdit" name="lineEdit">
        <property name="minimumSize">
         <size>
-         <width>300</width>
-         <height>0</height>
+         <width>0</width>
+         <height>100</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -883,10 +883,10 @@ font: 18pt;</string>
         </size>
        </property>
        <property name="text">
-        <string>07/07/2020</string>
+        <string>03/14/2021</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
