@@ -20,7 +20,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     m_dateTimeController = new DateTimeController(this);
 
     m_dateTimeController->setTimeWidgets(ui->lineEditTime, ui->pushButtonTimeUp, ui->pushButtonTimeDown);
-    m_dateTimeController->setTimeWidgets(ui->lineEdit, ui->pushButtonDateUp, ui->pushButtonDateDown);
+    m_dateTimeController->setDateWidgets(ui->lineEditDate, ui->pushButtonDateUp, ui->pushButtonDateDown);
     m_dateTimeController->setWidgets(ui->pushButtonApply, ui->pushButtonCancel);
 //    m_dateTimeController->controllerInitialize();
 

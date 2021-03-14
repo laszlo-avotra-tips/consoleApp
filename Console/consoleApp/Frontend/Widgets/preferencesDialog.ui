@@ -754,23 +754,32 @@ font: 18pt;</string>
      </item>
      <item>
       <widget class="QLineEdit" name="lineEditTime">
-       <property name="minimumSize">
-        <size>
-         <width>300</width>
-         <height>0</height>
-        </size>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>300</width>
-         <height>100</height>
-        </size>
+       <property name="font">
+        <font>
+         <family>Helvetica Neue</family>
+         <pointsize>20</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="inputMask">
+        <string>99:99:99</string>
        </property>
        <property name="text">
-        <string>11:42:00</string>
+        <string>03:12:20</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -869,21 +878,27 @@ font: 18pt;</string>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>100</height>
-        </size>
+      <widget class="QLineEdit" name="lineEditDate">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>300</width>
-         <height>16777215</height>
-        </size>
+       <property name="font">
+        <font>
+         <family>Helvetica Neue</family>
+         <pointsize>20</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="inputMask">
+        <string>99/99/9999</string>
        </property>
        <property name="text">
-        <string>03/14/2021</string>
+        <string>01/03/2000</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
