@@ -2,6 +2,7 @@
 #include "ui_preferencesDialog.h"
 #include "logger.h"
 #include "Utility/preferencesModel.h"
+#include "dateTimeController.h"
 
 #include "Utility/userSettings.h"
 #include "Utility/preferencesDatabase.h"
@@ -16,6 +17,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
+    m_dateTimeController = new DateTimeController(this);
+
     m_physicianLabels = {ui->labelDr1, ui->labelDr2, ui->labelDr3};
     m_locationLabels = {ui->labelLocation1, ui->labelLocation2, ui->labelLocation3, };
 

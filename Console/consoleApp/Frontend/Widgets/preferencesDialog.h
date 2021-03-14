@@ -15,6 +15,8 @@ namespace Ui {
 class PreferencesDialog;
 }
 
+class DateTimeController;
+
 class PreferencesDialog : public QDialog
 {
     Q_OBJECT
@@ -103,6 +105,8 @@ private:
 
     QTimer m_currentTimeUpdate;
     QTimer m_currentDateUpdate;
+
+    DateTimeController* m_dateTimeController{nullptr};
 
 };
 

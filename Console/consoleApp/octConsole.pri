@@ -34,6 +34,8 @@ HEADERS += \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
+    $$PWD/Frontend/Widgets/dateTimeController.h \
+    $$PWD/Frontend/Widgets/dateTimeModel.h \
     $$PWD/Frontend/Widgets/deviceDelegate.h \
     $$PWD/Frontend/Widgets/deviceDisplayModel.h \
     $$PWD/Frontend/Widgets/deviceListModel.h \
@@ -44,6 +46,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/formPmLogo.h \
     $$PWD/Frontend/Widgets/formSecondMonitor.h \
     $$PWD/Frontend/Widgets/iRotationIndicator.h \
+    $$PWD/Frontend/Widgets/localTime.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/opaqueScreen.h \
     $$PWD/Frontend/Widgets/preferencesDialog.h \
@@ -119,6 +122,8 @@ SOURCES += \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
+    $$PWD/Frontend/Widgets/dateTimeController.cpp \
+    $$PWD/Frontend/Widgets/dateTimeModel.cpp \
     $$PWD/Frontend/Widgets/deviceDelegate.cpp \
     $$PWD/Frontend/Widgets/deviceDisplayModel.cpp \
     $$PWD/Frontend/Widgets/deviceListModel.cpp \
@@ -128,6 +133,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/formDisk.cpp \
     $$PWD/Frontend/Widgets/formPmLogo.cpp \
     $$PWD/Frontend/Widgets/formSecondMonitor.cpp \
+    $$PWD/Frontend/Widgets/localTime.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
     $$PWD/Frontend/Widgets/opaqueScreen.cpp \
     $$PWD/Frontend/Widgets/preferencesDialog.cpp \
