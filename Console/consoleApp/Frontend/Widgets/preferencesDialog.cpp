@@ -287,6 +287,7 @@ void PreferencesDialog::updateLocationLabels()
 
 void PreferencesDialog::persistPreferences()
 {
+    m_dateTimeController->apply();
     m_model->persistPreferences();
 }
 

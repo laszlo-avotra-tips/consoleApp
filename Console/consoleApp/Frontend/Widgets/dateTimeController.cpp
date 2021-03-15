@@ -55,6 +55,11 @@ void DateTimeController::controllerInitialize()
     m_pushButtonCancel->setStyleSheet("background-color: black; color: black ");
 }
 
+void DateTimeController::cancelEdit()
+{
+    emit m_pushButtonCancel->clicked();
+}
+
 DateTimeController::~DateTimeController()
 {
     m_updateTimer.stop();

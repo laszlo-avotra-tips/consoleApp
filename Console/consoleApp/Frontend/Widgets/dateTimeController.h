@@ -26,6 +26,8 @@ public:
     void setDateWidgets(QLineEdit* le, QPushButton* up, QPushButton* down);
     void setWidgets(QPushButton* accept, QPushButton* cancel);
     void controllerInitialize();
+    void cancelEdit();
+    void apply();
 
 signals:
     void incrementDate();
@@ -69,7 +71,6 @@ private slots:
     void showCurrentDate();
     void showEditDate();
 
-    void apply();
     void deselect();
     void reloadDateTime();
 
