@@ -387,7 +387,7 @@ background-color: black;
      <rect>
       <x>151</x>
       <y>522</y>
-      <width>56</width>
+      <width>104</width>
       <height>50</height>
      </rect>
     </property>
@@ -398,7 +398,7 @@ background-color: black;
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
@@ -420,7 +420,7 @@ background-color: black;
      <rect>
       <x>1530</x>
       <y>522</y>
-      <width>56</width>
+      <width>104</width>
       <height>50</height>
      </rect>
     </property>
@@ -431,7 +431,7 @@ background-color: black;
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
@@ -453,7 +453,7 @@ background-color: black;
      <rect>
       <x>315</x>
       <y>522</y>
-      <width>56</width>
+      <width>104</width>
       <height>50</height>
      </rect>
     </property>
@@ -464,7 +464,7 @@ background-color: black;
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
@@ -486,7 +486,7 @@ background-color: black;
      <rect>
       <x>1701</x>
       <y>522</y>
-      <width>56</width>
+      <width>104</width>
       <height>50</height>
      </rect>
     </property>
@@ -497,7 +497,7 @@ background-color: black;
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
