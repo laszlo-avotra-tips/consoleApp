@@ -51,9 +51,9 @@ void DateTimeController::controllerInitialize()
     connect(&m_updateTimer, &QTimer::timeout, this, &DateTimeController::showCurrentTime);
 
     m_updateTimer.start(m_updateTimerTimeout);
-    m_pushButtonApply->setStyleSheet("background-color: black; color: black ");
+    m_pushButtonApply->setStyleSheet("background-color: black; color: black ;font: 16pt Helvetica Neue;");
 
-    m_pushButtonCancel->setStyleSheet("background-color: black; color: black ");
+    m_pushButtonCancel->setStyleSheet("background-color: black; color: black;font: 16pt Helvetica Neue; ");
 }
 
 void DateTimeController::cancelEdit()
