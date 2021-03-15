@@ -1,13 +1,14 @@
 #include "dateTimeModel.h"
 #include "localTime.h"
+#include "logger.h"
 
 #include <QDebug>
 #include <QDateTime>
 
-#define LOG2(x_,y_) {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " "\
-    << __FUNCTION__ << ":"<< __LINE__ << " "<< #x_ << "=" << x_ << " "<< #y_ << "=" << y_ ;}
-#define LOG(x_) {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " " << __FUNCTION__ << ":"<< __LINE__ << " "<< #x_ << "=" << x_;}
-#define LOG_ {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " " << __FUNCTION__ << ":"<< __LINE__;}
+//#define LOG2(x_,y_) {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " "\
+//    << __FUNCTION__ << ":"<< __LINE__ << " "<< #x_ << "=" << x_ << " "<< #y_ << "=" << y_ ;}
+//#define LOG(x_) {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " " << __FUNCTION__ << ":"<< __LINE__ << " "<< #x_ << "=" << x_;}
+//#define LOG_ {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " " << __FUNCTION__ << ":"<< __LINE__;}
 
 DateTimeModel::DateTimeModel(QObject *parent) : QObject(parent)
 {
@@ -18,10 +19,10 @@ DateTimeModel::DateTimeModel(QObject *parent) : QObject(parent)
 void DateTimeModel::apply()
 {
     bool successDate = LocalTime::instance()->setDate(m_editDate);
-    LOG(successDate);
+    LOG1(successDate);
 
     bool successTime = LocalTime::instance()->addSeconds(m_secondsAdjustment);
-    LOG(successTime);
+    LOG1(successTime);
 
 }
 
@@ -94,7 +95,7 @@ void DateTimeModel::incrementHour()
 {
     m_secondsAdjustment = 60 * 60;
     m_secondsAdjustment %= m_dayInSeconds;
-    LOG(m_secondsAdjustment);
+    LOG1(m_secondsAdjustment);
     m_editTime = m_editTime.addSecs(m_secondsAdjustment);
 }
 
@@ -102,7 +103,7 @@ void DateTimeModel::incrementMinutes()
 {
     m_secondsAdjustment = 60;
     m_secondsAdjustment %= m_dayInSeconds;
-    LOG(m_secondsAdjustment);
+    LOG1(m_secondsAdjustment);
     m_editTime = m_editTime.addSecs(m_secondsAdjustment);
 }
 
@@ -110,7 +111,7 @@ void DateTimeModel::incrementSeconds()
 {
     m_secondsAdjustment = 1;
     m_secondsAdjustment %= m_dayInSeconds;
-    LOG(m_secondsAdjustment);
+    LOG1(m_secondsAdjustment);
     m_editTime = m_editTime.addSecs(m_secondsAdjustment);
 }
 
@@ -118,7 +119,7 @@ void DateTimeModel::decrementHour()
 {
     m_secondsAdjustment = -60 * 60;
     m_secondsAdjustment %= m_dayInSeconds;
-    LOG(m_secondsAdjustment);
+    LOG1(m_secondsAdjustment);
     m_editTime = m_editTime.addSecs(m_secondsAdjustment);
 }
 
@@ -126,7 +127,7 @@ void DateTimeModel::decrementMinutes()
 {
     m_secondsAdjustment = -60;
     m_secondsAdjustment %= m_dayInSeconds;
-    LOG(m_secondsAdjustment);
+    LOG1(m_secondsAdjustment);
     m_editTime = m_editTime.addSecs(m_secondsAdjustment);
 }
 
@@ -134,7 +135,7 @@ void DateTimeModel::decrementSeconds()
 {
     m_secondsAdjustment = -1;
     m_secondsAdjustment %= m_dayInSeconds;
-    LOG(m_secondsAdjustment);
+    LOG1(m_secondsAdjustment);
     m_editTime = m_editTime.addSecs(m_secondsAdjustment);
 }
 
@@ -150,6 +151,6 @@ QDate DateTimeModel::editDate() const
 
 QTime DateTimeModel::editTime() const
 {
-    LOG(m_editTime.second());
+    LOG1(m_editTime.second());
     return m_editTime;
 }
