@@ -50,9 +50,9 @@ void DateTimeController::controllerInitialize()
     connect(&m_updateTimer, &QTimer::timeout, this, &DateTimeController::showCurrentTime);
 
     m_updateTimer.start(m_updateTimerTimeout);
-    m_pushButtonApply->setStyleSheet("background-color: #F5C400; color: black ");
+    m_pushButtonApply->setStyleSheet("background-color: black; color: black ");
 
-    m_pushButtonCancel->setStyleSheet("background-color: #F5C400; color: black ");
+    m_pushButtonCancel->setStyleSheet("background-color: black; color: black ");
 }
 
 DateTimeController::~DateTimeController()
@@ -317,9 +317,9 @@ void DateTimeController::showButton(bool isShown, QPushButton *button)
 {
     LOG2(button->x(), button->y());
     if(isShown){
-        button->setStyleSheet("background-color: black");
+        button->setStyleSheet("background-color: #F5C400");
     }else{
-        button->setStyleSheet("background-color: #F5C400; color: black ");
+        button->setStyleSheet("background-color: black; color: black ");
     }
 
 //    if(isShown){
