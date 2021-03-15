@@ -1,6 +1,7 @@
 #include "dateTimeController.h"
 #include "localTime.h"
 #include "dateTimeModel.h"
+#include "logger.h"
 
 #include <QLineEdit>
 #include <QPushButton>
@@ -11,10 +12,6 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 
-#define LOG2(x_,y_) {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " "\
-    << __FUNCTION__ << ":"<< __LINE__ << " "<< #x_ << "=" << x_ << " "<< #y_ << "=" << y_ ;}
-#define LOG(x_) {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " " << __FUNCTION__ << ":"<< __LINE__ << " "<< #x_ << "=" << x_;}
-#define LOG_ {qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss:zzz")<< " " << __FUNCTION__ << ":"<< __LINE__;}
 
 DateTimeController::DateTimeController(QWidget *parent)
     : QDialog(parent)
@@ -218,7 +215,7 @@ void DateTimeController::selectDateItem(int pos)
     //0,1 month
     //3,4 day
     //6,7,8,9 year
-    LOG(pos);
+    LOG1(pos);
     switch(pos){
     case 7:
     case 8:
@@ -265,7 +262,7 @@ void DateTimeController::selectTimeItem(int pos)
     //0,1 hour
     //3,4 min
     //6,7 sec
-    LOG(pos);
+    LOG1(pos);
     switch(pos){
     case 2:
     case 1:
@@ -349,11 +346,11 @@ void DateTimeController::setIsEditMode(bool isEditMode)
     if(m_isEditMode != isEditMode){
         m_isEditMode = isEditMode;
         if(m_isEditMode){
-            LOG(m_isEditMode);
+            LOG1(m_isEditMode);
             m_updateTimer.stop();
             m_model->setEditTime(m_currentTime);
         }else{
-            LOG(m_isEditMode);
+            LOG1(m_isEditMode);
             m_updateTimer.start(m_updateTimerTimeout);
         }
         showButton(m_isEditMode, m_pushButtonApply);
@@ -397,7 +394,7 @@ void DateTimeController::apply()
 
 void DateTimeController::deselect()
 {
-    LOG_;
+    LOG1(this);
     m_dateSelected = {-1,-1};
     m_timeSelected = {-1,-1};
     m_lineEditDate->deselect();

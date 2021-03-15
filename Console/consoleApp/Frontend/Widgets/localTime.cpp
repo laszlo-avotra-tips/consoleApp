@@ -5,11 +5,10 @@
 #include <sysinfoapi.h>
 
 #include "localTime.h"
+#include "logger.h"
 
 #include <QDebug>
 #include <QDate>
-
-#define LOG(x_) {qDebug() << #x_ << "=" << x_;}
 
 
 LocalTime* LocalTime::m_instance{nullptr};
@@ -33,9 +32,9 @@ bool LocalTime::addSeconds(int adjustmentInSeconds)
         const int deltaM = (adjustmentInSeconds % oneHourInSeconds) / oneMinuteInSeconds;
         const int deltaS = adjustmentInSeconds % oneMinuteInSeconds;
 
-        LOG(deltaH);
-        LOG(deltaM);
-        LOG(deltaS);
+        LOG1(deltaH);
+        LOG1(deltaM);
+        LOG1(deltaS);
 
         _SYSTEMTIME current;
         GetLocalTime(&current);
@@ -98,9 +97,9 @@ bool LocalTime::setLocalTime(const QTime &time)
 bool LocalTime::updateLocalTime(const _SYSTEMTIME &st)
 {
     bool success{true};
-    //success = SetLocalTime(&st);
+    success = SetLocalTime(&st);
     logSystemTime(st);
-    LOG(success);
+    LOG1(success);
     return success;
 }
 
@@ -110,12 +109,12 @@ LocalTime::LocalTime()
 
 void LocalTime::logSystemTime(const _SYSTEMTIME &current)
 {
-    LOG(current.wYear);
-    LOG(current.wMonth);
-    LOG(current.wDayOfWeek);
-    LOG(current.wDay);
+    LOG1(current.wYear);
+    LOG1(current.wMonth);
+    LOG1(current.wDayOfWeek);
+    LOG1(current.wDay);
 
-    LOG(current.wHour);
-    LOG(current.wMinute);
-    LOG(current.wSecond);
+    LOG1(current.wHour);
+    LOG1(current.wMinute);
+    LOG1(current.wSecond);
 }
