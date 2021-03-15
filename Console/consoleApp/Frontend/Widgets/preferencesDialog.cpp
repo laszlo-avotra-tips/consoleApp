@@ -22,7 +22,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     m_dateTimeController->setTimeWidgets(ui->lineEditTime, ui->pushButtonTimeUp, ui->pushButtonTimeDown);
     m_dateTimeController->setDateWidgets(ui->lineEditDate, ui->pushButtonDateUp, ui->pushButtonDateDown);
     m_dateTimeController->setWidgets(ui->pushButtonApply, ui->pushButtonCancel);
-//    m_dateTimeController->controllerInitialize();
+    m_dateTimeController->controllerInitialize();
 
     m_physicianLabels = {ui->labelDr1, ui->labelDr2, ui->labelDr3};
     m_locationLabels = {ui->labelLocation1, ui->labelLocation2, ui->labelLocation3, };
@@ -83,7 +83,7 @@ void PreferencesDialog::init()
     ui->labelSn->setText(QString("Lightbox Serial Number: ") + m_model->getSerialNumber());
     ui->labelDiskSpace->setText(QString("Disk Space Remaining: ") + m_model->getSpaceRemaining() + QString(" GB"));
 
-    m_dateTimeController->controllerInitialize();
+//    m_dateTimeController->controllerInitialize();
 
 }
 
@@ -287,6 +287,7 @@ void PreferencesDialog::updateLocationLabels()
 
 void PreferencesDialog::persistPreferences()
 {
+    LOG1(this);
     m_dateTimeController->apply();
     m_model->persistPreferences();
 }
