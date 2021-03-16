@@ -213,7 +213,7 @@ void DateTimeController::handleTimeChanged(const QString &)
 
 void DateTimeController::selectDateItem(int pos)
 {
-    setIsEditMode(true);
+//    setIsEditMode(true);
     m_pushButtonDateDown->setEnabled(true);
     m_pushButtonDateUp->setEnabled(true);
 
@@ -391,7 +391,9 @@ void DateTimeController::showEditTime()
 
 void DateTimeController::apply()
 {
-    if(isEditMode()){
+    LOG1(this);
+//    if(isEditMode())
+    {
         m_model->apply();
         setIsEditMode(false);
         deselect();
