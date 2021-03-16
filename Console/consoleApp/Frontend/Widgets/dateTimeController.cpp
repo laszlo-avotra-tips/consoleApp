@@ -113,6 +113,7 @@ void DateTimeController::handlePushButtonCancel()
         showDate(m_currentDate);
         deselect();
     }
+    showEditControlButtons(false);
 }
 
 void DateTimeController::incrementDay()
@@ -213,9 +214,7 @@ void DateTimeController::handleTimeChanged(const QString &)
 
 void DateTimeController::selectDateItem(int pos)
 {
-//    setIsEditMode(true);
-    m_pushButtonDateDown->setEnabled(true);
-    m_pushButtonDateUp->setEnabled(true);
+    showEditControlButtons(true);
 
     //03/11/2021
     //0,1 month
@@ -359,9 +358,16 @@ void DateTimeController::setIsEditMode(bool isEditMode)
             LOG1(m_isEditMode);
             m_updateTimer.start(m_updateTimerTimeout);
         }
-        showButton(m_isEditMode, m_pushButtonApply);
-        showButton(m_isEditMode, m_pushButtonCancel);
+        showEditControlButtons(m_isEditMode);
     }
+}
+
+void DateTimeController::showEditControlButtons(bool isShown)
+{
+    showButton(isShown, m_pushButtonApply);
+    showButton(isShown, m_pushButtonCancel);
+    m_pushButtonDateDown->setEnabled(isShown);
+    m_pushButtonDateUp->setEnabled(isShown);
 }
 
 void DateTimeController::showTime(const QTime& newTimeValue)
@@ -392,11 +398,16 @@ void DateTimeController::showEditTime()
 void DateTimeController::apply()
 {
     LOG1(this);
-//    if(isEditMode())
+    if(isEditMode())
     {
         m_model->apply();
         setIsEditMode(false);
         deselect();
+    }else{
+        showEditControlButtons(false);
+        m_model->applyDate();
+        deselect();
+        reloadDateTime();
     }
 }
 

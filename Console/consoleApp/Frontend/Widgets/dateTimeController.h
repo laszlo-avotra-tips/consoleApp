@@ -80,6 +80,7 @@ private:
     void showTime(const QTime &newTimeValue);
     bool isEditMode() const;
     void setIsEditMode(bool isEditMode);
+    void showEditControlButtons(bool isShown);
 
     void selectDateItem(int pos);
     void selectTimeItem(int pos);

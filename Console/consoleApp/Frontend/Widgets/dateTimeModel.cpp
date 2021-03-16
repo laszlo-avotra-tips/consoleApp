@@ -18,14 +18,17 @@ DateTimeModel::DateTimeModel(QObject *parent) : QObject(parent)
 
 void DateTimeModel::apply()
 {
-    bool successDate = LocalTime::instance()->setDate(m_editDate);
-    LOG1(successDate);
 
-//    bool successTime = LocalTime::instance()->addSeconds(m_secondsAdjustment);
-//    LOG1(successTime);
-
+    applyDate();
     bool successTime = LocalTime::instance()->setLocalTime(m_editTime);
     LOG1(successTime);
+}
+
+void DateTimeModel::applyDate()
+{
+    bool successDate = LocalTime::instance()->setDate(m_editDate);
+    LOG1(successDate);
+    \
 }
 
 void DateTimeModel::setEditTime(const QTime &editTime)
