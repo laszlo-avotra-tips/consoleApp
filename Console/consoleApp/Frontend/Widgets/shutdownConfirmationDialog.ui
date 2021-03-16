@@ -95,7 +95,7 @@ background-color: black;
     <rect>
      <x>98</x>
      <y>485</y>
-     <width>1278</width>
+     <width>1461</width>
      <height>84</height>
     </rect>
    </property>
@@ -106,7 +106,10 @@ background-color: black;
     </sizepolicy>
    </property>
    <property name="text">
-    <string>ARE YOU SURE YOU WANT TO SHUTDOWN</string>
+    <string>ARE YOU SURE YOU WANT TO SHUTDOWN?</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonCancel">
