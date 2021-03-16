@@ -325,7 +325,12 @@ void DateTimeController::showButton(bool isShown, QPushButton *button)
 {
     LOG2(button->x(), button->y());
     if(isShown){
-        button->setStyleSheet("background-color: #F5C400");
+        //background-color:#676767;
+        if(button->text() == "CANCEL"){
+            button->setStyleSheet("background-color: #676767");
+        }else{
+            button->setStyleSheet("background-color: #F5C400");
+        }
     }else{
         button->setStyleSheet("background-color: black; color: black ");
     }

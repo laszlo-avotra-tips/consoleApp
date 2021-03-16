@@ -19,7 +19,7 @@ background-color: black;
 color: white;
 }
 QLabel{
-font: 18pt &quot;Helvetica Neue&quot;;
+font: 22pt &quot;Helvetica Neue&quot;;
 }
 QPushButton{
 font: 18pt;
@@ -124,6 +124,9 @@ background-color: black;
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: white</string>
+   </property>
    <property name="text">
     <string>CANCEL</string>
    </property>
@@ -143,11 +146,50 @@ background-color: black;
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="accessibleDescription">
+    <string/>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #F5C400</string>
+   </property>
    <property name="text">
     <string>SHUTDOWN</string>
    </property>
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>ShutdownConfirmationDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>609</x>
+     <y>756</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>816</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonShutdown</sender>
+   <signal>clicked()</signal>
+   <receiver>ShutdownConfirmationDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>756</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>816</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

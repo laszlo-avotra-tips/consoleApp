@@ -6,6 +6,7 @@ ShutdownConfirmationDialog::ShutdownConfirmationDialog(QWidget *parent) :
     ui(new Ui::ShutdownConfirmationDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::SplashScreen);
 }
 
 ShutdownConfirmationDialog::~ShutdownConfirmationDialog()
