@@ -38,7 +38,7 @@ public:
     void setEditTime(const QTime &editTime);
 
 public slots:
-    void apply();
+    void applyTime();
     void applyDate();
 
 signals:

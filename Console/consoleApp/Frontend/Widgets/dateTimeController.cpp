@@ -415,7 +415,7 @@ void DateTimeController::apply()
     LOG1(this);
     if(isTimeEditMode())
     {
-        m_model->apply();
+        m_model->applyTime();
         setIsTimeEditMode(false);
         deselect();
     }else{

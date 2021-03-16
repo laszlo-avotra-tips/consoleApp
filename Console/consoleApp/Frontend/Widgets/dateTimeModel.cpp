@@ -16,7 +16,7 @@ DateTimeModel::DateTimeModel(QObject *parent) : QObject(parent)
     m_editTime = QDateTime::currentDateTime().time();
 }
 
-void DateTimeModel::apply()
+void DateTimeModel::applyTime()
 {
 
     applyDate();
