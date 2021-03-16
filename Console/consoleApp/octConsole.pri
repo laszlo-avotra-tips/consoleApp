@@ -56,6 +56,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
+    $$PWD/Frontend/Widgets/shutdownConfirmationDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
     $$PWD/Frontend/Widgets/videoplayer.h \
     ../version.h \
@@ -143,6 +144,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
+    $$PWD/Frontend/Widgets/shutdownConfirmationDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/Frontend/Widgets/videoplayer.cpp \
     $$PWD/main.cpp \
@@ -196,6 +198,7 @@ FORMS += \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.ui \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
+    $$PWD/Frontend/Widgets/shutdownConfirmationDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     ../../Common/GUI/styledmessagebox.ui  
 
