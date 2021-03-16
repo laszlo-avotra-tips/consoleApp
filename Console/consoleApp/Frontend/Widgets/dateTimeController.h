@@ -78,8 +78,8 @@ private slots:
 private:
     void showDate(const QDate &newDate);
     void showTime(const QTime &newTimeValue);
-    bool isEditMode() const;
-    void setIsEditMode(bool isEditMode);
+    bool isTimeEditMode() const;
+    void setIsTimeEditMode(bool isEditMode);
     void showEditControlButtons(bool isShown);
 
     void selectDateItem(int pos);
@@ -97,7 +97,7 @@ private:
 
     QTimer m_updateTimer;
     const int m_updateTimerTimeout{100};
-    bool m_isEditMode{false};
+    bool m_isTimeEditMode{false};
 
     QLineEdit* m_lineEditDate{nullptr};
     QLineEdit* m_lineEditTime{nullptr};

@@ -108,8 +108,8 @@ void DateTimeController::handlePushButtonTimeDown()
 
 void DateTimeController::handlePushButtonCancel()
 {
-    if(isEditMode()){
-        setIsEditMode(false);
+    if(isTimeEditMode()){
+        setIsTimeEditMode(false);
         showDate(m_currentDate);
         deselect();
     }
@@ -258,7 +258,7 @@ void DateTimeController::selectDateItem(int pos)
 
 void DateTimeController::selectTimeItem(int pos)
 {
-    if(isEditMode()){
+    if(isTimeEditMode()){
         m_pushButtonTimeDown->setEnabled(true);
         m_pushButtonTimeUp->setEnabled(true);
     }
@@ -272,7 +272,7 @@ void DateTimeController::selectTimeItem(int pos)
     case 2:
     case 1:
     case 0:
-        setIsEditMode(true);
+        setIsTimeEditMode(true);
         m_timeSelected = {0,2};
         m_lineEditTime->setSelection(m_timeSelected.first, m_timeSelected.second);
         disconnect();
@@ -283,7 +283,7 @@ void DateTimeController::selectTimeItem(int pos)
     case 5:
     case 4:
     case 3:
-        setIsEditMode(true);
+        setIsTimeEditMode(true);
         m_timeSelected = {3,2};
         m_lineEditTime->setSelection(m_timeSelected.first, m_timeSelected.second);
         disconnect();
@@ -294,7 +294,7 @@ void DateTimeController::selectTimeItem(int pos)
 //    case 8:
     case 7:
     case 6:
-        setIsEditMode(true);
+        setIsTimeEditMode(true);
         m_timeSelected = {6,2};
         m_lineEditTime->setSelection(m_timeSelected.first, m_timeSelected.second);
         disconnect();
@@ -306,14 +306,14 @@ void DateTimeController::selectTimeItem(int pos)
 
 void DateTimeController::showCurrentDate()
 {
-    if(!isEditMode()){
+    if(!isTimeEditMode()){
         showDate(m_currentDate);
     }
 }
 
 void DateTimeController::showEditDate()
 {
-    if(isEditMode()){
+    if(isTimeEditMode()){
         showDate(m_model->editDate());
     }
 }
@@ -341,24 +341,24 @@ void DateTimeController::showButton(bool isShown, QPushButton *button)
 
 }
 
-bool DateTimeController::isEditMode() const
+bool DateTimeController::isTimeEditMode() const
 {
-    return m_isEditMode;
+    return m_isTimeEditMode;
 }
 
-void DateTimeController::setIsEditMode(bool isEditMode)
+void DateTimeController::setIsTimeEditMode(bool isEditMode)
 {
-    if(m_isEditMode != isEditMode){
-        m_isEditMode = isEditMode;
-        if(m_isEditMode){
-            LOG1(m_isEditMode);
+    if(m_isTimeEditMode != isEditMode){
+        m_isTimeEditMode = isEditMode;
+        if(m_isTimeEditMode){
+            LOG1(m_isTimeEditMode);
             m_updateTimer.stop();
             m_model->setEditTime(m_currentTime);
         }else{
-            LOG1(m_isEditMode);
+            LOG1(m_isTimeEditMode);
             m_updateTimer.start(m_updateTimerTimeout);
         }
-        showEditControlButtons(m_isEditMode);
+        showEditControlButtons(m_isTimeEditMode);
     }
 }
 
@@ -382,7 +382,7 @@ void DateTimeController::showTime(const QTime& newTimeValue)
 
 void DateTimeController::showCurrentTime()
 {
-    if(!isEditMode()){
+    if(!isTimeEditMode()){
         m_currentTime = QDateTime::currentDateTime().time();
         showTime(m_currentTime);
     }
@@ -390,7 +390,7 @@ void DateTimeController::showCurrentTime()
 
 void DateTimeController::showEditTime()
 {
-    if(isEditMode()){
+    if(isTimeEditMode()){
         showTime(m_model->editTime());
     }
 }
@@ -398,10 +398,10 @@ void DateTimeController::showEditTime()
 void DateTimeController::apply()
 {
     LOG1(this);
-    if(isEditMode())
+    if(isTimeEditMode())
     {
         m_model->apply();
-        setIsEditMode(false);
+        setIsTimeEditMode(false);
         deselect();
     }else{
         showEditControlButtons(false);
