@@ -39,7 +39,6 @@ void DateTimeController::controllerInitialize()
     connect(m_pushButtonDateDown, &QPushButton::clicked, this, &DateTimeController::handlePushButtonDateDown);
     connect(m_pushButtonDateUp, &QPushButton::clicked, this, &DateTimeController::handlePushButtonDateUp);
 
-    connect(m_lineEditTime, &QLineEdit::textChanged, this, &DateTimeController::handleTimeChanged);
     connect(m_lineEditTime, &QLineEdit::cursorPositionChanged, this, &DateTimeController::handleTimeCursorPositionChanged);
 
     connect(m_pushButtonTimeDown, &QPushButton::clicked, this, &DateTimeController::handlePushButtonTimeDown);
@@ -205,13 +204,6 @@ void DateTimeController::handleTimeCursorPositionChanged(int, int pos)
     selectTimeItem(pos);
 }
 
-void DateTimeController::handleTimeChanged(const QString &)
-{
-//    if(isEditMode()){
-//        m_lineEditTime->setSelection(m_timeSelected.first, m_timeSelected.second);
-//    }
-}
-
 void DateTimeController::selectDateItem(int pos)
 {
     setIsDateEditMode(true);
@@ -348,9 +340,10 @@ bool DateTimeController::isDateEditMode() const
 
 void DateTimeController::setIsDateEditMode(bool isDateEditMode)
 {
-    LOG1(isDateEditMode);
-    if(m_isDateEditMode != isDateEditMode){
-         m_isDateEditMode = isDateEditMode;
+    m_isDateEditMode = isDateEditMode;
+    if(m_isDateEditMode){
+        LOG1(m_isDateEditMode);
+        m_model->setEditDate(m_currentDate);
     }
     showEditControlButtons(m_isDateEditMode || m_isTimeEditMode);
 }
@@ -360,19 +353,17 @@ bool DateTimeController::isTimeEditMode() const
     return m_isTimeEditMode;
 }
 
-void DateTimeController::setIsTimeEditMode(bool isEditMode)
+void DateTimeController::setIsTimeEditMode(bool isTimeEditMode)
 {
-    if(m_isTimeEditMode != isEditMode){
-        m_isTimeEditMode = isEditMode;
+    if(m_isTimeEditMode != isTimeEditMode){
+        m_isTimeEditMode = isTimeEditMode;
         if(m_isTimeEditMode){
             LOG1(m_isTimeEditMode);
             m_updateTimer.stop();
             m_model->setEditTime(m_currentTime);
         }else{
-            LOG1(m_isTimeEditMode);
             m_updateTimer.start(m_updateTimerTimeout);
         }
-//        showEditControlButtons(m_isTimeEditMode);
     }
     showEditControlButtons(m_isDateEditMode || m_isTimeEditMode);
 }
@@ -418,11 +409,12 @@ void DateTimeController::apply()
         m_model->applyTime();
         setIsTimeEditMode(false);
         deselect();
-    }else{
+    }
+    if(isDateEditMode())
+    {
         setIsDateEditMode(false);
         m_model->applyDate();
         deselect();
-        reloadDateTime();
     }
 }
 

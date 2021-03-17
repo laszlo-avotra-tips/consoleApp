@@ -48,7 +48,6 @@ private slots:
     void handleDateChanged(const QString &);
 
     void handleTimeCursorPositionChanged(int, int pos);
-    void handleTimeChanged(const QString &);
 
     void incrementDay();
     void incrementMonth();
@@ -80,7 +79,7 @@ private:
     void showTime(const QTime &newTimeValue);
 
     bool isTimeEditMode() const;
-    void setIsTimeEditMode(bool isEditMode);
+    void setIsTimeEditMode(bool isTimeEditMode);
     bool isDateEditMode() const;
     void setIsDateEditMode(bool isDateEditMode);
 

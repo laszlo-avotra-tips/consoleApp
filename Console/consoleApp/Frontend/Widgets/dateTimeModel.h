@@ -29,13 +29,14 @@ public:
     void decrementHour();
     void decrementMinutes();
     void decrementSeconds();
-    bool isEditMode() const;
 
     int secondsAdjustment() const;
     QDate editDate() const;
     QTime editTime() const;
 
     void setEditTime(const QTime &editTime);
+
+    void setEditDate(const QDate &editDate);
 
 public slots:
     void applyTime();

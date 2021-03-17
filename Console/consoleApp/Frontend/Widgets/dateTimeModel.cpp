@@ -31,6 +31,11 @@ void DateTimeModel::applyDate()
     \
 }
 
+void DateTimeModel::setEditDate(const QDate &editDate)
+{
+    m_editDate = editDate;
+}
+
 void DateTimeModel::setEditTime(const QTime &editTime)
 {
     m_editTime = editTime;
