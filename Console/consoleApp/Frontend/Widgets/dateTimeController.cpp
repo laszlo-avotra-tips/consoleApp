@@ -112,6 +112,12 @@ void DateTimeController::handlePushButtonCancel()
         showDate(m_currentDate);
         deselect();
     }
+    if(isDateEditMode()){
+        setIsDateEditMode(false);
+        showDate(m_currentDate);
+        deselect();
+    }
+
     showEditControlButtons(false);
 }
 
@@ -208,6 +214,11 @@ void DateTimeController::selectDateItem(int pos)
 {
     setIsDateEditMode(true);
 
+    if(isDateEditMode()){
+        m_pushButtonDateDown->setEnabled(true);
+        m_pushButtonDateUp->setEnabled(true);
+    }
+
     //03/11/2021
     //0,1 month
     //3,4 day
@@ -298,14 +309,14 @@ void DateTimeController::selectTimeItem(int pos)
 
 void DateTimeController::showCurrentDate()
 {
-    if(!isTimeEditMode()){
+    if(!isDateEditMode()){
         showDate(m_currentDate);
     }
 }
 
 void DateTimeController::showEditDate()
 {
-    if(isTimeEditMode()){
+    if(isDateEditMode()){
         showDate(m_model->editDate());
     }
 }
