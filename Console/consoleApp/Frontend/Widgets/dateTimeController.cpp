@@ -114,6 +114,7 @@ void DateTimeController::handlePushButtonCancel()
     if(isDateEditMode()){
         setIsDateEditMode(false);
         showDate(m_currentDate);
+        m_model->setEditDate(m_currentDate);
         deselect();
     }
 
@@ -442,6 +443,7 @@ void DateTimeController::reloadDateTime()
 {
     m_currentDate = QDateTime::currentDateTime().date();
     m_currentTime = QDateTime::currentDateTime().time();
+    m_model->setEditDate(m_currentDate);
 }
 
 void DateTimeController::showDate(const QDate &newDate)
