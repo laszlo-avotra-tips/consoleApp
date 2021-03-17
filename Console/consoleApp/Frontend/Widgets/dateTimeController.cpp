@@ -28,7 +28,7 @@ void DateTimeController::controllerInitialize()
     m_lineEditTime->setInputMask("99:99:99");
     m_lineEditTime->setReadOnly(true);
 
-    m_currentDate = QDateTime::currentDateTime().date();
+    reloadDateTime();
 
     showCurrentDate();
     showCurrentTime();
@@ -109,7 +109,6 @@ void DateTimeController::handlePushButtonCancel()
 {
     if(isTimeEditMode()){
         setIsTimeEditMode(false);
-        showDate(m_currentDate);
         deselect();
     }
     if(isDateEditMode()){
@@ -427,6 +426,7 @@ void DateTimeController::apply()
         m_model->applyDate();
         deselect();
     }
+    reloadDateTime();
 }
 
 void DateTimeController::deselect()
