@@ -499,7 +499,7 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
-        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
+        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
 
     } else {
         LOG1( "Cancelled")
@@ -809,12 +809,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                 auto interfaceSupport = InterfaceSupport::getInstance();
                 int currentSledRunningStateVal{interfaceSupport->getRunningState()};
 
-                       int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
-                       if(lastRunningState == 3)
+                if(currentSledRunningStateVal == 3)
                        {
                            activePassiveValue = "PASSIVE";
                        }
-                       else if(lastRunningState == 1)
+                else if(currentSledRunningStateVal == 1)
                        {
                            activePassiveValue = "ACTIVE";
                        }

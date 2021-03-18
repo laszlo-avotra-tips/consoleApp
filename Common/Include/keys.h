@@ -49,9 +49,9 @@ public:
 
     Keys( QString filename, Access_T openMode );
     ~Keys( void );
-    void init( void );
+    bool init( QString inputDirPath = "" );
     bool readKeys( void );
-    bool checkKeysBlocking( void );
+    bool checkKeysBlocking( QString inputDirPath = "" );
     void checkKeysBackground( void );
     bool isValid( void ) { return isValidFiles; }
     void doKeyChecks();
@@ -63,6 +63,7 @@ public:
 
 public slots:
     void addFile( QString filename );
+    void addFilePath( QString fullFilePathname, QString relativePathName);
 
 signals:
     void fileCheckDone( bool );

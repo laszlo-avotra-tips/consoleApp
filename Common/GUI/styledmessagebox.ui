@@ -206,7 +206,7 @@ QDialogButtonBox
      <string notr="true"/>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>msg</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
