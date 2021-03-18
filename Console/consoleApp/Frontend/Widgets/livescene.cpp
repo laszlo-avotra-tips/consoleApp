@@ -23,7 +23,7 @@
 #include "logger.h"
 #include <QApplication>
 #include "Utility/userSettings.h"
-#include "sledsupport.h"
+#include <Backend/interfacesupport.h>
 #include "rotationIndicatorFactory.h"
 
 
@@ -523,7 +523,18 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if(isInTheCenter){
              qApp->setOverrideCursor( Qt::ArrowCursor );
              if(RotationIndicatorFactory::getRotationIndicator()->isVisible()){
-                SledSupport::Instance().toggleDirection();
+                 auto interfaceSupport = InterfaceSupport::getInstance();
+                 int runState = interfaceSupport->getRunningState();
+
+                 if (runState == 1) {
+                     interfaceSupport->enableDisableBidirectional(true); // Clockwise
+                     interfaceSupport->setSledDirection(true);
+                     interfaceSupport->setSledRunState(true);
+                 } else if (runState == 3) {
+                     interfaceSupport->enableDisableBidirectional(false); // Counter-clockwise
+                     interfaceSupport->setSledDirection(false);
+                     interfaceSupport->setSledRunState(true);
+                 }
              }
         }
     }

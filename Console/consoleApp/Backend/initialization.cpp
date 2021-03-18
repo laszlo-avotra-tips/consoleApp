@@ -18,7 +18,7 @@
 #include "defaults.h"
 #include "keys.h"
 #include "logger.h"
-#include "sledsupport.h"
+#include <Backend/interfacesupport.h>
 
 /*
  * Constructor
@@ -28,6 +28,13 @@ Initialization::Initialization()
     hasWarning         = false;
     docScreenAvailable = true;  // assume it is unless the check in init() fails
     statusMessage      = "";
+    auto interfaceSupport = InterfaceSupport::getInstance(true);
+
+    if (interfaceSupport) {
+        LOG( INFO, "Interface support initialized successfully");
+    } else {
+        LOG( ERROR, "Interface support could not be initialized");
+    }
 }
 
 /*
@@ -49,18 +56,11 @@ bool Initialization::init( )
 
     bool isExeOk = true;
 
-    SledSupport &ss = SledSupport::Instance();
-
     // Check Hardware, drivers and libraries
     if( !isExeOk )
     {
         statusMessage = tr( "ERROR: The executable file has been tampered with or\n" \
                             "       is not the original version that was installed." );
-        isReady = false;
-    }
-    else if( !ss.init() )
-    {
-        statusMessage = tr( "ERROR: Unable to communicate with Sled Support Board hardware." );
         isReady = false;
     }
 
