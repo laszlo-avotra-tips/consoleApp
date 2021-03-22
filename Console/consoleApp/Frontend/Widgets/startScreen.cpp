@@ -127,9 +127,6 @@ void StartScreen::on_pushButtonShutdown_clicked()
         QThread::sleep(1);
         InterfaceSupport::releaseInstance();
         LOG( INFO, "FTDI interface closed successfully");
-        auto idaq = daqfactory::instance()->getdaq();
-        idaq->shutdownDaq();
-        QThread::sleep(1);
     }
     delete dialog;
 }
