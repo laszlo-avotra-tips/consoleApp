@@ -27,7 +27,7 @@
 #include "Utility/userSettings.h"
 #include <QTime>
 #include "depthsetting.h"
-#include "sledsupport.h"
+#include <Backend/interfacesupport.h>
 #include "rotationIndicatorFactory.h"
 #include "signalmodel.h"
 
@@ -579,7 +579,10 @@ void overlayItem::render( void )
 
     if(dev->isBiDirectional()){
         auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
-        if(SledSupport::Instance().getLastRunningState() != 0){
+        auto interfaceSupport = InterfaceSupport::getInstance();
+        int runningState{interfaceSupport->getRunningState()};
+
+        if(runningState != 0){
             rotationIndicatorOverlayItem->show();
         }
     }

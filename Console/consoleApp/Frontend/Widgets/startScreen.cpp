@@ -10,7 +10,6 @@
 #include "fullCaseRecorder.h"
 #include "displayManager.h"
 #include "daqfactory.h"
-#include "sledsupport.h"
 #include "preferencesDialog.h"
 #include "shutdownConfirmationDialog.h"
 
@@ -66,6 +65,24 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     QTapAndHoldGesture::setTimeout(2000);
 
      ui->pushButtonDemoMode->hide();
+
+     DisplayManager::instance();
+//     DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
+     hookupStartUpDiagnostics();
+}
+
+void StartScreen::hookupStartUpDiagnostics() {
+    diagnostics = new StartUpDiagnostics();
+    auto messageBox = styledMessageBox::instance(); //new PowerUpMessageBox();
+
+    QObject::connect(diagnostics, &OctSystemDiagnostics::showMessageBox,
+                     messageBox, &styledMessageBox::onShowMessageBox);
+    QObject::connect(diagnostics, &OctSystemDiagnostics::hideMessageBox,
+                     messageBox, &styledMessageBox::onHideMessageBox);
+
+    QObject::connect(messageBox, &styledMessageBox::userAcknowledged,
+                     diagnostics, &OctSystemDiagnostics::onUserAcknowledged);
+    LOG(INFO, "Start Up diagnostics framework initialized");
 }
 
 StartScreen::~StartScreen()
@@ -105,9 +122,11 @@ void StartScreen::on_pushButtonShutdown_clicked()
 
         DisplayManager::instance()->killDisplayMonitor();
 
-        auto& sled = SledSupport::Instance();
-        sled.writeSerial("sr0\r");
-
+        auto idaq = daqfactory::instance()->getdaq();
+        idaq->shutdownDaq();
+        QThread::sleep(1);
+        InterfaceSupport::releaseInstance();
+        LOG( INFO, "FTDI interface closed successfully");
         auto idaq = daqfactory::instance()->getdaq();
         idaq->shutdownDaq();
         QThread::sleep(1);
@@ -132,6 +151,15 @@ void StartScreen::hideEvent(QHideEvent *he)
 
 void StartScreen::on_pushButtonStart_released()
 {
+    if (diagnostics) {
+        if (!diagnostics->performDiagnostics(true)) {
+            LOG(ERROR, "Start up diagnostics failed!");
+            return;
+        } else {
+            LOG(INFO, "Start up diagnostics succeeded!");
+        }
+    }
+
     if(!m_isPressAndHold){
         WidgetContainer::instance()->gotoScreen("mainScreen");
     }

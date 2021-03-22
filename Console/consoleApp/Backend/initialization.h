@@ -48,4 +48,3 @@ protected:
 };
 
 #endif //INITIALIZATION_H_
-
