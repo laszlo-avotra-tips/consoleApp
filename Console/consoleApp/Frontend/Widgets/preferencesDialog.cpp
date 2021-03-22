@@ -1,12 +1,15 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
 #include "logger.h"
+#include "Utility/preferencesModel.h"
+#include "dateTimeController.h"
 
-#include "caseInformationModel.h"
 #include "Utility/userSettings.h"
-#include "Utility/caseInfoDatabase.h"
+#include "Utility/preferencesDatabase.h"
 #include "Utility/widgetcontainer.h"
 #include "consoleKeyboard.h"
+#include <QShowEvent>
+#include <QHideEvent>
 
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
@@ -14,18 +17,33 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
+    m_dateTimeController = new DateTimeController(this);
+
+    m_dateTimeController->setTimeWidgets(ui->lineEditTime, ui->pushButtonTimeUp, ui->pushButtonTimeDown);
+    m_dateTimeController->setDateWidgets(ui->lineEditDate, ui->pushButtonDateUp, ui->pushButtonDateDown);
+    m_dateTimeController->setWidgets(ui->pushButtonApply, ui->pushButtonCancel);
+    m_dateTimeController->controllerInitialize();
+
     m_physicianLabels = {ui->labelDr1, ui->labelDr2, ui->labelDr3};
     m_locationLabels = {ui->labelLocation1, ui->labelLocation2, ui->labelLocation3, };
 
     setWindowFlags(Qt::SplashScreen);
 
-    connect(ui->labelDr1, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
-    connect(ui->labelDr2, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
-    connect(ui->labelDr3, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedPhysician);
+    connect(ui->labelDr1, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLabelDr1);
+    connect(ui->labelDr2, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLabelDr2);
+    connect(ui->labelDr3, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLabelDr3);
 
-    connect(ui->labelLocation1, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
-    connect(ui->labelLocation2, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
-    connect(ui->labelLocation3, &ActiveLabel::labelSelected, this, &PreferencesDialog::handleSelectedLocation);
+    connect(ui->labelDr1, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handlePhysicianUnmarked);
+    connect(ui->labelDr2, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handlePhysicianUnmarked);
+    connect(ui->labelDr3, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handlePhysicianUnmarked);
+
+    connect(ui->labelLocation1, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation1);
+    connect(ui->labelLocation2, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation2);
+    connect(ui->labelLocation3, &ActiveLabel::labelItemMarked, this, &PreferencesDialog::handleLocation3);
+
+    connect(ui->labelLocation1, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handleLocationUnmarked);
+    connect(ui->labelLocation2, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handleLocationUnmarked);
+    connect(ui->labelLocation3, &ActiveLabel::labelItemUnmarked, this, &PreferencesDialog::handleLocationUnmarked);
 
     connect(ui->pushButtonDrDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultPhysician);
     connect(ui->pushButtonLocationDefault, &QPushButton::clicked, this, &PreferencesDialog::setDefaultLocation);
@@ -35,28 +53,38 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     connect(ui->pushButtonAddLocation, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemoveLocation);
     connect(ui->pushButtonAddPhysician, &QPushButton::clicked, this, &PreferencesDialog::handleAddRemovePhysician);
 
-    connect(ui->pushButtonDrUp, &QPushButton::clicked, this, &PreferencesDialog::handlePhysicianUp);
-    connect(ui->pushButtonDrDown, &QPushButton::clicked, this, &PreferencesDialog::handlePhysicianDown);
+    connect(ui->pushButtonDrUp, &QPushButton::clicked, this, &PreferencesDialog::handlePhysicianDown);
+    connect(ui->pushButtonDrDown, &QPushButton::clicked, this, &PreferencesDialog::handlePhysicianUp);
 
-    connect(ui->pushButtonLocationUp, &QPushButton::clicked, this, &PreferencesDialog::handleLocationUp);
-    connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &PreferencesDialog::handleLocationDown);
+    connect(ui->pushButtonLocationUp, &QPushButton::clicked, this, &PreferencesDialog::handleLocationDown);
+    connect(ui->pushButtonLocationDown, &QPushButton::clicked, this, &PreferencesDialog::handleLocationUp);
 
     ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
+}
 
+void PreferencesDialog::init()
+{
+    m_model = PreferencesModel::instance();
 
-    CaseInfoDatabase ciDb;
-    ciDb.initDb();
+    m_defaultLocationCandidate = m_model->defaultLocation();
+    m_defaultPhysicianCandidate = m_model->defaultPhysician();
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
+
+    m_locIt = m_model->locations().begin();
+    m_phIt = m_model->physicians().begin();
 
     initPhysiciansContainer();
     initLocationsContainer();
 
-    const auto& ci = CaseInformationModel::instance();
-    m_defaultLocationCandidate = ci->defaultLocation();
-    m_defaultPhysicianCandidate = ci->defaultPhysicianName();
-
     setDefaultPhysician();
     setDefaultLocation();
+
+    ui->labelSn->setText(QString("Lightbox Serial Number: ") + m_model->getSerialNumber());
+    ui->labelDiskSpace->setText(QString("Disk Space Remaining: ") + m_model->getSpaceRemaining() + QString(" GB"));
+
+//    m_dateTimeController->controllerInitialize();
+
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -64,24 +92,75 @@ PreferencesDialog::~PreferencesDialog()
     delete ui;
 }
 
+void PreferencesDialog::handleLabelDr1(ActiveLabel *label)
+{
+    handlePhysicianLabel(label);
+}
+
+void PreferencesDialog::handleLabelDr2(ActiveLabel* label)
+{
+    handlePhysicianLabel(label);
+}
+
+void PreferencesDialog::handleLabelDr3(ActiveLabel* label)
+{
+    handlePhysicianLabel(label);
+}
+
+void PreferencesDialog::handleLocation1(ActiveLabel *label)
+{
+    handleLocationLabel(label);
+}
+
+void PreferencesDialog::handleLocation2(ActiveLabel *label)
+{
+    handleLocationLabel(label);
+}
+
+void PreferencesDialog::handleLocation3(ActiveLabel *label)
+{
+    handleLocationLabel(label);
+}
+
+void PreferencesDialog::unmarkAll(std::vector<ActiveLabel*>& container)
+{
+    for(auto& label : container){
+        label->unmark();
+    }
+}
+
+void PreferencesDialog::markCandidate(std::vector<ActiveLabel *> &cont, const QString &name)
+{
+    // for empty default - "" - all will be unmarked
+    for(auto& label : cont){
+        if(label->text() == name){
+            label->mark();
+        } else {
+            label->unmark();
+        }
+    }
+}
+
+
 void PreferencesDialog::handleSelectedPhysician(const QString &name)
 {
-    LOG1(name)
-    for(auto& label : m_physicianLabels){
-        label->setStyleSheet("color: white");
-    }
+    unmarkAll(m_physicianLabels);
 
     const auto& labelIt = m_physiciansContainer.find(name);
     if(labelIt != m_physiciansContainer.end()){
         m_selectedPhysicianLabel = labelIt->second;
         if(m_selectedPhysicianLabel){
-            m_selectedPhysicianLabel->setStyleSheet("color: rgb(245,196,0)");
+            m_selectedPhysicianLabel->mark();
+        } else {
+            LOG1(m_selectedPhysicianLabel);
         }
     }
     m_defaultPhysicianCandidate = name;
     ui->pushButtonDrDefault->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
+
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setText("REMOVE");
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::setDefaultPhysician()
@@ -89,26 +168,24 @@ void PreferencesDialog::setDefaultPhysician()
     ui->labelDrDefault->setText(QString("Default: ") + m_defaultPhysicianCandidate);
     ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     if(m_selectedPhysicianLabel){
-        m_selectedPhysicianLabel->setStyleSheet("color: white");
+        m_selectedPhysicianLabel->unmark();
     }
-    auto ci = CaseInformationModel::instance();
-    ci->setDefaultPhysicianName(m_defaultPhysicianCandidate);
-    ui->pushButtonAddPhysician->setText("+ADD");
-//    ui->spushButtonAddPhysician->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+    m_model->setDefaultPhysician(m_defaultPhysicianCandidate);
+    m_defaultPhysicianCandidate = "";
+    ui->pushButtonAddPhysician->setText("ADD");
 }
 
 void PreferencesDialog::handleSelectedLocation(const QString &name)
 {
-    LOG1(name)
-    for(auto& label : m_locationLabels){
-        label->setStyleSheet("color: white");
-    }
+    unmarkAll(m_locationLabels);
 
     const auto& labelIt = m_locationsContainer.find(name);
     if(labelIt != m_locationsContainer.end()){
         m_selectedLocationLabel = labelIt->second;
         if(m_selectedLocationLabel){
-            m_selectedLocationLabel->setStyleSheet("color: rgb(245,196,0)");
+            m_selectedLocationLabel->mark();
+        } else {
+            LOG1(m_selectedLocationLabel);
         }
     }
     m_defaultLocationCandidate = name;
@@ -116,6 +193,7 @@ void PreferencesDialog::handleSelectedLocation(const QString &name)
 
     ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddLocation->setText("REMOVE");
+    LOG2(m_defaultPhysicianCandidate, m_defaultLocationCandidate);
 }
 
 void PreferencesDialog::setDefaultLocation()
@@ -123,120 +201,100 @@ void PreferencesDialog::setDefaultLocation()
     ui->labelLocationDefault->setText(QString("Default: ") + m_defaultLocationCandidate);
     ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
     if(m_selectedLocationLabel){
-        m_selectedLocationLabel->setStyleSheet("color: white");
+        m_selectedLocationLabel->unmark();
     }
-    auto ci = CaseInformationModel::instance();
-    ci->setDefaultLocation(m_defaultLocationCandidate);
-    ui->pushButtonAddLocation->setText("+ADD");
-//    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
+    m_model->setDefaultLocation(m_defaultLocationCandidate);
+    m_defaultLocationCandidate = "";
+    ui->pushButtonAddLocation->setText("ADD");
 }
 
 void PreferencesDialog::initPhysiciansContainer()
 {
-    const auto& ci = CaseInformationModel::instance();
-    const auto& phns = ci->physicianNames();
+    const auto& names = m_model->physicians();
 
-    int i{0};
-    for(const auto& label : m_physicianLabels){
-        if(i < phns.size()){
-            label->setText(phns[i + m_physicianBase]);
+    auto nameIt = m_phIt;
+    m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
+    for(auto* label : m_physicianLabels){
+        if(label && nameIt != names.end()){
+            const auto& name = *nameIt;
+            label->setText(name);
+            m_physiciansContainer[label->text()] = label;
+            ++nameIt;
+        } else if(label){
+            label->setText("");
         }
-        m_physiciansContainer[label->text()] = label;
-        ++i;
     }
 }
-
-void PreferencesDialog::initPhysiciansContainer2()
-{
-    const auto& ci = CaseInformationModel::instance();
-    const auto& phns = ci->physicianNames2();
-
-    int i{0};
-    for(const auto& label : m_physicianLabels){
-        if(i < phns.size()){
-            label->setText(phns[i]);
-        }
-        m_physiciansContainer[label->text()] = label;
-        ++i;
-    }
-}
-
 
 void PreferencesDialog::initLocationsContainer()
 {
-    const auto& ci = CaseInformationModel::instance();
-    const auto& locs = ci->locations();
+    const auto& names = m_model->locations();
 
-    int i{0};
-    for(const auto& label : m_locationLabels){
-        if(i < locs.size()){
-            label->setText(locs[i]);
+    auto nameIt = m_locIt;
+    m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
+    for(auto* label : m_locationLabels){
+        if(label && nameIt != names.end()){
+            const auto& name = *nameIt;
+            label->setText(name);
+            m_locationsContainer[label->text()] = label;
+            ++nameIt;
+        } else if(label){
+            label->setText("");
         }
-        m_locationsContainer[label->text()] = label;
-        ++i;
     }
 }
 
-void PreferencesDialog::initLocationsContainer2()
+void PreferencesDialog::updatePysicianLabels()
 {
-    const auto& ci = CaseInformationModel::instance();
-    const auto& locs = ci->locations2();
+    const auto& names = m_model->physicians();
+    m_phIt = names.begin();
+    auto nameIt = m_phIt;
 
-    int i{0};
-    for(const auto& label : m_locationLabels){
-        if(i < locs.size()){
-            label->setText(locs[i]);
+    m_physiciansContainer.erase(m_physiciansContainer.begin(), m_physiciansContainer.end());
+    for(const auto& label : m_physicianLabels){
+        if(nameIt != names.end()){
+            const auto& name = *nameIt;
+            LOG1(name);
+            label->setText(name);
+             m_physiciansContainer[name] = label;
+             ++nameIt;
+        } else {
+            label->setText("");
         }
-        m_locationsContainer[label->text()] = label;
-        ++i;
     }
 }
 
-void PreferencesDialog::createCaseInfoDb()
-{
-    initLocationsContainer2();
-    initPhysiciansContainer2();
-    //lcv only once
-    CaseInfoDatabase ciDb;
-    ciDb.initDb();
-    for(const auto& physician : m_physiciansContainer){
-        ciDb.addPhysician(physician.first);
-    }
 
-    for(const auto& location : m_locationsContainer){
-        ciDb.addLocation(location.first);
+void PreferencesDialog::updateLocationLabels()
+{
+    const auto& names = m_model->locations();
+
+    m_locIt = names.begin();
+    auto nameIt = m_locIt;
+
+    m_locationsContainer.erase(m_locationsContainer.begin(), m_locationsContainer.end());
+    for(const auto& label : m_locationLabels){
+        if(nameIt != names.end()){
+            const auto& name = *nameIt;
+            label->setText(name);
+             m_locationsContainer[name] = label;
+             ++nameIt;
+        }else {
+            label->setText("");
+        }
     }
 }
 
 void PreferencesDialog::persistPreferences()
 {
-    auto& settings = userSettings::Instance();
-    const auto& ci = CaseInformationModel::instance();
-
-    const auto& loc = ci->defaultLocation();
-    LOG1(loc);
-    settings.setLocation(loc);
-    settings.setPhysician(ci->defaultPhysicianName());
-
-    CaseInfoDatabase ciDb;
-    ciDb.initDb();
-
-    LOG2(ci->physicianNames().size(), ci->locations().size())
-
-    for(const auto& physician : ci->physicianNames()){
-        ciDb.addPhysician(physician);
-    }
-
-    for(const auto& location : ci->locations()){
-        ciDb.addLocation(location);
-    }
-
-    //    createCaseInfoDb();
+    LOG1(this);
+    m_dateTimeController->apply();
+    m_model->persistPreferences();
 }
 
 void PreferencesDialog::handleAddRemoveLocation()
 {
-    if(ui->pushButtonAddLocation->text() == "+ADD"){
+    if(ui->pushButtonAddLocation->text() == "ADD"){
         handleAddLocation();
     }else{
         handleRemoveLocation();
@@ -245,7 +303,7 @@ void PreferencesDialog::handleAddRemoveLocation()
 
 void PreferencesDialog::handleAddRemovePhysician()
 {
-    if(ui->pushButtonAddPhysician->text() == "+ADD"){
+    if(ui->pushButtonAddPhysician->text() == "ADD"){
         handleAddPhysician();
     }else{
         handleRemovePhysician();
@@ -255,8 +313,7 @@ void PreferencesDialog::handleAddRemovePhysician()
 
 void PreferencesDialog::handleAddLocation()
 {
-//    ui->pushButtonAddLocation->setStyleSheet("background-color:#262626; color: black; font: 18pt;");
-    QString paramName("LOCATIONE");
+    QString paramName("LOCATION");
     QString paramValue("");
     const int keyboardY{height() / 2};
 
@@ -274,12 +331,10 @@ void PreferencesDialog::handleAddLocation()
      * code execution continues here once the keyboard is closed
      * update selected physician name with newName
      */
-    LOG1(newName);
 
     if(!newName.isEmpty()){
-        auto cim = CaseInformationModel::instance();
-        cim->addLocation(newName);
-        initLocationsContainer();
+        m_model->addLocation(newName);
+        updateLocationLabels();
     }
 
 }
@@ -287,7 +342,7 @@ void PreferencesDialog::handleAddLocation()
 void PreferencesDialog::handleAddPhysician()
 {
     QString paramName("PHYSICIAN NAME");
-    QString paramValue("Dr. ");
+    QString paramValue("");
     const int keyboardY{height() / 2};
 
     /*
@@ -304,55 +359,154 @@ void PreferencesDialog::handleAddPhysician()
      * code execution continues here once the keyboard is closed
      * update selected physician name with newName
      */
-    LOG1(newName);
 
     if(!newName.isEmpty()){
-        auto cim = CaseInformationModel::instance();
-        cim->addPhysicianName(newName);
-        initPhysiciansContainer();
+        m_model->addPhysician(newName);
+        updatePysicianLabels();
     }
 }
 
 void PreferencesDialog::handleRemoveLocation()
 {
-    LOG1(m_selectedLocationLabel->text())
+    if(m_selectedLocationLabel){
+        const auto& name = m_selectedLocationLabel->text();
+        LOG1(name);
+        if(m_model->removeLocation(name)){
+            updateLocationLabels();
+            unmarkAll(m_locationLabels);
+            ui->pushButtonAddLocation->setText("ADD");
+            ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+            if(m_model->defaultLocation() == name){
+                ui->labelLocationDefault->setText("Default:");
+                m_model->setDefaultLocation("");
+            }
+        }
+    }
 }
 
 void PreferencesDialog::handleRemovePhysician()
 {
-    LOG1(m_selectedPhysicianLabel->text())
+    if(m_selectedPhysicianLabel){
+        const auto& name = m_selectedPhysicianLabel->text();
+        LOG1(name);
+
+        if(m_model->removePhysician(name)){
+            LOG1(name);
+            updatePysicianLabels();
+            unmarkAll(m_physicianLabels);
+            ui->pushButtonAddPhysician->setText("ADD");
+            ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+            if(m_model->defaultPhysician() == name){
+                ui->labelDrDefault->setText("Default:");
+                m_model->setDefaultPhysician("");
+            }
+        }
+    }
 }
 
 void PreferencesDialog::handlePhysicianUp()
 {
-   auto cim = CaseInformationModel::instance();
-   auto numNames = cim->physicianNames().size();
-   auto numLabels = m_physicianLabels.size();
+    const auto& names = m_model->physicians();
 
-   int maxBaseIndex = ((numNames - numLabels) > 0) ? (numNames - numLabels) : 0;
-
-   if(m_physicianBase < maxBaseIndex){
-       ++m_physicianBase;
-   }
-   LOG1(m_physicianBase);
-   initPhysiciansContainer();
+    auto maxBaseIt = names.end();
+    int i=0;
+    while((i < 3) && (maxBaseIt != names.begin())){
+        --maxBaseIt;
+        ++i;
+    }
+    if(m_phIt != maxBaseIt){
+        ++m_phIt;
+        initPhysiciansContainer();
+    }
+    handlePhysicianUnmarked();
+    unmarkAll(m_physicianLabels);
 }
 
 void PreferencesDialog::handlePhysicianDown()
 {
-    if(m_physicianBase > 0){
-        --m_physicianBase;
+    const auto& names = m_model->physicians();
+
+    if(m_phIt != names.begin()){
+        --m_phIt;
+        initPhysiciansContainer();
     }
-    LOG1(m_physicianBase);
-    initPhysiciansContainer();
+    handlePhysicianUnmarked();
+    unmarkAll(m_physicianLabels);
 }
 
 void PreferencesDialog::handleLocationUp()
 {
+    const auto& names = m_model->locations();
 
+    auto maxBaseIt = names.end();
+    int i=0;
+    while((i < 3) && (maxBaseIt != names.begin())){
+        --maxBaseIt;
+        ++i;
+    }
+    if(m_locIt != maxBaseIt){
+        ++m_locIt;
+        initLocationsContainer();
+    }
+    handleLocationUnmarked();
+    unmarkAll(m_locationLabels);
 }
 
 void PreferencesDialog::handleLocationDown()
 {
+    const auto& names = m_model->locations();
 
+    if(m_locIt != names.begin()){
+        --m_locIt;
+        initLocationsContainer();
+    }
+    handleLocationUnmarked();
+    unmarkAll(m_locationLabels);
+}
+
+void PreferencesDialog::handlePhysicianUnmarked()
+{
+    ui->pushButtonAddPhysician->setText("ADD");
+    ui->pushButtonDrDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+    m_defaultPhysicianCandidate = "";
+}
+
+void PreferencesDialog::handleLocationUnmarked()
+{
+    ui->pushButtonAddLocation->setText("ADD");
+    ui->pushButtonLocationDefault->setStyleSheet("background-color:#676767; color: black; font: 18pt;");
+    m_defaultLocationCandidate = "";
+}
+
+void PreferencesDialog::handlePhysicianLabel(const ActiveLabel *label)
+{
+    const auto& name = label->text();
+    if(!name.isEmpty()){
+        handleSelectedPhysician(name);
+    }
+}
+
+void PreferencesDialog::handleLocationLabel(const ActiveLabel *label)
+{
+    const auto& name = label->text();
+    if(!name.isEmpty()){
+        handleSelectedLocation(name);
+    }
+}
+
+void PreferencesDialog::showEvent(QShowEvent *se)
+{
+    QWidget::showEvent( se );
+    if(se->type() == QEvent::Show){
+        LOG1(se->type());
+        init();
+    }
+}
+
+void PreferencesDialog::hideEvent(QHideEvent *he)
+{
+    QWidget::hideEvent( he );
+    if(he->type() == QEvent::Hide){
+        LOG1(he->type());
+    }
 }

@@ -10,9 +10,18 @@ class ActiveLabel : public QLabel
 public:
     ActiveLabel(QWidget* parent);
     void mouseReleaseEvent(QMouseEvent*) override;
+    void mark();
+    void unmark();
+
+    bool isMarked() const;
+    void setIsMarked(bool isMarked);
 
 signals:
-    void labelSelected(const QString& name);
+    void labelItemMarked(ActiveLabel* label);
+    void labelItemUnmarked();
+
+private:
+    bool m_isMarked{false};
 
 };
 

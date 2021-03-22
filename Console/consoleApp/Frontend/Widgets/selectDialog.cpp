@@ -1,12 +1,19 @@
 #include "selectDialog.h"
 #include "ui_selectDialog.h"
 #include <logger.h>
+#include <caseInformationModel.h>
+#include <iterator>
+#include "Utility/widgetcontainer.h"
+#include "Utility/preferencesModel.h"
 
-
-SelectDialog::SelectDialog(QWidget *parent) :
+SelectDialog::SelectDialog(const QString& name, CaseInformationDialog *parent) :
     QDialog(parent),
+    m_name(name),
     ui(new Ui::SelectDialog)
 {
+    m_parent = parent;
+    m_pModel = PreferencesModel::instance();
+    m_pModel->loadPreferences();
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
 
@@ -17,7 +24,7 @@ SelectDialog::SelectDialog(QWidget *parent) :
         ui->lineEditItem3,
     };
 
-    connect(ui->pushButtonAddNew, &QPushButton::clicked, this, &SelectDialog::reject);
+    connect(ui->pushButtonAddNew, &QPushButton::clicked, this, &SelectDialog::addNew);
     connect(ui->pushButtonScrollDown, &QPushButton::clicked, this, &SelectDialog::scrollDown);
 
     connect(m_selectableWidgets[0], &ConsoleLineEdit::mousePressed, this, &SelectDialog::selectItem0);
@@ -30,51 +37,63 @@ SelectDialog::~SelectDialog()
     delete ui;
 }
 
-void SelectDialog::populate(const QStringList &sl, const QString &selected)
+void SelectDialog::initializeSelect(const PhysicianNameContainer &sl, QString selected)
 {
     m_items = sl;
-    m_selectedItem = selected;
-    if(sl.size() > 3){
+    if(!selected.isEmpty()){
+        m_selectedItem = selected;
+    } else if(!sl.empty()){
+        m_selectedItem = *(sl.begin());
+    }
+    if(sl.size() > m_selectableCount){
         ui->pushButtonScrollDown->show();
     } else {
         ui->pushButtonScrollDown->hide();
     }
+    LOG1(selected);
+    populateItemsInview(m_selectedItem);
+    highlight(m_selectedItem);
+}
 
-    if(!m_selectedItem.isEmpty()){
-        m_itemsInView.clear();
-        auto si = m_items.indexOf(m_selectedItem);
-        LOG2(si, m_selectedItem)
-        if(si >= 0){
-            if(si < 3){
-                m_itemsInView.push_back(m_items[0]);
-                m_itemsInView.push_back(m_items[1]);
-                m_itemsInView.push_back(m_items[2]);
-                auto* wid = m_selectableWidgets[si];
-                auto style = wid->styleSheet();
-                wid->setStyleSheet(style + QString("color:#F5C400;"));
-            } else {
-                m_itemsInView.push_back(m_items[si - 2]);
-                m_itemsInView.push_back(m_items[si - 1]);
-                m_itemsInView.push_back(m_items[si]);
-                auto* wid = m_selectableWidgets[2];
-                auto style = wid->styleSheet();
-                wid->setStyleSheet(style + QString("color:#F5C400;"));
-            }
-            int index{0};
-            for(auto* lineEdit : m_selectableWidgets){
-                if(m_items.size()>index){
-                    lineEdit->setText(m_itemsInView[index]);
-                }
-                ++index;
+void SelectDialog::populateItemsInview(const QString &selected)
+{
+    auto selectedIt = m_items.find(selected);
+
+    m_itemsInView.clear();
+    if(m_items.size() > m_selectableCount){
+        auto nameIt = selectedIt;
+        for(size_t i = 0; i < m_selectableCount; ++i){
+            if(nameIt != m_items.end()){
+                const auto& name = *nameIt;
+                incrementCircular(m_items,nameIt);
+                LOG1(name);
+                m_itemsInView.push_back(name);
             }
         }
     } else {
-        int index{0};
-        for(auto* lineEdit : m_selectableWidgets){
-            if(m_items.size()>index){
-                lineEdit->setText(m_items[index]);
+        for(const auto& item : m_items){
+           const auto& name = item;
+           LOG1(name);
+           m_itemsInView.push_back(name);
+        }
+    }
+}
+
+
+
+void SelectDialog::highlight(const QString &selected)
+{
+    auto itemIt = m_itemsInView.begin();
+    for(auto* lineEdit : m_selectableWidgets){
+        if(itemIt != m_itemsInView.end()){
+            const auto& name = *itemIt++;
+            LOG1(name);
+            lineEdit->setText(name);
+            if(name == selected){
+                lineEdit->mark();
+            }else {
+                lineEdit->unmark();
             }
-            ++index;
         }
     }
 }
@@ -96,48 +115,68 @@ void SelectDialog::selectItem2()
 
 void SelectDialog::scrollDown()
 {
-    if(m_itemsInView.size() == 3){
-        auto lastInView = m_itemsInView[2];
-        auto indexOfLastInView = m_items.indexOf(lastInView);
-        auto maxIndexInView = m_items.size() - 1;
-        if(indexOfLastInView == maxIndexInView){
-            m_itemsInView[0] = m_items[maxIndexInView - 1];
-            m_itemsInView[1] = m_items[maxIndexInView];
-            m_itemsInView[2] = m_items[0];
-        }else if (indexOfLastInView > 0){
-            m_itemsInView[0] = m_items[indexOfLastInView - 1];
-            m_itemsInView[1] = m_items[indexOfLastInView];
-            m_itemsInView[2] = m_items[indexOfLastInView + 1];
-        } else if(indexOfLastInView == 0){
-            m_itemsInView[0] = m_items[maxIndexInView];
-            m_itemsInView[1] = m_items[0];
-            m_itemsInView[2] = m_items[1];
-        }
+    const QString nextName = m_itemsInView[1];
+    populateItemsInview(nextName);
+    highlight(m_selectedItem);
+}
 
-        int index{0};
-        for(auto* lineEdit : m_selectableWidgets){
-            if(m_items.size()>index){
-                auto style = lineEdit->styleSheet();
-                lineEdit->setText(m_itemsInView[index]);
-                lineEdit->setStyleSheet(style + QString("color:white"));
-            }
-            ++index;
-        }
-        auto highlighted =   m_itemsInView.indexOf(m_selectedItem);
-        LOG2(m_selectedItem, highlighted)
-        if(highlighted >= 0 && highlighted < 3){
-            auto* wid = m_selectableWidgets[highlighted];
-            auto style = wid->styleSheet();
-            wid->setStyleSheet(style + QString("color:#F5C400;"));
-        }
+void SelectDialog::addNew()
+{
+    /*
+     * handle "ADD NEW" physician name
+     */
+    QString paramName;
+    QString paramValue("");
+    int keyboardY;
+
+    if(m_name == "physician"){
+        paramName = m_parent->getPhysicianName();
+        keyboardY = 200;
+    } else {
+        keyboardY = 0;
+        paramName = m_parent->getLocation();
+    }
+    const ParameterType param{paramName, paramValue, "ADD NEW"};
+
+    /*
+     * create the modal keyboard instance for physician name
+     */
+    auto newName = WidgetContainer::instance()->openKeyboard(this, param, keyboardY);
+
+    /*
+     * code execution continues here once the keyboard is closed
+     * add newName
+     * update selected physician name with newName
+     */
+    auto model = *CaseInformationModel::instance();
+    if(m_name == QString("physician")){
+        m_pModel->addPhysician(newName);
+        model.setSelectedPhysicianName(newName);
+        m_pModel->persistPreferences();
+        initializeSelect(m_pModel->physicians(),newName);
+    } else {
+        m_pModel->addLocation(newName);
+        model.setSelectedLocation(newName);
+        m_pModel->persistPreferences();
+        initializeSelect(m_pModel->locations(),newName);
+    }
+    accept();
+}
+
+void SelectDialog::closeDialog(bool isChecked)
+{
+    if(!isChecked){
+        LOG1(isChecked);
+        emit rejected();
     }
 }
+
 //border-top: 2px solid rgb( 169, 169, 169);
-void SelectDialog::selectItem(int index)
+void SelectDialog::selectItem(size_t index)
 {
     m_selectedItem = m_selectableWidgets[index]->text();
 
-    for(int i = 0; i < 3; ++i ){
+    for(size_t i = 0; i < m_selectableCount; ++i ){
         auto* wid = m_selectableWidgets[i];
         auto style = wid->styleSheet();
         if(i == index){
@@ -147,6 +186,30 @@ void SelectDialog::selectItem(int index)
         }
     }
     QTimer::singleShot(500,this,&SelectDialog::accept);
+}
+
+void SelectDialog::incrementCircular(const PhysicianNameContainer &cont, PhysicianNameContainer::iterator &it)
+{
+    if(it != cont.end()){
+        auto tempIt = it;
+        if(++tempIt == cont.end()){
+            it = cont.begin();
+        } else {
+            ++it;
+        }
+    }
+}
+
+void SelectDialog::decrementCircular(const PhysicianNameContainer &cont, PhysicianNameContainer::iterator &it)
+{
+    if(it != cont.end()){
+        if(it == cont.begin()){
+            auto tempIt = cont.end();
+            it = --tempIt;
+        }else{
+            --it;
+        }
+    }
 }
 
 QString SelectDialog::selectedItem() const

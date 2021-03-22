@@ -2,17 +2,20 @@
 #define PREFERENCESDIALOG_H
 
 #include <QDialog>
-#include <QLabel>
+#include <QTimer>
 
 #include <vector>
 
 #include "activeLabel.h"
+#include "Utility/preferencesModel.h"
 
-using LabelContainer = std::map<QString, QLabel*>;
+using LabelContainer = std::map<QString, ActiveLabel*>;
 
 namespace Ui {
 class PreferencesDialog;
 }
+
+class DateTimeController;
 
 class PreferencesDialog : public QDialog
 {
@@ -23,6 +26,14 @@ public:
     ~PreferencesDialog();
 
 private slots:
+    void handleLabelDr1(ActiveLabel* label);
+    void handleLabelDr2(ActiveLabel* label);
+    void handleLabelDr3(ActiveLabel* label);
+
+    void handleLocation1(ActiveLabel* label);
+    void handleLocation2(ActiveLabel* label);
+    void handleLocation3(ActiveLabel* label);
+
     void handleSelectedPhysician(const QString &name);
     void handleSelectedLocation(const QString &name);
 
@@ -43,28 +54,54 @@ private slots:
 
     void handleLocationUp();
     void handleLocationDown();
+
+    void handlePhysicianUnmarked();
+    void handleLocationUnmarked();
+
 private:
+    void handlePhysicianLabel(const ActiveLabel* label);
+    void handleLocationLabel(const ActiveLabel* label);
+    void showEvent(QShowEvent* se) override;
+    void hideEvent(QHideEvent* se) override;
+
     void initPhysiciansContainer();
     void initLocationsContainer();
-    void initPhysiciansContainer2();
-    void initLocationsContainer2();
-    void createCaseInfoDb();
+    void init();
+    void updatePysicianLabels();
+    void updateLocationLabels();
+    void unmarkAll(std::vector<ActiveLabel*>& container);
+    void markCandidate(std::vector<ActiveLabel*>& cont, const QString& name);
+
 
     Ui::PreferencesDialog *ui;
     LabelContainer m_physiciansContainer;
     LabelContainer m_locationsContainer;
 
-    std::vector<QLabel*> m_physicianLabels;
-    std::vector<QLabel*> m_locationLabels;
+    std::vector<ActiveLabel*> m_physicianLabels;
+    std::vector<ActiveLabel*> m_locationLabels;
 
     QString m_defaultPhysicianCandidate;
     QString m_defaultLocationCandidate;
 
-    QLabel* m_selectedPhysicianLabel{nullptr};
-    QLabel* m_selectedLocationLabel{nullptr};
+    QString m_highlightedPhysician;
+    QString m_highlightedLocation;
+
+    bool m_isCandidatePhysitian{false};
+    bool m_isCandidateLocation{false};
+
+    ActiveLabel* m_selectedPhysicianLabel{nullptr};
+    ActiveLabel* m_selectedLocationLabel{nullptr};
 
     int m_physicianBase{0};
     int m_locationBase{0};
+
+    PreferenceContainers_t::iterator m_phIt;
+    PreferenceContainers_t::iterator m_locIt;
+
+    PreferencesModel* m_model{nullptr};
+
+    DateTimeController* m_dateTimeController{nullptr};
+
 };
 
 #endif // PREFERENCESDIALOG_H

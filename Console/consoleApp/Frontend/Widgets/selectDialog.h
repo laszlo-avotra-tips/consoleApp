@@ -8,8 +8,8 @@
 #include <QString>
 
 #include <vector>
+#include "caseInformationDialog.h"
 
-class QStringList;
 
 using SelectableWidgetContainer = std::vector<ConsoleLineEdit*>;
 
@@ -17,32 +17,46 @@ namespace Ui {
 class SelectDialog;
 }
 
+class PreferencesModel;
+
 class SelectDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SelectDialog(QWidget *parent = nullptr);
+    explicit SelectDialog(const QString& name, CaseInformationDialog *parent = nullptr);
     ~SelectDialog();
 
-    void populate(const QStringList& sl, const QString& selected);
+    void initializeSelect(const PhysicianNameContainer& sl, QString selected);
 
     QString selectedItem() const;
+
+public slots:
+    void closeDialog(bool isChecked);
 
 private slots:
     void selectItem0();
     void selectItem1();
     void selectItem2();
     void scrollDown();
+    void addNew();
+    void highlight(const QString& selected);
 
 private:
-    void selectItem(int index);
+    void selectItem(size_t index);
+    void incrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
+    void decrementCircular(const PhysicianNameContainer& cont, PhysicianNameContainer::iterator& it);
+    void populateItemsInview(const QString& selected);
 
+    QString m_name;
     Ui::SelectDialog *ui;
     SelectableWidgetContainer m_selectableWidgets;
-    QStringList m_items;
+    const size_t m_selectableCount{3};
+    PhysicianNameContainer m_items;
     QStringList m_itemsInView;
     QString m_selectedItem;
+    CaseInformationDialog* m_parent{nullptr};
+    PreferencesModel* m_pModel{nullptr};
 };
 
 #endif // SELECTDIALOG_H

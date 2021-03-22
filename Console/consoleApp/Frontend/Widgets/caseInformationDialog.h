@@ -4,9 +4,9 @@
 #include <QDialog>
 #include <QDateTime>
 #include <QTimer>
+#include "caseInformationModel.h"
 
 class SelectDialog;
-class CaseInformationModel;
 
 namespace Ui {
 class CaseInformationDialog;
@@ -45,10 +45,12 @@ public:
      */
     ~CaseInformationDialog();
 
-    /*!
-     * \brief reset the case information model to default values
-     */
-    static void reset();
+    QString getPhysicianName() const;
+    void setPhysicianName(const QString& name);
+
+    QString getLocation() const;
+    void setLocation(const QString& name);
+
 
 private slots:
     /*!
@@ -57,19 +59,9 @@ private slots:
     void setDateAndTime();
 
     /*!
-     * \brief editOrSelectPhysicianName - edit or select physician name
-     */
-    void editOrSelectPhysicianName();
-
-    /*!
      * \brief openKeyboardPatientId - open the keyboard to edit the patient ID
      */
     void openKeyboardPatientId();
-
-    /*!
-     * \brief openKeyboardLocation - open the keyboard to edit the location
-     */
-    void editOrSelectLocation();
 
     /*!
      * \brief handleNext
@@ -78,13 +70,15 @@ private slots:
 
     /*!
      * \brief handlePhysicianNameSelect
+     * \param isCkecked
      */
-    void handlePhysicianNameSelect();
+    void handlePhysicianNameSelect(bool isChecked);
 
     /*!
      * \brief handleLocationSelect
+     * \param isCkecked
      */
-    void handleLocationSelect();
+    void handleLocationSelect(bool isChecked);
 
     /*!
      * \brief handleBack
@@ -106,9 +100,8 @@ private:
 
     /*!
      * \brief enableNext - enable/disable the < NEXT> > button
-     * \param isNext - enable if true, disable otherwise
      */
-    void enableNext(bool isNext);
+    void enableNext();
 
     /*!
      * the widgets
@@ -134,11 +127,6 @@ private:
      * the model
      */
     CaseInformationModel& m_model;
-
-    /*!
-     * \brief m_isNewCase - true for new case
-     */
-    bool m_isNewCase{true};
 };
 
 #endif // CASEINFORMATIONDIALOG_H

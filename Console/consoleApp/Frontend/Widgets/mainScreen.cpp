@@ -244,8 +244,6 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_opacScreen->show();
         m_graphicsView->hide();
 
-        CaseInformationDialog::reset();
-
         WidgetContainer::instance()->gotoScreen("startScreen");
 
         WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
@@ -351,6 +349,7 @@ void MainScreen::showEvent(QShowEvent *se)
     QWidget::showEvent( se );
     qDebug() << __FUNCTION__;
     if(WidgetContainer::instance()->getIsNewCase()){
+        CaseInformationModel::instance()->init();
         QTimer::singleShot(100,this, &MainScreen::openCaseInformationDialog);
         //clear sector
     }

@@ -12,6 +12,7 @@
 #include "daqfactory.h"
 #include "sledsupport.h"
 #include "preferencesDialog.h"
+#include "shutdownConfirmationDialog.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -96,16 +97,22 @@ void StartScreen::on_pushButtonPreferences_clicked()
 void StartScreen::on_pushButtonShutdown_clicked()
 {
 //    FullCaseRecorder::instance()->closeRecorder();
-    WidgetContainer::instance()->close();
 
-    DisplayManager::instance()->killDisplayMonitor();
+    auto dialog = new ShutdownConfirmationDialog();
 
-    auto& sled = SledSupport::Instance();
-    sled.writeSerial("sr0\r");
+    if(dialog->exec() == QDialog::Accepted){
+        WidgetContainer::instance()->close();
 
-    auto idaq = daqfactory::instance()->getdaq();
-    idaq->shutdownDaq();
-    QThread::sleep(1);
+        DisplayManager::instance()->killDisplayMonitor();
+
+        auto& sled = SledSupport::Instance();
+        sled.writeSerial("sr0\r");
+
+        auto idaq = daqfactory::instance()->getdaq();
+        idaq->shutdownDaq();
+        QThread::sleep(1);
+    }
+    delete dialog;
 }
 
 void StartScreen::showEvent(QShowEvent *se)
