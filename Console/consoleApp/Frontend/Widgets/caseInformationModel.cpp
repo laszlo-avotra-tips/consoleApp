@@ -4,13 +4,46 @@
 #include "util.h"
 #include "logger.h"
 #include "fullCaseRecorder.h"
+#include "Utility/caseInfoDatabase.h"
 
 CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
 CaseInformationModel::CaseInformationModel()
 {
-    m_physicianNames = userSettings::Instance().getPhysicians();
-    m_locations = userSettings::Instance().getLocations();
+}
+
+void CaseInformationModel::initDefaults()
+{
+    const auto& settings = userSettings::Instance();
+    LOG2(m_physicianNames.size(), m_locations.size())
+    const auto& defaultPhysicianName = settings.getPhysician();
+    if(m_physicianNames.contains(defaultPhysicianName)){
+        m_defaultPhysicianName = defaultPhysicianName;
+    }
+    const auto& defaultLocation = settings.getLocation();
+    if(m_locations.contains(defaultLocation)){
+        m_defaultLocation = defaultLocation;
+    }
+}
+
+QString CaseInformationModel::defaultPhysicianName() const
+{
+    return m_defaultPhysicianName;
+}
+
+void CaseInformationModel::setDefaultPhysicianName(const QString &defaultPhysicianName)
+{
+    m_defaultPhysicianName = defaultPhysicianName;
+}
+
+QString CaseInformationModel::defaultLocation() const
+{
+    return m_defaultLocation;
+}
+
+void CaseInformationModel::setDefaultLocation(const QString &defaultLocation)
+{
+    m_defaultLocation = defaultLocation;
 }
 
 CaseInformationModel *CaseInformationModel::instance()
@@ -21,9 +54,24 @@ CaseInformationModel *CaseInformationModel::instance()
     return m_instance;
 }
 
+void CaseInformationModel::eraseLocations()
+{
+    m_locations.erase(m_locations.begin(), m_locations.end());
+}
+
+void CaseInformationModel::erasePhysicians()
+{
+    m_physicianNames.erase(m_physicianNames.begin(), m_physicianNames.end());
+}
+
 QStringList CaseInformationModel::physicianNames() const
 {
     return m_physicianNames;
+}
+
+QStringList CaseInformationModel::physicianNames2() const
+{
+    return QStringList{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
 }
 
 QString CaseInformationModel::selectedPhysicianName() const
@@ -54,6 +102,11 @@ void CaseInformationModel::setPhysicianName(int index, const QString &name)
 QStringList CaseInformationModel::locations() const
 {
     return m_locations;
+}
+
+QStringList CaseInformationModel::locations2() const
+{
+    return QStringList{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
 }
 
 QString CaseInformationModel::selectedLocation() const

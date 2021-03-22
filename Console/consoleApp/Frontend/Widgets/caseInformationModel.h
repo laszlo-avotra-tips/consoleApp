@@ -19,11 +19,15 @@ class CaseInformationModel
 public:
     static CaseInformationModel* instance();
 
+    void eraseLocations();
+    void erasePhysicians();
+    void initDefaults();
     /*!
      * \brief physicianNames - get the list of registered physicina names
      * \return the list of registered physician names
      */
     QStringList physicianNames() const;
+    QStringList physicianNames2() const;
 
     /*!
      * \brief selectedPhysicianName - get the selected physician name
@@ -61,6 +65,7 @@ public:
      * \return the list of registered locations
      */
     QStringList locations() const;
+    QStringList locations2() const;
 
     /*!
      * \brief selectedLocation - get the selected location
@@ -127,6 +132,12 @@ public:
      */
     void validate();
 
+    QString defaultLocation() const;
+    void setDefaultLocation(const QString &defaultLocation);
+
+    QString defaultPhysicianName() const;
+    void setDefaultPhysicianName(const QString &defaultPhysicianName);
+
 private:
     /*!
      * \brief CaseInformationModel - private constructor
@@ -149,7 +160,7 @@ private:
     QString m_selectedPhysicianName;
 
     /*!
-     * \brief m_defaultPhysicianName - the default physitioan name
+     * \brief m_defaultPhysicianName - the default physician name
      */
     QString m_defaultPhysicianName;
 
@@ -162,6 +173,11 @@ private:
      * \brief m_selectedLocation - the selected location for this case
      */
     QString m_selectedLocation;
+
+    /*!
+     * \brief m_selectedLocation - the selected location for this case
+     */
+    QString m_defaultLocation;
 
     /*!
      * \brief m_patientId - the patient id for this case

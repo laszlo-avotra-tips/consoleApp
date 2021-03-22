@@ -14,6 +14,7 @@ HEADERS += \
     $$PWD/Backend/imagedescriptor.h \
     $$PWD/Backend/scanconversion.h \
     $$PWD/Frontend/Utility/ScreenCapture.hpp \
+    $$PWD/Frontend/Utility/caseInfoDatabase.h \
     $$PWD/Frontend/Utility/clipListModel.h \
     $$PWD/Frontend/Utility/concatenateVideo.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
@@ -21,6 +22,7 @@ HEADERS += \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
+    $$PWD/Frontend/Widgets/activeLabel.h \
     $$PWD/Frontend/Widgets/captureItemDelegate.h \
     $$PWD/Frontend/Widgets/capturelistview.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
@@ -44,6 +46,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/iRotationIndicator.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/opaqueScreen.h \
+    $$PWD/Frontend/Widgets/preferencesDialog.h \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \
     $$PWD/Frontend/Widgets/rotationIndicatorFactory.h \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.h \
@@ -96,6 +99,7 @@ SOURCES += \
     $$PWD/Backend/fullCaseRecorder.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
     $$PWD/Backend/scanconversion.cpp \
+    $$PWD/Frontend/Utility/caseInfoDatabase.cpp \
     $$PWD/Frontend/Utility/clipListModel.cpp \
     $$PWD/Frontend/Utility/concatenateVideo.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
@@ -103,6 +107,7 @@ SOURCES += \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
+    $$PWD/Frontend/Widgets/activeLabel.cpp \
     $$PWD/Frontend/Widgets/captureItemDelegate.cpp \
     $$PWD/Frontend/Widgets/capturelistview.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
@@ -125,6 +130,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/formSecondMonitor.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
     $$PWD/Frontend/Widgets/opaqueScreen.cpp \
+    $$PWD/Frontend/Widgets/preferencesDialog.cpp \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorFactory.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.cpp \
@@ -181,6 +187,7 @@ FORMS += \
     $$PWD/Frontend/Widgets/formSecondMonitor.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
     $$PWD/Frontend/Widgets/opaqueScreen.ui \
+    $$PWD/Frontend/Widgets/preferencesDialog.ui \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.ui \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
