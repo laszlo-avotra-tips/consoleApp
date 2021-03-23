@@ -344,6 +344,12 @@ border: 3px solid #F5C400;
      <property name="sizeConstraint">
       <enum>QLayout::SetMinimumSize</enum>
      </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
     </layout>
    </widget>
    <widget class="QPushButton" name="pushButtonPlay">
