@@ -11,6 +11,8 @@
 #include "displayManager.h"
 #include "daqfactory.h"
 #include "sledsupport.h"
+#include "preferencesDialog.h"
+#include "shutdownConfirmationDialog.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -23,6 +25,8 @@ StartScreen::StartScreen(QWidget *parent) :
 {
     ui->setupUi(this);
     on_pushButtonMenu_clicked(ui->pushButtonMenu->isChecked());
+
+    m_preferencesDialog = new PreferencesDialog(this);
 
     QString brandVersion("<html><head/><body><p><span style=\" font-size:21pt; font-weight:600; color:#A9A9A9;\">LIGHTBOX</span><span \
 style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
@@ -37,12 +41,12 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
 
 
     const int sideFrameWidth = 640;
-    const int middleFrameWidth = 3240 - 2 * sideFrameWidth;
-    const int middleFrameHight = 2160;
+    const int middleFrameWidth = ControlScreenWidth - 2 * sideFrameWidth;
+    const int middleFrameHight = ControlScreenHeight;
     const int frameHeight = middleFrameHight - 160;
 
-    const int windowWidth{3240};
-    const int windowHeight{2160};
+    const int windowWidth{ControlScreenWidth};
+    const int windowHeight{ControlScreenHeight};
 
     setMinimumSize(windowWidth, windowHeight);
     setMaximumSize(windowWidth, windowHeight);
@@ -84,21 +88,31 @@ void StartScreen::on_pushButtonMenu_clicked(bool checked)
 
 void StartScreen::on_pushButtonPreferences_clicked()
 {
+    if(m_preferencesDialog->exec() == QDialog::Accepted){
+        LOG1("ACCEPTED");
+        m_preferencesDialog->close();
+    }
 }
 
 void StartScreen::on_pushButtonShutdown_clicked()
 {
 //    FullCaseRecorder::instance()->closeRecorder();
-    WidgetContainer::instance()->close();
 
-    DisplayManager::instance()->killDisplayMonitor();
+    auto dialog = new ShutdownConfirmationDialog();
 
-    auto& sled = SledSupport::Instance();
-    sled.writeSerial("sr0\r");
+    if(dialog->exec() == QDialog::Accepted){
+        WidgetContainer::instance()->close();
 
-    auto idaq = daqfactory::instance()->getdaq();
-    idaq->shutdownDaq();
-    QThread::sleep(1);
+        DisplayManager::instance()->killDisplayMonitor();
+
+        auto& sled = SledSupport::Instance();
+        sled.writeSerial("sr0\r");
+
+        auto idaq = daqfactory::instance()->getdaq();
+        idaq->shutdownDaq();
+        QThread::sleep(1);
+    }
+    delete dialog;
 }
 
 void StartScreen::showEvent(QShowEvent *se)
@@ -106,15 +120,15 @@ void StartScreen::showEvent(QShowEvent *se)
     QWidget::showEvent( se );
     if(se->type() == QEvent::Show){
         LOG1("show");
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
+        DisplayManager::instance()->showOnTheSecondMonitor("logo");
         WidgetContainer::instance()->setIsNewCase(true);
     }
 }
 
-void StartScreen::hideEvent(QHideEvent *he)
-{
-    QWidget::hideEvent( he );
-}
+//void StartScreen::hideEvent(QHideEvent *he)
+//{
+//    QWidget::hideEvent( he );
+//}
 
 void StartScreen::on_pushButtonStart_released()
 {

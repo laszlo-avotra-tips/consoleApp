@@ -6,6 +6,7 @@
 
 class Backend;
 class QGestureEvent;
+class PreferencesDialog;
 
 namespace Ui {
 class StartScreen;
@@ -38,12 +39,13 @@ private slots:
 
 private:
     void showEvent(QShowEvent* se) override;
-    void hideEvent(QHideEvent* he) override;
+//    void hideEvent(QHideEvent* he) override;
 
     Ui::StartScreen *ui;
     Backend* m_backend{nullptr};
     bool m_isPressAndHold{false};
     QTimer m_timer;
+    PreferencesDialog* m_preferencesDialog{nullptr};
 };
 
 #endif // STARTSCREEN_H

@@ -11,6 +11,9 @@ LiveSceneView::LiveSceneView(QWidget *parent) :
 
     ui->graphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     ui->graphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    ui->labelSpeed->hide();
+    ui->pushButtonSpeed->hide();
+
 }
 
 LiveSceneView::~LiveSceneView()
@@ -62,4 +65,15 @@ void LiveSceneView::setCheckRecording(bool isChecked)
 void LiveSceneView::pushButtonRecord_clicked(bool isChecked)
 {
     ui->pushButtonRecord->clicked(isChecked);
+}
+
+void LiveSceneView::setSpeedVisible(bool isVisible)
+{
+    ui->labelSpeed->setVisible(isVisible);
+    ui->pushButtonSpeed->setVisible(isVisible);
+}
+
+void LiveSceneView::setSpeed(const QString &speed)
+{
+    ui->pushButtonSpeed->setText(speed);
 }

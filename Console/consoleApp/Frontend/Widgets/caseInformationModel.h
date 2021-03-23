@@ -3,27 +3,27 @@
 
 #include <QStringList>
 #include <QString>
+#include <set>
 
 /*!
-    \class CaseInformationModel saseInformationModel.h
+    \class CaseInformationModel caseInformationModel.h
     \brief The CaseInformationModel class implements the Case Information Model.
 
-    The CaseInformationModel represnts the data shown and manipulated by the CaseInformationDialog
-    The CaseInformationDialog class allows of editing of the physician names and locations
+    The CaseInformationModel represents the data shown and manipulated by the CaseInformationDialog
+    The CaseInformationDialog class allows adding physician names and locations
     The CaseInformationModel is an singleton available by name from any class
-    The CaseInfornationModel is persisten - saved to a database
     \sa CaseInformationDialog
  */
+
+class PreferencesModel;
+using PhysicianNameContainer = std::set<QString>;
+
 class CaseInformationModel
 {
 public:
     static CaseInformationModel* instance();
 
-    /*!
-     * \brief physicianNames - get the list of registered physicina names
-     * \return the list of registered physician names
-     */
-    QStringList physicianNames() const;
+    void init();
 
     /*!
      * \brief selectedPhysicianName - get the selected physician name
@@ -44,25 +44,6 @@ public:
     bool isSelectedPhysicianName() const;
 
     /*!
-     * \brief addPhysicianName - add name to the registered physician names
-     * \param name - the name to add to the registered physician names
-     */
-    void addPhysicianName(const QString& name);
-
-    /*!
-     * \brief setPhysicianName - set the physician name at index to name
-     * \param index
-     * \param name
-     */
-    void setPhysicianName(int index, const QString &name);
-
-    /*!
-     * \brief locations - get the list of registered locations
-     * \return the list of registered locations
-     */
-    QStringList locations() const;
-
-    /*!
      * \brief selectedLocation - get the selected location
      * \return the selected location
      */
@@ -81,19 +62,6 @@ public:
     bool isSelectedLocation() const;
 
     /*!
-     * \brief addLocation - add location to the registered locations
-     * \param location - the location to add to the registered locations
-     */
-    void addLocation(const QString& location);
-
-    /*!
-     * \brief setLocation - set the location at index to location
-     * \param index
-     * \param location
-     */
-    void setLocation(int index, const QString &location);
-
-    /*!
      * \brief patientId - get the patient Id
      * \return - the patient Id
      */
@@ -104,11 +72,6 @@ public:
      * \param patientId - the patient Id
      */
     void setPatientId(const QString &patientId);
-
-    /*!
-     * \brief resetModel remove selected physician name and selected location
-     */
-    void resetModel();
 
     /*!
      * \brief dateAndTime - get the case date and time stamp
@@ -139,24 +102,9 @@ private:
     static CaseInformationModel* m_instance;
 
     /*!
-     * \brief m_physicianNames - the pysician name registry
-     */
-    QStringList m_physicianNames; //{{"Dr. Himanshu Patel"}, {"Dr. Jaafer Golzar"}, {"Dr. Kara Parker-Smith"}};
-
-    /*!
      * \brief m_selectedPhysicianName - the selected physician name for this case - empty string means no selection
      */
     QString m_selectedPhysicianName;
-
-    /*!
-     * \brief m_defaultPhysicianName - the default physitioan name
-     */
-    QString m_defaultPhysicianName;
-
-    /*!
-     * \brief m_locations - the location registry
-     */
-    QStringList m_locations; //{{"CATH LAB 1"}, {"CATH LAB 2"}, {"CATH LAB 3"}};
 
     /*!
      * \brief m_selectedLocation - the selected location for this case
@@ -172,6 +120,8 @@ private:
      * \brief m_dateAndTime - the date and time stamp of this case
      */
     QString m_dateAndTime;
+
+    PreferencesModel* m_preferencesModel{nullptr};
 };
 
 #endif // CASEINFORMATIONMODEL_H

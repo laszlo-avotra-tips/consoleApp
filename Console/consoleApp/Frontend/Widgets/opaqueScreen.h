@@ -16,6 +16,8 @@ public:
     ~OpaqueScreen();
 
 private:
+    void hideEvent(QHideEvent* he) override;
+
     void init();
     Ui::OpacScreen *ui;
 };

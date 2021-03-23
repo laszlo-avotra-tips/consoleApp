@@ -143,9 +143,9 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
         painter->setPen( Qt::black );
         painter->drawText( center, Qt::AlignCenter, spin );
 
-        if(redrawCount++ % 64 == 0){
-            LOG1(DirectionEdge)
-        }
+//        if(redrawCount++ % 64 == 0){
+//            LOG1(DirectionEdge)
+//        }
     }
 
     painter->end();

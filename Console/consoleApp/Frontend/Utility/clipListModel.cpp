@@ -165,7 +165,7 @@ int clipListModel::addClipCapture(QString name,
 
     // Find next available ID
     sessionDatabase db;
-    db.initDb();
+    db.initSessionDb();
 
     int maxID = db.addClipCapture( name, timestamp, thumbnailDir, deviceName );
 

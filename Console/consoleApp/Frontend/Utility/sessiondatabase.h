@@ -21,7 +21,7 @@ public:
     sessionDatabase();
     ~sessionDatabase();
 
-    QSqlError initDb(void);
+    QSqlError initSessionDb(void);
 
     void createSession(void);
     void updateSession(void);

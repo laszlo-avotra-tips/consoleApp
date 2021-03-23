@@ -10,8 +10,11 @@
 #include "clipItemDelegate.h"
 #include "Utility/clipListModel.h"
 #include "Utility/octFrameRecorder.h"
+#include "displayManager.h"
 
 #include <QGraphicsPixmapItem>
+#include <QShowEvent>
+#include <QHideEvent>
 
 
 CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
@@ -104,6 +107,7 @@ void CaseReviewScreen::initPlayer()
 
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
+//    m_player->setVideoWidgetContainer(DisplayManager::instance()->getVideoWidgetContainer());
     m_player->init();
 
     auto* slider = ui->horizontalSlider;
@@ -203,7 +207,7 @@ void CaseReviewScreen::showCapture(bool isVisible)
     } else {
         ui->captureScene->hide();
     }
-
+    DisplayManager::instance()->showCapture(isVisible);
 }
 
 void CaseReviewScreen::showClip(bool isVisible)
@@ -222,17 +226,34 @@ CaseReviewScreen::~CaseReviewScreen()
 
 void CaseReviewScreen::showEvent(QShowEvent * e)
 {
-    updateCaseInfo();
-    updateCaptureLabel();
+
     QWidget::showEvent(e);
+    if(e->type() == QEvent::Show)
+    {
+        updateCaseInfo();
+        updateCaptureLabel();
 
-    showCapture(false);
-    showClip(false);
-    showPlayer(false);
+        showCapture(false);
+        showClip(false);
+        showPlayer(false);
 
-    QGraphicsScene *scene = new QGraphicsScene();
+        QGraphicsScene *scene = new QGraphicsScene();
 
-    ui->captureScene->setScene(scene);
+        ui->captureScene->setScene(scene);
+        DisplayManager::instance()->setScene(scene);
+
+        DisplayManager::instance()->showOnTheSecondMonitor("caseReview");
+    }
+
+}
+
+void CaseReviewScreen::hideEvent(QHideEvent * e)
+{
+    QWidget::hideEvent(e);
+    if(e->type() == QEvent::Hide)
+    {
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
+    }
 }
 
 void CaseReviewScreen::on_pushButtonBack_clicked()
@@ -318,16 +339,21 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
         const auto& imageName{m_selectedCaptureItem->getName()};
         LOG1(imageName)
         QImage image = m_selectedCaptureItem->loadDecoratedImage(imageName).scaledToWidth(1600);
+        QImage imagePm = image.scaledToWidth(1000);
 
         LOG2(image.size().width(), image.size().height())
 
-        QGraphicsScene *scene = new QGraphicsScene();
+        QGraphicsScene *scene = new QGraphicsScene(this);
+        QGraphicsScene *scenePm = new QGraphicsScene(this);
 
         QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+        QGraphicsPixmapItem* itemPm = new QGraphicsPixmapItem(QPixmap::fromImage(imagePm));
 
         scene->addItem(item);
+        scenePm->addItem(itemPm);
 
         ui->captureScene->setScene(scene);
+        DisplayManager::instance()->setScene(scenePm);
     }
 }
 

@@ -230,7 +230,7 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
-    DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
+    DisplayManager::instance()->showOnTheSecondMonitor("logo");
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
         ui->pushButtonRecord->click();
@@ -244,8 +244,6 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_opacScreen->show();
         m_graphicsView->hide();
 
-        CaseInformationDialog::reset();
-
         WidgetContainer::instance()->gotoScreen("startScreen");
 
         WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
@@ -256,6 +254,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_updatetimeTimer.stop();
         ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
         ui->frameSpeed->hide();
+        DisplayManager::instance()->setSpeedVisible(false);
 
         captureListModel::Instance().reset();
         clipListModel::Instance().reset();
@@ -303,6 +302,7 @@ void MainScreen::setDeviceLabel()
 void MainScreen::showSpeed(bool isShown)
 {
     ui->frameSpeed->setVisible(isShown);
+    DisplayManager::instance()->setSpeedVisible(isShown);
 }
 
 void MainScreen::on_pushButtonSettings_clicked()
@@ -337,7 +337,6 @@ void MainScreen::on_pushButtonSettings_clicked()
             if(result.first){
                 delete result.first;
             }
-
         }
     }
     else {
@@ -350,6 +349,7 @@ void MainScreen::showEvent(QShowEvent *se)
     QWidget::showEvent( se );
     qDebug() << __FUNCTION__;
     if(WidgetContainer::instance()->getIsNewCase()){
+        CaseInformationModel::instance()->init();
         QTimer::singleShot(100,this, &MainScreen::openCaseInformationDialog);
         //clear sector
     }
@@ -381,9 +381,6 @@ void MainScreen::openCaseInformationDialog()
     const std::vector<QString> cidParam{"NEXT"};
     auto result = WidgetContainer::instance()->openDialog(this,"caseInformationDialog");
 
-    if(result.first){
-        result.first->hide();
-    }
     if( result.second == QDialog::Accepted){
         qDebug() << "Accepted";
         openDeviceSelectDialog();
@@ -399,7 +396,6 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
     CaseInformationModel model = *CaseInformationModel::instance();
     const std::vector<QString> cidParam{"DONE"};
     auto result = WidgetContainer::instance()->openDialog(this, "caseInformationDialog", &cidParam);
-
     if(result.first){
         result.first->hide();
     }
@@ -476,7 +472,7 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
-        DisplayManager::instance()->initWidgetForTheSecondMonitor("liveData");
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
@@ -564,6 +560,7 @@ void MainScreen::udpateToSpeed1()
 
     setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonLow);
+    DisplayManager::instance()->setSpeed("LOW");
 }
 
 void MainScreen::udpateToSpeed2()
@@ -574,6 +571,7 @@ void MainScreen::udpateToSpeed2()
 
     setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonMedium);
+    DisplayManager::instance()->setSpeed("MEDIUM");
 }
 
 void MainScreen::udpateToSpeed3()
@@ -584,6 +582,8 @@ void MainScreen::udpateToSpeed3()
 
     setSpeedAndEnableDisableBidirectional(speed);
     highlightSpeedButton(ui->pushButtonHigh);
+    DisplayManager::instance()->setSpeed("HIGH");
+
 }
 
 void MainScreen::on_pushButtonCapture_released()
@@ -633,19 +633,18 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
         if(runningStateVal == 1){
             labelLiveColor = QString("color: green;");
-//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setActive();
+                DisplayManager::instance()->setSpeedVisible(true);
             }
         } else if (runningStateVal == 3){
             labelLiveColor = QString("color: green;");
-//            ui->labelLive->setStyleSheet("color: green;");
             if(isBd){
                 m_scene->setPassive();
+                DisplayManager::instance()->setSpeedVisible(true);
             }
         }else{
             labelLiveColor = QString("color: grey;");
-//            ui->labelLive->setStyleSheet("color: grey;");
             m_scene->setIdle();
         }
         ui->labelLive->setStyleSheet(labelLiveColor);

@@ -164,12 +164,6 @@ public:
 
     QDate getServiceDate() const;
 
-    QStringList getPhysicians() const;
-    void setPhysicians(const QStringList &doctors);
-
-    QStringList getLocations() const;
-    void setLocations(const QStringList &locations);
-
     float getImagingDepth_mm() const;
 
     int getALineLength_px() const;
@@ -194,6 +188,16 @@ public:
 
     int getDisableExternalMonitor() const;
 
+    QString getPhysician() const;
+
+    QString getLocation() const;
+
+    void setPhysician(const QString &physician);
+
+    void setLocation(const QString &location);
+
+    QString getSerialNumber() const;
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -214,8 +218,8 @@ private:
 
     int  recordingDurationMin;
     QDate m_serviceDate;
-    QStringList m_physicians;
-    QStringList m_locations;
+    QString m_physician;
+    QString m_location;
     QString catheterViewStr;          // view orientation of the catheter to coordinate with the fluoro view
     CatheterView_t catheterViewMode{DistalToProximal};  //
     bool m_isGray{true};
@@ -236,4 +240,5 @@ private:
     QSettings *varSettings{nullptr};
     QSettings *profileSettings{nullptr};
     static userSettings* theSettings;
+    QString m_serialNumber;
 };

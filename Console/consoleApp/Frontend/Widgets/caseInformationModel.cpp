@@ -1,16 +1,20 @@
 #include "caseInformationModel.h"
-#include "Utility/sessiondatabase.h"
-#include "Utility/userSettings.h"
 #include "util.h"
 #include "logger.h"
-#include "fullCaseRecorder.h"
+#include "Utility/preferencesModel.h"
+#include "Utility/sessiondatabase.h"
+#include "Utility/userSettings.h"
+
+
+#include <algorithm>
 
 CaseInformationModel* CaseInformationModel::m_instance{nullptr};
 
 CaseInformationModel::CaseInformationModel()
 {
-    m_physicianNames = userSettings::Instance().getPhysicians();
-    m_locations = userSettings::Instance().getLocations();
+    init();
+    QString msgCaseInformationModel("created");
+    LOG1(msgCaseInformationModel);
 }
 
 CaseInformationModel *CaseInformationModel::instance()
@@ -21,9 +25,18 @@ CaseInformationModel *CaseInformationModel::instance()
     return m_instance;
 }
 
-QStringList CaseInformationModel::physicianNames() const
+void CaseInformationModel::init()
 {
-    return m_physicianNames;
+    m_preferencesModel = PreferencesModel::instance();
+    m_preferencesModel->loadPreferences();
+
+    m_selectedLocation = m_preferencesModel->defaultLocation();
+
+    if(!m_preferencesModel->defaultPhysician().isEmpty()){
+        m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
+    } else {
+         m_selectedPhysicianName = m_preferencesModel->defaultPhysician();
+    }
 }
 
 QString CaseInformationModel::selectedPhysicianName() const
@@ -33,27 +46,13 @@ QString CaseInformationModel::selectedPhysicianName() const
 
 void CaseInformationModel::setSelectedPhysicianName(const QString &selectedPysicianName)
 {
+    LOG1(selectedPysicianName)
     m_selectedPhysicianName = selectedPysicianName;
 }
 
 bool CaseInformationModel::isSelectedPhysicianName() const
 {
     return !m_selectedPhysicianName.isEmpty();
-}
-
-void CaseInformationModel::addPhysicianName(const QString &name)
-{
-    m_physicianNames.push_back(name);
-}
-
-void CaseInformationModel::setPhysicianName(int index, const QString &name)
-{
-    m_physicianNames[index] = name;
-}
-
-QStringList CaseInformationModel::locations() const
-{
-    return m_locations;
 }
 
 QString CaseInformationModel::selectedLocation() const
@@ -71,16 +70,6 @@ bool CaseInformationModel::isSelectedLocation() const
     return !m_selectedLocation.isEmpty();
 }
 
-void CaseInformationModel::addLocation(const QString &location)
-{
-    m_locations.push_back(location);
-}
-
-void CaseInformationModel::setLocation(int index, const QString &location)
-{
-    m_locations[index] = location;
-}
-
 QString CaseInformationModel::patientId() const
 {
     return m_patientId;
@@ -89,13 +78,6 @@ QString CaseInformationModel::patientId() const
 void CaseInformationModel::setPatientId(const QString &patientId)
 {
     m_patientId = patientId;
-}
-
-void CaseInformationModel::resetModel()
-{
-    m_selectedPhysicianName.clear();
-    m_selectedLocation.clear();
-    m_patientId.clear();
 }
 
 QString CaseInformationModel::dateAndTime() const
@@ -107,6 +89,7 @@ void CaseInformationModel::setDateAndTime(const QString &dateAndTime)
 {
     m_dateAndTime = dateAndTime;
 }
+
 
 void CaseInformationModel::validate()
 {
@@ -173,7 +156,7 @@ void CaseInformationModel::validate()
         /*
          *  Create and save the session information to the case database
          */
-        db.initDb();
+        db.initSessionDb();
         db.createSession();
 
         /*

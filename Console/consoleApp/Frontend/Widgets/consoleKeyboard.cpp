@@ -37,6 +37,7 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
             enterButton->setText(actionOnEnter);
         }
     }
+    ui->pushButton_enter->setEnabled(false);
 
     /*
      * connect the UI widgets to this classes methods
@@ -93,6 +94,7 @@ void ConsoleKeyboard::handleDelete()
     }
     ui->lineEditParam->setFocus();
     highlightEnter();
+
 }
 
 void ConsoleKeyboard::handleSpace()
@@ -106,8 +108,14 @@ void ConsoleKeyboard::handleNumbersAndOthers(const QString& number)
 {
     auto stringList = number.split("\n");
     if(stringList.size() == 2){
-        const QString val = ui->lineEditParam->text() + stringList[1];
-        ui->lineEditParam->setText(val);
+        if(m_isLowCap){
+            const QString val = ui->lineEditParam->text() + stringList[1];
+            ui->lineEditParam->setText(val);
+        } else {
+            const QString val = ui->lineEditParam->text() + stringList[0];
+            ui->lineEditParam->setText(val);
+            toggleCap();
+        }
     } else if(stringList.size() == 1){
         const QString val = ui->lineEditParam->text() + stringList[0];
         ui->lineEditParam->setText(val);
@@ -158,6 +166,7 @@ void ConsoleKeyboard::initButtonContainers()
 
         ui->pushButton_slash,
         ui->pushButton_backSlash,
+        ui->pushButton_quote,
 
     };
 
@@ -285,7 +294,14 @@ void ConsoleKeyboard::buttonToLower(QPushButton *button)
 
 void ConsoleKeyboard::highlightEnter()
 {
-    ui->pushButton_enter->setStyleSheet("background-color: rgb(245,196,0); color: black");
+    if(!ui->lineEditParam->text().isEmpty()){
+        ui->pushButton_enter->setStyleSheet("background-color: rgb(245,196,0); color: black");
+        ui->pushButton_enter->setEnabled(true);
+    } else {
+        //background-color: #343434;
+        ui->pushButton_enter->setStyleSheet("background-color: #343434; color: black");
+        ui->pushButton_enter->setEnabled(false);
+    }
 }
 
 void ConsoleKeyboard::handleCapsLock(bool checked)

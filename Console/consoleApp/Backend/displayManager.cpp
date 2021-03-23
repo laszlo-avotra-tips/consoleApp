@@ -3,6 +3,7 @@
 #include "formSecondMonitor.h"
 #include "livescene.h"
 #include "formPmLogo.h"
+#include "formPmCaseReview.h"
 #include "opaqueScreen.h"
 #include "formDisk.h"
 #include "Utility/userSettings.h"
@@ -46,7 +47,7 @@ void DisplayManager::showHideSecondMonitor(bool isNonPrimaryMonitorPresent)
     LOG1(isNonPrimaryMonitorPresent)
     if(isNonPrimaryMonitorPresent){
         m_widgetOnTheSecondMonitor->show();
-        m_widgetOnTheSecondMonitor->move(3240,0);
+        m_widgetOnTheSecondMonitor->move(ControlScreenWidth,0);
         m_widgetOnTheSecondMonitor->showFullScreen();
     } else {
         m_widgetOnTheSecondMonitor->hide();
@@ -68,34 +69,23 @@ void DisplayManager::setScene(liveScene *scene)
     m_liveSceneView->setScene(scene);
 }
 
-void DisplayManager::initWidgetForTheSecondMonitor(QString name)
+void DisplayManager::showOnTheSecondMonitor(QString name)
 {
     LOG1(name);
 
     auto it = m_widgetContainer.find(name);
     if(it != m_widgetContainer.end()){
-        m_widgetOnTheSecondMonitor->hide();
+        if(m_widgetOnTheSecondMonitor){
+            m_widgetOnTheSecondMonitor->hide();
+        }
         //find widget by name assign to m_widgetOnTheSecondMonitor
         if(it->second){
             m_widgetOnTheSecondMonitor = it->second;
             m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-            m_widgetOnTheSecondMonitor->move(3240,0);
+            m_widgetOnTheSecondMonitor->move(ControlScreenWidth,0);
         }
     }
     emit nonPrimaryMonitorIsPresent(isNonPrimaryMonitorPresent());
-}
-
-void DisplayManager::initSecondMonitor(QString name)
-{
-    auto it = m_widgetContainer.find(name);
-    if(it != m_widgetContainer.end()){
-        if(it->second){
-            m_widgetOnTheSecondMonitor = it->second;
-            m_widgetOnTheSecondMonitor->setWindowFlags(Qt::SplashScreen);
-            m_widgetOnTheSecondMonitor->move(3240,0);
-            LOG1(name)
-        }
-    }
 }
 
 void DisplayManager::setWindowTitle(const QString &msg)
@@ -162,6 +152,31 @@ void DisplayManager::pushButtonRecord_clicked(bool isChecked)
     m_liveSceneView->pushButtonRecord_clicked(isChecked);
 }
 
+void DisplayManager::setSpeedVisible(bool isVisible)
+{
+    m_liveSceneView->setSpeedVisible(isVisible);
+}
+
+void DisplayManager::setSpeed(const QString &speed)
+{
+    m_liveSceneView->setSpeed(speed);
+}
+
+void DisplayManager::setScene(QGraphicsScene * scene)
+{
+    m_pmCaseReview->setScene(scene);
+}
+
+void DisplayManager::showCapture(bool isVisible)
+{
+    m_pmCaseReview->showCapture(isVisible);
+}
+
+QVBoxLayout *DisplayManager::getVideoWidgetContainer()
+{
+    return m_pmCaseReview->getVideoWidgetContainer();
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
@@ -180,14 +195,14 @@ DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
     m_liveSceneView = std::make_unique<LiveSceneView>();
     m_pmDisk = std::make_unique<FormDisk>();
     m_pmLogo = std::make_unique<FormPmLogo>();
+    m_pmCaseReview = std::make_unique<FormPmCaseReview>();
 
     m_widgetContainer["logo"] = m_pmLogo.get();
     m_widgetContainer["disk"] = m_pmDisk.get();
     m_widgetContainer["liveData"] = m_liveSceneView.get();
+    m_widgetContainer["caseReview"] = m_pmCaseReview.get();
 
     connect(this, &DisplayManager::nonPrimaryMonitorIsPresent, this, &DisplayManager::showHideSecondMonitor);
-
-    initSecondMonitor("logo");
 
     connect(    m_diplaySettingsMonitor.get(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
                 this, &DisplayManager::programFinished);

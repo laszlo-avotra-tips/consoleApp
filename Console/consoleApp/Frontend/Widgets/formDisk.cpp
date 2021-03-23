@@ -7,6 +7,8 @@ FormDisk::FormDisk(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(this, &QWidget::windowTitleChanged, this, &FormDisk::setInfoLabel);
+    ui->labelSpeed->hide();
+    ui->pushButtonSpeed->hide();
 }
 
 FormDisk::~FormDisk()

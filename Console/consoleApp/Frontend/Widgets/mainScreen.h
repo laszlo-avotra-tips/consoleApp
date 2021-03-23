@@ -113,8 +113,8 @@ private:
     QImage m_grayImage;
 
     const std::pair<int,int> m_widthHeight{3,2};
-    const int m_sceneWidth{2160};
-    const QSize m_sceneSize{2160,2160};
+    const int m_sceneWidth{ControlScreenHeight};
+    const QSize m_sceneSize{ControlScreenHeight,ControlScreenHeight};
 
     std::vector<QWidget*> m_navigationButtons;
 

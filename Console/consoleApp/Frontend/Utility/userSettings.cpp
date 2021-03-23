@@ -26,6 +26,11 @@ userSettings::userSettings()
     loadSettings();
 }
 
+QString userSettings::getSerialNumber() const
+{
+    return m_serialNumber;
+}
+
 /*
  * saveSettings()
  *
@@ -47,6 +52,8 @@ void userSettings::saveSettings()
         varSettings->setValue( "displayOptions/color", QString("sepia") );
     }
 //    LOG2(m_isGray,m_imageDepthIndex)
+    varSettings->setValue( "caseSetup/physician", m_physician );
+    varSettings->setValue( "caseSetup/location", m_location );
 }
 
 void userSettings::loadVarSettings()
@@ -69,15 +76,10 @@ void userSettings::loadVarSettings()
     m_serviceDate = QDate::fromString(date, "MM.dd.yyyy");
     LOG2(date,m_serviceDate.toString())
 
-    m_physicians = varSettings->value( "caseSetup/physicians",        "" ).toStringList();
-    for(const auto& doctor : m_physicians){
-        LOG1(doctor)
-    }
+    m_physician = varSettings->value( "caseSetup/physician",        "" ).toString();
+    LOG1(m_physician)
 
-    m_locations = varSettings->value( "caseSetup/locations",        "" ).toStringList();
-    for(const auto& location : m_locations){
-        LOG1(location)
-    }
+    m_location = varSettings->value( "caseSetup/location",        "" ).toString();
 }
 
 void userSettings::loadProfileSettings()
@@ -106,6 +108,31 @@ void userSettings::loadProfileSettings()
     m_oct_firmware_version = profileSettings->value( "subSystemVersion/oct_firmware_version", "").toString();
     m_interface_hw_version = profileSettings->value( "subSystemVersion/interface_hw_version", "").toString();
     LOG4(getSled_firmware_version(), getInterface_firmware_version(), getOct_firmware_version(), getInterface_hw_version())
+
+    m_serialNumber = profileSettings->value( "System/serialNumber", "0000").toString();
+    LOG1(m_serialNumber)
+}
+
+void userSettings::setLocation(const QString &location)
+{
+    m_location = location;
+    saveSettings();
+}
+
+void userSettings::setPhysician(const QString &physician)
+{
+    m_physician = physician;
+    saveSettings();
+}
+
+QString userSettings::getLocation() const
+{
+    return m_location;
+}
+
+QString userSettings::getPhysician() const
+{
+    return m_physician;
 }
 
 int userSettings::getDisableExternalMonitor() const
@@ -172,27 +199,6 @@ void userSettings::loadSettings()
 {
     loadVarSettings();
     loadProfileSettings();
-}
-
-
-QStringList userSettings::getLocations() const
-{
-    return m_locations;
-}
-
-void userSettings::setLocations(const QStringList &locations)
-{
-    m_locations = locations;
-}
-
-QStringList userSettings::getPhysicians() const
-{
-    return m_physicians;
-}
-
-void userSettings::setPhysicians(const QStringList &doctors)
-{
-    m_physicians = doctors;
 }
 
 QDate userSettings::getServiceDate() const

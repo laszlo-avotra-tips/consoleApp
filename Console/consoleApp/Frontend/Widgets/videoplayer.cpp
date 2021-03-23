@@ -68,6 +68,10 @@ void VideoPlayer::init()
 {
     m_mediaPlayer = new QMediaPlayer(this,QMediaPlayer::VideoSurface);
     m_videoWidget = new QVideoWidget();
+    m_videoWidget->setFixedSize(1500,1500);
+
+    m_errorLabel = new QLabel(this);
+    m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
     if(!m_videoWidgetContainer){
         m_videoWidgetContainer = new QVBoxLayout();
@@ -77,6 +81,7 @@ void VideoPlayer::init()
     }
     QVBoxLayout *layout = m_videoWidgetContainer;
     layout->addWidget(m_videoWidget);
+    layout->addWidget(m_errorLabel);
 
     m_videoWidget->autoFillBackground();
     m_mediaPlayer->setVideoOutput(m_videoWidget);
@@ -99,6 +104,7 @@ VideoPlayer::~VideoPlayer()
     LOG1("~VideoPlayer");
     delete m_videoWidget;
     delete m_mediaPlayer;
+    delete m_errorLabel;
 }
 
 

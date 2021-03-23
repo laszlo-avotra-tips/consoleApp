@@ -18,9 +18,12 @@ HEADERS += \
     $$PWD/Frontend/Utility/concatenateVideo.h \
     $$PWD/Frontend/Utility/dialogFactory.h \
     $$PWD/Frontend/Utility/octFrameRecorder.h \
+    $$PWD/Frontend/Utility/preferencesDatabase.h \
+    $$PWD/Frontend/Utility/preferencesModel.h \
     $$PWD/Frontend/Utility/screenFactory.h \
     $$PWD/Frontend/Utility/widgetcontainer.h \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.h \
+    $$PWD/Frontend/Widgets/activeLabel.h \
     $$PWD/Frontend/Widgets/captureItemDelegate.h \
     $$PWD/Frontend/Widgets/capturelistview.h \
     $$PWD/Frontend/Widgets/caseInformationDialog.h \
@@ -31,6 +34,8 @@ HEADERS += \
     $$PWD/Frontend/Widgets/consoleKeyboard.h \
     $$PWD/Frontend/Widgets/consoleLabel.h \
     $$PWD/Frontend/Widgets/consoleLineEdit.h \
+    $$PWD/Frontend/Widgets/dateTimeController.h \
+    $$PWD/Frontend/Widgets/dateTimeModel.h \
     $$PWD/Frontend/Widgets/deviceDelegate.h \
     $$PWD/Frontend/Widgets/deviceDisplayModel.h \
     $$PWD/Frontend/Widgets/deviceListModel.h \
@@ -38,17 +43,21 @@ HEADERS += \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
     $$PWD/Frontend/Widgets/formDisk.h \
+    $$PWD/Frontend/Widgets/formPmCaseReview.h \
     $$PWD/Frontend/Widgets/formPmLogo.h \
     $$PWD/Frontend/Widgets/formSecondMonitor.h \
     $$PWD/Frontend/Widgets/iRotationIndicator.h \
+    $$PWD/Frontend/Widgets/localTime.h \
     $$PWD/Frontend/Widgets/mainScreen.h \
     $$PWD/Frontend/Widgets/opaqueScreen.h \
+    $$PWD/Frontend/Widgets/preferencesDialog.h \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.h \
     $$PWD/Frontend/Widgets/rotationIndicatorFactory.h \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.h \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.h \
     $$PWD/Frontend/Widgets/screenNavigator.h \
     $$PWD/Frontend/Widgets/selectDialog.h \
+    $$PWD/Frontend/Widgets/shutdownConfirmationDialog.h \
     $$PWD/Frontend/Widgets/startScreen.h \
     $$PWD/Frontend/Widgets/videoplayer.h \
     ../version.h \
@@ -99,9 +108,12 @@ SOURCES += \
     $$PWD/Frontend/Utility/concatenateVideo.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
     $$PWD/Frontend/Utility/octFrameRecorder.cpp \
+    $$PWD/Frontend/Utility/preferencesDatabase.cpp \
+    $$PWD/Frontend/Utility/preferencesModel.cpp \
     $$PWD/Frontend/Utility/screenFactory.cpp \
     $$PWD/Frontend/Utility/widgetcontainer.cpp \
     $$PWD/Frontend/Widgets/DisplayOptionsModel.cpp \
+    $$PWD/Frontend/Widgets/activeLabel.cpp \
     $$PWD/Frontend/Widgets/captureItemDelegate.cpp \
     $$PWD/Frontend/Widgets/capturelistview.cpp \
     $$PWD/Frontend/Widgets/caseInformationDialog.cpp \
@@ -112,6 +124,8 @@ SOURCES += \
     $$PWD/Frontend/Widgets/consoleKeyboard.cpp \
     $$PWD/Frontend/Widgets/consoleLabel.cpp \
     $$PWD/Frontend/Widgets/consoleLineEdit.cpp \
+    $$PWD/Frontend/Widgets/dateTimeController.cpp \
+    $$PWD/Frontend/Widgets/dateTimeModel.cpp \
     $$PWD/Frontend/Widgets/deviceDelegate.cpp \
     $$PWD/Frontend/Widgets/deviceDisplayModel.cpp \
     $$PWD/Frontend/Widgets/deviceListModel.cpp \
@@ -119,16 +133,20 @@ SOURCES += \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
     $$PWD/Frontend/Widgets/formDisk.cpp \
+    $$PWD/Frontend/Widgets/formPmCaseReview.cpp \
     $$PWD/Frontend/Widgets/formPmLogo.cpp \
     $$PWD/Frontend/Widgets/formSecondMonitor.cpp \
+    $$PWD/Frontend/Widgets/localTime.cpp \
     $$PWD/Frontend/Widgets/mainScreen.cpp \
     $$PWD/Frontend/Widgets/opaqueScreen.cpp \
+    $$PWD/Frontend/Widgets/preferencesDialog.cpp \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorFactory.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay.cpp \
     $$PWD/Frontend/Widgets/rotationIndicatorOverlay2.cpp \
     $$PWD/Frontend/Widgets/screenNavigator.cpp \
     $$PWD/Frontend/Widgets/selectDialog.cpp \
+    $$PWD/Frontend/Widgets/shutdownConfirmationDialog.cpp \
     $$PWD/Frontend/Widgets/startScreen.cpp \
     $$PWD/Frontend/Widgets/videoplayer.cpp \
     $$PWD/main.cpp \
@@ -174,13 +192,16 @@ FORMS += \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
     $$PWD/Frontend/Widgets/formDisk.ui \
+    $$PWD/Frontend/Widgets/formPmCaseReview.ui \
     $$PWD/Frontend/Widgets/formPmLogo.ui \
     $$PWD/Frontend/Widgets/formSecondMonitor.ui \
     $$PWD/Frontend/Widgets/mainScreen.ui \
     $$PWD/Frontend/Widgets/opaqueScreen.ui \
+    $$PWD/Frontend/Widgets/preferencesDialog.ui \
     $$PWD/Frontend/Widgets/reviewAndSettingsDialog.ui \
     $$PWD/Frontend/Widgets/screenNavigator.ui \
     $$PWD/Frontend/Widgets/selectDialog.ui \
+    $$PWD/Frontend/Widgets/shutdownConfirmationDialog.ui \
     $$PWD/Frontend/Widgets/startScreen.ui \
     ../../Common/GUI/styledmessagebox.ui  
 

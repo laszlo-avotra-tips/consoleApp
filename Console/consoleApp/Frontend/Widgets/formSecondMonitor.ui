@@ -90,6 +90,9 @@ border-radius: 40px;
    <property name="text">
     <string>09:15:59</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="labelLive">
    <property name="geometry">
@@ -99,6 +102,9 @@ border-radius: 40px;
      <width>58</width>
      <height>43</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;Helvetica Neue&quot;;</string>
    </property>
    <property name="text">
     <string>LIVE</string>
@@ -130,7 +136,7 @@ border-radius: 40px;
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -185,6 +191,73 @@ border-radius: 40px;
     <bool>false</bool>
    </property>
   </widget>
+  <widget class="QLabel" name="labelSpeed">
+   <property name="geometry">
+    <rect>
+     <x>1131</x>
+     <y>196</y>
+     <width>98</width>
+     <height>43</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>80</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>SPEED</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonSpeed">
+   <property name="geometry">
+    <rect>
+     <x>1110</x>
+     <y>243</y>
+     <width>139</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>100</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+border: 2px solid grey; 
+border-radius: 15px;
+font: 14pt &quot;Helvetica Neue&quot;;
+background-color: #F5C400; color: black;
+}</string>
+   </property>
+   <property name="text">
+    <string>LOW</string>
+   </property>
+  </widget>
   <zorder>frame</zorder>
   <zorder>labelLive</zorder>
   <zorder>graphicsView</zorder>
@@ -193,6 +266,8 @@ border-radius: 40px;
   <zorder>labelRunTime</zorder>
   <zorder>labelDevice</zorder>
   <zorder>pushButtonRecord</zorder>
+  <zorder>labelSpeed</zorder>
+  <zorder>pushButtonSpeed</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>

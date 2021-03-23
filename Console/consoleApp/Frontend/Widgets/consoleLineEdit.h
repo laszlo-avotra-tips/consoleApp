@@ -25,12 +25,22 @@ public:
      * \param e - pointer to the mouse event
      */
     void mousePressEvent(QMouseEvent * e) override;
+    void mark();
+    void unmark();
+
+    bool isMarked() const;
+    void setIsMarked(bool isMarked);
 
 signals:
     /*!
      * \brief mousePressed
      */
     void mousePressed();
+    void labelItemMarked(ConsoleLineEdit* label);
+    void labelItemUnmarked();
+
+private:
+    bool m_isMarked{false};
 
 };
 

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ShutdownConfirmationDialog</class>
+ <widget class="QDialog" name="ShutdownConfirmationDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1633</width>
+    <height>1087</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+background-color: black;
+color: white;
+}
+QLabel{
+font: 22pt &quot;Helvetica Neue&quot;;
+}
+QPushButton{
+font: 18pt;
+color: black;
+background-color:#676767;
+border-radius: 10px;
+}
+QDialog{
+border: 2px solid grey; 
+border-radius: 280px;
+}
+QFrame#frame{
+border: 2px solid grey; 
+}
+QLabel#labelTitle{
+font: 36pt &quot;Helvetica Neue&quot;;
+font-weight: 600
+}
+QFrame#frameDone{
+background-color:#262626;
+border-radius: 10px;
+}
+QFrame#frameBack{
+background-color:#636363;
+border-radius: 10px;
+}
+QLineEdit{
+font: 20pt &quot;Helvetica Neue&quot;;
+color:white;
+background-color: black;
+}</string>
+  </property>
+  <widget class="QLabel" name="labelTitle">
+   <property name="geometry">
+    <rect>
+     <x>126</x>
+     <y>157</y>
+     <width>1414</width>
+     <height>134</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>SHUTDOWN CONFIRMATION</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>314</y>
+     <width>1633</width>
+     <height>2</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: grey</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelInfo">
+   <property name="geometry">
+    <rect>
+     <x>98</x>
+     <y>485</y>
+     <width>1461</width>
+     <height>84</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>ARE YOU SURE YOU WANT TO SHUTDOWN?</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonCancel">
+   <property name="geometry">
+    <rect>
+     <x>468</x>
+     <y>719</y>
+     <width>283</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: white</string>
+   </property>
+   <property name="text">
+    <string>CANCEL</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonShutdown">
+   <property name="geometry">
+    <rect>
+     <x>818</x>
+     <y>719</y>
+     <width>383</width>
+     <height>76</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="accessibleDescription">
+    <string/>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #F5C400</string>
+   </property>
+   <property name="text">
+    <string>SHUTDOWN</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>ShutdownConfirmationDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>609</x>
+     <y>756</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>816</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonShutdown</sender>
+   <signal>clicked()</signal>
+   <receiver>ShutdownConfirmationDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>756</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>816</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

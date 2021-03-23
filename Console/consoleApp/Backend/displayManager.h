@@ -18,6 +18,9 @@ class FormPmLogo;
 class QGraphicsView;
 class liveScene;
 class FormDisk;
+class FormPmCaseReview;
+class QGraphicsScene;
+class QVBoxLayout;
 
 //MonWMIServer.exe -w 1280 -h 1024 -e C:\work\MonEvent.txt -l C:\Work\MonWMIServer.log
 
@@ -33,8 +36,7 @@ public:
     bool isNonPrimaryMonitorPresent() const;
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
     void setScene(liveScene* scene);
-    void initWidgetForTheSecondMonitor(QString name);
-    void initSecondMonitor(QString name);
+    void showOnTheSecondMonitor(QString name);
     void setWindowTitle(const QString& msg);
     void setRuntimeLabel(const QString& msg);
     void setCurrentTime(const QString& msg);
@@ -44,6 +46,11 @@ public:
     void setRecordingEnabled(bool isEnabled);
     void setRecordingChecked(bool isChecked);
     void pushButtonRecord_clicked(bool isChecked);
+    void setSpeedVisible(bool isVisible);
+    void setSpeed( const QString& speed);
+    void setScene(QGraphicsScene*);
+    void showCapture(bool isVisible);
+    QVBoxLayout* getVideoWidgetContainer();
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);
@@ -62,6 +69,7 @@ private:
     std::unique_ptr<LiveSceneView> m_liveSceneView{nullptr};
     std::unique_ptr<FormPmLogo> m_pmLogo{nullptr};
     std::unique_ptr<FormDisk> m_pmDisk{nullptr};
+    std::unique_ptr<FormPmCaseReview> m_pmCaseReview{nullptr};
     QWidget* m_widgetOnTheSecondMonitor{nullptr};
 
     const QString m_programName{R"(MonWMIServer.exe)"};
