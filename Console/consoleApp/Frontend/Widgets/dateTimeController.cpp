@@ -359,7 +359,7 @@ void DateTimeController::setIsDateEditMode(bool isDateEditMode)
     m_isDateEditMode = isDateEditMode;
     if(m_isDateEditMode){
         LOG1(m_isDateEditMode);
-        m_model->setEditDate(m_currentDate);
+//        m_model->setEditDate(m_currentDate);
     }
     showEditControlButtons(m_isDateEditMode || m_isTimeEditMode);
 }
