@@ -87,7 +87,7 @@ void VideoPlayer::init()
     m_pmVideoWidget->autoFillBackground();
 
     m_mediaPlayer->setVideoOutput(m_videoWidget);   
-    m_pmMediaPlayer->setVideoOutput(m_videoWidget);
+    m_pmMediaPlayer->setVideoOutput(m_pmVideoWidget);
 
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
@@ -106,6 +106,7 @@ VideoPlayer::~VideoPlayer()
 {
     LOG1("~VideoPlayer");
     delete m_videoWidget;
+    delete m_pmVideoWidget;
     delete m_mediaPlayer;
     delete m_pmMediaPlayer;
     delete m_errorLabel;
