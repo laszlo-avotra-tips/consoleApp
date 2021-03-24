@@ -196,6 +196,7 @@ void CaseReviewScreen::showPlayer(bool isVisible)
         ui->framePlayer->hide();
         ui->horizontalSlider->hide();
     }
+    DisplayManager::instance()->showCapture(!isVisible);
 }
 
 void CaseReviewScreen::showCapture(bool isVisible)

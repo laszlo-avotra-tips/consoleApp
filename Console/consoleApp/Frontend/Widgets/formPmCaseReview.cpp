@@ -1,5 +1,6 @@
 #include "formPmCaseReview.h"
 #include "ui_formPmCaseReview.h"
+#include "logger.h"
 
 #include <QGraphicsScene>
 #include <QLabel>
@@ -23,6 +24,7 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 
 void FormPmCaseReview::showCapture(bool isVisible)
 {
+    LOG1(isVisible);
     if(isVisible){
         ui->stackedWidget->setCurrentIndex(0);
         ui->captureScene->show();
