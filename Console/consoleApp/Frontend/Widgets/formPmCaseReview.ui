@@ -213,10 +213,10 @@ border-radius: 40px;
    <zorder>labelTime</zorder>
    <zorder>pushButtonPlay</zorder>
   </widget>
-  <zorder>framePlayer</zorder>
   <zorder>captureScene</zorder>
   <zorder>pushButtonLogo</zorder>
   <zorder>labelRunTime</zorder>
+  <zorder>framePlayer</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>
