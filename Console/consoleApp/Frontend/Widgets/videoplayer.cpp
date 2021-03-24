@@ -70,18 +70,14 @@ void VideoPlayer::init()
     m_videoWidget = new QVideoWidget();
     m_videoWidget->setFixedSize(1500,1500);
 
+    m_pmVideoWidget = new QVideoWidget();
+    m_pmVideoWidget->setFixedSize(1000,1000);
+
     m_errorLabel = new QLabel(this);
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
-    if(!m_videoWidgetContainer){
-        m_videoWidgetContainer = new QVBoxLayout();
-        setLayout(m_videoWidgetContainer);
-        qDebug() << __LINE__ << "local m_videoWidgetContainer";
-        LOG1(m_videoWidgetContainer);
-    }
-    QVBoxLayout *layout = m_videoWidgetContainer;
-    layout->addWidget(m_videoWidget);
-    layout->addWidget(m_errorLabel);
+    m_videoWidgetContainer->addWidget(m_videoWidget);
+    m_videoWidgetContainer->addWidget(m_errorLabel);
 
     m_videoWidget->autoFillBackground();
     m_mediaPlayer->setVideoOutput(m_videoWidget);
@@ -169,5 +165,11 @@ void VideoPlayer::handleError()
 void VideoPlayer::setVideoWidgetContainer(QVBoxLayout *videoWidgetContainer)
 {
     m_videoWidgetContainer = videoWidgetContainer;
+    LOG1(m_videoWidgetContainer);
+}
+
+void VideoPlayer::setPmVideoWidgetContainer(QVBoxLayout *videoWidgetContainer)
+{
+    m_pmVideoWidgetContainer = videoWidgetContainer;
     LOG1(m_videoWidgetContainer);
 }
