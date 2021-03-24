@@ -7,8 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>1024</height>
+    <height>1080</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1280</width>
+    <height>1080</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1280</width>
+    <height>1080</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -79,7 +97,7 @@ border-radius: 40px;
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>1024</height>
+     <height>1080</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -95,8 +113,26 @@ border-radius: 40px;
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>1000</height>
+     <height>900</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>1280</width>
+     <height>900</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1280</width>
+     <height>900</height>
+    </size>
    </property>
    <property name="styleSheet">
     <string notr="true"/>
@@ -107,29 +143,37 @@ border-radius: 40px;
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>10</y>
-      <width>1601</width>
-      <height>1601</height>
-     </rect>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
-    </layout>
-   </widget>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>24</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+     </layout>
+    </item>
+   </layout>
   </widget>
-  <zorder>captureScene</zorder>
-  <zorder>pushButtonLogo</zorder>
-  <zorder>labelCaseReview</zorder>
-  <zorder>framePlayer</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>

@@ -26,11 +26,11 @@ void FormPmCaseReview::showCapture(bool isVisible)
     if(isVisible){
         ui->captureScene->show();
         ui->pushButtonLogo->hide();
-        ui->labelRunTime->move(960,80);
+        ui->labelCaseReview->move(960,80);
     } else {
         ui->captureScene->hide();
         ui->pushButtonLogo->show();
-        ui->labelRunTime->move(1100,34);
+        ui->labelCaseReview->move(1100,34);
     }
 }
 
