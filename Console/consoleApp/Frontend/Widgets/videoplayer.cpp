@@ -67,6 +67,8 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 void VideoPlayer::init()
 {
     m_mediaPlayer = new QMediaPlayer(this,QMediaPlayer::VideoSurface);
+    m_pmMediaPlayer = new QMediaPlayer(this,QMediaPlayer::VideoSurface);
+
     m_videoWidget = new QVideoWidget();
     m_videoWidget->setFixedSize(1500,1500);
 
@@ -77,10 +79,15 @@ void VideoPlayer::init()
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
     m_videoWidgetContainer->addWidget(m_videoWidget);
+    m_pmVideoWidgetContainer->addWidget(m_pmVideoWidget);
+
     m_videoWidgetContainer->addWidget(m_errorLabel);
 
     m_videoWidget->autoFillBackground();
-    m_mediaPlayer->setVideoOutput(m_videoWidget);
+    m_pmVideoWidget->autoFillBackground();
+
+    m_mediaPlayer->setVideoOutput(m_videoWidget);   
+    m_pmMediaPlayer->setVideoOutput(m_videoWidget);
 
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
@@ -100,6 +107,7 @@ VideoPlayer::~VideoPlayer()
     LOG1("~VideoPlayer");
     delete m_videoWidget;
     delete m_mediaPlayer;
+    delete m_pmMediaPlayer;
     delete m_errorLabel;
 }
 
@@ -108,6 +116,7 @@ void VideoPlayer::setUrl(const QUrl &url)
 {
     setWindowFilePath(url.isLocalFile() ? url.toLocalFile() : QString());
     m_mediaPlayer->setMedia(url);
+    m_pmMediaPlayer->setMedia(url);
 }
 
 void VideoPlayer::play()
@@ -115,9 +124,11 @@ void VideoPlayer::play()
     switch (m_mediaPlayer->state()) {
     case QMediaPlayer::PlayingState:
         m_mediaPlayer->pause();
+        m_pmMediaPlayer->pause();
         break;
     default:
         m_mediaPlayer->play();
+        m_pmMediaPlayer->play();
         break;
     }
 }
@@ -136,6 +147,7 @@ void VideoPlayer::durationChanged(qint64 duration)
 void VideoPlayer::setPosition(int position)
 {
     m_mediaPlayer->setPosition(position);
+    m_pmMediaPlayer->setPosition(position);
 }
 
 void VideoPlayer::handleError()

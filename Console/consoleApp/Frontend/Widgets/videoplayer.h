@@ -93,6 +93,7 @@ private slots:
 
 private:
     QMediaPlayer* m_mediaPlayer{nullptr};
+    QMediaPlayer* m_pmMediaPlayer{nullptr};
     QVideoWidget *m_videoWidget{nullptr};
     QVideoWidget *m_pmVideoWidget{nullptr};
     QLabel *m_errorLabel;

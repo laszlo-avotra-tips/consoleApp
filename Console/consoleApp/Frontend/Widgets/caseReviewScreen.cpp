@@ -107,7 +107,7 @@ void CaseReviewScreen::initPlayer()
 
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
-//    m_player->setPmVideoWidgetContainer(DisplayManager::instance()->getVideoWidgetContainer());
+    m_player->setPmVideoWidgetContainer(DisplayManager::instance()->getVideoWidgetContainer());
     m_player->init();
 
     auto* slider = ui->horizontalSlider;
