@@ -24,10 +24,12 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 void FormPmCaseReview::showCapture(bool isVisible)
 {
     if(isVisible){
+        ui->stackedWidget->setCurrentIndex(0);
         ui->captureScene->show();
         ui->pushButtonLogo->hide();
         ui->labelCaseReview->move(960,80);
     } else {
+        ui->stackedWidget->setCurrentIndex(1);
         ui->captureScene->hide();
         ui->pushButtonLogo->show();
         ui->labelCaseReview->move(1100,34);

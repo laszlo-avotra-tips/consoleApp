@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2588</width>
+    <width>1280</width>
     <height>1080</height>
    </rect>
   </property>
@@ -24,7 +24,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>3000</width>
+    <width>1280</width>
     <height>1080</height>
    </size>
   </property>
@@ -76,194 +76,10 @@ background: rgb( 67, 67, 67 );
 border-radius: 15px;
 }</string>
   </property>
-  <widget class="QPushButton" name="pushButtonLogo">
-   <property name="geometry">
-    <rect>
-     <x>27</x>
-     <y>34</y>
-     <width>192</width>
-     <height>48</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="../../octConsole.qrc">
-     <normaloff>:/octConsole/captureLogo.png</normaloff>:/octConsole/captureLogo.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>192</width>
-     <height>48</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelCaseReview">
-   <property name="geometry">
-    <rect>
-     <x>1100</x>
-     <y>34</y>
-     <width>160</width>
-     <height>43</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:#F5C400;</string>
-   </property>
-   <property name="text">
-    <string>CASE REVIEW</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QFrame" name="framePlayer">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1280</width>
-     <height>900</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>1280</width>
-     <height>900</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>1280</width>
-     <height>900</height>
-    </size>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>24</number>
-    </property>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-     </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QLabel" name="labelDuration">
-   <property name="geometry">
-    <rect>
-     <x>1049</x>
-     <y>950</y>
-     <width>178</width>
-     <height>55</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>55</height>
-    </size>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
-   </property>
-   <property name="text">
-    <string>12:30</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QSlider" name="horizontalSlider">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>950</y>
-     <width>772</width>
-     <height>58</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>58</height>
-    </size>
-   </property>
-   <property name="pageStep">
-    <number>10</number>
-   </property>
-   <property name="sliderPosition">
-    <number>60</number>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelTime">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>950</y>
-     <width>178</width>
-     <height>55</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>55</height>
-    </size>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
-   </property>
-   <property name="text">
-    <string>12:30</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
     <rect>
-     <x>1280</x>
+     <x>0</x>
      <y>0</y>
      <width>1280</width>
      <height>1080</height>
@@ -271,6 +87,9 @@ border-radius: 15px;
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: grey</string>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QGraphicsView" name="captureScene">
@@ -332,15 +151,199 @@ border-radius: 15px;
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="page_2"/>
+   <widget class="QWidget" name="page_2">
+    <widget class="QLabel" name="labelCaseReview">
+     <property name="geometry">
+      <rect>
+       <x>1100</x>
+       <y>34</y>
+       <width>160</width>
+       <height>43</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:#F5C400;</string>
+     </property>
+     <property name="text">
+      <string>CASE REVIEW</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonLogo">
+     <property name="geometry">
+      <rect>
+       <x>27</x>
+       <y>34</y>
+       <width>192</width>
+       <height>48</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../octConsole.qrc">
+       <normaloff>:/octConsole/captureLogo.png</normaloff>:/octConsole/captureLogo.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>192</width>
+       <height>48</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QFrame" name="framePlayer">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1280</width>
+       <height>1000</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>1280</width>
+       <height>1000</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1280</width>
+       <height>1000</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QLabel" name="labelDuration">
+     <property name="geometry">
+      <rect>
+       <x>1030</x>
+       <y>1000</y>
+       <width>178</width>
+       <height>55</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>55</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
+     </property>
+     <property name="text">
+      <string>12:30</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>251</x>
+       <y>1000</y>
+       <width>772</width>
+       <height>58</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>58</height>
+      </size>
+     </property>
+     <property name="pageStep">
+      <number>10</number>
+     </property>
+     <property name="sliderPosition">
+      <number>60</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelTime">
+     <property name="geometry">
+      <rect>
+       <x>81</x>
+       <y>1000</y>
+       <width>178</width>
+       <height>55</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>55</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
+     </property>
+     <property name="text">
+      <string>12:30</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <zorder>framePlayer</zorder>
+    <zorder>labelCaseReview</zorder>
+    <zorder>pushButtonLogo</zorder>
+    <zorder>labelDuration</zorder>
+    <zorder>horizontalSlider</zorder>
+    <zorder>labelTime</zorder>
+   </widget>
   </widget>
-  <zorder>framePlayer</zorder>
-  <zorder>pushButtonLogo</zorder>
-  <zorder>labelCaseReview</zorder>
-  <zorder>labelDuration</zorder>
-  <zorder>labelTime</zorder>
-  <zorder>horizontalSlider</zorder>
-  <zorder>stackedWidget</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>
