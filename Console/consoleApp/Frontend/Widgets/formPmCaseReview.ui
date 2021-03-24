@@ -76,10 +76,10 @@ border-radius: 40px;
   <widget class="QGraphicsView" name="captureScene">
    <property name="geometry">
     <rect>
-     <x>12</x>
-     <y>12</y>
-     <width>1256</width>
-     <height>1000</height>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>1024</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -92,10 +92,10 @@ border-radius: 40px;
   <widget class="QFrame" name="framePlayer">
    <property name="geometry">
     <rect>
-     <x>12</x>
-     <y>12</y>
-     <width>1256</width>
-     <height>1000</height>
+     <x>0</x>
+     <y>100</y>
+     <width>1280</width>
+     <height>924</height>
     </rect>
    </property>
    <property name="styleSheet">
