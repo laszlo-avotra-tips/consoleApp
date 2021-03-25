@@ -196,7 +196,7 @@ void CaseReviewScreen::showPlayer(bool isVisible)
         ui->framePlayer->hide();
         ui->horizontalSlider->hide();
     }
-    DisplayManager::instance()->showCapture(!isVisible);
+//    DisplayManager::instance()->showCapture(!isVisible);
 }
 
 void CaseReviewScreen::showCapture(bool isVisible)
@@ -241,7 +241,7 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
         QGraphicsScene *scene = new QGraphicsScene();
 
         ui->captureScene->setScene(scene);
-        DisplayManager::instance()->setScene(scene);
+        DisplayManager::instance()->setPmScene(scene);
 
         DisplayManager::instance()->showOnTheSecondMonitor("caseReview");
     }
@@ -354,7 +354,7 @@ void CaseReviewScreen::captureSelected( QModelIndex index )
         scenePm->addItem(itemPm);
 
         ui->captureScene->setScene(scene);
-        DisplayManager::instance()->setScene(scenePm);
+        DisplayManager::instance()->setPmScene(scenePm);
     }
 }
 

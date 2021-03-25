@@ -48,7 +48,7 @@ public:
     void pushButtonRecord_clicked(bool isChecked);
     void setSpeedVisible(bool isVisible);
     void setSpeed( const QString& speed);
-    void setScene(QGraphicsScene*);
+    void setPmScene(QGraphicsScene*);
     void showCapture(bool isVisible);
     QVBoxLayout* getVideoWidgetContainer();
 

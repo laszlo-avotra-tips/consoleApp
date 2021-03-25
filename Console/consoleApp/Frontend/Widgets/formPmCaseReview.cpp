@@ -24,7 +24,7 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 
 void FormPmCaseReview::showCapture(bool isVisible)
 {
-    LOG1(isVisible);
+    ui->captureScene->show();
     if(isVisible){
         if(ui->stackedWidget->currentIndex()){
             ui->stackedWidget->setCurrentIndex(0);
@@ -34,7 +34,6 @@ void FormPmCaseReview::showCapture(bool isVisible)
 //        ui->pushButtonLogo->hide();
 //        ui->labelCaseReview->move(960,80);
     } else {
-        ui->stackedWidget->setCurrentIndex(1);
         if(!ui->stackedWidget->currentIndex()){
             ui->stackedWidget->setCurrentIndex(1);
             LOG2(isVisible, ui->stackedWidget->currentIndex());

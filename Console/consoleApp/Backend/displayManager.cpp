@@ -162,7 +162,7 @@ void DisplayManager::setSpeed(const QString &speed)
     m_liveSceneView->setSpeed(speed);
 }
 
-void DisplayManager::setScene(QGraphicsScene * scene)
+void DisplayManager::setPmScene(QGraphicsScene * scene)
 {
     m_pmCaseReview->setScene(scene);
 }
