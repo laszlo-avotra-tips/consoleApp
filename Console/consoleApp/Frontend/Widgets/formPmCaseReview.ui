@@ -10,6 +10,24 @@
     <height>1024</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1280</width>
+    <height>1024</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1280</width>
+    <height>1024</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -22,6 +40,9 @@ QFrame{
 border: 0px;
 }
 QLabel{
+font: 22pt &quot;Helvetica Neue&quot;;
+}
+QLabel#labelCaseReview{
 font: 14pt &quot;Helvetica Neue&quot;;
 }
 QLabel#labelInfo{
@@ -29,7 +50,30 @@ font: 22pt &quot;Helvetica Neue&quot;;
 border: 2px solid black; 
 border-radius: 40px;
 }
-</string>
+
+QSlider::groove:horizontal {
+background: white;
+height: 22px;
+border-radius: 11px;
+}
+QSlider::sub-page:horizontal {
+background: rgb( 51, 51, 51 );
+border: 1px solid rgb( 51, 51, 51 );
+height: 22px;
+}
+QSlider::sub-page:horizontal {
+background:#A9A9A9;
+border: 1px solid #A9A9A9;
+height: 22px;
+border-radius: 11px;
+}
+QSlider::handle:horizontal {
+/* image: url(:images/handle_normal.png);*/
+width: 31px;
+margin: -20px 0;
+background: rgb( 67, 67, 67 );
+border-radius: 15px;
+}</string>
   </property>
   <widget class="QPushButton" name="pushButtonLogo">
    <property name="geometry">
@@ -54,7 +98,7 @@ border-radius: 40px;
     </size>
    </property>
   </widget>
-  <widget class="QLabel" name="labelRunTime">
+  <widget class="QLabel" name="labelCaseReview">
    <property name="geometry">
     <rect>
      <x>1100</x>
@@ -76,10 +120,10 @@ border-radius: 40px;
   <widget class="QGraphicsView" name="captureScene">
    <property name="geometry">
     <rect>
-     <x>12</x>
-     <y>12</y>
-     <width>1256</width>
-     <height>1000</height>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>1024</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -92,11 +136,29 @@ border-radius: 40px;
   <widget class="QFrame" name="framePlayer">
    <property name="geometry">
     <rect>
-     <x>12</x>
-     <y>12</y>
-     <width>1256</width>
-     <height>1000</height>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>924</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>1280</width>
+     <height>924</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1280</width>
+     <height>924</height>
+    </size>
    </property>
    <property name="styleSheet">
     <string notr="true"/>
@@ -107,116 +169,119 @@ border-radius: 40px;
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>10</y>
-      <width>1601</width>
-      <height>1601</height>
-     </rect>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="pushButtonPlay">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>1530</y>
-      <width>121</width>
-      <height>61</height>
-     </rect>
+    <property name="leftMargin">
+     <number>0</number>
     </property>
-    <property name="text">
-     <string/>
+    <property name="topMargin">
+     <number>0</number>
     </property>
-    <property name="icon">
-     <iconset resource="../../octConsole.qrc">
-      <normaloff>:/octConsole/Frontend/Resources/play_button.png</normaloff>
-      <normalon>:/octConsole/Frontend/Resources/pause_button.png</normalon>:/octConsole/Frontend/Resources/play_button.png</iconset>
+    <property name="rightMargin">
+     <number>0</number>
     </property>
-    <property name="iconSize">
-     <size>
-      <width>150</width>
-      <height>50</height>
-     </size>
+    <property name="bottomMargin">
+     <number>0</number>
     </property>
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-    <property name="flat">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelDuration">
-    <property name="geometry">
-     <rect>
-      <x>1226</x>
-      <y>1530</y>
-      <width>178</width>
-      <height>55</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>55</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
-    </property>
-    <property name="text">
-     <string>12:30</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelTime">
-    <property name="geometry">
-     <rect>
-      <x>277</x>
-      <y>1530</y>
-      <width>178</width>
-      <height>55</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>55</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font:14pt &quot;Helvetica Neue&quot;;</string>
-    </property>
-    <property name="text">
-     <string>12:30</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <zorder>verticalLayoutWidget</zorder>
-   <zorder>labelDuration</zorder>
-   <zorder>labelTime</zorder>
-   <zorder>pushButtonPlay</zorder>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+     </layout>
+    </item>
+   </layout>
   </widget>
-  <zorder>framePlayer</zorder>
-  <zorder>captureScene</zorder>
+  <widget class="QLabel" name="labelTime">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>950</y>
+     <width>100</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>55</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>12:30</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QSlider" name="horizontalSlider">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>950</y>
+     <width>700</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>58</height>
+    </size>
+   </property>
+   <property name="pageStep">
+    <number>10</number>
+   </property>
+   <property name="sliderPosition">
+    <number>60</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelDuration">
+   <property name="geometry">
+    <rect>
+     <x>1010</x>
+     <y>950</y>
+     <width>100</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>55</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>12:30</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
   <zorder>pushButtonLogo</zorder>
-  <zorder>labelRunTime</zorder>
+  <zorder>captureScene</zorder>
+  <zorder>framePlayer</zorder>
+  <zorder>labelCaseReview</zorder>
+  <zorder>horizontalSlider</zorder>
+  <zorder>labelDuration</zorder>
+  <zorder>labelTime</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>

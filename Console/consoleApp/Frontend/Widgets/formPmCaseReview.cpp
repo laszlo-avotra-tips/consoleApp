@@ -1,5 +1,6 @@
 #include "formPmCaseReview.h"
 #include "ui_formPmCaseReview.h"
+#include <logger.h>
 
 #include <QGraphicsScene>
 #include <QLabel>
@@ -23,18 +24,37 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 
 void FormPmCaseReview::showCapture(bool isVisible)
 {
+    LOG1(isVisible);
     if(isVisible){
+        ui->framePlayer->hide();
         ui->captureScene->show();
         ui->pushButtonLogo->hide();
-        ui->labelRunTime->move(960,80);
+        ui->labelCaseReview->move(960,80);
     } else {
+        ui->framePlayer->show();
         ui->captureScene->hide();
         ui->pushButtonLogo->show();
-        ui->labelRunTime->move(1100,34);
+        ui->labelCaseReview->move(1100,34);
     }
 }
 
 QVBoxLayout *FormPmCaseReview::getVideoWidgetContainer()
 {
     return ui->verticalLayout;
+}
+
+void FormPmCaseReview::updateSliderLabels(const QString &time, const QString &duration)
+{
+    ui->labelTime->setText(time);
+    ui->labelDuration->setText(duration);
+}
+
+void FormPmCaseReview::setSliderPosition(quint64 position)
+{
+    ui->horizontalSlider->setValue(position);
+}
+
+void FormPmCaseReview::setSliderRange(quint64 range)
+{
+    ui->horizontalSlider->setRange(0, range);
 }
