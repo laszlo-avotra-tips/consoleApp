@@ -36,6 +36,7 @@ public:
     bool isNonPrimaryMonitorPresent() const;
     void setIsNonPrimaryMonitorPresent(bool isNonPrimaryMonitorPresent);
     void setScene(liveScene* scene);
+    void setPmScene(QGraphicsScene*);
     void showOnTheSecondMonitor(QString name);
     void setWindowTitle(const QString& msg);
     void setRuntimeLabel(const QString& msg);
@@ -48,7 +49,6 @@ public:
     void pushButtonRecord_clicked(bool isChecked);
     void setSpeedVisible(bool isVisible);
     void setSpeed( const QString& speed);
-    void setPmScene(QGraphicsScene*);
     void showCapture(bool isVisible);
     QVBoxLayout* getVideoWidgetContainer();
 

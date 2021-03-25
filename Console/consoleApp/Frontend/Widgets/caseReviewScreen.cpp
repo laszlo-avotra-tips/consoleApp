@@ -239,9 +239,10 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
         showPlayer(false);
 
         QGraphicsScene *scene = new QGraphicsScene();
+        QGraphicsScene *pmScene = new QGraphicsScene();
 
         ui->captureScene->setScene(scene);
-        DisplayManager::instance()->setPmScene(scene);
+        DisplayManager::instance()->setPmScene(pmScene);
 
         DisplayManager::instance()->showOnTheSecondMonitor("caseReview");
     }
