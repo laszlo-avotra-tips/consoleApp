@@ -48,3 +48,13 @@ void FormPmCaseReview::updateSliderLabels(const QString &time, const QString &du
     ui->labelTime->setText(time);
     ui->labelDuration->setText(duration);
 }
+
+void FormPmCaseReview::setSliderPosition(quint64 position)
+{
+    ui->horizontalSlider->setValue(position);
+}
+
+void FormPmCaseReview::setSliderRange(quint64 range)
+{
+    ui->horizontalSlider->setRange(0, range);
+}

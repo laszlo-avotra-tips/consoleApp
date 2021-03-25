@@ -184,6 +184,20 @@ void DisplayManager::updateSliderLabels(const QString &time, const QString &dura
     }
 }
 
+void DisplayManager::setSliderPosition(quint64 position)
+{
+    if(m_isNonPrimaryMonitorPresent && m_pmCaseReview){
+        m_pmCaseReview->setSliderPosition(position);
+    }
+}
+
+void DisplayManager::setSliderRange(quint64 range)
+{
+    if(m_isNonPrimaryMonitorPresent && m_pmCaseReview){
+        m_pmCaseReview->setSliderRange(range);
+    }
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
