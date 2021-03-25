@@ -161,7 +161,7 @@ border-radius: 15px;
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:grey</string>
+    <string notr="true"/>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -203,10 +203,10 @@ border-radius: 15px;
   <widget class="QLabel" name="labelTime">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>180</x>
      <y>950</y>
-     <width>175</width>
-     <height>58</height>
+     <width>100</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -228,10 +228,10 @@ border-radius: 15px;
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
-     <x>275</x>
+     <x>300</x>
      <y>950</y>
-     <width>730</width>
-     <height>58</height>
+     <width>700</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -253,10 +253,10 @@ border-radius: 15px;
   <widget class="QLabel" name="labelDuration">
    <property name="geometry">
     <rect>
-     <x>1000</x>
+     <x>1010</x>
      <y>950</y>
-     <width>170</width>
-     <height>58</height>
+     <width>100</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="minimumSize">
