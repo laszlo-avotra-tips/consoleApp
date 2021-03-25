@@ -307,6 +307,8 @@ void CaseReviewScreen::updateSliderLabels()
     const QString& time = QString("%1:%2").arg(timeMinutes,2,10,QLatin1Char('0')).arg(timeSeconds,2,10,QLatin1Char('0'));
     ui->labelTime->setText(time);
 
+    DisplayManager::instance()->updateSliderLabels(time,duration);
+
     ui->pushButtonPlay->setChecked(m_player->isPlaying());
 }
 

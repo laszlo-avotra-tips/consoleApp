@@ -20,6 +20,7 @@ public:
     void setScene(QGraphicsScene* scene);
     void showCapture(bool isVisible);
     QVBoxLayout *getVideoWidgetContainer();
+    void updateSliderLabels(const QString& time, const QString& duration);
 
 private:
     Ui::FormPmCaseReview *ui;

@@ -177,6 +177,13 @@ QVBoxLayout *DisplayManager::getVideoWidgetContainer()
     return m_pmCaseReview->getVideoWidgetContainer();
 }
 
+void DisplayManager::updateSliderLabels(const QString &time, const QString &duration)
+{
+    if(m_isNonPrimaryMonitorPresent && m_pmCaseReview){
+        m_pmCaseReview->updateSliderLabels(time,duration);
+    }
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();
