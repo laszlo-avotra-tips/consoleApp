@@ -127,7 +127,7 @@ border-radius: 15px;
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButtonLogo_2">
+    <widget class="QPushButton" name="pushButtonLogo">
      <property name="geometry">
       <rect>
        <x>27</x>
@@ -151,7 +151,7 @@ border-radius: 15px;
      </property>
     </widget>
     <zorder>labelCaseReview_2</zorder>
-    <zorder>pushButtonLogo_2</zorder>
+    <zorder>pushButtonLogo</zorder>
     <zorder>captureScene</zorder>
    </widget>
    <widget class="QWidget" name="page_2">
@@ -172,29 +172,6 @@ border-radius: 15px;
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButtonLogo">
-     <property name="geometry">
-      <rect>
-       <x>27</x>
-       <y>34</y>
-       <width>192</width>
-       <height>48</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../octConsole.qrc">
-       <normaloff>:/octConsole/captureLogo.png</normaloff>:/octConsole/captureLogo.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>192</width>
-       <height>48</height>
-      </size>
      </property>
     </widget>
     <widget class="QFrame" name="framePlayer">
@@ -341,7 +318,6 @@ border-radius: 15px;
     </widget>
     <zorder>framePlayer</zorder>
     <zorder>labelCaseReview</zorder>
-    <zorder>pushButtonLogo</zorder>
     <zorder>labelDuration</zorder>
     <zorder>horizontalSlider</zorder>
     <zorder>labelTime</zorder>

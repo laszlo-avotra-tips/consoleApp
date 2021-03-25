@@ -26,15 +26,22 @@ void FormPmCaseReview::showCapture(bool isVisible)
 {
     LOG1(isVisible);
     if(isVisible){
-        ui->stackedWidget->setCurrentIndex(0);
-        ui->captureScene->show();
-        ui->pushButtonLogo->hide();
-        ui->labelCaseReview->move(960,80);
+        if(ui->stackedWidget->currentIndex()){
+            ui->stackedWidget->setCurrentIndex(0);
+            LOG2(isVisible, ui->stackedWidget->currentIndex());
+        }
+//        ui->captureScene->show();
+//        ui->pushButtonLogo->hide();
+//        ui->labelCaseReview->move(960,80);
     } else {
         ui->stackedWidget->setCurrentIndex(1);
-        ui->captureScene->hide();
-        ui->pushButtonLogo->show();
-        ui->labelCaseReview->move(1100,34);
+        if(!ui->stackedWidget->currentIndex()){
+            ui->stackedWidget->setCurrentIndex(1);
+            LOG2(isVisible, ui->stackedWidget->currentIndex());
+        }
+//        ui->captureScene->hide();
+//        ui->pushButtonLogo->show();
+//        ui->labelCaseReview->move(1100,34);
     }
 }
 
