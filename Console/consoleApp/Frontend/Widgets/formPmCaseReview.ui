@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>1080</height>
+    <height>1024</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>1280</width>
-    <height>1080</height>
+    <height>1024</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>1280</width>
-    <height>1080</height>
+    <height>1024</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -97,7 +97,7 @@ border-radius: 40px;
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>1080</height>
+     <height>1024</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -113,7 +113,7 @@ border-radius: 40px;
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>900</height>
+     <height>1024</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -125,13 +125,13 @@ border-radius: 40px;
    <property name="minimumSize">
     <size>
      <width>1280</width>
-     <height>900</height>
+     <height>1024</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>1280</width>
-     <height>900</height>
+     <height>1024</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -157,7 +157,7 @@ border-radius: 40px;
      <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>24</number>
+     <number>0</number>
     </property>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -174,6 +174,10 @@ border-radius: 40px;
     </item>
    </layout>
   </widget>
+  <zorder>pushButtonLogo</zorder>
+  <zorder>captureScene</zorder>
+  <zorder>framePlayer</zorder>
+  <zorder>labelCaseReview</zorder>
  </widget>
  <resources>
   <include location="../../octConsole.qrc"/>
