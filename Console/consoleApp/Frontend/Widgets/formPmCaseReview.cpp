@@ -42,3 +42,9 @@ QVBoxLayout *FormPmCaseReview::getVideoWidgetContainer()
 {
     return ui->verticalLayout;
 }
+
+void FormPmCaseReview::updateSliderLabels(const QString &time, const QString &duration)
+{
+    ui->labelTime->setText(time);
+    ui->labelDuration->setText(duration);
+}

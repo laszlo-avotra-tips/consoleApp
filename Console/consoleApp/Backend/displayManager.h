@@ -51,6 +51,7 @@ public:
     void setScene(QGraphicsScene*);
     void showCapture(bool isVisible);
     QVBoxLayout* getVideoWidgetContainer();
+    void updateSliderLabels(const QString &time, const QString &duration);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);
