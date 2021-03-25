@@ -177,6 +177,27 @@ QVBoxLayout *DisplayManager::getVideoWidgetContainer()
     return m_pmCaseReview->getVideoWidgetContainer();
 }
 
+void DisplayManager::updateSliderLabels(const QString &time, const QString &duration)
+{
+    if(m_isNonPrimaryMonitorPresent && m_pmCaseReview){
+        m_pmCaseReview->updateSliderLabels(time,duration);
+    }
+}
+
+void DisplayManager::setSliderPosition(quint64 position)
+{
+    if(m_isNonPrimaryMonitorPresent && m_pmCaseReview){
+        m_pmCaseReview->setSliderPosition(position);
+    }
+}
+
+void DisplayManager::setSliderRange(quint64 range)
+{
+    if(m_isNonPrimaryMonitorPresent && m_pmCaseReview){
+        m_pmCaseReview->setSliderRange(range);
+    }
+}
+
 DisplayManager::DisplayManager(QObject *parent) : QObject(parent)
 {
     m_eventFileWatcher = std::make_unique< QFileSystemWatcher>();

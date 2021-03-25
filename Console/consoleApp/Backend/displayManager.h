@@ -51,6 +51,9 @@ public:
     void setScene(QGraphicsScene*);
     void showCapture(bool isVisible);
     QVBoxLayout* getVideoWidgetContainer();
+    void updateSliderLabels(const QString &time, const QString &duration);
+    void setSliderPosition(quint64 position);
+    void setSliderRange(quint64 range);
 
 signals:
     void nonPrimaryMonitorIsPresent(bool isPresent);

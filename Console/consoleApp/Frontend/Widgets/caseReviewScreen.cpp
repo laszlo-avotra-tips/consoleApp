@@ -107,7 +107,7 @@ void CaseReviewScreen::initPlayer()
 
     m_player = new VideoPlayer(this);
     m_player->setVideoWidgetContainer(ui->verticalLayout);
-//    m_player->setVideoWidgetContainer(DisplayManager::instance()->getVideoWidgetContainer());
+    m_player->setPmVideoWidgetContainer(DisplayManager::instance()->getVideoWidgetContainer());
     m_player->init();
 
     auto* slider = ui->horizontalSlider;
@@ -263,9 +263,10 @@ void CaseReviewScreen::on_pushButtonBack_clicked()
 
 void CaseReviewScreen::setSliderPosition(quint64 position)
 {
-    m_position = position;
+     m_position = position;
      ui->horizontalSlider->setValue(position);
      updateSliderLabels();
+     DisplayManager::instance()->setSliderPosition(position);
 }
 
 void CaseReviewScreen::setSliderRange(quint64 range)
@@ -273,6 +274,7 @@ void CaseReviewScreen::setSliderRange(quint64 range)
     m_duration = range;
     ui->horizontalSlider->setRange(0, range);
     updateSliderLabels();
+    DisplayManager::instance()->setSliderRange(range);
 }
 
 void CaseReviewScreen::updateCaseInfo()
@@ -306,6 +308,8 @@ void CaseReviewScreen::updateSliderLabels()
 
     const QString& time = QString("%1:%2").arg(timeMinutes,2,10,QLatin1Char('0')).arg(timeSeconds,2,10,QLatin1Char('0'));
     ui->labelTime->setText(time);
+
+    DisplayManager::instance()->updateSliderLabels(time,duration);
 
     ui->pushButtonPlay->setChecked(m_player->isPlaying());
 }

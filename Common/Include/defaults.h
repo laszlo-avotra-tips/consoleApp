@@ -27,8 +27,6 @@ const int SectorHeight_px = SECTOR_HEIGHT_PX;
 #define USE_NEW_SLED_SUPPORT_BOARD 1
 #define LASER_SCAN_DIVIDER 0    // Set scan rate to 100/(divider+1 ) kHz
 
-const int AuxScreenWidth = 1920;
-const int AuxScreenHeight = 1080;
 const int ControlScreenWidth = 3240;
 const int ControlScreenHeight = 2160;
 
@@ -56,10 +54,6 @@ const int MinNumberMonitors = 2;
 
 const int TechScreenWidth  = 3240;
 const int TechScreenHeight = 2160;
-const int PhysicianScreenWidth  = 1920; // height of the monitor in portrait mode
-const int PhysicianScreenHeight = 1080;
-const int AuxScreenWidthMin  = 1024;
-const int AuxScreenHeightMin = 720;
 
 const int HideMouseDelay_ms = 3000;
 
