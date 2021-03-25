@@ -1,5 +1,6 @@
 #include "formPmCaseReview.h"
 #include "ui_formPmCaseReview.h"
+#include <logger.h>
 
 #include <QGraphicsScene>
 #include <QLabel>
@@ -23,11 +24,14 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 
 void FormPmCaseReview::showCapture(bool isVisible)
 {
+    LOG1(isVisible);
     if(isVisible){
+        ui->framePlayer->hide();
         ui->captureScene->show();
         ui->pushButtonLogo->hide();
         ui->labelCaseReview->move(960,80);
     } else {
+        ui->framePlayer->show();
         ui->captureScene->hide();
         ui->pushButtonLogo->show();
         ui->labelCaseReview->move(1100,34);

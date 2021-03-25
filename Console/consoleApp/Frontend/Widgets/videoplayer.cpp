@@ -73,7 +73,7 @@ void VideoPlayer::init()
     m_videoWidget->setFixedSize(1500,1500);
 
     m_pmVideoWidget = new QVideoWidget();
-    m_pmVideoWidget->setFixedSize(900,900);
+    m_pmVideoWidget->setFixedSize(980,980);
 
     m_errorLabel = new QLabel(this);
     m_errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
