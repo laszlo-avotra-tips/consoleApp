@@ -609,8 +609,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             if(w && h){
                 box->setWidth( w );
                 box->setHeight( h );
-                box->setX(1024 - w - 9);
-                box->setY(1024 - h - 9);
+                box->setX(1024 - w - 29);
+                box->setY(1024 - h - 29);
                 painter->drawRect( *box );
             }
         }
