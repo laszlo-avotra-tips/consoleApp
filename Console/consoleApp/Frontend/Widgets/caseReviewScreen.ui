@@ -492,11 +492,17 @@ border: 3px solid #F5C400;
   <widget class="QGraphicsView" name="captureScene">
    <property name="geometry">
     <rect>
-     <x>1306</x>
-     <y>345</y>
-     <width>1610</width>
-     <height>1610</height>
+     <x>1301</x>
+     <y>340</y>
+     <width>1620</width>
+     <height>1620</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonRightArrow">
