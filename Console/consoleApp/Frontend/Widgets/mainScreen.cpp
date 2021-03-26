@@ -64,9 +64,9 @@ MainScreen::MainScreen(QWidget *parent)
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
     connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
 
-    const double scaleUp = 2.1; //lcv zomFactor
+    const double imageScaleFactor = 2.21; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
-    ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
+    ui->graphicsView->setTransform( QTransform::fromScale( imageScaleFactor * matrix.m11(), imageScaleFactor * matrix.m22() ) );
 
     m_scene = new liveScene( this );
     m_graphicsView->setScene(m_scene);

@@ -15,18 +15,19 @@
 #include <qmath.h>
 #include "logger.h"
 
+namespace{
 const int PointTolerance = 20;
-
 const int MeasurementPrecision = 2;
 const double rounding{0.005};
-
+const double imageScaleFactor{2.21};
+}
 /*
  * Constructor
  */
 AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     : QGraphicsPixmapItem()
 {
-    const double imageScaleFactor{2.11};
+
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
@@ -590,8 +591,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             if(st.size().width() > 100){
                 const int xMargin = FontSize;
                 const int yMargin = 2*FontSize;
-                m_width = int(st.size().width() + ( 2.11 * xMargin ));
-                m_height = int(st.size().height() + ( 2.11 * yMargin ) );
+                m_width = int(st.size().width() + ( imageScaleFactor * xMargin ));
+                m_height = int(st.size().height() + ( imageScaleFactor * yMargin ) );
                 painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
             } else {
                 const int FontSize2 = 12;
@@ -602,8 +603,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
                 const int yMargin = FontSize2;
                 painter->drawText( box->left() + xMargin, box->top() + font2.pointSize() + yMargin, str );
             }
-            int w = m_width; //149; //int(st.size().width() + ( 2.11 * xMargin ));
-            int h = m_height; //52; //int(st.size().height() + ( 2.11 * yMargin ) );
+            int w = m_width; //149; //int(st.size().width() + ( imageScaleFactor * xMargin ));
+            int h = m_height; //52; //int(st.size().height() + ( imageScaleFactor * yMargin ) );
 
             if(w && h){
                 box->setWidth( w );
