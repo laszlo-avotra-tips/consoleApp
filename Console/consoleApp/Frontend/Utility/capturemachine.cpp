@@ -261,8 +261,8 @@ void captureMachine::addCatheterName(QPainter &painter, bool isClip)
     LOG2(rect0.width(), rect0.height())
     LOG2(rect1.width(), rect1.height())
 
-    int catheterX0{ int(SectorWidth_px * imageScaleFactor - rect0.width()) - 20 };
-    int catheterX1{ int(SectorWidth_px * imageScaleFactor - rect1.width()) - 20 };
+    int catheterX0{ int(SectorWidth_px * imageScaleFactor - rect0.width()) - 120 };
+    int catheterX1{ int(SectorWidth_px * imageScaleFactor - rect1.width()) - 120 };
     int catheterY0{60};
     int catheterY1{120};
 
@@ -270,8 +270,8 @@ void captureMachine::addCatheterName(QPainter &painter, bool isClip)
 
     if(names.count() >= 2){
         if(isClip){
-            catheterX0 = int(SectorWidth_px - rect0.width() ) - 10;
-            catheterX1 = int(SectorWidth_px - rect1.width() ) - 10;
+            catheterX0 = int(SectorWidth_px - rect0.width() ) - 110;
+            catheterX1 = int(SectorWidth_px - rect1.width() ) - 110;
             catheterY0 = 30;
             catheterY1 = 60;
         }
