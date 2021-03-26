@@ -25,7 +25,7 @@
 #include "Utility/octFrameRecorder.h"
 
 namespace{
-const double imageScaleFactor{2.11};
+const double imageScaleFactor{2.21};
 }
 /*
  * constructor
