@@ -17,7 +17,7 @@
 
 const int PointTolerance = 20;
 
-const int MeasurementPrecision = 1;
+const int MeasurementPrecision = 2;
 
 /*
  * Constructor
