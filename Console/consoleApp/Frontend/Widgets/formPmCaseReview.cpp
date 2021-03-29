@@ -34,11 +34,11 @@ void FormPmCaseReview::showCapture(bool isVisible)
         ui->framePlayer->hide();
         ui->captureScene->show();
         ui->pushButtonLogo->hide();
-        ui->labelCaseReview->move(960,80);
+        ui->labelCaseReview->move(960,85);
         ui->labelDuration->hide();
         ui->labelTime->hide();
         ui->horizontalSlider->hide();
-        ui->labelCaseReview->setStyleSheet("font: 18pt Helvetica Neue; color: rgb(245,196,0);");
+        ui->labelCaseReview->setStyleSheet("font: 17pt Helvetica Neue; color: rgb(245,196,0);");
     } else {
         ui->framePlayer->show();
         ui->captureScene->hide();
