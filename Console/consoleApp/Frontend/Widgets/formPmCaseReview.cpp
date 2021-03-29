@@ -10,6 +10,10 @@ FormPmCaseReview::FormPmCaseReview(QWidget *parent) :
     ui(new Ui::FormPmCaseReview)
 {
     ui->setupUi(this);
+    ui->labelCaseReview->hide();
+    ui->labelDuration->hide();
+    ui->labelTime->hide();
+    ui->horizontalSlider->hide();
 }
 
 FormPmCaseReview::~FormPmCaseReview()
@@ -24,6 +28,7 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 
 void FormPmCaseReview::showCapture(bool isVisible)
 {
+    ui->labelCaseReview->show();
     LOG1(isVisible);
     if(isVisible){
         ui->framePlayer->hide();
