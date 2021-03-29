@@ -21,6 +21,7 @@
 #include "Utility/userSettings.h"
 #include "Utility/clipListModel.h"
 #include "displayManager.h"
+#include "defaults.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -64,9 +65,8 @@ MainScreen::MainScreen(QWidget *parent)
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
     connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
 
-    const double imageScaleFactor = 2.21; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
-    ui->graphicsView->setTransform( QTransform::fromScale( imageScaleFactor * matrix.m11(), imageScaleFactor * matrix.m22() ) );
+    ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
 
     m_scene = new liveScene( this );
     m_graphicsView->setScene(m_scene);

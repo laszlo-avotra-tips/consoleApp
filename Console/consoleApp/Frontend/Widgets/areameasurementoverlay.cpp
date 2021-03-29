@@ -19,7 +19,6 @@ namespace{
 const int PointTolerance = 20;
 const int MeasurementPrecision = 2;
 const double rounding{0.005};
-const double imageScaleFactor{2.21};
 }
 /*
  * Constructor
@@ -31,8 +30,8 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
     overlayPixmap = new QPixmap( SectorWidth_px, SectorHeight_px  );
 
     // Position the box near the bottom right corner with space for text.
-    int boxX = overlayPixmap->width() - int(380/imageScaleFactor);
-    int boxY = overlayPixmap->height() - int(280/imageScaleFactor);
+    int boxX = overlayPixmap->width() - int(380/IMAGE_SCALE_FACTOR);
+    int boxY = overlayPixmap->height() - int(280/IMAGE_SCALE_FACTOR);
 
     box = new QRect( boxX, boxY, 1, 1 );
     LOG2(boxX, boxY)
@@ -591,8 +590,8 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             if(st.size().width() > 100){
                 const int xMargin = FontSize;
                 const int yMargin = 2*FontSize;
-                m_width = int(st.size().width() + ( imageScaleFactor * xMargin ));
-                m_height = int(st.size().height() + ( imageScaleFactor * yMargin ) );
+                m_width = int(st.size().width() + ( IMAGE_SCALE_FACTOR * xMargin ));
+                m_height = int(st.size().height() + ( IMAGE_SCALE_FACTOR * yMargin ) );
                 painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
             } else {
                 const int FontSize2 = 12;

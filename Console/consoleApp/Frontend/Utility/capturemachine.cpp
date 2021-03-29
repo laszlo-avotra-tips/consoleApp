@@ -24,9 +24,6 @@
 #include "logger.h"
 #include "Utility/octFrameRecorder.h"
 
-namespace{
-const double imageScaleFactor{2.21};
-}
 /*
  * constructor
  */
@@ -261,8 +258,8 @@ void captureMachine::addCatheterName(QPainter &painter, bool isClip)
     LOG2(rect0.width(), rect0.height())
     LOG2(rect1.width(), rect1.height())
 
-    int catheterX0{ int(SectorWidth_px * imageScaleFactor - rect0.width()) - 120 };
-    int catheterX1{ int(SectorWidth_px * imageScaleFactor - rect1.width()) - 120 };
+    int catheterX0{ int(SectorWidth_px * IMAGE_SCALE_FACTOR - rect0.width()) - 120 };
+    int catheterX1{ int(SectorWidth_px * IMAGE_SCALE_FACTOR - rect1.width()) - 120 };
     int catheterY0{60};
     int catheterY1{120};
 
@@ -288,7 +285,7 @@ void captureMachine::addLogo(QPainter &painter, bool isClip)
     int scale{360};
 
     if(isClip){
-        scale = double(scale) / imageScaleFactor;
+        scale = double(scale) / IMAGE_SCALE_FACTOR;
     }
     const QImage LogoImage = logoImage.scaledToWidth(scale);
     painter.drawImage( logoX0, logoY, LogoImage );

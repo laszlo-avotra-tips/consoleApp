@@ -29,6 +29,8 @@ const int SectorHeight_px = SECTOR_HEIGHT_PX;
 
 const int ControlScreenWidth = 3240;
 const int ControlScreenHeight = 2160;
+const double IMAGE_SCALE_FACTOR{2.2};
+
 
 // file defines
 const int B_per_KB = 1024;
