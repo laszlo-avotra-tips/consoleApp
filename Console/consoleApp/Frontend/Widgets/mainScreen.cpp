@@ -597,7 +597,7 @@ void MainScreen::on_pushButtonCapture_released()
 
     onCaptureImage();
 
-    QString yellowBorder("border:5px solid rgb(245,196,0);");
+    QString yellowBorder("border:2px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
     DisplayManager::instance()->setBorderForRecording(yellowBorder);
 
