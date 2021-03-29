@@ -34,7 +34,7 @@ void FormPmCaseReview::showCapture(bool isVisible)
         ui->framePlayer->hide();
         ui->captureScene->show();
         ui->pushButtonLogo->hide();
-        ui->labelCaseReview->move(960,85);
+        ui->labelCaseReview->move(950,80);
         ui->labelDuration->hide();
         ui->labelTime->hide();
         ui->horizontalSlider->hide();
