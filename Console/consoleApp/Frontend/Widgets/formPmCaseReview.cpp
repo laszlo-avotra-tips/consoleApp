@@ -38,7 +38,7 @@ void FormPmCaseReview::showCapture(bool isVisible)
         ui->labelDuration->hide();
         ui->labelTime->hide();
         ui->horizontalSlider->hide();
-        ui->labelCaseReview->setStyleSheet("font: 22pt Helvetica Neue");
+        ui->labelCaseReview->setStyleSheet("font: 18pt Helvetica Neue; color: rgb(245,196,0);");
     } else {
         ui->framePlayer->show();
         ui->captureScene->hide();
@@ -48,7 +48,7 @@ void FormPmCaseReview::showCapture(bool isVisible)
         ui->labelTime->show();
         ui->horizontalSlider->show();
         //font: 22pt "Helvetica Neue";
-        ui->labelCaseReview->setStyleSheet("font: 28pt Helvetica Neue");
+        ui->labelCaseReview->setStyleSheet("font: 18pt Helvetica Neue; color: rgb(245,196,0);");
     }
 }
 
