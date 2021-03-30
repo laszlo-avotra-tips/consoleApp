@@ -27,7 +27,6 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     initClips();
 
     showPlayer(false);
-    showCapture(false);
     showClip(false);
 
     updateCaptureLabel();
@@ -204,7 +203,7 @@ void CaseReviewScreen::showCapture(bool isVisible)
     capList.setIsSelected(isVisible);
     if(isVisible){
         ui->captureScene->show();
-        QString yellowBorder("border:5px solid rgb(245,196,0);");
+        QString yellowBorder("border:2px solid rgb(245,196,0);");
         ui->captureScene->setStyleSheet(yellowBorder);
     } else {
         ui->captureScene->hide();
@@ -235,7 +234,6 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
         updateCaseInfo();
         updateCaptureLabel();
 
-        showCapture(false);
         showClip(false);
         showPlayer(false);
 

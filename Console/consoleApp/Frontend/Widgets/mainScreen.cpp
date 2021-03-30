@@ -21,6 +21,7 @@
 #include "Utility/userSettings.h"
 #include "Utility/clipListModel.h"
 #include "displayManager.h"
+#include "defaults.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -64,9 +65,8 @@ MainScreen::MainScreen(QWidget *parent)
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
     connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
 
-    const double scaleUp = 2.1; //lcv zomFactor
     QMatrix matrix = ui->graphicsView->matrix();
-    ui->graphicsView->setTransform( QTransform::fromScale( scaleUp * matrix.m11(), scaleUp * matrix.m22() ) );
+    ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
 
     m_scene = new liveScene( this );
     m_graphicsView->setScene(m_scene);
@@ -597,7 +597,7 @@ void MainScreen::on_pushButtonCapture_released()
 
     onCaptureImage();
 
-    QString yellowBorder("border:5px solid rgb(245,196,0);");
+    QString yellowBorder("border:2px solid rgb(245,196,0);");
     ui->graphicsView->setStyleSheet(yellowBorder);
     DisplayManager::instance()->setBorderForRecording(yellowBorder);
 

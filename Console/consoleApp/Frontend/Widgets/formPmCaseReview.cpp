@@ -10,6 +10,10 @@ FormPmCaseReview::FormPmCaseReview(QWidget *parent) :
     ui(new Ui::FormPmCaseReview)
 {
     ui->setupUi(this);
+    ui->labelCaseReview->hide();
+    ui->labelDuration->hide();
+    ui->labelTime->hide();
+    ui->horizontalSlider->hide();
 }
 
 FormPmCaseReview::~FormPmCaseReview()
@@ -24,24 +28,27 @@ void FormPmCaseReview::setScene(QGraphicsScene* scene)
 
 void FormPmCaseReview::showCapture(bool isVisible)
 {
+    ui->labelCaseReview->show();
     LOG1(isVisible);
     if(isVisible){
         ui->framePlayer->hide();
         ui->captureScene->show();
         ui->pushButtonLogo->hide();
-        ui->labelCaseReview->move(960,80);
+        ui->labelCaseReview->move(950,80);
         ui->labelDuration->hide();
         ui->labelTime->hide();
         ui->horizontalSlider->hide();
+        ui->labelCaseReview->setStyleSheet("font: 17pt Helvetica Neue; color: rgb(245,196,0);");
     } else {
         ui->framePlayer->show();
         ui->captureScene->hide();
         ui->pushButtonLogo->show();
-//        ui->labelCaseReview->move(1100,34);
         ui->labelCaseReview->move(910,75);
         ui->labelDuration->show();
         ui->labelTime->show();
         ui->horizontalSlider->show();
+        //font: 22pt "Helvetica Neue";
+        ui->labelCaseReview->setStyleSheet("font: 18pt Helvetica Neue; color: rgb(245,196,0);");
     }
 }
 
