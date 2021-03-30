@@ -231,8 +231,6 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     QWidget::showEvent(e);
     if(e->type() == QEvent::Show)
     {
-        m_selectedCaptureItem = nullptr;
-        m_selectedClipItem = nullptr;
         updateCaseInfo();
         updateCaptureLabel();
 
