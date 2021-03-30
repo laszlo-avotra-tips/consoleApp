@@ -27,7 +27,6 @@ CaseReviewScreen::CaseReviewScreen(QWidget *parent) :
     initClips();
 
     showPlayer(false);
-//    showCapture(false);
     showClip(false);
 
     updateCaptureLabel();
@@ -232,10 +231,11 @@ void CaseReviewScreen::showEvent(QShowEvent * e)
     QWidget::showEvent(e);
     if(e->type() == QEvent::Show)
     {
+        m_selectedCaptureItem = nullptr;
+        m_selectedClipItem = nullptr;
         updateCaseInfo();
         updateCaptureLabel();
 
-//        showCapture(false);
         showClip(false);
         showPlayer(false);
 
