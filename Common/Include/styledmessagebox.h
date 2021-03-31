@@ -23,6 +23,22 @@ class styledMessageBox : public QDialog
     Q_OBJECT
 
 public:
+    static styledMessageBox* instance();
+    static void warning( QString message );
+    static void info( QString message );
+    static void critical( QString message );
+
+signals:
+    void userAcknowledged();
+
+public slots:
+    void onShowMessageBox(const QString& msg, const QString& module, const QString& actionString);
+    void onHideMessageBox();
+
+private slots:
+    void on_buttonBox_accepted();
+
+private:
     explicit styledMessageBox(QWidget *parent = nullptr, QString msg = QString());
     ~styledMessageBox();
     void setHasCancel( bool has, bool cancelIsDefault = false, bool hasOk = true );
@@ -31,11 +47,8 @@ public:
     void setText( QString msg );
     QString text();
 
-    static void warning( QString message );
-    static void info( QString message );
-    static void critical( QString message );
-
 private:
+    static styledMessageBox* m_instance;
     Ui::styledMessageBox *ui;
     backgroundMask *mask;
 };

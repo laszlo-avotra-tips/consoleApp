@@ -9,6 +9,8 @@
 #include <QTime>
 #include <QTimer>
 #include <QElapsedTimer>
+#include <Backend/endcasediagnostics.h>
+#include <styledmessagebox.h>
 
 class liveScene;
 class OpaqueScreen;
@@ -104,6 +106,7 @@ private:
     void updateDeviceSettings();
     void showYellowBorderForRecordingOn(bool recordingIsOn);
     void initRecording();
+    void hookupEndCaseDiagnostics();
 
 private:
     Ui::MainScreen *ui;
@@ -137,5 +140,6 @@ private:
     int m_imageDecimation{0};
     bool m_disableRendering{false};
 
+    OctSystemDiagnostics* diagnostics = nullptr;
 };
 #endif // MAINSCREEN_H

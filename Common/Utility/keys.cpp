@@ -4,7 +4,7 @@
  * Interface for reading, writing, checking cryptographic hash values
  * of files related to the software and cases.  The stored hash values
  * allow the software to determine if files or the stored values were
- * tampered with outside of the software's control. 
+ * tampered with outside of the software's control.
  *
  * Author: Dennis W. Jackson
  *
@@ -17,26 +17,22 @@
 #include "logger.h"
 #include <QCryptographicHash>
 #include <QStringList>
-//#include <QtConcurrentMap>
+#include <QtConcurrent/QtConcurrent>
 #include <QList>
 #include <QMutex>
 #include <QMutexLocker>
 #include "logger.h"
 #include "util.h"
 
-KeyBundle_t *checkSingleKey( KeyBundle_t *key );
-
-namespace {
 QMutex fileCheckMutex;
-}
 
 /*
  * Constructor
  */
 Keys::Keys( QString sourceFilename, Access_T openMode ) :
-        hFile( nullptr ),
-        hFileInfo( nullptr ),
-        fileCheckWatcher( nullptr ),
+        hFile( NULL ),
+        hFileInfo( NULL ),
+        fileCheckWatcher( NULL ),
         isValidFiles( false ),
         isValueCalculated( false )
 {
@@ -50,7 +46,7 @@ Keys::Keys( QString sourceFilename, Access_T openMode ) :
 Keys::~Keys( void )
 {
 
-    if (fileCheckWatcher ) {
+    if (fileCheckWatcher != NULL) {
         fileCheckWatcher->cancel();
     }
 
@@ -61,16 +57,16 @@ Keys::~Keys( void )
     }
 
     // Free up handles
-    if( hFileInfo )
+    if( hFileInfo != NULL )
     {
         delete hFileInfo;
-        hFileInfo = nullptr;
+        hFileInfo = NULL;
     }
 
-    if( hFile )
+    if( hFile != NULL )
     {
         delete hFile;
-        hFile = nullptr;
+        hFile = NULL;
     }
 }
 
@@ -80,19 +76,24 @@ Keys::~Keys( void )
  * Initialize the object depending on the operating mode. The mode
  * is set in the constructor.
  */
-void Keys::init( void )
+bool Keys::init( QString inputDirPath )
 {
     status = KeyOk;
     errorHandler &err = errorHandler::Instance();
 
     getFileHandles( keyFilename );
 
-    if(  mode == ReadOnly )
+    if (inputDirPath.length() > 0 && inputDirPath[inputDirPath.length() - 1] != '/') {
+        // Append a slash character
+        inputDirPath += '/';
+    }
+
+    if(mode == ReadOnly)
     {
         if ( !hFile->open( QIODevice::ReadOnly | QIODevice::Text ) )
         {
             qDebug() << "ERROR: Could not open " << hFile->fileName() << " read-only";
-            LOG( WARNING, QString( "ERROR: Could not open %1 read-only" ).arg( hFile->fileName() ) )
+            LOG( WARNING, QString( "ERROR: Could not open %1 read-only" ).arg( hFile->fileName() ) );
             err.warn(QString( tr( "Could not open %1 read-only." ) ).arg( hFile->fileName() ) );
             status = KeyFileError;
         }
@@ -101,21 +102,25 @@ void Keys::init( void )
             if( readKeys() )
             {
                 // only validate the keys if the key file was valid
-                isValidFiles = checkKeysBlocking();
+                isValidFiles = checkKeysBlocking(inputDirPath);
+                if (!isValidFiles) {
+                    status = KeyCryptoError;
+                }
             }
             else
             {
-                LOG( WARNING, QString( "Key missing: %1 has no key data" ).arg( hFile->fileName() ) )
+                LOG( WARNING, QString( "Key missing: %1 has no key data" ).arg( hFile->fileName() ) );
+                status = KeyFileError;
             }
         }
     }
     else if ( mode == WriteOnly )
     {
         // Create or Open the key file for this session
-        if( !hFile->open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text ) )
+        if( !hFile->open( QIODevice::WriteOnly | QIODevice::Text ) )
         {
             qDebug() << "ERROR: Could not open " << hFile->fileName() << " for writing.";
-            LOG( WARNING, QString( "ERROR: Could not open %1 for writing" ).arg( hFile->fileName() ) )
+            LOG( WARNING, QString( "ERROR: Could not open %1 for writing" ).arg( hFile->fileName() ) );
             err.warn( QString( tr( "Could not open %1 for writing." ) ).arg( hFile->fileName() ) );
 
             status = KeyFileError;
@@ -131,7 +136,7 @@ void Keys::init( void )
         if ( !hFile->open( QIODevice::ReadWrite | QIODevice::Text ) )
         {
             qDebug() << "ERROR: Could not open " << hFile->fileName() << " read/write: " << hFile->errorString();
-            LOG( WARNING, QString( "ERROR: Could not open %1 read/write: %2" ).arg( hFile->fileName() ).arg( hFile->errorString() ) )
+            LOG( WARNING, QString( "ERROR: Could not open %1 read/write: %2" ).arg( hFile->fileName() ).arg( hFile->errorString() ) );
             err.warn( QString( tr( "Could not open %1 for read/write." ) ).arg( hFile->fileName() ) );
             status = KeyFileError;
         }
@@ -139,15 +144,20 @@ void Keys::init( void )
         {
             if( !readKeys() )
             {
-                LOG( WARNING, QString( "ERROR: Key file %1 has errors" ).arg( hFile->fileName() ) )
+                LOG( WARNING, QString( "ERROR: Key file %1 has errors" ).arg( hFile->fileName() ) );
                 err.warn( QString( "ERROR: Key file %1 has errors" ).arg( hFile->fileName() ) );
+                status = KeyFileError;
             }
         }
     }
     else
     {
         err.warn( tr( "Could not initialize the Key system with unknown mode." ) );
+        status = KeyFileError;
     }
+
+    bool result = (status == KeyOk) ? true : false;
+    return result;
 }
 
 /*
@@ -218,7 +228,7 @@ KeyBundle_t *checkSingleKey( KeyBundle_t *key )
         qDebug() << "ERROR: Key mismatch! " << key->file << "\n"
                 << "    Loaded:" << key->key << "\n"
                 << "  Computed:" << testValue;
-        LOG( WARNING, QString( "ERROR: Key mismatch. %1" ).arg( key->file ) )
+        LOG( WARNING, QString( "ERROR: Key mismatch. %1" ).arg( key->file ) );
         key->valid = false;
     } else {
         qDebug() << "INFO: Key match " << key->file << "\n"
@@ -241,7 +251,7 @@ void Keys::handleFileCheckDone( void )
     int itemCounter = keyHash.count();
 
     for ( int i = 0; i < itemCounter; i++) {
-        if ( !( dynamic_cast<KeyBundle_t *>(fileCheckWatcher->resultAt( i )) )->valid ) {
+        if ( !( (KeyBundle_t *)fileCheckWatcher->resultAt( i ) )->valid ) {
             status = KeyCryptoError;
             allValid = false;
         }
@@ -249,12 +259,12 @@ void Keys::handleFileCheckDone( void )
     emit fileCheckDone( allValid );
 
     delete fileCheckWatcher;
-    fileCheckWatcher = nullptr;
+    fileCheckWatcher = NULL;
     qDebug() << "File check complete, result is " << allValid;
     if ( allValid ) {
-        LOG( INFO, QString( "File check complete, result is %1" ).arg( allValid ) )
+        LOG( INFO, QString( "File check complete, result is %1" ).arg( allValid ) );
     } else {
-        LOG( WARNING, QString( "File check complete, result is %1" ).arg( allValid ) )
+        LOG( WARNING, QString( "File check complete, result is %1" ).arg( allValid ) );
     }
 }
 
@@ -266,9 +276,9 @@ void Keys::handleFileCheckDone( void )
  *
  * This call blocks until all keys have been checked.
  */
-bool Keys::checkKeysBlocking( void )
+bool Keys::checkKeysBlocking(QString inputDirPath)
 {
-    bool retStatus = true;
+    bool status = true;
     errorHandler & err = errorHandler::Instance();
 
     QHashIterator<QString, QByteArray> i( keyHash );
@@ -277,7 +287,7 @@ bool Keys::checkKeysBlocking( void )
     {
         i.next();
 
-        QString testFile = hFileInfo->absolutePath() + "/" + i.key();
+        QString testFile = inputDirPath + i.key();
         QByteArray testValue = SawFile::computeHash( testFile );
 
         if( i.value() != testValue )
@@ -289,12 +299,12 @@ bool Keys::checkKeysBlocking( void )
             qDebug() << "ERROR: Key mismatch! " << testFile << "\n"
                     << "    Loaded:" << i.value() << "\n"
                     << "  Computed:" << testValue;
-
-            retStatus = false;
+            LOG( ERROR, QString( "Integrity check failed for %1" ).arg( testFile ) );
+            status = false;
         }
     }
 
-    return retStatus;
+    return status;
 }
 /*
  * checkKeysBackground
@@ -305,28 +315,28 @@ bool Keys::checkKeysBlocking( void )
  */
 void Keys::checkKeysBackground( void )
 {
-return; //lcv
-//    QHashIterator<QString, QByteArray> i( keyHash );
-//    QList<KeyBundle_t *> keyList;
 
-//    while( i.hasNext() )
-//    {
-//        KeyBundle_t *keybundle = new KeyBundle_t;
-//        i.next();
-//        QString testFile = hFileInfo->absolutePath() + "/" + i.key();
-//        keybundle->file = testFile;
-//        QByteArray testValue = i.value();
-//        keybundle->key = testValue;
-//        keybundle->valid = false;
-//        keyList.append(keybundle);
-//    }
+    QHashIterator<QString, QByteArray> i( keyHash );
+    QList<KeyBundle_t *> keyList;
 
-//    fileCheckWatcher = new QFutureWatcher<KeyBundle_t *>(this);
-//    connect( fileCheckWatcher, SIGNAL( finished() ), this, SLOT( handleFileCheckDone() ) );
-//    connect( fileCheckWatcher, SIGNAL( progressRangeChanged( int, int ) ), this, SIGNAL( fileCheckProgressRange( int,int) ) );
-//    connect( fileCheckWatcher, SIGNAL( progressValueChanged( int ) ), this, SIGNAL( fileCheckProgressChanged( int ) ) );
+    while( i.hasNext() )
+    {
+        KeyBundle_t *keybundle = new KeyBundle_t;
+        i.next();
+        QString testFile = hFileInfo->absolutePath() + "/" + i.key();
+        keybundle->file = testFile;
+        QByteArray testValue = i.value();
+        keybundle->key = testValue;
+        keybundle->valid = false;
+        keyList.append(keybundle);
+    }
 
-//lcv    fileCheckWatcher->setFuture( QtConcurrent::mapped( keyList, checkSingleKey ) );
+    fileCheckWatcher = new QFutureWatcher<KeyBundle_t *>(this);
+    connect( fileCheckWatcher, SIGNAL( finished() ), this, SLOT( handleFileCheckDone() ) );
+    connect( fileCheckWatcher, SIGNAL( progressRangeChanged( int, int ) ), this, SIGNAL( fileCheckProgressRange( int,int) ) );
+    connect( fileCheckWatcher, SIGNAL( progressValueChanged( int ) ), this, SIGNAL( fileCheckProgressChanged( int ) ) );
+
+    fileCheckWatcher->setFuture( QtConcurrent::mapped( keyList, checkSingleKey ) );
 }
 
 /*
@@ -360,6 +370,30 @@ void Keys::addFile( QString filename )
 }
 
 /*
+ * addFile
+ *
+ * Add a file name to the internal hash
+ */
+void Keys::addFilePath( QString fullFilePathname, QString relativePathName)
+{
+    // Set up the thread to compute the value and add it to the file
+    FileItem_t fileToAdd;
+
+    fileToAdd.fileFullPath = fullFilePathname;
+    fileToAdd.fileNameOnly = relativePathName;
+
+    mutex.lock();
+    fileQ.enqueue( fileToAdd );
+    mutex.unlock();
+
+    if( !isRunning() )
+    {
+        // kick-off the thread
+        start();
+    }
+}
+
+/*
  * run
  *
  * Main process for the thread.  While the queue of files to add to the key list is
@@ -376,7 +410,7 @@ void Keys::run( void )
 
         QByteArray newValue  = SawFile::computeHash( f.fileFullPath );
 
-        textStream << newValue << "  " << f.fileNameOnly << endl;
+        textStream << newValue << "  " << f.fileNameOnly << Qt::endl;
     }
 }
 
@@ -421,7 +455,7 @@ void Keys::updateExistingKey( QString filename )
 #ifdef Q_WS_MACX
     textStream << endl; // Required to account for DOS/UNIX end-of-line confusion
 #endif
-    textStream << newKey << "  " << filename << endl;
+    textStream << newKey << "  " << filename << Qt::endl;
 }
 
 /*
@@ -444,7 +478,7 @@ void Keys::computeKeyValues( void )
 
         keyHash.insert( currFile, newValue );
     }
-    
+
     isValueCalculated = true;
 }
 
@@ -459,20 +493,20 @@ void Keys::getFileHandles( QString filename )
 
     // handle to get path/file information
     hFileInfo = new QFileInfo( filename );
-    if( !hFileInfo )
+    if( hFileInfo == NULL )
     {
-        qDebug() << "ERROR: Keys::hFileInfo (" << filename << ") is nullptr."; // TBD
-        LOG( WARNING, QString( "ERROR: Keys::hFileInfo %1 is nullptr. " ).arg( filename ) )
-        err.fail( QString( tr( "Keys::hFileInfo (%1) is nullptr. Key check failed." ) ).arg( filename ) );
+        qDebug() << "ERROR: Keys::hFileInfo (" << filename << ") is NULL."; // TBD
+        LOG( WARNING, QString( "ERROR: Keys::hFileInfo %1 is NULL. " ).arg( filename ) );
+        err.fail( QString( tr( "Keys::hFileInfo (%1) is NULL. Key check failed." ) ).arg( filename ) );
         status = KeyFileError;
     }
 
     // handle to access the contents of the file
     hFile = new QFile( filename );
-    if( !hFile )
+    if( hFile == NULL )
     {
-        LOG( WARNING, QString( "ERROR: Keys::hFile %1 is nullptr." ).arg( filename ) )
-        err.fail( QString( tr( "Keys::hFile (%1) is nullptr. Key check failed." ) ).arg( filename) );
+        LOG( WARNING, QString( "ERROR: Keys::hFile %1 is NULL." ).arg( filename ) );
+        err.fail( QString( tr( "Keys::hFile (%1) is NULL. Key check failed." ) ).arg( filename) );
         status = KeyFileError;
     }
 }
@@ -487,21 +521,21 @@ void Keys::getFileHandles( QString filename )
 bool Keys::containsRequiredFiles( QStringList list )
 {
     // default to OK
-    bool retStatus = true;
+    bool status = true;
 
     // Walk through the list of required files.  If any is not in the list,
     // log it and return false to the caller.
     for( int i = 0; i < list.count(); i++ )
     {
-        retStatus = keyHash.contains( list.at( i ) );
+        status = keyHash.contains( list.at( i ) );
 
         if( !status )
         {
             // Log with full path to the keys file
-            LOG( WARNING, QString( "Missing required file %1 in %2 " ).arg( list.at( i ) ).arg( hFileInfo->absoluteFilePath() ) )
+            LOG( WARNING, QString( "Missing required file %1 in %2 " ).arg( list.at( i ) ).arg( hFileInfo->absoluteFilePath() ) );
             break;
         }
     }
 
-    return retStatus;
+    return status;
 }

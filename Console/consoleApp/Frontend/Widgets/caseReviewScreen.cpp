@@ -4,7 +4,6 @@
 #include "Utility/widgetcontainer.h"
 #include "caseInformationModel.h"
 #include "logger.h"
-#include "sledsupport.h"
 #include "captureItemDelegate.h"
 #include "Utility/captureListModel.h"
 #include "clipItemDelegate.h"

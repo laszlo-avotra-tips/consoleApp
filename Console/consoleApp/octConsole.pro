@@ -11,6 +11,7 @@ QT += sql xml widgets
 QT += charts
 QT += serialport
 QT += multimedia multimediawidgets
+QT += concurrent
 
 
 CONFIG += c++latest

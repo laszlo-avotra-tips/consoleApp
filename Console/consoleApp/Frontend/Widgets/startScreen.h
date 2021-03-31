@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <Backend/startupdiagnostics.h>
+
+#include <styledmessagebox.h>
 
 class Backend;
 class QGestureEvent;
@@ -39,13 +42,16 @@ private slots:
 
 private:
     void showEvent(QShowEvent* se) override;
-//    void hideEvent(QHideEvent* he) override;
+    void hideEvent(QHideEvent* he) override;
+
+    void hookupStartUpDiagnostics();
 
     Ui::StartScreen *ui;
     Backend* m_backend{nullptr};
     bool m_isPressAndHold{false};
     QTimer m_timer;
     PreferencesDialog* m_preferencesDialog{nullptr};
+    OctSystemDiagnostics* diagnostics = nullptr;
 };
 
 #endif // STARTSCREEN_H
