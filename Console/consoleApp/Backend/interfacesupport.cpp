@@ -660,7 +660,7 @@ int InterfaceSupport::getRunningState() {
                 if (part.contains("gr")) {
                     auto version = part.split(QLatin1Char('='));
                     runState = version[1].toInt();
-                    LOG( INFO, QString( "Interface support: getRunningState response: %1 ").arg(runState));
+//                    LOG( INFO, QString( "Interface support: getRunningState response: %1 ").arg(runState));
                     break;
                 }
             }
