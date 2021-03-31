@@ -375,10 +375,12 @@ bool InterfaceSupport::writeDataToDevice(QByteArray command) {
             qDebug() << "Could not write command" << command;
             LOG( WARNING, QString( "Interface support: writeDataToDevice could not write command: %1 ").arg(command.data()));
             retVal = false;
-        } else {
-            //qDebug() << "Serial bytes written: " << bytesWritten;
-            LOG( INFO, QString( "Interface support: writeDataToDevice command written: %1 " ).arg( command.data() ) );
         }
+//        else
+//        {
+//            //qDebug() << "Serial bytes written: " << bytesWritten;
+//            LOG( INFO, QString( "Interface support: writeDataToDevice command written: %1 " ).arg( command.data() ) );
+//        }
     } else {
         qDebug() << "Serial port not open for write";
         retVal = false;
