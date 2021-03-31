@@ -810,18 +810,26 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                    if(image && frame.dispData){
 
-                       QString activePassiveValue{"ACTIVE"};
-                auto interfaceSupport = InterfaceSupport::getInstance();
-                int currentSledRunningStateVal{interfaceSupport->getRunningState()};
+                        QString activePassiveValue{"ACTIVE"};
+                        auto interfaceSupport = InterfaceSupport::getInstance();
+                        int currentSledRunningStateVal{interfaceSupport->getRunningState()};
 
-                if(currentSledRunningStateVal == 3)
-                       {
-                           activePassiveValue = "PASSIVE";
-                       }
-                else if(currentSledRunningStateVal == 1)
-                       {
-                           activePassiveValue = "ACTIVE";
-                       }
+                        if(m_sledRunningState != currentSledRunningStateVal){
+                            m_sledRunningState = currentSledRunningStateVal;
+                            if(m_sledRunningState == 3)
+                            {
+                               activePassiveValue = "PASSIVE";
+                            }
+                            else if(m_sledRunningState == 1)
+                            {
+                               activePassiveValue = "ACTIVE";
+                            }
+                            if(m_sledRunningState){
+                                interfaceSupport->setVOAMode(true);
+                            } else {
+                                interfaceSupport->setVOAMode(false);
+                            }
+                        }
 
                        const QDateTime currentTime = QDateTime::currentDateTime();
                        const QString timeLabel{currentTime.toString("hh:mm:ss")};

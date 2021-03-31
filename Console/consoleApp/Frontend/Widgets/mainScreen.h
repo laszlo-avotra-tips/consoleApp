@@ -139,6 +139,7 @@ private:
     bool startCount{false};
     int m_imageDecimation{0};
     bool m_disableRendering{false};
+    int m_sledRunningState{-1};
 
     OctSystemDiagnostics* diagnostics = nullptr;
 };
