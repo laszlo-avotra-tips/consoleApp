@@ -812,7 +812,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                         QString activePassiveValue{"ACTIVE"};
                         auto interfaceSupport = InterfaceSupport::getInstance();
-                        int currentSledRunningStateVal{interfaceSupport->getRunningState()};
+                        int currentSledRunningStateVal{interfaceSupport->getLastRunningState()};
 
                         if(m_sledRunningState != currentSledRunningStateVal){
                             m_sledRunningState = currentSledRunningStateVal;

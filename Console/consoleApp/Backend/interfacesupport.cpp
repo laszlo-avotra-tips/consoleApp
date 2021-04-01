@@ -389,6 +389,11 @@ bool InterfaceSupport::writeDataToDevice(QByteArray command) {
     return retVal;
 }
 
+int InterfaceSupport::getLastRunningState() const
+{
+    return m_lastRunningState;
+}
+
 void InterfaceSupport::populateInterfaceBoardCommandList() {
     interfaceBoardCommandList.clear();
 
@@ -649,7 +654,6 @@ bool InterfaceSupport::enableDisableBidirectional(bool bidirectionalState) {
 }
 
 int InterfaceSupport::getRunningState() {
-    int runState = 0;
 
     if (writeDataToDevice(interfaceBoardCommandList[OctInterfaceBoardCommandType::GET_SLED_RUNNING_STATE])) {
         bool ignoreNakResponse = true;
@@ -659,7 +663,7 @@ int InterfaceSupport::getRunningState() {
             for (auto part : parts) {
                 if (part.contains("gr")) {
                     auto version = part.split(QLatin1Char('='));
-                    runState = version[1].toInt();
+                    m_lastRunningState = version[1].toInt();
 //                    LOG( INFO, QString( "Interface support: getRunningState response: %1 ").arg(runState));
                     break;
                 }
@@ -667,7 +671,7 @@ int InterfaceSupport::getRunningState() {
         }
     }
 
-    return runState;
+    return m_lastRunningState;
 }
 
 bool InterfaceSupport::setSledRunState(bool runState) {

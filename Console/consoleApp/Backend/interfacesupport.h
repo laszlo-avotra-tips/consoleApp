@@ -242,6 +242,8 @@ public:
      */
     int getRunningState();
 
+    int getLastRunningState() const;
+
 private:
 
     /*
@@ -305,6 +307,8 @@ private:
     static InterfaceSupport* m_instance; // Pointer to singleton instance to InterfaceSupport class
 
     InterfaceBoardCommandList interfaceBoardCommandList; // List of commands to be used to query interface board
+
+    int m_lastRunningState{0};
 };
 
 #endif // INTERFACESUPPORT_H
