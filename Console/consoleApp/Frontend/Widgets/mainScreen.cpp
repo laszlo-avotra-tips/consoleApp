@@ -812,10 +812,10 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                         QString activePassiveValue{"ACTIVE"};
                         auto interfaceSupport = InterfaceSupport::getInstance();
-                        int currentSledRunningStateVal{interfaceSupport->getLastRunningState()};
+//                        int currentSledRunningStateVal{m_sledRunningStateVal}; //{interfaceSupport->getLastRunningState()};
 
-                        if(m_sledRunningState != currentSledRunningStateVal){
-                            m_sledRunningState = currentSledRunningStateVal;
+                        if(m_sledRunningState != m_sledRunningStateVal){
+                            m_sledRunningState = m_sledRunningStateVal;
                             if(m_sledRunningState == 3)
                             {
                                activePassiveValue = "PASSIVE";
@@ -852,7 +852,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                        QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-                       if(pixmap && !m_disableRendering){
+                       if(pixmap && !m_disableRendering && m_sledRunningState){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
                            m_scene->paintOverlay();
