@@ -317,7 +317,7 @@ void MainScreen::setDeviceLabel()
     m_opacScreen->hide();
     m_graphicsView->show();
     m_runTime.start();
-    m_updatetimeTimer.start(200);
+    m_updatetimeTimer.start(250);
     updateTime();
 }
 
