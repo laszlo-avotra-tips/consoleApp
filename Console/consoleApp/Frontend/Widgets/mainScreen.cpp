@@ -51,8 +51,8 @@ MainScreen::MainScreen(QWidget *parent)
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
 
-    m_updatetimeTimer.start(500);
-    connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
+    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
+    connect(&m_updateTimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
     m_opacScreen = new OpaqueScreen(this);
     m_opacScreen->show();
@@ -264,7 +264,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_sledRuntime = 0;
         m_runTime.invalidate();
 
-        m_updatetimeTimer.stop();
+        m_updateTimeTimer.stop();
         ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
         ui->frameSpeed->hide();
         DisplayManager::instance()->setSpeedVisible(false);
@@ -317,7 +317,7 @@ void MainScreen::setDeviceLabel()
     m_opacScreen->hide();
     m_graphicsView->show();
     m_runTime.start();
-    m_updatetimeTimer.start(250);
+    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
     updateTime();
 }
 

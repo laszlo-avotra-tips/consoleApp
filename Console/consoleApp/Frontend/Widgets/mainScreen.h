@@ -123,7 +123,8 @@ private:
 
     QTime m_currentTime;
     QElapsedTimer m_runTime;
-    QTimer m_updatetimeTimer;
+    QTimer m_updateTimeTimer;
+    const int m_updateTimeTimeoutMs{250};
     QTimer m_daqTimer;
     OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
