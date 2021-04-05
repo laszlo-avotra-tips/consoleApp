@@ -824,11 +824,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             {
                                activePassiveValue = "ACTIVE";
                             }
-                            if(m_sledRunningState){
-                                interfaceSupport->setVOAMode(true);
-                            } else {
-                               ;// interfaceSupport->setVOAMode(false);
-                            }
+//                            if(m_sledRunningState){
+//                                interfaceSupport->setVOAMode(true);
+//                            } else {
+//                               interfaceSupport->setVOAMode(false);
+//                            }
                         }
 
                        const QDateTime currentTime = QDateTime::currentDateTime();
