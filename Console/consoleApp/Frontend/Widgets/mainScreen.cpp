@@ -827,7 +827,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             if(m_sledRunningState){
                                 interfaceSupport->setVOAMode(true);
                             } else {
-                                interfaceSupport->setVOAMode(false);
+                               ;// interfaceSupport->setVOAMode(false);
                             }
                         }
 

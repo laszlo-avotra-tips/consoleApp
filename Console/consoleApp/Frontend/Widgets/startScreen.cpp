@@ -168,10 +168,10 @@ void StartScreen::on_pushButtonStart_released()
 
         auto* ifs = InterfaceSupport::getInstance();
         ifs->turnOnACPowerToOCT(true);//1. sac1
-        ifs->setVOAMode(false);//2. svb
         ifs->turnOnSled5V(true); // 3, ON "sled 5v"
         ifs->turnOnSled24V(true); //3. ON "sled 24v"
-
+//        ifs->setVOAMode(false);//2. svb
+        ifs->setVOAMode(true);
         LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
 
         WidgetContainer::instance()->gotoScreen("mainScreen");
