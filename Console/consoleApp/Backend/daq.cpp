@@ -331,8 +331,8 @@ void DAQ::getData(new_image_callback_data_t data)
         auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
         axsunData->bufferLength = info.width;
         axsunData->frameCount = data.image_number;
-        LOG3(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength)
         if (retval == AxErr::NO_AxERROR) {
+            LOG3(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength)
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
                 qs << "\tForce triggered mode.";
