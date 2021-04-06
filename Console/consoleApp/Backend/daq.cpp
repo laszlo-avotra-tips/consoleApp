@@ -330,6 +330,8 @@ void DAQ::getData(new_image_callback_data_t data)
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
         auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
         axsunData->bufferLength = info.width;
+        axsunData->frameCount = data.image_number;
+        LOG3(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength)
         if (retval == AxErr::NO_AxERROR) {
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
@@ -358,7 +360,7 @@ void DAQ::getData(new_image_callback_data_t data)
     if(data.image_number && !(last_image - data.image_number)){
 //        axsunData->bufferLength = info.width;
 
-        axsunData->frameCount = data.image_number;
+//        axsunData->frameCount = data.image_number;
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
     }
