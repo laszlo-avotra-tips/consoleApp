@@ -357,7 +357,7 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG1(msg);
     }
 
-    if(data.image_number && !(last_image - data.image_number)){
+    if(data.image_number && !(last_image - data.image_number) && axsunData->bufferLength){
 //        axsunData->bufferLength = info.width;
 
 //        axsunData->frameCount = data.image_number;
