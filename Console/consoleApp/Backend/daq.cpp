@@ -162,7 +162,7 @@ bool DAQ::startDaq()
             logAxErrorVerbose(__LINE__, success);
         }
 
-        const float capacity_MB{50.0f};
+        const float capacity_MB{500.0f};
         success = axStartSession(&session, capacity_MB);    // Start Axsun engine session
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
