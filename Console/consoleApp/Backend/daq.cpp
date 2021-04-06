@@ -333,7 +333,6 @@ void DAQ::getData(new_image_callback_data_t data)
         axsunData->bufferLength = info.width;
         axsunData->frameCount = data.image_number;
         if (retval == AxErr::NO_AxERROR) {
-            LOG3(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength)
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
                 qs << "\tForce triggered mode.";
@@ -361,6 +360,6 @@ void DAQ::getData(new_image_callback_data_t data)
     if( (retval == AxErr::NO_AxERROR) && data.image_number && !(last_image - data.image_number) && axsunData->bufferLength){
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
-        LOG3(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength)
+        LOG4(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength, dropped_packets)
     }
 }
