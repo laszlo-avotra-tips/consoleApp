@@ -293,7 +293,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void* user_ptr)
     }
 }
 
-bool DAQ::getData(new_image_callback_data_t data)
+void DAQ::getData(new_image_callback_data_t data)
 {
 
     QString msg;
@@ -319,17 +319,17 @@ bool DAQ::getData(new_image_callback_data_t data)
     // are already provided in the callback's data argument.  It is safe to call if other image info
     // is needed prior to calling axRequestImage().
 
-    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
     auto* sm = SignalModel::instance();
     OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-//    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
+    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
 
     auto info = image_info_t{};
 
     if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
         auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
+        axsunData->bufferLength = info.width;
         if (retval == AxErr::NO_AxERROR) {
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
@@ -356,12 +356,12 @@ bool DAQ::getData(new_image_callback_data_t data)
     }
 
     if(data.image_number && !(last_image - data.image_number)){
-        axsunData->bufferLength = info.width;
+//        axsunData->bufferLength = info.width;
 
         axsunData->frameCount = data.image_number;
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
     }
 
-    return true;
+//    return true;
 }

@@ -30,7 +30,7 @@ public:
 private:
     bool startDaq();
     void setSubSamplingFactor();
-    bool getData(new_image_callback_data_t data);
+    void getData(new_image_callback_data_t data);
     void initLogLevelAndDecimation();
     void logRegisterValue(int line, int reg);
 
