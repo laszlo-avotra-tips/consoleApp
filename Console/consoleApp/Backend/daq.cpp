@@ -319,10 +319,11 @@ bool DAQ::getData(new_image_callback_data_t data)
     // are already provided in the callback's data argument.  It is safe to call if other image info
     // is needed prior to calling axRequestImage().
 
+    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
     auto* sm = SignalModel::instance();
     OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
+//    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
 
     auto info = image_info_t{};
 
