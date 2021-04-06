@@ -326,9 +326,10 @@ void DAQ::getData(new_image_callback_data_t data)
 
     auto info = image_info_t{};
 
+    AxErr retval{AxErr::BUFFER_IS_EMPTY};
     if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
-        auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
+        retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
         axsunData->bufferLength = info.width;
         axsunData->frameCount = data.image_number;
         if (retval == AxErr::NO_AxERROR) {
@@ -357,13 +358,9 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG1(msg);
     }
 
-    if(data.image_number && !(last_image - data.image_number) && axsunData->bufferLength){
-//        axsunData->bufferLength = info.width;
-
-//        axsunData->frameCount = data.image_number;
+    if( (retval == AxErr::NO_AxERROR) && data.image_number && !(last_image - data.image_number) && axsunData->bufferLength){
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
+        LOG3(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength)
     }
-
-//    return true;
 }
