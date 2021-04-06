@@ -322,7 +322,7 @@ void DAQ::getData(new_image_callback_data_t data)
     auto* sm = SignalModel::instance();
     OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
+    m_frameNumber = m_daqCount % FRAME_BUFFER_SIZE;
 
     auto info = image_info_t{};
 
@@ -361,5 +361,6 @@ void DAQ::getData(new_image_callback_data_t data)
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
         LOG4(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength, dropped_packets)
+                ++m_daqCount;
     }
 }
