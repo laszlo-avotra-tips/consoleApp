@@ -357,10 +357,15 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG1(msg);
     }
 
-    if( (retval == AxErr::NO_AxERROR) && data.image_number && !(last_image - data.image_number) && axsunData->bufferLength){
+    if( (retval == AxErr::NO_AxERROR) &&
+            data.image_number && !(last_image - data.image_number) &&
+            axsunData->bufferLength && axsunData->bufferLength != 256
+            ){
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
         LOG4(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength, dropped_packets)
                 ++m_daqCount;
+    } else {
+        memset(axsunData->acqData,0,256);
     }
 }
