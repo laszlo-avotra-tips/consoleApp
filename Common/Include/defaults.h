@@ -86,6 +86,7 @@ const QString ExportCachePath      = DataDir + "/" + ExportCacheDir;
 const QString ExportArchivePath    = "Avinger_Exports";
 const QString BackupDirectory      = "Avinger_Backup/";
 const QString KeyFile              = "keys.txt";
+const QString L300KeyFile          = "L300Keys.txt";
 const QString SystemKeysPath       = SystemDir + "/" + KeyFile;
 const QString EventDataLogFileName = "events.xml";
 const QString SessionDatabaseFileName = "session.db";

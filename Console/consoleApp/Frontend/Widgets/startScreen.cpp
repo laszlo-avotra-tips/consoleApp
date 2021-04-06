@@ -10,7 +10,6 @@
 #include "fullCaseRecorder.h"
 #include "displayManager.h"
 #include "daqfactory.h"
-#include "sledsupport.h"
 #include "preferencesDialog.h"
 #include "shutdownConfirmationDialog.h"
 
@@ -66,6 +65,24 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     QTapAndHoldGesture::setTimeout(2000);
 
      ui->pushButtonDemoMode->hide();
+
+     DisplayManager::instance();
+//     DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
+     hookupStartUpDiagnostics();
+}
+
+void StartScreen::hookupStartUpDiagnostics() {
+    diagnostics = new StartUpDiagnostics();
+    auto messageBox = styledMessageBox::instance(); //new PowerUpMessageBox();
+
+    QObject::connect(diagnostics, &OctSystemDiagnostics::showMessageBox,
+                     messageBox, &styledMessageBox::onShowMessageBox);
+    QObject::connect(diagnostics, &OctSystemDiagnostics::hideMessageBox,
+                     messageBox, &styledMessageBox::onHideMessageBox);
+
+    QObject::connect(messageBox, &styledMessageBox::userAcknowledged,
+                     diagnostics, &OctSystemDiagnostics::onUserAcknowledged);
+    LOG(INFO, "Start Up diagnostics framework initialized");
 }
 
 StartScreen::~StartScreen()
@@ -105,12 +122,11 @@ void StartScreen::on_pushButtonShutdown_clicked()
 
         DisplayManager::instance()->killDisplayMonitor();
 
-        auto& sled = SledSupport::Instance();
-        sled.writeSerial("sr0\r");
-
         auto idaq = daqfactory::instance()->getdaq();
         idaq->shutdownDaq();
         QThread::sleep(1);
+        InterfaceSupport::releaseInstance();
+        LOG( INFO, "FTDI interface closed successfully");
     }
     delete dialog;
 }
@@ -119,20 +135,44 @@ void StartScreen::showEvent(QShowEvent *se)
 {
     QWidget::showEvent( se );
     if(se->type() == QEvent::Show){
-        LOG1("show");
         DisplayManager::instance()->showOnTheSecondMonitor("logo");
         WidgetContainer::instance()->setIsNewCase(true);
+
+        auto* ifs = InterfaceSupport::getInstance();
+        ifs->turnOnACPowerToOCT(false);//1. sac0
+        ifs->setVOAMode(false);//2. svb
+        ifs->turnOnSled5V(false); // 3, OFF "sled 5v"
+        ifs->turnOnSled24V(false); //3. OFF "sled 24v"
+
+        LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
     }
 }
 
-//void StartScreen::hideEvent(QHideEvent *he)
-//{
-//    QWidget::hideEvent( he );
-//}
+void StartScreen::hideEvent(QHideEvent *he)
+{
+    QWidget::hideEvent( he );
+}
 
 void StartScreen::on_pushButtonStart_released()
 {
+    if (diagnostics) {
+        if (!diagnostics->performDiagnostics(true)) {
+            LOG(ERROR, "Start up diagnostics failed!");
+            return;
+        } else {
+            LOG(INFO, "Start up diagnostics succeeded!");
+        }
+    }
+
     if(!m_isPressAndHold){
+
+        auto* ifs = InterfaceSupport::getInstance();
+        ifs->turnOnACPowerToOCT(true);//1. sac1
+        ifs->turnOnSled5V(true); // 3, ON "sled 5v"
+        ifs->turnOnSled24V(true); //3. ON "sled 24v"
+        ifs->setVOAMode(false);//2. svb
+        LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
+
         WidgetContainer::instance()->gotoScreen("mainScreen");
     }
 }

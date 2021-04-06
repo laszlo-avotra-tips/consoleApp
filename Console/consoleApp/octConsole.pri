@@ -10,9 +10,14 @@ HEADERS += \
     $$PWD/Backend/backend.h \
     $$PWD/Backend/daq.h \
     $$PWD/Backend/displayManager.h \
+    $$PWD/Backend/endcasediagnostics.h \
     $$PWD/Backend/fullCaseRecorder.h \
     $$PWD/Backend/imagedescriptor.h \
+    $$PWD/Backend/interfacesupport.h \
+    $$PWD/Backend/octsystemdiagnostics.h \
+    $$PWD/Backend/powerUpDiagnostics.h \
     $$PWD/Backend/scanconversion.h \
+    $$PWD/Backend/startupdiagnostics.h \
     $$PWD/Frontend/Utility/ScreenCapture.hpp \
     $$PWD/Frontend/Utility/clipListModel.h \
     $$PWD/Frontend/Utility/concatenateVideo.h \
@@ -87,7 +92,6 @@ HEADERS += \
     ../../Common/Include/util.h \
     Backend/dsp.h \
     Backend/depthsetting.h \
-    Backend/sledsupport.h \
     Frontend/Widgets/areameasurementoverlay.h \
     Frontend/Widgets/annotateoverlay.h \
     ../../Common/Include/backgroundmask.h \
@@ -101,9 +105,14 @@ SOURCES += \
     $$PWD/Backend/backend.cpp \
     $$PWD/Backend/daq.cpp \
     $$PWD/Backend/displayManager.cpp \
+    $$PWD/Backend/endcasediagnostics.cpp \
     $$PWD/Backend/fullCaseRecorder.cpp \
     $$PWD/Backend/imagedescriptor.cpp \
+    $$PWD/Backend/interfacesupport.cpp \
+    $$PWD/Backend/octsystemdiagnostics.cpp \
+    $$PWD/Backend/powerUpDiagnostics.cpp \
     $$PWD/Backend/scanconversion.cpp \
+    $$PWD/Backend/startupdiagnostics.cpp \
     $$PWD/Frontend/Utility/clipListModel.cpp \
     $$PWD/Frontend/Utility/concatenateVideo.cpp \
     $$PWD/Frontend/Utility/dialogFactory.cpp \
@@ -173,7 +182,6 @@ SOURCES += \
     ../../Common/Utility/keys.cpp \
     Backend/dsp.cpp \
     Backend/depthsetting.cpp \
-    Backend/sledsupport.cpp \
     Frontend/Widgets/areameasurementoverlay.cpp \
     Frontend/Widgets/annotateoverlay.cpp \
     ../../Common/GUI/backgroundmask.cpp \

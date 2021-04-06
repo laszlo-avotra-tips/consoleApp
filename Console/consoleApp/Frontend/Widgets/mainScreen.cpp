@@ -12,7 +12,6 @@
 #include "Utility/octFrameRecorder.h"
 #include "displayOptionsDialog.h"
 #include "DisplayOptionsModel.h"
-#include "sledsupport.h"
 #include "livescene.h"
 #include "scanconversion.h"
 #include "signalmodel.h"
@@ -22,6 +21,7 @@
 #include "Utility/clipListModel.h"
 #include "displayManager.h"
 #include "defaults.h"
+#include <Backend/interfacesupport.h>
 
 #include <QTimer>
 #include <QDebug>
@@ -51,8 +51,8 @@ MainScreen::MainScreen(QWidget *parent)
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
 
-    m_updatetimeTimer.start(500);
-    connect(&m_updatetimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
+    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
+    connect(&m_updateTimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
     m_opacScreen = new OpaqueScreen(this);
     m_opacScreen->show();
@@ -77,8 +77,22 @@ MainScreen::MainScreen(QWidget *parent)
     m_graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     m_clipBuffer = new uint8_t[1024 * 1024];
+    hookupEndCaseDiagnostics();
 //    ui->pushButton->setEnabled(false);
-//    m_daqTimer.start(5);
+}
+
+void MainScreen::hookupEndCaseDiagnostics() {
+    diagnostics = new EndCaseDiagnostics();
+    auto messageBox = styledMessageBox::instance(); //new PowerUpMessageBox();
+
+    QObject::connect(diagnostics, &OctSystemDiagnostics::showMessageBox,
+                     messageBox, &styledMessageBox::onShowMessageBox);
+    QObject::connect(diagnostics, &OctSystemDiagnostics::hideMessageBox,
+                     messageBox, &styledMessageBox::onHideMessageBox);
+
+    QObject::connect(messageBox, &styledMessageBox::userAcknowledged,
+                     diagnostics, &OctSystemDiagnostics::onUserAcknowledged);
+    LOG(INFO, "End case diagnostics framework initialized");
 }
 
 void MainScreen::setScene(liveScene *scene)
@@ -163,12 +177,12 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
             idaq->setSubsamplingAndForcedTrigger(speed);
         }
 
-        const QString qSpeed(QString::number(speed));
-        const QByteArray baSpeed(qSpeed.toStdString().c_str());
-        auto& sled = SledSupport::Instance();
-        sled.setSledSpeed(baSpeed);
-        QThread::msleep(200);
-        sled.enableDisableBidirectional();
+        auto interfaceSupport = InterfaceSupport::getInstance();
+        interfaceSupport->setSledSpeed(speed);
+        deviceSettings &device = deviceSettings::Instance();
+        auto currentDev = device.current();
+        const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
+        interfaceSupport->enableDisableBidirectional(isBiDirectionalEnabled);
     }
 }
 
@@ -183,7 +197,6 @@ void MainScreen::highlightSpeedButton(QPushButton *wid)
 
 int MainScreen::getSledRuntime()
 {
-
     updateSledRunningState();
 
     if(m_runTime.isValid()){
@@ -251,7 +264,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         m_sledRuntime = 0;
         m_runTime.invalidate();
 
-        m_updatetimeTimer.stop();
+        m_updateTimeTimer.stop();
         ui->labelRunTime->setText(QString("Runtime: 0:00:00"));
         ui->frameSpeed->hide();
         DisplayManager::instance()->setSpeedVisible(false);
@@ -260,6 +273,15 @@ void MainScreen::on_pushButtonEndCase_clicked()
         clipListModel::Instance().reset();
         LOG1(m_recordingIsOn)
     });
+
+    if (diagnostics) {
+        if (!diagnostics->performDiagnostics(true)) {
+            LOG(ERROR, "End case diagnostics failed!");
+            return;
+        } else {
+            LOG(INFO, "End case diagnostics succeeded!");
+        }
+    }
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -295,7 +317,7 @@ void MainScreen::setDeviceLabel()
     m_opacScreen->hide();
     m_graphicsView->show();
     m_runTime.start();
-    m_updatetimeTimer.start(500);
+    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
     updateTime();
 }
 
@@ -337,6 +359,7 @@ void MainScreen::on_pushButtonSettings_clicked()
             if(result.first){
                 delete result.first;
             }
+
         }
     }
     else {
@@ -396,6 +419,7 @@ void MainScreen::openCaseInformationDialogFromReviewAndSettings()
     CaseInformationModel model = *CaseInformationModel::instance();
     const std::vector<QString> cidParam{"DONE"};
     auto result = WidgetContainer::instance()->openDialog(this, "caseInformationDialog", &cidParam);
+
     if(result.first){
         result.first->hide();
     }
@@ -412,8 +436,9 @@ void MainScreen::updateDeviceSettings()
     const bool isBidir = selectedDevice->isBiDirectional();
     const int numberOfSpeeds = selectedDevice->getNumberOfSpeeds();
 
-    auto& sled = SledSupport::Instance();
-    int currentSledRunningStateVal{sled.runningState()};
+    auto interfaceSupport = InterfaceSupport::getInstance();
+    int currentSledRunningStateVal{interfaceSupport->getRunningState()};
+
     emit sledRunningStateChanged(currentSledRunningStateVal);
 
     if(isBidir){
@@ -611,7 +636,8 @@ void MainScreen::on_pushButtonMeasure_clicked(bool checked)
 
 void MainScreen::updateSledRunningState()
 {
-    int currentSledRunningStateVal{SledSupport::Instance().runningState()};
+    auto interfaceSupport = InterfaceSupport::getInstance();
+    int currentSledRunningStateVal{interfaceSupport->getRunningState()};
 
      if(m_sledRunningStateVal != currentSledRunningStateVal)
      {
@@ -784,18 +810,26 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                    if(image && frame.dispData){
 
-                       QString activePassiveValue{"ACTIVE"};
-                       auto& sled = SledSupport::Instance();
+                        QString activePassiveValue{"ACTIVE"};
+                        auto interfaceSupport = InterfaceSupport::getInstance();
+//                        int currentSledRunningStateVal{m_sledRunningStateVal}; //{interfaceSupport->getLastRunningState()};
 
-                       int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
-                       if(lastRunningState == 3)
-                       {
-                           activePassiveValue = "PASSIVE";
-                       }
-                       else if(lastRunningState == 1)
-                       {
-                           activePassiveValue = "ACTIVE";
-                       }
+                        if(m_sledRunningState != m_sledRunningStateVal){
+                            m_sledRunningState = m_sledRunningStateVal;
+                            if(m_sledRunningState == 3)
+                            {
+                               activePassiveValue = "PASSIVE";
+                            }
+                            else if(m_sledRunningState == 1)
+                            {
+                               activePassiveValue = "ACTIVE";
+                            }
+                            if(m_sledRunningState){
+                                interfaceSupport->setVOAMode(true);
+                            } else {
+                               interfaceSupport->setVOAMode(false);
+                            }
+                        }
 
                        const QDateTime currentTime = QDateTime::currentDateTime();
                        const QString timeLabel{currentTime.toString("hh:mm:ss")};
@@ -818,7 +852,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                        QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-                       if(pixmap && !m_disableRendering){
+                       if(pixmap && !m_disableRendering && m_sledRunningState){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
                            m_scene->paintOverlay();
@@ -837,20 +871,16 @@ void MainScreen::updateImage()
 
 void MainScreen::on_pushButton_clicked()
 {
-    static bool sledIsOn{false};
+    auto interfaceSupport = InterfaceSupport::getInstance();
+    int currentSledRunningStateVal{interfaceSupport->getRunningState()};
 
-    auto& sled = SledSupport::Instance();
-
-    if(sledIsOn){
-        sledIsOn = false;
-        sled.writeSerial("sr0\r");
+    if (currentSledRunningStateVal == 0) {
+        interfaceSupport->setSledRunState(true);
         ui->pushButton->setText("SledOn");
-    } else {
-        sledIsOn = true;
-        sled.writeSerial("sr1\r");
+    } else if (currentSledRunningStateVal > 0) {
+        interfaceSupport->setSledRunState(false);
         ui->pushButton->setText("SledOff");
     }
-
 }
 
 void MainScreen::initRecording()

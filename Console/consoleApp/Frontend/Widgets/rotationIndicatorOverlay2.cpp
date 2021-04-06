@@ -6,7 +6,7 @@
 #include "deviceSettings.h"
 #include "logger.h"
 #include "depthsetting.h"
-#include "sledsupport.h"
+#include <Backend/interfacesupport.h>
 
 RotationIndicatorOverlay2* RotationIndicatorOverlay2::m_instance{nullptr};
 
@@ -118,9 +118,9 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
 //        font.setBold(true);
         painter->setFont(font);
 
-        auto& sled = SledSupport::Instance();
+        auto interfaceSupport = InterfaceSupport::getInstance();
+        int lastRunningState{interfaceSupport->getRunningState()};
 
-        int lastRunningState = sled.getLastRunningState(); //dev.current()->getRotation();
         if(lastRunningState == 3)
         {
             painter->setBrush( PassiveSpinColor );

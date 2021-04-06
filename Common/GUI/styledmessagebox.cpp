@@ -14,9 +14,18 @@
 #include <QPushButton>
 #include "logger.h"
 
+styledMessageBox* styledMessageBox::m_instance {nullptr};
 /*
  * Constructor
  */
+styledMessageBox *styledMessageBox::instance()
+{
+    if(!m_instance){
+        m_instance = new styledMessageBox(nullptr, "");
+    }
+    return m_instance;
+}
+
 styledMessageBox::styledMessageBox( QWidget *parent, QString msg ) :
     QDialog(parent),
     ui(new Ui::styledMessageBox)
@@ -182,4 +191,29 @@ void styledMessageBox::critical( QString message )
     msg.exec();
 
     LOG( FATAL, message.toLatin1() )
+}
+
+void styledMessageBox::onShowMessageBox(const QString &msg, const QString &module, const QString &actionString)
+{
+    ui->titlebarTextLabel->setText(actionString);
+    ui->messageText->setText(msg);
+    ui->instructionsTextLabel->setText(module);
+    setHasCancel( false );
+    show();
+}
+
+void styledMessageBox::onHideMessageBox()
+{
+    hide();
+}
+
+void styledMessageBox::on_buttonBox_accepted()
+{
+    if (ui->titlebarTextLabel->text() != "Shutdown") {
+        LOG(WARNING, ui->messageText->text());
+        emit userAcknowledged();
+    } else {
+        QString s = QApplication::tr( ui->messageText->text().toLatin1() );
+        LOG(FATAL, s.toLatin1().data())
+    }
 }
