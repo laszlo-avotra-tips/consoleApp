@@ -276,7 +276,8 @@ std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     std::pair<bool, OctData> retVal{false, OctData()};
-    if(isImageRenderingQueueGTE(FRAME_BUFFER_SIZE - 2)){
+    if(isImageRenderingQueueGTE(1)){
+//        if(isImageRenderingQueueGTE(FRAME_BUFFER_SIZE - 2)){
         retVal.second = m_imageRenderingQueue.front();
         retVal.first = true;
     }
