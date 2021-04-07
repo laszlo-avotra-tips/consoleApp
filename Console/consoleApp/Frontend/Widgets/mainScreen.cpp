@@ -812,7 +812,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                         QString activePassiveValue{"ACTIVE"};
                         auto interfaceSupport = InterfaceSupport::getInstance();
-//                        int currentSledRunningStateVal{m_sledRunningStateVal}; //{interfaceSupport->getLastRunningState()};
 
                         if(m_sledRunningState != m_sledRunningStateVal){
                             m_sledRunningState = m_sledRunningStateVal;
@@ -826,6 +825,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             }
                             if(m_sledRunningState){
                                 interfaceSupport->setVOAMode(true);
+                                if(m_scene){
+                                    m_scene->paintOverlay();
+                                }
                             } else {
                                interfaceSupport->setVOAMode(false);
                             }
@@ -855,7 +857,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        if(pixmap && !m_disableRendering && m_sledRunningState){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
-                           m_scene->paintOverlay();
+//                           m_scene->paintOverlay();
                        }
                    }
                }
