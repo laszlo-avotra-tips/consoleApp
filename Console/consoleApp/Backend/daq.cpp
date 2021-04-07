@@ -365,7 +365,5 @@ void DAQ::getData(new_image_callback_data_t data)
         sm->pushImageRenderingQueue(*axsunData);
         LOG4(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength, dropped_packets)
                 ++m_daqCount;
-    } else {
-        memset(axsunData->acqData,0,256);
     }
 }
