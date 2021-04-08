@@ -29,7 +29,6 @@ void SignalModel::allocateOctData()
 
         m_octData.push_back(oct);
     }
-
 }
 
 void SignalModel::saveOct(const OctData &od)
@@ -42,6 +41,23 @@ void SignalModel::saveOct(const OctData &od)
         LOG3(fn, od.bufferLength, len);
         file.close();
     }
+}
+
+bool SignalModel::retrieveOct(OctData &od)
+{
+    bool success = false;
+    QString fn = m_simFnBase + QString::number(od.frameCount) + QString(".dat");
+    QFile file(fn);
+
+    if(file.open(QFile::ReadOnly)){
+        auto len = file.read(reinterpret_cast<char*>(od.acqData), MAX_ACQ_IMAGE_SIZE);
+        od.bufferLength = len;
+        LOG3(fn, od.bufferLength, len);
+        file.close();
+        success = len > 0;
+    }
+
+    return success;
 }
 
 const cl_float* SignalModel::getCatheterRadius_um() const
@@ -310,6 +326,8 @@ void SignalModel::freeOctData()
 
 OctData SignalModel::handleSimulationSettings(const OctData &od)
 {
+    static int frameCount = 2;
+    OctData retVal{od};
     const auto& settings = userSettings::Instance();
     const bool isSimulation = settings.getIsSimulation();
     const bool isRecording = settings.getIsRecording();
@@ -317,10 +335,15 @@ OctData SignalModel::handleSimulationSettings(const OctData &od)
     if(isSimulation){
         if(isRecording){
             saveOct(od);
+        } else {
+            retVal.frameCount = frameCount++;
+            if(!retrieveOct(retVal)){
+                LOG1(frameCount);
+            }
         }
     }
 
-    return od;
+    return retVal;
 }
 
 OCTFile::OctData_t *SignalModel::getOctData(int index)

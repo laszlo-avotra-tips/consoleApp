@@ -109,6 +109,7 @@ private: //functions
     SignalModel();
     void allocateOctData();
     void saveOct(const OctData& od);
+    bool retrieveOct(OctData& od);
 
 private: //data
     static SignalModel* m_instance;
