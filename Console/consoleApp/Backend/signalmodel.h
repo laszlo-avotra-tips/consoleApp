@@ -108,6 +108,7 @@ public: //functions
 private: //functions
     SignalModel();
     void allocateOctData();
+    void saveOct(const OctData& od);
 
 private: //data
     static SignalModel* m_instance;
@@ -152,6 +153,7 @@ private: //data
     cl_mem m_warpVideoBuffer{nullptr};
 
     int m_dvacedViewSourceFrameNumber{0};
+    const QString m_simFnBase{"C:/Avinger_System/sim/frame"};
 };
 
 #endif // SIGNALMODEL_H

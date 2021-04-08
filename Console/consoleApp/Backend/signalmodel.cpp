@@ -1,6 +1,7 @@
 #include "signalmodel.h"
 #include "logger.h"
 #include "Utility/userSettings.h"
+#include <QFile>
 
 
 SignalModel* SignalModel::m_instance{nullptr};
@@ -29,6 +30,18 @@ void SignalModel::allocateOctData()
         m_octData.push_back(oct);
     }
 
+}
+
+void SignalModel::saveOct(const OctData &od)
+{
+    QString fn = m_simFnBase + QString::number(od.frameCount) + QString(".dat");
+    QFile file(fn);
+
+    if(file.open(QFile::WriteOnly)){
+        auto len = file.write(reinterpret_cast<const char*>(od.acqData), od.bufferLength);
+        LOG3(fn, od.bufferLength, len);
+        file.close();
+    }
 }
 
 const cl_float* SignalModel::getCatheterRadius_um() const
@@ -301,7 +314,11 @@ OctData SignalModel::handleSimulationSettings(const OctData &od)
     const bool isSimulation = settings.getIsSimulation();
     const bool isRecording = settings.getIsRecording();
 
-    LOG2(isSimulation,isRecording);
+    if(isSimulation){
+        if(isRecording){
+            saveOct(od);
+        }
+    }
 
     return od;
 }
