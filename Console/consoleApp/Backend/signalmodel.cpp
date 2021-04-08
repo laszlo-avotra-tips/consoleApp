@@ -287,7 +287,7 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
     m_isAveragingNoiseReduction = isAveragingNoiseReduction;
 }
 
-void SignalModel::pushImageRenderingQueue(const OctData& od)
+void SignalModel::pushImageRenderingQueue(OctData &od)
 {
     auto data = handleSimulationSettings(od);
     QMutexLocker guard(&m_imageRenderingMutex);
@@ -326,7 +326,7 @@ void SignalModel::freeOctData()
     m_octData.clear();
 }
 
-OctData SignalModel::handleSimulationSettings(const OctData &od)
+OctData SignalModel::handleSimulationSettings(OctData &od)
 {
     static int frameCount = 1;
     OctData retVal{};

@@ -19,9 +19,9 @@ public:
     OCTFile::OctData_t * getOctData(int index);
     void freeOctData();
 
-    OctData handleSimulationSettings(const OctData& od);
+    OctData handleSimulationSettings(OctData& od);
 
-    void pushImageRenderingQueue(const OctData& od);
+    void pushImageRenderingQueue(OctData& od);
     void popImageRenderingQueue();
     bool isImageRenderingQueueGTE(size_t length) const;
     std::pair<bool, OctData>  frontImageRenderingQueue();
