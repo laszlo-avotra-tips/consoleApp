@@ -52,7 +52,7 @@ bool SignalModel::retrieveOct(OctData &od)
     if(file.open(QFile::ReadOnly)){
         auto len = file.read(reinterpret_cast<char*>(od.acqData), MAX_ACQ_IMAGE_SIZE);
         od.bufferLength = len;
-        LOG3(fn, od.bufferLength, len);
+        LOG3(fn, od.acqData, len);
         file.close();
         success = len > 0;
     } else {
