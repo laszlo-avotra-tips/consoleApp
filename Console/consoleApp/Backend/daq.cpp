@@ -162,7 +162,7 @@ bool DAQ::startDaq()
             logAxErrorVerbose(__LINE__, success);
         }
 
-        const float capacity_MB{50.0f};
+        const float capacity_MB{500.0f};
         success = axStartSession(&session, capacity_MB);    // Start Axsun engine session
         if(success != AxErr::NO_AxERROR){
             logAxErrorVerbose(__LINE__, success);
@@ -293,7 +293,7 @@ void DAQ::NewImageArrived(new_image_callback_data_t data, void* user_ptr)
     }
 }
 
-bool DAQ::getData(new_image_callback_data_t data)
+void DAQ::getData(new_image_callback_data_t data)
 {
 
     QString msg;
@@ -322,13 +322,16 @@ bool DAQ::getData(new_image_callback_data_t data)
     auto* sm = SignalModel::instance();
     OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-    m_frameNumber = ++m_daqCount % FRAME_BUFFER_SIZE;
+    m_frameNumber = m_daqCount % FRAME_BUFFER_SIZE;
 
     auto info = image_info_t{};
 
+    AxErr retval{AxErr::BUFFER_IS_EMPTY};
     if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
-        auto retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
+        retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
+        axsunData->bufferLength = info.width;
+        axsunData->frameCount = data.image_number;
         if (retval == AxErr::NO_AxERROR) {
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
@@ -354,13 +357,13 @@ bool DAQ::getData(new_image_callback_data_t data)
         LOG1(msg);
     }
 
-    if(data.image_number && !(last_image - data.image_number)){
-        axsunData->bufferLength = info.width;
-
-        axsunData->frameCount = data.image_number;
+    if( (retval == AxErr::NO_AxERROR) &&
+            data.image_number && !(last_image - data.image_number) &&
+            axsunData->bufferLength && axsunData->bufferLength != 256
+            ){
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
+        LOG4(axsunData->frameCount,axsunData->acqData, axsunData->bufferLength, dropped_packets)
+                ++m_daqCount;
     }
-
-    return true;
 }
