@@ -37,7 +37,7 @@ void SignalModel::saveOct(const OctData &od)
     QFile file(fn);
 
     if(file.open(QFile::WriteOnly)){
-        auto len = file.write(reinterpret_cast<const char*>(od.acqData), od.bufferLength);
+        auto len = file.write(reinterpret_cast<const char*>(od.acqData), od.bufferLength * 1024);
         LOG3(fn, od.bufferLength, len);
         file.close();
     }
