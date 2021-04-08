@@ -55,6 +55,8 @@ bool SignalModel::retrieveOct(OctData &od)
         LOG3(fn, od.bufferLength, len);
         file.close();
         success = len > 0;
+    } else {
+        LOG1(fn)
     }
 
     return success;
@@ -326,20 +328,20 @@ void SignalModel::freeOctData()
 
 OctData SignalModel::handleSimulationSettings(const OctData &od)
 {
-    static int frameCount = 2;
-    OctData retVal{od};
+    static int frameCount = 1;
+    OctData retVal{};
     const auto& settings = userSettings::Instance();
     const bool isSimulation = settings.getIsSimulation();
     const bool isRecording = settings.getIsRecording();
 
     if(isSimulation){
         if(isRecording){
+            retVal = od;
             saveOct(od);
         } else {
             retVal.frameCount = frameCount++;
-            if(!retrieveOct(retVal)){
-                LOG1(frameCount);
-            }
+            retVal.acqData = od.acqData;
+            retrieveOct(retVal);
         }
     }
 
