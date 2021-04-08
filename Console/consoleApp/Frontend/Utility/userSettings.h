@@ -198,6 +198,10 @@ public:
 
     QString getSerialNumber() const;
 
+    int getIsSimulation() const;
+
+    int getIsRecording() const;
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -215,6 +219,8 @@ private:
     int  daqIndexDecimation;
     int  disableRendering;
     int  disableExternalMonitor;
+    int  isSimulation;
+    int  isRecording;
 
     int  recordingDurationMin;
     QDate m_serviceDate;

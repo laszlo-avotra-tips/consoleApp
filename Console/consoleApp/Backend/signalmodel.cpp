@@ -258,14 +258,9 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(const OctData& od)
 {
-    const auto& settings = userSettings::Instance();
-    const bool isSimulation = settings.getIsSimulation();
-    const bool isRecording = settings.getIsRecording();
-
-    LOG2(isSimulation,isRecording)
-
+    auto data = handleSimulationSettings(od);
     QMutexLocker guard(&m_imageRenderingMutex);
-    m_imageRenderingQueue.push(od);
+    m_imageRenderingQueue.push(data);
 }
 
 void SignalModel::popImageRenderingQueue()
@@ -298,6 +293,17 @@ void SignalModel::freeOctData()
         delete [] it->dispData;
     }
     m_octData.clear();
+}
+
+OctData SignalModel::handleSimulationSettings(const OctData &od)
+{
+    const auto& settings = userSettings::Instance();
+    const bool isSimulation = settings.getIsSimulation();
+    const bool isRecording = settings.getIsRecording();
+
+    LOG2(isSimulation,isRecording);
+
+    return od;
 }
 
 OCTFile::OctData_t *SignalModel::getOctData(int index)
