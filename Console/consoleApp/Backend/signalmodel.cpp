@@ -258,7 +258,12 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(const OctData& od)
 {
-    userSettings::
+    const auto& settings = userSettings::Instance();
+    const bool isSimulation = settings.getIsSimulation();
+    const bool isRecording = settings.getIsRecording();
+
+    LOG2(isSimulation,isRecording)
+
     QMutexLocker guard(&m_imageRenderingMutex);
     m_imageRenderingQueue.push(od);
 }
