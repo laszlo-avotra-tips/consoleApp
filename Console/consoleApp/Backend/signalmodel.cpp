@@ -1,5 +1,6 @@
 #include "signalmodel.h"
 #include "logger.h"
+#include "Utility/userSettings.h"
 
 
 SignalModel* SignalModel::m_instance{nullptr};
@@ -257,6 +258,7 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(const OctData& od)
 {
+    userSettings::
     QMutexLocker guard(&m_imageRenderingMutex);
     m_imageRenderingQueue.push(od);
 }

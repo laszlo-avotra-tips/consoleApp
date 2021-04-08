@@ -96,6 +96,12 @@ void userSettings::loadProfileSettings()
     disableExternalMonitor = profileSettings->value( "control/disableExternalMonitor", 0).toInt();
     LOG1(disableExternalMonitor);
 
+    isSimulation = profileSettings->value( "control/isSimulation", 0).toInt();
+    LOG1(isSimulation);
+
+    isRecording = profileSettings->value( "control/isRecording", 0).toInt();
+    LOG1(isRecording);
+
     recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
 
@@ -111,6 +117,16 @@ void userSettings::loadProfileSettings()
 
     m_serialNumber = profileSettings->value( "System/serialNumber", "0000").toString();
     LOG1(m_serialNumber)
+}
+
+int userSettings::getIsRecording() const
+{
+    return isRecording;
+}
+
+int userSettings::getIsSimulation() const
+{
+    return isSimulation;
 }
 
 void userSettings::setLocation(const QString &location)
