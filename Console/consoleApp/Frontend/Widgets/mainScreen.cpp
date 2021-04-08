@@ -832,6 +832,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             } else {
                                interfaceSupport->setVOAMode(false);
                             }
+                            if(m_scene){
+                                m_scene->paintOverlay();
+                            }
                         }
 
                        const QDateTime currentTime = QDateTime::currentDateTime();
