@@ -328,7 +328,8 @@ void SignalModel::freeOctData()
 
 OctData SignalModel::handleSimulationSettings(OctData &od)
 {
-    static int frameCount = 0;
+//    static int frameCount = 0;
+
     OctData retVal{};
     const auto& settings = userSettings::Instance();
     const bool isSimulation = settings.getIsSimulation();
@@ -337,21 +338,23 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     const int  sequenceLimitH = settings.getSequenceLimitH();
     const int  sequenceLimitL = settings.getSequenceLimitL();
 
+    m_simulationFrameCount = settings.getSequenceLimitL();
+
     if(isSimulation){
         if(isRecording){
             retVal = od;
             if(isSequencial){
-                od.frameCount = ++frameCount;
+                od.frameCount = m_simulationFrameCount++;
             }
             saveOct(od);
         } else {
             OCTFile::OctData_t* axsunData = getOctData(1);
-            if(frameCount > sequenceLimitH){
-                frameCount = sequenceLimitL;
+            if(m_simulationFrameCount > sequenceLimitH){
+                m_simulationFrameCount = sequenceLimitL;
             } else {
-                ++frameCount;
+                ++m_simulationFrameCount;
             }
-            retVal.frameCount = frameCount;
+            retVal.frameCount = m_simulationFrameCount;
             retVal.acqData = axsunData->acqData;
             retrieveOct(retVal);
         }

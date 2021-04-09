@@ -117,6 +117,7 @@ private: //data
     std::vector<OctData> m_octData;
     QMutex m_imageRenderingMutex;
     std::queue<OctData> m_imageRenderingQueue;
+    int m_simulationFrameCount{0};
 
     cl_uint m_linesPerRevolution{1184};
     //post fft
