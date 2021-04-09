@@ -79,6 +79,9 @@ MainScreen::MainScreen(QWidget *parent)
     m_clipBuffer = new uint8_t[1024 * 1024];
     hookupEndCaseDiagnostics();
 //    ui->pushButton->setEnabled(false);
+    if(!userSettings::Instance().getIsSimulation()){
+        ui->labelSim->hide();
+    }
 }
 
 void MainScreen::hookupEndCaseDiagnostics() {
@@ -863,6 +866,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        if(pixmap && !m_disableRendering && m_sledRunningState){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
+                           ui->labelSim->setText(QString("count = ") + QString::number(frame.frameCount));
 //                           m_scene->paintOverlay();
                        }
                    }

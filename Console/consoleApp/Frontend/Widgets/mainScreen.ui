@@ -831,6 +831,13 @@ font: 20pt &quot;Helvetica Neue&quot;;
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QLabel" name="labelSim">
+           <property name="text">
+            <string>Frame </string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
