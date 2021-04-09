@@ -9,6 +9,8 @@ SignalModel* SignalModel::m_instance{nullptr};
 SignalModel::SignalModel()
 {
     allocateOctData();
+    const auto& settings = userSettings::Instance();
+    m_simulationFrameCount = settings.getSequenceLimitL();
 }
 
 void SignalModel::allocateOctData()
@@ -337,8 +339,6 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     const bool isSequencial = settings.getIsSequencial();
     const int  sequenceLimitH = settings.getSequenceLimitH();
     const int  sequenceLimitL = settings.getSequenceLimitL();
-
-    m_simulationFrameCount = settings.getSequenceLimitL();
 
     if(isSimulation){
         if(isRecording){
