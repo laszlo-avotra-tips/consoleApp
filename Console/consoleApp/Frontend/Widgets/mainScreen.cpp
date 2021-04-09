@@ -79,9 +79,6 @@ MainScreen::MainScreen(QWidget *parent)
     m_clipBuffer = new uint8_t[1024 * 1024];
     hookupEndCaseDiagnostics();
 //    ui->pushButton->setEnabled(false);
-    if(!userSettings::Instance().getIsSimulation()){
-        ui->labelSim->hide();
-    }
 }
 
 void MainScreen::hookupEndCaseDiagnostics() {
@@ -105,6 +102,10 @@ void MainScreen::setScene(liveScene *scene)
         m_graphicsView->setScene(m_scene);
         daqfactory::instance()->getdaq();
         DisplayManager::instance()->setScene(m_scene);
+
+        if(!userSettings::Instance().getIsSimulation()){
+            ui->labelSim->hide();
+        }
     }
 }
 
