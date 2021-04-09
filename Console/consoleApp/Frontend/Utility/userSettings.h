@@ -204,7 +204,9 @@ public:
 
     int getIsSequencial() const;
 
-    int getSequenceLimit() const;
+    int getSequenceLimitH() const;
+
+    int getSequenceLimitL() const;
 
 private:
     void saveSettings();
@@ -226,7 +228,8 @@ private:
     int  isSimulation;
     int  isRecording;
     int  isSequencial;
-    int  sequenceLimit;
+    int  sequenceLimitL;
+    int  sequenceLimitH;
 
     int  recordingDurationMin;
     QDate m_serviceDate;

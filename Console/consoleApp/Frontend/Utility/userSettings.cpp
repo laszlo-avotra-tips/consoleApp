@@ -105,8 +105,11 @@ void userSettings::loadProfileSettings()
     isSequencial = profileSettings->value( "control/isSequencial", 0).toInt();
     LOG1(isSequencial);
 
-    sequenceLimit = profileSettings->value( "control/sequenceLimit", 2).toInt();
-    LOG1(sequenceLimit);
+    sequenceLimitL = profileSettings->value( "control/sequenceLimitL", 1).toInt();
+    LOG1(sequenceLimitL);
+
+    sequenceLimitH = profileSettings->value( "control/sequenceLimitH", 2).toInt();
+    LOG1(sequenceLimitH);
 
     recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
@@ -125,9 +128,14 @@ void userSettings::loadProfileSettings()
     LOG1(m_serialNumber)
 }
 
-int userSettings::getSequenceLimit() const
+int userSettings::getSequenceLimitL() const
 {
-    return sequenceLimit;
+    return sequenceLimitL;
+}
+
+int userSettings::getSequenceLimitH() const
+{
+    return sequenceLimitH;
 }
 
 int userSettings::getIsSequencial() const

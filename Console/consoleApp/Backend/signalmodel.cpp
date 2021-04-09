@@ -334,7 +334,8 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     const bool isSimulation = settings.getIsSimulation();
     const bool isRecording = settings.getIsRecording();
     const bool isSequencial = settings.getIsSequencial();
-    const int  sequenceLimit = settings.getSequenceLimit();
+    const int  sequenceLimitH = settings.getSequenceLimitH();
+    const int  sequenceLimitL = settings.getSequenceLimitL();
 
     if(isSimulation){
         if(isRecording){
@@ -345,8 +346,8 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
             saveOct(od);
         } else {
             OCTFile::OctData_t* axsunData = getOctData(1);
-            if(frameCount > sequenceLimit){
-                frameCount = 1;
+            if(frameCount > sequenceLimitH){
+                frameCount = sequenceLimitL;
             } else {
                 ++frameCount;
             }
