@@ -660,6 +660,16 @@ CASE</string>
           </widget>
          </item>
          <item>
+          <widget class="QLabel" name="labelSim">
+           <property name="text">
+            <string>Frame </string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -846,13 +856,6 @@ font: 20pt &quot;Helvetica Neue&quot;;
          </size>
         </property>
        </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelSim">
-        <property name="text">
-         <string>Frame </string>
-        </property>
-       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButtonFlip">

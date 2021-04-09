@@ -867,7 +867,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        if(pixmap && !m_disableRendering && m_sledRunningState){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
-                           ui->labelSim->setText(QString("count = ") + QString::number(frame.frameCount));
+                           ui->labelSim->setText(QString("frame# ") + QString::number(frame.frameCount));
 //                           m_scene->paintOverlay();
                        }
                    }
