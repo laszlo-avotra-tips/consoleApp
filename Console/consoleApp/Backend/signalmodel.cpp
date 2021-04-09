@@ -340,13 +340,17 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
         if(isRecording){
             retVal = od;
             if(isSequencial){
-                od.frameCount = frameCount++;
+                od.frameCount = ++frameCount;
             }
             saveOct(od);
         } else {
             OCTFile::OctData_t* axsunData = getOctData(1);
+            if(frameCount > sequenceLimit){
+                frameCount = 1;
+            } else {
+                ++frameCount;
+            }
             retVal.frameCount = frameCount;
-            frameCount = (++frameCount) % sequenceLimit;
             retVal.acqData = axsunData->acqData;
             retrieveOct(retVal);
         }
