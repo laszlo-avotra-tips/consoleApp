@@ -791,8 +791,10 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
            auto& frame = val.second;
            LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
            sm->popImageRenderingQueue();
-           uint32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-           missedImageCountAcc += missedImageCount;
+           int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+           if(missedImageCount > 0){
+                missedImageCountAcc += missedImageCount;
+           }
            lastGoodImage = frame.frameCount;
            if(m_imageDecimation && (++count % m_imageDecimation == 0)){
                float percent = 100.0f * missedImageCountAcc / frame.frameCount;
