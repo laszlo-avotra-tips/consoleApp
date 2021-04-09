@@ -202,6 +202,10 @@ public:
 
     int getIsRecording() const;
 
+    int getIsSequencial() const;
+
+    int getSequenceLimit() const;
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -221,6 +225,8 @@ private:
     int  disableExternalMonitor;
     int  isSimulation;
     int  isRecording;
+    int  isSequencial;
+    int  sequenceLimit;
 
     int  recordingDurationMin;
     QDate m_serviceDate;
