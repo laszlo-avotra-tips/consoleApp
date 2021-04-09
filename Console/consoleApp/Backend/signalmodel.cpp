@@ -340,7 +340,7 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
         if(isRecording){
             retVal = od;
             if(isSequencial){
-                retVal.frameCount = frameCount++;
+                od.frameCount = frameCount++;
             }
             saveOct(od);
         } else {
