@@ -348,12 +348,12 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
             }
             saveOct(od);
         } else {
-            OCTFile::OctData_t* axsunData = getOctData(0);
+//            OCTFile::OctData_t* axsunData = getOctData(0);
             if(m_simulationFrameCount > sequenceLimitH){
                 m_simulationFrameCount = sequenceLimitL;
             }
             retVal.frameCount = m_simulationFrameCount++;
-            retVal.acqData = axsunData->acqData;
+            retVal.acqData = od.acqData;
             retrieveOct(retVal);
         }
     }
