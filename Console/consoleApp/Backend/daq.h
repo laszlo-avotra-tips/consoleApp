@@ -48,7 +48,7 @@ private:
     };
     const int m_framesUntilForceTrigDefault{24};
 
-    int m_frameNumber{FRAME_BUFFER_SIZE - 1};
+    int m_frameNumber;
     AOChandle session{nullptr};
     QElapsedTimer imageFrameTimer;
     char axMessage[256];

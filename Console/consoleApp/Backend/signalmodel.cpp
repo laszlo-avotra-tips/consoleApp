@@ -22,7 +22,9 @@ void SignalModel::allocateOctData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-    for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
+    int frameBufferCount = userSettings::Instance().getBufferSize();
+
+    for(int i = 0; i < frameBufferCount; ++i){
 
         OCTFile::OctData_t oct;
 
@@ -311,8 +313,9 @@ std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     std::pair<bool, OctData> retVal{false, OctData()};
+    int frameBufferCount = userSettings::Instance().getBufferSize();
 //    if(isImageRenderingQueueGTE(1)){
-        if(isImageRenderingQueueGTE(FRAME_BUFFER_SIZE/2)){
+    if(isImageRenderingQueueGTE(frameBufferCount/2)){
         retVal.second = m_imageRenderingQueue.front();
         retVal.first = true;
     }
