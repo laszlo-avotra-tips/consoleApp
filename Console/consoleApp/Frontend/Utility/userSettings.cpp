@@ -111,6 +111,15 @@ void userSettings::loadProfileSettings()
     sequenceLimitH = profileSettings->value( "control/sequenceLimitH", 2).toInt();
     LOG1(sequenceLimitH);
 
+    bufferSize = profileSettings->value( "control/bufferSize", 2).toInt();
+    LOG1(bufferSize);
+
+    measurementPrecision = profileSettings->value( "control/measurementPrecision", 2).toInt();
+    LOG1(measurementPrecision);
+
+    simDir = profileSettings->value( "control/simDir", "sim11").toString();
+    LOG1(simDir);
+
     recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
 
@@ -126,6 +135,21 @@ void userSettings::loadProfileSettings()
 
     m_serialNumber = profileSettings->value( "System/serialNumber", "0000").toString();
     LOG1(m_serialNumber)
+}
+
+QString userSettings::getSimDir() const
+{
+    return simDir;
+}
+
+int userSettings::getMeasurementPrecision() const
+{
+    return measurementPrecision;
+}
+
+int userSettings::getBufferSize() const
+{
+    return bufferSize;
 }
 
 int userSettings::getSequenceLimitL() const

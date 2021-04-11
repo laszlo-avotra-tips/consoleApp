@@ -208,6 +208,12 @@ public:
 
     int getSequenceLimitL() const;
 
+    int getBufferSize() const;
+
+    int getMeasurementPrecision() const;
+
+    QString getSimDir() const;
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -230,6 +236,9 @@ private:
     int  isSequencial;
     int  sequenceLimitL;
     int  sequenceLimitH;
+    int  bufferSize;
+    int  measurementPrecision;
+    QString simDir;
 
     int  recordingDurationMin;
     QDate m_serviceDate;
