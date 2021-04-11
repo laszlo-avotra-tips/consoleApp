@@ -320,7 +320,7 @@ void DAQ::getData(new_image_callback_data_t data)
     // is needed prior to calling axRequestImage().
 
     auto* sm = SignalModel::instance();
-    OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber)
+    OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
     m_frameNumber = m_daqCount % FRAME_BUFFER_SIZE;
 
