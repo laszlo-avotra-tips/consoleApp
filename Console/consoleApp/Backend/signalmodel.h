@@ -155,7 +155,7 @@ private: //data
     cl_mem m_warpVideoBuffer{nullptr};
 
     int m_dvacedViewSourceFrameNumber{0};
-    const QString m_simFnBase{"C:/Avinger_System/sim"};
+    const QString m_simFnBase{"C:/Avinger_System/"};
 };
 
 #endif // SIGNALMODEL_H

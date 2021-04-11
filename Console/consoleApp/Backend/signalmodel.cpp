@@ -37,8 +37,9 @@ void SignalModel::allocateOctData()
 
 void SignalModel::saveOct(const OctData &od)
 {
+    QString dir = userSettings::Instance().getSimDir();
 
-    QString fn = m_simFnBase + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
     QFile file(fn);
 
     if(file.open(QFile::WriteOnly)){
@@ -51,7 +52,8 @@ void SignalModel::saveOct(const OctData &od)
 bool SignalModel::retrieveOct(OctData &od)
 {
     bool success = false;
-    QString fn = m_simFnBase + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QString dir = userSettings::Instance().getSimDir();
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
     QFile file(fn);
 
     if(file.open(QFile::ReadOnly)){
