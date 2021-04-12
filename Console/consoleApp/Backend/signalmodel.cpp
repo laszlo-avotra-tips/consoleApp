@@ -347,7 +347,9 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
             if(isSequencial){
                 od.frameCount = m_simulationFrameCount++;
             }
-            saveOct(od);
+            if(m_simulationFrameCount < sequenceLimitH){
+                saveOct(od);
+            }
         } else {
 //            OCTFile::OctData_t* axsunData = getOctData(0);
             if(m_simulationFrameCount > sequenceLimitH){
