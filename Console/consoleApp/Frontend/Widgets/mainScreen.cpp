@@ -523,6 +523,7 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
     } else {
         updateDeviceSettings();
     }
+    m_scene->paintOverlay();
 }
 
 void MainScreen::openDisplayOptionsDialog()
@@ -548,6 +549,7 @@ void MainScreen::openDisplayOptionsDialog()
         } else {
             on_pushButtonSettings_clicked();
         }
+        m_scene->paintOverlay();
     }
 }
 
@@ -867,7 +869,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        if(pixmap && !m_disableRendering && m_sledRunningState){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
-                           ui->labelSim->setText(QString("frame# ") + QString::number(frame.frameCount));
+                           if( userSettings::Instance().getIsRecording()){
+                                ui->labelSim->setText(QString("recorded #") + QString::number(frame.frameCount));
+                           } else {
+                                ui->labelSim->setText(QString("retrieved #") + QString::number(frame.frameCount));
+                           }
 //                           m_scene->paintOverlay();
                        }
                    }
