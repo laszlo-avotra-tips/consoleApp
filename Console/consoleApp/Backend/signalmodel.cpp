@@ -22,7 +22,7 @@ void SignalModel::allocateOctData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-    int frameBufferCount = userSettings::Instance().getBufferSize();
+    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
 
     for(int i = 0; i < frameBufferCount; ++i){
 
@@ -316,7 +316,7 @@ std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     std::pair<bool, OctData> retVal{false, OctData()};
-    int frameBufferCount = userSettings::Instance().getBufferSize();
+    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
     if(isImageRenderingQueueGTE(frameBufferCount/2 + 1)){
         retVal.second = m_imageRenderingQueue.front();
         retVal.first = true;

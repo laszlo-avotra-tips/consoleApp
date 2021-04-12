@@ -111,8 +111,8 @@ void userSettings::loadProfileSettings()
     sequenceLimitH = profileSettings->value( "control/sequenceLimitH", 2).toInt();
     LOG1(sequenceLimitH);
 
-    bufferSize = profileSettings->value( "control/bufferSize", 2).toInt();
-    LOG1(bufferSize);
+    numberOfDaqBuffers = profileSettings->value( "control/numberOfDaqBuffers", 2).toInt();
+    LOG1(numberOfDaqBuffers);
 
     measurementPrecision = profileSettings->value( "control/measurementPrecision", 2).toInt();
     LOG1(measurementPrecision);
@@ -147,9 +147,9 @@ int userSettings::getMeasurementPrecision() const
     return measurementPrecision;
 }
 
-int userSettings::getBufferSize() const
+int userSettings::getNumberOfDaqBuffers() const
 {
-    return bufferSize;
+    return numberOfDaqBuffers;
 }
 
 int userSettings::getSequenceLimitL() const

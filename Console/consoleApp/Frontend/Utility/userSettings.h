@@ -208,7 +208,7 @@ public:
 
     int getSequenceLimitL() const;
 
-    int getBufferSize() const;
+    int getNumberOfDaqBuffers() const;
 
     int getMeasurementPrecision() const;
 
@@ -236,7 +236,7 @@ private:
     int  isSequencial;
     int  sequenceLimitL;
     int  sequenceLimitH;
-    int  bufferSize;
+    int  numberOfDaqBuffers;
     int  measurementPrecision;
     QString simDir;
 

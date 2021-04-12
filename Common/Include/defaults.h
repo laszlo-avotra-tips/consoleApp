@@ -9,15 +9,15 @@
 #define _WINDOWS
 #define SECTOR_HEIGHT_PX 1024
 #define FFT_DATA_SIZE    1024
-//#define MAX_LINES_PER_FRAME 6120 // divisible by 360 seems necessary for Ocelot Synthetic mode
-#define MAX_LINES_PER_FRAME 7200 // must be larger than 6144 for Pantheris at 100 kHz
-//#define MAX_LINES_PER_FRAME 14400 // test for 500 rpm
+#define MAX_LINES_PER_FRAME 12000   // normalized to 1000rpm that is 6000 lines/frame
+                                    // memory is allocated for twice the lines/frame
+
 #define SECTOR_SIZE_B (SECTOR_HEIGHT_PX * SECTOR_HEIGHT_PX)
 
 const int SectorWidth_px  = SECTOR_HEIGHT_PX;
 const int SectorHeight_px = SECTOR_HEIGHT_PX;
 
-#define MAX_ACQ_IMAGE_SIZE ( FFT_DATA_SIZE * MAX_LINES_PER_FRAME * 2) // max acquired frame size
+#define MAX_ACQ_IMAGE_SIZE ( FFT_DATA_SIZE * MAX_LINES_PER_FRAME) // max acquired frame size
 
 #define SURFACE_BOOK 0
 #define SIMULATION_MODE 0

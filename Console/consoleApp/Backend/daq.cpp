@@ -67,8 +67,8 @@ void DAQ::initDaq()
 {
     AxErr retval;
 
-    int frameBufferCount = userSettings::Instance().getBufferSize();
-    m_frameNumber = frameBufferCount - 1;
+    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
+    m_frameNumber = frameBufferCount ? (frameBufferCount - 1) : 0;
 
     imageFrameTimer.start(); // start a timer to provide frame information
 
@@ -326,7 +326,7 @@ void DAQ::getData(new_image_callback_data_t data)
     OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
 
-    int frameBufferCount = userSettings::Instance().getBufferSize();
+    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
     m_frameNumber = m_daqCount % frameBufferCount;
 
     auto info = image_info_t{};
