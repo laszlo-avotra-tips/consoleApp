@@ -102,12 +102,6 @@ void MainScreen::setScene(liveScene *scene)
         m_graphicsView->setScene(m_scene);
         daqfactory::instance()->getdaq();
         DisplayManager::instance()->setScene(m_scene);
-
-        bool isSimulation = userSettings::Instance().getIsSimulation();
-        LOG1(isSimulation)
-        if(!isSimulation){
-            ui->labelSim->hide();
-        }
     }
 }
 
@@ -394,7 +388,11 @@ void MainScreen::showEvent(QShowEvent *se)
             QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
             pixmap->setPixmap(tmpPixmap);
         }
-
+        bool isSimulation = userSettings::Instance().getIsSimulation();
+        LOG1(isSimulation)
+        if(!isSimulation){
+            ui->labelSim->hide();
+        }
     }
 }
 
