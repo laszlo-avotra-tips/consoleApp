@@ -103,7 +103,9 @@ void MainScreen::setScene(liveScene *scene)
         daqfactory::instance()->getdaq();
         DisplayManager::instance()->setScene(m_scene);
 
-        if(!userSettings::Instance().getIsSimulation()){
+        bool isSimulation = userSettings::Instance().getIsSimulation();
+        LOG1(isSimulation)
+        if(!isSimulation){
             ui->labelSim->hide();
         }
     }
