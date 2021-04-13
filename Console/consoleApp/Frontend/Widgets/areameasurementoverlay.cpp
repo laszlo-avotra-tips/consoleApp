@@ -14,11 +14,10 @@
 #include "depthsetting.h"
 #include <qmath.h>
 #include "logger.h"
+#include "Utility/userSettings.h"
 
 namespace{
 const int PointTolerance = 20;
-const int MeasurementPrecision = 2;
-const double ROUNDING{0.005};
 }
 /*
  * Constructor
@@ -50,6 +49,12 @@ AreaMeasurementOverlay::AreaMeasurementOverlay( QWidget * )
 
     replacementPointIndex = -1;
     currPxPerMm = 0.0f;
+    m_measurementPrecision = userSettings::Instance().getMeasurementPrecision();
+
+    //m_rounding = 0.005;
+    m_rounding = 0.5 / (10 * m_measurementPrecision);
+
+    LOG2(m_measurementPrecision, m_rounding)
 }
 
 /*
@@ -580,7 +585,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
             QLineF line;
             line.setPoints( polygonPoints.point( 0 ), polygonPoints.point( 1 ) );
             painter->setPen( QPen( QBrush( QColor( 255, 100, 0 ), Qt::SolidPattern ), 2 ) );
-            QString str = QString( "Length: %1 mm" ).arg( QString::number( ROUNDING + line.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
+            QString str = QString( "Length: %1 mm" ).arg( QString::number( m_rounding + line.length() / double(currPxPerMm), 'f', m_measurementPrecision ) );
 
 //            painter->drawText( box->left() + xMargin, box->top() + font.pointSize() + yMargin, str );
 
@@ -620,7 +625,7 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
         {
             if( centroid.isValid )
             {
-                QString str( QString( "Min: %1 mm" ).arg( QString::number( ROUNDING + classMinLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) ) );
+                QString str( QString( "Min: %1 mm" ).arg( QString::number( m_rounding + classMinLine.length() / double(currPxPerMm), 'f', m_measurementPrecision ) ) );
                 QStaticText st( str );
                 st.prepare( QTransform(), font );
                 int xMargin, yMargin;
@@ -634,12 +639,12 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 
                     QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
-                    str = QString( "Max: %1 mm" ).arg( QString::number( ROUNDING + classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    str = QString( "Max: %1 mm" ).arg( QString::number( m_rounding + classMaxLine.length() / double(currPxPerMm), 'f', m_measurementPrecision ) );
                     painter->drawText( maxRect.bottomLeft(), str );
 
                     QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
-                    str = QString( "Area: %1 mm" ).arg( QString::number( ROUNDING + polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    str = QString( "Area: %1 mm" ).arg( QString::number( m_rounding + polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', m_measurementPrecision ) );
                     painter->drawText( areaRect.bottomLeft(), str );
                     /*
                      * Draw a superscript "2" using drawText by finding the right edge of the drawn text and drawing a smaller font
@@ -665,12 +670,12 @@ void AreaMeasurementOverlay::paintCalculationBox( QPainter *painter )
 
                     QRect maxRect( box->left() + xMargin, minRect.bottom() + yMargin, box->width() - xMargin, font2.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( QColor( 255, 215, 0 ), Qt::SolidPattern ), 2 ) );
-                    str = QString( "Max: %1 mm" ).arg( QString::number( ROUNDING + classMaxLine.length() / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    str = QString( "Max: %1 mm" ).arg( QString::number( m_rounding + classMaxLine.length() / double(currPxPerMm), 'f', m_measurementPrecision ) );
                     painter->drawText( maxRect.bottomLeft(), str );
 
                     QRect areaRect( box->left() + xMargin, maxRect.bottom() + yMargin, box->width() - xMargin, font2.pointSize() + yMargin );
                     painter->setPen( QPen( QBrush( Qt::magenta, Qt::SolidPattern ), 2 ) );
-                    str = QString( "Area: %1 mm" ).arg( QString::number( ROUNDING + polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', MeasurementPrecision ) );
+                    str = QString( "Area: %1 mm" ).arg( QString::number( m_rounding + polygonArea / double(currPxPerMm) / double(currPxPerMm), 'f', m_measurementPrecision ) );
                     painter->drawText( areaRect.bottomLeft(), str );
                     /*
                      * Draw a superscript "2" using drawText by finding the right edge of the drawn text and drawing a smaller font

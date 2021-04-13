@@ -1,5 +1,7 @@
 #include "signalmodel.h"
 #include "logger.h"
+#include "Utility/userSettings.h"
+#include <QFile>
 
 
 SignalModel* SignalModel::m_instance{nullptr};
@@ -7,6 +9,8 @@ SignalModel* SignalModel::m_instance{nullptr};
 SignalModel::SignalModel()
 {
     allocateOctData();
+    const auto& settings = userSettings::Instance();
+    m_simulationFrameCount = settings.getSequenceLimitL();
 }
 
 void SignalModel::allocateOctData()
@@ -18,7 +22,9 @@ void SignalModel::allocateOctData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-    for(int i = 0; i < FRAME_BUFFER_SIZE; ++i){
+    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
+
+    for(int i = 0; i < frameBufferCount; ++i){
 
         OCTFile::OctData_t oct;
 
@@ -27,7 +33,40 @@ void SignalModel::allocateOctData()
 
         m_octData.push_back(oct);
     }
+}
 
+void SignalModel::saveOct(const OctData &od)
+{
+    QString dir = userSettings::Instance().getSimDir();
+
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QFile file(fn);
+
+    if(file.open(QFile::WriteOnly)){
+        auto len = file.write(reinterpret_cast<const char*>(od.acqData), od.bufferLength * 1024);
+        LOG3(fn, od.bufferLength, len);
+        file.close();
+    }
+}
+
+bool SignalModel::retrieveOct(OctData &od)
+{
+    bool success = false;
+    QString dir = userSettings::Instance().getSimDir();
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QFile file(fn);
+
+    if(file.open(QFile::ReadOnly)){
+        auto len = file.read(reinterpret_cast<char*>(od.acqData), MAX_ACQ_IMAGE_SIZE);
+        od.bufferLength = len / 1024;
+        LOG3(fn, od.acqData, len);
+        file.close();
+        success = len > 0;
+    } else {
+        LOG1(fn)
+    }
+
+    return success;
 }
 
 const cl_float* SignalModel::getCatheterRadius_um() const
@@ -255,10 +294,11 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
     m_isAveragingNoiseReduction = isAveragingNoiseReduction;
 }
 
-void SignalModel::pushImageRenderingQueue(const OctData& od)
+void SignalModel::pushImageRenderingQueue(OctData &od)
 {
+    auto data = handleSimulationSettings(od);
     QMutexLocker guard(&m_imageRenderingMutex);
-    m_imageRenderingQueue.push(od);
+    m_imageRenderingQueue.push(data);
 }
 
 void SignalModel::popImageRenderingQueue()
@@ -274,8 +314,10 @@ bool SignalModel::isImageRenderingQueueGTE(size_t length) const
 
 std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 {
+    QMutexLocker guard(&m_imageRenderingMutex);
     std::pair<bool, OctData> retVal{false, OctData()};
-    if(isImageRenderingQueueGTE(2)){
+    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
+    if(isImageRenderingQueueGTE(frameBufferCount/2 + 1)){
         retVal.second = m_imageRenderingQueue.front();
         retVal.first = true;
     }
@@ -289,6 +331,37 @@ void SignalModel::freeOctData()
         delete [] it->dispData;
     }
     m_octData.clear();
+}
+
+OctData SignalModel::handleSimulationSettings(OctData &od)
+{
+    const auto& settings = userSettings::Instance();
+    const bool isSimulation = settings.getIsSimulation();
+    const bool isRecording = settings.getIsRecording();
+    const bool isSequencial = settings.getIsSequencial();
+    const int  sequenceLimitH = settings.getSequenceLimitH();
+    const int  sequenceLimitL = settings.getSequenceLimitL();
+
+    if(isSimulation){
+        if(isRecording){
+            if(isSequencial){
+                od.frameCount = m_simulationFrameCount++;
+            }
+            if(m_simulationFrameCount < sequenceLimitH){
+                saveOct(od);
+            }
+        } else {
+//            OCTFile::OctData_t* axsunData = getOctData(0);
+            if(m_simulationFrameCount > sequenceLimitH){
+                m_simulationFrameCount = sequenceLimitL;
+            }
+            od.frameCount = m_simulationFrameCount++;
+            od.acqData = od.acqData;
+            retrieveOct(od);
+        }
+    }
+
+    return od;
 }
 
 OCTFile::OctData_t *SignalModel::getOctData(int index)

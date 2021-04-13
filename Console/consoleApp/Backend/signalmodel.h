@@ -19,7 +19,9 @@ public:
     OCTFile::OctData_t * getOctData(int index);
     void freeOctData();
 
-    void pushImageRenderingQueue(const OctData& od);
+    OctData handleSimulationSettings(OctData& od);
+
+    void pushImageRenderingQueue(OctData& od);
     void popImageRenderingQueue();
     bool isImageRenderingQueueGTE(size_t length) const;
     std::pair<bool, OctData>  frontImageRenderingQueue();
@@ -106,6 +108,8 @@ public: //functions
 private: //functions
     SignalModel();
     void allocateOctData();
+    void saveOct(const OctData& od);
+    bool retrieveOct(OctData& od);
 
 private: //data
     static SignalModel* m_instance;
@@ -113,6 +117,7 @@ private: //data
     std::vector<OctData> m_octData;
     QMutex m_imageRenderingMutex;
     std::queue<OctData> m_imageRenderingQueue;
+    int m_simulationFrameCount{0};
 
     cl_uint m_linesPerRevolution{1184};
     //post fft
@@ -150,6 +155,7 @@ private: //data
     cl_mem m_warpVideoBuffer{nullptr};
 
     int m_dvacedViewSourceFrameNumber{0};
+    const QString m_simFnBase{"C:/Avinger_System/"};
 };
 
 #endif // SIGNALMODEL_H

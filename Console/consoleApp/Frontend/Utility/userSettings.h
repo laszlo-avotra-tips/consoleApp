@@ -198,6 +198,22 @@ public:
 
     QString getSerialNumber() const;
 
+    int getIsSimulation() const;
+
+    int getIsRecording() const;
+
+    int getIsSequencial() const;
+
+    int getSequenceLimitH() const;
+
+    int getSequenceLimitL() const;
+
+    int getNumberOfDaqBuffers() const;
+
+    int getMeasurementPrecision() const;
+
+    QString getSimDir() const;
+
 private:
     void saveSettings();
     void loadVarSettings();
@@ -215,6 +231,14 @@ private:
     int  daqIndexDecimation;
     int  disableRendering;
     int  disableExternalMonitor;
+    int  isSimulation;
+    int  isRecording;
+    int  isSequencial;
+    int  sequenceLimitL;
+    int  sequenceLimitH;
+    int  numberOfDaqBuffers;
+    int  measurementPrecision;
+    QString simDir;
 
     int  recordingDurationMin;
     QDate m_serviceDate;

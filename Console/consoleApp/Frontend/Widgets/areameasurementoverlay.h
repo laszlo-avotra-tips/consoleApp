@@ -70,6 +70,8 @@ private:
     int polygonArea;
     int m_width{0};
     int m_height{0};
+    int m_measurementPrecision{2};
+    double m_rounding{0.005};
 
 protected:
     void mouseMoveEvent( QGraphicsSceneMouseEvent *event );

@@ -388,7 +388,11 @@ void MainScreen::showEvent(QShowEvent *se)
             QPixmap tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
             pixmap->setPixmap(tmpPixmap);
         }
-
+        bool isSimulation = userSettings::Instance().getIsSimulation();
+        LOG1(isSimulation)
+        if(!isSimulation){
+            ui->labelSim->hide();
+        }
     }
 }
 
@@ -519,6 +523,7 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
     } else {
         updateDeviceSettings();
     }
+    m_scene->paintOverlay();
 }
 
 void MainScreen::openDisplayOptionsDialog()
@@ -544,6 +549,7 @@ void MainScreen::openDisplayOptionsDialog()
         } else {
             on_pushButtonSettings_clicked();
         }
+        m_scene->paintOverlay();
     }
 }
 
@@ -789,9 +795,12 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
        auto val = sm->frontImageRenderingQueue();
        if(val.first){
            auto& frame = val.second;
+           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
            sm->popImageRenderingQueue();
-           uint32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-           missedImageCountAcc += missedImageCount;
+           int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+           if(missedImageCount > 0){
+                missedImageCountAcc += missedImageCount;
+           }
            lastGoodImage = frame.frameCount;
            if(m_imageDecimation && (++count % m_imageDecimation == 0)){
                float percent = 100.0f * missedImageCountAcc / frame.frameCount;
@@ -812,7 +821,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                         QString activePassiveValue{"ACTIVE"};
                         auto interfaceSupport = InterfaceSupport::getInstance();
-//                        int currentSledRunningStateVal{m_sledRunningStateVal}; //{interfaceSupport->getLastRunningState()};
 
                         if(m_sledRunningState != m_sledRunningStateVal){
                             m_sledRunningState = m_sledRunningStateVal;
@@ -826,8 +834,14 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             }
                             if(m_sledRunningState){
                                 interfaceSupport->setVOAMode(true);
+                                if(m_scene){
+                                    m_scene->paintOverlay();
+                                }
                             } else {
                                interfaceSupport->setVOAMode(false);
+                            }
+                            if(m_scene){
+                                m_scene->paintOverlay();
                             }
                         }
 
@@ -855,7 +869,12 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                        if(pixmap && !m_disableRendering && m_sledRunningState){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
-                           m_scene->paintOverlay();
+                           if( userSettings::Instance().getIsRecording()){
+                                ui->labelSim->setText(QString("recording ") + QString::number(frame.frameCount));
+                           } else {
+                                ui->labelSim->setText(QString("retrieving ") + QString::number(frame.frameCount));
+                           }
+//                           m_scene->paintOverlay();
                        }
                    }
                }

@@ -96,6 +96,30 @@ void userSettings::loadProfileSettings()
     disableExternalMonitor = profileSettings->value( "control/disableExternalMonitor", 0).toInt();
     LOG1(disableExternalMonitor);
 
+    isSimulation = profileSettings->value( "control/isSimulation", 0).toInt();
+    LOG1(isSimulation);
+
+    isRecording = profileSettings->value( "control/isRecording", 0).toInt();
+    LOG1(isRecording);
+
+    isSequencial = profileSettings->value( "control/isSequencial", 0).toInt();
+    LOG1(isSequencial);
+
+    sequenceLimitL = profileSettings->value( "control/sequenceLimitL", 1).toInt();
+    LOG1(sequenceLimitL);
+
+    sequenceLimitH = profileSettings->value( "control/sequenceLimitH", 2).toInt();
+    LOG1(sequenceLimitH);
+
+    numberOfDaqBuffers = profileSettings->value( "control/numberOfDaqBuffers", 2).toInt();
+    LOG1(numberOfDaqBuffers);
+
+    measurementPrecision = profileSettings->value( "control/measurementPrecision", 2).toInt();
+    LOG1(measurementPrecision);
+
+    simDir = profileSettings->value( "control/simDir", "sim11").toString();
+    LOG1(simDir);
+
     recordingDurationMin = profileSettings->value( "recording/durationMinimum_ms", 3000).toInt();
     LOG1(recordingDurationMin)
 
@@ -111,6 +135,46 @@ void userSettings::loadProfileSettings()
 
     m_serialNumber = profileSettings->value( "System/serialNumber", "0000").toString();
     LOG1(m_serialNumber)
+}
+
+QString userSettings::getSimDir() const
+{
+    return simDir;
+}
+
+int userSettings::getMeasurementPrecision() const
+{
+    return measurementPrecision;
+}
+
+int userSettings::getNumberOfDaqBuffers() const
+{
+    return numberOfDaqBuffers;
+}
+
+int userSettings::getSequenceLimitL() const
+{
+    return sequenceLimitL;
+}
+
+int userSettings::getSequenceLimitH() const
+{
+    return sequenceLimitH;
+}
+
+int userSettings::getIsSequencial() const
+{
+    return isSequencial;
+}
+
+int userSettings::getIsRecording() const
+{
+    return isRecording;
+}
+
+int userSettings::getIsSimulation() const
+{
+    return isSimulation;
 }
 
 void userSettings::setLocation(const QString &location)

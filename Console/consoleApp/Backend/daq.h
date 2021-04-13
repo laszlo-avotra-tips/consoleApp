@@ -30,7 +30,7 @@ public:
 private:
     bool startDaq();
     void setSubSamplingFactor();
-    bool getData(new_image_callback_data_t data);
+    void getData(new_image_callback_data_t data);
     void initLogLevelAndDecimation();
     void logRegisterValue(int line, int reg);
 
@@ -48,7 +48,7 @@ private:
     };
     const int m_framesUntilForceTrigDefault{24};
 
-    int m_frameNumber{FRAME_BUFFER_SIZE - 1};
+    int m_frameNumber;
     AOChandle session{nullptr};
     QElapsedTimer imageFrameTimer;
     char axMessage[256];
