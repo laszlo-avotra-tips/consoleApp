@@ -870,9 +870,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
                            if( userSettings::Instance().getIsRecording()){
-                                ui->labelSim->setText(QString("recorded #") + QString::number(frame.frameCount));
+                                ui->labelSim->setText(QString("recording ") + QString::number(frame.frameCount));
                            } else {
-                                ui->labelSim->setText(QString("retrieved #") + QString::number(frame.frameCount));
+                                ui->labelSim->setText(QString("retrieving ") + QString::number(frame.frameCount));
                            }
 //                           m_scene->paintOverlay();
                        }
