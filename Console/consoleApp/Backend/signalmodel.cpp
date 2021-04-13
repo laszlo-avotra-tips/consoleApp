@@ -351,14 +351,12 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
                 saveOct(od);
             }
         } else {
-//            OCTFile::OctData_t* axsunData = getOctData(0);
+            OCTFile::OctData_t* axsunData = getOctData(0);
             if(m_simulationFrameCount > sequenceLimitH){
                 m_simulationFrameCount = sequenceLimitL;
             }
             od.frameCount = m_simulationFrameCount++;
-            if(userSettings::Instance().getIsSimulation()){
-                od.acqData = getOctData(0)->acqData;
-            }
+            od.acqData = axsunData->acqData;
             LOG1(od.acqData)
             retrieveOct(od);
         }
@@ -373,6 +371,7 @@ OCTFile::OctData_t *SignalModel::getOctData(int index)
 
     if(index <  int(m_octData.size())){
         retVal = &m_octData[index];
+        LOG2(index, retVal->acqData)
     }
     return retVal;
 }
