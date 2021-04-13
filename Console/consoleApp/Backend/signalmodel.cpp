@@ -26,12 +26,12 @@ void SignalModel::allocateOctData()
 
     for(int i = 0; i < frameBufferCount; ++i){
 
-        OCTFile::OctData_t* oct = new OCTFile::OctData_t();
+        OCTFile::OctData_t oct;
 
-        oct->dispData  = new uint8_t [dispDataSize];
-        oct->acqData   = new uint8_t [MAX_ACQ_IMAGE_SIZE];
+        oct.dispData  = new uint8_t [dispDataSize];
+        oct.acqData   = new uint8_t [MAX_ACQ_IMAGE_SIZE];
 
-        m_octData.push_back(*oct);
+        m_octData[i] = oct;
     }
 }
 
@@ -326,10 +326,8 @@ std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 void SignalModel::freeOctData()
 {
     for(auto it = m_octData.begin(); it != m_octData.end(); ++it){
-        delete [] it->acqData;
-        delete [] it->dispData;
-        auto& reference = *it;
-        delete &reference;
+        delete [] it->second.acqData;
+        delete [] it->second.dispData;
     }
     m_octData.clear();
 }
@@ -352,12 +350,12 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
                 saveOct(od);
             }
         } else {
-            OCTFile::OctData_t* axsunData = getOctData(0);
+            OCTFile::OctData_t axsunData = getOctData(0);
             if(m_simulationFrameCount > sequenceLimitH){
                 m_simulationFrameCount = sequenceLimitL;
             }
             od.frameCount = m_simulationFrameCount++;
-            od.acqData = axsunData->acqData;
+            od.acqData = axsunData.acqData;
             LOG1(od.acqData)
             retrieveOct(od);
         }
@@ -366,13 +364,17 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     return od;
 }
 
-OCTFile::OctData_t *SignalModel::getOctData(int index)
+OCTFile::OctData_t SignalModel::getOctData(int index)
 {
-    OCTFile::OctData_t* octData = &(m_octData[0]);
+    OCTFile::OctData_t octData;
+    auto it = m_octData.find(index);
 
-    if(index && ( index <  int(m_octData.size()) ) ){
-        octData = &(m_octData[index]);
+    if(it != m_octData.end())
+    {
+        octData = it->second;
+    } else {
+        octData = m_octData.begin()->second;
     }
-    LOG3(index, octData->acqData, m_octData.size())
+    LOG3(index, octData.acqData, m_octData.size())
     return octData;
 }

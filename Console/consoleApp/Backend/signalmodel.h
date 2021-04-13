@@ -6,6 +6,7 @@
 #include "defaults.h"
 #include "octFile.h"
 #include <queue>
+#include <map>
 
 using OctData = OCTFile::OctData_t;
 
@@ -16,7 +17,7 @@ class SignalModel : public QObject
 public:
     static SignalModel* instance();
 
-    OCTFile::OctData_t * getOctData(int index);
+    OCTFile::OctData_t getOctData(int index);
     void freeOctData();
 
     OctData handleSimulationSettings(OctData& od);
@@ -114,7 +115,7 @@ private: //functions
 private: //data
     static SignalModel* m_instance;
 
-    std::vector<OctData> m_octData;
+    std::map<int, OctData> m_octData;
     QMutex m_imageRenderingMutex;
     std::queue<OctData> m_imageRenderingQueue;
     int m_simulationFrameCount{0};
