@@ -26,12 +26,12 @@ void SignalModel::allocateOctData()
 
     for(int i = 0; i < frameBufferCount; ++i){
 
-        OCTFile::OctData_t oct;
+        OCTFile::OctData_t* oct = new OCTFile::OctData_t();
 
-        oct.dispData  = new uint8_t [dispDataSize];
-        oct.acqData   = new uint8_t [MAX_ACQ_IMAGE_SIZE];
+        oct->dispData  = new uint8_t [dispDataSize];
+        oct->acqData   = new uint8_t [MAX_ACQ_IMAGE_SIZE];
 
-        m_octData.push_back(oct);
+        m_octData.push_back(*oct);
     }
 }
 
@@ -328,6 +328,8 @@ void SignalModel::freeOctData()
     for(auto it = m_octData.begin(); it != m_octData.end(); ++it){
         delete [] it->acqData;
         delete [] it->dispData;
+        auto& reference = *it;
+        delete &reference;
     }
     m_octData.clear();
 }
