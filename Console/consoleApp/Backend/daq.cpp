@@ -327,12 +327,13 @@ void DAQ::getData(new_image_callback_data_t data)
     OCTFile::OctData_t axsunData;
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
 
-    if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1)){
-        axsunData = sm->getOctData(1);
-        LOG1(axsunData.acqData)
-    } else {
+//    if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1)){
+//        axsunData = sm->getOctData(1);
+//        LOG1(axsunData.acqData)
+//    } else
+    {
         axsunData = sm->getOctData(m_frameNumber);
-        LOG1(axsunData.acqData)
+//        LOG1(axsunData.acqData)
     }
 
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
