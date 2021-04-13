@@ -366,11 +366,11 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
 
 OCTFile::OctData_t *SignalModel::getOctData(int index)
 {
-    OCTFile::OctData_t * retVal {&m_octData[0]};
+    OCTFile::OctData_t& octData {m_octData[0]};
 
     if(index <  int(m_octData.size())){
-        retVal = &m_octData[index];
-        LOG2(index, retVal->acqData)
+        octData = m_octData[index];
+        LOG2(index, octData.acqData)
     }
-    return retVal;
+    return &octData;
 }
