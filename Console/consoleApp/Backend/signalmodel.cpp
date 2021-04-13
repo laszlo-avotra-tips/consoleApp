@@ -316,8 +316,7 @@ std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     std::pair<bool, OctData> retVal{false, OctData()};
-    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
-    if(isImageRenderingQueueGTE(frameBufferCount/2 + 1)){
+    if(isImageRenderingQueueGTE(1)){
         retVal.second = m_imageRenderingQueue.front();
         retVal.first = true;
     }
