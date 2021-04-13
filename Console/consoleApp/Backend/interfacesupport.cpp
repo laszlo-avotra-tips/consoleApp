@@ -136,8 +136,17 @@ bool InterfaceSupport::initalizeFTDIDevice() {
 bool InterfaceSupport::resetInterfaceBoard() {
     bool result = true;
 
-    QString msg = "Reset interface board";
-    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, 0xF0, 0x20 );  // Reset interface board
+    QString msg = "Reset interface board - pull reset line low";
+
+    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // Reset interface board
+    LOG3(ftStatus, FT_OK, msg);
+    if( ftStatus != FT_OK ) {
+        qDebug() << "Could not perform reset on interface board" << msg;
+        return false;
+    }
+
+    msg = "Reset interface board - pull reset line high";
+    ftStatus = FT_SetBitMode( ftHandle, 0xF0, 0x20 );  // Reset interface board
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
         qDebug() << "Could not perform reset on interface board" << msg;
