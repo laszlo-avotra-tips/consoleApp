@@ -357,9 +357,9 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
             }
             od.frameCount = m_simulationFrameCount++;
             if(userSettings::Instance().getIsSimulation()){
-                od.acqData = getOctData(1)->acqData;
+                od.acqData = getOctData(0)->acqData;
             }
-
+            LOG1(od.acqData)
             retrieveOct(od);
         }
     }
