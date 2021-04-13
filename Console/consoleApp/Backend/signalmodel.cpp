@@ -22,7 +22,7 @@ void SignalModel::allocateOctData()
 
     LOG3(rawDataSize, fftDataSize, dispDataSize); //8192, 4096, 1024, 1982464
 
-    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
+    int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers() + int(userSettings::Instance().getIsSimulation());
 
     for(int i = 0; i < frameBufferCount; ++i){
 
@@ -356,7 +356,10 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
                 m_simulationFrameCount = sequenceLimitL;
             }
             od.frameCount = m_simulationFrameCount++;
-            od.acqData = od.acqData;
+            if(userSettings::Instance().getIsSimulation()){
+                od.acqData = getOctData(0)->acqData;
+            }
+
             retrieveOct(od);
         }
     }
