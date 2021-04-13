@@ -324,11 +324,13 @@ void DAQ::getData(new_image_callback_data_t data)
 
     auto* sm = SignalModel::instance();
 
-    OCTFile::OctData_t* axsunData = sm->getOctData(m_frameNumber);
+    OCTFile::OctData_t* axsunData = nullptr;
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
 
-    if(userSettings::Instance().getIsSimulation() && frameBufferCount > 1){
+    if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1)){
         axsunData = sm->getOctData(1);
+    } else {
+        axsunData = sm->getOctData(m_frameNumber);
     }
 
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
