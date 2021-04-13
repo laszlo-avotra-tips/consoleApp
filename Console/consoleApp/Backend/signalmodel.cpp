@@ -372,7 +372,7 @@ OCTFile::OctData_t *SignalModel::getOctData(int index)
 
     if(index && ( index <  int(m_octData.size()) ) ){
         octData = &(m_octData[index]);
-        LOG2(index, octData->acqData)
     }
+    LOG2(index, octData->acqData)
     return octData;
 }
