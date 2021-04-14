@@ -105,11 +105,11 @@ void userSettings::loadProfileSettings()
     isSequencial = profileSettings->value( "control/isSequencial", 0).toInt();
     LOG1(isSequencial);
 
-    sequenceLimitL = profileSettings->value( "control/sequenceLimitL", 1).toInt();
-    LOG1(sequenceLimitL);
+    startFrame = profileSettings->value( "control/startFrame", 0).toInt();
+    LOG1(startFrame);
 
-    sequenceLimitH = profileSettings->value( "control/sequenceLimitH", 2).toInt();
-    LOG1(sequenceLimitH);
+    endFrame = profileSettings->value( "control/endFrame", 16).toInt();
+    LOG1(endFrame);
 
     numberOfDaqBuffers = profileSettings->value( "control/numberOfDaqBuffers", 2).toInt();
     LOG1(numberOfDaqBuffers);
@@ -152,14 +152,14 @@ int userSettings::getNumberOfDaqBuffers() const
     return numberOfDaqBuffers;
 }
 
-int userSettings::getSequenceLimitL() const
+int userSettings::getStartFrame() const
 {
-    return sequenceLimitL;
+    return startFrame;
 }
 
-int userSettings::getSequenceLimitH() const
+int userSettings::getEndFrame() const
 {
-    return sequenceLimitH;
+    return endFrame;
 }
 
 int userSettings::getIsSequencial() const
