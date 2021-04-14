@@ -662,7 +662,7 @@ CASE</string>
          <item>
           <widget class="QLabel" name="labelSim">
            <property name="text">
-            <string>Frame </string>
+            <string>Simulation</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

@@ -204,9 +204,9 @@ public:
 
     int getIsSequencial() const;
 
-    int getSequenceLimitH() const;
+    int getEndFrame() const;
 
-    int getSequenceLimitL() const;
+    int getStartFrame() const;
 
     int getNumberOfDaqBuffers() const;
 
@@ -234,8 +234,8 @@ private:
     int  isSimulation;
     int  isRecording;
     int  isSequencial;
-    int  sequenceLimitL;
-    int  sequenceLimitH;
+    int  startFrame;
+    int  endFrame;
     int  numberOfDaqBuffers;
     int  measurementPrecision;
     QString simDir;

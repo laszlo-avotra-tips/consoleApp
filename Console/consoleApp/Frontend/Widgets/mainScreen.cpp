@@ -795,10 +795,10 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
        auto val = sm->frontImageRenderingQueue();
        if(val.first){
            auto& frame = val.second;
-           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
+//           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
            sm->popImageRenderingQueue();
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-           if(missedImageCount > 0){
+           if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
            }
            lastGoodImage = frame.frameCount;
