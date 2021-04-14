@@ -313,4 +313,7 @@ void DisplayOptionsDialog::handleImageBrightness(int brightness)
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( brightness );
     LOG1(brightness)
+    if(m_scene){
+        m_scene->paintOverlay();
+    }
 }
