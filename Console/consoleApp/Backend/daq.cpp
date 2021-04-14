@@ -329,7 +329,7 @@ void DAQ::getData(new_image_callback_data_t data)
 
     if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1)){
         axsunData = sm->getOctData(1);
-        LOG1(axsunData.acqData)
+//        LOG1(axsunData.acqData)
     } else
     {
         axsunData = sm->getOctData(m_frameNumber);
@@ -379,7 +379,7 @@ void DAQ::getData(new_image_callback_data_t data)
             ){
         axsunData.timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(axsunData);
-        LOG4(axsunData.frameCount,axsunData.acqData, axsunData.bufferLength, dropped_packets)
+//        LOG4(axsunData.frameCount,axsunData.acqData, axsunData.bufferLength, dropped_packets)
                 ++m_daqCount;
     }
 }
