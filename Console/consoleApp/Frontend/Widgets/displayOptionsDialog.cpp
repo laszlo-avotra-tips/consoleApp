@@ -149,6 +149,10 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
     emit reticleBrightnessChanged();
 
     ui->labelReticleBrightness->setNum(reticleBrightness * 100 / 255);
+
+    if(m_scene){
+        m_scene->paintOverlay();
+    }
 }
 
 void DisplayOptionsDialog::handleUp()
@@ -313,7 +317,4 @@ void DisplayOptionsDialog::handleImageBrightness(int brightness)
     userSettings &settings = userSettings::Instance();
     settings.setBrightness( brightness );
     LOG1(brightness)
-    if(m_scene){
-        m_scene->paintOverlay();
-    }
 }
