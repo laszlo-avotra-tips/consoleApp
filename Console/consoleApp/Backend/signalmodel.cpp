@@ -338,24 +338,24 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     const bool isSimulation = settings.getIsSimulation();
     const bool isRecording = settings.getIsRecording();
     const bool isSequencial = settings.getIsSequencial();
-    const int  sequenceLimitH = settings.getEndFrame();
-    const int  sequenceLimitL = settings.getStartFrame();
+    const int  endFrame = settings.getEndFrame();
+    const int  startFrame = settings.getStartFrame();
 
     if(isSimulation){
         if(isRecording){
             if(isSequencial){
                 od.frameCount = m_simulationFrameCount++;
             }
-            if(m_simulationFrameCount < sequenceLimitH){
+            if(m_simulationFrameCount <= endFrame){
                 saveOct(od);
             }
         } else {
-//            OCTFile::OctData_t axsunData = getOctData(0);
-            if(m_simulationFrameCount > sequenceLimitH){
-                m_simulationFrameCount = sequenceLimitL;
+            OCTFile::OctData_t axsunData = getOctData(0);
+            if(m_simulationFrameCount > endFrame){
+                m_simulationFrameCount = startFrame;
             }
             od.frameCount = m_simulationFrameCount++;
-//            od.acqData = axsunData.acqData;
+            od.acqData = axsunData.acqData;
 //            LOG1(od.acqData)
             retrieveOct(od);
         }
@@ -375,6 +375,6 @@ OCTFile::OctData_t SignalModel::getOctData(int index)
     } else {
         octData = m_octData.begin()->second;
     }
-    LOG3(index, octData.acqData, m_octData.size())
+//    LOG3(index, octData.acqData, m_octData.size())
     return octData;
 }
