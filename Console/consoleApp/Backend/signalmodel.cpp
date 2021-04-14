@@ -43,8 +43,8 @@ void SignalModel::saveOct(const OctData &od)
     QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
     QFile file(fn);
 
+    QMutexLocker guard(&m_imageRenderingMutex);
     if(file.open(QFile::WriteOnly)){
-        QMutexLocker guard(&m_imageRenderingMutex);
         auto len = file.write(reinterpret_cast<const char*>(od.acqData), od.bufferLength * 1024);
 //        LOG3(fn, od.bufferLength, len);
         file.close();
@@ -58,8 +58,8 @@ bool SignalModel::retrieveOct(OctData &od)
     QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
     QFile file(fn);
 
+    QMutexLocker guard(&m_imageRenderingMutex);
     if(file.open(QFile::ReadOnly)){
-        QMutexLocker guard(&m_imageRenderingMutex);
         auto len = file.read(reinterpret_cast<char*>(od.acqData), MAX_ACQ_IMAGE_SIZE);
         od.bufferLength = len / 1024;
 //        LOG3(fn, od.acqData, len);
