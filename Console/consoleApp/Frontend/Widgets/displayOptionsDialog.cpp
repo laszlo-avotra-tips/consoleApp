@@ -149,6 +149,10 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
     emit reticleBrightnessChanged();
 
     ui->labelReticleBrightness->setNum(reticleBrightness * 100 / 255);
+
+    if(m_scene){
+        m_scene->paintOverlay();
+    }
 }
 
 void DisplayOptionsDialog::handleUp()
