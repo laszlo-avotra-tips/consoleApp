@@ -24,6 +24,7 @@ void SignalModel::allocateOctData()
 
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers() + int(userSettings::Instance().getIsSimulation());
 
+    QMutexLocker guard(&m_imageRenderingMutex);
     for(int i = 0; i < frameBufferCount; ++i){
 
         OCTFile::OctData_t oct;
@@ -325,6 +326,7 @@ std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 
 void SignalModel::freeOctData()
 {
+    QMutexLocker guard(&m_imageRenderingMutex);
     for(auto it = m_octData.begin(); it != m_octData.end(); ++it){
         delete [] it->second.acqData;
         delete [] it->second.dispData;
@@ -366,6 +368,8 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
 
 OCTFile::OctData_t SignalModel::getOctData(int index)
 {
+    QMutexLocker guard(&m_imageRenderingMutex);
+
     OCTFile::OctData_t octData;
     auto it = m_octData.find(index);
 
