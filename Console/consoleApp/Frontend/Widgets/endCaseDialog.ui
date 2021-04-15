@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>endCaseDialog</class>
  <widget class="QDialog" name="endCaseDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -51,6 +54,12 @@ font: 20pt &quot;Helvetica Neue&quot;;
 color:white;
 background-color: black;
 }</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <widget class="QLabel" name="labelTitle">
    <property name="geometry">

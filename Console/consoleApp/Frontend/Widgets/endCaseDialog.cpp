@@ -7,9 +7,6 @@ endCaseDialog::endCaseDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
-    setWindowFlags( windowFlags() & Qt::CustomizeWindowHint );
-    setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
-
 }
 
 endCaseDialog::~endCaseDialog()
