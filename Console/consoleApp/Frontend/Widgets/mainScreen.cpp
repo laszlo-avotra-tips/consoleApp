@@ -880,7 +880,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                        QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-                       if(pixmap && !m_disableRendering && m_sledRunningState){
+                       if(pixmap && !m_disableRendering){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
                            if( userSettings::Instance().getIsRecording()){
