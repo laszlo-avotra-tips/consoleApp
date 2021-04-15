@@ -128,6 +128,9 @@ void DisplayOptionsDialog::setImagingDepth(int depthIndex)
     m_depthIndex = depthIndex;
     m_model->setDepthIndex(m_depthIndex);
     ui->horizontalSlider->setValue(depthIndex);
+    if(m_scene){
+        m_scene->paintOverlay();
+    }
 }
 
 
