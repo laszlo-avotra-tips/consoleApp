@@ -299,8 +299,8 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData &od)
 {
-    auto data = handleSimulationSettings(od);
     QMutexLocker guard(&m_imageRenderingMutex);
+    auto data = handleSimulationSettings(od);
     m_imageRenderingQueue.push(data);
 }
 
