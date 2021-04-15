@@ -47,6 +47,7 @@ HEADERS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.h \
     $$PWD/Frontend/Widgets/displayOptionsDialog.h \
     $$PWD/Frontend/Widgets/emptyDialog.h \
+    $$PWD/Frontend/Widgets/endCaseDialog.h \
     $$PWD/Frontend/Widgets/formDisk.h \
     $$PWD/Frontend/Widgets/formPmCaseReview.h \
     $$PWD/Frontend/Widgets/formPmLogo.h \
@@ -141,6 +142,7 @@ SOURCES += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.cpp \
     $$PWD/Frontend/Widgets/displayOptionsDialog.cpp \
     $$PWD/Frontend/Widgets/emptyDialog.cpp \
+    $$PWD/Frontend/Widgets/endCaseDialog.cpp \
     $$PWD/Frontend/Widgets/formDisk.cpp \
     $$PWD/Frontend/Widgets/formPmCaseReview.cpp \
     $$PWD/Frontend/Widgets/formPmLogo.cpp \
@@ -199,6 +201,7 @@ FORMS += \
     $$PWD/Frontend/Widgets/deviceSelectDialog.ui \
     $$PWD/Frontend/Widgets/displayOptionsDialog.ui \
     $$PWD/Frontend/Widgets/emptyDialog.ui \
+    $$PWD/Frontend/Widgets/endCaseDialog.ui \
     $$PWD/Frontend/Widgets/formDisk.ui \
     $$PWD/Frontend/Widgets/formPmCaseReview.ui \
     $$PWD/Frontend/Widgets/formPmLogo.ui \
