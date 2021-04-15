@@ -107,6 +107,7 @@ private:
     void showYellowBorderForRecordingOn(bool recordingIsOn);
     void initRecording();
     void hookupEndCaseDiagnostics();
+    void handleEndCase();
 
 private:
     Ui::MainScreen *ui;

@@ -22,6 +22,7 @@
 #include "displayManager.h"
 #include "defaults.h"
 #include <Backend/interfacesupport.h>
+#include "endCaseDialog.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -243,6 +244,19 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
+    auto dialog = new endCaseDialog(this);
+
+    if(dialog->exec() == QDialog::Accepted){
+        handleEndCase();
+    } else {
+        dialog->hide();
+    }
+    delete dialog;
+}
+
+void MainScreen::handleEndCase()
+{
+
     DisplayManager::instance()->showOnTheSecondMonitor("logo");
     if(m_recordingIsOn){
         LOG1(m_recordingIsOn)
