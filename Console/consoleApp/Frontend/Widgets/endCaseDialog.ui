@@ -55,8 +55,8 @@ background-color: black;
   <widget class="QLabel" name="labelTitle">
    <property name="geometry">
     <rect>
-     <x>206</x>
-     <y>70</y>
+     <x>126</x>
+     <y>157</y>
      <width>1414</width>
      <height>134</height>
     </rect>
@@ -68,7 +68,7 @@ background-color: black;
     </sizepolicy>
    </property>
    <property name="text">
-    <string>SHUTDOWN CONFIRMATION</string>
+    <string>END CASE CONFIRMATION</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -77,8 +77,8 @@ background-color: black;
   <widget class="QPushButton" name="pushButtonCancel">
    <property name="geometry">
     <rect>
-     <x>548</x>
-     <y>632</y>
+     <x>468</x>
+     <y>719</y>
      <width>283</width>
      <height>76</height>
     </rect>
@@ -96,11 +96,11 @@ background-color: black;
     <string>CANCEL</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButtonShutdown">
+  <widget class="QPushButton" name="pushButtonEndCase">
    <property name="geometry">
     <rect>
-     <x>898</x>
-     <y>632</y>
+     <x>818</x>
+     <y>719</y>
      <width>383</width>
      <height>76</height>
     </rect>
@@ -118,14 +118,14 @@ background-color: black;
     <string notr="true">background-color: #F5C400</string>
    </property>
    <property name="text">
-    <string>SHUTDOWN</string>
+    <string>END CASE</string>
    </property>
   </widget>
   <widget class="Line" name="line">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>227</y>
+     <x>0</x>
+     <y>314</y>
      <width>1633</width>
      <height>2</height>
     </rect>
@@ -140,8 +140,8 @@ background-color: black;
   <widget class="QLabel" name="labelInfo">
    <property name="geometry">
     <rect>
-     <x>178</x>
-     <y>398</y>
+     <x>98</x>
+     <y>485</y>
      <width>1461</width>
      <height>84</height>
     </rect>
@@ -153,7 +153,7 @@ background-color: black;
     </sizepolicy>
    </property>
    <property name="text">
-    <string>ARE YOU SURE YOU WANT TO SHUTDOWN?</string>
+    <string>ARE YOU SURE YOU WANT TO END THE CASE?</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -161,5 +161,38 @@ background-color: black;
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButtonEndCase</sender>
+   <signal>clicked()</signal>
+   <receiver>endCaseDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>756</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>816</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>endCaseDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>609</x>
+     <y>756</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>816</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
