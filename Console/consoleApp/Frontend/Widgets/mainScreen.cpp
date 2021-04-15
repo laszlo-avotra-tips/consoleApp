@@ -244,7 +244,7 @@ QSize MainScreen::getSceneSize()
 
 void MainScreen::on_pushButtonEndCase_clicked()
 {
-    auto dialog = new endCaseDialog(this);
+    auto dialog = new endCaseDialog();
 
     if(dialog->exec() == QDialog::Accepted){
         handleEndCase();
