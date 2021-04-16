@@ -838,6 +838,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                         if(m_sledRunningState != m_sledRunningStateVal){
                             m_sledRunningState = m_sledRunningStateVal;
+                            auto idaq = daqfactory::instance()->getdaq();
                             if(m_sledRunningState == 3)
                             {
                                activePassiveValue = "PASSIVE";
@@ -848,11 +849,13 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             }
                             if(m_sledRunningState){
                                 interfaceSupport->setVOAMode(true);
+                                LOG1(idaq->turnLaserOn());
                                 if(m_scene){
                                     m_scene->paintOverlay();
                                 }
                             } else {
                                interfaceSupport->setVOAMode(false);
+                               LOG1(idaq->turnLaserOff());
                             }
                             if(m_scene){
                                 m_scene->paintOverlay();
