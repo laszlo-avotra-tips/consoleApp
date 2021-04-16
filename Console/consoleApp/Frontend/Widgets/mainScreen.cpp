@@ -847,6 +847,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             {
                                activePassiveValue = "ACTIVE";
                             }
+
                             if(m_sledRunningState){
                                 auto laserOnSuccess = idaq->turnLaserOn();
                                 LOG1(laserOnSuccess)
@@ -856,6 +857,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                                 LOG1(laserOffSuccess)
                                 interfaceSupport->setVOAMode(false);
                             }
+
                             if(m_scene){
                                 m_scene->paintOverlay();
                             }
