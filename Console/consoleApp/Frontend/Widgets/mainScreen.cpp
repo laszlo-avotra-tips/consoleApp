@@ -250,6 +250,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         handleEndCase();
     } else {
         dialog->hide();
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     }
     delete dialog;
 }
