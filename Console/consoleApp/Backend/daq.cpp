@@ -57,7 +57,7 @@ bool DAQ::setLaserEmissionState(uint32_t emission_state)
     if(retval != AxErr::NO_AxERROR){
         char errorMsg[512];
         axGetErrorString(retval, errorMsg);
-        LOG2(int(retval), errorMsg)
+        LOG3(emission_state, int(retval), errorMsg)
     } else {
         success = true;
         LOG1(emission_state)
@@ -259,7 +259,7 @@ bool DAQ::turnLaserOn()
     // emission_state =1 enables laser emission, =0 disables laser emission.
     // which_laser The numeric index of the desired Laser.
     const uint32_t emission_state{1};
-
+    LOG1(emission_state)
     return setLaserEmissionState(emission_state);
 }
 
@@ -268,7 +268,7 @@ bool DAQ::turnLaserOff()
     // emission_state =1 enables laser emission, =0 disables laser emission.
     // which_laser The numeric index of the desired Laser.
     const uint32_t emission_state{0};
-
+    LOG1(emission_state)
     return setLaserEmissionState(emission_state);
 }
 
