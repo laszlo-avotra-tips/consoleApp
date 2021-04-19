@@ -672,13 +672,13 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 
     auto interfaceSupport = InterfaceSupport::getInstance();
     auto idaq = daqfactory::instance()->getdaq();
-    if(m_sledRunningState){
+    if(m_sledIsInRunningState){
         auto laserOnSuccess = idaq->turnLaserOn();
-        LOG1(laserOnSuccess)
+        LOG2(runningStateVal,laserOnSuccess)
         interfaceSupport->setVOAMode(true);
     } else {
         auto laserOffSuccess = idaq->turnLaserOff();
-        LOG1(laserOffSuccess)
+        LOG2(runningStateVal,laserOffSuccess)
         interfaceSupport->setVOAMode(false);
     }
 
