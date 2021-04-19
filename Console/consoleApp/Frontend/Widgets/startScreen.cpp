@@ -127,6 +127,8 @@ void StartScreen::on_pushButtonShutdown_clicked()
         QThread::sleep(1);
         InterfaceSupport::releaseInstance();
         LOG( INFO, "FTDI interface closed successfully");
+    } else {
+        DisplayManager::instance()->showOnTheSecondMonitor("logo");
     }
     delete dialog;
 }
