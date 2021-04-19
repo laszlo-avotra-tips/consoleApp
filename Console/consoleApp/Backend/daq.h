@@ -27,6 +27,9 @@ public:
 
     bool shutdownDaq() override;
 
+    virtual bool turnLaserOn() override;
+    virtual bool turnLaserOff() override;
+
 private:
     bool startDaq();
     void setSubSamplingFactor();
@@ -35,6 +38,7 @@ private:
     void logRegisterValue(int line, int reg);
 
     void logAxErrorVerbose(int line, AxErr e, int count = 0);
+    bool setLaserEmissionState(uint32_t emission_state); // emission_state =1 enables laser emission, =0 disables laser emission.
 
     static void NewImageArrived(new_image_callback_data_t data, void* user_ptr);
 

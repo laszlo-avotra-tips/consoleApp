@@ -1,5 +1,7 @@
 #include "shutdownConfirmationDialog.h"
 #include "ui_shutdownConfirmationDialog.h"
+#include "displayManager.h"
+
 
 ShutdownConfirmationDialog::ShutdownConfirmationDialog(QWidget *parent) :
     QDialog(parent),
@@ -7,6 +9,10 @@ ShutdownConfirmationDialog::ShutdownConfirmationDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::SplashScreen);
+
+    DisplayManager::instance()->showOnTheSecondMonitor("disk");
+    DisplayManager::instance()->setWindowTitle("SHUTDOWN IN PROCESS");
+
 }
 
 ShutdownConfirmationDialog::~ShutdownConfirmationDialog()

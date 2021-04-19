@@ -17,6 +17,8 @@ public:
 
     virtual IDAQ* getSignalSource() { return nullptr;}
     virtual bool shutdownDaq() = 0;
+    virtual bool turnLaserOn() = 0;
+    virtual bool turnLaserOff() = 0;
 
 signals:
     void sendWarning( QString );

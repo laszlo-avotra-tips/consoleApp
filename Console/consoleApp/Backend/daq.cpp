@@ -47,6 +47,24 @@ void DAQ::logAxErrorVerbose(int line, AxErr axErrorCode, int count)
     }
 }
 
+bool DAQ::setLaserEmissionState(uint32_t emission_state)
+{
+    bool success{false};
+    // emission_state =1 enables laser emission, =0 disables laser emission.
+    // which_laser The numeric index of the desired Laser.
+    const uint32_t which_laser{0};
+    AxErr retval = axSetLaserEmission(emission_state, which_laser);
+    if(retval != AxErr::NO_AxERROR){
+        char errorMsg[512];
+        axGetErrorString(retval, errorMsg);
+        LOG2(int(retval), errorMsg)
+    } else {
+        success = true;
+        LOG1(emission_state)
+    }
+    return success;
+}
+
 void DAQ::logRegisterValue(int line, int registerNumber)
 {
     uint16_t regVal{0};
@@ -81,16 +99,7 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
-    // emission_state =1 enables laser emission, =0 disables laser emission.
-    // which_laser The numeric index of the desired Laser.
-    const uint32_t emission_state{1};
-    const uint32_t which_laser{0};
-    retval = axSetLaserEmission(emission_state, which_laser);
-    if(retval != AxErr::NO_AxERROR){
-        char errorMsg[512];
-        axGetErrorString(retval, errorMsg);
-        LOG2(int(retval), errorMsg)
-    }
+    LOG1(turnLaserOn());
 
     // number_of_images =0 for Imaging Off (idle), =-1 for Live Imaging (no record), or any positive
     // value between 1 and 32767 to request the desired number of images in a Burst Record operation.
@@ -243,6 +252,24 @@ bool DAQ::shutdownDaq()
     LOG1(int(success));
 
     return success == AxErr::NO_AxERROR;
+}
+
+bool DAQ::turnLaserOn()
+{
+    // emission_state =1 enables laser emission, =0 disables laser emission.
+    // which_laser The numeric index of the desired Laser.
+    const uint32_t emission_state{1};
+
+    return setLaserEmissionState(emission_state);
+}
+
+bool DAQ::turnLaserOff()
+{
+    // emission_state =1 enables laser emission, =0 disables laser emission.
+    // which_laser The numeric index of the desired Laser.
+    const uint32_t emission_state{0};
+
+    return setLaserEmissionState(emission_state);
 }
 
 void DAQ::setSubSamplingFactor()

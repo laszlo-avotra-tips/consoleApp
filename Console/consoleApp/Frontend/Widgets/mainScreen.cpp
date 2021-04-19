@@ -250,6 +250,7 @@ void MainScreen::on_pushButtonEndCase_clicked()
         handleEndCase();
     } else {
         dialog->hide();
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     }
     delete dialog;
 }
@@ -670,6 +671,18 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 {
     m_sledIsInRunningState = (runningStateVal == 1) || (runningStateVal == 3);
 
+    auto interfaceSupport = InterfaceSupport::getInstance();
+    auto idaq = daqfactory::instance()->getdaq();
+    if(m_sledIsInRunningState){
+        auto laserOnSuccess = idaq->turnLaserOn();
+        LOG2(runningStateVal,laserOnSuccess)
+        interfaceSupport->setVOAMode(true);
+    } else {
+        auto laserOffSuccess = idaq->turnLaserOff();
+        LOG2(runningStateVal,laserOffSuccess)
+        interfaceSupport->setVOAMode(false);
+    }
+
     auto&ds = deviceSettings::Instance();
     auto device = ds.current();
 
@@ -834,7 +847,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                    if(image && frame.dispData){
 
                         QString activePassiveValue{"ACTIVE"};
-                        auto interfaceSupport = InterfaceSupport::getInstance();
 
                         if(m_sledRunningState != m_sledRunningStateVal){
                             m_sledRunningState = m_sledRunningStateVal;
@@ -846,14 +858,8 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                             {
                                activePassiveValue = "ACTIVE";
                             }
-                            if(m_sledRunningState){
-                                interfaceSupport->setVOAMode(true);
-                                if(m_scene){
-                                    m_scene->paintOverlay();
-                                }
-                            } else {
-                               interfaceSupport->setVOAMode(false);
-                            }
+
+
                             if(m_scene){
                                 m_scene->paintOverlay();
                             }
@@ -880,7 +886,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                        QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-                       if(pixmap && !m_disableRendering && m_sledRunningState){
+                       if(pixmap && !m_disableRendering){
                            const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
                            pixmap->setPixmap(tmpPixmap);
                            if( userSettings::Instance().getIsRecording()){
