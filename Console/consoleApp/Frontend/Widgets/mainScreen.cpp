@@ -516,11 +516,11 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
-        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
         m_daqTimer.start(3);
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
 
     } else {
         LOG1( "Cancelled")
