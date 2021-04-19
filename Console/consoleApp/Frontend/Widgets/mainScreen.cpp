@@ -670,6 +670,18 @@ void MainScreen::handleSledRunningState(int runningStateVal)
 {
     m_sledIsInRunningState = (runningStateVal == 1) || (runningStateVal == 3);
 
+    auto interfaceSupport = InterfaceSupport::getInstance();
+    auto idaq = daqfactory::instance()->getdaq();
+    if(m_sledRunningState){
+        auto laserOnSuccess = idaq->turnLaserOn();
+        LOG1(laserOnSuccess)
+        interfaceSupport->setVOAMode(true);
+    } else {
+        auto laserOffSuccess = idaq->turnLaserOff();
+        LOG1(laserOffSuccess)
+        interfaceSupport->setVOAMode(false);
+    }
+
     auto&ds = deviceSettings::Instance();
     auto device = ds.current();
 
@@ -834,11 +846,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                    if(image && frame.dispData){
 
                         QString activePassiveValue{"ACTIVE"};
-                        auto interfaceSupport = InterfaceSupport::getInstance();
 
                         if(m_sledRunningState != m_sledRunningStateVal){
                             m_sledRunningState = m_sledRunningStateVal;
-                            auto idaq = daqfactory::instance()->getdaq();
                             if(m_sledRunningState == 3)
                             {
                                activePassiveValue = "PASSIVE";
@@ -848,15 +858,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                                activePassiveValue = "ACTIVE";
                             }
 
-                            if(m_sledRunningState){
-                                auto laserOnSuccess = idaq->turnLaserOn();
-                                LOG1(laserOnSuccess)
-                                interfaceSupport->setVOAMode(true);
-                            } else {
-                                auto laserOffSuccess = idaq->turnLaserOff();
-                                LOG1(laserOffSuccess)
-                                interfaceSupport->setVOAMode(false);
-                            }
 
                             if(m_scene){
                                 m_scene->paintOverlay();
