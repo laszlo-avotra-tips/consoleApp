@@ -11,6 +11,11 @@ ScreenFactory::ScreenFactory()
     auto& log = Logger::Instance();
     log.init("ScreenFactory");
 
+    registerScreens();
+}
+
+void ScreenFactory::registerScreens()
+{
     StartScreen* startScreen = new StartScreen();
     WidgetContainer::instance()->registerWidget("startScreen", startScreen);
 
@@ -20,4 +25,10 @@ ScreenFactory::ScreenFactory()
     CaseReviewScreen* caseReviewScreen = new CaseReviewScreen();
     WidgetContainer::instance()->registerWidget("caseReviewScreen", caseReviewScreen);
 
+}
+
+void ScreenFactory::unRegisterScreens()
+{
+     WidgetContainer::instance()->unRegisterWidget("mainScreen");
+     WidgetContainer::instance()->unRegisterWidget("caseReviewScreen");
 }
