@@ -18,7 +18,9 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
 
     widgets->setStackedWidget(stack);
     widgets->setNavigator(this);
-    ScreenFactory pf;
+
+    ScreenFactory sf;
+    sf.registerScreens();
 
     int count = stack->count();
 
