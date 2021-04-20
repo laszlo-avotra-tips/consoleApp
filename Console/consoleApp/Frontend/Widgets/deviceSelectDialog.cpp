@@ -132,6 +132,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
 
     QWidget* widget = WidgetContainer::instance()->getScreen("mainScreen");
     MainScreen* ms = dynamic_cast<MainScreen*>(widget);
+    LOG2(widget,ms)
     if(ms){
       ms->showFullScreen();
       ms->setDeviceLabel();
