@@ -34,9 +34,3 @@ IDAQ *daqfactory::getdaq()
 
     return idaq;
 }
-
-void daqfactory::deleteDaq()
-{
-    delete idaq;
-    idaq = nullptr;
-}

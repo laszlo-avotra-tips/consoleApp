@@ -143,7 +143,6 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
 
 void DeviceSelectDialog::startDaq(MainScreen *ms)
 {
-    daqfactory::instance()->deleteDaq();
     auto idaq = daqfactory::instance()->getdaq();
 
     if(!idaq){
