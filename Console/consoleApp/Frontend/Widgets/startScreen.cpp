@@ -176,6 +176,10 @@ void StartScreen::on_pushButtonStart_released()
         ifs->setVOAMode(false);//2. svb
         LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
 
+        ScreenFactory sf;
+        sf.unRegisterScreens();
+        sf.registerScreens();
+
         WidgetContainer::instance()->gotoScreen("mainScreen");
     }
 }
@@ -229,7 +233,4 @@ void StartScreen::on_pushButtonStart_pressed()
 //    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
 //    DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
 
-    ScreenFactory sf;
-    sf.unRegisterScreens();
-    sf.registerScreens();
 }

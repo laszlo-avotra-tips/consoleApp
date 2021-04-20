@@ -29,12 +29,12 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
 
     widgets->gotoScreen("startScreen");
 
-    ScreenFactory sf;
-    sf.unRegisterScreens();
-    sf.registerScreens();
-    int pageCount = stack->count();
+//    ScreenFactory sf;
+//    sf.unRegisterScreens();
+//    sf.registerScreens();
+//    int pageCount = stack->count();
 
-    LOG1(pageCount);
+//    LOG1(pageCount);
 }
 
 ScreenNavigator::~ScreenNavigator()
