@@ -3,6 +3,7 @@
 #include "ui_screenNavigator.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
+#include "logger.h"
 #include <QDebug>
 #include <QFile>
 
@@ -19,6 +20,9 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
 
     widgets->setStackedWidget(stack);
     widgets->setNavigator(this);
+
+    auto& log = Logger::Instance();
+    log.init("ScreenNavigator");
 
     StartScreen* startScreen = new StartScreen();
     WidgetContainer::instance()->registerWidget("startScreen", startScreen);
