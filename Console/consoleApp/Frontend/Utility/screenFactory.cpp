@@ -1,5 +1,4 @@
 #include "screenFactory.h"
-#include "startScreen.h"
 #include "widgetcontainer.h"
 #include "mainScreen.h"
 #include "caseReviewScreen.h"
@@ -14,8 +13,6 @@ ScreenFactory::ScreenFactory()
 
 void ScreenFactory::registerScreens()
 {
-    StartScreen* startScreen = new StartScreen();
-    WidgetContainer::instance()->registerWidget("startScreen", startScreen);
 
     MainScreen* mainScreen = new MainScreen();
     WidgetContainer::instance()->registerWidget("mainScreen", mainScreen);
