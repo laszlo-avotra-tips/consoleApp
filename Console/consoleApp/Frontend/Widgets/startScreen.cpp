@@ -12,6 +12,7 @@
 #include "daqfactory.h"
 #include "preferencesDialog.h"
 #include "shutdownConfirmationDialog.h"
+#include "Utility/screenFactory.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -227,4 +228,8 @@ void StartScreen::on_pushButtonStart_pressed()
     m_isPressAndHold = false;
 //    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
 //    DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
+
+    ScreenFactory sf;
+    sf.unRegisterScreens();
+    sf.registerScreens();
 }
