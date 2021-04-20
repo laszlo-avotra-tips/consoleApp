@@ -7,8 +7,6 @@
 
 ScreenFactory::ScreenFactory()
 {
-    auto& log = Logger::Instance();
-    log.init("ScreenFactory");
 }
 
 void ScreenFactory::registerScreens()
