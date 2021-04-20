@@ -1,4 +1,5 @@
 #include "screenNavigator.h"
+#include "startScreen.h"
 #include "ui_screenNavigator.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
@@ -18,6 +19,9 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
 
     widgets->setStackedWidget(stack);
     widgets->setNavigator(this);
+
+    StartScreen* startScreen = new StartScreen();
+    WidgetContainer::instance()->registerWidget("startScreen", startScreen);
 
     ScreenFactory sf;
     sf.registerScreens();
