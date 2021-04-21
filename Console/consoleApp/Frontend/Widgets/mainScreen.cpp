@@ -516,11 +516,11 @@ void MainScreen::openDeviceSelectDialog()
         dialog->setScene(m_scene);
         model->persistModel();
         m_scene->handleDeviceChange();
-        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
         m_daqTimer.start(3);
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
 
     } else {
         LOG1( "Cancelled")
@@ -675,11 +675,11 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     auto idaq = daqfactory::instance()->getdaq();
     if(m_sledIsInRunningState){
         auto laserOnSuccess = idaq->turnLaserOn();
-        LOG2(runningStateVal,laserOnSuccess)
+        LOG2(m_sledIsInRunningState,laserOnSuccess)
         interfaceSupport->setVOAMode(true);
     } else {
         auto laserOffSuccess = idaq->turnLaserOff();
-        LOG2(runningStateVal,laserOffSuccess)
+        LOG2(m_sledIsInRunningState,laserOffSuccess)
         interfaceSupport->setVOAMode(false);
     }
 

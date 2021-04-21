@@ -22,11 +22,6 @@ extern "C" {
 DAQ::DAQ()
 {
     initLogLevelAndDecimation();
-
-    if( !startDaq() )
-    {
-        LOG1( "DAQ: Failed to start DAQ")
-    }
 }
 
 
@@ -57,7 +52,7 @@ bool DAQ::setLaserEmissionState(uint32_t emission_state)
     if(retval != AxErr::NO_AxERROR){
         char errorMsg[512];
         axGetErrorString(retval, errorMsg);
-        LOG2(int(retval), errorMsg)
+        LOG3(emission_state, int(retval), errorMsg)
     } else {
         success = true;
         LOG1(emission_state)
@@ -99,7 +94,7 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
-    LOG1(turnLaserOn());
+//    LOG1(turnLaserOn());
 
     // number_of_images =0 for Imaging Off (idle), =-1 for Live Imaging (no record), or any positive
     // value between 1 and 32767 to request the desired number of images in a Burst Record operation.
@@ -166,6 +161,10 @@ void DAQ::setSubsamplingAndForcedTrigger(int speed)
 bool DAQ::startDaq()
 {
     AxErr success = AxErr::NO_AxERROR;
+
+    m_numberOfConnectedDevices = 0;
+
+    shutdownDaq();
 
     try {
 
@@ -244,32 +243,51 @@ bool DAQ::startDaq()
 bool DAQ::shutdownDaq()
 {
     AxErr success = AxErr::NO_AxERROR;
+    int errorCount = 0;
 
     success = axStopSession(session);    // Stop Axsun engine session
     if(success != AxErr::NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
+        ++errorCount;
     }
     LOG1(int(success));
 
-    return success == AxErr::NO_AxERROR;
+    success = axCloseAxsunOCTControl();
+    if(success != AxErr::NO_AxERROR){
+        logAxErrorVerbose(__LINE__, success);
+        ++errorCount;
+    }
+    LOG1(int(success));
+
+    return errorCount == 0;
 }
 
 bool DAQ::turnLaserOn()
 {
+    bool success{false};
     // emission_state =1 enables laser emission, =0 disables laser emission.
     // which_laser The numeric index of the desired Laser.
-    const uint32_t emission_state{1};
 
-    return setLaserEmissionState(emission_state);
+    if(m_numberOfConnectedDevices == 2){
+        const uint32_t emission_state{1};
+        LOG1(emission_state)
+        success = setLaserEmissionState(emission_state);
+    }
+    return success;
 }
 
 bool DAQ::turnLaserOff()
 {
+    bool success{false};
     // emission_state =1 enables laser emission, =0 disables laser emission.
     // which_laser The numeric index of the desired Laser.
-    const uint32_t emission_state{0};
 
-    return setLaserEmissionState(emission_state);
+    if(m_numberOfConnectedDevices == 2){
+        const uint32_t emission_state{0};
+        LOG1(emission_state)
+        success = setLaserEmissionState(emission_state);
+    }
+    return success;
 }
 
 void DAQ::setSubSamplingFactor()

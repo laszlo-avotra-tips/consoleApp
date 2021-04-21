@@ -132,6 +132,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
 
     QWidget* widget = WidgetContainer::instance()->getScreen("mainScreen");
     MainScreen* ms = dynamic_cast<MainScreen*>(widget);
+    LOG2(widget,ms)
     if(ms){
       ms->showFullScreen();
       ms->setDeviceLabel();
@@ -149,6 +150,11 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
         return;
     }
     if(idaq){
+        if( !idaq->startDaq() )
+        {
+            LOG1( "DAQ: Failed to start DAQ")
+        }
+
         if(idaq->getSignalSource()){
             connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector, Qt::QueuedConnection);
             idaq->initDaq();

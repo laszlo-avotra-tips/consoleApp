@@ -10,6 +10,8 @@ class ScreenFactory
 {
 public:
     ScreenFactory();
+    void registerScreens();
+    void unRegisterScreens();
 
 };
 

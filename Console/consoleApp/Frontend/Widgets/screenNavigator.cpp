@@ -1,7 +1,9 @@
 #include "screenNavigator.h"
+#include "startScreen.h"
 #include "ui_screenNavigator.h"
 #include "Utility/widgetcontainer.h"
 #include "Utility/screenFactory.h"
+#include "logger.h"
 #include <QDebug>
 #include <QFile>
 
@@ -18,14 +20,21 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
 
     widgets->setStackedWidget(stack);
     widgets->setNavigator(this);
-    ScreenFactory pf;
 
-    int count = stack->count();
+    auto& log = Logger::Instance();
+    log.init("ScreenNavigator");
 
-    qDebug() << "page count = " << count;
+    StartScreen* startScreen = new StartScreen();
+    WidgetContainer::instance()->registerWidget("startScreen", startScreen);
 
     widgets->gotoScreen("startScreen");
 
+//    ScreenFactory sf;
+//    sf.unRegisterScreens();
+//    sf.registerScreens();
+//    int pageCount = stack->count();
+
+//    LOG1(pageCount);
 }
 
 ScreenNavigator::~ScreenNavigator()
