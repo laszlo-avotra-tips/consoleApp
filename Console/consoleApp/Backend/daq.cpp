@@ -162,6 +162,10 @@ bool DAQ::startDaq()
 {
     AxErr success = AxErr::NO_AxERROR;
 
+    m_numberOfConnectedDevices = 0;
+
+    shutdownDaq();
+
     try {
 
         success = axOpenAxsunOCTControl(true);
@@ -239,14 +243,23 @@ bool DAQ::startDaq()
 bool DAQ::shutdownDaq()
 {
     AxErr success = AxErr::NO_AxERROR;
+    int errorCount = 0;
 
     success = axStopSession(session);    // Stop Axsun engine session
     if(success != AxErr::NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
+        ++errorCount;
     }
     LOG1(int(success));
 
-    return success == AxErr::NO_AxERROR;
+    success = axCloseAxsunOCTControl();
+    if(success != AxErr::NO_AxERROR){
+        logAxErrorVerbose(__LINE__, success);
+        ++errorCount;
+    }
+    LOG1(int(success));
+
+    return errorCount == 0;
 }
 
 bool DAQ::turnLaserOn()
