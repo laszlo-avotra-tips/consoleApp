@@ -164,7 +164,7 @@ bool DAQ::startDaq()
 
     m_numberOfConnectedDevices = 0;
 
-    shutdownDaq();
+    //shutdownDaq();
 
     try {
 
@@ -250,14 +250,14 @@ bool DAQ::shutdownDaq()
         logAxErrorVerbose(__LINE__, success);
         ++errorCount;
     }
-    LOG1(int(success));
+    LOG1(int(success == AxErr::NO_AxERROR));
 
     success = axCloseAxsunOCTControl();
     if(success != AxErr::NO_AxERROR){
         logAxErrorVerbose(__LINE__, success);
         ++errorCount;
     }
-    LOG1(int(success));
+    LOG1(int(success == AxErr::NO_AxERROR));
 
     return errorCount == 0;
 }

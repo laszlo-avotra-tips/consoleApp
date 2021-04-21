@@ -272,6 +272,8 @@ void MainScreen::handleEndCase()
         m_opacScreen->show();
         m_graphicsView->hide();
 
+        daqfactory::instance()->getdaq()->shutdownDaq();
+
         WidgetContainer::instance()->gotoScreen("startScreen");
 
         WidgetContainer::instance()->unRegisterWidget("l2500Frontend");
@@ -537,6 +539,10 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
         on_pushButtonSettings_clicked();
     } else {
         updateDeviceSettings();
+        deviceSettings &dev = deviceSettings::Instance();
+        auto selectedDevice = dev.current();
+        DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
+        DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     }
     m_scene->paintOverlay();
 }
