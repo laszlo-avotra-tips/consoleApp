@@ -19,6 +19,7 @@ public:
     virtual bool shutdownDaq() = 0;
     virtual bool turnLaserOn() = 0;
     virtual bool turnLaserOff() = 0;
+    virtual bool startDaq() = 0;
 
 signals:
     void sendWarning( QString );

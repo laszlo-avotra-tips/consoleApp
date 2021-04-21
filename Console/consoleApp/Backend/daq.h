@@ -29,9 +29,9 @@ public:
 
     virtual bool turnLaserOn() override;
     virtual bool turnLaserOff() override;
+    bool startDaq() override;
 
 private:
-    bool startDaq();
     void setSubSamplingFactor();
     void getData(new_image_callback_data_t data);
     void initLogLevelAndDecimation();

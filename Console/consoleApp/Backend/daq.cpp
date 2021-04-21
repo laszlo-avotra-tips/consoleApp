@@ -22,11 +22,6 @@ extern "C" {
 DAQ::DAQ()
 {
     initLogLevelAndDecimation();
-
-    if( !startDaq() )
-    {
-        LOG1( "DAQ: Failed to start DAQ")
-    }
 }
 
 
