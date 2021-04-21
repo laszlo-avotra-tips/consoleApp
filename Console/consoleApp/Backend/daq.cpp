@@ -99,7 +99,7 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
-    LOG1(turnLaserOn());
+//    LOG1(turnLaserOn());
 
     // number_of_images =0 for Imaging Off (idle), =-1 for Live Imaging (no record), or any positive
     // value between 1 and 32767 to request the desired number of images in a Burst Record operation.
