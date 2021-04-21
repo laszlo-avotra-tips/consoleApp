@@ -272,6 +272,8 @@ void MainScreen::handleEndCase()
         m_opacScreen->show();
         m_graphicsView->hide();
 
+        daqfactory::instance()->getdaq()->shutdownDaq();
+
         WidgetContainer::instance()->gotoScreen("startScreen");
 
         WidgetContainer::instance()->unRegisterWidget("l2500Frontend");

@@ -164,7 +164,7 @@ bool DAQ::startDaq()
 
     m_numberOfConnectedDevices = 0;
 
-    shutdownDaq();
+    //shutdownDaq();
 
     try {
 
