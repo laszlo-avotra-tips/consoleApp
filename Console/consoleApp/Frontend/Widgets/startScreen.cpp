@@ -60,7 +60,7 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
     ui->pushButtonStart->setIconSize(QSize(middleFrameWidth,middleFrameWidth));
     ui->pushButtonMenu->setIconSize(QSize(windowWidth/16, windowHeight/16));
 
-    m_backend = new Backend(parent);
+//    m_backend = new Backend(parent);
 
     grabGesture(Qt::TapAndHoldGesture);
     QTapAndHoldGesture::setTimeout(2000);
@@ -232,5 +232,5 @@ void StartScreen::on_pushButtonStart_pressed()
     m_isPressAndHold = false;
 //    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
 //    DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");
-
+    m_backend = new Backend(this);
 }
