@@ -534,6 +534,9 @@ void MainScreen::openDeviceSelectDialogFromReviewAndSettings()
     auto result = WidgetContainer::instance()->openDialog(this,"deviceSelectDialog",&dsdParam);
 
     if( result.second != QDialog::Accepted){
+        deviceSettings &dev = deviceSettings::Instance();
+        auto selectedDevice = dev.current();
+        DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
         on_pushButtonSettings_clicked();
     } else {
         updateDeviceSettings();
