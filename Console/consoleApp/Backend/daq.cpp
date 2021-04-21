@@ -256,20 +256,30 @@ bool DAQ::shutdownDaq()
 
 bool DAQ::turnLaserOn()
 {
+    bool success{false};
     // emission_state =1 enables laser emission, =0 disables laser emission.
     // which_laser The numeric index of the desired Laser.
-    const uint32_t emission_state{1};
-    LOG1(emission_state)
-    return setLaserEmissionState(emission_state);
+
+    if(m_numberOfConnectedDevices == 2){
+        const uint32_t emission_state{1};
+        LOG1(emission_state)
+        success = setLaserEmissionState(emission_state);
+    }
+    return success;
 }
 
 bool DAQ::turnLaserOff()
 {
+    bool success{false};
     // emission_state =1 enables laser emission, =0 disables laser emission.
     // which_laser The numeric index of the desired Laser.
-    const uint32_t emission_state{0};
-    LOG1(emission_state)
-    return setLaserEmissionState(emission_state);
+
+    if(m_numberOfConnectedDevices == 2){
+        const uint32_t emission_state{0};
+        LOG1(emission_state)
+        success = setLaserEmissionState(emission_state);
+    }
+    return success;
 }
 
 void DAQ::setSubSamplingFactor()
