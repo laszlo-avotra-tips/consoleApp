@@ -21,7 +21,6 @@ DateTimeController::DateTimeController(QWidget *parent)
 
 void DateTimeController::controllerInitialize()
 {
-    LOG1(this)
     m_lineEditDate->setInputMask("99/99/9999");
     m_lineEditDate->setReadOnly(true);
 

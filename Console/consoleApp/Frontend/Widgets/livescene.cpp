@@ -40,21 +40,12 @@ const int TextWidth( int(SectorWidth_px / 4.25 ) ); // Width of text rendered fo
 const int TextInterlineSpacing( 5 ); // 5 pixels between lines of text
 const int LinesOfText( 3 );
 
-// Advance/rewind percents
-const double ClipStep_percent( 10.0 );
-
-// Video state update rate
-const int ClipUpdateRate_ms( 100 );
-
 /*
  * Constructor
  */
 liveScene::liveScene( QObject *parent )
     : QGraphicsScene( 0, 0, SceneWidth, SceneHeight, parent )
 {
-//	qDebug() << "***** liveScene constructor";
-    //lcv
-    LOG2(ClipStep_percent, ClipUpdateRate_ms)
     // Items for display
     sector = new sectorItem();
     sector->setData( 0, "axsun" );
