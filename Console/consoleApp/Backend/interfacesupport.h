@@ -79,7 +79,7 @@ public:
      *
      * @return True if sled is turned on successfullly
      */
-    bool turnOnSled5V(bool state);
+    bool turnOnOffSled5V(bool state);
 
     /*
      * Turn on Sled 24V.
@@ -89,7 +89,7 @@ public:
      *
      * @return True if sled is turned on successfullly
      */
-    bool turnOnSled24V(bool state);
+    bool turnOnOffSled24V(bool state);
 
     /*
      * Turn on Sled.
@@ -99,7 +99,7 @@ public:
      *
      * @return True if sled is turned on successfullly
      */
-    bool turnOnSled(bool state);
+    bool turnOnOffSled(bool state);
 
     /*
      * Turn on Laser.
@@ -109,7 +109,7 @@ public:
      *
      * @return True if laser is turned on successfullly
      */
-    bool turnOnLaser(bool state);
+    bool turnOnOffLaser(bool state);
 
     /*
      * Reset interface board low. The effect is; fans get turned OFF

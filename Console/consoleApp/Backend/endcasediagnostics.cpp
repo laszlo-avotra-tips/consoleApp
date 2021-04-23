@@ -45,7 +45,7 @@ int EndCaseDiagnostics::turnOffSled() {
 
     if (interfaceSupport) {
         currentOctDiagnosticCheck = OctDiagnosticCheckType::OCT_START_OCT_SLED_OFF_CHECK;
-        bool operationResult = interfaceSupport->turnOnSled(false);
+        bool operationResult = interfaceSupport->turnOnOffSled(false);
 
         if (operationResult) {
             LOG( INFO, "Successfully turned off Sled");
@@ -55,7 +55,7 @@ int EndCaseDiagnostics::turnOffSled() {
             return 0;
         }
 
-        operationResult = interfaceSupport->turnOnLaser(false);
+        operationResult = interfaceSupport->turnOnOffLaser(false);
 
         if (operationResult) {
             LOG( INFO, "Successfully turned off Laser");

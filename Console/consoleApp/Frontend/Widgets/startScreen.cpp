@@ -144,8 +144,8 @@ void StartScreen::showEvent(QShowEvent *se)
         auto* ifs = InterfaceSupport::getInstance();
         ifs->turnOnACPowerToOCT(false);//1. sac0
         ifs->setVOAMode(false);//2. svb
-        ifs->turnOnSled5V(false); // 3, OFF "sled 5v"
-        ifs->turnOnSled24V(false); //3. OFF "sled 24v"
+        ifs->turnOnOffSled5V(false); // 3, OFF "sled 5v"
+        ifs->turnOnOffSled24V(false); //3. OFF "sled 24v"
 
         LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
     }
@@ -171,8 +171,8 @@ void StartScreen::on_pushButtonStart_released()
 
         auto* ifs = InterfaceSupport::getInstance();
         ifs->turnOnACPowerToOCT(true);//1. sac1
-        ifs->turnOnSled5V(true); // 3, ON "sled 5v"
-        ifs->turnOnSled24V(true); //3. ON "sled 24v"
+        ifs->turnOnOffSled5V(true); // 3, ON "sled 5v"
+        ifs->turnOnOffSled24V(true); //3. ON "sled 24v"
         ifs->setVOAMode(false);//2. svb
         LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
 

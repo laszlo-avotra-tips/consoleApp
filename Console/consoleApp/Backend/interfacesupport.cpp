@@ -161,7 +161,7 @@ bool InterfaceSupport::turnOffInterfaceBoard() {
     return performResetLow();
 }
 
-bool InterfaceSupport::turnOnSled5V(bool state) {
+bool InterfaceSupport::turnOnOffSled5V(bool state) {
     currentBitSetVal.set(DEVICE_BIT_POSITION_SLED_5V, state);
 
     QString msg = "";
@@ -182,7 +182,7 @@ bool InterfaceSupport::turnOnSled5V(bool state) {
     return true;
 }
 
-bool InterfaceSupport::turnOnSled24V(bool state) {
+bool InterfaceSupport::turnOnOffSled24V(bool state) {
     currentBitSetVal.set(DEVICE_BIT_POSITION_SLED_24V, state);
 
     QString msg = "";
@@ -203,17 +203,17 @@ bool InterfaceSupport::turnOnSled24V(bool state) {
     return true;
 }
 
-bool InterfaceSupport::turnOnSled(bool state) {
-    bool result = turnOnSled5V(state);
+bool InterfaceSupport::turnOnOffSled(bool state) {
+    bool result = turnOnOffSled5V(state);
 
     if (result) {
-        turnOnSled24V(state);
+        turnOnOffSled24V(state);
     }
 
     return result;
 }
 
-bool InterfaceSupport::turnOnLaser(bool state) {
+bool InterfaceSupport::turnOnOffLaser(bool state) {
     currentBitSetVal.set(DEVICE_BIT_POSITION_LASER, state);
 
     QString msg = "";
