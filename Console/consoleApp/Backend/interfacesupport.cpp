@@ -384,9 +384,15 @@ QByteArray InterfaceSupport::readDataFromDevice(bool ignoreNakResponse) {
 }
 
 bool InterfaceSupport::writeDataToDevice(QByteArray command) {
+
+    static QByteArray command0;
+
     bool retVal = true;
 
-    LOG1(command.toStdString().c_str())
+    if(command0 != command){
+        LOG1(command.toStdString().c_str())
+        command0 = command;
+    }
     if( ftHandle != NULL ) {
         DWORD bytesWritten;
 
@@ -682,7 +688,7 @@ bool InterfaceSupport::enableDisableBidirectional(bool bidirectionalState) {
 }
 
 int InterfaceSupport::getRunningState() {
-
+    static int lastRunningState0;
     if (writeDataToDevice(interfaceBoardCommandList[OctInterfaceBoardCommandType::GET_SLED_RUNNING_STATE])) {
         bool ignoreNakResponse = true;
         QByteArray response = readDataFromDevice(ignoreNakResponse);
@@ -698,7 +704,10 @@ int InterfaceSupport::getRunningState() {
             }
         }
     }
-    LOG1(m_lastRunningState)
+    if(lastRunningState0 != m_lastRunningState){
+        LOG1(m_lastRunningState)
+        lastRunningState0 = m_lastRunningState;
+    }
     return m_lastRunningState;
 }
 
