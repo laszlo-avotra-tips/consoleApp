@@ -437,14 +437,14 @@ void device::setNumberOfSpeeds(int value)
     numberOfSpeeds = value;
 }
 
-bool deviceSettings::getIsSimulation() const
+bool deviceSettings::getIsDeviceSimulation() const
 {
-    return m_isSimulation;
+    return m_isDeviceSimulation;
 }
 
-void deviceSettings::setIsSimulation(bool isSimulation)
+void deviceSettings::setIsDeviceSimulation(bool isDeviceSimulation)
 {
-    m_isSimulation = isSimulation;
+    m_isDeviceSimulation = isDeviceSimulation;
 }
 
 const QString &device::getSplitDeviceName() const

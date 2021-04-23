@@ -220,8 +220,8 @@ public:
     int  getBrightness (void ) { return brightness; }
     int  getContrast( void ) { return contrast; }
 
-    bool getIsSimulation() const;
-    void setIsSimulation(bool isSimulation);
+    bool getIsDeviceSimulation() const;
+    void setIsDeviceSimulation(bool isDeviceSimulation);
 
     QImage *getSelectedIcon() const;
     void setSelectedIcon(QImage *selectedIcon);
@@ -241,7 +241,7 @@ private:
 
     int brightness = 0;
     int contrast = 0;
-    bool m_isSimulation{false};
+    bool m_isDeviceSimulation{false};
     const QString m_unknownDeviceName{"Unknown"};
 
     deviceSettings();
