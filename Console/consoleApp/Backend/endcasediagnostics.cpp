@@ -12,7 +12,7 @@ int EndCaseDiagnostics::performOctPowerDownChecks() {
 
     if (interfaceSupport) {
         currentOctDiagnosticCheck = OctDiagnosticCheckType::OCT_END_CASE_OCT_POWER_DOWN_CHECK;
-        bool operationResult = interfaceSupport->turnOnACPowerToOCT(false);
+        bool operationResult = interfaceSupport->turnOnOffACPowerToOCT(false);
 
         if (operationResult) {
             LOG(INFO, "Successfully turned off AC power to OCT");

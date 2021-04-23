@@ -15,7 +15,7 @@ int StartUpDiagnostics::performOctPowerUpChecks() {
 
     if (interfaceSupport) {
         currentOctDiagnosticCheck = OctDiagnosticCheckType::OCT_START_OCT_POWER_UP_CHECK;
-        bool operationResult = interfaceSupport->turnOnACPowerToOCT(true);
+        bool operationResult = interfaceSupport->turnOnOffACPowerToOCT(true);
 
         if (operationResult) {
             LOG(INFO, "Successfully turned on AC power to OCT");

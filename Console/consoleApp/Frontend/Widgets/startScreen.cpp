@@ -142,7 +142,7 @@ void StartScreen::showEvent(QShowEvent *se)
         WidgetContainer::instance()->setIsNewCase(true);
 
         auto* ifs = InterfaceSupport::getInstance();
-        ifs->turnOnACPowerToOCT(false);//1. sac0
+        ifs->turnOnOffACPowerToOCT(false);//1. sac0
         ifs->setVOAMode(false);//2. svb
         ifs->turnOnOffSled5V(false); // 3, OFF "sled 5v"
         ifs->turnOnOffSled24V(false); //3. OFF "sled 24v"
@@ -170,7 +170,7 @@ void StartScreen::on_pushButtonStart_released()
     if(!m_isPressAndHold){
 
         auto* ifs = InterfaceSupport::getInstance();
-        ifs->turnOnACPowerToOCT(true);//1. sac1
+        ifs->turnOnOffACPowerToOCT(true);//1. sac1
         ifs->turnOnOffSled5V(true); // 3, ON "sled 5v"
         ifs->turnOnOffSled24V(true); //3. ON "sled 24v"
         ifs->setVOAMode(false);//2. svb
