@@ -175,7 +175,7 @@ public:
      *
      * @return True if AC power to the OCT can be turned on successfullly
      */
-    bool turnOnACPowerToOCT(bool state);
+    bool turnOnOffACPowerToOCT(bool state);
 
     /*
      * Queries VOA settings from the interface board

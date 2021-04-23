@@ -270,7 +270,6 @@ bool InterfaceSupport::performResetLow() {
     FT_STATUS ftStatus = FT_SetBitMode( ftHandle, currentBitSetVal.to_ulong(), 0x20 );  // Reset interface board
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
-        qDebug() << "Could not complete operation for low resetting of interface board" << msg;
         return false;
     }
 
@@ -285,7 +284,6 @@ bool InterfaceSupport::performResetHigh() {
     FT_STATUS ftStatus = FT_SetBitMode( ftHandle, currentBitSetVal.to_ulong(), 0x20 );  // Reset interface board
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
-        qDebug() << "Could not complete operation for high resetting of interface board" << msg;
         return false;
     }
 
@@ -400,11 +398,6 @@ bool InterfaceSupport::writeDataToDevice(QByteArray command) {
             LOG( WARNING, QString( "Interface support: writeDataToDevice could not write command: %1 ").arg(command.data()));
             retVal = false;
         }
-//        else
-//        {
-//            //qDebug() << "Serial bytes written: " << bytesWritten;
-//            LOG( INFO, QString( "Interface support: writeDataToDevice command written: %1 " ).arg( command.data() ) );
-//        }
     } else {
         const QString msg( "Serial port not open for write");
         LOG1(msg)
