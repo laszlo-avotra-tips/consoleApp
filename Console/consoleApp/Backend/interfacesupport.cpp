@@ -355,6 +355,7 @@ bool InterfaceSupport::reportCurrentDeviceStatus() {
 
 QByteArray InterfaceSupport::readDataFromDevice(bool ignoreNakResponse) {
     QByteArray data;
+    static QByteArray data0;
     if(ftHandle != nullptr) {
         DWORD bytesToRead = 256;
         DWORD bytesRead;
@@ -375,7 +376,10 @@ QByteArray InterfaceSupport::readDataFromDevice(bool ignoreNakResponse) {
             LOG( INFO, "Device responded NAK");
         }
     }
-    LOG1(data.toStdString().c_str())
+    if(data0 != data){
+        LOG1(data.toStdString().c_str())
+        data0 = data;
+    }
     return data;
 }
 
