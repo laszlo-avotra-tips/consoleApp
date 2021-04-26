@@ -61,6 +61,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     ui->pushButtonAddLocation->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
     ui->pushButtonAddPhysician->setStyleSheet("background-color: rgb(245,196,0); color: black; font: 18pt;");
+
+    LOGUA;
 }
 
 void PreferencesDialog::init()
@@ -89,6 +91,7 @@ void PreferencesDialog::init()
 
 PreferencesDialog::~PreferencesDialog()
 {
+    LOGUA;
     delete ui;
 }
 

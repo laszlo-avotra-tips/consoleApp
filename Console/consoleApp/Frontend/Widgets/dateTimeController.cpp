@@ -86,26 +86,31 @@ void DateTimeController::setWidgets(QPushButton *accept, QPushButton *cancel)
 
 void DateTimeController::handlePushButtonDateUp()
 {
+    LOGUA;
     emit incrementDate();
 }
 
 void DateTimeController::handlePushButtonDateDown()
 {
+    LOGUA;
     emit decrementDate();
 }
 
 void DateTimeController::handlePushButtonTimeUp()
 {
+    LOGUA;
     emit incrementTime();
 }
 
 void DateTimeController::handlePushButtonTimeDown()
 {
+    LOGUA;
     emit decrementTime();
 }
 
 void DateTimeController::handlePushButtonCancel()
 {
+    LOGUA;
     if(isTimeEditMode()){
         setIsTimeEditMode(false);
         deselect();
@@ -122,12 +127,14 @@ void DateTimeController::handlePushButtonCancel()
 
 void DateTimeController::incrementDay()
 {
+    LOGUA;
     m_model->incrementDay();
     showEditDate();
 }
 
 void DateTimeController::incrementMonth()
 {
+    LOGUA;
     m_model->incrementMonth();
     showEditDate();
 }
@@ -194,6 +201,7 @@ void DateTimeController::decrementSeconds()
 
 void DateTimeController::handleDateChanged(const QString &)
 {
+    LOGUA;
     if(m_dateSelected.first != m_dateSelected.second){
         m_lineEditDate->setSelection(m_dateSelected.first, m_dateSelected.second);
     }
@@ -201,11 +209,13 @@ void DateTimeController::handleDateChanged(const QString &)
 
 void DateTimeController::handleDateCursorPositionChanged(int, int pos)
 {
+    LOGUA;
     selectDateItem(pos);
 }
 
 void DateTimeController::handleTimeCursorPositionChanged(int, int pos)
 {
+    LOGUA;
     selectTimeItem(pos);
 }
 
@@ -418,7 +428,7 @@ void DateTimeController::showEditTime()
 
 void DateTimeController::apply()
 {
-    LOG1(this);
+    LOGUA;
     if(isTimeEditMode())
     {
         m_model->applyTime();
@@ -436,7 +446,7 @@ void DateTimeController::apply()
 
 void DateTimeController::deselect()
 {
-    LOG1(this);
+    LOGUA;
     m_dateSelected = {-1,-1};
     m_timeSelected = {-1,-1};
     m_lineEditDate->deselect();

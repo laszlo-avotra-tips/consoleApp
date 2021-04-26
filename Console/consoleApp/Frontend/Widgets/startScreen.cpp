@@ -70,6 +70,7 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
      DisplayManager::instance();
 //     DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
      hookupStartUpDiagnostics();
+     LOGUA;
 }
 
 void StartScreen::hookupStartUpDiagnostics() {
@@ -93,6 +94,7 @@ StartScreen::~StartScreen()
 
 void StartScreen::on_pushButtonMenu_clicked(bool checked)
 {
+    LOGUA;
     if(checked){
          ui->pushButtonShutdown->show();
          ui->pushButtonCaseReviewAndExport->show();
@@ -106,6 +108,7 @@ void StartScreen::on_pushButtonMenu_clicked(bool checked)
 
 void StartScreen::on_pushButtonPreferences_clicked()
 {
+    LOGUA;
     if(m_preferencesDialog->exec() == QDialog::Accepted){
         LOG1("ACCEPTED");
         m_preferencesDialog->close();
@@ -116,6 +119,7 @@ void StartScreen::on_pushButtonShutdown_clicked()
 {
 //    FullCaseRecorder::instance()->closeRecorder();
 
+    LOGUA;
     auto dialog = new ShutdownConfirmationDialog();
 
     if(dialog->exec() == QDialog::Accepted){
@@ -158,6 +162,7 @@ void StartScreen::hideEvent(QHideEvent *he)
 
 void StartScreen::on_pushButtonStart_released()
 {
+    LOGUA;
     if (diagnostics) {
         if (!diagnostics->performDiagnostics(true)) {
             LOG(ERROR, "Start up diagnostics failed!");
@@ -186,6 +191,7 @@ void StartScreen::on_pushButtonStart_released()
 
 void StartScreen::setPressAndHold()
 {
+    LOGUA;
     m_isPressAndHold = true;
     WidgetContainer::instance()->minimize();
 }
@@ -229,6 +235,7 @@ bool StartScreen::gestureEvent(QGestureEvent *ge)
 
 void StartScreen::on_pushButtonStart_pressed()
 {
+    LOGUA;
     m_isPressAndHold = false;
 //    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
 //    DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");

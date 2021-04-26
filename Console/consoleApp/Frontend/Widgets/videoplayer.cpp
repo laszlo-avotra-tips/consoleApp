@@ -136,17 +136,20 @@ void VideoPlayer::play()
 
 void VideoPlayer::positionChanged(qint64 position)
 {
+    LOGUA;
     emit updatePosition(position);
 }
 
 void VideoPlayer::durationChanged(qint64 duration)
 {
+    LOGUA;
     emit playerInitialized();
     emit updateDuration(duration);
 }
 
 void VideoPlayer::setPosition(int position)
 {
+    LOGUA;
     m_mediaPlayer->setPosition(position);
     m_pmMediaPlayer->setPosition(position);
 }

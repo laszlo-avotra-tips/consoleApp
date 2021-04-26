@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 
 #include "consoleLineEdit.h"
+#include "logger.h"
 
 ConsoleLineEdit::ConsoleLineEdit(QWidget *parent):QLineEdit(parent)
 {
@@ -10,6 +11,7 @@ ConsoleLineEdit::ConsoleLineEdit(QWidget *parent):QLineEdit(parent)
 
 void ConsoleLineEdit::mousePressEvent(QMouseEvent *e)
 {
+    LOGUA;
     if(e){
         auto bt = e->buttons();
         if(bt == Qt::LeftButton){

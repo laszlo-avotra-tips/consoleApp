@@ -63,11 +63,13 @@ DisplayOptionsDialog::~DisplayOptionsDialog()
 
 void DisplayOptionsDialog::on_pushButtonDone_clicked()
 {
+    LOGUA;
     accept();
 }
 
 void DisplayOptionsDialog::on_pushButtonBack_clicked()
 {
+    LOGUA;
     //restor the model
     *m_model = m_model0;
     SignalModel::instance()->setWhiteLevel(m_model0.imageContrast());
@@ -95,6 +97,7 @@ void DisplayOptionsDialog::on_pushButtonBack_clicked()
 
 void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
 {
+    LOGUA;
     auto val = ui->horizontalSlider->value();
     if(val > 1 && val <= 5 ){
         int newVal = val - 1;
@@ -109,6 +112,7 @@ void DisplayOptionsDialog::on_pushButtonDepthMimus_clicked()
 
 void DisplayOptionsDialog::on_pushButtonDepthPlus_clicked()
 {
+    LOGUA;
     auto val = ui->horizontalSlider->value();
     if(val < 5 && val >= 1) {
         int newVal = val + 1;
@@ -136,6 +140,7 @@ void DisplayOptionsDialog::setImagingDepth(int depthIndex)
 
 void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 {
+    LOGUA;
     if(value > 0){
         m_depthIndex = value;
         setImagingDepth(value);
@@ -146,7 +151,7 @@ void DisplayOptionsDialog::on_horizontalSlider_valueChanged(int value)
 
 void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int reticleBrightness)
 {
-    LOG1(reticleBrightness)
+    LOGUA;
     userSettings::Instance().setReticleBrightness(reticleBrightness);
     m_model->setReticleBrightness(reticleBrightness);
     emit reticleBrightnessChanged();
@@ -160,6 +165,7 @@ void DisplayOptionsDialog::on_horizontalSliderRingBrightness_valueChanged(int re
 
 void DisplayOptionsDialog::handleUp()
 {
+    LOGUA;
     if(m_model->isPointedDown()){
         m_model->setIsPointedDown(false);
     }
@@ -169,6 +175,7 @@ void DisplayOptionsDialog::handleUp()
 
 void DisplayOptionsDialog::handleDown()
 {
+    LOGUA;
     if(!m_model->isPointedDown()){
         m_model->setIsPointedDown(true);
     }
@@ -204,6 +211,7 @@ void DisplayOptionsDialog::updateDistalToProximalSetting(bool isUp)
 
 void DisplayOptionsDialog::handleGray()
 {
+    LOGUA;
     if(!m_model->isImageColorGray()){
         m_model->setIsImageColorGray(true);
     }
@@ -213,6 +221,7 @@ void DisplayOptionsDialog::handleGray()
 
 void DisplayOptionsDialog::handleSepia()
 {
+    LOGUA;
     if(m_model->isImageColorGray()){
         m_model->setIsImageColorGray(false);
     }
@@ -301,6 +310,7 @@ void DisplayOptionsDialog::initImagingDepth()
 
 void DisplayOptionsDialog::handleImageContrast(int contrast)
 {
+    LOGUA;
     const int contrastPercent = 100 * (contrast + 255) / 510;
     ui->labelImageContrast->setNum(contrastPercent);
     SignalModel::instance()->setWhiteLevel(contrast);
@@ -313,6 +323,7 @@ void DisplayOptionsDialog::handleImageContrast(int contrast)
 
 void DisplayOptionsDialog::handleImageBrightness(int brightness)
 {
+    LOGUA;
     const int brightnessPercent = 100 * (brightness + 255) / 510;
     ui->labelImageBrightness->setNum(brightnessPercent);
     SignalModel::instance()->setBlackLevel(brightness);

@@ -4,6 +4,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include "displayManager.h"
+#include "logger.h"
 
 endCaseDialog::endCaseDialog(QWidget *parent) :
     QDialog(parent),
@@ -36,10 +37,12 @@ endCaseDialog::endCaseDialog(QWidget *parent) :
     setWindowFlags( windowFlags() & ~Qt::WindowTitleHint );
     DisplayManager::instance()->showOnTheSecondMonitor("disk");
     DisplayManager::instance()->setWindowTitle("END CASE IN PROCESS");
+    LOGUA;
 
 }
 
 endCaseDialog::~endCaseDialog()
 {
+    LOGUA;
     delete ui;
 }

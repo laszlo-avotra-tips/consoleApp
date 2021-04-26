@@ -156,7 +156,7 @@ bool Logger::rotateLog( const QString systemLogFileName )
     if( hFile->exists() && ( hFile->size() > MaxLogSize_bytes ) )
     {
         // create a unique name for the old log file
-        QString timeStamp = QDateTime::currentDateTime().toUTC().toString( "yyyyMMdd-hhmmss" );
+        QString timeStamp = QDateTime::currentDateTimeUtc().toString( "yyyyMMdd-hhmmss" );
         QString newName   = SystemDir + "/OCT_System-" + timeStamp + ".log";
         hFile->rename( newName );
 
@@ -189,12 +189,11 @@ void Logger::logMessage( QString msg, const char *severity, const char *file, in
     if( output )
     {
         // write the UTC time-stamped log message and flush the file (endl)
-        *output << "[" << QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
-                << "(" << appName << "." << C_PATCH_VERSION << ") "
+        *output << "[" << QDateTime::currentDateTimeUtc().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
+                << "(" << C_PATCH_VERSION << ") "
                 << severity << ": " 
                 << msg.toLatin1() << " - "
-                << file << " (" << line << ")"
-                << endl;
+                << file << " (" << line << ")\n";
     }
 }
 
@@ -202,9 +201,17 @@ void Logger::logDebugMessage(const QString &msg, const char* function, int line,
 {
     QMutexLocker locker( &mutex );
 
-    *output << "[" << QDateTime::currentDateTime().toUTC().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
-            << "(" << appName << "." << C_PATCH_VERSION << ") DEBUG: THR(" << tId << ") "
+    *output << "[" << QDateTime::currentDateTimeUtc().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
+            << "(" << C_PATCH_VERSION << ") DEBUG: (" << tId << ") "
             << " - " << function << " (" << line << ") -> "
-            << msg << endl;
+            << msg << "\n";
 }
 
+void Logger::logButtonMessage(const QString &, const char* function, int line, Qt::HANDLE tId)
+{
+    QMutexLocker locker( &mutex );
+
+    *output << "[" << QDateTime::currentDateTimeUtc().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
+            << "(" << C_PATCH_VERSION << ") USER: ------------------- (" << tId << ") "
+            << " - " << function << " (" << line << ")\n";
+}
