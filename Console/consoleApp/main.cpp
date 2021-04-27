@@ -35,10 +35,10 @@ void hookupPowerUpDiagnostics() {
 int main(int argc, char *argv[])
 {
     QApplication app( argc, argv );
+    hookupPowerUpDiagnostics();
 
     ScreenNavigator navigator;
     navigator.display();
-    hookupPowerUpDiagnostics();
 
     app.exec();
 

@@ -268,7 +268,7 @@ private:
     *
     * No copying and moving allowed.
     */
-    InterfaceSupport() = default;
+    InterfaceSupport();
     ~InterfaceSupport();
     InterfaceSupport(const InterfaceSupport&) = delete;
     InterfaceSupport& operator=(const InterfaceSupport&) = delete;

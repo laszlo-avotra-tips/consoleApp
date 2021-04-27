@@ -117,12 +117,8 @@ bool InterfaceSupport::initalizeFTDIDevice() {
         ftHandle = ftdiDeviceInfo[0].ftHandle;
         QThread::msleep(250);
         // make sure device is closed before we open it
-        ftStatus = FT_Close( ftHandle );
-        if( ftStatus != FT_OK ) {
-            const QString msg("Could not close FTDI device");
-            LOG1(msg)
-            return false;
-        }
+        FT_Close( ftHandle );
+
         QThread::msleep(250);
 
         ftStatus = FT_Open( 0, &ftHandle );
@@ -603,6 +599,11 @@ bool InterfaceSupport::setSledButtonMode(const device &currentDevice)
 
 
     return success;
+}
+
+InterfaceSupport::InterfaceSupport()
+{
+
 }
 
 int InterfaceSupport::getLastRunningState() const
