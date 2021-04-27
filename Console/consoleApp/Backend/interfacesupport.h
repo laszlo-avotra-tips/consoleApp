@@ -2,7 +2,9 @@
 #define INTERFACESUPPORT_H
 
 #include "ftd2xx.h"
-#include<bitset>
+#include "deviceSettings.h"
+
+#include <bitset>
 #include <QByteArray>
 #include <map>
 
@@ -244,6 +246,8 @@ public:
     int getRunningState();
 
     int getLastRunningState() const;
+
+    void updateSledConfig(const device& currentDevice);
 
 private:
 

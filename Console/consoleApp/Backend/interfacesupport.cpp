@@ -417,6 +417,22 @@ bool InterfaceSupport::writeDataToDevice(QByteArray command) {
     return retVal;
 }
 
+void InterfaceSupport::updateSledConfig(const device &currentDevice)
+{
+    //void SledSupport::setSledParams( DeviceParams_T params )
+    //{
+    //        setClockingMode( params.isEnabled );//sc0 or sc1
+    //        setClockingGain( params.gain ); //scg1:255
+    //        setClockingOffset( params.offset );//sco1:999
+    //        setSpeed( params.speed ); // bool setSledSpeed(int speed);
+    //        setTorqueLimit( params.torque );// sto0:45
+    //        setTorqueTime( params.time );//sti0:15
+    //        setStallBlinking( params.blinkEnabled );//sb0:1
+    //        setButtonMode( params.sledMulti ); //sbm0:2
+    //}
+
+}
+
 int InterfaceSupport::getLastRunningState() const
 {
     return m_lastRunningState;
