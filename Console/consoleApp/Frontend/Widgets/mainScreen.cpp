@@ -183,7 +183,7 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
         deviceSettings &device = deviceSettings::Instance();
         auto currentDev = device.current();
         const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
-        interfaceSupport->enableDisableBidirectional(isBiDirectionalEnabled);
+//        interfaceSupport->enableDisableBidirectional(isBiDirectionalEnabled);
     }
 }
 

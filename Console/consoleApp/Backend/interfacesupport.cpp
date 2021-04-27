@@ -115,9 +115,16 @@ bool InterfaceSupport::initalizeFTDIDevice() {
         }
 
         ftHandle = ftdiDeviceInfo[0].ftHandle;
-
+        QThread::msleep(250);
         // make sure device is closed before we open it
         ftStatus = FT_Close( ftHandle );
+        if( ftStatus != FT_OK ) {
+            const QString msg("Could not close FTDI device");
+            LOG1(msg)
+            return false;
+        }
+        QThread::msleep(250);
+
         ftStatus = FT_Open( 0, &ftHandle );
         if( ftStatus != FT_OK ) {
             const QString msg("Could not open FTDI device");
@@ -132,6 +139,7 @@ bool InterfaceSupport::initalizeFTDIDevice() {
             LOG1(msg)
             return false;
         }
+        QThread::msleep(250);
 
         prepDevice();
 
