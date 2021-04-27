@@ -430,18 +430,119 @@ void InterfaceSupport::updateSledConfig(const device &currentDevice)
     //        setStallBlinking( params.blinkEnabled );//sb0:1
     //        setButtonMode( params.sledMulti ); //sbm0:2
     //}
+    LOG1(currentDevice.getSplitDeviceName());
 
-    LOG1(currentDevice.getClockingEnabled());
-    LOG1(currentDevice.getClockingGain());
-    LOG1(currentDevice.getClockingOffset());
+    setSledClockingEnabled(currentDevice);
 
-    LOG1(currentDevice.getRevolutionsPerMin());
+    setSledClockingGain(currentDevice);
 
-    LOG1(currentDevice.getTorqueLimit());
-    LOG1(currentDevice.getTorqueTime());
+    setSledClockingOffset(currentDevice);
 
-    LOG1(currentDevice.getStallBlinking());
-    LOG1(currentDevice.getButtonMode());
+    if(setSledSpeed(currentDevice)){
+        LOG1(currentDevice.getRevolutionsPerMin());
+    }
+
+    if(setSledTorqueLimit(currentDevice)){
+        LOG1(currentDevice.getTorqueLimit());
+    }
+
+    if(setSledTorqueTime(currentDevice)){
+        LOG1(currentDevice.getTorqueTime());
+    }
+
+    if(setSledStallBlinking(currentDevice)){
+        LOG1(currentDevice.getStallBlinking());
+    }
+
+    if(setSledButtonMode(currentDevice)){
+        LOG1(currentDevice.getButtonMode());
+    }
+}
+
+bool InterfaceSupport::setSledClockingEnabled(const device &currentDevice)
+{
+    bool success{false};
+    QByteArray setClockingEnabledCmd{"sc"};
+    int currentClockingEnabled{currentDevice.getClockingEnabled()};
+
+    setClockingEnabledCmd.append(QByteArray(QString::number(currentClockingEnabled).toStdString().c_str())).append("\r");
+
+    if(writeDataToDevice(setClockingEnabledCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, currentClockingEnabled);
+
+    return success;
+}
+
+bool InterfaceSupport::setSledClockingGain(const device &currentDevice)
+{
+    bool success{false};
+
+    QByteArray setClockingGainCmd{"scg"};
+    QByteArray currentClockingGain{currentDevice.getClockingGain()};
+
+    setClockingGainCmd.append(currentClockingGain).append("\r");
+    if(writeDataToDevice(setClockingGainCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, setClockingGainCmd);
+
+    return success;
+}
+
+bool InterfaceSupport::setSledClockingOffset(const device &currentDevice)
+{
+    bool success{false};
+    QByteArray setClockingOffsetCmd{"sco"};
+    QByteArray currentClockingOffset{currentDevice.getClockingOffset()};
+
+    setClockingOffsetCmd.append(currentClockingOffset).append("\r");
+    if(writeDataToDevice(setClockingOffsetCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, setClockingOffsetCmd);
+
+    return success;
+}
+
+bool InterfaceSupport::setSledSpeed(const device &currentDevice)
+{
+    bool success{false};
+    return success;
+}
+
+bool InterfaceSupport::setSledTorqueLimit(const device &currentDevice)
+{
+    bool success{false};
+    return success;
+}
+
+bool InterfaceSupport::setSledTorqueTime(const device &currentDevice)
+{
+    bool success{false};
+    return success;
+}
+
+bool InterfaceSupport::setSledStallBlinking(const device &currentDevice)
+{
+    bool success{false};
+    return success;
+}
+
+bool InterfaceSupport::setSledButtonMode(const device &currentDevice)
+{
+    bool success{false};
+    return success;
 }
 
 int InterfaceSupport::getLastRunningState() const

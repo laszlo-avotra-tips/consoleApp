@@ -249,6 +249,18 @@ public:
 
     void updateSledConfig(const device& currentDevice);
 
+    bool setSledClockingEnabled(const device& currentDevice);
+    bool setSledClockingGain(const device& currentDevice);
+    bool setSledClockingOffset(const device& currentDevice);
+
+    bool setSledSpeed(const device& currentDevice);
+
+    bool setSledTorqueLimit(const device& currentDevice);
+    bool setSledTorqueTime(const device& currentDevice);
+
+    bool setSledStallBlinking(const device& currentDevice);
+    bool setSledButtonMode(const device& currentDevice);
+
 private:
 
     /*
