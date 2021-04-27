@@ -53,7 +53,7 @@ public:
 
           QByteArray  inClockingOffset           = "400",
           QByteArray  inTorqueLimit              = "45",
-          QByteArray  inTorqueTime               = "1",
+          QByteArray  inTorqueTime               = "8",
           QByteArray  inStallBlinking            = "1",
 
           QByteArray  inButtonMode               = "0",
