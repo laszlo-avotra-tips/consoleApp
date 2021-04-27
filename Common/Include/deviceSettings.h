@@ -111,15 +111,15 @@ public:
     int getInternalImagingMask_px(void) const   { return internalImagingMask_px; }
     int getCatheterRadius_px(void) const       { return ( catheterRadius_um * pixelsPerUm ); }
     int getCatheterRadius_um(void) const       { return catheterRadius_um; }
-    int getRevolutionsPerMin(void)        { return revolutionsPerMin1; }
-    int getRevolutionsPerMin1(void)        { return revolutionsPerMin1; }
-    int getRevolutionsPerMin2(void)        { return revolutionsPerMin2; }
-    int getRevolutionsPerMin3(void)        { return revolutionsPerMin3; }
+    int getRevolutionsPerMin(void) const       { return revolutionsPerMin1; }
+    int getRevolutionsPerMin1(void)const       { return revolutionsPerMin1; }
+    int getRevolutionsPerMin2(void)const       { return revolutionsPerMin2; }
+    int getRevolutionsPerMin3(void)const       { return revolutionsPerMin3; }
     int getALineLength_px(void) const;
-    int getMeaurementVersion(void)        { return measurementVersion; }
-    int getClockingEnabled(void)          { return clockingEnabled; }
-    QByteArray getClockingGain(void)      { return clockingGain; }
-    QByteArray getClockingOffset(void)    { return clockingOffset; }
+    int getMeaurementVersion(void)         { return measurementVersion; }
+    int getClockingEnabled(void) const     { return clockingEnabled; }
+    QByteArray getClockingGain(void) const { return clockingGain; }
+    QByteArray getClockingOffset(void)const{ return clockingOffset; }
 
     QByteArray getTorqueLimit(void) const   { return torqueLimit; }
     QByteArray getTorqueTime(void)  const   { return torqueTime; }

@@ -431,6 +431,17 @@ void InterfaceSupport::updateSledConfig(const device &currentDevice)
     //        setButtonMode( params.sledMulti ); //sbm0:2
     //}
 
+    LOG1(currentDevice.getClockingEnabled());
+    LOG1(currentDevice.getClockingGain());
+    LOG1(currentDevice.getClockingOffset());
+
+    LOG1(currentDevice.getRevolutionsPerMin());
+
+    LOG1(currentDevice.getTorqueLimit());
+    LOG1(currentDevice.getTorqueTime());
+
+    LOG1(currentDevice.getStallBlinking());
+    LOG1(currentDevice.getButtonMode());
 }
 
 int InterfaceSupport::getLastRunningState() const
