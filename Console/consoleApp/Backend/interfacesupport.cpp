@@ -438,25 +438,15 @@ void InterfaceSupport::updateSledConfig(const device &currentDevice)
 
     setSledClockingOffset(currentDevice);
 
-    if(setSledSpeed(currentDevice)){
-        LOG1(currentDevice.getRevolutionsPerMin());
-    }
+    setSledSpeed(currentDevice);
 
-    if(setSledTorqueLimit(currentDevice)){
-        LOG1(currentDevice.getTorqueLimit());
-    }
+    setSledTorqueLimit(currentDevice);
 
-    if(setSledTorqueTime(currentDevice)){
-        LOG1(currentDevice.getTorqueTime());
-    }
+    setSledTorqueTime(currentDevice);
 
-    if(setSledStallBlinking(currentDevice)){
-        LOG1(currentDevice.getStallBlinking());
-    }
+    setSledStallBlinking(currentDevice);
 
-    if(setSledButtonMode(currentDevice)){
-        LOG1(currentDevice.getButtonMode());
-    }
+    setSledButtonMode(currentDevice);
 }
 
 bool InterfaceSupport::setSledClockingEnabled(const device &currentDevice)
@@ -504,6 +494,7 @@ bool InterfaceSupport::setSledClockingOffset(const device &currentDevice)
     QByteArray currentClockingOffset{currentDevice.getClockingOffset()};
 
     setClockingOffsetCmd.append(currentClockingOffset).append("\r");
+
     if(writeDataToDevice(setClockingOffsetCmd)){
         QByteArray response = readDataFromDevice();
         if(response.toUpper().contains("ACK")){
@@ -518,30 +509,91 @@ bool InterfaceSupport::setSledClockingOffset(const device &currentDevice)
 bool InterfaceSupport::setSledSpeed(const device &currentDevice)
 {
     bool success{false};
+    QByteArray setSpeedCmd{"ss"};
+    int currentSpeed{currentDevice.getRevolutionsPerMin()};
+
+    setSpeedCmd.append(QByteArray(QString::number(currentSpeed).toStdString().c_str())).append("\r");
+
+    if(writeDataToDevice(setSpeedCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, currentSpeed);
+
     return success;
 }
 
 bool InterfaceSupport::setSledTorqueLimit(const device &currentDevice)
 {
     bool success{false};
+    QByteArray setTorqueLimitCmd{"sto"};
+    QByteArray currentTorqueLimit{currentDevice.getTorqueLimit()};
+
+    setTorqueLimitCmd.append(currentTorqueLimit).append("\r");
+    if(writeDataToDevice(setTorqueLimitCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, setTorqueLimitCmd);
+
     return success;
 }
 
 bool InterfaceSupport::setSledTorqueTime(const device &currentDevice)
 {
     bool success{false};
+    QByteArray setTorqueTimeCmd{"sti"};
+    QByteArray currentTorqueTime{currentDevice.getTorqueTime()};
+
+    setTorqueTimeCmd.append(currentTorqueTime).append("\r");
+    if(writeDataToDevice(setTorqueTimeCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, setTorqueTimeCmd);
     return success;
 }
 
 bool InterfaceSupport::setSledStallBlinking(const device &currentDevice)
 {
     bool success{false};
+    QByteArray setStallBlinkingCmd{"sb"};
+    QByteArray currentStallBlinking{currentDevice.getStallBlinking()};
+
+    setStallBlinkingCmd.append(currentStallBlinking).append("\r");
+    if(writeDataToDevice(setStallBlinkingCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, setStallBlinkingCmd);
+
     return success;
 }
 
 bool InterfaceSupport::setSledButtonMode(const device &currentDevice)
 {
     bool success{false};
+    QByteArray setButtonModeCmd{"sbm"};
+    QByteArray currentButtonMode{currentDevice.getButtonMode()};
+
+    setButtonModeCmd.append(currentButtonMode).append("\r");
+    if(writeDataToDevice(setButtonModeCmd)){
+        QByteArray response = readDataFromDevice();
+        if(response.toUpper().contains("ACK")){
+            success = true;
+        }
+    }
+    LOG2(success, setButtonModeCmd);
+
+
     return success;
 }
 
