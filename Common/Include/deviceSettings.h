@@ -27,12 +27,6 @@ using DeviceIconType = std::vector<QImage*>;
 class device
 {
 public:
-    enum DeviceType
-    {
-        LowSpeed,
-        HighSpeed,
-        Ocelaris
-    };
 
 /*
  * Default values for a new device
@@ -41,24 +35,32 @@ public:
           QByteArray  inCatheterType             = "ATH",
           QByteArray  inDevicePropVersion        = "3.0",
           QByteArray  inSledFwMinVersion         = "3.0",
+
           QByteArray  inIfFwMinVersion           = "3.0",
           int         inCatheterLength           = 140,
           int         inInternalImagingMask_px   = 135,
           int         inCatheterRadius_um        = 406,
+
           int         inBidirectional            = 0,
           int         inNumberOfSpeeds           = 1,
           int         inRevolutionsPerMin1       = 600,
           int         inRevolutionsPerMin2       = 800,
+
           int         inRevolutionsPerMin3       = 1000,
           int         inDefaultSpeedIndex        = 1,
           int         inClockingEnabled          = 1,
           QByteArray  inClockingGain             = "25",
+
           QByteArray  inClockingOffset           = "400",
           QByteArray  inTorqueLimit              = "45",
-          QByteArray  inTimeLimit                = "1",
+          QByteArray  inTorqueTime               = "1",
+          QByteArray  inStallBlinking            = "1",
+
+          QByteArray  inButtonMode               = "0",
           int         inMeasurementVersion       = 0,
           QString     inDisclaimerText           = InvestigationalDeviceWarning,
           QByteArray  inDeviceCRC                = "",
+
           DeviceIconType      inIcon = std::vector<QImage*>())
     {
         deviceName               = inDeviceName;
@@ -81,8 +83,11 @@ public:
         clockingEnabled          = inClockingEnabled;
         clockingGain             = inClockingGain;
         clockingOffset           = inClockingOffset;
+
         torqueLimit              = inTorqueLimit;
-        timeLimit                = inTimeLimit;
+        torqueTime               = inTorqueTime;
+        stallBlinking            = inStallBlinking;
+        buttonMode               = inButtonMode;
         measurementVersion       = inMeasurementVersion;
         disclaimerText           = inDisclaimerText;
         deviceCRC                = inDeviceCRC;
@@ -115,8 +120,13 @@ public:
     int getClockingEnabled(void)          { return clockingEnabled; }
     QByteArray getClockingGain(void)      { return clockingGain; }
     QByteArray getClockingOffset(void)    { return clockingOffset; }
-    QByteArray getTorqueLimit(void)       { return torqueLimit; }
-    QByteArray getTimeLimit(void)         { return timeLimit; }
+
+    QByteArray getTorqueLimit(void) const   { return torqueLimit; }
+    QByteArray getTorqueTime(void)  const   { return torqueTime; }
+    QByteArray getStallBlinking(void) const { return stallBlinking;}
+    QByteArray getButtonMode(void) const    { return buttonMode;}
+
+
     float getImagingDepth_mm(void) const;
     DeviceIconType getIcon(void)              { return icon; }
     bool isBiDirectional(void)            { return biDirectional; }
@@ -126,36 +136,35 @@ public:
     DeviceIconType    icon;
 
 public:
-static QString formatDeviceName(const QString& name);
-bool isAth() const {return m_isAth;}
+    static QString formatDeviceName(const QString& name);
+    bool isAth() const {return m_isAth;}
 
-void setImagingDepth_mm(float value);
+    void setImagingDepth_mm(float value);
 
-void setALineLength_px(int value);
+    void setALineLength_px(int value);
 
-QByteArray getDevicePropVersion() const;
-void setDevicePropVersion(const QByteArray &value);
+    QByteArray getDevicePropVersion() const;
+    void setDevicePropVersion(const QByteArray &value);
 
-QByteArray getSledFwMinVersion() const;
-void setSledFwMinVersion(const QByteArray &value);
+    QByteArray getSledFwMinVersion() const;
+    void setSledFwMinVersion(const QByteArray &value);
 
-QByteArray getIfFwMinVersion() const;
-void setIfFwMinVersion(const QByteArray &value);
+    QByteArray getIfFwMinVersion() const;
+    void setIfFwMinVersion(const QByteArray &value);
 
-int getDefaultSpeedIndex() const;
-void setDefaultSpeedIndex(int value);
+    int getDefaultSpeedIndex() const;
+    void setDefaultSpeedIndex(int value);
 
-QByteArray getDeviceCRC() const;
-void setDeviceCRC(const QByteArray &value);
+    QByteArray getDeviceCRC() const;
+    void setDeviceCRC(const QByteArray &value);
 
-int getNumberOfSpeeds() const;
-void setNumberOfSpeeds(int value);
+    int getNumberOfSpeeds() const;
+    void setNumberOfSpeeds(int value);
 
 private:
-QString    deviceName;
-QString    splitDeviceName;
-
-QByteArray catheterType;
+    QString    deviceName;
+    QString    splitDeviceName;
+    QByteArray catheterType;
     QByteArray devicePropVersion{"3.0"};
     QByteArray sledFwMinVersion{"3.0"};
     QByteArray ifFwMinVersion{"3.0"};
@@ -173,8 +182,12 @@ QByteArray catheterType;
     int        clockingEnabled;
     QByteArray clockingGain;
     QByteArray clockingOffset;
+
     QByteArray torqueLimit;
-    QByteArray timeLimit;
+    QByteArray torqueTime;
+    QByteArray stallBlinking;
+    QByteArray buttonMode;
+
     float      imagingDepth_mm;
     float      pixelsPerMm;
     float      pixelsPerUm;

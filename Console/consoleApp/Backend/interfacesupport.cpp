@@ -434,6 +434,7 @@ void InterfaceSupport::populateInterfaceBoardCommandList() {
     interfaceBoardCommandList.emplace(OctInterfaceBoardCommandType::SET_VOA_TO_TRANSPARENT_MODE, "svt\r");
     interfaceBoardCommandList.emplace(OctInterfaceBoardCommandType::SET_VOA_TO_BLOCKING_MODE, "svb\r");
     interfaceBoardCommandList.emplace(OctInterfaceBoardCommandType::GET_SLED_FIRMWARE_VERSION, "gv\r");
+
     interfaceBoardCommandList.emplace(OctInterfaceBoardCommandType::SET_SLED_SPEED, "ss");
     interfaceBoardCommandList.emplace(OctInterfaceBoardCommandType::SET_BIDIRECTIONAL_MODE_OFF, "sbm0\r");
     interfaceBoardCommandList.emplace(OctInterfaceBoardCommandType::SET_BIDIRECTIONAL_MODE_ON, "sbm1\r");
@@ -780,3 +781,15 @@ bool InterfaceSupport::setSledDirection(bool direction) {
 
     return operationResult;
 }
+
+//void SledSupport::setSledParams( DeviceParams_T params )
+//{
+//        setClockingMode( params.isEnabled );//sc0 or sc1
+//        setClockingGain( params.gain ); //scg1:255
+//        setClockingOffset( params.offset );//sco1:999
+//        setSpeed( params.speed ); // bool setSledSpeed(int speed);
+//        setTorqueLimit( params.torque );// sto0:45
+//        setTorqueTime( params.time );//sti0:15
+//        setStallBlinking( params.blinkEnabled );//sb0:1
+//        setButtonMode( params.sledMulti ); //sbm0:2
+//}
