@@ -145,12 +145,17 @@ bool InterfaceSupport::initalizeFTDIDevice() {
 }
 
 bool InterfaceSupport::resetInterfaceBoard() {
+
     bool result = true;
+
+    currentBitSetVal.set(DEVICE_BIT_POSITION_LASER, 0); //laser hardware pin pulled low to avoid the bootloader
+
+    currentBitSetVal.set(DEVICE_BIT_POSITION_INTERFACE_BOARD_RESET, 0);
 
     QString msg = "Reset interface board - pull reset line low";
     QTextStream qts(&msg);
 
-    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, 0xF0, 0x20 );  //  pull reset line low
+    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, currentBitSetVal.to_ulong(), 0x20 );
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
         qts << "Could not perform reset on interface board" << msg;
@@ -158,9 +163,10 @@ bool InterfaceSupport::resetInterfaceBoard() {
         return false;
     }
     QThread::msleep(50);
+    currentBitSetVal.set(DEVICE_BIT_POSITION_INTERFACE_BOARD_RESET, 1);
 
     msg = "Reset interface board - pull reset line high";
-    ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // pull reset line high
+    ftStatus = ftStatus = FT_SetBitMode( ftHandle, currentBitSetVal.to_ulong(), 0x20 );
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
         qts << "Could not perform reset on interface board" << msg;

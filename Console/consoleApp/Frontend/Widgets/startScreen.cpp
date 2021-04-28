@@ -68,7 +68,12 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
      ui->pushButtonDemoMode->hide();
 
      DisplayManager::instance();
-//     InterfaceSupport::getInstance()->resetInterfaceBoard();
+
+     QString msg("call reset");
+     LOG1(msg);
+
+     InterfaceSupport::getInstance()->resetInterfaceBoard();
+
      hookupStartUpDiagnostics();
 //     LOGUA;
 }
