@@ -100,21 +100,25 @@ void SelectDialog::highlight(const QString &selected)
 
 void SelectDialog::selectItem0()
 {
+    LOGUA;
     selectItem(0);
 }
 
 void SelectDialog::selectItem1()
 {
+    LOGUA;
     selectItem(1);
 }
 
 void SelectDialog::selectItem2()
 {
+    LOGUA;
     selectItem(2);
 }
 
 void SelectDialog::scrollDown()
 {
+    LOGUA;
     const QString nextName = m_itemsInView[1];
     populateItemsInview(nextName);
     highlight(m_selectedItem);
@@ -122,6 +126,7 @@ void SelectDialog::scrollDown()
 
 void SelectDialog::addNew()
 {
+    LOGUA;
     /*
      * handle "ADD NEW" physician name
      */

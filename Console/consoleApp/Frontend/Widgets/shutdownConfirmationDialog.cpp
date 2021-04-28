@@ -1,6 +1,7 @@
 #include "shutdownConfirmationDialog.h"
 #include "ui_shutdownConfirmationDialog.h"
 #include "displayManager.h"
+#include "logger.h"
 
 
 ShutdownConfirmationDialog::ShutdownConfirmationDialog(QWidget *parent) :
@@ -12,10 +13,12 @@ ShutdownConfirmationDialog::ShutdownConfirmationDialog(QWidget *parent) :
 
     DisplayManager::instance()->showOnTheSecondMonitor("disk");
     DisplayManager::instance()->setWindowTitle("SHUTDOWN IN PROCESS");
+    LOGUA;
 
 }
 
 ShutdownConfirmationDialog::~ShutdownConfirmationDialog()
 {
+    LOGUA;
     delete ui;
 }

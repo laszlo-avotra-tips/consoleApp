@@ -123,6 +123,7 @@ void DeviceSelectDialog::populateList()
 
 void DeviceSelectDialog::on_pushButtonDone_clicked()
 {
+    LOGUA;
     initializeSelectedDevice();
 
     deviceSettings &devices = deviceSettings::Instance();
@@ -165,6 +166,7 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
 
 void DeviceSelectDialog::on_listViewAtherectomy_clicked(const QModelIndex &index)
 {
+    LOGUA;
     deviceSettings &dev = deviceSettings::Instance();
 
     QVariant name = index.data();
@@ -199,6 +201,7 @@ void DeviceSelectDialog::initializeSelectedDevice()
 
 void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
 {
+    LOGUA;
     deviceSettings &dev = deviceSettings::Instance();
 
     QVariant name = index.data();
@@ -224,6 +227,7 @@ void DeviceSelectDialog::on_listViewCto_clicked(const QModelIndex &index)
 
 void DeviceSelectDialog::on_listViewAtherectomy_pressed(const QModelIndex &index)
 {
+    LOGUA;
     deviceSettings &dev = deviceSettings::Instance();
     QVariant name = index.data();
     LOG2(name.toString(), index.row())
@@ -244,6 +248,7 @@ void DeviceSelectDialog::on_listViewAtherectomy_pressed(const QModelIndex &index
 
 void DeviceSelectDialog::on_listViewCto_pressed(const QModelIndex &index)
 {
+    LOGUA;
     deviceSettings &dev = deviceSettings::Instance();
     QVariant name = index.data();
     LOG2(name.toString(), index.row())

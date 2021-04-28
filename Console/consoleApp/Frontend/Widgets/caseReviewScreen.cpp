@@ -257,6 +257,7 @@ void CaseReviewScreen::hideEvent(QHideEvent * e)
 
 void CaseReviewScreen::on_pushButtonBack_clicked()
 {
+    LOGUA;
     WidgetContainer::instance()->gotoScreen("mainScreen");
 }
 
@@ -388,11 +389,13 @@ void CaseReviewScreen::clipSelected(QModelIndex index)
 
 void CaseReviewScreen::on_pushButtonDone_clicked()
 {
+    LOGUA;
     WidgetContainer::instance()->gotoScreen("mainScreen");
 }
 
 void CaseReviewScreen::on_pushButtonRightArrow_clicked()
 {
+    LOGUA;
     const int size{5};
     captureListModel& capList = captureListModel::Instance();
     if(m_numCaptures > size + capList.getRowOffset()){
@@ -403,6 +406,7 @@ void CaseReviewScreen::on_pushButtonRightArrow_clicked()
 
 void CaseReviewScreen::on_pushButtonLeftArrow_clicked()
 {
+    LOGUA;
     captureListModel& capList = captureListModel::Instance();
     if(capList.getRowOffset()){
         update();
@@ -422,6 +426,7 @@ void CaseReviewScreen::on_pushButtonClipsRightArrow_clicked()
 
 void CaseReviewScreen::on_pushButtonClipsLeftArrow_clicked()
 {
+    LOGUA;
     clipListModel& clipList = clipListModel::Instance();
     if(clipList.getRowOffset()){
         update();
