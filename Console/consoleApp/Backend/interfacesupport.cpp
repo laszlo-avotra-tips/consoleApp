@@ -168,8 +168,9 @@ bool InterfaceSupport::resetInterfaceBoard() {
         return false;
     }
 
-    QThread::msleep(200);
-    turnOnOffACPowerToOCT(false);
+    QThread::msleep(250);
+
+//    turnOnOffACPowerToOCT(false);
     return result;
 }
 
