@@ -193,7 +193,7 @@ void Logger::logMessage( QString msg, const char *severity, const char *file, in
                 << "(" << C_PATCH_VERSION << ") "
                 << severity << ": " 
                 << msg.toLatin1() << " - "
-                << file << " (" << line << ")\n";
+                << file << " (" << line << endl;
     }
 }
 
@@ -204,7 +204,7 @@ void Logger::logDebugMessage(const QString &msg, const char* function, int line,
     *output << "[" << QDateTime::currentDateTimeUtc().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
             << "(" << C_PATCH_VERSION << ") DEBUG: (" << tId << ") "
             << " - " << function << " (" << line << ") -> "
-            << msg << "\n";
+            << msg << endl;
 }
 
 void Logger::logButtonMessage(const QString &, const char* function, int line, Qt::HANDLE tId)
@@ -213,5 +213,5 @@ void Logger::logButtonMessage(const QString &, const char* function, int line, Q
 
     *output << "[" << QDateTime::currentDateTimeUtc().toString( "yyyy-MM-dd HH:mm:ss.zzz" ) << "] "
             << "(" << C_PATCH_VERSION << ") USER: ------------------- (" << tId << ") "
-            << " - " << function << " (" << line << ")\n";
+            << " - " << function << " (" << line <<endl;
 }
