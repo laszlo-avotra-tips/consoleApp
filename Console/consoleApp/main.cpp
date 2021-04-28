@@ -14,20 +14,20 @@
 #include "logger.h"
 #include <styledmessagebox.h>
 
-void hookupPowerUpDiagnostics() {
-    auto diagnostics = new PowerUpDiagnostics();
-    auto messageBox = styledMessageBox::instance(); //new PowerUpMessageBox();
-    LOG(INFO, "Initializing power up diagnostics");
+//void hookupPowerUpDiagnostics() {
+//    auto diagnostics = new PowerUpDiagnostics();
+//    auto messageBox = styledMessageBox::instance(); //new PowerUpMessageBox();
+//    LOG(INFO, "Initializing power up diagnostics");
 
-    QObject::connect(diagnostics, &OctSystemDiagnostics::showMessageBox,
-                     messageBox, &styledMessageBox::onShowMessageBox);
-    QObject::connect(diagnostics, &OctSystemDiagnostics::hideMessageBox,
-                     messageBox, &styledMessageBox::onHideMessageBox);
+//    QObject::connect(diagnostics, &OctSystemDiagnostics::showMessageBox,
+//                     messageBox, &styledMessageBox::onShowMessageBox);
+//    QObject::connect(diagnostics, &OctSystemDiagnostics::hideMessageBox,
+//                     messageBox, &styledMessageBox::onHideMessageBox);
 
-    QObject::connect(messageBox, &styledMessageBox::userAcknowledged,
-                     diagnostics, &OctSystemDiagnostics::onUserAcknowledged);
-    diagnostics->performDiagnostics(true);
-}
+//    QObject::connect(messageBox, &styledMessageBox::userAcknowledged,
+//                     diagnostics, &OctSystemDiagnostics::onUserAcknowledged);
+//    diagnostics->performDiagnostics(true);
+//}
 
 /*
  * main
@@ -35,10 +35,10 @@ void hookupPowerUpDiagnostics() {
 int main(int argc, char *argv[])
 {
     QApplication app( argc, argv );
-    hookupPowerUpDiagnostics();
 
     ScreenNavigator navigator;
     navigator.display();
+//    hookupPowerUpDiagnostics();
 
     app.exec();
 
