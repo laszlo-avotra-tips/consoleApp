@@ -12,6 +12,7 @@ InterfaceSupport* InterfaceSupport::m_instance {nullptr};
 
 InterfaceSupport *InterfaceSupport::getInstance(bool resetInterfaceBoard) {
     if(!m_instance){
+        LOG2(m_instance,resetInterfaceBoard)
         m_instance = new InterfaceSupport();
         // Initialize FTDI device
         if (!m_instance->initalizeFTDIDevice()) {
@@ -640,7 +641,7 @@ float InterfaceSupport::getHardwareVersion() {
     if (writeDataToDevice(interfaceBoardCommandList[OctInterfaceBoardCommandType::GET_HARDWARE_VERSION])) {
         QThread::msleep(250);
         QByteArray response = readDataFromDevice();
-        LOG1(response)
+        LOG1(response.toStdString().c_str());
         if(response.toUpper().contains("ACK")){
             auto parts = QString(response).split(QLatin1Char(' '));
             for (auto part : parts) {
@@ -663,7 +664,7 @@ float InterfaceSupport::getFirmwareVersion() {
     if (writeDataToDevice(interfaceBoardCommandList[OctInterfaceBoardCommandType::GET_FIRMWARE_VERSION])) {
         QThread::msleep(250);
         QByteArray response = readDataFromDevice();
-        LOG1(response)
+        LOG1(response.toStdString().c_str());
         if(response.toUpper().contains("ACK")){
             auto parts = QString(response).split(QLatin1Char(' '));
             for (auto part : parts) {
