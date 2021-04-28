@@ -150,7 +150,7 @@ bool InterfaceSupport::resetInterfaceBoard() {
     QString msg = "Reset interface board - pull reset line low";
     QTextStream qts(&msg);
 
-    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  //  pull reset line low
+    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, 0xF0, 0x20 );  //  pull reset line low
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
         qts << "Could not perform reset on interface board" << msg;
@@ -160,7 +160,7 @@ bool InterfaceSupport::resetInterfaceBoard() {
     QThread::msleep(50);
 
     msg = "Reset interface board - pull reset line high";
-    ftStatus = FT_SetBitMode( ftHandle, 0xF0, 0x20 );  // pull reset line high
+    ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // pull reset line high
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
         qts << "Could not perform reset on interface board" << msg;
