@@ -61,7 +61,7 @@
     qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ ; \
     log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
-#define LOGUA { Logger &log = Logger::Instance(); log.logButtonMessage(QString(""), __FUNCTION__, __LINE__, QThread::currentThreadId());}
+#define LOGUA //{ Logger &log = Logger::Instance(); log.logButtonMessage(QString(""), __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
 class Logger
 {
