@@ -148,7 +148,7 @@ bool InterfaceSupport::resetInterfaceBoard() {
 
     bool result = true;
 
-    currentBitSetVal.set(DEVICE_BIT_POSITION_LASER, 0); //laser hardware pin pulled low to avoid the bootloader
+    currentBitSetVal.set(DEVICE_BIT_POSITION_LASER, 1); //laser hardware pin pulled low to avoid the bootloader
 
     currentBitSetVal.set(DEVICE_BIT_POSITION_INTERFACE_BOARD_RESET, 0);
 
@@ -163,7 +163,7 @@ bool InterfaceSupport::resetInterfaceBoard() {
         return false;
     }
     QThread::msleep(50);
-    currentBitSetVal.set(DEVICE_BIT_POSITION_INTERFACE_BOARD_RESET, 1);
+    currentBitSetVal.set(DEVICE_BIT_POSITION_INTERFACE_BOARD_RESET, 0);
 
     msg = "Reset interface board - pull reset line high";
     ftStatus = ftStatus = FT_SetBitMode( ftHandle, currentBitSetVal.to_ulong(), 0x20 );
