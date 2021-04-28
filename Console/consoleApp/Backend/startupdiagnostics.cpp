@@ -67,7 +67,7 @@ int StartUpDiagnostics::turnOnSled() {
             statusMessage = tr( "Failed to turn on Sled");
             return 0;
         }
-        operationResult = interfaceSupport->turnOnOffLaser(true);
+        operationResult = interfaceSupport->turnOnOffLaser(false);
 
         if (operationResult) {
             LOG( INFO, "Successfully turned on Laser");

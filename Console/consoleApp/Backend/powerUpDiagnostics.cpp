@@ -79,7 +79,7 @@ int PowerUpDiagnostics::performInterfaceBoardCompatibilityCheck() {
         float minimumHardwareVersion = settings.getInterface_hw_version().toFloat();
         float minimumFirmwareVersion = settings.getInterface_firmware_version().toFloat();
         LOG2(minimumHardwareVersion, minimumFirmwareVersion)
-        auto interfaceSupport = InterfaceSupport::getInstance();
+        auto interfaceSupport = InterfaceSupport::getInstance(true); //initialize FTDI and also reset the interface board
         float hardwareVersion = 0.0;
         float firmwareVersion = 0.0;
 

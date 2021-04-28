@@ -114,13 +114,11 @@ bool InterfaceSupport::initalizeFTDIDevice() {
                 LOG( INFO, QString("*** Description : %1").arg(ftdiDeviceInfo[i].Description));
             }
         }
+        QThread::msleep(250);
 
         ftHandle = ftdiDeviceInfo[0].ftHandle;
-        QThread::msleep(250);
         // make sure device is closed before we open it
         FT_Close( ftHandle );
-
-        QThread::msleep(250);
 
         ftStatus = FT_Open( 0, &ftHandle );
         if( ftStatus != FT_OK ) {
@@ -136,7 +134,6 @@ bool InterfaceSupport::initalizeFTDIDevice() {
             LOG1(msg)
             return false;
         }
-        QThread::msleep(250);
 
         prepDevice();
 
@@ -153,16 +150,17 @@ bool InterfaceSupport::resetInterfaceBoard() {
     QString msg = "Reset interface board - pull reset line low";
     QTextStream qts(&msg);
 
-    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  // Reset interface board
+    FT_STATUS ftStatus = FT_SetBitMode( ftHandle, 0xF4, 0x20 );  //  pull reset line low
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
         qts << "Could not perform reset on interface board" << msg;
         LOG1(msg)
         return false;
     }
+    QThread::msleep(50);
 
     msg = "Reset interface board - pull reset line high";
-    ftStatus = FT_SetBitMode( ftHandle, 0xF0, 0x20 );  // Reset interface board
+    ftStatus = FT_SetBitMode( ftHandle, 0xF0, 0x20 );  // pull reset line high
     LOG3(ftStatus, FT_OK, msg);
     if( ftStatus != FT_OK ) {
         qts << "Could not perform reset on interface board" << msg;
@@ -170,6 +168,7 @@ bool InterfaceSupport::resetInterfaceBoard() {
         return false;
     }
 
+    QThread::msleep(200);
     turnOnOffACPowerToOCT(false);
     return result;
 }
