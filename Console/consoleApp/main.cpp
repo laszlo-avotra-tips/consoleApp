@@ -26,7 +26,8 @@ void hookupPowerUpDiagnostics() {
 
     QObject::connect(messageBox, &styledMessageBox::userAcknowledged,
                      diagnostics, &OctSystemDiagnostics::onUserAcknowledged);
-    diagnostics->performDiagnostics(true);
+    const bool success = diagnostics->performDiagnostics(true);
+    LOG1(success);
 }
 
 /*

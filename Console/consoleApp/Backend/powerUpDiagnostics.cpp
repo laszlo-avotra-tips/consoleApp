@@ -78,7 +78,7 @@ int PowerUpDiagnostics::performInterfaceBoardCompatibilityCheck() {
         userSettings &settings = userSettings::Instance();
         float minimumHardwareVersion = settings.getInterface_hw_version().toFloat();
         float minimumFirmwareVersion = settings.getInterface_firmware_version().toFloat();
-
+        LOG2(minimumHardwareVersion, minimumFirmwareVersion)
         auto interfaceSupport = InterfaceSupport::getInstance();
         float hardwareVersion = 0.0;
         float firmwareVersion = 0.0;
@@ -86,6 +86,7 @@ int PowerUpDiagnostics::performInterfaceBoardCompatibilityCheck() {
         if (interfaceSupport) {
             hardwareVersion = interfaceSupport->getHardwareVersion();
             firmwareVersion = interfaceSupport->getFirmwareVersion();
+            LOG2(hardwareVersion, firmwareVersion);
         } else {
             // InterfaceSupport cannot be instatiated possibly due to FTDI error.
             // Flag this as test not run
@@ -150,18 +151,21 @@ int PowerUpDiagnostics::performSystemDateCheck() {
     return result;
 }
 
-bool PowerUpDiagnostics::performDiagnostics(bool checkAll) {
+bool PowerUpDiagnostics::   performDiagnostics(bool checkAll) {
     if (checkAll) {
         resetResultsTable();
     }
 
     int checkResult = verifyAssets();
+    LOG1(checkResult);
+
     if (!setInitCheckStatusAndProcessResult(OctDiagnosticCheckType::OCT_INIT_KEY_CHECK,
                                             "Shutdown", checkResult)) {
         return false;
     }
 
     checkResult = performInterfaceBoardCompatibilityCheck();
+    LOG1(checkResult);
 
     if (!setInitCheckStatusAndProcessResult(OctDiagnosticCheckType::OCT_INIT_IF_BOARD_COMPATIBILITY_CHECK,
                                             "Shutdown", checkResult)) {
@@ -169,6 +173,7 @@ bool PowerUpDiagnostics::performDiagnostics(bool checkAll) {
     }
 
     checkResult = performACPowerCheck();
+    LOG1(checkResult);
 
     if (!setInitCheckStatusAndProcessResult(OctDiagnosticCheckType::OCT_INIT_AC_POWER_CHECK,
                                             "Shutdown", checkResult)) {
@@ -176,6 +181,7 @@ bool PowerUpDiagnostics::performDiagnostics(bool checkAll) {
     }
 
     checkResult = performSystemDateCheck();
+    LOG1(checkResult);
 
     if (!setInitCheckStatusAndProcessResult(OctDiagnosticCheckType::OCT_INIT_SYSTEM_DATE_CHECK,
                                             "Warning", checkResult)) {

@@ -638,7 +638,9 @@ float InterfaceSupport::getHardwareVersion() {
     float hardwareVersionNum = 0.0;
 
     if (writeDataToDevice(interfaceBoardCommandList[OctInterfaceBoardCommandType::GET_HARDWARE_VERSION])) {
+        QThread::msleep(250);
         QByteArray response = readDataFromDevice();
+        LOG1(response)
         if(response.toUpper().contains("ACK")){
             auto parts = QString(response).split(QLatin1Char(' '));
             for (auto part : parts) {
@@ -659,7 +661,9 @@ float InterfaceSupport::getFirmwareVersion() {
     float firmwareVersionNum = 0.0;
 
     if (writeDataToDevice(interfaceBoardCommandList[OctInterfaceBoardCommandType::GET_FIRMWARE_VERSION])) {
+        QThread::msleep(250);
         QByteArray response = readDataFromDevice();
+        LOG1(response)
         if(response.toUpper().contains("ACK")){
             auto parts = QString(response).split(QLatin1Char(' '));
             for (auto part : parts) {
