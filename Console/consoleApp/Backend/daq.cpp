@@ -424,6 +424,7 @@ void DAQ::getData(new_image_callback_data_t data)
             ){
         axsunData.timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(axsunData);
+        emit updateSector(nullptr);
 //        LOG4(axsunData.frameCount,axsunData.acqData, axsunData.bufferLength, dropped_packets)
                 ++m_daqCount;
     }
