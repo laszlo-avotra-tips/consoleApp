@@ -310,8 +310,9 @@ void SignalModel::popImageRenderingQueue()
 
 bool SignalModel::isImageRenderingQueueGTE(size_t length) const
 {
-    QMutexLocker guard(&m_imageRenderingMutex);
+//    QMutexLocker guard(&m_imageRenderingMutex);
     const bool success = m_imageRenderingQueue.size() >= length;
+    if(success)LOG1(success)
     return success;
 }
 
