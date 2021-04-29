@@ -179,11 +179,11 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
         }
 
         auto interfaceSupport = InterfaceSupport::getInstance();
-//        interfaceSupport->setSledSpeed(speed);
+        interfaceSupport->setSledSpeed(speed);
         deviceSettings &device = deviceSettings::Instance();
         auto currentDev = device.current();
         const bool isBiDirectionalEnabled{currentDev->isBiDirectional()};
-//        interfaceSupport->enableDisableBidirectional(isBiDirectionalEnabled);
+        interfaceSupport->enableDisableBidirectional(isBiDirectionalEnabled);
     }
 }
 
