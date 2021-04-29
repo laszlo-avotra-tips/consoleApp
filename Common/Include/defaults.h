@@ -162,32 +162,6 @@ const int HsVideoTimeoutCount = 5;
 // about the size of a single frame mkv file).
 const unsigned int MinVideoFileSizeBytes = 45000;
 
-typedef struct
-{
-    int minValue;
-    int maxValue;
-    int defaultValue;
-} VideoQualityLevel_T;
-
-/*
- * See backend/videoencoder.cpp for details on video quality (crf) values.
- * These values were determined by benchtop testing with ocelot
- * and wolverine catheters, trading off file size and onscreen quality.
- */
-const VideoQualityLevel_T VideoQualityLevel_crf = { 20, 27, 25 };
-
-const QString VideoQualitySetting( "video/crf" );
-
-/*
- * AutoComplete settings
- */
-const QString LocationAutoCompleteSetting( "caseSetup/locations" );
-const QString DefaultLocationSetting( "caseSetup/defaultLocation" );
-
-const QString DoctorAutoCompleteSetting( "caseSetup/doctors" );
-const QString DefaultDoctorSetting( "caseSetup/defaultDoctor" );
-
-const QString FullCaseRecordingSetting( "data/fullCaseRecording" );
 
 /*
  * Settings in octConsole.ini

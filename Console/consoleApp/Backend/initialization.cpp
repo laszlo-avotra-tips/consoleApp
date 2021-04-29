@@ -28,7 +28,9 @@ Initialization::Initialization()
     hasWarning         = false;
     docScreenAvailable = true;  // assume it is unless the check in init() fails
     statusMessage      = "";
-    auto interfaceSupport = InterfaceSupport::getInstance(true);
+
+    auto interfaceSupport = InterfaceSupport::getInstance();
+    LOG1(interfaceSupport)
 
     if (interfaceSupport) {
         LOG( INFO, "Interface support initialized successfully");

@@ -35,7 +35,7 @@ ImageDescriptor::ImageDescriptor() :
 {
     auto& setting = deviceSettings::Instance();
 
-    if(setting.getIsSimulation()){
+    if(setting.getIsDeviceSimulation()){
         m_imageWidth = MaxALineLength;
         m_imageHeight = SignalModel::instance()->linesPerRevolution();
         m_warpImageWidth = SectorWidth_px;

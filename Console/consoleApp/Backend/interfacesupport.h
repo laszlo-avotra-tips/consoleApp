@@ -2,7 +2,9 @@
 #define INTERFACESUPPORT_H
 
 #include "ftd2xx.h"
-#include<bitset>
+#include "deviceSettings.h"
+
+#include <bitset>
 #include <QByteArray>
 #include <map>
 
@@ -20,6 +22,7 @@ enum class OctInterfaceBoardCommandType {
     SET_VOA_TO_TRANSPARENT_MODE = 7,
     SET_VOA_TO_BLOCKING_MODE = 8,
     GET_SLED_FIRMWARE_VERSION = 9,
+
     SET_SLED_SPEED = 10,
     SET_BIDIRECTIONAL_MODE_OFF = 11,
     SET_BIDIRECTIONAL_MODE_ON = 12,
@@ -74,32 +77,32 @@ public:
     /*
      * Turn on Sled 5V.
      *
-     * @param state
+     * @param isOn
      *      enabling state of Sled 5V to be set.
      *
-     * @return True if sled is turned on successfullly
+     * @return True if sled is turned on or off successfullly
      */
-    bool turnOnSled5V(bool state);
+    bool turnOnOffSled5V(bool isOn);
 
     /*
      * Turn on Sled 24V.
      *
-     * @param state
+     * @param isOn
      *      enabling state of Sled 24V to be set.
      *
-     * @return True if sled is turned on successfullly
+     * @return True if sled is turned on or off successfullly
      */
-    bool turnOnSled24V(bool state);
+    bool turnOnOffSled24V(bool isOn);
 
     /*
      * Turn on Sled.
      *
-     * @param state
+     * @param isOn
      *      enabling state of Sled for both 5V and 24V to be set.
      *
-     * @return True if sled is turned on successfullly
+     * @return True if sled is turned on or off successfullly
      */
-    bool turnOnSled(bool state);
+    bool turnOnOffSled(bool isOn);
 
     /*
      * Turn on Laser.
@@ -109,7 +112,7 @@ public:
      *
      * @return True if laser is turned on successfullly
      */
-    bool turnOnLaser(bool state);
+    bool turnOnOffLaser(bool isOn);
 
     /*
      * Reset interface board low. The effect is; fans get turned OFF
@@ -175,7 +178,7 @@ public:
      *
      * @return True if AC power to the OCT can be turned on successfullly
      */
-    bool turnOnACPowerToOCT(bool state);
+    bool turnOnOffACPowerToOCT(bool state);
 
     /*
      * Queries VOA settings from the interface board
@@ -244,6 +247,20 @@ public:
 
     int getLastRunningState() const;
 
+    void updateSledConfig(const device& currentDevice);
+
+    bool setSledClockingEnabled(const device& currentDevice);
+    bool setSledClockingGain(const device& currentDevice);
+    bool setSledClockingOffset(const device& currentDevice);
+
+    bool setSledSpeed(const device& currentDevice);
+
+    bool setSledTorqueLimit(const device& currentDevice);
+    bool setSledTorqueTime(const device& currentDevice);
+
+    bool setSledStallBlinking(const device& currentDevice);
+    bool setSledButtonMode(const device& currentDevice);
+
 private:
 
     /*
@@ -251,7 +268,7 @@ private:
     *
     * No copying and moving allowed.
     */
-    InterfaceSupport() = default;
+    InterfaceSupport();
     ~InterfaceSupport();
     InterfaceSupport(const InterfaceSupport&) = delete;
     InterfaceSupport& operator=(const InterfaceSupport&) = delete;

@@ -1,5 +1,6 @@
 #include "consoleKeyboard.h"
 #include "ui_consoleKeyboard.h"
+#include <logger.h>
 
 #include <QDebug>
 
@@ -76,6 +77,7 @@ ConsoleKeyboard::ConsoleKeyboard(const ParameterType &param, QWidget *parent) :
 
 ConsoleKeyboard::~ConsoleKeyboard()
 {
+    LOGUA;
     delete ui;
 }
 
@@ -86,6 +88,7 @@ QString ConsoleKeyboard::value()
 
 void ConsoleKeyboard::handleDelete()
 {
+    LOGUA;
     auto* target = ui->lineEditParam;
     auto param = target->text();
     if(!param.isEmpty()){
@@ -99,6 +102,7 @@ void ConsoleKeyboard::handleDelete()
 
 void ConsoleKeyboard::handleSpace()
 {
+    LOGUA;
     const QString val = ui->lineEditParam->text() + QString(" ");
     ui->lineEditParam->setText(val);
     ui->lineEditParam->setFocus();
@@ -106,6 +110,7 @@ void ConsoleKeyboard::handleSpace()
 
 void ConsoleKeyboard::handleNumbersAndOthers(const QString& number)
 {
+    LOGUA;
     auto stringList = number.split("\n");
     if(stringList.size() == 2){
         if(m_isLowCap){
@@ -126,6 +131,7 @@ void ConsoleKeyboard::handleNumbersAndOthers(const QString& number)
 
 void ConsoleKeyboard::handleLetters(const QString &letter)
 {
+    LOGUA;
     const QString val = ui->lineEditParam->text() + letter;
     ui->lineEditParam->setText(val);
     ui->lineEditParam->setFocus();
@@ -306,6 +312,7 @@ void ConsoleKeyboard::highlightEnter()
 
 void ConsoleKeyboard::handleCapsLock(bool checked)
 {
+    LOGUA;
     if(checked){
         buttonToUpper(ui->pushButton_capsLock);
         toHighCap();
@@ -318,11 +325,13 @@ void ConsoleKeyboard::handleCapsLock(bool checked)
 
 void ConsoleKeyboard::handleLeftShift()
 {
+    LOGUA;
     handleRightShift();
 }
 
 void ConsoleKeyboard::handleRightShift()
 {
+    LOGUA;
     if(m_isLowCap){
         toggleCap();
         m_isShift = true;

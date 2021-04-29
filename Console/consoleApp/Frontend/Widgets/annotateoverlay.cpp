@@ -9,7 +9,7 @@
 #include <QDebug>
 #include "defaults.h"
 #include "annotateoverlay.h"
-
+#include <logger.h>
 /*
  * Constructor
  */
@@ -57,6 +57,7 @@ AnnotateOverlay::~AnnotateOverlay()
  */
 void AnnotateOverlay::mousePressEvent( QGraphicsSceneMouseEvent *event )
 {
+    LOGUA;
     mouseIsDown = true;
 
     workingSegmentList = new QList<QPoint>;
@@ -72,6 +73,7 @@ void AnnotateOverlay::mousePressEvent( QGraphicsSceneMouseEvent *event )
  */
 void AnnotateOverlay::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
 {
+    LOGUA;
     if( mouseIsDown )
     {
         // Add each point as the mouse moves
@@ -87,6 +89,7 @@ void AnnotateOverlay::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
  */
 void AnnotateOverlay::mouseReleaseEvent( QGraphicsSceneMouseEvent * /*event*/ )
 {
+    LOGUA;
     mouseIsDown = false;
     drawingsList.append( workingSegmentList );
 }

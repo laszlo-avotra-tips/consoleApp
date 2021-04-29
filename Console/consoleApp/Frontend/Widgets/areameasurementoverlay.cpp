@@ -80,6 +80,7 @@ AreaMeasurementOverlay::~AreaMeasurementOverlay()
  */
 void AreaMeasurementOverlay::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    LOGUA;
     // drag the box
     if( box->contains( event->pos().toPoint() ) )
     {
@@ -126,6 +127,7 @@ void AreaMeasurementOverlay::mousePressEvent(QGraphicsSceneMouseEvent *event)
  */
 void AreaMeasurementOverlay::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
 {
+    LOGUA;
     const int Top    = 0;
     const int Left   = 0;
     const int Right  = SectorWidth_px;

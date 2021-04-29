@@ -61,6 +61,8 @@
     qtextstream << #x_ << "=" << x_ << " " << #y_ << "=" << y_ << " " << #z_ << "=" << z_ << " " << #zz_ << "=" << zz_ ; \
     log.logDebugMessage(logMsg, __FUNCTION__, __LINE__, QThread::currentThreadId());}
 
+#define LOGUA { Logger &log = Logger::Instance(); log.logButtonMessage(QString(""), __FUNCTION__, __LINE__, QThread::currentThreadId());}
+
 class Logger
 {
 public:
@@ -73,6 +75,7 @@ public:
 
     void logMessage( QString msg, const char *severity, const char* file, int line );
     void logDebugMessage(const QString& msg, const char* function, int line, Qt::HANDLE tId );
+    void logButtonMessage(const QString& msg, const char* function, int line, Qt::HANDLE tId );
 
 private:
     Logger();  // hide ctor

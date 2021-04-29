@@ -29,7 +29,7 @@ IDAQ *daqfactory::getdaq()
         LOG1(deviceName)
 
         idaq = new DAQ();
-        setting.setIsSimulation(false);
+        setting.setIsDeviceSimulation(false);
     }
 
     return idaq;

@@ -3,6 +3,7 @@
 #include "Utility/widgetcontainer.h"
 #include <displayManager.h>
 #include "defaults.h"
+#include "logger.h"
 
 #include <QTimer>
 #include <QGraphicsOpacityEffect>
@@ -49,41 +50,48 @@ ReviewAndSettingsDialog::ReviewAndSettingsDialog(QWidget *parent) :
         group->addAnimation(animation);
         group->start();
     }
-
+    LOGUA;
 }
 
 ReviewAndSettingsDialog::~ReviewAndSettingsDialog()
 {
+    LOGUA;
     delete ui;
 }
 
 void ReviewAndSettingsDialog::on_pushButtonExit_clicked()
 {
+    LOGUA;
     reject();
 }
 
 void ReviewAndSettingsDialog::on_pushButtonNext_clicked()
 {
+    LOGUA;
     accept();
 }
 
 void ReviewAndSettingsDialog::on_pushButtonDisplayOptions_clicked(bool checked)
 {
+    LOGUA;
    showLastButtonSelected(ui->pushButtonDisplayOptions, checked);
 }
 
 void ReviewAndSettingsDialog::on_pushButtonCaseReview_clicked(bool checked)
 {
+    LOGUA;
     showLastButtonSelected(ui->pushButtonCaseReview, checked);
 }
 
 void ReviewAndSettingsDialog::on_pushButtonDeviceSelect_clicked(bool checked)
 {
+    LOGUA;
     showLastButtonSelected(ui->pushButtonDeviceSelect, checked);
 }
 
 void ReviewAndSettingsDialog::on_pushButtonCaseInformation_clicked(bool checked)
 {
+    LOGUA;
     showLastButtonSelected(ui->pushButtonCaseInformation, checked);
 }
 

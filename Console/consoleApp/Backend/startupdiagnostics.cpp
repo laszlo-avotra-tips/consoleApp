@@ -15,7 +15,7 @@ int StartUpDiagnostics::performOctPowerUpChecks() {
 
     if (interfaceSupport) {
         currentOctDiagnosticCheck = OctDiagnosticCheckType::OCT_START_OCT_POWER_UP_CHECK;
-        bool operationResult = interfaceSupport->turnOnACPowerToOCT(true);
+        bool operationResult = interfaceSupport->turnOnOffACPowerToOCT(true);
 
         if (operationResult) {
             LOG(INFO, "Successfully turned on AC power to OCT");
@@ -58,7 +58,7 @@ int StartUpDiagnostics::turnOnSled() {
 
     if (interfaceSupport) {
         currentOctDiagnosticCheck = OctDiagnosticCheckType::OCT_START_OCT_SLED_ON_CHECK;
-        bool operationResult = interfaceSupport->turnOnSled(true);
+        bool operationResult = interfaceSupport->turnOnOffSled(true);
 
         if (operationResult) {
             LOG( INFO, "Successfully turned on Sled");
@@ -67,7 +67,7 @@ int StartUpDiagnostics::turnOnSled() {
             statusMessage = tr( "Failed to turn on Sled");
             return 0;
         }
-        operationResult = interfaceSupport->turnOnLaser(true);
+        operationResult = interfaceSupport->turnOnOffLaser(false);
 
         if (operationResult) {
             LOG( INFO, "Successfully turned on Laser");

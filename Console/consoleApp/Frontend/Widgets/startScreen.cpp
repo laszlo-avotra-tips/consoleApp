@@ -68,8 +68,14 @@ style=\" font-size:21pt;color:#A9A9A9;\"> L300 | Software Version ");
      ui->pushButtonDemoMode->hide();
 
      DisplayManager::instance();
-//     DisplayManager::instance()->initWidgetForTheSecondMonitor("logo");
+
+     QString msg("call reset");
+     LOG1(msg);
+
+     InterfaceSupport::getInstance()->resetInterfaceBoard();
+
      hookupStartUpDiagnostics();
+//     LOGUA;
 }
 
 void StartScreen::hookupStartUpDiagnostics() {
@@ -93,6 +99,7 @@ StartScreen::~StartScreen()
 
 void StartScreen::on_pushButtonMenu_clicked(bool checked)
 {
+    LOGUA;
     if(checked){
          ui->pushButtonShutdown->show();
          ui->pushButtonCaseReviewAndExport->show();
@@ -106,6 +113,7 @@ void StartScreen::on_pushButtonMenu_clicked(bool checked)
 
 void StartScreen::on_pushButtonPreferences_clicked()
 {
+    LOGUA;
     if(m_preferencesDialog->exec() == QDialog::Accepted){
         LOG1("ACCEPTED");
         m_preferencesDialog->close();
@@ -116,6 +124,7 @@ void StartScreen::on_pushButtonShutdown_clicked()
 {
 //    FullCaseRecorder::instance()->closeRecorder();
 
+    LOGUA;
     auto dialog = new ShutdownConfirmationDialog();
 
     if(dialog->exec() == QDialog::Accepted){
@@ -142,10 +151,10 @@ void StartScreen::showEvent(QShowEvent *se)
         WidgetContainer::instance()->setIsNewCase(true);
 
         auto* ifs = InterfaceSupport::getInstance();
-        ifs->turnOnACPowerToOCT(false);//1. sac0
+        ifs->turnOnOffACPowerToOCT(false);//1. sac0
         ifs->setVOAMode(false);//2. svb
-        ifs->turnOnSled5V(false); // 3, OFF "sled 5v"
-        ifs->turnOnSled24V(false); //3. OFF "sled 24v"
+        ifs->turnOnOffSled5V(false); // 3, OFF "sled 5v"
+        ifs->turnOnOffSled24V(false); //3. OFF "sled 24v"
 
         LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
     }
@@ -158,6 +167,7 @@ void StartScreen::hideEvent(QHideEvent *he)
 
 void StartScreen::on_pushButtonStart_released()
 {
+    LOGUA;
     if (diagnostics) {
         if (!diagnostics->performDiagnostics(true)) {
             LOG(ERROR, "Start up diagnostics failed!");
@@ -170,9 +180,9 @@ void StartScreen::on_pushButtonStart_released()
     if(!m_isPressAndHold){
 
         auto* ifs = InterfaceSupport::getInstance();
-        ifs->turnOnACPowerToOCT(true);//1. sac1
-        ifs->turnOnSled5V(true); // 3, ON "sled 5v"
-        ifs->turnOnSled24V(true); //3. ON "sled 24v"
+        ifs->turnOnOffACPowerToOCT(true);//1. sac1
+        ifs->turnOnOffSled5V(true); // 3, ON "sled 5v"
+        ifs->turnOnOffSled24V(true); //3. ON "sled 24v"
         ifs->setVOAMode(false);//2. svb
         LOG2(ifs->getSupplyVoltage(), ifs->getVOASettings());
 
@@ -186,6 +196,7 @@ void StartScreen::on_pushButtonStart_released()
 
 void StartScreen::setPressAndHold()
 {
+    LOGUA;
     m_isPressAndHold = true;
     WidgetContainer::instance()->minimize();
 }
@@ -229,6 +240,7 @@ bool StartScreen::gestureEvent(QGestureEvent *ge)
 
 void StartScreen::on_pushButtonStart_pressed()
 {
+    LOGUA;
     m_isPressAndHold = false;
 //    m_timer.singleShot(2000, this, &StartScreen::setPressAndHold);
 //    DisplayManager::instance()->initWidgetForTheSecondMonitor("disk");

@@ -6,6 +6,22 @@
 #include "logger.h"
 #include <QDebug>
 #include <QFile>
+#include <Backend/powerUpDiagnostics.h>
+
+//void hookupPowerUpDiagnostics() {
+//    auto diagnostics = new PowerUpDiagnostics();
+//    auto messageBox = styledMessageBox::instance(); //new PowerUpMessageBox();
+//    LOG(INFO, "Initializing power up diagnostics");
+
+//    QObject::connect(diagnostics, &OctSystemDiagnostics::showMessageBox,
+//                     messageBox, &styledMessageBox::onShowMessageBox);
+//    QObject::connect(diagnostics, &OctSystemDiagnostics::hideMessageBox,
+//                     messageBox, &styledMessageBox::onHideMessageBox);
+
+//    QObject::connect(messageBox, &styledMessageBox::userAcknowledged,
+//                     diagnostics, &OctSystemDiagnostics::onUserAcknowledged);
+//    diagnostics->performDiagnostics(true);
+//}
 
 
 ScreenNavigator::ScreenNavigator(QWidget *parent) :
@@ -23,6 +39,7 @@ ScreenNavigator::ScreenNavigator(QWidget *parent) :
 
     auto& log = Logger::Instance();
     log.init("ScreenNavigator");
+//    hookupPowerUpDiagnostics();
 
     StartScreen* startScreen = new StartScreen();
     WidgetContainer::instance()->registerWidget("startScreen", startScreen);

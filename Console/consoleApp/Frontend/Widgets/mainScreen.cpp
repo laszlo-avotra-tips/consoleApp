@@ -454,6 +454,13 @@ void MainScreen::updateDeviceSettings()
 {
     deviceSettings &dev = deviceSettings::Instance();
     auto selectedDevice = dev.current();
+
+    if(!selectedDevice){
+        return;
+    }
+
+    InterfaceSupport::getInstance()->updateSledConfig(*selectedDevice);
+
     const bool isBidir = selectedDevice->isBiDirectional();
     const int numberOfSpeeds = selectedDevice->getNumberOfSpeeds();
 

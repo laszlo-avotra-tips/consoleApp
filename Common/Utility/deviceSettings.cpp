@@ -12,7 +12,6 @@
 #include <QDebug>
 #include "deviceSettings.h"
 #include "defaults.h"
-//#include "util.h"
 #include "logger.h"
 #include <QDir>
 #include <QFile>
@@ -21,6 +20,7 @@
 #include <QXmlStreamReader>
 #include <QSettings>
 #include <QMessageBox>
+#include <QTextStream>
 #include <logger.h>
 #include "Utility/userSettings.h"
 #include "signalmodel.h"
@@ -172,12 +172,8 @@ QString deviceSettings::getCurrentDeviceTitle() const
  */
 bool deviceSettings::loadDevice( QString deviceFile )
 {
-    int testno = 0;
-    //errorHandler &err = errorHandler::Instance();
+    LOG1(deviceFile);
 
-    qDebug() << "Loading device from:" << deviceFile;
-
-//    device::DeviceType speedType = device::LowSpeed;    // to make compiler happy that it is initialized
     bool retVal = false;
 
     // open the file
@@ -203,39 +199,23 @@ bool deviceSettings::loadDevice( QString deviceFile )
         // get the filename from the filepath
         fileInfo = file->fileName();
         QString errMessage;
+        QTextStream qts(&errMessage);
         int errLine;
         int errColumn;
 
         if( !doc->setContent( file, &errMessage, &errLine, &errColumn  ) )
         {
             retVal = false;
-            qDebug() << "Failed to parse XML file" << fileInfo.fileName() << errMessage << errLine << errColumn;
-            //err.warn( QString( "Failed to parse XML file %1." ).arg( fileInfo.fileName() ) );
+            qts << "Failed to parse XML file" << fileInfo.fileName() << errMessage << errLine << errColumn;
+            LOG1(errMessage);
         }
     }
-    testno++;
-    if (retVal != true) {
-        qDebug() << "test: " << testno;
-    }
-//    // do not continue if the device XML version is wrong
-//    if( retVal )
-//    {
-//        if( !checkVersion( doc ) )
-//        {
-//            retVal = false;
-//            //err.warn( QString( "Failed to load device %1\nReason: Version mismatch" ).arg( fileInfo.fileName() ) );
-//        }
-//    }
-//    testno++;
-//    if (retVal != true) qDebug() << "test: " << 2;
 
     if( retVal )
     {
         // read in data
         QDomElement root = doc->documentElement();
 
-//        QDomNode n = root.firstChild();
-//        QDomElement e = n.toElement();
         QDomElement e = root.toElement();
         // read attributes for device
         if( e.tagName() == "device" )
@@ -252,8 +232,8 @@ bool deviceSettings::loadDevice( QString deviceFile )
             QImage *d1Img = new QImage;
             if( !d1Img->load( deviceFile.replace( DeviceDescriptionExtension, DeviceIconExtension, Qt::CaseInsensitive ) ) )
             {
-                qDebug() << "Failed loading icon";
-                //d1Img->load( ":/octConsole/Frontend/Resources/unknowndev.jpg" );
+                QString msg("Failed loading icon");
+                LOG1(msg)
             }
 
             QImage *d2Img = new QImage;
@@ -266,24 +246,32 @@ bool deviceSettings::loadDevice( QString deviceFile )
                                      e.attribute( "type", "" ).toLatin1(),
                                      e.attribute( "devicePropVersion","").toLatin1(),
                                      e.attribute( "sledFwMinVersion","").toLatin1(),
+
                                      e.attribute( "ifFwMinVersion", "").toLatin1(),
                                      e.attribute( "catheterLength", "" ).toInt(),
                                      e.attribute( "internalImagingMask_px", "" ).toInt(),
                                      e.attribute( "catheterRadius_um", "" ).toInt(),
+
                                      e.attribute( "biDirectional", "0" ).toInt(),
                                      e.attribute( "numberOfSpeeds", "1" ).toInt(),
                                      e.attribute( "revolutionsPerMin1", "600" ).toInt(),
                                      e.attribute( "revolutionsPerMin2", "800" ).toInt(),
+
                                      e.attribute( "revolutionsPerMin3", "1000" ).toInt(),
                                      e.attribute( "defaultSpeedIndex", "1").toInt(),
                                      e.attribute( "clockingEnabled", "1" ).toInt(),
                                      e.attribute( "clockingGain", "" ).toLatin1(),
+
                                      e.attribute( "clockingOffset", "" ).toLatin1(),
-                                     e.attribute( "torqueLimit", "2.5" ).toLatin1(),
-                                     e.attribute( "timeLimit", "1" ).toLatin1(),
-                                     e.attribute( "measurementVersion", "1" ).toInt(),
+                                     e.attribute( "torqueLimit", "25" ).toLatin1(),
+                                     e.attribute( "torqueTime", "1" ).toLatin1(),
+                                     e.attribute( "stallBlinking", "1" ).toLatin1(),
+
+                                     e.attribute( "buttonMode", "0" ).toLatin1(),
+                                     e.attribute( "measurementVersion", "1" ).toInt(),                                     
                                      e.attribute( "disclaimerText", InvestigationalDeviceWarning ),
                                      e.attribute( "deviceCRC","").toLatin1(),
+
                                      deviceIcon );    // d1Img
             deviceList.append( d1 );
         }
@@ -437,14 +425,14 @@ void device::setNumberOfSpeeds(int value)
     numberOfSpeeds = value;
 }
 
-bool deviceSettings::getIsSimulation() const
+bool deviceSettings::getIsDeviceSimulation() const
 {
-    return m_isSimulation;
+    return m_isDeviceSimulation;
 }
 
-void deviceSettings::setIsSimulation(bool isSimulation)
+void deviceSettings::setIsDeviceSimulation(bool isDeviceSimulation)
 {
-    m_isSimulation = isSimulation;
+    m_isDeviceSimulation = isDeviceSimulation;
 }
 
 const QString &device::getSplitDeviceName() const
