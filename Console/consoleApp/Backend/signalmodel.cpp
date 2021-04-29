@@ -297,8 +297,8 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData &od)
 {
-    auto data = handleSimulationSettings(od);
     QMutexLocker guard(&m_imageRenderingMutex);
+    auto data = handleSimulationSettings(od);
     m_imageRenderingQueue.push(data);
 }
 
@@ -310,7 +310,9 @@ void SignalModel::popImageRenderingQueue()
 
 bool SignalModel::isImageRenderingQueueGTE(size_t length) const
 {
-    return m_imageRenderingQueue.size() >= length;
+    QMutexLocker guard(&m_imageRenderingMutex);
+    const bool success = m_imageRenderingQueue.size() >= length;
+    return success;
 }
 
 std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
