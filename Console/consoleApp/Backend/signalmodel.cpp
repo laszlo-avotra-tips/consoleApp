@@ -310,17 +310,15 @@ void SignalModel::popImageRenderingQueue()
 
 bool SignalModel::isImageRenderingQueueGTE(size_t length) const
 {
-//    QMutexLocker guard(&m_imageRenderingMutex);
-    const bool success = m_imageRenderingQueue.size() >= length;
-    if(success)LOG1(success)
-    return success;
+    return  m_imageRenderingQueue.size() >= length;
 }
 
 std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     std::pair<bool, OctData> retVal{false, OctData()};
-    if(isImageRenderingQueueGTE(1)){
+//    if(isImageRenderingQueueGTE(1)){
+    if(!m_imageRenderingQueue.empty()){
         retVal.second = m_imageRenderingQueue.front();
         retVal.first = true;
     }
