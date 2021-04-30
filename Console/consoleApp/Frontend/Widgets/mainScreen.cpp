@@ -265,8 +265,8 @@ void MainScreen::handleEndCase()
     }
 
     auto idaq = daqfactory::instance()->getdaq();
-    bool isDisonnected = disconnect( idaq->getSignalSource(), &IDAQ::updateSector, this, &MainScreen::updateSector);
-    LOG1(isDisonnected);
+    bool isDisconnected = disconnect( idaq, &IDAQ::updateSector, this, &MainScreen::updateSector);
+    LOG1(isDisconnected);
 
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
