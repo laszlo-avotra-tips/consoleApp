@@ -265,8 +265,8 @@ void MainScreen::handleEndCase()
     }
 
     auto idaq = daqfactory::instance()->getdaq();
-    bool isDisconnected = disconnect( idaq, &IDAQ::updateSector, this, &MainScreen::updateSector);
-    LOG1(isDisconnected);
+    bool isDisonnected = disconnect( idaq->getSignalSource(), &IDAQ::updateSector, this, &MainScreen::updateSector);
+    LOG1(isDisonnected);
 
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
@@ -818,7 +818,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t frameData)
+void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
@@ -827,18 +827,16 @@ void MainScreen::updateSector(OCTFile::OctData_t frameData)
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
     }
-    LOG1(frameData.frameCount);
-    {
+
+    if(!frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
         m_disableRendering = userSettings::Instance().getDisableRendering();
-//       auto* sm = SignalModel::instance();
-//       auto val = sm->frontImageRenderingQueue();
-//       if(val.first)
-       {
-//           auto& frame = val.second;
+       auto* sm = SignalModel::instance();
+       auto val = sm->frontImageRenderingQueue();
+       if(val.first){
+           auto& frame = val.second;
 //           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
 //           sm->popImageRenderingQueue();
-           auto& frame = frameData;
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
@@ -920,7 +918,7 @@ void MainScreen::updateSector(OCTFile::OctData_t frameData)
 
 void MainScreen::updateImage()
 {
-    //updateSector(nullptr);
+    updateSector(nullptr);
 }
 
 void MainScreen::on_pushButton_clicked()
