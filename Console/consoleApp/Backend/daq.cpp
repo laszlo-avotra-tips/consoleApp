@@ -346,6 +346,9 @@ void DAQ::getData(new_image_callback_data_t data)
 
     QString msg;
     QTextStream qs(&msg);
+    static uint32_t lastGoodImage = 0;
+    static uint32_t missedImageCountAcc = 0;
+    static float percent{0.0f};
 
     auto currentTime = QTime::currentTime();
     QString timeString = currentTime.toString("hh:mm:ss.zzz");
@@ -415,17 +418,23 @@ void DAQ::getData(new_image_callback_data_t data)
     }
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        LOG1(msg);
+        LOG2(msg,percent);
     }
 
     if( (retval == AxErr::NO_AxERROR) && axsunData &&
             data.image_number && !(last_image - data.image_number) &&
             axsunData->bufferLength && axsunData->bufferLength != 256
             ){
+        int32_t missedImageCount = axsunData->frameCount - lastGoodImage - 1;
+        if(lastGoodImage && (lastGoodImage < axsunData->frameCount) && (missedImageCount > 0) ){
+            missedImageCountAcc += missedImageCount;
+        }
+        percent = 100.0f * missedImageCountAcc / axsunData->frameCount;
+        lastGoodImage = axsunData->frameCount;
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         sm->pushImageRenderingQueue(*axsunData);
         emit updateSector(axsunData);
-//        LOG4(axsunData.frameCount,axsunData.acqData, axsunData.bufferLength, dropped_packets)
-                ++m_daqCount;
+        LOG4(axsunData->frameCount, missedImageCount, percent, dropped_packets);
+        ++m_daqCount;
     }
 }
