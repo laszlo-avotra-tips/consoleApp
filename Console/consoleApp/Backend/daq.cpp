@@ -409,16 +409,13 @@ void DAQ::getData(new_image_callback_data_t data)
         else
             qs << "\taxRequestImage reported: " << int(retval);
     }
-    else
+    else {
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
+    }
 
     if((m_daqDecimation == 1 ) && !data.image_number) {
         //forced trigger logging
         LOG1(msg);
-    }
-
-    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        LOG2(msg,percent);
     }
 
     if( (retval == AxErr::NO_AxERROR) && axsunData &&
@@ -437,4 +434,9 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG4(axsunData->frameCount, missedImageCount, percent, dropped_packets);
         ++m_daqCount;
     }
+
+    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
+        LOG2(msg, percent);
+    }
+
 }
