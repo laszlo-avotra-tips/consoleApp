@@ -265,7 +265,7 @@ void MainScreen::handleEndCase()
     }
 
     auto idaq = daqfactory::instance()->getdaq();
-    bool isDisonnected = disconnect( idaq->getSignalSource(), &IDAQ::updateSector, this, &MainScreen::updateSector);
+    bool isDisonnected = disconnect( idaq, &IDAQ::updateSector, this, &MainScreen::updateSector);
     LOG1(isDisonnected);
 
     QTimer::singleShot(1000, [this](){
