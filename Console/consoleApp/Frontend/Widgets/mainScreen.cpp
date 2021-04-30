@@ -828,15 +828,17 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         m_scanWorker = new ScanConversion();
     }
 
-    if(!frameData){
+    if(frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
         m_disableRendering = userSettings::Instance().getDisableRendering();
-       auto* sm = SignalModel::instance();
-       auto val = sm->frontImageRenderingQueue();
-       if(val.first){
-           auto& frame = val.second;
+//       auto* sm = SignalModel::instance();
+//       auto val = sm->frontImageRenderingQueue();
+//       if(val.first)
+       {
+//           auto& frame = val.second;
 //           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
 //           sm->popImageRenderingQueue();
+           auto& frame = *frameData;
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
