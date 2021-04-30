@@ -831,14 +831,13 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     if(frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
         m_disableRendering = userSettings::Instance().getDisableRendering();
-//       auto* sm = SignalModel::instance();
-//       auto val = sm->frontImageRenderingQueue();
-//       if(val.first)
+       auto* sm = SignalModel::instance();
+       auto val = sm->frontImageRenderingQueue();
+       if(val.first)
        {
-           auto& frame = *frameData;//val.second;
-//           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
-//           sm->popImageRenderingQueue();
+           auto& frame = val.second;
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+           LOG3(frame.frameCount, frameData->frameCount, missedImageCount);
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
            }
