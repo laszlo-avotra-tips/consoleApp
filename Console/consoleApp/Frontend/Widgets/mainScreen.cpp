@@ -818,7 +818,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t &frameData)
+void MainScreen::updateSector(OCTFile::OctData_t frameData)
 {
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
