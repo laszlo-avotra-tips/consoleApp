@@ -818,7 +818,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+void MainScreen::updateSector(OCTFile::OctData_t &frameData)
 {
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
@@ -828,7 +828,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         m_scanWorker = new ScanConversion();
     }
 
-    if(frameData){
+    {
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
         m_disableRendering = userSettings::Instance().getDisableRendering();
 //       auto* sm = SignalModel::instance();
@@ -838,7 +838,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 //           auto& frame = val.second;
 //           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
 //           sm->popImageRenderingQueue();
-           auto& frame = *frameData;
+           auto& frame = frameData;
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
@@ -920,7 +920,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
 void MainScreen::updateImage()
 {
-    updateSector(nullptr);
+    //updateSector(nullptr);
 }
 
 void MainScreen::on_pushButton_clicked()

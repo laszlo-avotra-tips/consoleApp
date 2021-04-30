@@ -26,7 +26,7 @@ signals:
     void sendError( QString );
     void setBlackLevel( int );
     void setWhiteLevel( int );
-    void updateSector(OCTFile::OctData_t*);
+    void updateSector(OCTFile::OctData_t&);
 };
 
 #endif // IDAQ_H
