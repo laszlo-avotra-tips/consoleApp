@@ -145,22 +145,17 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
 void DeviceSelectDialog::startDaq(MainScreen *ms)
 {
     auto idaq = daqfactory::instance()->getdaq();
-
-    if(!idaq){
-        LOG( INFO, "Device not supported. OCT Console cancelled" )
-        return;
-    }
     if(idaq){
-        if( !idaq->startDaq() )
+        if( idaq->startDaq() )
         {
+            const bool isUpdateSectorConnected = connect( idaq, &IDAQ::updateSector, ms, &MainScreen::updateSector, Qt::QueuedConnection);
+            LOG1(isUpdateSectorConnected);
+            idaq->initDaq();
+        } else {
             LOG1( "DAQ: Failed to start DAQ")
         }
-
-        if(idaq->getSignalSource()){
-            connect( idaq->getSignalSource(), &IDAQ::updateSector, ms, &MainScreen::updateSector, Qt::QueuedConnection);
-            idaq->initDaq();
-        }
-//        idaq->start();
+    } else {
+        LOG( INFO, "Device not supported. OCT Console cancelled" ) ;
     }
 }
 

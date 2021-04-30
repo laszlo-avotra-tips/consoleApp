@@ -64,7 +64,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
-    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
+//    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
 
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
@@ -265,7 +265,7 @@ void MainScreen::handleEndCase()
     }
 
     auto idaq = daqfactory::instance()->getdaq();
-    bool isDisonnected = disconnect( idaq->getSignalSource(), &IDAQ::updateSector, this, &MainScreen::updateSector);
+    bool isDisonnected = disconnect( idaq, &IDAQ::updateSector, this, &MainScreen::updateSector);
     LOG1(isDisonnected);
 
     QTimer::singleShot(1000, [this](){
@@ -528,7 +528,7 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-        m_daqTimer.start(3);
+//        m_daqTimer.start(10);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
 
     } else {
@@ -828,16 +828,16 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         m_scanWorker = new ScanConversion();
     }
 
-    if(!frameData){
+    if(frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
         m_disableRendering = userSettings::Instance().getDisableRendering();
        auto* sm = SignalModel::instance();
        auto val = sm->frontImageRenderingQueue();
-       if(val.first){
+       if(val.first)
+       {
            auto& frame = val.second;
-//           LOG3(frame.frameCount, frame.acqData, frame.bufferLength)
-           sm->popImageRenderingQueue();
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+//           LOG3(frame.frameCount, frameData->frameCount, missedImageCount);
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
            }
