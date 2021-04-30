@@ -369,7 +369,7 @@ void DAQ::getData(new_image_callback_data_t data)
 
     auto* sm = SignalModel::instance();
 
-    OCTFile::OctData_t axsunData;
+    OCTFile::OctData_t* axsunData{nullptr};
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
 
     if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1)){
@@ -390,9 +390,9 @@ void DAQ::getData(new_image_callback_data_t data)
     AxErr retval{AxErr::BUFFER_IS_EMPTY};
     if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
-        retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData.acqData, &info);
-        axsunData.bufferLength = info.width;
-        axsunData.frameCount = data.image_number;
+        retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
+        axsunData->bufferLength = info.width;
+        axsunData->frameCount = data.image_number;
         if (retval == AxErr::NO_AxERROR) {
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
@@ -418,13 +418,13 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG1(msg);
     }
 
-    if( (retval == AxErr::NO_AxERROR) &&
+    if( (retval == AxErr::NO_AxERROR) && axsunData &&
             data.image_number && !(last_image - data.image_number) &&
-            axsunData.bufferLength && axsunData.bufferLength != 256
+            axsunData->bufferLength && axsunData->bufferLength != 256
             ){
-        axsunData.timeStamp = imageFrameTimer.elapsed();;
-        sm->pushImageRenderingQueue(axsunData);
-        emit updateSector(nullptr);
+        axsunData->timeStamp = imageFrameTimer.elapsed();;
+        sm->pushImageRenderingQueue(*axsunData);
+        emit updateSector(axsunData);
 //        LOG4(axsunData.frameCount,axsunData.acqData, axsunData.bufferLength, dropped_packets)
                 ++m_daqCount;
     }

@@ -828,7 +828,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
         m_scanWorker = new ScanConversion();
     }
 
-    if(!frameData){
+    if(frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
         m_disableRendering = userSettings::Instance().getDisableRendering();
        auto* sm = SignalModel::instance();

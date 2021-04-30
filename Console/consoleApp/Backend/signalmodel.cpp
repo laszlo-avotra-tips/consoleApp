@@ -353,12 +353,12 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
                 saveOct(od);
             }
         } else {
-            OCTFile::OctData_t axsunData = getOctData(0);
+            OCTFile::OctData_t* axsunData = getOctData(0);
             if(m_simulationFrameCount > endFrame){
                 m_simulationFrameCount = startFrame;
             }
             od.frameCount = m_simulationFrameCount++;
-            od.acqData = axsunData.acqData;
+            od.acqData = axsunData->acqData;
 //            LOG1(od.acqData)
             retrieveOct(od);
         }
@@ -367,18 +367,18 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     return od;
 }
 
-OCTFile::OctData_t SignalModel::getOctData(int index)
+OCTFile::OctData_t* SignalModel::getOctData(int index)
 {
     QMutexLocker guard(&m_imageRenderingMutex);
 
-    OCTFile::OctData_t octData;
+    OCTFile::OctData_t* octData{nullptr};
     auto it = m_octData.find(index);
 
     if(it != m_octData.end())
     {
-        octData = it->second;
+        octData = &(it->second);
     } else {
-        octData = m_octData.begin()->second;
+        octData = &(m_octData.begin()->second);
     }
 //    LOG3(index, octData.acqData, m_octData.size())
     return octData;
