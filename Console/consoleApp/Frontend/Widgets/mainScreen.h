@@ -126,7 +126,7 @@ private:
     QElapsedTimer m_runTime;
     QTimer m_updateTimeTimer;
     const int m_updateTimeTimeoutMs{250};
-//    QTimer m_daqTimer;
+    QTimer m_daqTimer;
     OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
     int m_sledRunningStateVal{0};
