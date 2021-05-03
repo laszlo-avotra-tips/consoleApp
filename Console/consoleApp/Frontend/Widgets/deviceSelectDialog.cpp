@@ -148,7 +148,7 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
     if(idaq){
         if( idaq->startDaq() )
         {
-            const bool isUpdateSectorConnected = connect( idaq, &IDAQ::updateSector, ms, &MainScreen::updateSector, Qt::QueuedConnection);
+            const bool isUpdateSectorConnected = connect( idaq, &IDAQ::updateSector, ms, &MainScreen::updateSector, Qt::BlockingQueuedConnection);
             LOG1(isUpdateSectorConnected);
             idaq->initDaq();
         } else {
