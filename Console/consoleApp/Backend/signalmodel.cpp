@@ -307,7 +307,7 @@ bool SignalModel::isImageRenderingQueueGTE(size_t length) const
     return m_imageRenderingQueue.size() >= length;
 }
 
-std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
+std::pair<bool, OctData> SignalModel::getFromImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     std::pair<bool, OctData> retVal{false, OctData()};

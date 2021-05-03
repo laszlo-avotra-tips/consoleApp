@@ -431,7 +431,7 @@ void DAQ::getData(new_image_callback_data_t data)
     }
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        LOG4(axsunData, axsunData->frameCount, msg, percent);
+        LOG4(axsunData->acqData, axsunData->frameCount, msg, percent);
     }
 //    emit updateSector(m_axsunData);
 

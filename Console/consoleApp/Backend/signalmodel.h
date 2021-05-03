@@ -24,7 +24,7 @@ public:
 
     void pushImageRenderingQueue(OctData& od);
     bool isImageRenderingQueueGTE(size_t length) const;
-    std::pair<bool, OctData>  frontImageRenderingQueue();
+    std::pair<bool, OctData>  getFromImageRenderingQueue();
 
     const cl_uint* getInputLength() const;
 
