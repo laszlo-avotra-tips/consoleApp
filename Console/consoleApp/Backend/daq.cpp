@@ -424,14 +424,15 @@ void DAQ::getData(new_image_callback_data_t data)
         percent = 100.0f * missedImageCountAcc / axsunData->frameCount;
         axsunData->timeStamp = imageFrameTimer.elapsed();;
         m_axsunData = axsunData;
-//        sm->pushImageRenderingQueue(*axsunData);
+        sm->pushImageRenderingQueue(*axsunData);
         ++m_daqCount;
         lastGoodImage = axsunData->frameCount;
+        emit updateSector(m_axsunData);
     }
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         LOG4(axsunData, axsunData->frameCount, msg, percent);
     }
-    emit updateSector(m_axsunData);
+//    emit updateSector(m_axsunData);
 
 }

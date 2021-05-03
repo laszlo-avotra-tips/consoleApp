@@ -831,11 +831,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
     if(frameData){
         m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
         m_disableRendering = userSettings::Instance().getDisableRendering();
-//       auto* sm = SignalModel::instance();
-//       auto val = sm->frontImageRenderingQueue();
-//       if(val.first)
+       auto* sm = SignalModel::instance();
+       auto val = sm->frontImageRenderingQueue();
+       if(val.first)
        {
-           auto& frame = *frameData; //val.second;
+           auto& frame = val.second;
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
@@ -843,7 +843,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
            lastGoodImage = frame.frameCount;
            if(m_imageDecimation && (++count % m_imageDecimation == 0)){
                float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-               LOG4(frameData, frameData->frameCount, missedImageCountAcc, percent);
+               LOG4(&frame, frame.frameCount, missedImageCountAcc, percent);
            }
            if(m_scene)
            {
