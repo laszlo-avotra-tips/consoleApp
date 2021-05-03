@@ -528,7 +528,7 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-        m_daqTimer.start(60);
+        m_daqTimer.start(1);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
 
     } else {
@@ -826,11 +826,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
+        m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
+        m_disableRendering = userSettings::Instance().getDisableRendering();
     }
 
     if(!frameData){
-        m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
-        m_disableRendering = userSettings::Instance().getDisableRendering();
        auto* sm = SignalModel::instance();
        auto val = sm->getFromImageRenderingQueue();
        if(val.first)
