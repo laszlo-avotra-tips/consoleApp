@@ -23,7 +23,6 @@ public:
     OctData handleSimulationSettings(OctData& od);
 
     void pushImageRenderingQueue(OctData& od);
-    void popImageRenderingQueue();
     bool isImageRenderingQueueGTE(size_t length) const;
     std::pair<bool, OctData>  frontImageRenderingQueue();
 

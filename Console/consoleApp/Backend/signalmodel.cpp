@@ -302,12 +302,6 @@ void SignalModel::pushImageRenderingQueue(OctData &od)
     m_imageRenderingQueue.push(data);
 }
 
-void SignalModel::popImageRenderingQueue()
-{
-    QMutexLocker guard(&m_imageRenderingMutex);
-    m_imageRenderingQueue.pop();
-}
-
 bool SignalModel::isImageRenderingQueueGTE(size_t length) const
 {
     return m_imageRenderingQueue.size() >= length;
