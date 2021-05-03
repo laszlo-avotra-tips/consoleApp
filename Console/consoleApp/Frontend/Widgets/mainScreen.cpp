@@ -837,7 +837,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
        {
            auto& frame = val.second;
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-//           LOG3(frame.frameCount, frameData->frameCount, missedImageCount);
+           LOG3(frame.frameCount, frameData->frameCount, missedImageCount);
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
            }
@@ -907,7 +907,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                            } else {
                                 ui->labelSim->setText(QString("retrieving ") + QString::number(frame.frameCount));
                            }
-//                           m_scene->paintOverlay();
                        }
                    }
                }
