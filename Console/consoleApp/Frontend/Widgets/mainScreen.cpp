@@ -843,7 +843,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
            lastGoodImage = frame.frameCount;
            if(m_imageDecimation && (++count % m_imageDecimation == 0)){
                float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-               LOG4(frame.frameCount, missedImageCount, missedImageCountAcc, percent);
+               LOG4(frame.frameCount, frameData->frameCount, missedImageCountAcc, percent);
            }
            if(m_scene)
            {
