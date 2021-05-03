@@ -837,7 +837,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
        {
            auto& frame = val.second;
            int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-           LOG3(frame.frameCount, frameData->frameCount, missedImageCount);
            if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
                 missedImageCountAcc += missedImageCount;
            }
