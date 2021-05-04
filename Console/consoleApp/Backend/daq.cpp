@@ -84,11 +84,10 @@ void DAQ::run()
     } else {
         LOG1( "DAQ: Failed to start DAQ")
     }
-
+    sleep(1);
     while(true){
-        msleep(1);
+        msleep(100);
     }
-
 }
 
 void DAQ::initDaq()
