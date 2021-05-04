@@ -108,7 +108,7 @@ private:
     void initRecording();
     void hookupEndCaseDiagnostics();
     void handleEndCase();
-    void updateActivePassiveLabel();
+    void updateMainScreenLabels(const OCTFile::OctData_t& frameData);
 
 private:
     Ui::MainScreen *ui;
