@@ -342,6 +342,13 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
                         activePassiveValue.toLatin1(),
                         timeLabel.toLatin1(),
                         1024,1024);
+
+    if( userSettings::Instance().getIsRecording()){
+         ui->labelSim->setText(QString("recording ") + QString::number(frameData.frameCount));
+    } else {
+         ui->labelSim->setText(QString("retrieving ") + QString::number(frameData.frameCount));
+    }
+
 }
 
 void MainScreen::computeStatistics(const OCTFile::OctData_t &frame)
@@ -877,54 +884,41 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *frameData)
+void MainScreen::updateSector(OCTFile::OctData_t *)
 {
 
-//    if(!m_scanWorker){
-//        m_scanWorker = new ScanConversion();
-//    }
+    auto val = SignalModel::instance()->getFromImageRenderingQueue();
 
-    if(!frameData){
-       auto* sm = SignalModel::instance();
-       auto val = sm->getFromImageRenderingQueue();
-       if(val.first)
-       {
-           auto& frame = val.second;
-           computeStatistics(frame);
+    if(val.first && m_scene)
+    {
+       auto& frame = val.second;
 
-           if(m_scene)
-           {
-               QImage* image = m_scene->sectorImage();
+       computeStatistics(frame);
 
-               frame.dispData = image->bits();
-               auto bufferLength = frame.bufferLength;
+       QImage* image = m_scene->sectorImage();
 
-               if(!m_scanWorker){
-                   m_scanWorker = new ScanConversion();
+       frame.dispData = image->bits();
+       auto bufferLength = frame.bufferLength;
+
+       if(!m_scanWorker){
+           m_scanWorker = new ScanConversion();
+       }
+       m_scanWorker->warpData( &frame, bufferLength);
+
+       if(m_scanWorker->isReady){
+
+           if(image && frame.dispData){
+
+                updateMainScreenLabels(frame);
+
+               QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+               if(pixmap && !m_disableRendering){
+                   const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+                   pixmap->setPixmap(tmpPixmap);
                }
-               m_scanWorker->warpData( &frame, bufferLength);
-
-               if(m_scanWorker->isReady){
-
-                   if(image && frame.dispData){
-
-                        updateMainScreenLabels(frame);
-
-                       QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-
-                       if(pixmap && !m_disableRendering){
-                           const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-                           pixmap->setPixmap(tmpPixmap);
-                           if( userSettings::Instance().getIsRecording()){
-                                ui->labelSim->setText(QString("recording ") + QString::number(frame.frameCount));
-                           } else {
-                                ui->labelSim->setText(QString("retrieving ") + QString::number(frame.frameCount));
-                           }
-                       }
-                   }
-               }
-            }
-        }
+           }
+       }
     }
 }
 
