@@ -20,10 +20,10 @@ class DAQ: public IDAQ
 public:
     DAQ();
     ~DAQ();
+
+    void run(void) override;
     void initDaq( void ) override;
     void setSubsamplingAndForcedTrigger(int speed) override;
-
-    IDAQ* getSignalSource() override;
 
     bool shutdownDaq() override;
 

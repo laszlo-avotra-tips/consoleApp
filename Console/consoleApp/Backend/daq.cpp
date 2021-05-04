@@ -76,6 +76,21 @@ DAQ::~DAQ()
 {
 }
 
+void DAQ::run()
+{
+    if( startDaq() )
+    {
+        initDaq();
+    } else {
+        LOG1( "DAQ: Failed to start DAQ")
+    }
+
+    while(true){
+        msleep(1);
+    }
+
+}
+
 void DAQ::initDaq()
 {
     AxErr retval;
@@ -110,11 +125,6 @@ void DAQ::initDaq()
 
 //    setSubSamplingFactor();
 
-}
-
-IDAQ *DAQ::getSignalSource()
-{
-    return this;
 }
 
 void DAQ::setSubsamplingAndForcedTrigger(int speed)

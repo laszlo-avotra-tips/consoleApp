@@ -146,12 +146,13 @@ void DeviceSelectDialog::startDaq(MainScreen *ms)
 {
     auto idaq = daqfactory::instance()->getdaq();
     if(idaq){
-        if( idaq->startDaq() )
-        {
-            idaq->initDaq();
-        } else {
-            LOG1( "DAQ: Failed to start DAQ")
-        }
+//        if( idaq->startDaq() )
+//        {
+//            idaq->initDaq();
+//        } else {
+//            LOG1( "DAQ: Failed to start DAQ")
+//        }
+        idaq->start();
     } else {
         LOG( INFO, "Device not supported. OCT Console cancelled" ) ;
     }

@@ -4,7 +4,7 @@
 #include <QThread>
 #include <QString>
 
-class IDAQ : public QObject
+class IDAQ : public QThread
 {
     Q_OBJECT
 
@@ -14,7 +14,6 @@ public:
     virtual void initDaq() = 0;
     virtual void setSubsamplingAndForcedTrigger(int speed) = 0;
 
-    virtual IDAQ* getSignalSource() { return nullptr;}
     virtual bool shutdownDaq() = 0;
     virtual bool turnLaserOn() = 0;
     virtual bool turnLaserOff() = 0;
