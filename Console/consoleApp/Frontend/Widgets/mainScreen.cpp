@@ -898,6 +898,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
        QImage* image = m_scene->sectorImage();
 
        frame.dispData = image->bits();
+
        auto bufferLength = frame.bufferLength;
 
        if(!m_scanWorker){
@@ -909,7 +910,7 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
 
            if(image && frame.dispData){
 
-                updateMainScreenLabels(frame);
+               updateMainScreenLabels(frame);
 
                QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
@@ -918,6 +919,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
                    pixmap->setPixmap(tmpPixmap);
                }
            }
+       }
+       else {
+           LOG1(m_scanWorker->isReady);
        }
     }
 }
