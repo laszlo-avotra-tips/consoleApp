@@ -924,7 +924,7 @@ void MainScreen::updateImage()
 
     if(val.first && m_scene)
     {
-       auto& frame = val.second;
+       auto& frame = *(val.second);
 
        computeStatistics(frame);
 

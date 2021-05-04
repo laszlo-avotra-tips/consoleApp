@@ -297,7 +297,7 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData *od)
 {
-    auto data = handleSimulationSettings(*od);
+    auto data = handleSimulationSettings(od);
     QMutexLocker guard(&m_imageRenderingMutex);
     m_imageRenderingQueue.push(data);
 }
@@ -324,7 +324,7 @@ void SignalModel::freeOctData()
     m_octData.clear();
 }
 
-OctData SignalModel::handleSimulationSettings(OctData &od)
+OctData* SignalModel::handleSimulationSettings(OctData* od)
 {
     const auto& settings = userSettings::Instance();
     const bool isSimulation = settings.getIsSimulation();
@@ -336,20 +336,20 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     if(isSimulation){
         if(isRecording){
             if(isSequencial){
-                od.frameCount = m_simulationFrameCount++;
+                od->frameCount = m_simulationFrameCount++;
             }
             if(m_simulationFrameCount <= endFrame){
-                saveOct(od);
+                saveOct(*od);
             }
         } else {
             OCTFile::OctData_t* axsunData = getOctData(0);
             if(m_simulationFrameCount > endFrame){
                 m_simulationFrameCount = startFrame;
             }
-            od.frameCount = m_simulationFrameCount++;
-            od.acqData = axsunData->acqData;
+            od->frameCount = m_simulationFrameCount++;
+            od->acqData = axsunData->acqData;
 //            LOG1(od.acqData)
-            retrieveOct(od);
+            retrieveOct(*od);
         }
     }
 
