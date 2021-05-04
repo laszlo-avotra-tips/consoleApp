@@ -389,7 +389,7 @@ QImage *MainScreen::polarTransform(const OCTFile::OctData_t &frameData)
     return polarImage;
 }
 
-bool MainScreen::renderImage(const QImage *disk)
+bool MainScreen::renderImage(const QImage *disk) const
 {
     bool success{false};
     QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
