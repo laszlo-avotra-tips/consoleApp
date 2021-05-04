@@ -295,32 +295,22 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
     m_isAveragingNoiseReduction = isAveragingNoiseReduction;
 }
 
-void SignalModel::pushImageRenderingQueue(OctData &od)
+void SignalModel::pushImageRenderingQueue(OctData *od)
 {
     auto data = handleSimulationSettings(od);
     QMutexLocker guard(&m_imageRenderingMutex);
     m_imageRenderingQueue.push(data);
 }
 
-void SignalModel::popImageRenderingQueue()
+OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
-    m_imageRenderingQueue.pop();
-}
-
-bool SignalModel::isImageRenderingQueueGTE(size_t length) const
-{
-    return m_imageRenderingQueue.size() >= length;
-}
-
-std::pair<bool, OctData> SignalModel::frontImageRenderingQueue()
-{
-    QMutexLocker guard(&m_imageRenderingMutex);
-    std::pair<bool, OctData> retVal{false, OctData()};
+    OctData* retVal{nullptr};
     if(!m_imageRenderingQueue.empty()){
-        retVal.second = m_imageRenderingQueue.front();
-        retVal.first = true;
-        m_imageRenderingQueue.pop();
+        retVal = m_imageRenderingQueue.back();
+        while(!m_imageRenderingQueue.empty()){
+            m_imageRenderingQueue.pop();
+        }
     }
     return retVal;
 }
@@ -335,7 +325,7 @@ void SignalModel::freeOctData()
     m_octData.clear();
 }
 
-OctData SignalModel::handleSimulationSettings(OctData &od)
+OctData* SignalModel::handleSimulationSettings(OctData * const od)
 {
     const auto& settings = userSettings::Instance();
     const bool isSimulation = settings.getIsSimulation();
@@ -344,23 +334,23 @@ OctData SignalModel::handleSimulationSettings(OctData &od)
     const int  endFrame = settings.getEndFrame();
     const int  startFrame = settings.getStartFrame();
 
-    if(isSimulation){
+    if(od && isSimulation){
         if(isRecording){
             if(isSequencial){
-                od.frameCount = m_simulationFrameCount++;
+                od->frameCount = m_simulationFrameCount++;
             }
             if(m_simulationFrameCount <= endFrame){
-                saveOct(od);
+                saveOct(*od);
             }
         } else {
             OCTFile::OctData_t* axsunData = getOctData(0);
             if(m_simulationFrameCount > endFrame){
                 m_simulationFrameCount = startFrame;
             }
-            od.frameCount = m_simulationFrameCount++;
-            od.acqData = axsunData->acqData;
+            od->frameCount = m_simulationFrameCount++;
+            od->acqData = axsunData->acqData;
 //            LOG1(od.acqData)
-            retrieveOct(od);
+            retrieveOct(*od);
         }
     }
 

@@ -91,7 +91,6 @@ private slots:
     void on_pushButtonRecord_clicked(bool checked);
 
 public slots:
-    void updateSector(OCTFile::OctData_t* frameData);
     void updateImage();
 
 private:
@@ -108,6 +107,10 @@ private:
     void initRecording();
     void hookupEndCaseDiagnostics();
     void handleEndCase();
+    void updateMainScreenLabels(const OCTFile::OctData_t& frameData);
+    void computeStatistics(const OCTFile::OctData_t& frameData) const;
+    QImage* polarTransform(const OCTFile::OctData_t& frameData);
+    bool renderImage(const QImage* disk) const;
 
 private:
     Ui::MainScreen *ui;
@@ -126,7 +129,7 @@ private:
     QElapsedTimer m_runTime;
     QTimer m_updateTimeTimer;
     const int m_updateTimeTimeoutMs{250};
-//    QTimer m_daqTimer;
+    QTimer m_daqTimer;
     OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};
     int m_sledRunningStateVal{0};

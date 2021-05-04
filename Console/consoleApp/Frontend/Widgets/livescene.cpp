@@ -238,8 +238,10 @@ void liveScene::setActive()
         if(!rotationIndicatorOverlayItem){
             rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator(this,nullptr);
         }
-        rotationIndicatorOverlayItem->addItem();
-        rotationIndicatorOverlayItem->setText(" ACTIVE");
+        if(rotationIndicatorOverlayItem){
+            rotationIndicatorOverlayItem->addItem();
+            rotationIndicatorOverlayItem->setText(" ACTIVE");
+        }
     }
 }
 
