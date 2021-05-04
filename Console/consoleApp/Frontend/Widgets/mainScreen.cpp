@@ -921,20 +921,21 @@ void MainScreen::setSceneCursor( QCursor cursor )
 void MainScreen::updateImage()
 {
     static int renderCount{0};
+
     QElapsedTimer timer;
     timer.start();
     auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+
     if(pointerToFrame && m_scene)
     {
+        auto t1Ms = timer.elapsed();
         auto& frame = *pointerToFrame;
 
         computeStatistics(frame);
-    }
 
-    if(pointerToFrame && m_scene)
-    {
-        auto& frame = *pointerToFrame;
         QImage* diskImage = polarTransform(frame);
+
+        auto t2Ms = timer.elapsed();
         if(diskImage)
         {
             updateMainScreenLabels(frame);
@@ -942,8 +943,8 @@ void MainScreen::updateImage()
             renderCount += renderImage(diskImage);
 
         }
-        auto elapsedMs = timer.elapsed();
-        LOG2(renderCount, elapsedMs);
+        auto t3Ms = timer.elapsed();
+        LOG4(renderCount, t1Ms, t2Ms, t3Ms);
     }
 }
 
