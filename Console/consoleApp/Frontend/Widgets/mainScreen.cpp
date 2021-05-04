@@ -79,7 +79,12 @@ MainScreen::MainScreen(QWidget *parent)
 
     m_clipBuffer = new uint8_t[1024 * 1024];
     hookupEndCaseDiagnostics();
+
 //    ui->pushButton->setEnabled(false);
+
+    m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
+    m_disableRendering = userSettings::Instance().getDisableRendering();
+
 }
 
 void MainScreen::hookupEndCaseDiagnostics() {
@@ -874,15 +879,10 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
-//    static uint32_t lastGoodImage = 0;
-//    static uint32_t missedImageCountAcc = 0;
-//    static int count{0};
 
-    if(!m_scanWorker){
-        m_scanWorker = new ScanConversion();
-        m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
-        m_disableRendering = userSettings::Instance().getDisableRendering();
-    }
+//    if(!m_scanWorker){
+//        m_scanWorker = new ScanConversion();
+//    }
 
     if(!frameData){
        auto* sm = SignalModel::instance();
@@ -890,16 +890,8 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
        if(val.first)
        {
            auto& frame = val.second;
-//           int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-//           if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
-//                missedImageCountAcc += missedImageCount;
-//           }
-//           lastGoodImage = frame.frameCount;
-//           if(m_imageDecimation && (++count % m_imageDecimation == 0)){
-//               float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-//               LOG4(frame.acqData, frame.frameCount, missedImageCountAcc, percent);
-//           }
            computeStatistics(frame);
+
            if(m_scene)
            {
                QImage* image = m_scene->sectorImage();
@@ -907,6 +899,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                frame.dispData = image->bits();
                auto bufferLength = frame.bufferLength;
 
+               if(!m_scanWorker){
+                   m_scanWorker = new ScanConversion();
+               }
                m_scanWorker->warpData( &frame, bufferLength);
 
                if(m_scanWorker->isReady){
