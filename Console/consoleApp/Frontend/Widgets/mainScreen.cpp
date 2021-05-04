@@ -364,7 +364,8 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
     lastGoodImage = frame.frameCount;
     if(m_imageDecimation && (++count % m_imageDecimation == 0)){
         float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-        LOG4(frame.acqData, frame.frameCount, missedImageCountAcc, percent);
+        LOG2(missedImageCount, missedImageCountAcc)
+        LOG3(frame.acqData, frame.frameCount, percent);
     }
 }
 
@@ -921,23 +922,27 @@ void MainScreen::updateImage()
 {
     static int renderCount{0};
     auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+    if(pointerToFrame && m_scene)
+    {
+        auto& frame = *pointerToFrame;
+
+        computeStatistics(frame);
+    }
+    return;
 
     if(pointerToFrame && m_scene)
     {
-       auto& frame = *pointerToFrame;
+        auto& frame = *pointerToFrame;
+        QImage* diskImage = polarTransform(frame);
+        if(diskImage)
+        {
+            updateMainScreenLabels(frame);
 
-       computeStatistics(frame);
+            renderCount += renderImage(diskImage);
 
-       QImage* diskImage = polarTransform(frame);
-       if(diskImage)
-       {
-           updateMainScreenLabels(frame);
-
-           renderCount += renderImage(diskImage);
-
-           LOG1(renderCount);
-       }
-   }
+            LOG1(renderCount);
+        }
+    }
 }
 
 void MainScreen::on_pushButton_clicked()
