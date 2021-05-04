@@ -364,8 +364,8 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
     lastGoodImage = frame.frameCount;
     if(m_imageDecimation && (++count % m_imageDecimation == 0)){
         float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-        LOG2(missedImageCount, missedImageCountAcc)
-        LOG3(frame.acqData, frame.frameCount, percent);
+        LOG2(frame.acqData, percent);
+        LOG4(lastGoodImage, frame.frameCount, missedImageCount, missedImageCountAcc)
     }
 }
 
