@@ -350,9 +350,12 @@ void DAQ::getData(new_image_callback_data_t data)
     static uint32_t missedImageCountAcc = 0;
     static float percent{0.0f};
 
+    QElapsedTimer callbackTimer;
+    callbackTimer.start();
     auto currentTime = QTime::currentTime();
     QString timeString = currentTime.toString("hh:mm:ss.zzz");
-    qs << timeString << "\t" <<data.image_number << "\t";
+//    qs << timeString;
+    qs << "\t" <<data.image_number << "\t";
 
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
     auto success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
@@ -375,10 +378,12 @@ void DAQ::getData(new_image_callback_data_t data)
     OCTFile::OctData_t* axsunData{nullptr};
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
 
-    if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1)){
+    if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1))
+    {
         axsunData = sm->getOctData(1);
 //        LOG1(axsunData.acqData)
-    } else
+    }
+    else
     {
         axsunData = sm->getOctData(m_frameNumber);
 //        LOG1(axsunData.acqData)
@@ -430,5 +435,6 @@ void DAQ::getData(new_image_callback_data_t data)
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         LOG4(axsunData->acqData, axsunData->frameCount, msg, percent);
+        LOG1(callbackTimer.elapsed());
     }
 }

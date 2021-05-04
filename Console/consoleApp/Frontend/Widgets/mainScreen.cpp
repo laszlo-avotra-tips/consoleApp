@@ -928,14 +928,12 @@ void MainScreen::updateImage()
 
     if(pointerToFrame && m_scene)
     {
-        auto t1Ms = timer.elapsed();
         auto& frame = *pointerToFrame;
 
         computeStatistics(frame);
 
         QImage* diskImage = polarTransform(frame);
 
-        auto t2Ms = timer.elapsed();
         if(diskImage)
         {
             updateMainScreenLabels(frame);
@@ -943,8 +941,8 @@ void MainScreen::updateImage()
             renderCount += renderImage(diskImage);
 
         }
-        auto t3Ms = timer.elapsed();
-        LOG4(renderCount, t1Ms, t2Ms, t3Ms);
+        auto timeMs = timer.elapsed();
+        LOG3(pointerToFrame,renderCount, timeMs);
     }
 }
 

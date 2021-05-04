@@ -18,7 +18,6 @@ public:
     static SignalModel* instance();
 
     OCTFile::OctData_t *getOctData(int index);
-    void freeOctData();
 
     OctData *handleSimulationSettings(OctData * const od);
 

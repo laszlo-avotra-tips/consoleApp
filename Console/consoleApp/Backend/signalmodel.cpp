@@ -24,7 +24,6 @@ void SignalModel::allocateOctData()
 
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers() + int(userSettings::Instance().getIsSimulation());
 
-    QMutexLocker guard(&m_imageRenderingMutex);
     for(int i = 0; i < frameBufferCount; ++i){
 
         OCTFile::OctData_t oct;
@@ -299,7 +298,9 @@ void SignalModel::pushImageRenderingQueue(OctData *od)
 {
     QElapsedTimer pushTimer;
     pushTimer.start();
+
     QMutexLocker guard(&m_imageRenderingMutex);
+
     auto data = handleSimulationSettings(od);
     m_imageRenderingQueue.push(data);
     LOG2(data->frameCount, pushTimer.elapsed())
@@ -309,28 +310,16 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 {
     QElapsedTimer popTimer;
     popTimer.start();
+
     QMutexLocker guard(&m_imageRenderingMutex);
     OctData* retVal{nullptr};
+
     if(!m_imageRenderingQueue.empty()){
         retVal = m_imageRenderingQueue.back();
-//        while(!m_imageRenderingQueue.empty()){
-//            m_imageRenderingQueue.pop();
-//        }
-    }
-    if(retVal){
+        m_imageRenderingQueue.pop();
         LOG2(retVal->frameCount, popTimer.elapsed())
     }
     return retVal;
-}
-
-void SignalModel::freeOctData()
-{
-    QMutexLocker guard(&m_imageRenderingMutex);
-    for(auto it = m_octData.begin(); it != m_octData.end(); ++it){
-        delete [] it->second.acqData;
-        delete [] it->second.dispData;
-    }
-    m_octData.clear();
 }
 
 OctData* SignalModel::handleSimulationSettings(OctData * const od)
@@ -367,8 +356,6 @@ OctData* SignalModel::handleSimulationSettings(OctData * const od)
 
 OCTFile::OctData_t* SignalModel::getOctData(int index)
 {
-    QMutexLocker guard(&m_imageRenderingMutex);
-
     OCTFile::OctData_t* octData{nullptr};
     auto it = m_octData.find(index);
 
@@ -378,6 +365,7 @@ OCTFile::OctData_t* SignalModel::getOctData(int index)
     } else {
         octData = &(m_octData.begin()->second);
     }
-//    LOG3(index, octData.acqData, m_octData.size())
+    LOG2(index, octData->acqData)
+
     return octData;
 }
