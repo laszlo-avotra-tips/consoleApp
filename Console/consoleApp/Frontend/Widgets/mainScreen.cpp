@@ -928,7 +928,6 @@ void MainScreen::updateImage()
 
         computeStatistics(frame);
     }
-    return;
 
     if(pointerToFrame && m_scene)
     {
