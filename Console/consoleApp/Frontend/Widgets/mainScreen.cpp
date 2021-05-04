@@ -273,8 +273,6 @@ void MainScreen::handleEndCase()
     }
 
     auto idaq = daqfactory::instance()->getdaq();
-    bool isDisonnected = disconnect( idaq, &IDAQ::updateSector, this, &MainScreen::updateSector);
-    LOG1(isDisonnected);
 
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
@@ -919,7 +917,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateSector(OCTFile::OctData_t *)
+void MainScreen::updateImage()
 {
     static int renderCount{0};
     auto val = SignalModel::instance()->getFromImageRenderingQueue();
@@ -935,21 +933,11 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
        {
            updateMainScreenLabels(frame);
 
-//           QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-
-//           if(pixmap && !m_disableRendering){
-//               const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-//               pixmap->setPixmap(tmpPixmap);
-//           }
            renderCount += renderImage(diskImage);
+
            LOG1(renderCount);
        }
    }
-}
-
-void MainScreen::updateImage()
-{
-    updateSector(nullptr);
 }
 
 void MainScreen::on_pushButton_clicked()

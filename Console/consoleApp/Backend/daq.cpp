@@ -427,12 +427,9 @@ void DAQ::getData(new_image_callback_data_t data)
         sm->pushImageRenderingQueue(*axsunData);
         ++m_daqCount;
         lastGoodImage = axsunData->frameCount;
-//        emit updateSector(m_axsunData);
     }
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         LOG4(axsunData->acqData, axsunData->frameCount, msg, percent);
     }
-//    emit updateSector(m_axsunData);
-
 }
