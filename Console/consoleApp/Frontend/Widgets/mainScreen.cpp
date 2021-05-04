@@ -389,6 +389,19 @@ QImage *MainScreen::polarTransform(const OCTFile::OctData_t &frameData)
     return polarImage;
 }
 
+bool MainScreen::renderImage(const QImage *disk)
+{
+    bool success{false};
+    QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
+
+    if(pixmap && !m_disableRendering){
+        const QPixmap& tmpPixmap = QPixmap::fromImage( *disk, Qt::MonoOnly);
+        pixmap->setPixmap(tmpPixmap);
+        success = true;
+    }
+    return success;
+}
+
 void MainScreen::on_pushButtonDownArrow_clicked()
 {
     on_pushButtonMenu_clicked();
@@ -908,7 +921,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *)
 {
-
+    static int renderCount{0};
     auto val = SignalModel::instance()->getFromImageRenderingQueue();
 
     if(val.first && m_scene)
@@ -917,32 +930,21 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
 
        computeStatistics(frame);
 
-       QImage* image = polarTransform(frame); //m_scene->sectorImage();
-
-//       frame.dispData = image->bits();
-
-//       auto bufferLength = frame.bufferLength;
-
-//       m_scanWorker->warpData( &frame, bufferLength);
-
-//       if(m_scanWorker->isReady)
+       QImage* diskImage = polarTransform(frame);
+       if(diskImage)
        {
+           updateMainScreenLabels(frame);
 
-//           if(image && frame.dispData)
-           if(image)
-           {
+//           QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
-               updateMainScreenLabels(frame);
-
-               QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-
-               if(pixmap && !m_disableRendering){
-                   const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
-                   pixmap->setPixmap(tmpPixmap);
-               }
-           }
+//           if(pixmap && !m_disableRendering){
+//               const QPixmap& tmpPixmap = QPixmap::fromImage( *image, Qt::MonoOnly);
+//               pixmap->setPixmap(tmpPixmap);
+//           }
+           renderCount += renderImage(diskImage);
+           LOG1(renderCount);
        }
-    }
+   }
 }
 
 void MainScreen::updateImage()

@@ -111,6 +111,7 @@ private:
     void updateMainScreenLabels(const OCTFile::OctData_t& frameData);
     void computeStatistics(const OCTFile::OctData_t& frameData) const;
     QImage* polarTransform(const OCTFile::OctData_t& frameData);
+    bool renderImage(const QImage* disk);
 
 private:
     Ui::MainScreen *ui;
