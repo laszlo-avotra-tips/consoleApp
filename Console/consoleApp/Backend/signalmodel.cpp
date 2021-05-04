@@ -302,13 +302,15 @@ void SignalModel::pushImageRenderingQueue(OctData *od)
     m_imageRenderingQueue.push(data);
 }
 
-OctData* SignalModel::getFromImageRenderingQueue()
+OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
     OctData* retVal{nullptr};
     if(!m_imageRenderingQueue.empty()){
         retVal = m_imageRenderingQueue.back();
-        m_imageRenderingQueue.pop();
+        while(!m_imageRenderingQueue.empty()){
+            m_imageRenderingQueue.pop();
+        }
     }
     return retVal;
 }
@@ -323,7 +325,7 @@ void SignalModel::freeOctData()
     m_octData.clear();
 }
 
-OctData* SignalModel::handleSimulationSettings(OctData* od)
+OctData* SignalModel::handleSimulationSettings(OctData * const od)
 {
     const auto& settings = userSettings::Instance();
     const bool isSimulation = settings.getIsSimulation();
@@ -332,7 +334,7 @@ OctData* SignalModel::handleSimulationSettings(OctData* od)
     const int  endFrame = settings.getEndFrame();
     const int  startFrame = settings.getStartFrame();
 
-    if(isSimulation){
+    if(od && isSimulation){
         if(isRecording){
             if(isSequencial){
                 od->frameCount = m_simulationFrameCount++;

@@ -20,10 +20,10 @@ public:
     OCTFile::OctData_t *getOctData(int index);
     void freeOctData();
 
-    OctData *handleSimulationSettings(OctData *od);
+    OctData *handleSimulationSettings(OctData * const od);
 
     void pushImageRenderingQueue(OctData* od);
-    OctData *getFromImageRenderingQueue();
+    OctData *getTheFramePointerFromTheImageRenderingQueue();
 
     const cl_uint* getInputLength() const;
 

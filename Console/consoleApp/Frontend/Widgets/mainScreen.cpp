@@ -920,11 +920,11 @@ void MainScreen::setSceneCursor( QCursor cursor )
 void MainScreen::updateImage()
 {
     static int renderCount{0};
-    auto val = SignalModel::instance()->getFromImageRenderingQueue();
+    auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
 
-    if(val && m_scene)
+    if(pointerToFrame && m_scene)
     {
-       auto& frame = *val;
+       auto& frame = *pointerToFrame;
 
        computeStatistics(frame);
 
