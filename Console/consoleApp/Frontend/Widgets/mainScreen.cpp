@@ -85,6 +85,9 @@ MainScreen::MainScreen(QWidget *parent)
     m_imageDecimation = userSettings::Instance().getImageIndexDecimation();
     m_disableRendering = userSettings::Instance().getDisableRendering();
 
+   if(!m_scanWorker){
+       m_scanWorker = new ScanConversion();
+   }
 }
 
 void MainScreen::hookupEndCaseDiagnostics() {
@@ -901,9 +904,9 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
 
        auto bufferLength = frame.bufferLength;
 
-       if(!m_scanWorker){
-           m_scanWorker = new ScanConversion();
-       }
+//       if(!m_scanWorker){
+//           m_scanWorker = new ScanConversion();
+//       }
        m_scanWorker->warpData( &frame, bufferLength);
 
        if(m_scanWorker->isReady){
