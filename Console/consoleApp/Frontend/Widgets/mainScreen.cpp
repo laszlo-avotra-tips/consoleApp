@@ -921,6 +921,8 @@ void MainScreen::setSceneCursor( QCursor cursor )
 void MainScreen::updateImage()
 {
     static int renderCount{0};
+    QElapsedTimer timer;
+    timer.start();
     auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     if(pointerToFrame && m_scene)
     {
@@ -939,8 +941,9 @@ void MainScreen::updateImage()
 
             renderCount += renderImage(diskImage);
 
-            LOG1(renderCount);
         }
+        auto elapsedMs = timer.elapsed();
+        LOG2(renderCount, elapsedMs);
     }
 }
 
