@@ -354,7 +354,7 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
 
 }
 
-void MainScreen::computeStatistics(const OCTFile::OctData_t &frame)
+void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
 {
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
@@ -368,6 +368,25 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame)
         float percent = 100.0f * missedImageCountAcc / frame.frameCount;
         LOG4(frame.acqData, frame.frameCount, missedImageCountAcc, percent);
     }
+}
+
+QImage *MainScreen::polarTransform(const OCTFile::OctData_t &frameData)
+{
+    QImage* image = m_scene->sectorImage();
+    QImage* polarImage{nullptr};
+
+    OCTFile::OctData_t frame = frameData;
+
+    frame.dispData = image->bits();
+
+    auto bufferLength = frame.bufferLength;
+
+    m_scanWorker->warpData( &frame, bufferLength);
+
+    if(m_scanWorker->isReady && frame.dispData){
+        polarImage = image;
+    }
+    return polarImage;
 }
 
 void MainScreen::on_pushButtonDownArrow_clicked()
@@ -898,20 +917,20 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
 
        computeStatistics(frame);
 
-       QImage* image = m_scene->sectorImage();
+       QImage* image = polarTransform(frame); //m_scene->sectorImage();
 
-       frame.dispData = image->bits();
+//       frame.dispData = image->bits();
 
-       auto bufferLength = frame.bufferLength;
+//       auto bufferLength = frame.bufferLength;
 
-//       if(!m_scanWorker){
-//           m_scanWorker = new ScanConversion();
-//       }
-       m_scanWorker->warpData( &frame, bufferLength);
+//       m_scanWorker->warpData( &frame, bufferLength);
 
-       if(m_scanWorker->isReady){
+//       if(m_scanWorker->isReady)
+       {
 
-           if(image && frame.dispData){
+//           if(image && frame.dispData)
+           if(image)
+           {
 
                updateMainScreenLabels(frame);
 
@@ -922,9 +941,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *)
                    pixmap->setPixmap(tmpPixmap);
                }
            }
-       }
-       else {
-           LOG1(m_scanWorker->isReady);
        }
     }
 }
