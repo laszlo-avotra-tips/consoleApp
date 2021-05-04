@@ -108,6 +108,7 @@ private:
     void initRecording();
     void hookupEndCaseDiagnostics();
     void handleEndCase();
+    void updateActivePassiveLabel();
 
 private:
     Ui::MainScreen *ui;

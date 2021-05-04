@@ -301,6 +301,44 @@ void MainScreen::handleEndCase()
     }
 }
 
+void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
+{
+    QString activePassiveValue{"ACTIVE"};
+    if(m_sledRunningState != m_sledRunningStateVal){
+        m_sledRunningState = m_sledRunningStateVal;
+        if(m_sledRunningState == 3)
+        {
+           activePassiveValue = "PASSIVE";
+        }
+        else if(m_sledRunningState == 1)
+        {
+           activePassiveValue = "ACTIVE";
+        }
+
+        if(m_scene){
+            m_scene->paintOverlay();
+        }
+    }
+    const QDateTime currentTime = QDateTime::currentDateTime();
+    const QString timeLabel{currentTime.toString("hh:mm:ss")};
+    const auto& dev = deviceSettings::Instance().current();
+
+    if(!dev->isBiDirectional()){
+        activePassiveValue = QString("");
+    }
+
+    auto devName = dev->getSplitDeviceName();
+    QStringList names = devName.split("\n");
+    const QString catheterName{names[0]};
+    const QString cathalogName{names[1]};
+
+    emit updateRecorder(frameData.dispData,
+                        catheterName.toLatin1(),cathalogName.toLatin1(),
+                        activePassiveValue.toLatin1(),
+                        timeLabel.toLatin1(),
+                        1024,1024);
+}
+
 void MainScreen::on_pushButtonDownArrow_clicked()
 {
     on_pushButtonMenu_clicked();
@@ -858,43 +896,8 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 
                    if(image && frame.dispData){
 
-                        QString activePassiveValue{"ACTIVE"};
 
-                        if(m_sledRunningState != m_sledRunningStateVal){
-                            m_sledRunningState = m_sledRunningStateVal;
-                            if(m_sledRunningState == 3)
-                            {
-                               activePassiveValue = "PASSIVE";
-                            }
-                            else if(m_sledRunningState == 1)
-                            {
-                               activePassiveValue = "ACTIVE";
-                            }
-
-
-                            if(m_scene){
-                                m_scene->paintOverlay();
-                            }
-                        }
-
-                       const QDateTime currentTime = QDateTime::currentDateTime();
-                       const QString timeLabel{currentTime.toString("hh:mm:ss")};
-                       const auto& dev = deviceSettings::Instance().current();
-
-                       if(!dev->isBiDirectional()){
-                           activePassiveValue = QString("");
-                       }
-
-                       auto devName = dev->getSplitDeviceName();
-                       QStringList names = devName.split("\n");
-                       const QString catheterName{names[0]};
-                       const QString cathalogName{names[1]};
-
-                       emit updateRecorder(frame.dispData, //clipData.dispData
-                                           catheterName.toLatin1(),cathalogName.toLatin1(),
-                                           activePassiveValue.toLatin1(),
-                                           timeLabel.toLatin1(),
-                                           1024,1024);
+                        updateMainScreenLabels(frame);
 
                        QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
 
