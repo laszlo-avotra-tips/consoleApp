@@ -109,6 +109,7 @@ private:
     void hookupEndCaseDiagnostics();
     void handleEndCase();
     void updateMainScreenLabels(const OCTFile::OctData_t& frameData);
+    void computeStatistics(const OCTFile::OctData_t& frameData);
 
 private:
     Ui::MainScreen *ui;

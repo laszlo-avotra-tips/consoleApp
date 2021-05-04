@@ -339,6 +339,22 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
                         1024,1024);
 }
 
+void MainScreen::computeStatistics(const OCTFile::OctData_t &frame)
+{
+    static uint32_t lastGoodImage = 0;
+    static uint32_t missedImageCountAcc = 0;
+    static int count{0};
+    int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+    if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
+         missedImageCountAcc += missedImageCount;
+    }
+    lastGoodImage = frame.frameCount;
+    if(m_imageDecimation && (++count % m_imageDecimation == 0)){
+        float percent = 100.0f * missedImageCountAcc / frame.frameCount;
+        LOG4(frame.acqData, frame.frameCount, missedImageCountAcc, percent);
+    }
+}
+
 void MainScreen::on_pushButtonDownArrow_clicked()
 {
     on_pushButtonMenu_clicked();
@@ -858,9 +874,9 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateSector(OCTFile::OctData_t *frameData)
 {
-    static uint32_t lastGoodImage = 0;
-    static uint32_t missedImageCountAcc = 0;
-    static int count{0};
+//    static uint32_t lastGoodImage = 0;
+//    static uint32_t missedImageCountAcc = 0;
+//    static int count{0};
 
     if(!m_scanWorker){
         m_scanWorker = new ScanConversion();
@@ -874,15 +890,16 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
        if(val.first)
        {
            auto& frame = val.second;
-           int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-           if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
-                missedImageCountAcc += missedImageCount;
-           }
-           lastGoodImage = frame.frameCount;
-           if(m_imageDecimation && (++count % m_imageDecimation == 0)){
-               float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-               LOG4(frame.acqData, frame.frameCount, missedImageCountAcc, percent);
-           }
+//           int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
+//           if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
+//                missedImageCountAcc += missedImageCount;
+//           }
+//           lastGoodImage = frame.frameCount;
+//           if(m_imageDecimation && (++count % m_imageDecimation == 0)){
+//               float percent = 100.0f * missedImageCountAcc / frame.frameCount;
+//               LOG4(frame.acqData, frame.frameCount, missedImageCountAcc, percent);
+//           }
+           computeStatistics(frame);
            if(m_scene)
            {
                QImage* image = m_scene->sectorImage();
@@ -895,7 +912,6 @@ void MainScreen::updateSector(OCTFile::OctData_t *frameData)
                if(m_scanWorker->isReady){
 
                    if(image && frame.dispData){
-
 
                         updateMainScreenLabels(frame);
 
