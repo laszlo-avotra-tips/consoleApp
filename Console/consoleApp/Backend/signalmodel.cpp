@@ -313,11 +313,11 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 
     QMutexLocker guard(&m_imageRenderingMutex);
     OctData* retVal{nullptr};
-
-    if(!m_imageRenderingQueue.empty()){
+    const auto qSize = m_imageRenderingQueue.size();
+    if(qSize > 1){
         retVal = m_imageRenderingQueue.back();
         m_imageRenderingQueue.pop();
-        LOG2(retVal->frameCount, popTimer.elapsed())
+        LOG2(retVal->frameCount, qSize)
     }
     return retVal;
 }
