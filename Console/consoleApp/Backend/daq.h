@@ -67,8 +67,6 @@ private:
     uint32_t m_droppedPackets{0};
     uint32_t m_missedImagesCountAccumulated{0};
     uint32_t m_lastDroppedPacketCount{0};
-    OCTFile::OctData_t* m_axsunData{nullptr};
-
 };
 
 #endif // DAQ_H

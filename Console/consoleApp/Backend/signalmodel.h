@@ -20,11 +20,10 @@ public:
     OCTFile::OctData_t *getOctData(int index);
     void freeOctData();
 
-    OctData handleSimulationSettings(OctData& od);
+    OctData *handleSimulationSettings(OctData *od);
 
-    void pushImageRenderingQueue(OctData& od);
-    bool isImageRenderingQueueGTE(size_t length) const;
-    std::pair<bool, OctData>  getFromImageRenderingQueue();
+    void pushImageRenderingQueue(OctData* od);
+    std::pair<bool, OctData *> getFromImageRenderingQueue();
 
     const cl_uint* getInputLength() const;
 
@@ -116,7 +115,7 @@ private: //data
 
     std::map<int, OctData> m_octData;
     QMutex m_imageRenderingMutex;
-    std::queue<OctData> m_imageRenderingQueue;
+    std::queue<OctData*> m_imageRenderingQueue;
     int m_simulationFrameCount{0};
 
     cl_uint m_linesPerRevolution{1184};
