@@ -922,9 +922,9 @@ void MainScreen::updateImage()
     static int renderCount{0};
     auto val = SignalModel::instance()->getFromImageRenderingQueue();
 
-    if(val.first && m_scene)
+    if(val && m_scene)
     {
-       auto& frame = *(val.second);
+       auto& frame = *val;
 
        computeStatistics(frame);
 

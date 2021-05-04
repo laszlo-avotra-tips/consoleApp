@@ -23,7 +23,7 @@ public:
     OctData *handleSimulationSettings(OctData *od);
 
     void pushImageRenderingQueue(OctData* od);
-    std::pair<bool, OctData *> getFromImageRenderingQueue();
+    OctData *getFromImageRenderingQueue();
 
     const cl_uint* getInputLength() const;
 

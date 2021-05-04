@@ -302,13 +302,12 @@ void SignalModel::pushImageRenderingQueue(OctData *od)
     m_imageRenderingQueue.push(data);
 }
 
-std::pair<bool, OctData*> SignalModel::getFromImageRenderingQueue()
+OctData* SignalModel::getFromImageRenderingQueue()
 {
     QMutexLocker guard(&m_imageRenderingMutex);
-    std::pair<bool, OctData*> retVal{false, nullptr};
+    OctData* retVal{nullptr};
     if(!m_imageRenderingQueue.empty()){
-        retVal.second = m_imageRenderingQueue.back();
-        retVal.first = true;
+        retVal = m_imageRenderingQueue.back();
         m_imageRenderingQueue.pop();
     }
     return retVal;
