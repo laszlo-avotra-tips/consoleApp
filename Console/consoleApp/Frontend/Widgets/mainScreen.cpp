@@ -925,7 +925,7 @@ void MainScreen::updateImage()
     QElapsedTimer timer;
     timer.start();
     auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
-
+    LOG2(pointerToFrame, m_scene)
     if(pointerToFrame && m_scene)
     {
         auto& frame = *pointerToFrame;
