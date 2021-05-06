@@ -2,6 +2,7 @@
 #include "logger.h"
 #include "Utility/userSettings.h"
 #include <QFile>
+#include <QElapsedTimer>
 
 
 SignalModel* SignalModel::m_instance{nullptr};
