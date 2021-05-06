@@ -316,7 +316,7 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
     OctData* retVal{nullptr};
     const auto qSize = m_imageRenderingQueue.size();
     if(!m_imageRenderingQueue.empty()){
-        retVal = m_imageRenderingQueue.back();
+        retVal = m_imageRenderingQueue.front();
         m_imageRenderingQueue.pop();
         LOG2(retVal->frameCount, qSize)
     }
