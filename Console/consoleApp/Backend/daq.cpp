@@ -424,10 +424,10 @@ void DAQ::getData(new_image_callback_data_t data)
             data.image_number && !(last_image - data.image_number) &&
             axsunData->bufferLength && axsunData->bufferLength != 256
             ){
+        axsunData->timeStamp = imageFrameTimer.elapsed();;
+        lastGoodImage = axsunData->frameCount;
 //         sm->pushImageRenderingQueue(axsunData);
         ++m_daqCount;
-        lastGoodImage = axsunData->frameCount;
-        axsunData->timeStamp = imageFrameTimer.elapsed();;
     }
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
