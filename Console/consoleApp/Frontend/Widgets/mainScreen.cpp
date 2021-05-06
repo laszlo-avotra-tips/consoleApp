@@ -628,6 +628,7 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
+        m_daqTimer.setSingleShot(true);
         m_daqTimer.start(1);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
 
@@ -926,23 +927,27 @@ void MainScreen::updateImage()
     timer.start();
     auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     LOG2(pointerToFrame, m_scene)
-    if(pointerToFrame && m_scene)
-    {
-        auto& frame = *pointerToFrame;
 
-        computeStatistics(frame);
-
-        QImage* diskImage = polarTransform(frame);
-
-        if(diskImage)
+    for(;;){
+        if(pointerToFrame && m_scene)
         {
-            updateMainScreenLabels(frame);
+            auto& frame = *pointerToFrame;
 
-            renderCount += renderImage(diskImage);
+            computeStatistics(frame);
 
+            QImage* diskImage = polarTransform(frame);
+
+            if(diskImage)
+            {
+                updateMainScreenLabels(frame);
+
+                renderCount += renderImage(diskImage);
+
+            }
+            auto timeMs = timer.elapsed();
+            LOG3(pointerToFrame,renderCount, timeMs);
         }
-        auto timeMs = timer.elapsed();
-        LOG3(pointerToFrame,renderCount, timeMs);
+        QThread::msleep(20);
     }
 }
 
