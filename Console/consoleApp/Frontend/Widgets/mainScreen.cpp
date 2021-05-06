@@ -931,9 +931,8 @@ void MainScreen::updateImage()
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
         QThread::msleep(100);
     }
-    LOG1(timer.elapsed());
-    for(;;){
-        auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+    LOG2(pointerToFrame->frameCount, timer.elapsed());
+    while(true){
         LOG2(pointerToFrame, m_scene)
         if(pointerToFrame && m_scene)
         {
@@ -955,6 +954,7 @@ void MainScreen::updateImage()
         }
         QThread::yieldCurrentThread();
         QThread::msleep(20);
+        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
 }
 
