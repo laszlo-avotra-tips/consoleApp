@@ -947,6 +947,7 @@ void MainScreen::updateImage()
             auto timeMs = timer.elapsed();
             LOG3(pointerToFrame,renderCount, timeMs);
         }
+        QThread::yieldCurrentThread();
         QThread::msleep(20);
     }
 }
