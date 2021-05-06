@@ -931,6 +931,7 @@ void MainScreen::updateImage()
     while( !pointerToFrame){
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
         QThread::msleep(100);
+        LOG1(pointerToFrame)
     }
     LOG2(pointerToFrame->frameCount, timer.elapsed());
     while(true){
