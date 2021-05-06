@@ -629,7 +629,7 @@ void MainScreen::openDeviceSelectDialog()
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
         m_daqTimer.setSingleShot(true);
-        m_daqTimer.start(1);
+        m_daqTimer.start(11);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
 
     } else {
