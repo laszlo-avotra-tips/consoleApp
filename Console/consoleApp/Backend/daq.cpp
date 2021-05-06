@@ -346,7 +346,7 @@ void DAQ::getData(new_image_callback_data_t data)
 
     QString msg;
     QTextStream qs(&msg);
-    static uint32_t lastGoodImage = 0;
+    static uint32_t lastGoodFrame = 0;
     static uint32_t missedImageCountAcc = 0;
     static float percent{0.0f};
 
@@ -420,25 +420,34 @@ void DAQ::getData(new_image_callback_data_t data)
 
     int32_t missedImageCount = 0;
 
-    if( (retval == AxErr::NO_AxERROR) && axsunData &&
-            data.image_number && !(last_image - data.image_number) &&
-            axsunData->bufferLength && axsunData->bufferLength != 256
-            ){
+    const bool thisFrameIsGood =
+            (retval == AxErr::NO_AxERROR) &&
+            axsunData &&
+            data.image_number &&
+            !(last_image - data.image_number) &&
+            axsunData->bufferLength &&
+            (axsunData->bufferLength != 256);
+
+    if( thisFrameIsGood){
         axsunData->timeStamp = imageFrameTimer.elapsed();;
-        lastGoodImage = axsunData->frameCount;
-//         sm->pushImageRenderingQueue(axsunData);
-        ++m_daqCount;
-    }
+        lastGoodFrame = axsunData->frameCount;
 
-    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-
-        missedImageCount = axsunData->frameCount - lastGoodImage - 1;
-        if(lastGoodImage && (lastGoodImage < axsunData->frameCount) && (missedImageCount > 0) ){
+        missedImageCount = axsunData->frameCount - lastGoodFrame - 1;
+        if(lastGoodFrame && (lastGoodFrame < axsunData->frameCount) && (missedImageCount > 0) ){
             missedImageCountAcc +=missedImageCount;
         }
         percent = 100.0f * missedImageCountAcc / axsunData->frameCount;
 
-        LOG4(missedImageCountAcc, axsunData->frameCount, lastGoodImage, percent);
+//         sm->pushImageRenderingQueue(axsunData);
+        ++m_daqCount;
+    } else {
+
+            missedImageCount = axsunData->frameCount - lastGoodFrame - 1;
+            percent = 100.0f * (missedImageCountAcc + missedImageCount)/ axsunData->frameCount;
+    }
+
+    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
+        LOG4(missedImageCountAcc, axsunData->frameCount, lastGoodFrame, percent);
         LOG4(m_frameNumber, axsunData->acqData, msg, callbackTimer.elapsed());
     }
 }
