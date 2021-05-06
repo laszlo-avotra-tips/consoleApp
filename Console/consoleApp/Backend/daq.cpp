@@ -418,22 +418,26 @@ void DAQ::getData(new_image_callback_data_t data)
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
     }
 
+    int32_t missedImageCount = 0;
+
     if( (retval == AxErr::NO_AxERROR) && axsunData &&
             data.image_number && !(last_image - data.image_number) &&
             axsunData->bufferLength && axsunData->bufferLength != 256
             ){
-        int32_t missedImageCount = axsunData->frameCount - lastGoodImage - 1;
+//         sm->pushImageRenderingQueue(axsunData);
+        ++m_daqCount;
+        lastGoodImage = axsunData->frameCount;
+        axsunData->timeStamp = imageFrameTimer.elapsed();;
+    }
+
+    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
+
+        missedImageCount = axsunData->frameCount - lastGoodImage - 1;
         if(lastGoodImage && (lastGoodImage < axsunData->frameCount) && (missedImageCount > 0) ){
             missedImageCountAcc +=missedImageCount;
         }
         percent = 100.0f * missedImageCountAcc / axsunData->frameCount;
-        axsunData->timeStamp = imageFrameTimer.elapsed();;
-//         sm->pushImageRenderingQueue(axsunData);
-        ++m_daqCount;
-        lastGoodImage = axsunData->frameCount;
-    }
 
-    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         LOG4(missedImageCountAcc, axsunData->frameCount, lastGoodImage, percent);
         LOG4(m_frameNumber, axsunData->acqData, msg, callbackTimer.elapsed());
     }
