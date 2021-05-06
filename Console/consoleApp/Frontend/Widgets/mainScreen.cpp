@@ -631,8 +631,6 @@ void MainScreen::openDeviceSelectDialog()
 //        m_daqTimer.setSingleShot(true);
 //        m_daqTimer.start(11);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
-        updateImage();
-
     } else {
         LOG1( "Cancelled")
         openCaseInformationDialog();
