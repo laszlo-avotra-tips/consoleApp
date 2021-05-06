@@ -926,7 +926,9 @@ void MainScreen::updateImage()
     QElapsedTimer timer;
     timer.start();
 
-    while( auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue() ){
+    OctData* pointerToFrame{nullptr};
+    while( !pointerToFrame){
+        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
         QThread::msleep(100);
     }
     LOG1(timer.elapsed());
