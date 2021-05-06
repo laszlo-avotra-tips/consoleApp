@@ -928,7 +928,7 @@ void MainScreen::updateImage()
     OctData* pointerToFrame{nullptr};
     pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
 
-    if(pointerToFrame && m_scene)
+    while(pointerToFrame && m_scene)
     {
         auto& frame = *pointerToFrame;
 
@@ -945,8 +945,9 @@ void MainScreen::updateImage()
         }
         auto timeMs = timer.elapsed();
         LOG3(pointerToFrame,renderCount, timeMs);
+        QThread::yieldCurrentThread();
+        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
-    QThread::yieldCurrentThread();
 }
 
 void MainScreen::on_pushButton_clicked()
