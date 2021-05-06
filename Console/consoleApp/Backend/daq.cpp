@@ -448,4 +448,5 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG4(missedImageCountAcc, axsunData->frameCount, lastGoodFrame, percent);
         LOG4(m_frameNumber, axsunData->acqData, msg, callbackTimer.elapsed());
     }
+    QThread::yieldCurrentThread();
 }

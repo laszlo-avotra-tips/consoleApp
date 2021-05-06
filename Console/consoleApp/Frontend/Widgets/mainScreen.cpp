@@ -628,8 +628,8 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-        m_daqTimer.setSingleShot(true);
-        m_daqTimer.start(11);
+//        m_daqTimer.setSingleShot(true);
+        m_daqTimer.start(1);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
         LOG1( "Cancelled")
@@ -926,36 +926,28 @@ void MainScreen::updateImage()
     timer.start();
 
     OctData* pointerToFrame{nullptr};
-    while( !pointerToFrame){
-        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
-        QThread::msleep(100);
-        LOG1(pointerToFrame)
-    }
+    pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     LOG2(pointerToFrame->frameCount, timer.elapsed());
-    while(true){
-        LOG2(pointerToFrame, m_scene)
-        if(pointerToFrame && m_scene)
+
+    if(pointerToFrame && m_scene)
+    {
+        auto& frame = *pointerToFrame;
+
+        computeStatistics(frame);
+
+        QImage* diskImage = polarTransform(frame);
+
+        if(diskImage)
         {
-            auto& frame = *pointerToFrame;
+            updateMainScreenLabels(frame);
 
-            computeStatistics(frame);
+            renderCount += renderImage(diskImage);
 
-            QImage* diskImage = polarTransform(frame);
-
-            if(diskImage)
-            {
-                updateMainScreenLabels(frame);
-
-                renderCount += renderImage(diskImage);
-
-            }
-            auto timeMs = timer.elapsed();
-            LOG3(pointerToFrame,renderCount, timeMs);
         }
-        QThread::yieldCurrentThread();
-        QThread::msleep(20);
-        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+        auto timeMs = timer.elapsed();
+        LOG3(pointerToFrame,renderCount, timeMs);
     }
+    QThread::yieldCurrentThread();
 }
 
 void MainScreen::on_pushButton_clicked()
