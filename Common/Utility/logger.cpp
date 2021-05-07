@@ -76,7 +76,7 @@ bool Logger::init( QString applicationName )
 
 //    const QString logFileName{SystemLogFileName};
     QStringList fn = SystemLogFileName.split(".");
-    QString logFileName = fn[0] + QString::number(C_PATCH_VERSION) + QString(".log");
+    QString logFileName = fn[0] + QString::number(C_PATCH_VERSION) + QString("_.log");
 
     // Logs are saved in a hard-coded location    
     if( !getFileHandle( logFileName ) )
