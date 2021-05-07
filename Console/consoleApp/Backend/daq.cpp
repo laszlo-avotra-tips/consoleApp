@@ -449,7 +449,7 @@ void DAQ::getData(new_image_callback_data_t data)
     //reset stats at 300
     if(m_callbackCount == 30){
        m_frameGoodCount = 30;
-       m_frameNumberGoodLast = 30;
+       m_frameNumberGoodLast = 29;
     }
     axsun->callbackCount = m_callbackCount;
     axsun->frameCountGood = m_frameGoodCount;
