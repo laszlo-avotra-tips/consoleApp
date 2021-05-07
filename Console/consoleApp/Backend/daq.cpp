@@ -436,7 +436,7 @@ void DAQ::getData(new_image_callback_data_t data)
         axsun->timeStamp = imageFrameTimer.elapsed();;
         m_frameNumberGoodLast = axsun->frameNumber;
 
-        sm->pushImageRenderingQueue(axsun);
+//        sm->pushImageRenderingQueue(axsun);
 
     } else {
         ++m_frameBadCount;
