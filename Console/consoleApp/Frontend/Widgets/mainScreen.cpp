@@ -357,15 +357,18 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
     static int count{0};
-    int32_t missedImageCount = frame.frameNumber - lastGoodImage - 1;
-    if(lastGoodImage && (lastGoodImage < frame.frameNumber) && (missedImageCount > 0) ){
+
+    int32_t missedImageCount = frame.imageNumber - lastGoodImage - 1;
+
+    if(lastGoodImage && (lastGoodImage < frame.imageNumber) && (missedImageCount > 0) ){
          missedImageCountAcc += missedImageCount;
     }
-    lastGoodImage = frame.frameNumber;
+
+    lastGoodImage = frame.imageNumber;
+
     if(m_imageDecimation && (++count % m_imageDecimation == 0)){
-        float percent = 100.0f * missedImageCountAcc / frame.frameNumber;
-        LOG2(frame.acqData, percent);
-        LOG4(lastGoodImage, frame.frameNumber, missedImageCount, missedImageCountAcc)
+        float percent = 100.0f * missedImageCountAcc / frame.imageNumber;
+        LOG4(frame.imageNumber, lastGoodImage, missedImageCountAcc, percent);
     }
 }
 
