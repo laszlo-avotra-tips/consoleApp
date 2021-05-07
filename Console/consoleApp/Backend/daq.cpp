@@ -435,7 +435,7 @@ void DAQ::getData(new_image_callback_data_t data)
         ++m_imageNumber;
         m_frameNumberGoodLast = axsun->frameNumber;
 
-//        sm->pushImageRenderingQueue(axsun);
+        sm->pushImageRenderingQueue(axsun);
 
     } else {
         ++m_frameBadCount;
@@ -457,10 +457,10 @@ void DAQ::getData(new_image_callback_data_t data)
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
-        LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
+//        LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
         LOG4(m_frameNumber, axsun->acqData, msg, callbackTimer.elapsed());
         LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
-        LOG2(axsun->frameNumberGoodLast, axsun->imageNumber);
+        LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
     }
     QThread::yieldCurrentThread();
 }
