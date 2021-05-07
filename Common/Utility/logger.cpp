@@ -74,7 +74,9 @@ bool Logger::init( QString applicationName )
 {
     bool isOk = true;
 
-    const QString logFileName{SystemLogFileName};
+//    const QString logFileName{SystemLogFileName};
+    QStringList fn = SystemLogFileName.split(".");
+    QString logFileName = fn[0] + QString::number(C_PATCH_VERSION) + QString(".log");
 
     // Logs are saved in a hard-coded location    
     if( !getFileHandle( logFileName ) )
