@@ -345,9 +345,9 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
                         1024,1024);
 
     if( userSettings::Instance().getIsRecording()){
-         ui->labelSim->setText(QString("recording ") + QString::number(frameData.frameCount));
+         ui->labelSim->setText(QString("recording ") + QString::number(frameData.frameNumber));
     } else {
-         ui->labelSim->setText(QString("retrieving ") + QString::number(frameData.frameCount));
+         ui->labelSim->setText(QString("retrieving ") + QString::number(frameData.frameNumber));
     }
 
 }
@@ -357,15 +357,15 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
     static int count{0};
-    int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-    if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
+    int32_t missedImageCount = frame.frameNumber - lastGoodImage - 1;
+    if(lastGoodImage && (lastGoodImage < frame.frameNumber) && (missedImageCount > 0) ){
          missedImageCountAcc += missedImageCount;
     }
-    lastGoodImage = frame.frameCount;
+    lastGoodImage = frame.frameNumber;
     if(m_imageDecimation && (++count % m_imageDecimation == 0)){
-        float percent = 100.0f * missedImageCountAcc / frame.frameCount;
+        float percent = 100.0f * missedImageCountAcc / frame.frameNumber;
         LOG2(frame.acqData, percent);
-        LOG4(lastGoodImage, frame.frameCount, missedImageCount, missedImageCountAcc)
+        LOG4(lastGoodImage, frame.frameNumber, missedImageCount, missedImageCountAcc)
     }
 }
 

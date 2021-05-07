@@ -36,7 +36,7 @@ public:
 
     struct OctData_t
     {
-        unsigned long  frameCount{0};
+        unsigned long  frameNumber{0};
         unsigned long  timeStamp{0};
         uint8_t *acqData{nullptr};
         uint8_t *dispData{nullptr};        // used for display

@@ -40,7 +40,7 @@ void SignalModel::saveOct(const OctData &od)
 {
     QString dir = userSettings::Instance().getSimDir();
 
-    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameNumber) + QString(".dat");
     QFile file(fn);
 
     if(file.open(QFile::WriteOnly)){
@@ -54,7 +54,7 @@ bool SignalModel::retrieveOct(OctData &od)
 {
     bool success = false;
     QString dir = userSettings::Instance().getSimDir();
-    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameNumber) + QString(".dat");
     QFile file(fn);
 
     if(file.open(QFile::ReadOnly)){
@@ -304,7 +304,7 @@ void SignalModel::pushImageRenderingQueue(OctData *od)
 
     auto data = handleSimulationSettings(od);
     m_imageRenderingQueue.push(data);
-    LOG2(data->frameCount, pushTimer.elapsed())
+    LOG2(data->frameNumber, pushTimer.elapsed())
 }
 
 OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
@@ -318,7 +318,7 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
     if(!m_imageRenderingQueue.empty()){
         retVal = m_imageRenderingQueue.front();
         m_imageRenderingQueue.pop();
-        LOG2(retVal->frameCount, qSize)
+        LOG2(retVal->frameNumber, qSize)
     }
     return retVal;
 }
@@ -335,7 +335,7 @@ OctData* SignalModel::handleSimulationSettings(OctData * const od)
     if(od && isSimulation){
         if(isRecording){
             if(isSequencial){
-                od->frameCount = m_simulationFrameCount++;
+                od->frameNumber = m_simulationFrameCount++;
             }
             if(m_simulationFrameCount <= endFrame){
                 saveOct(*od);
@@ -345,7 +345,7 @@ OctData* SignalModel::handleSimulationSettings(OctData * const od)
             if(m_simulationFrameCount > endFrame){
                 m_simulationFrameCount = startFrame;
             }
-            od->frameCount = m_simulationFrameCount++;
+            od->frameNumber = m_simulationFrameCount++;
             od->acqData = axsunData->acqData;
 //            LOG1(od.acqData)
             retrieveOct(*od);

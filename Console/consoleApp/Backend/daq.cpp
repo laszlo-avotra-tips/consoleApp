@@ -400,7 +400,7 @@ void DAQ::getData(new_image_callback_data_t data)
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
         retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
         axsunData->bufferLength = info.width;
-        axsunData->frameCount = data.image_number;
+        axsunData->frameNumber = data.image_number;
         if (retval == AxErr::NO_AxERROR) {
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
@@ -430,22 +430,22 @@ void DAQ::getData(new_image_callback_data_t data)
 
     if( thisFrameIsGood){
         axsunData->timeStamp = imageFrameTimer.elapsed();;
-        lastGoodFrame = axsunData->frameCount;
+        lastGoodFrame = axsunData->frameNumber;
 
          sm->pushImageRenderingQueue(axsunData);
 
         ++m_daqCount;
     } else {
 
-        missedImageCount = axsunData->frameCount - lastGoodFrame - 1;
-        if(lastGoodFrame && (lastGoodFrame < axsunData->frameCount) && (missedImageCount > 0) ){
+        missedImageCount = axsunData->frameNumber - lastGoodFrame - 1;
+        if(lastGoodFrame && (lastGoodFrame < axsunData->frameNumber) && (missedImageCount > 0) ){
             missedImageCountAcc +=missedImageCount;
         }
     }
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        percent = 100.0f * missedImageCountAcc / axsunData->frameCount;
-        LOG4(missedImageCountAcc, axsunData->frameCount, lastGoodFrame, percent);
+        percent = 100.0f * missedImageCountAcc / axsunData->frameNumber;
+        LOG4(missedImageCountAcc, axsunData->frameNumber, lastGoodFrame, percent);
         LOG4(m_frameNumber, axsunData->acqData, msg, callbackTimer.elapsed());
     }
     QThread::yieldCurrentThread();
