@@ -70,6 +70,7 @@ private:
 
     unsigned long m_frameGoodCount{0};
     unsigned long m_frameBadCount{0};
+    unsigned long m_imageNumber{0};
 };
 
 #endif // DAQ_H

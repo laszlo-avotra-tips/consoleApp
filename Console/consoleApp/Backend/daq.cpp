@@ -432,15 +432,13 @@ void DAQ::getData(new_image_callback_data_t data)
 
     if( thisFrameIsGood){
         ++m_frameGoodCount;
-        axsun->frameCountGood = m_frameGoodCount;
-        axsun->timeStamp = imageFrameTimer.elapsed();;
+        ++m_imageNumber;
         m_frameNumberGoodLast = axsun->frameNumber;
 
 //        sm->pushImageRenderingQueue(axsun);
 
     } else {
         ++m_frameBadCount;
-        axsun->frameCountBad = m_frameBadCount;
 
         missedImageCount = axsun->frameNumber - m_frameNumberGoodLast - 1;
         if(m_frameNumberGoodLast && (m_frameNumberGoodLast < axsun->frameNumber) && (missedImageCount > 0) ){
@@ -449,14 +447,20 @@ void DAQ::getData(new_image_callback_data_t data)
     }
 
     axsun->callbackCount = m_callbackCount;
+    axsun->frameCountGood = m_frameGoodCount;
+    axsun->frameCountBad = m_callbackCount - m_frameGoodCount;
     axsun->frameNumberGoodLast = m_frameNumberGoodLast;
 
+    axsun->imageNumber = m_imageNumber;
+
+    axsun->timeStamp = imageFrameTimer.elapsed();;
+
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        percent = 100.0f * missedImageCountAcc / axsun->frameNumber;
+        percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
         LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
         LOG4(m_frameNumber, axsun->acqData, msg, callbackTimer.elapsed());
         LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
-        LOG1(axsun->frameNumberGoodLast);
+        LOG2(axsun->frameNumberGoodLast, axsun->imageNumber);
     }
     QThread::yieldCurrentThread();
 }
