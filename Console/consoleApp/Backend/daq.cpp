@@ -439,7 +439,7 @@ void DAQ::getData(new_image_callback_data_t data)
         ++m_imageNumber;
         m_frameNumberGoodLast = axsun->frameNumber;
 
-        sm->pushImageRenderingQueue(axsun);
+//        sm->pushImageRenderingQueue(axsun);
         sm->setFrameNumber(m_frameNumber);
 
     } else {

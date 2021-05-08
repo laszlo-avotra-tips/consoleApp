@@ -962,8 +962,12 @@ void MainScreen::updateImage2()
 void MainScreen::updateImage()
 {
     static int index{-1};
+    static int count{0};
 
     const auto sm = SignalModel::instance();
+    QElapsedTimer time;
+
+    ++count;
 
     const int qIndex = sm->renderingQueueIndex();
 
@@ -973,6 +977,11 @@ void MainScreen::updateImage()
 
         if(pointerToFrame && m_scene)
         {
+
+            auto frameNumber = pointerToFrame->frameNumber;
+            auto deltaT = time.elapsed();
+            LOG4(count, qIndex, frameNumber, deltaT);
+
             const auto& frame = *pointerToFrame;
 
             computeStatistics(frame);
