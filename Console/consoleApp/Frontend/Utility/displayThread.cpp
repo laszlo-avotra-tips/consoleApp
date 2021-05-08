@@ -16,9 +16,9 @@ void DisplayThread::run()
         msleep(1);
         ++m_count;
         yieldCurrentThread();
-        if(index != sm->renderingQueueIndex()){
+        if(sm->renderingQueueIndex() > 0 && index != sm->renderingQueueIndex()){
             index = sm->renderingQueueIndex();
-            LOG2(m_count, sm->renderingQueueIndex());
+            LOG3(m_count, sm->renderingQueueIndex(), priority());
         }
     }
 }
