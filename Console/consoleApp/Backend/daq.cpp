@@ -108,6 +108,8 @@ void DAQ::initDaq()
         LOG2(int(retval), errorMsg)
     }
 
+    m_callbackTimer.start();
+    m_dataTimer.start();
 //    setSubSamplingFactor();
 
 }
@@ -350,10 +352,12 @@ void DAQ::getData(new_image_callback_data_t data)
     static uint32_t missedImageCountAcc = 0;
     static float percent{0.0f};
 
-    ++m_callbackCount;;
+    ++m_callbackCount;
+    m_callbackTime = m_callbackTimer.elapsed();
+    m_callbackTimer.restart();
 
-    QElapsedTimer callbackTimer;
-    callbackTimer.start();
+    QElapsedTimer getDataFunctionTimer;
+    getDataFunctionTimer.start();
     auto currentTime = QTime::currentTime();
     QString timeString = currentTime.toString("hh:mm:ss.zzz");
 //    qs << timeString;
@@ -460,13 +464,16 @@ void DAQ::getData(new_image_callback_data_t data)
 
     axsun->timeStamp = imageFrameTimer.elapsed();
     axsun->index = m_frameNumber;
+    m_dataTime = m_dataTimer.elapsed();
+    m_dataTimer.restart();
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
 //        LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
-        LOG4(m_frameNumber, axsun->acqData, msg, callbackTimer.elapsed());
+        LOG4(m_frameNumber, axsun->acqData, msg, getDataFunctionTimer.elapsed());
         LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
         LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
+        LOG2(m_callbackTime, m_dataTime);
     }
     QThread::yieldCurrentThread();
 }
