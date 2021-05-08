@@ -4,14 +4,17 @@
 #include <QThread>
 #include <QObject>
 
+class MainScreen;
+
 class DisplayThread : public QThread
 {
 public:
-    DisplayThread();
+    DisplayThread(MainScreen* ms);
     void run() override;
 
 private:
     int m_count{0};
+    MainScreen * const m_ms{nullptr};
 };
 
 #endif // DISPLAYTHREAD_H

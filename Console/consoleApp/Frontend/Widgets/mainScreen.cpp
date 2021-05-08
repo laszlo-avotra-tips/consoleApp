@@ -91,7 +91,7 @@ MainScreen::MainScreen(QWidget *parent)
    }
 
    if(!m_displayThread){
-       m_displayThread = new DisplayThread();
+       m_displayThread = new DisplayThread(this);
    }
 }
 
@@ -637,8 +637,8 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-        m_daqTimer.start(1);
-//        m_displayThread->start(QThread::HighestPriority);
+//        m_daqTimer.start(1);
+        m_displayThread->start(QThread::HighestPriority);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
         LOG1( "Cancelled")
@@ -983,20 +983,40 @@ void MainScreen::updateImage()
             auto deltaT = time.elapsed();
             LOG4(count, qIndex, frameNumber, deltaT);
 
-            const auto& frame = *pointerToFrame;
+//            const auto& frame = *pointerToFrame;
 
-            computeStatistics(frame);
+//            computeStatistics(frame);
 
-            const QImage* diskImage = polarTransform(frame);
+//            const QImage* diskImage = polarTransform(frame);
 
-            if(diskImage)
-            {
-                updateMainScreenLabels(frame);
-                renderImage(diskImage);
-            }
+//            if(diskImage)
+//            {
+//                updateMainScreenLabels(frame);
+//                renderImage(diskImage);
+//            }
+            presentData(pointerToFrame);
         }
     }
 }
+
+void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
+    if(pointerToFrame && m_scene)
+    {
+
+        const auto& frame = *pointerToFrame;
+
+        computeStatistics(frame);
+
+        const QImage* diskImage = polarTransform(frame);
+
+        if(diskImage)
+        {
+            updateMainScreenLabels(frame);
+            renderImage(diskImage);
+        }
+    }
+}
+
 
 
 void MainScreen::on_pushButton_clicked()

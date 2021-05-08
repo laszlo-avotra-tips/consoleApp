@@ -1,9 +1,10 @@
 #include "displayThread.h"
 #include "logger.h"
 #include "signalmodel.h"
+#include "mainScreen.h"
 #include <QElapsedTimer>
 
-DisplayThread::DisplayThread()
+DisplayThread::DisplayThread(MainScreen *ms) : m_ms(ms)
 {
 
 }
@@ -22,8 +23,13 @@ void DisplayThread::run()
         int qIndex = sm->renderingQueueIndex();
         if(qIndex > 0 && index != qIndex){
             index = qIndex;
-            auto data = sm->getOctData(index);
-            auto frameNumber = data->frameNumber;
+            auto p = sm->getOctData(index);
+            int frameNumber{-1};
+
+            if(p){
+                frameNumber = p->frameNumber;
+                m_ms->presentData(p);
+            }
             auto deltaT = time.elapsed();
             LOG4(m_count, qIndex, frameNumber, deltaT);
             time.restart();
