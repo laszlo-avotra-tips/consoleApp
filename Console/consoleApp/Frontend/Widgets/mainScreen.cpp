@@ -954,7 +954,7 @@ void MainScreen::updateImage()
 
         }
         auto timeMs = timer.elapsed();
-        LOG3(pointerToFrame,renderCount, timeMs);
+//        LOG3(pointerToFrame,renderCount, timeMs);
         QThread::yieldCurrentThread();
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
