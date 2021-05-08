@@ -70,6 +70,16 @@ bool SignalModel::retrieveOct(OctData &od)
     return success;
 }
 
+int SignalModel::getFrameNumber() const
+{
+    return m_frameNumber;
+}
+
+void SignalModel::setFrameNumber(int frameNumber)
+{
+    m_frameNumber = frameNumber;
+}
+
 const cl_float* SignalModel::getCatheterRadius_um() const
 {
     return &m_catheterRadius_um;
@@ -325,11 +335,7 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 
 int SignalModel::renderingQueueIndex() const
 {
-    int index = -1;
-    if(!m_imageRenderingQueue.empty()){
-        index = m_imageRenderingQueue.front()->index;
-    }
-    return index;
+    return getFrameNumber();
 }
 
 OctData* SignalModel::handleSimulationSettings(OctData * const od)
