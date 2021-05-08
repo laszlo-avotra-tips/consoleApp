@@ -966,6 +966,7 @@ void MainScreen::updateImage()
 
     const auto sm = SignalModel::instance();
     QElapsedTimer time;
+    time.start();
 
     ++count;
 
@@ -991,6 +992,7 @@ void MainScreen::updateImage()
             if(diskImage)
             {
                 updateMainScreenLabels(frame);
+                renderImage(diskImage);
             }
         }
     }
