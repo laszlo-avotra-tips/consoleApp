@@ -23,6 +23,7 @@
 #include "defaults.h"
 #include <Backend/interfacesupport.h>
 #include "endCaseDialog.h"
+#include "Utility/displayThread.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -88,6 +89,10 @@ MainScreen::MainScreen(QWidget *parent)
    if(!m_scanWorker){
        m_scanWorker = new ScanConversion();
    }
+
+   if(!m_displayThread){
+       m_displayThread = new DisplayThread();
+   }
 }
 
 void MainScreen::hookupEndCaseDiagnostics() {
@@ -116,6 +121,7 @@ void MainScreen::setScene(liveScene *scene)
 
 MainScreen::~MainScreen()
 {
+    delete m_displayThread;
     delete[] m_clipBuffer;
     delete ui;
 }
@@ -633,6 +639,7 @@ void MainScreen::openDeviceSelectDialog()
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
 //        m_daqTimer.setSingleShot(true);
         m_daqTimer.start(1);
+        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
         LOG1( "Cancelled")

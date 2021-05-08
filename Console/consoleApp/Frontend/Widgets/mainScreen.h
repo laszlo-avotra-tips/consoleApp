@@ -17,6 +17,7 @@ class OpaqueScreen;
 class QPushButton;
 class QGraphicsView;
 class ScanConversion;
+class DisplayThread;
 
 
 QT_BEGIN_NAMESPACE
@@ -147,5 +148,6 @@ private:
     int m_sledRunningState{-1};
 
     OctSystemDiagnostics* diagnostics = nullptr;
+    DisplayThread* m_displayThread{nullptr};
 };
 #endif // MAINSCREEN_H
