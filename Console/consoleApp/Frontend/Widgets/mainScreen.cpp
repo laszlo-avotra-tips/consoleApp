@@ -378,7 +378,7 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
     }
 }
 
-QImage *MainScreen::polarTransform(const OCTFile::OctData_t &frameData)
+const QImage *MainScreen::polarTransform(const OCTFile::OctData_t &frameData)
 {
     QImage* image = m_scene->sectorImage();
     QImage* polarImage{nullptr};
@@ -943,7 +943,7 @@ void MainScreen::updateImage2()
 
         computeStatistics(frame);
 
-        QImage* diskImage = polarTransform(frame);
+        const QImage* diskImage = polarTransform(frame);
 
         if(diskImage)
         {
@@ -963,24 +963,21 @@ void MainScreen::updateImage()
 {
     static int index{-1};
 
-    QElapsedTimer timer;
-    timer.start();
+    const auto sm = SignalModel::instance();
 
-    auto sm = SignalModel::instance();
-
-    int qIndex = sm->renderingQueueIndex();
+    const int qIndex = sm->renderingQueueIndex();
 
     if(qIndex > 0 && index != qIndex){
         index = qIndex;
-        auto pointerToFrame = sm->getOctData(index);
+        const auto pointerToFrame = sm->getOctData(index);
 
         if(pointerToFrame && m_scene)
         {
-            auto& frame = *pointerToFrame;
+            const auto& frame = *pointerToFrame;
 
             computeStatistics(frame);
 
-            QImage* diskImage = polarTransform(frame);
+            const QImage* diskImage = polarTransform(frame);
 
             if(diskImage)
             {

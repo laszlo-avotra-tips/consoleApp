@@ -111,7 +111,7 @@ private:
     void handleEndCase();
     void updateMainScreenLabels(const OCTFile::OctData_t& frameData);
     void computeStatistics(const OCTFile::OctData_t& frameData) const;
-    QImage* polarTransform(const OCTFile::OctData_t& frameData);
+    const QImage *polarTransform(const OCTFile::OctData_t& frameData);
     bool renderImage(const QImage* disk) const;
 
 private:
