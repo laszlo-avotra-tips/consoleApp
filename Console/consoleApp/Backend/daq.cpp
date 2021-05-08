@@ -346,13 +346,18 @@ void DAQ::getData(new_image_callback_data_t data)
 
     QString msg;
     QTextStream qs(&msg);
-    static uint32_t lastGoodImage = 0;
+    static uint32_t m_frameNumberGoodLast = 0;
     static uint32_t missedImageCountAcc = 0;
     static float percent{0.0f};
 
+    ++m_callbackCount;;
+
+    QElapsedTimer callbackTimer;
+    callbackTimer.start();
     auto currentTime = QTime::currentTime();
     QString timeString = currentTime.toString("hh:mm:ss.zzz");
-    qs << timeString << "\t" <<data.image_number << "\t";
+//    qs << timeString;
+    qs << "\t" <<data.image_number << "\t";
 
     uint32_t imaging, last_packet, last_frame, last_image, dropped_packets, frames_since_sync;
     auto success = axGetStatus(data.session, &imaging, &last_packet, &last_frame, &last_image, &dropped_packets, &frames_since_sync);
@@ -372,30 +377,32 @@ void DAQ::getData(new_image_callback_data_t data)
 
     auto* sm = SignalModel::instance();
 
-    OCTFile::OctData_t* axsunData{nullptr};
+    OCTFile::OctData_t* axsun{nullptr};
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
 
-    if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1)){
-        axsunData = sm->getOctData(1);
-//        LOG1(axsunData.acqData)
-    } else
+    if(userSettings::Instance().getIsSimulation() && (frameBufferCount > 1))
     {
-        axsunData = sm->getOctData(m_frameNumber);
-//        LOG1(axsunData.acqData)
+        axsun = sm->getOctData(1);
+//        LOG1(axsun.acqData)
+    }
+    else
+    {
+        axsun = sm->getOctData(m_frameNumber);
+//        LOG1(axsun.acqData)
     }
 
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
 
-    m_frameNumber = m_daqCount % frameBufferCount;
+    m_frameNumber = m_callbackCount % frameBufferCount;
 
     auto info = image_info_t{};
 
     AxErr retval{AxErr::BUFFER_IS_EMPTY};
     if (bytes_allocated >= data.required_buffer_size) {		// insure memory allocation large enough
         auto prefs = request_prefs_t{ .request_mode = AxRequestMode::RETRIEVE_TO_CALLER, .which_window = 1 };
-        retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsunData->acqData, &info);
-        axsunData->bufferLength = info.width;
-        axsunData->frameCount = data.image_number;
+        retval = axRequestImage(data.session, data.image_number, prefs, bytes_allocated, axsun->acqData, &info);
+        axsun->bufferLength = info.width;
+        axsun->frameNumber = data.image_number;
         if (retval == AxErr::NO_AxERROR) {
             qs << "Success: \tWidth: " << info.width;
             if (info.force_trig)
@@ -413,22 +420,52 @@ void DAQ::getData(new_image_callback_data_t data)
         qs << "Memory allocation too small for retrieval of image " << data.image_number;
     }
 
-    if( (retval == AxErr::NO_AxERROR) && axsunData &&
-            data.image_number && !(last_image - data.image_number) &&
-            axsunData->bufferLength && axsunData->bufferLength != 256
-            ){
-        int32_t missedImageCount = axsunData->frameCount - lastGoodImage - 1;
-        if(lastGoodImage && (lastGoodImage < axsunData->frameCount) && (missedImageCount > 0) ){
+    int32_t missedImageCount = 0;
+
+    const bool thisFrameIsGood =
+            (retval == AxErr::NO_AxERROR) &&
+            axsun &&
+            data.image_number &&
+            !(last_image - data.image_number) &&
+            axsun->bufferLength &&
+            (axsun->bufferLength != 256);
+
+    if( thisFrameIsGood){
+        ++m_frameGoodCount;
+        ++m_imageNumber;
+        m_frameNumberGoodLast = axsun->frameNumber;
+
+        sm->pushImageRenderingQueue(axsun);
+
+    } else {
+        ++m_frameBadCount;
+
+        missedImageCount = axsun->frameNumber - m_frameNumberGoodLast - 1;
+        if(m_frameNumberGoodLast && (m_frameNumberGoodLast < axsun->frameNumber) && (missedImageCount > 0) ){
             missedImageCountAcc +=missedImageCount;
         }
-        percent = 100.0f * missedImageCountAcc / axsunData->frameCount;
-        axsunData->timeStamp = imageFrameTimer.elapsed();;
-         sm->pushImageRenderingQueue(axsunData);
-        ++m_daqCount;
-        lastGoodImage = axsunData->frameCount;
     }
 
-    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        LOG4(axsunData->acqData, axsunData->frameCount, msg, percent);
+    //reset stats at 300
+    if(m_callbackCount == 30){
+       m_frameGoodCount = 30;
+       m_frameNumberGoodLast = 29;
     }
+    axsun->callbackCount = m_callbackCount;
+    axsun->frameCountGood = m_frameGoodCount;
+    axsun->frameCountBad = m_callbackCount - m_frameGoodCount;
+    axsun->frameNumberGoodLast = m_frameNumberGoodLast;
+
+    axsun->imageNumber = m_imageNumber;
+
+    axsun->timeStamp = imageFrameTimer.elapsed();;
+
+    if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
+        percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
+//        LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
+        LOG4(m_frameNumber, axsun->acqData, msg, callbackTimer.elapsed());
+        LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
+        LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
+    }
+    QThread::yieldCurrentThread();
 }

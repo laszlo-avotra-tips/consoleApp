@@ -2,6 +2,7 @@
 #include "logger.h"
 #include "Utility/userSettings.h"
 #include <QFile>
+#include <QElapsedTimer>
 
 
 SignalModel* SignalModel::m_instance{nullptr};
@@ -24,7 +25,6 @@ void SignalModel::allocateOctData()
 
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers() + int(userSettings::Instance().getIsSimulation());
 
-    QMutexLocker guard(&m_imageRenderingMutex);
     for(int i = 0; i < frameBufferCount; ++i){
 
         OCTFile::OctData_t oct;
@@ -40,7 +40,7 @@ void SignalModel::saveOct(const OctData &od)
 {
     QString dir = userSettings::Instance().getSimDir();
 
-    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameNumber) + QString(".dat");
     QFile file(fn);
 
     if(file.open(QFile::WriteOnly)){
@@ -54,7 +54,7 @@ bool SignalModel::retrieveOct(OctData &od)
 {
     bool success = false;
     QString dir = userSettings::Instance().getSimDir();
-    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameCount) + QString(".dat");
+    QString fn = m_simFnBase + dir + QString("/frame") + QString::number(od.frameNumber) + QString(".dat");
     QFile file(fn);
 
     if(file.open(QFile::ReadOnly)){
@@ -297,32 +297,30 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData *od)
 {
-    auto data = handleSimulationSettings(od);
+    QElapsedTimer pushTimer;
+    pushTimer.start();
+
     QMutexLocker guard(&m_imageRenderingMutex);
+
+    auto data = handleSimulationSettings(od);
     m_imageRenderingQueue.push(data);
+    LOG2(data->frameNumber, pushTimer.elapsed())
 }
 
 OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 {
+    QElapsedTimer popTimer;
+    popTimer.start();
+
     QMutexLocker guard(&m_imageRenderingMutex);
     OctData* retVal{nullptr};
+    const auto qSize = m_imageRenderingQueue.size();
     if(!m_imageRenderingQueue.empty()){
-        retVal = m_imageRenderingQueue.back();
-        while(!m_imageRenderingQueue.empty()){
-            m_imageRenderingQueue.pop();
-        }
+        retVal = m_imageRenderingQueue.front();
+        m_imageRenderingQueue.pop();
+        LOG2(retVal->frameNumber, qSize)
     }
     return retVal;
-}
-
-void SignalModel::freeOctData()
-{
-    QMutexLocker guard(&m_imageRenderingMutex);
-    for(auto it = m_octData.begin(); it != m_octData.end(); ++it){
-        delete [] it->second.acqData;
-        delete [] it->second.dispData;
-    }
-    m_octData.clear();
 }
 
 OctData* SignalModel::handleSimulationSettings(OctData * const od)
@@ -337,7 +335,7 @@ OctData* SignalModel::handleSimulationSettings(OctData * const od)
     if(od && isSimulation){
         if(isRecording){
             if(isSequencial){
-                od->frameCount = m_simulationFrameCount++;
+                od->frameNumber = m_simulationFrameCount++;
             }
             if(m_simulationFrameCount <= endFrame){
                 saveOct(*od);
@@ -347,7 +345,7 @@ OctData* SignalModel::handleSimulationSettings(OctData * const od)
             if(m_simulationFrameCount > endFrame){
                 m_simulationFrameCount = startFrame;
             }
-            od->frameCount = m_simulationFrameCount++;
+            od->frameNumber = m_simulationFrameCount++;
             od->acqData = axsunData->acqData;
 //            LOG1(od.acqData)
             retrieveOct(*od);
@@ -359,8 +357,6 @@ OctData* SignalModel::handleSimulationSettings(OctData * const od)
 
 OCTFile::OctData_t* SignalModel::getOctData(int index)
 {
-    QMutexLocker guard(&m_imageRenderingMutex);
-
     OCTFile::OctData_t* octData{nullptr};
     auto it = m_octData.find(index);
 
@@ -370,6 +366,7 @@ OCTFile::OctData_t* SignalModel::getOctData(int index)
     } else {
         octData = &(m_octData.begin()->second);
     }
-//    LOG3(index, octData.acqData, m_octData.size())
+    LOG2(index, octData->acqData)
+
     return octData;
 }

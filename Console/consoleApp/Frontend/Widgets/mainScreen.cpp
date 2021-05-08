@@ -345,9 +345,9 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
                         1024,1024);
 
     if( userSettings::Instance().getIsRecording()){
-         ui->labelSim->setText(QString("recording ") + QString::number(frameData.frameCount));
+         ui->labelSim->setText(QString("recording ") + QString::number(frameData.frameNumber));
     } else {
-         ui->labelSim->setText(QString("retrieving ") + QString::number(frameData.frameCount));
+         ui->labelSim->setText(QString("retrieving ") + QString::number(frameData.frameNumber));
     }
 
 }
@@ -357,15 +357,18 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
     static uint32_t lastGoodImage = 0;
     static uint32_t missedImageCountAcc = 0;
     static int count{0};
-    int32_t missedImageCount = frame.frameCount - lastGoodImage - 1;
-    if(lastGoodImage && (lastGoodImage < frame.frameCount) && (missedImageCount > 0) ){
+
+    int32_t missedImageCount = frame.imageNumber - lastGoodImage - 1;
+
+    if(lastGoodImage && (lastGoodImage < frame.imageNumber) && (missedImageCount > 0) ){
          missedImageCountAcc += missedImageCount;
     }
-    lastGoodImage = frame.frameCount;
+
+    lastGoodImage = frame.imageNumber;
+
     if(m_imageDecimation && (++count % m_imageDecimation == 0)){
-        float percent = 100.0f * missedImageCountAcc / frame.frameCount;
-        LOG2(frame.acqData, percent);
-        LOG4(lastGoodImage, frame.frameCount, missedImageCount, missedImageCountAcc)
+        float percent = 100.0f * missedImageCountAcc / frame.imageNumber;
+        LOG4(frame.imageNumber, lastGoodImage, missedImageCountAcc, percent);
     }
 }
 
@@ -628,9 +631,9 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
+//        m_daqTimer.setSingleShot(true);
         m_daqTimer.start(1);
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
-
     } else {
         LOG1( "Cancelled")
         openCaseInformationDialog();
@@ -921,26 +924,32 @@ void MainScreen::setSceneCursor( QCursor cursor )
 void MainScreen::updateImage()
 {
     static int renderCount{0};
-    auto pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
-    if(pointerToFrame && m_scene)
+
+    QElapsedTimer timer;
+    timer.start();
+
+    OctData* pointerToFrame{nullptr};
+    pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+
+    while(pointerToFrame && m_scene)
     {
         auto& frame = *pointerToFrame;
 
         computeStatistics(frame);
-    }
 
-    if(pointerToFrame && m_scene)
-    {
-        auto& frame = *pointerToFrame;
         QImage* diskImage = polarTransform(frame);
+
         if(diskImage)
         {
             updateMainScreenLabels(frame);
 
             renderCount += renderImage(diskImage);
 
-            LOG1(renderCount);
         }
+        auto timeMs = timer.elapsed();
+        LOG3(pointerToFrame,renderCount, timeMs);
+        QThread::yieldCurrentThread();
+        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
 }
 

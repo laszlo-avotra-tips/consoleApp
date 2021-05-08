@@ -58,7 +58,7 @@ private:
     char axMessage[256];
 
     int m_daqDecimation{0};
-    int m_daqCount{0};
+    int m_callbackCount{0};
 
     const int m_subsamplingThreshold{1000};
     int m_subsamplingFactor{2};
@@ -67,6 +67,10 @@ private:
     uint32_t m_droppedPackets{0};
     uint32_t m_missedImagesCountAccumulated{0};
     uint32_t m_lastDroppedPacketCount{0};
+
+    unsigned long m_frameGoodCount{0};
+    unsigned long m_frameBadCount{0};
+    unsigned long m_imageNumber{0};
 };
 
 #endif // DAQ_H

@@ -36,7 +36,18 @@ public:
 
     struct OctData_t
     {
-        unsigned long  frameCount{0};
+        unsigned long  callbackCount{0};
+        unsigned long  imageNumber{0};
+
+        unsigned long  frameNumber{0};
+        unsigned long  frameCountGood{0};
+        unsigned long  frameCountBad{0};
+        unsigned long  frameNumberGoodLast{0};
+
+        unsigned long  imageCountProcessed{0};
+        unsigned long  imageCountSkipped{0};
+        unsigned long  imageNumberGoodLast{0};
+
         unsigned long  timeStamp{0};
         uint8_t *acqData{nullptr};
         uint8_t *dispData{nullptr};        // used for display

@@ -139,7 +139,7 @@ void DeviceSelectDialog::on_pushButtonDone_clicked()
       ms->setDeviceLabel();
       ms->showSpeed(isShowSpeed);
       startDaq(ms);
-    }
+     }
 }
 
 void DeviceSelectDialog::startDaq(MainScreen *ms)

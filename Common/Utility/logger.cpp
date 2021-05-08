@@ -74,17 +74,21 @@ bool Logger::init( QString applicationName )
 {
     bool isOk = true;
 
+//    const QString logFileName{SystemLogFileName};
+    QStringList fn = SystemLogFileName.split(".");
+    QString logFileName = fn[0] + QString::number(C_PATCH_VERSION) + QString("_.log");
+
     // Logs are saved in a hard-coded location    
-    if( !getFileHandle( SystemLogFileName ) )
+    if( !getFileHandle( logFileName ) )
     {
-        status = QObject::tr( "ERROR: Could not get file handle for " ) + SystemLogFileName;
+        status = QObject::tr( "ERROR: Could not get file handle for " ) + logFileName;
         isOk = false;
     }
     else
     {
-        if( !rotateLog( SystemLogFileName ) )
+        if( !rotateLog( logFileName ) )
         {
-            status = QObject::tr( "ERROR: Could not rotate the log file, " ) + SystemLogFileName;
+            status = QObject::tr( "ERROR: Could not rotate the log file, " ) + logFileName;
             isOk = false;
         }
         else
@@ -92,7 +96,7 @@ bool Logger::init( QString applicationName )
             // open or create the log file
             if( !hFile->open( QIODevice::Append | QIODevice::Text ) )
             {
-                status = QObject::tr( "ERROR: Could not open %1 for appending." ).arg( SystemLogFileName );
+                status = QObject::tr( "ERROR: Could not open %1 for appending." ).arg( logFileName );
                 isOk = false;
             }
             else
@@ -101,7 +105,7 @@ bool Logger::init( QString applicationName )
 
                 if( !output )
                 {
-                    status = QObject::tr( "ERROR: Could not open %1 for writing." ).arg( SystemLogFileName );
+                    status = QObject::tr( "ERROR: Could not open %1 for writing." ).arg( logFileName );
                     isOk = false;
                 }
             }
@@ -151,13 +155,15 @@ bool Logger::rotateLog( const QString systemLogFileName )
 {
     bool isOk = true;
 
+    QStringList fn = systemLogFileName.split(".");
+
     // Check if the log file has grown large. If so, rename it and a new one
     // will be started.
     if( hFile->exists() && ( hFile->size() > MaxLogSize_bytes ) )
     {
         // create a unique name for the old log file
         QString timeStamp = QDateTime::currentDateTimeUtc().toString( "yyyyMMdd-hhmmss" );
-        QString newName   = SystemDir + "/OCT_System-" + timeStamp + ".log";
+        QString newName   = fn[0] + "-" + timeStamp + ".log";
         hFile->rename( newName );
 
         // release the old handle
