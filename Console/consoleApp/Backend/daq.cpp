@@ -391,13 +391,13 @@ void DAQ::getData(new_image_callback_data_t data)
     }
     else
     {
+
+        m_frameNumber = m_callbackCount % frameBufferCount;
         axsun = sm->getOctData(m_frameNumber);
 //        LOG1(axsun.acqData)
     }
 
     const uint32_t bytes_allocated{MAX_ACQ_IMAGE_SIZE};
-
-    m_frameNumber = m_callbackCount % frameBufferCount;
 
     auto info = image_info_t{};
 
