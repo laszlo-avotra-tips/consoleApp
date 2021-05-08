@@ -304,7 +304,7 @@ void SignalModel::pushImageRenderingQueue(OctData *od)
 
     auto data = handleSimulationSettings(od);
     m_imageRenderingQueue.push(data);
-    LOG2(data->frameNumber, pushTimer.elapsed())
+//    LOG2(data->frameNumber, pushTimer.elapsed())
 }
 
 OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
@@ -318,9 +318,18 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
     if(!m_imageRenderingQueue.empty()){
         retVal = m_imageRenderingQueue.front();
         m_imageRenderingQueue.pop();
-        LOG2(retVal->frameNumber, qSize)
+//        LOG2(retVal->frameNumber, qSize)
     }
     return retVal;
+}
+
+int SignalModel::renderingQueueIndex() const
+{
+    int index = -1;
+    if(!m_imageRenderingQueue.empty()){
+        index = m_imageRenderingQueue.front()->index;
+    }
+    return index;
 }
 
 OctData* SignalModel::handleSimulationSettings(OctData * const od)

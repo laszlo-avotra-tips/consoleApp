@@ -458,7 +458,8 @@ void DAQ::getData(new_image_callback_data_t data)
 
     axsun->imageNumber = m_imageNumber;
 
-    axsun->timeStamp = imageFrameTimer.elapsed();;
+    axsun->timeStamp = imageFrameTimer.elapsed();
+    axsun->index = m_frameNumber;
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;

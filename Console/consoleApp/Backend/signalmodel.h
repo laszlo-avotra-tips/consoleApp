@@ -23,6 +23,7 @@ public:
 
     void pushImageRenderingQueue(OctData* od);
     OctData *getTheFramePointerFromTheImageRenderingQueue();
+    int renderingQueueIndex() const;
 
     const cl_uint* getInputLength() const;
 
@@ -30,7 +31,7 @@ public:
 
     void storeAdvancedViewFftData(char* data);
 
-     cl_uint linesPerRevolution() const;
+    cl_uint linesPerRevolution() const;
     void setLinesPerRevolution(const cl_uint &linesPerRevolution);
 
     const cl_uint* dcNoiseLevel() const;

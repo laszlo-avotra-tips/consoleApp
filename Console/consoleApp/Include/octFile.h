@@ -49,6 +49,7 @@ public:
         unsigned long  imageNumberGoodLast{0};
 
         unsigned long  timeStamp{0};
+        int index{0};
         uint8_t *acqData{nullptr};
         uint8_t *dispData{nullptr};        // used for display
         size_t bufferLength{0};
