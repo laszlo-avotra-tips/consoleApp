@@ -93,6 +93,7 @@ private slots:
 
 public slots:
     void updateImage();
+    void updateImage2();
 
 private:
     void showEvent(QShowEvent* se) override;
