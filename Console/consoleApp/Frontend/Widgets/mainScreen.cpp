@@ -639,7 +639,7 @@ void MainScreen::openDeviceSelectDialog()
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
 //        m_daqTimer.setSingleShot(true);
         m_daqTimer.start(1);
-        m_displayThread->start();
+//        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
         LOG1( "Cancelled")
