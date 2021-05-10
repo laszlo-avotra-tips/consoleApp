@@ -90,9 +90,9 @@ MainScreen::MainScreen(QWidget *parent)
        m_scanWorker = new ScanConversion();
    }
 
-   if(!m_displayThread){
-       m_displayThread = new DisplayThread(this);
-   }
+//   if(!m_displayThread){
+//       m_displayThread = new DisplayThread(this);
+//   }
 
    SignalModel::instance()->setMainScreen(this);
 }
@@ -639,7 +639,7 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-//        m_daqTimer.start(1);
+        m_daqTimer.start(1);
 //        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {

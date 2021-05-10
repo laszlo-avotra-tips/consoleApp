@@ -318,16 +318,13 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData *od)
 {
-//    QElapsedTimer pushTimer;
-//    pushTimer.start();
+    QElapsedTimer pushTimer;
+    pushTimer.start();
 
-//    QMutexLocker guard(&m_imageRenderingMutex);
+    QMutexLocker guard(&m_imageRenderingMutex);
 
-//    auto data = handleSimulationSettings(od);
-//    m_imageRenderingQueue.push(data);
-    if(m_mainScreen){
-        m_mainScreen->presentData(od);
-    }
+    auto data = handleSimulationSettings(od);
+    m_imageRenderingQueue.push(data);
 }
 
 OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
