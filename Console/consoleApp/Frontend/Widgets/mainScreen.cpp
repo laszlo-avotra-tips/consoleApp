@@ -939,19 +939,7 @@ void MainScreen::updateImage()
 
     while(pointerToFrame && m_scene)
     {
-        auto& frame = *pointerToFrame;
-
-        computeStatistics(frame);
-
-        const QImage* diskImage = polarTransform(frame);
-
-        if(diskImage)
-        {
-            updateMainScreenLabels(frame);
-
-            renderCount += renderImage(diskImage);
-
-        }
+        presentData(pointerToFrame);
 //        auto timeMs = timer.elapsed();
 //        LOG3(pointerToFrame,renderCount, timeMs);
         QThread::yieldCurrentThread();
@@ -983,17 +971,6 @@ void MainScreen::updateImage2()
             auto deltaT = time.elapsed();
             LOG4(count, qIndex, frameNumber, deltaT);
 
-//            const auto& frame = *pointerToFrame;
-
-//            computeStatistics(frame);
-
-//            const QImage* diskImage = polarTransform(frame);
-
-//            if(diskImage)
-//            {
-//                updateMainScreenLabels(frame);
-//                renderImage(diskImage);
-//            }
             presentData(pointerToFrame);
         }
     }
