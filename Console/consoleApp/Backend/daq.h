@@ -71,6 +71,12 @@ private:
     unsigned long m_frameGoodCount{0};
     unsigned long m_frameBadCount{0};
     unsigned long m_imageNumber{0};
+
+    QElapsedTimer m_callbackTimer;
+    QElapsedTimer m_dataTimer;
+    int m_callbackTime{0};
+    int m_dataTime{0};
+
 };
 
 #endif // DAQ_H

@@ -91,7 +91,7 @@ MainScreen::MainScreen(QWidget *parent)
    }
 
    if(!m_displayThread){
-       m_displayThread = new DisplayThread();
+       m_displayThread = new DisplayThread(this);
    }
 }
 
@@ -378,7 +378,7 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
     }
 }
 
-QImage *MainScreen::polarTransform(const OCTFile::OctData_t &frameData)
+const QImage *MainScreen::polarTransform(const OCTFile::OctData_t &frameData)
 {
     QImage* image = m_scene->sectorImage();
     QImage* polarImage{nullptr};
@@ -637,7 +637,6 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-//        m_daqTimer.setSingleShot(true);
         m_daqTimer.start(1);
 //        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
@@ -940,25 +939,62 @@ void MainScreen::updateImage()
 
     while(pointerToFrame && m_scene)
     {
-        auto& frame = *pointerToFrame;
-
-        computeStatistics(frame);
-
-        QImage* diskImage = polarTransform(frame);
-
-        if(diskImage)
-        {
-            updateMainScreenLabels(frame);
-
-            renderCount += renderImage(diskImage);
-
-        }
-        auto timeMs = timer.elapsed();
+        presentData(pointerToFrame);
+//        auto timeMs = timer.elapsed();
 //        LOG3(pointerToFrame,renderCount, timeMs);
         QThread::yieldCurrentThread();
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
 }
+
+void MainScreen::updateImage2()
+{
+    static int index{-1};
+    static int count{0};
+
+    const auto sm = SignalModel::instance();
+    QElapsedTimer time;
+    time.start();
+
+    ++count;
+
+    const int qIndex = sm->renderingQueueIndex();
+
+    if(qIndex > 0 && index != qIndex){
+        index = qIndex;
+        const auto pointerToFrame = sm->getOctData(index);
+
+        if(pointerToFrame && m_scene)
+        {
+
+            auto frameNumber = pointerToFrame->frameNumber;
+            auto deltaT = time.elapsed();
+            LOG4(count, qIndex, frameNumber, deltaT);
+
+            presentData(pointerToFrame);
+        }
+    }
+}
+
+void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
+    if(pointerToFrame && m_scene)
+    {
+
+        const auto& frame = *pointerToFrame;
+
+        computeStatistics(frame);
+
+        const QImage* diskImage = polarTransform(frame);
+
+        if(diskImage)
+        {
+            updateMainScreenLabels(frame);
+            renderImage(diskImage);
+        }
+    }
+}
+
+
 
 void MainScreen::on_pushButton_clicked()
 {

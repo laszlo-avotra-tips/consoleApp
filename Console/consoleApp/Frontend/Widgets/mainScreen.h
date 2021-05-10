@@ -38,6 +38,7 @@ public:
     void setDeviceLabel();
     void showSpeed(bool isShown);
     static void setSpeedAndEnableDisableBidirectional(int speed);
+    void presentData( const OCTFile::OctData_t* frame);
 
 signals:
     void captureImage();
@@ -93,6 +94,7 @@ private slots:
 
 public slots:
     void updateImage();
+    void updateImage2();
 
 private:
     void showEvent(QShowEvent* se) override;
@@ -110,7 +112,7 @@ private:
     void handleEndCase();
     void updateMainScreenLabels(const OCTFile::OctData_t& frameData);
     void computeStatistics(const OCTFile::OctData_t& frameData) const;
-    QImage* polarTransform(const OCTFile::OctData_t& frameData);
+    const QImage *polarTransform(const OCTFile::OctData_t& frameData);
     bool renderImage(const QImage* disk) const;
 
 private:
