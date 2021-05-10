@@ -492,7 +492,4 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
         LOG2(m_callbackTime, m_dataTime);
     }
-
-
-    QThread::yieldCurrentThread();
 }

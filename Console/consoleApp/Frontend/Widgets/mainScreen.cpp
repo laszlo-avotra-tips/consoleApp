@@ -931,8 +931,6 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateImage()
 {
-    static int renderCount{0};
-
     QElapsedTimer timer;
     timer.start();
 
@@ -942,9 +940,6 @@ void MainScreen::updateImage()
     while(pointerToFrame && m_scene)
     {
         presentData(pointerToFrame);
-//        auto timeMs = timer.elapsed();
-//        LOG3(pointerToFrame,renderCount, timeMs);
-        QThread::yieldCurrentThread();
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
 }
@@ -963,20 +958,17 @@ void MainScreen::updateImage2()
     const int qIndex = sm->renderingQueueIndex();
 
     if(qIndex > 0 && index != qIndex){
+
         index = qIndex;
         const auto pointerToFrame = sm->getOctData(index);
-        LOG1(pointerToFrame)
+
         if(pointerToFrame && m_scene)
         {
-
-            auto frameNumber = pointerToFrame->frameNumber;
-            auto deltaT = time.elapsed();
-            LOG4(count, qIndex, frameNumber, deltaT);
-
             presentData(pointerToFrame);
+
+            LOG4(  pointerToFrame->frameCountGood, qIndex, index, time.elapsed());
         }
     }
-    LOG3(time.elapsed(), qIndex, index);
 }
 
 void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
