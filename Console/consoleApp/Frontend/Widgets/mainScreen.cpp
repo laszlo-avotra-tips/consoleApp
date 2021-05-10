@@ -65,7 +65,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
-    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
+    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage2 );
 
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
@@ -403,7 +403,7 @@ bool MainScreen::renderImage(const QImage *disk) const
 {
     bool success{false};
     QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-
+    LOG2(m_disableRendering, pixmap);
     if(pixmap && !m_disableRendering){
         const QPixmap& tmpPixmap = QPixmap::fromImage( *disk, Qt::MonoOnly);
         pixmap->setPixmap(tmpPixmap);
@@ -986,13 +986,13 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 
         computeStatistics(frame);
 
-//        const QImage* diskImage = polarTransform(frame);
+        const QImage* diskImage = polarTransform(frame);
 
-//        if(diskImage)
-//        {
-//            updateMainScreenLabels(frame);
-//            renderImage(diskImage);
-//        }
+        if(diskImage)
+        {
+            updateMainScreenLabels(frame);
+            renderImage(diskImage);
+        }
     }
 }
 
