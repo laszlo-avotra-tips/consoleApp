@@ -8,6 +8,8 @@
 #include <queue>
 #include <map>
 
+class MainScreen;
+
 using OctData = OCTFile::OctData_t;
 
 class SignalModel : public QObject
@@ -107,6 +109,9 @@ public: //functions
     int getFrameNumber() const;
     void setBufferNumber(int frameNumber);
 
+    MainScreen *getMainScreen() const;
+    void setMainScreen(MainScreen *mainScreen);
+
 private: //functions
     SignalModel();
     void allocateOctData();
@@ -159,6 +164,8 @@ private: //data
     int m_dvacedViewSourceFrameNumber{0};
     const QString m_simFnBase{"C:/Avinger_System/"};
     int m_frameNumber{-1};
+
+    MainScreen* m_mainScreen{nullptr};
 };
 
 #endif // SIGNALMODEL_H

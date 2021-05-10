@@ -93,6 +93,8 @@ MainScreen::MainScreen(QWidget *parent)
    if(!m_displayThread){
        m_displayThread = new DisplayThread(this);
    }
+
+   SignalModel::instance()->setMainScreen(this);
 }
 
 void MainScreen::hookupEndCaseDiagnostics() {
@@ -638,7 +640,7 @@ void MainScreen::openDeviceSelectDialog()
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
 //        m_daqTimer.start(1);
-        m_displayThread->start();
+//        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
         LOG1( "Cancelled")

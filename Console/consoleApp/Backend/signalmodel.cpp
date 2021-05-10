@@ -3,6 +3,7 @@
 #include "Utility/userSettings.h"
 #include <QFile>
 #include <QElapsedTimer>
+#include "mainScreen.h"
 
 
 SignalModel* SignalModel::m_instance{nullptr};
@@ -68,6 +69,16 @@ bool SignalModel::retrieveOct(OctData &od)
     }
 
     return success;
+}
+
+MainScreen *SignalModel::getMainScreen() const
+{
+    return m_mainScreen;
+}
+
+void SignalModel::setMainScreen(MainScreen *mainScreen)
+{
+    m_mainScreen = mainScreen;
 }
 
 int SignalModel::getFrameNumber() const
@@ -307,14 +318,16 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData *od)
 {
-    QElapsedTimer pushTimer;
-    pushTimer.start();
+//    QElapsedTimer pushTimer;
+//    pushTimer.start();
 
-    QMutexLocker guard(&m_imageRenderingMutex);
+//    QMutexLocker guard(&m_imageRenderingMutex);
 
-    auto data = handleSimulationSettings(od);
-    m_imageRenderingQueue.push(data);
-//    LOG2(data->frameNumber, pushTimer.elapsed())
+//    auto data = handleSimulationSettings(od);
+//    m_imageRenderingQueue.push(data);
+    if(m_mainScreen){
+        m_mainScreen->presentData(od);
+    }
 }
 
 OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
