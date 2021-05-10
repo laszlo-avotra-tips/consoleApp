@@ -75,7 +75,7 @@ int SignalModel::getFrameNumber() const
     return m_frameNumber;
 }
 
-void SignalModel::setFrameNumber(int frameNumber)
+void SignalModel::setBufferNumber(int frameNumber)
 {
     m_frameNumber = frameNumber;
 }
