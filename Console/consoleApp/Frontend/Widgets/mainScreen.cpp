@@ -933,11 +933,11 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateImage()
 {
-    static int count{0};
+//    static int count{0};
 
-    ++count;
+//    ++count;
 
-    if(count % 3 != 0) return;
+//    if(count % 3 != 0) return;
 
     QElapsedTimer timer;
     timer.start();
