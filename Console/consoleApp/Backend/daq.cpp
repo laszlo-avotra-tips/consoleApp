@@ -443,9 +443,9 @@ void DAQ::getData(new_image_callback_data_t data)
 
 //        sm->pushImageRenderingQueue(axsun);
 //        sm->setBufferNumber(m_bufferNumber);
-        if(m_mainScreen){
-            m_mainScreen->presentData(axsun);
-        }
+//        if(m_mainScreen){
+//            m_mainScreen->presentData(axsun);
+//        }
 
     } else {
         ++m_frameBadCount;
