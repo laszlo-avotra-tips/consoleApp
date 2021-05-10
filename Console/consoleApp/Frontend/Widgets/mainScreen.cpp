@@ -637,8 +637,8 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-//        m_daqTimer.start(1);
-        m_displayThread->start();
+        m_daqTimer.start(1);
+//        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
         LOG1( "Cancelled")
@@ -927,7 +927,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
     ui->graphicsView->viewport()->setProperty( "cursor", QVariant( cursor ) );
 }
 
-void MainScreen::updateImage2()
+void MainScreen::updateImage()
 {
     static int renderCount{0};
 
@@ -952,14 +952,14 @@ void MainScreen::updateImage2()
             renderCount += renderImage(diskImage);
 
         }
-        auto timeMs = timer.elapsed();
+//        auto timeMs = timer.elapsed();
 //        LOG3(pointerToFrame,renderCount, timeMs);
         QThread::yieldCurrentThread();
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
 }
 
-void MainScreen::updateImage()
+void MainScreen::updateImage2()
 {
     static int index{-1};
     static int count{0};
