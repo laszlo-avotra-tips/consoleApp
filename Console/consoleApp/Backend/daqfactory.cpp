@@ -2,6 +2,7 @@
 #include "deviceSettings.h"
 #include "logger.h"
 #include "daq.h"
+#include "mainScreen.h"
 
 daqfactory* daqfactory::factory(nullptr);
 
@@ -18,7 +19,7 @@ daqfactory *daqfactory::instance()
     return factory;
 }
 
-IDAQ *daqfactory::getdaq()
+IDAQ *daqfactory::getdaq(MainScreen* ms)
 {
     if( !idaq )
     {
@@ -28,9 +29,14 @@ IDAQ *daqfactory::getdaq()
 
         LOG1(deviceName)
 
-        idaq = new DAQ();
+        idaq = new DAQ(ms);
         setting.setIsDeviceSimulation(false);
     }
 
+    return idaq;
+}
+
+IDAQ *daqfactory::getdaq()
+{
     return idaq;
 }

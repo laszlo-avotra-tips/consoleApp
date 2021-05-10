@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <map>
 
+class MainScreen;
+
 using ForceTriggerTimeoutTable = std::map<int,int>;
 
 class DAQ: public IDAQ
@@ -18,7 +20,7 @@ class DAQ: public IDAQ
     Q_OBJECT
 
 public:
-    DAQ();
+    DAQ(MainScreen* ms);
     ~DAQ();
     void initDaq( void ) override;
     void setSubsamplingAndForcedTrigger(int speed) override;
@@ -76,6 +78,7 @@ private:
     QElapsedTimer m_dataTimer;
     int m_callbackTime{0};
     int m_dataTime{0};
+    MainScreen* m_mainScreen{nullptr};
 
 };
 

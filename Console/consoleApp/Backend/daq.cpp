@@ -7,6 +7,8 @@
 #include <algorithm>
 #include "signalmodel.h"
 #include "Utility/userSettings.h"
+#include "mainScreen.h"
+
 #include <exception>
 
 #ifdef WIN32
@@ -19,7 +21,7 @@ extern "C" {
 /*
  * Constructor
  */
-DAQ::DAQ()
+DAQ::DAQ(MainScreen *ms) : m_mainScreen(ms)
 {
     initLogLevelAndDecimation();
 }
@@ -439,8 +441,11 @@ void DAQ::getData(new_image_callback_data_t data)
         ++m_imageNumber;
         m_frameNumberGoodLast = axsun->frameNumber;
 
-        sm->pushImageRenderingQueue(axsun);
+//        sm->pushImageRenderingQueue(axsun);
 //        sm->setBufferNumber(m_bufferNumber);
+        if(m_mainScreen){
+            m_mainScreen->presentData(axsun);
+        }
 
     } else {
         ++m_frameBadCount;
@@ -465,6 +470,11 @@ void DAQ::getData(new_image_callback_data_t data)
 
     axsun->timeStamp = imageFrameTimer.elapsed();
     axsun->index = m_bufferNumber;
+
+    if(thisFrameIsGood && m_mainScreen){
+        m_mainScreen->presentData(axsun);
+    }
+
     m_dataTime = m_dataTimer.elapsed();
     m_dataTimer.restart();
 
@@ -476,5 +486,7 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
         LOG2(m_callbackTime, m_dataTime);
     }
+
+
     QThread::yieldCurrentThread();
 }
