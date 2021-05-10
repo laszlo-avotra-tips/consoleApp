@@ -403,11 +403,13 @@ bool MainScreen::renderImage(const QImage *disk) const
 {
     bool success{false};
     QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-    LOG2(m_disableRendering, pixmap);
     if(pixmap && !m_disableRendering){
+        QElapsedTimer time;
+        time.start();
         const QPixmap& tmpPixmap = QPixmap::fromImage( *disk, Qt::MonoOnly);
         pixmap->setPixmap(tmpPixmap);
         success = true;
+        LOG2(m_disableRendering, time.elapsed());
     }
     return success;
 }
@@ -947,28 +949,23 @@ void MainScreen::updateImage()
 void MainScreen::updateImage2()
 {
     static int index{-1};
-    static int count{0};
 
-    if(++count % 3 == 0){
-        const auto sm = SignalModel::instance();
-        QElapsedTimer time;
-        time.start();
+    const auto sm = SignalModel::instance();
+    QElapsedTimer time;
+    time.start();
 
-        ++count;
+    const int qIndex = sm->renderingQueueIndex();
 
-        const int qIndex = sm->renderingQueueIndex();
+    if(qIndex > 0 && index != qIndex){
 
-        if(qIndex > 0 && index != qIndex){
+        index = qIndex;
+        const auto pointerToFrame = sm->getOctData(index);
 
-            index = qIndex;
-            const auto pointerToFrame = sm->getOctData(index);
+        if(pointerToFrame && m_scene)
+        {
+            presentData(pointerToFrame);
 
-            if(pointerToFrame && m_scene)
-            {
-                presentData(pointerToFrame);
-
-                LOG4(  pointerToFrame->frameCountGood, qIndex, index, time.elapsed());
-            }
+            LOG4(  pointerToFrame->frameCountGood, qIndex, index, time.elapsed());
         }
     }
 }
