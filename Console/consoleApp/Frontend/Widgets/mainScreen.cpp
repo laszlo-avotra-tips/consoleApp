@@ -991,7 +991,7 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
         if(diskImage)
         {
             updateMainScreenLabels(frame);
-            renderImage(diskImage);
+//            renderImage(diskImage);
         }
     }
 }
