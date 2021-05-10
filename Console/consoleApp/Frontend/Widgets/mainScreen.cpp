@@ -986,13 +986,13 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 
         computeStatistics(frame);
 
-        const QImage* diskImage = polarTransform(frame);
+//        const QImage* diskImage = polarTransform(frame);
 
-        if(diskImage)
-        {
-            updateMainScreenLabels(frame);
+//        if(diskImage)
+//        {
+//            updateMainScreenLabels(frame);
 //            renderImage(diskImage);
-        }
+//        }
     }
 }
 
