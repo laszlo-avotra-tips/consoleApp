@@ -81,7 +81,7 @@ void DAQ::initDaq()
     AxErr retval;
 
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
-    m_frameNumber = frameBufferCount ? (frameBufferCount - 1) : 0;
+    m_bufferNumber = frameBufferCount ? (frameBufferCount - 1) : 0;
 
     imageFrameTimer.start(); // start a timer to provide frame information
 
@@ -392,8 +392,8 @@ void DAQ::getData(new_image_callback_data_t data)
     else
     {
 
-        m_frameNumber = m_callbackCount % frameBufferCount;
-        axsun = sm->getOctData(m_frameNumber);
+        m_bufferNumber = m_callbackCount % frameBufferCount;
+        axsun = sm->getOctData(m_bufferNumber);
 //        LOG1(axsun.acqData)
     }
 
@@ -439,8 +439,8 @@ void DAQ::getData(new_image_callback_data_t data)
         ++m_imageNumber;
         m_frameNumberGoodLast = axsun->frameNumber;
 
-        sm->pushImageRenderingQueue(axsun);
-        sm->setFrameNumber(m_frameNumber);
+//        sm->pushImageRenderingQueue(axsun);
+        sm->setFrameNumber(m_bufferNumber);
 
     } else {
         ++m_frameBadCount;
@@ -464,14 +464,14 @@ void DAQ::getData(new_image_callback_data_t data)
     axsun->imageNumber = m_imageNumber;
 
     axsun->timeStamp = imageFrameTimer.elapsed();
-    axsun->index = m_frameNumber;
+    axsun->index = m_bufferNumber;
     m_dataTime = m_dataTimer.elapsed();
     m_dataTimer.restart();
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
         percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
 //        LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
-        LOG4(m_frameNumber, axsun->acqData, msg, getDataFunctionTimer.elapsed());
+        LOG4(m_bufferNumber, axsun->acqData, msg, getDataFunctionTimer.elapsed());
         LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
         LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
         LOG2(m_callbackTime, m_dataTime);

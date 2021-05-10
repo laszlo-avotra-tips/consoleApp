@@ -28,7 +28,7 @@ void DisplayThread::run()
 
             if(p){
                 frameNumber = p->frameNumber;
-                m_ms->presentData(p);
+//                m_ms->presentData(p);
             }
             auto deltaT = time.elapsed();
             LOG4(m_count, qIndex, frameNumber, deltaT);

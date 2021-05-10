@@ -105,7 +105,7 @@ public: //functions
     void setCatheterRadius_um(const cl_float &catheterRadius_um);
 
     int getFrameNumber() const;
-    void setFrameNumber(int frameNumber);
+    void setBufferNumber(int frameNumber);
 
 private: //functions
     SignalModel();

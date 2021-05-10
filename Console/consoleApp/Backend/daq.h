@@ -52,7 +52,7 @@ private:
     };
     const int m_framesUntilForceTrigDefault{24};
 
-    int m_frameNumber;
+    int m_bufferNumber;
     AOChandle session{nullptr};
     QElapsedTimer imageFrameTimer;
     char axMessage[256];
