@@ -65,7 +65,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
-    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage2 );
+//    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage2 );
 
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
@@ -949,24 +949,26 @@ void MainScreen::updateImage2()
     static int index{-1};
     static int count{0};
 
-    const auto sm = SignalModel::instance();
-    QElapsedTimer time;
-    time.start();
+    if(++count % 3 == 0){
+        const auto sm = SignalModel::instance();
+        QElapsedTimer time;
+        time.start();
 
-    ++count;
+        ++count;
 
-    const int qIndex = sm->renderingQueueIndex();
+        const int qIndex = sm->renderingQueueIndex();
 
-    if(qIndex > 0 && index != qIndex){
+        if(qIndex > 0 && index != qIndex){
 
-        index = qIndex;
-        const auto pointerToFrame = sm->getOctData(index);
+            index = qIndex;
+            const auto pointerToFrame = sm->getOctData(index);
 
-        if(pointerToFrame && m_scene)
-        {
-            presentData(pointerToFrame);
+            if(pointerToFrame && m_scene)
+            {
+                presentData(pointerToFrame);
 
-            LOG4(  pointerToFrame->frameCountGood, qIndex, index, time.elapsed());
+                LOG4(  pointerToFrame->frameCountGood, qIndex, index, time.elapsed());
+            }
         }
     }
 }
