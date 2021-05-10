@@ -391,7 +391,7 @@ OCTFile::OctData_t* SignalModel::getOctData(int index)
     } else {
         octData = &(m_octData.begin()->second);
     }
-//    LOG2(index, octData->acqData)
+    LOG2(index, octData->acqData)
 
     return octData;
 }

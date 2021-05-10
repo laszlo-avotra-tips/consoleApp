@@ -950,6 +950,12 @@ void MainScreen::updateImage2()
 {
     static int index{-1};
 
+    static int count{0};
+
+    ++count;
+
+    if(count % 3 != 0) return;
+
     const auto sm = SignalModel::instance();
     QElapsedTimer time;
     time.start();
