@@ -948,7 +948,6 @@ void MainScreen::updateImage()
     if(pointerToFrame && m_scene)
     {
         presentData(pointerToFrame);
-        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
         LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
     }
 }
