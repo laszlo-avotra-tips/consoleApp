@@ -106,8 +106,8 @@ public: //functions
     const cl_float* getCatheterRadius_um() const;
     void setCatheterRadius_um(const cl_float &catheterRadius_um);
 
-    int getFrameNumber() const;
-    void setBufferNumber(int frameNumber);
+    int getBufferNumber() const;
+    void setBufferNumber(int bufferNumber);
 
     MainScreen *getMainScreen() const;
     void setMainScreen(MainScreen *mainScreen);
@@ -163,7 +163,7 @@ private: //data
 
     int m_dvacedViewSourceFrameNumber{0};
     const QString m_simFnBase{"C:/Avinger_System/"};
-    int m_frameNumber{-1};
+    int m_bufferNumber{-1};
 
     MainScreen* m_mainScreen{nullptr};
 };

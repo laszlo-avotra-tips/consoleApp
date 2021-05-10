@@ -81,14 +81,14 @@ void SignalModel::setMainScreen(MainScreen *mainScreen)
     m_mainScreen = mainScreen;
 }
 
-int SignalModel::getFrameNumber() const
+int SignalModel::getBufferNumber() const
 {
-    return m_frameNumber;
+    return m_bufferNumber;
 }
 
-void SignalModel::setBufferNumber(int frameNumber)
+void SignalModel::setBufferNumber(int bufferNumber)
 {
-    m_frameNumber = frameNumber;
+    m_bufferNumber = bufferNumber;
 }
 
 const cl_float* SignalModel::getCatheterRadius_um() const
@@ -345,7 +345,7 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 
 int SignalModel::renderingQueueIndex() const
 {
-    return getFrameNumber();
+    return getBufferNumber();
 }
 
 OctData* SignalModel::handleSimulationSettings(OctData * const od)
