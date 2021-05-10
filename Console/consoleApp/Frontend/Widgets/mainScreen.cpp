@@ -965,7 +965,7 @@ void MainScreen::updateImage2()
     if(qIndex > 0 && index != qIndex){
         index = qIndex;
         const auto pointerToFrame = sm->getOctData(index);
-
+        LOG1(pointerToFrame)
         if(pointerToFrame && m_scene)
         {
 
@@ -976,6 +976,7 @@ void MainScreen::updateImage2()
             presentData(pointerToFrame);
         }
     }
+    LOG3(time.elapsed(), qIndex, index);
 }
 
 void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
