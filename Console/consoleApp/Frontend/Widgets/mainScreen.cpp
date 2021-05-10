@@ -949,9 +949,8 @@ void MainScreen::updateImage()
     {
         presentData(pointerToFrame);
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+        LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
     }
-    LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
-
 }
 
 void MainScreen::updateImage2()
