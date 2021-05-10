@@ -945,11 +945,13 @@ void MainScreen::updateImage()
     OctData* pointerToFrame{nullptr};
     pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
 
-    while(pointerToFrame && m_scene)
+    if(pointerToFrame && m_scene)
     {
         presentData(pointerToFrame);
         pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
     }
+    LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
+
 }
 
 void MainScreen::updateImage2()
