@@ -12,8 +12,9 @@ DisplayThread::DisplayThread(MainScreen *ms) : m_ms(ms)
 void DisplayThread::run()
 {
     while(true){
-        msleep(10);
-        m_ms->updateImage();
+        if(m_ms) {
+            m_ms->updateImage();
+        }
     }
 }
 

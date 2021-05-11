@@ -638,8 +638,9 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
-        m_daqTimer.setTimerType(Qt::PreciseTimer);
+//        m_daqTimer.setTimerType(Qt::PreciseTimer);
 //        m_daqTimer.start(1);
+        m_displayThread->setPriority(QThread::IdlePriority);
         m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
