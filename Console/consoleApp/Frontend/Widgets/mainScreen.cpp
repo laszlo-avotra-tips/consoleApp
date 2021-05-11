@@ -944,8 +944,8 @@ void MainScreen::updateImage()
 
     if(pointerToFrame && m_scene)
     {
-        presentData(pointerToFrame);
         LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
+        presentData(pointerToFrame);
     }
 }
 
@@ -991,7 +991,7 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 
         if(diskImage)
         {
-            updateMainScreenLabels(frame);
+//            updateMainScreenLabels(frame);
             renderImage(diskImage);
         }
     }
