@@ -935,19 +935,20 @@ void MainScreen::updateImage()
 
     ++count;
 
-//    if(count % 3 != 0) return;
-
-    QElapsedTimer timer;
-    timer.start();
+    LOG1(count);
+/*
+//    QElapsedTimer timer;
+//    timer.start();
 
     OctData* pointerToFrame{nullptr};
     pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
 
     if(pointerToFrame && m_scene)
     {
-        presentData(pointerToFrame);
+//        presentData(pointerToFrame);
         LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
     }
+*/
 }
 
 void MainScreen::updateImage2()
