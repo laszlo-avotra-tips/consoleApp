@@ -65,7 +65,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
-    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage);
+    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage, Qt::BlockingQueuedConnection);
 
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
