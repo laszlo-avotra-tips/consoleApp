@@ -694,6 +694,7 @@ void MainScreen::openDisplayOptionsDialog()
 
 void MainScreen::updateTime()
 {
+    QCoreApplication::processEvents();
     int sledRunTime{getSledRuntime()};
 
     if(sledRunTime){
@@ -931,6 +932,8 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateImage()
 {
+    QCoreApplication::processEvents();
+
     static int count{0};
 
     ++count;

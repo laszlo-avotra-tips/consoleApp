@@ -3,6 +3,8 @@
 #include "Utility/userSettings.h"
 #include <QFile>
 #include <QElapsedTimer>
+#include <QCoreApplication>
+
 #include "mainScreen.h"
 
 
@@ -318,6 +320,8 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData *od)
 {
+    QCoreApplication::processEvents();
+
     QElapsedTimer pushTimer;
     pushTimer.start();
 
