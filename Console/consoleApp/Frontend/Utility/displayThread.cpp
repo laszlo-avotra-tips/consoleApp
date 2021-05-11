@@ -15,7 +15,8 @@ void DisplayThread::run()
     while(true){
         sm->waitOnData();
         LOG1(sm);
-        emit update();
+//        emit update();
+        if(m_ms) m_ms->updateImage();
     }
 }
 
