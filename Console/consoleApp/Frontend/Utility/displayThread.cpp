@@ -14,7 +14,7 @@ void DisplayThread::run()
     while(true){
         if(m_ms) {
 //            m_ms->updateImage();
-            msleep(1);
+            msleep(90);
             emit update();
         }
     }
