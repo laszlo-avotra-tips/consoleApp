@@ -13,7 +13,8 @@ void DisplayThread::run()
 {
     while(true){
         if(m_ms) {
-            m_ms->updateImage();
+//            m_ms->updateImage();
+            emit update();
         }
     }
 }

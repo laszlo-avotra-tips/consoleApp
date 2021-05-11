@@ -61,11 +61,15 @@ MainScreen::MainScreen(QWidget *parent)
     m_graphicsView->hide();
     ui->frameSpeed->hide();
 
+    if(!m_displayThread){
+        m_displayThread = new DisplayThread(this);
+    }
     connect(ui->pushButtonLow, &QPushButton::clicked, this, &MainScreen::udpateToSpeed1);
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
     connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage);
+    connect(m_displayThread, &DisplayThread::update, this, &MainScreen::updateImage);
 
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
@@ -90,9 +94,6 @@ MainScreen::MainScreen(QWidget *parent)
        m_scanWorker = new ScanConversion();
    }
 
-   if(!m_displayThread){
-       m_displayThread = new DisplayThread(this);
-   }
 
    SignalModel::instance()->setMainScreen(this);
 }
