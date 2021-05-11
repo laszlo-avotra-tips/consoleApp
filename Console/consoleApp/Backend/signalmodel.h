@@ -7,6 +7,8 @@
 #include "octFile.h"
 #include <queue>
 #include <map>
+#include <QMutex>
+#include <QWaitCondition>
 
 class MainScreen;
 
@@ -112,6 +114,10 @@ public: //functions
     MainScreen *getMainScreen() const;
     void setMainScreen(MainScreen *mainScreen);
 
+    QWaitCondition& getBufferNotEmpty();
+
+    void waitOnData();
+
 private: //functions
     SignalModel();
     void allocateOctData();
@@ -166,6 +172,9 @@ private: //data
     int m_bufferNumber{-1};
 
     MainScreen* m_mainScreen{nullptr};
+    QWaitCondition m_bufferNotEmpty;
+    QMutex m_mutex;
+
 };
 
 #endif // SIGNALMODEL_H

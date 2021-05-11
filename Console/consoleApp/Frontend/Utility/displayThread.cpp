@@ -11,13 +11,11 @@ DisplayThread::DisplayThread(MainScreen *ms) : m_ms(ms)
 
 void DisplayThread::run()
 {
+    auto sm = SignalModel::instance();
     while(true){
-        if(m_ms) {
-//            m_ms->updateImage();
-            msleep(1);
-            emit update();
-        }
-        msleep(50);
+        sm->waitOnData();
+        LOG1(sm);
+        emit update();
     }
 }
 

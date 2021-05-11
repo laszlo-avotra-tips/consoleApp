@@ -71,6 +71,18 @@ bool SignalModel::retrieveOct(OctData &od)
     return success;
 }
 
+QWaitCondition &SignalModel::getBufferNotEmpty()
+{
+    return m_bufferNotEmpty;
+}
+
+void SignalModel::waitOnData()
+{
+    m_mutex.lock();
+    m_bufferNotEmpty.wait(&m_mutex);
+    m_mutex.unlock();
+}
+
 MainScreen *SignalModel::getMainScreen() const
 {
     return m_mainScreen;
@@ -321,10 +333,15 @@ void SignalModel::pushImageRenderingQueue(OctData *od)
     QElapsedTimer pushTimer;
     pushTimer.start();
 
-    QMutexLocker guard(&m_imageRenderingMutex);
+    {
+        QMutexLocker guard(&m_imageRenderingMutex);
 
-    auto data = handleSimulationSettings(od);
-    m_imageRenderingQueue.push(data);
+        auto data = handleSimulationSettings(od);
+        m_imageRenderingQueue.push(data);
+    }
+    m_mutex.lock();
+    m_bufferNotEmpty.wakeOne();
+    m_mutex.unlock();
 }
 
 OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
@@ -338,7 +355,7 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
     if(!m_imageRenderingQueue.empty()){
         retVal = m_imageRenderingQueue.front();
         m_imageRenderingQueue.pop();
-//        LOG2(retVal->frameNumber, qSize)
+        LOG2(retVal->frameNumber, qSize)
     }
     return retVal;
 }
