@@ -37,7 +37,7 @@ public:
 
     void setDeviceLabel();
     void showSpeed(bool isShown);
-    static void setSpeedAndEnableDisableBidirectional(int speed);
+    void setSpeedAndEnableDisableBidirectional(int speed);
     void presentData( const OCTFile::OctData_t* frame);
 
 signals:

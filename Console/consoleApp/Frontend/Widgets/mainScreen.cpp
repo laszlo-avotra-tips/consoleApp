@@ -116,7 +116,6 @@ void MainScreen::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
-        daqfactory::instance()->getdaq();
         DisplayManager::instance()->setScene(m_scene);
     }
 }
@@ -189,7 +188,7 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
     if(speed >= 600){
         LOG1(speed);
 
-        auto idaq = daqfactory::instance()->getdaq();
+        auto* idaq = daqfactory::instance()->getdaq(this);
         if(idaq){
             idaq->setSubsamplingAndForcedTrigger(speed);
         }
@@ -279,8 +278,6 @@ void MainScreen::handleEndCase()
         LOG1(m_recordingIsOn)
         ui->pushButtonRecord->click();
     }
-
-    auto idaq = daqfactory::instance()->getdaq();
 
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
@@ -798,7 +795,7 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     m_sledIsInRunningState = (runningStateVal == 1) || (runningStateVal == 3);
 
     auto interfaceSupport = InterfaceSupport::getInstance();
-    auto idaq = daqfactory::instance()->getdaq();
+    auto idaq = daqfactory::instance()->getdaq(this);
     if(m_sledIsInRunningState){
         auto laserOnSuccess = idaq->turnLaserOn();
         LOG2(m_sledIsInRunningState,laserOnSuccess)
