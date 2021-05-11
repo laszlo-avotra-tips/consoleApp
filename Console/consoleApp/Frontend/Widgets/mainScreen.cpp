@@ -939,19 +939,19 @@ void MainScreen::updateImage()
     ++count;
 
     LOG1(count);
-/*
-//    QElapsedTimer timer;
-//    timer.start();
+
+    QElapsedTimer timer;
+    timer.start();
 
     OctData* pointerToFrame{nullptr};
     pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
 
     if(pointerToFrame && m_scene)
     {
-//        presentData(pointerToFrame);
+        presentData(pointerToFrame);
         LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
     }
-*/
+
 }
 
 void MainScreen::updateImage2()
@@ -994,11 +994,13 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 
         const QImage* diskImage = polarTransform(frame);
 
+        QCoreApplication::processEvents();
         if(diskImage)
         {
             updateMainScreenLabels(frame);
             renderImage(diskImage);
         }
+        QCoreApplication::processEvents();
     }
 }
 
