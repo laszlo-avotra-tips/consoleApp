@@ -11,6 +11,7 @@ class DisplayThread : public QThread
 public:
     DisplayThread(MainScreen* ms);
     void run() override;
+    void run2();
 
 private:
     int m_count{0};

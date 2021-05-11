@@ -90,9 +90,9 @@ MainScreen::MainScreen(QWidget *parent)
        m_scanWorker = new ScanConversion();
    }
 
-//   if(!m_displayThread){
-//       m_displayThread = new DisplayThread(this);
-//   }
+   if(!m_displayThread){
+       m_displayThread = new DisplayThread(this);
+   }
 
    SignalModel::instance()->setMainScreen(this);
 }
@@ -639,8 +639,8 @@ void MainScreen::openDeviceSelectDialog()
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
         m_daqTimer.setTimerType(Qt::PreciseTimer);
-        m_daqTimer.start(1);
-//        m_displayThread->start();
+//        m_daqTimer.start(1);
+        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
     } else {
         LOG1( "Cancelled")

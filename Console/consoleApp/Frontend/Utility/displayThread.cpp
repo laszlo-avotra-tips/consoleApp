@@ -11,12 +11,19 @@ DisplayThread::DisplayThread(MainScreen *ms) : m_ms(ms)
 
 void DisplayThread::run()
 {
+    while(true){
+        msleep(10);
+        m_ms->updateImage();
+    }
+}
+
+void DisplayThread::run2()
+{
     auto sm = SignalModel::instance();
     int index{-1};
     QElapsedTimer time;
     time.start();
     while(true){
-        yieldCurrentThread();
         msleep(1);
         ++m_count;
         yieldCurrentThread();
