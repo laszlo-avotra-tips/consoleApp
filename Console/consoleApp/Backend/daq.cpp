@@ -443,12 +443,6 @@ void DAQ::getData(new_image_callback_data_t data)
         ++m_imageNumber;
         m_frameNumberGoodLast = axsun->frameNumber;
 
-//        sm->pushImageRenderingQueue(axsun);
-//        sm->setBufferNumber(m_bufferNumber);
-//        if(m_mainScreen){
-//            m_mainScreen->presentData(axsun);
-//        }
-
     } else {
         ++m_frameBadCount;
 
@@ -474,13 +468,8 @@ void DAQ::getData(new_image_callback_data_t data)
     axsun->index = m_bufferNumber;
 
     if(thisFrameIsGood && m_mainScreen){
-//        sm->setBufferNumber(m_bufferNumber);
-        sm->pushImageRenderingQueue(axsun);
-    //m_mainScreen->presentData(axsun);
-//        m_mainScreen->updateImage();
-    }
-
-    if(thisFrameIsGood){
+        sm->setBufferNumber(m_bufferNumber);
+//        sm->pushImageRenderingQueue(axsun);
     }
 
     m_dataTime = m_dataTimer.elapsed();
