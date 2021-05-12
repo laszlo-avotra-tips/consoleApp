@@ -935,6 +935,7 @@ void MainScreen::updateImage()
     //QCoreApplication::processEvents();
 
     static int count{0};
+    static unsigned long frameNumberProcessed{0};
 
     ++count;
 
@@ -949,10 +950,12 @@ void MainScreen::updateImage()
     pointerToFrame = SignalModel::instance()->getOctData(bufferNumber);
     if(pointerToFrame && m_scene)
     {
-        presentData(pointerToFrame);
-        LOG4(  count, bufferNumber,  pointerToFrame->frameCountGood, timer.elapsed());
+        if(pointerToFrame->frameNumber != frameNumberProcessed){
+            presentData(pointerToFrame);
+            LOG4(  count, bufferNumber,  pointerToFrame->frameCountGood, timer.elapsed());
+            frameNumberProcessed = pointerToFrame->frameNumber;
+        }
     }
-
 }
 
 void MainScreen::updateImage2()
