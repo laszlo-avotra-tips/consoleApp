@@ -320,7 +320,7 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData *od)
 {
-    QCoreApplication::processEvents();
+    //QCoreApplication::processEvents();
 
     QElapsedTimer pushTimer;
     pushTimer.start();

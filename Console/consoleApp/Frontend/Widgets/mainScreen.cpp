@@ -694,7 +694,7 @@ void MainScreen::openDisplayOptionsDialog()
 
 void MainScreen::updateTime()
 {
-    QCoreApplication::processEvents();
+    //QCoreApplication::processEvents();
     int sledRunTime{getSledRuntime()};
 
     if(sledRunTime){
@@ -932,7 +932,7 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateImage()
 {
-    QCoreApplication::processEvents();
+    //QCoreApplication::processEvents();
 
     static int count{0};
 
@@ -994,13 +994,13 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 
         const QImage* diskImage = polarTransform(frame);
 
-        QCoreApplication::processEvents();
+        //QCoreApplication::processEvents();
         if(diskImage)
         {
             updateMainScreenLabels(frame);
             renderImage(diskImage);
         }
-        QCoreApplication::processEvents();
+        //QCoreApplication::processEvents();
     }
 }
 

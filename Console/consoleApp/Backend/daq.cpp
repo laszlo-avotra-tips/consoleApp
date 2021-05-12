@@ -354,7 +354,7 @@ void DAQ::getData(new_image_callback_data_t data)
     static uint32_t missedImageCountAcc = 0;
     static float percent{0.0f};
 
-    QCoreApplication::processEvents();
+    //QCoreApplication::processEvents();
 
     ++m_callbackCount;
     m_callbackTime = m_callbackTimer.elapsed();
