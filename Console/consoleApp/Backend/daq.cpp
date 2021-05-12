@@ -470,7 +470,7 @@ void DAQ::getData(new_image_callback_data_t data)
     if(thisFrameIsGood && m_mainScreen){
         sm->setBufferNumber(m_bufferNumber);
 //        sm->pushImageRenderingQueue(axsun);
-        m_mainScreen->updateImage();
+//        m_mainScreen->updateImage();
     }
 
     m_dataTime = m_dataTimer.elapsed();
