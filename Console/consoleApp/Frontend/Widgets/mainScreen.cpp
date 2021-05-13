@@ -319,6 +319,9 @@ void MainScreen::handleEndCase()
 void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
 {
     QString activePassiveValue{"ACTIVE"};
+
+    LOG2(m_sledRunningState,m_sledRunningStateVal)
+
     if(m_sledRunningState != m_sledRunningStateVal){
         m_sledRunningState = m_sledRunningStateVal;
         if(m_sledRunningState == 3)
