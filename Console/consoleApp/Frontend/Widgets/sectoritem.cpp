@@ -577,15 +577,15 @@ void overlayItem::render( void )
     static int overlayCount{0};
     LOG1(overlayCount) overlayCount++;
 
-//    if(dev->isBiDirectional()){
-//        auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
-//        auto interfaceSupport = InterfaceSupport::getInstance();
-//        int runningState{interfaceSupport->getRunningState()};
+    if(dev->isBiDirectional()){
+        auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
+        auto interfaceSupport = InterfaceSupport::getInstance();
+        int runningState{1}; //{interfaceSupport->getRunningState()};
 
-//        if(runningState != 0){
-//            rotationIndicatorOverlayItem->show();
-//        }
-//    }
+        if(runningState != 0){
+            rotationIndicatorOverlayItem->show();
+        }
+    }
 
     depthSetting &depth = depthSetting::Instance();
     int numReticles = depth.getNumReticles();
