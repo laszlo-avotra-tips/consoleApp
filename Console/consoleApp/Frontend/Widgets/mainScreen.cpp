@@ -53,7 +53,7 @@ MainScreen::MainScreen(QWidget *parent)
     ui->pushButtonDownArrow->hide();
     ui->pushButtonCondensUp->show();
 
-    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
+//    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
     connect(&m_updateTimeTimer, &QTimer::timeout, this, &MainScreen::updateTime);
 
     m_opacScreen = new OpaqueScreen(this);
@@ -453,7 +453,7 @@ void MainScreen::setDeviceLabel()
     m_opacScreen->hide();
     m_graphicsView->show();
     m_runTime.start();
-    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
+//    m_updateTimeTimer.start(m_updateTimeTimeoutMs);
     updateTime();
 }
 
