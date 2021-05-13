@@ -215,6 +215,7 @@ int MainScreen::getSledRuntime()
 {
     QElapsedTimer time;
     time.start();
+    LOG1(time.elapsed());
     updateSledRunningState();
 
     if(m_runTime.isValid()){
