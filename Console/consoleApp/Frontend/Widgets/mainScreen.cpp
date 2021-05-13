@@ -323,6 +323,7 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
     LOG2(m_sledRunningState,m_sledRunningStateVal)
 
     if(m_sledRunningState != m_sledRunningStateVal){
+        LOG2(m_sledRunningState,m_sledRunningStateVal)
         m_sledRunningState = m_sledRunningStateVal;
         if(m_sledRunningState == 3)
         {
