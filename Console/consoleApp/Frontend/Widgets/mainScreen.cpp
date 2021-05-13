@@ -380,7 +380,7 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
 
     if(m_imageDecimation && (count % m_imageDecimation == 0)){
         float percent = 100.0f * missedImageCountAcc / frame.imageNumber;
-        LOG4(frame.imageNumber, lastGoodImage, missedImageCountAcc, percent);
+//        LOG4(frame.imageNumber, lastGoodImage, missedImageCountAcc, percent);
         LOG4(render.callbackCount, render.imageNumber, render.imageCountProcessed, render.imageCountSkipped);
         LOG2(render.imageNumberGoodLast, percent);
     }
@@ -958,7 +958,7 @@ void MainScreen::updateImage()
     if(axsun && m_scene)
     {
         presentData(axsun);
-        LOG3(  signalCount, axsun->frameCountGood, timer.elapsed());
+//        LOG3(  signalCount, axsun->frameCountGood, timer.elapsed());
     }
 
 }
