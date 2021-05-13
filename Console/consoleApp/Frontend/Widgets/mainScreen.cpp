@@ -943,22 +943,22 @@ void MainScreen::updateImage()
 {
     //QCoreApplication::processEvents();
 
-    static int count{0};
+    static int signalCount{0};
 
-    ++count;
+    ++signalCount;
 
-    LOG1(count);
+    LOG1(signalCount);
 
     QElapsedTimer timer;
     timer.start();
 
-    OctData* pointerToFrame{nullptr};
-    pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+    OctData* axsun{nullptr};
+    axsun = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
 
-    if(pointerToFrame && m_scene)
+    if(axsun && m_scene)
     {
-        presentData(pointerToFrame);
-        LOG3(  count, pointerToFrame->frameCountGood, timer.elapsed());
+        presentData(axsun);
+        LOG3(  signalCount, axsun->frameCountGood, timer.elapsed());
     }
 
 }
