@@ -1006,7 +1006,7 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
         //QCoreApplication::processEvents();
         if(diskImage)
         {
-            updateMainScreenLabels(frame);
+//            updateMainScreenLabels(frame);
             renderImage(diskImage);
         }
         //QCoreApplication::processEvents();
