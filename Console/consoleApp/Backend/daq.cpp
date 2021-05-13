@@ -352,7 +352,7 @@ void DAQ::getData(new_image_callback_data_t data)
     QTextStream qs(&msg);
     static uint32_t m_frameNumberGoodLast = 0;
     static uint32_t missedImageCountAcc = 0;
-    static float percent{0.0f};
+    float axsunErrorPercent{0.0f};
 
     //QCoreApplication::processEvents();
 
@@ -487,11 +487,11 @@ void DAQ::getData(new_image_callback_data_t data)
     m_dataTimer.restart();
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
+        axsunErrorPercent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
 //        LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
         LOG4(m_bufferNumber, axsun->acqData, msg, getDataFunctionTimer.elapsed());
         LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
-        LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
+        LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, axsunErrorPercent);
         LOG2(m_callbackTime, m_dataTime);
     }
 }
