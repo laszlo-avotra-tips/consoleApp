@@ -492,6 +492,6 @@ void DAQ::getData(new_image_callback_data_t data)
         LOG4(m_bufferNumber, axsun->acqData, msg, getDataFunctionTimer.elapsed());
         LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
         LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, axsunErrorPercent);
-        LOG2(m_callbackTime, m_dataTime);
+//        LOG2(m_callbackTime, m_dataTime);
     }
 }
