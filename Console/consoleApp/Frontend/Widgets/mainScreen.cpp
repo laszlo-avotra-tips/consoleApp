@@ -382,7 +382,7 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
         float percent = 100.0f * missedImageCountAcc / frame.imageNumber;
         LOG4(frame.imageNumber, lastGoodImage, missedImageCountAcc, percent);
         LOG4(render.callbackCount, render.imageNumber, render.imageCountProcessed, render.imageCountSkipped);
-        LOG2(render.frameNumberGoodLast, percent);
+        LOG2(render.imageNumberGoodLast, percent);
     }
 }
 
