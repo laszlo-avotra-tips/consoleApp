@@ -576,16 +576,16 @@ void overlayItem::render( void )
     auto* dev = ds.current();
     static int overlayCount{0};
     LOG1(overlayCount) overlayCount++;
-return;
-    if(dev->isBiDirectional()){
-        auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
-        auto interfaceSupport = InterfaceSupport::getInstance();
-        int runningState{interfaceSupport->getRunningState()};
 
-        if(runningState != 0){
-            rotationIndicatorOverlayItem->show();
-        }
-    }
+//    if(dev->isBiDirectional()){
+//        auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
+//        auto interfaceSupport = InterfaceSupport::getInstance();
+//        int runningState{interfaceSupport->getRunningState()};
+
+//        if(runningState != 0){
+//            rotationIndicatorOverlayItem->show();
+//        }
+//    }
 
     depthSetting &depth = depthSetting::Instance();
     int numReticles = depth.getNumReticles();
