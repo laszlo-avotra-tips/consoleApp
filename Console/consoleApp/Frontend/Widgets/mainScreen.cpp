@@ -330,9 +330,9 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
            activePassiveValue = "ACTIVE";
         }
 
-        if(m_scene){
-            m_scene->paintOverlay();
-        }
+//        if(m_scene){
+//            m_scene->paintOverlay();
+//        }
     }
     const QDateTime currentTime = QDateTime::currentDateTime();
     const QString timeLabel{currentTime.toString("hh:mm:ss")};
@@ -1010,7 +1010,7 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
         //QCoreApplication::processEvents();
         if(diskImage)
         {
-//            updateMainScreenLabels(frame);
+            updateMainScreenLabels(frame);
             renderImage(diskImage);
         }
         //QCoreApplication::processEvents();
