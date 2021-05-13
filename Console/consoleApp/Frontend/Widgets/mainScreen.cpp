@@ -824,7 +824,49 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     auto&ds = deviceSettings::Instance();
     auto device = ds.current();
 
-    QString labelLiveColor;
+
+    // if m_sledIsInRunningState set labelLiveColor
+    QString labelLiveColor("color: grey;");
+    if(m_sledIsInRunningState){
+        labelLiveColor = QString("color: green;");
+    }
+    ui->labelLive->setStyleSheet(labelLiveColor);
+    //Physicians monitor
+    DisplayManager::instance()->setLabelLiveColor(labelLiveColor);
+
+    if(device && m_scene){
+        const bool isBd = device->isBiDirectional();
+        // if isBd set active passive else none
+        if(isBd){
+            switch(runningStateVal){
+            case 1:
+                m_scene->setActive();
+                break;
+            case 3:
+                m_scene->setPassive();
+                break;
+            default:
+                break;
+            }
+        } else {
+            m_scene->setIdle();
+        }
+
+        // if settings:numberOfSpeed > 1 setSpeedVisible true for the Physicians monitor
+        if(device->getNumberOfSpeeds() > 1){
+            DisplayManager::instance()->setSpeedVisible(true);
+        }else {
+            DisplayManager::instance()->setSpeedVisible(false);
+        }
+    }
+
+    if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
+        on_pushButtonMeasure_clicked(false);
+    }
+
+    ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
+
+/*
     if(device && m_scene){
         const bool isBd = device->isBiDirectional();
 
@@ -844,14 +886,19 @@ void MainScreen::handleSledRunningState(int runningStateVal)
             labelLiveColor = QString("color: grey;");
             m_scene->setIdle();
         }
+
         ui->labelLive->setStyleSheet(labelLiveColor);
+
+        //Physicians monitor
         DisplayManager::instance()->setLabelLiveColor(labelLiveColor);
+
         if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
             on_pushButtonMeasure_clicked(false);
         }
 
         ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
     }
+ */
 }
 
 void MainScreen::on_pushButtonRecord_clicked(bool checked)
