@@ -335,7 +335,7 @@ void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
         }
 
         if(m_scene){
-            m_scene->paintOverlay();
+//            m_scene->paintOverlay();
         }
     }
     const QDateTime currentTime = QDateTime::currentDateTime();
