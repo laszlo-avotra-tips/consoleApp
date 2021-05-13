@@ -575,8 +575,8 @@ void overlayItem::render( void )
     auto& ds = deviceSettings::Instance();
     auto* dev = ds.current();
     static int overlayCount{0};
-//    LOG1(overlayCount) overlayCount++;
-
+    LOG1(overlayCount) overlayCount++;
+return;
     if(dev->isBiDirectional()){
         auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
         auto interfaceSupport = InterfaceSupport::getInstance();
