@@ -213,6 +213,8 @@ void MainScreen::highlightSpeedButton(QPushButton *wid)
 
 int MainScreen::getSledRuntime()
 {
+    QElapsedTimer time;
+    time.start();
     updateSledRunningState();
 
     if(m_runTime.isValid()){
@@ -225,6 +227,7 @@ int MainScreen::getSledRuntime()
         }
 //        LOG3(m_sledRunningStateVal,delta, m_sledRuntime);
     }
+    LOG1(time.elapsed());
     return m_sledRuntime;
 }
 
