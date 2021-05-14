@@ -7,6 +7,8 @@
 #include <algorithm>
 #include "signalmodel.h"
 #include "Utility/userSettings.h"
+#include "mainScreen.h"
+
 #include <exception>
 
 #ifdef WIN32
@@ -19,7 +21,7 @@ extern "C" {
 /*
  * Constructor
  */
-DAQ::DAQ()
+DAQ::DAQ(MainScreen *ms) : m_mainScreen(ms)
 {
     initLogLevelAndDecimation();
 }
@@ -81,7 +83,7 @@ void DAQ::initDaq()
     AxErr retval;
 
     int frameBufferCount = userSettings::Instance().getNumberOfDaqBuffers();
-    m_frameNumber = frameBufferCount ? (frameBufferCount - 1) : 0;
+    m_bufferNumber = frameBufferCount ? (frameBufferCount - 1) : 0;
 
     imageFrameTimer.start(); // start a timer to provide frame information
 
@@ -350,7 +352,9 @@ void DAQ::getData(new_image_callback_data_t data)
     QTextStream qs(&msg);
     static uint32_t m_frameNumberGoodLast = 0;
     static uint32_t missedImageCountAcc = 0;
-    static float percent{0.0f};
+    float axsunErrorPercent{0.0f};
+
+    //QCoreApplication::processEvents();
 
     ++m_callbackCount;
     m_callbackTime = m_callbackTimer.elapsed();
@@ -392,8 +396,8 @@ void DAQ::getData(new_image_callback_data_t data)
     else
     {
 
-        m_frameNumber = m_callbackCount % frameBufferCount;
-        axsun = sm->getOctData(m_frameNumber);
+        m_bufferNumber = m_callbackCount % frameBufferCount;
+        axsun = sm->getOctData(m_bufferNumber);
 //        LOG1(axsun.acqData)
     }
 
@@ -439,8 +443,11 @@ void DAQ::getData(new_image_callback_data_t data)
         ++m_imageNumber;
         m_frameNumberGoodLast = axsun->frameNumber;
 
-        sm->pushImageRenderingQueue(axsun);
-        sm->setFrameNumber(m_frameNumber);
+//        sm->pushImageRenderingQueue(axsun);
+//        sm->setBufferNumber(m_bufferNumber);
+//        if(m_mainScreen){
+//            m_mainScreen->presentData(axsun);
+//        }
 
     } else {
         ++m_frameBadCount;
@@ -464,17 +471,27 @@ void DAQ::getData(new_image_callback_data_t data)
     axsun->imageNumber = m_imageNumber;
 
     axsun->timeStamp = imageFrameTimer.elapsed();
-    axsun->index = m_frameNumber;
+    axsun->index = m_bufferNumber;
+
+    if(thisFrameIsGood && m_mainScreen){
+//        sm->setBufferNumber(m_bufferNumber);
+        sm->pushImageRenderingQueue(axsun);
+    //m_mainScreen->presentData(axsun);
+//        m_mainScreen->updateImage();
+    }
+
+    if(thisFrameIsGood){
+    }
+
     m_dataTime = m_dataTimer.elapsed();
     m_dataTimer.restart();
 
     if(data.image_number && m_daqDecimation && (data.image_number % m_daqDecimation == 0)){
-        percent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
+        axsunErrorPercent = 100.0f * axsun->frameCountBad / axsun->callbackCount;
 //        LOG4(missedImageCountAcc, axsun->frameNumber, m_frameNumberGoodLast, percent);
-        LOG4(m_frameNumber, axsun->acqData, msg, getDataFunctionTimer.elapsed());
+        LOG4(m_bufferNumber, axsun->acqData, msg, getDataFunctionTimer.elapsed());
         LOG4(axsun->callbackCount, axsun->frameNumber, axsun->frameCountGood, axsun->frameCountBad);
-        LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, percent);
-        LOG2(m_callbackTime, m_dataTime);
+        LOG3(axsun->frameNumberGoodLast, axsun->imageNumber, axsunErrorPercent);
+//        LOG2(m_callbackTime, m_dataTime);
     }
-    QThread::yieldCurrentThread();
 }

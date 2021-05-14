@@ -37,7 +37,7 @@ public:
 
     void setDeviceLabel();
     void showSpeed(bool isShown);
-    static void setSpeedAndEnableDisableBidirectional(int speed);
+    void setSpeedAndEnableDisableBidirectional(int speed);
     void presentData( const OCTFile::OctData_t* frame);
 
 signals:
@@ -131,7 +131,7 @@ private:
     QTime m_currentTime;
     QElapsedTimer m_runTime;
     QTimer m_updateTimeTimer;
-    const int m_updateTimeTimeoutMs{250};
+    const int m_updateTimeTimeoutMs{1000};
     QTimer m_daqTimer;
     OpaqueScreen* m_opacScreen{nullptr};
     bool m_sledIsInRunningState{false};

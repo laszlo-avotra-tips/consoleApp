@@ -133,7 +133,7 @@ void StartScreen::on_pushButtonShutdown_clicked()
         DisplayManager::instance()->killDisplayMonitor();
 
         auto idaq = daqfactory::instance()->getdaq();
-        idaq->shutdownDaq();
+        if(idaq) idaq->shutdownDaq();
         QThread::sleep(1);
         InterfaceSupport::releaseInstance();
         LOG( INFO, "FTDI interface closed successfully");

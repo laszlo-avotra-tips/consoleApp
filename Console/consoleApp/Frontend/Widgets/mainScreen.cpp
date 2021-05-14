@@ -65,7 +65,7 @@ MainScreen::MainScreen(QWidget *parent)
     connect(ui->pushButtonMedium, &QPushButton::clicked, this, &MainScreen::udpateToSpeed2);
     connect(ui->pushButtonHigh, &QPushButton::clicked, this, &MainScreen::udpateToSpeed3);
     connect(this, &MainScreen::sledRunningStateChanged, this, &MainScreen::handleSledRunningState);
-    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage );
+    connect(&m_daqTimer, &QTimer::timeout, this, &MainScreen::updateImage);
 
     QMatrix matrix = ui->graphicsView->matrix();
     ui->graphicsView->setTransform( QTransform::fromScale( IMAGE_SCALE_FACTOR * matrix.m11(), IMAGE_SCALE_FACTOR * matrix.m22() ) );
@@ -90,9 +90,11 @@ MainScreen::MainScreen(QWidget *parent)
        m_scanWorker = new ScanConversion();
    }
 
-   if(!m_displayThread){
-       m_displayThread = new DisplayThread(this);
-   }
+//   if(!m_displayThread){
+//       m_displayThread = new DisplayThread(this);
+//   }
+
+   SignalModel::instance()->setMainScreen(this);
 }
 
 void MainScreen::hookupEndCaseDiagnostics() {
@@ -114,7 +116,6 @@ void MainScreen::setScene(liveScene *scene)
     if(!m_scene){
         m_scene = scene;
         m_graphicsView->setScene(m_scene);
-        daqfactory::instance()->getdaq();
         DisplayManager::instance()->setScene(m_scene);
     }
 }
@@ -187,7 +188,7 @@ void MainScreen::setSpeedAndEnableDisableBidirectional(int speed)
     if(speed >= 600){
         LOG1(speed);
 
-        auto idaq = daqfactory::instance()->getdaq();
+        auto* idaq = daqfactory::instance()->getdaq(this);
         if(idaq){
             idaq->setSubsamplingAndForcedTrigger(speed);
         }
@@ -212,6 +213,9 @@ void MainScreen::highlightSpeedButton(QPushButton *wid)
 
 int MainScreen::getSledRuntime()
 {
+    QElapsedTimer time;
+    time.start();
+    LOG1(time.elapsed());
     updateSledRunningState();
 
     if(m_runTime.isValid()){
@@ -224,6 +228,7 @@ int MainScreen::getSledRuntime()
         }
 //        LOG3(m_sledRunningStateVal,delta, m_sledRuntime);
     }
+    LOG1(time.elapsed());
     return m_sledRuntime;
 }
 
@@ -278,8 +283,6 @@ void MainScreen::handleEndCase()
         ui->pushButtonRecord->click();
     }
 
-    auto idaq = daqfactory::instance()->getdaq();
-
     QTimer::singleShot(1000, [this](){
         m_opacScreen->show();
         m_graphicsView->hide();
@@ -316,7 +319,11 @@ void MainScreen::handleEndCase()
 void MainScreen::updateMainScreenLabels(const OCTFile::OctData_t &frameData)
 {
     QString activePassiveValue{"ACTIVE"};
+
+    LOG2(m_sledRunningState,m_sledRunningStateVal)
+
     if(m_sledRunningState != m_sledRunningStateVal){
+        LOG2(m_sledRunningState,m_sledRunningStateVal)
         m_sledRunningState = m_sledRunningStateVal;
         if(m_sledRunningState == 3)
         {
@@ -372,9 +379,18 @@ void MainScreen::computeStatistics(const OCTFile::OctData_t &frame) const
 
     lastGoodImage = frame.imageNumber;
 
-    if(m_imageDecimation && (++count % m_imageDecimation == 0)){
-        float percent = 100.0f * missedImageCountAcc / frame.imageNumber;
-        LOG4(frame.imageNumber, lastGoodImage, missedImageCountAcc, percent);
+    auto render = frame;
+    render.callbackCount = ++count;
+    render.imageNumber = frame.imageNumber;
+    render.imageNumberGoodLast = lastGoodImage;
+    render.imageCountSkipped = missedImageCountAcc;
+    render.imageCountProcessed = frame.imageNumber - missedImageCountAcc;
+
+    if(m_imageDecimation && (count % m_imageDecimation == 0)){
+        float renderSkippedPercent = 100.0f * missedImageCountAcc / frame.imageNumber;
+//        LOG4(frame.imageNumber, lastGoodImage, missedImageCountAcc, percent);
+        LOG4(render.callbackCount, render.imageNumber, render.imageCountProcessed, render.imageCountSkipped);
+        LOG2(render.imageNumberGoodLast, renderSkippedPercent);
     }
 }
 
@@ -401,11 +417,13 @@ bool MainScreen::renderImage(const QImage *disk) const
 {
     bool success{false};
     QGraphicsPixmapItem* pixmap = m_scene->sectorHandle();
-
     if(pixmap && !m_disableRendering){
+        QElapsedTimer time;
+        time.start();
         const QPixmap& tmpPixmap = QPixmap::fromImage( *disk, Qt::MonoOnly);
         pixmap->setPixmap(tmpPixmap);
         success = true;
+        LOG2(m_disableRendering, time.elapsed());
     }
     return success;
 }
@@ -574,7 +592,7 @@ void MainScreen::updateDeviceSettings()
     const int numberOfSpeeds = selectedDevice->getNumberOfSpeeds();
 
     auto interfaceSupport = InterfaceSupport::getInstance();
-    int currentSledRunningStateVal{interfaceSupport->getRunningState()};
+    int currentSledRunningStateVal{interfaceSupport->getLastRunningState()};
 
     emit sledRunningStateChanged(currentSledRunningStateVal);
 
@@ -637,6 +655,7 @@ void MainScreen::openDeviceSelectDialog()
         deviceSettings &dev = deviceSettings::Instance();
         auto selectedDevice = dev.current();
         DisplayManager::instance()->setDevice(selectedDevice->getSplitDeviceName());
+        m_daqTimer.setTimerType(Qt::PreciseTimer);
         m_daqTimer.start(1);
 //        m_displayThread->start();
         DisplayManager::instance()->showOnTheSecondMonitor("liveData");
@@ -692,6 +711,7 @@ void MainScreen::openDisplayOptionsDialog()
 
 void MainScreen::updateTime()
 {
+    //QCoreApplication::processEvents();
     int sledRunTime{getSledRuntime()};
 
     if(sledRunTime){
@@ -794,7 +814,7 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     m_sledIsInRunningState = (runningStateVal == 1) || (runningStateVal == 3);
 
     auto interfaceSupport = InterfaceSupport::getInstance();
-    auto idaq = daqfactory::instance()->getdaq();
+    auto idaq = daqfactory::instance()->getdaq(this);
     if(m_sledIsInRunningState){
         auto laserOnSuccess = idaq->turnLaserOn();
         LOG2(m_sledIsInRunningState,laserOnSuccess)
@@ -808,7 +828,49 @@ void MainScreen::handleSledRunningState(int runningStateVal)
     auto&ds = deviceSettings::Instance();
     auto device = ds.current();
 
-    QString labelLiveColor;
+
+    // if m_sledIsInRunningState set labelLiveColor
+    QString labelLiveColor("color: grey;");
+    if(m_sledIsInRunningState){
+        labelLiveColor = QString("color: green;");
+    }
+    ui->labelLive->setStyleSheet(labelLiveColor);
+    //Physicians monitor
+    DisplayManager::instance()->setLabelLiveColor(labelLiveColor);
+
+    if(device && m_scene){
+        const bool isBd = device->isBiDirectional();
+        // if isBd set active passive else none
+        if(isBd){
+            switch(runningStateVal){
+            case 1:
+                m_scene->setActive();
+                break;
+            case 3:
+                m_scene->setPassive();
+                break;
+            default:
+                break;
+            }
+        } else {
+            m_scene->setIdle();
+        }
+
+        // if settings:numberOfSpeed > 1 setSpeedVisible true for the Physicians monitor
+        if(device->getNumberOfSpeeds() > 1){
+            DisplayManager::instance()->setSpeedVisible(true);
+        }else {
+            DisplayManager::instance()->setSpeedVisible(false);
+        }
+    }
+
+    if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
+        on_pushButtonMeasure_clicked(false);
+    }
+
+    ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
+
+/*
     if(device && m_scene){
         const bool isBd = device->isBiDirectional();
 
@@ -828,14 +890,19 @@ void MainScreen::handleSledRunningState(int runningStateVal)
             labelLiveColor = QString("color: grey;");
             m_scene->setIdle();
         }
+
         ui->labelLive->setStyleSheet(labelLiveColor);
+
+        //Physicians monitor
         DisplayManager::instance()->setLabelLiveColor(labelLiveColor);
+
         if(m_sledIsInRunningState && ui->pushButtonMeasure->isChecked()){
             on_pushButtonMeasure_clicked(false);
         }
 
         ui->pushButtonMeasure->setEnabled(!m_sledIsInRunningState);
     }
+ */
 }
 
 void MainScreen::on_pushButtonRecord_clicked(bool checked)
@@ -929,49 +996,54 @@ void MainScreen::setSceneCursor( QCursor cursor )
 
 void MainScreen::updateImage()
 {
-    static int renderCount{0};
+    //QCoreApplication::processEvents();
+
+    static int signalCount{0};
+
+    ++signalCount;
+
+    LOG1(signalCount);
 
     QElapsedTimer timer;
     timer.start();
 
-    OctData* pointerToFrame{nullptr};
-    pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+    OctData* axsun{nullptr};
+    axsun = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
 
-    while(pointerToFrame && m_scene)
+    if(axsun && m_scene)
     {
-        presentData(pointerToFrame);
-//        auto timeMs = timer.elapsed();
-//        LOG3(pointerToFrame,renderCount, timeMs);
-        QThread::yieldCurrentThread();
-        pointerToFrame = SignalModel::instance()->getTheFramePointerFromTheImageRenderingQueue();
+        presentData(axsun);
+//        LOG3(  signalCount, axsun->frameCountGood, timer.elapsed());
     }
+
 }
 
 void MainScreen::updateImage2()
 {
     static int index{-1};
+
     static int count{0};
+
+    ++count;
+
+    if(count % 3 != 0) return;
 
     const auto sm = SignalModel::instance();
     QElapsedTimer time;
     time.start();
 
-    ++count;
-
     const int qIndex = sm->renderingQueueIndex();
 
     if(qIndex > 0 && index != qIndex){
+
         index = qIndex;
         const auto pointerToFrame = sm->getOctData(index);
 
         if(pointerToFrame && m_scene)
         {
-
-            auto frameNumber = pointerToFrame->frameNumber;
-            auto deltaT = time.elapsed();
-            LOG4(count, qIndex, frameNumber, deltaT);
-
             presentData(pointerToFrame);
+
+            LOG4(  pointerToFrame->frameCountGood, qIndex, index, time.elapsed());
         }
     }
 }
@@ -986,11 +1058,13 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 
         const QImage* diskImage = polarTransform(frame);
 
+        //QCoreApplication::processEvents();
         if(diskImage)
         {
             updateMainScreenLabels(frame);
             renderImage(diskImage);
         }
+        //QCoreApplication::processEvents();
     }
 }
 
@@ -999,7 +1073,7 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 void MainScreen::on_pushButton_clicked()
 {
     auto interfaceSupport = InterfaceSupport::getInstance();
-    int currentSledRunningStateVal{interfaceSupport->getRunningState()};
+    int currentSledRunningStateVal{interfaceSupport->getLastRunningState()};
 
     if (currentSledRunningStateVal == 0) {
         interfaceSupport->setSledRunState(true);

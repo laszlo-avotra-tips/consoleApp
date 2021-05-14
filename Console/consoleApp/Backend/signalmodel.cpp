@@ -3,6 +3,9 @@
 #include "Utility/userSettings.h"
 #include <QFile>
 #include <QElapsedTimer>
+#include <QCoreApplication>
+
+#include "mainScreen.h"
 
 
 SignalModel* SignalModel::m_instance{nullptr};
@@ -70,14 +73,24 @@ bool SignalModel::retrieveOct(OctData &od)
     return success;
 }
 
-int SignalModel::getFrameNumber() const
+MainScreen *SignalModel::getMainScreen() const
 {
-    return m_frameNumber;
+    return m_mainScreen;
 }
 
-void SignalModel::setFrameNumber(int frameNumber)
+void SignalModel::setMainScreen(MainScreen *mainScreen)
 {
-    m_frameNumber = frameNumber;
+    m_mainScreen = mainScreen;
+}
+
+int SignalModel::getBufferNumber() const
+{
+    return m_bufferNumber;
+}
+
+void SignalModel::setBufferNumber(int bufferNumber)
+{
+    m_bufferNumber = bufferNumber;
 }
 
 const cl_float* SignalModel::getCatheterRadius_um() const
@@ -307,6 +320,8 @@ void SignalModel::setIsAveragingNoiseReduction(bool isAveragingNoiseReduction)
 
 void SignalModel::pushImageRenderingQueue(OctData *od)
 {
+    //QCoreApplication::processEvents();
+
     QElapsedTimer pushTimer;
     pushTimer.start();
 
@@ -314,7 +329,6 @@ void SignalModel::pushImageRenderingQueue(OctData *od)
 
     auto data = handleSimulationSettings(od);
     m_imageRenderingQueue.push(data);
-//    LOG2(data->frameNumber, pushTimer.elapsed())
 }
 
 OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
@@ -335,7 +349,7 @@ OctData* SignalModel::getTheFramePointerFromTheImageRenderingQueue()
 
 int SignalModel::renderingQueueIndex() const
 {
-    return getFrameNumber();
+    return getBufferNumber();
 }
 
 OctData* SignalModel::handleSimulationSettings(OctData * const od)
@@ -381,7 +395,7 @@ OCTFile::OctData_t* SignalModel::getOctData(int index)
     } else {
         octData = &(m_octData.begin()->second);
     }
-//    LOG2(index, octData->acqData)
+    LOG2(index, octData->acqData)
 
     return octData;
 }
