@@ -592,7 +592,7 @@ void MainScreen::updateDeviceSettings()
     const int numberOfSpeeds = selectedDevice->getNumberOfSpeeds();
 
     auto interfaceSupport = InterfaceSupport::getInstance();
-    int currentSledRunningStateVal{interfaceSupport->getRunningState()};
+    int currentSledRunningStateVal{interfaceSupport->getLastRunningState()};
 
     emit sledRunningStateChanged(currentSledRunningStateVal);
 
@@ -1073,7 +1073,7 @@ void MainScreen::presentData( const OCTFile::OctData_t* pointerToFrame){
 void MainScreen::on_pushButton_clicked()
 {
     auto interfaceSupport = InterfaceSupport::getInstance();
-    int currentSledRunningStateVal{interfaceSupport->getRunningState()};
+    int currentSledRunningStateVal{interfaceSupport->getLastRunningState()};
 
     if (currentSledRunningStateVal == 0) {
         interfaceSupport->setSledRunState(true);

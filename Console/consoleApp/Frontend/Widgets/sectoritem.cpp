@@ -580,7 +580,7 @@ void overlayItem::render( void )
     if(dev->isBiDirectional()){
         auto rotationIndicatorOverlayItem = RotationIndicatorFactory::getRotationIndicator();
         auto interfaceSupport = InterfaceSupport::getInstance();
-        int runningState{interfaceSupport->getRunningState()};
+        int runningState{interfaceSupport->getLastRunningState()};
 
         if(runningState != 0){
             rotationIndicatorOverlayItem->show();

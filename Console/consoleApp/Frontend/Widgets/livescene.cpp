@@ -517,7 +517,7 @@ void liveScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
              qApp->setOverrideCursor( Qt::ArrowCursor );
              if(RotationIndicatorFactory::getRotationIndicator()->isVisible()){
                  auto interfaceSupport = InterfaceSupport::getInstance();
-                 int runState = interfaceSupport->getRunningState();
+                 int runState = interfaceSupport->getLastRunningState();
 
                  if (runState == 1) {
                      interfaceSupport->enableDisableBidirectional(true); // Clockwise
