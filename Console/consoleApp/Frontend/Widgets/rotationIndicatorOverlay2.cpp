@@ -119,8 +119,7 @@ void RotationIndicatorOverlay2::paint(QPainter* painter, const QStyleOptionGraph
         painter->setFont(font);
 
         auto interfaceSupport = InterfaceSupport::getInstance();
-//        int lastRunningState{interfaceSupport->getRunningState()};
-        int lastRunningState{1};
+        int lastRunningState{interfaceSupport->getLastRunningState()};
 
         if(lastRunningState == 3)
         {
