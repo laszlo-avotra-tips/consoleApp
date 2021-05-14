@@ -582,9 +582,9 @@ void overlayItem::render( void )
         auto interfaceSupport = InterfaceSupport::getInstance();
         int runningState{interfaceSupport->getRunningState()};
 
-//        if(runningState != 0){
-//            rotationIndicatorOverlayItem->show();
-//        }
+        if(runningState != 0){
+            rotationIndicatorOverlayItem->show();
+        }
     }
 
     depthSetting &depth = depthSetting::Instance();
